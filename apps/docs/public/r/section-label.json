@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "section-label",
+  "title": "Section Label",
+  "dependencies": [
+    "@base-ui/react",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/section-label.tsx",
+      "content": "\"use client\";\n\nimport { mergeProps } from \"@base-ui/react/merge-props\";\nimport { useRender } from \"@base-ui/react/use-render\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport const sectionLabelVariants = cva(\n  \"flex items-baseline justify-between text-[length:var(--text-patch-micro)] uppercase tracking-[0.08em] text-patch-text-secondary font-medium\",\n  {\n    defaultVariants: {\n      variant: \"bare\",\n    },\n    variants: {\n      variant: {\n        bare: \"mb-3\",\n        divided: \"mb-5 pb-3 border-b-[0.5px] border-[var(--patch-border)]\",\n      },\n    },\n  },\n);\n\nexport interface SectionLabelProps extends useRender.ComponentProps<\"div\"> {\n  variant?: VariantProps<typeof sectionLabelVariants>[\"variant\"];\n  action?: React.ReactNode;\n  children?: React.ReactNode;\n}\n\nexport function SectionLabel({\n  className,\n  variant,\n  action,\n  children,\n  render,\n  ...props\n}: SectionLabelProps): React.ReactElement {\n  const defaultProps = {\n    className: cn(sectionLabelVariants({ className, variant })),\n    \"data-slot\": \"section-label\",\n    children: (\n      <>\n        <span>{children}</span>\n        {action && (\n          <span className=\"normal-case tracking-[var(--tracking-patch-small)] text-[length:var(--text-patch-mini)] font-medium text-patch-text\">\n            {action}\n          </span>\n        )}\n      </>\n    ),\n  };\n\n  return useRender({\n    defaultTagName: \"div\",\n    props: mergeProps<\"div\">(defaultProps, props),\n    render,\n  });\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/section-label.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

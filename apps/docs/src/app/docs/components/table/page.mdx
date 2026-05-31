@@ -1,0 +1,87 @@
+import { TableDemo } from "./table-demo";
+
+# Table
+
+A set of composable table primitives - thin, styled wrappers around native table elements with hairline dividers, a surface background, and restrained typography. Mirrors the familiar shadcn table API so the parts compose the way you expect.
+
+<Install name="table" />
+
+<ComponentPreview label="Table Example">
+  <TableDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCaption,
+} from "@patchui/react";
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Plan</TableHead>
+      <TableHead align="right">Price</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Team</TableCell>
+      <TableCell align="right">$49</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+## Props
+
+### Table
+
+<PropsTable
+  props={[
+    {
+      name: "scrollable",
+      type: "boolean",
+      default: "true",
+      description: "Wrap the table in a horizontally-scrollable container so wide tables stay usable on narrow viewports.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the table element.",
+    },
+  ]}
+/>
+
+### TableHead / TableCell
+
+<PropsTable
+  props={[
+    {
+      name: "align",
+      type: '"left" | "center" | "right"',
+      default: '"left"',
+      description: "Text alignment for the cell. Right-aligned TableCells also apply tabular-nums for column-aligned numerals.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the cell.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Composition:** `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, and `TableCaption` map directly to the native table elements, so standard HTML attributes pass through.
+- **Numerals:** Use `align="right"` on numeric `TableCell`s to right-align and enable tabular figures for clean column alignment.
+- **Key/value pairs:** For simple two-column key/value data, a two-cell `TableRow` per pair works well; reserve the header row for true tabular data.
+</Callout>

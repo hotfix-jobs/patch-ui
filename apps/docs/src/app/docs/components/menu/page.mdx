@@ -1,0 +1,139 @@
+import { MenuDemo } from "./menu-demo";
+
+# Menu
+
+A dropdown menu with support for items, groups, checkbox items, radio items, sub-menus, keyboard shortcuts, and separators.
+
+<Install name="menu" />
+
+<ComponentPreview label="Menu Examples">
+  <MenuDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Button,
+  Menu,
+  MenuTrigger,
+  MenuPopup,
+  MenuItem,
+  MenuGroup,
+  MenuGroupLabel,
+  MenuCheckboxItem,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuSeparator,
+  MenuShortcut,
+  MenuSub,
+  MenuSubTrigger,
+  MenuSubPopup,
+} from "@patchui/react";
+
+// Basic menu
+<Menu>
+  <MenuTrigger render={<Button />}>Open Menu</MenuTrigger>
+  <MenuPopup>
+    <MenuItem>Profile</MenuItem>
+    <MenuItem>Settings</MenuItem>
+    <MenuSeparator />
+    <MenuItem variant="destructive">Log out</MenuItem>
+  </MenuPopup>
+</Menu>
+
+// With checkbox items
+const [checked, setChecked] = useState(true);
+<MenuCheckboxItem checked={checked} onCheckedChange={setChecked}>
+  Show Sidebar
+</MenuCheckboxItem>
+
+// With radio items
+const [value, setValue] = useState("system");
+<MenuRadioGroup value={value} onValueChange={setValue}>
+  <MenuRadioItem value="light">Light</MenuRadioItem>
+  <MenuRadioItem value="dark">Dark</MenuRadioItem>
+  <MenuRadioItem value="system">System</MenuRadioItem>
+</MenuRadioGroup>
+```
+
+## Props
+
+### MenuItem
+
+<PropsTable
+  props={[
+    {
+      name: "variant",
+      type: '"default" | "destructive"',
+      default: '"default"',
+      description: "Visual variant. Use destructive for dangerous actions like delete or log out.",
+    },
+    {
+      name: "inset",
+      type: "boolean",
+      default: "false",
+      description: "Adds left padding to align with items that have icons or indicators.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the menu item.",
+    },
+  ]}
+/>
+
+### MenuPopup
+
+<PropsTable
+  props={[
+    {
+      name: "side",
+      type: '"top" | "bottom" | "left" | "right"',
+      default: '"bottom"',
+      description: "Which side of the trigger the popup appears on.",
+    },
+    {
+      name: "sideOffset",
+      type: "number",
+      default: "4",
+      description: "Distance in pixels between the popup and trigger.",
+    },
+    {
+      name: "align",
+      type: '"start" | "center" | "end"',
+      default: '"center"',
+      description: "Alignment of the popup relative to the trigger.",
+    },
+  ]}
+/>
+
+## Compound Components
+
+<CompoundComponents
+  components={[
+    { name: "Menu", description: "Root component managing open/close state." },
+    { name: "MenuTrigger", description: "Element that opens the menu on click." },
+    { name: "MenuPopup", description: "Portal-rendered popup with positioner." },
+    { name: "MenuItem", description: "A single menu action. Supports variant and inset." },
+    { name: "MenuGroup", description: "Groups related items together." },
+    { name: "MenuGroupLabel", description: "Label for a group. Supports inset." },
+    { name: "MenuCheckboxItem", description: "A togglable item with a check indicator." },
+    { name: "MenuRadioGroup", description: "Container for mutually exclusive radio items." },
+    { name: "MenuRadioItem", description: "A radio option within a group." },
+    { name: "MenuSeparator", description: "A visual divider between sections." },
+    { name: "MenuShortcut", description: "Displays a keyboard shortcut hint, right-aligned." },
+    { name: "MenuSub", description: "Wrapper for a sub-menu." },
+    { name: "MenuSubTrigger", description: "Opens the sub-menu on hover. Supports inset." },
+    { name: "MenuSubPopup", description: "Portal-rendered popup for the sub-menu." },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Keyboard navigation:** Supports arrow keys, type-ahead, Home/End, Enter/Space, and Escape.
+- **Sub-menus:** Nest `MenuSub` > `MenuSubTrigger` + `MenuSubPopup` for cascading menus. Sub-menus open on hover.
+- **Portal rendering:** The popup renders outside the DOM tree via a portal, so it appears above all other content.
+- **Inset alignment:** Use the `inset` prop on `MenuItem`, `MenuGroupLabel`, and `MenuSubTrigger` to align text with items that have icons or check indicators.
+</Callout>

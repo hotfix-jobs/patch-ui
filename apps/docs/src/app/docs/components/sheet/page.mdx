@@ -1,0 +1,91 @@
+import { SheetDemo } from "./sheet-demo";
+
+# Sheet
+
+A slide-out panel (drawer) that enters from any edge of the screen. Built on Base UI's Drawer primitive with backdrop, scroll locking, and focus trapping.
+
+<Install name="sheet" />
+
+<ComponentPreview label="Sheet Examples">
+  <SheetDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Button,
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+} from "@patchui/react";
+
+<Sheet>
+  <SheetTrigger render={<Button />}>Open Sheet</SheetTrigger>
+  <SheetContent side="right">
+    <SheetHeader>
+      <SheetTitle>Settings</SheetTitle>
+      <SheetDescription>Update your preferences.</SheetDescription>
+    </SheetHeader>
+    <div className="p-6">{/* Content */}</div>
+    <SheetFooter>
+      <Button>Save</Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>
+```
+
+## Props
+
+### SheetContent
+
+<PropsTable
+  props={[
+    {
+      name: "side",
+      type: '"right" | "left" | "top" | "bottom"',
+      default: '"right"',
+      description: "Which edge of the screen the sheet slides in from.",
+    },
+    {
+      name: "showCloseButton",
+      type: "boolean",
+      default: "true",
+      description: "Whether to render an X close button in the top-right corner.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the sheet popup.",
+    },
+  ]}
+/>
+
+## Compound Components
+
+<CompoundComponents
+  components={[
+    { name: "Sheet", description: "Root component managing open/close state. Accepts open and onOpenChange for controlled usage." },
+    { name: "SheetTrigger", description: "Renders the element that opens the sheet. Use render prop for polymorphism." },
+    { name: "SheetContent", description: "Portal-rendered panel with backdrop, scroll lock, and directional animation." },
+    { name: "SheetHeader", description: "Container for title and description." },
+    { name: "SheetTitle", description: "The sheet's heading." },
+    { name: "SheetDescription", description: "Secondary description text." },
+    { name: "SheetPanel", description: "Scrollable content area with padding." },
+    { name: "SheetFooter", description: "Footer area for action buttons with a top border." },
+    { name: "SheetClose", description: "Closes the sheet when clicked." },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Directional animation:** The sheet slides in from the specified `side` with a smooth cubic-bezier transition.
+- **Scroll locking:** Body scrolling is disabled while the sheet is open.
+- **Width/height:** Left and right sheets default to `max-w-md`. Top and bottom sheets span the full width.
+- **Backdrop dismiss:** Clicking the backdrop closes the sheet by default.
+</Callout>

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "title": "Textarea",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/recipes.json",
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/textarea.tsx",
+      "content": "\"use client\";\n\nimport { Field as FieldPrimitive } from \"@base-ui/react/field\";\nimport { mergeProps } from \"@base-ui/react/merge-props\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { colorTransition } from \"@/lib/recipes\";\n\nexport type TextareaProps = React.ComponentProps<\"textarea\"> & {\n  unstyled?: boolean;\n};\n\nexport function Textarea({\n  className,\n  rows,\n  unstyled = false,\n  ...props\n}: TextareaProps): React.ReactElement {\n  return (\n    <span\n      className={\n        cn(\n          !unstyled &&\n            cn(\n              \"relative inline-flex w-full rounded-[var(--radius-patch-sm)] bg-[var(--input-bg)] text-[length:var(--text-patch-control)] text-patch-text border-[0.5px] border-[var(--input-border)] has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)] has-focus-visible:border-[var(--input-border-focus)] has-disabled:opacity-50\",\n              colorTransition,\n            ),\n          className,\n        ) || undefined\n      }\n      data-slot=\"textarea-control\"\n    >\n      <FieldPrimitive.Control\n        render={(defaultProps: React.ComponentProps<\"textarea\">) => (\n          <textarea\n            className=\"field-sizing-content min-h-[5rem] w-full rounded-[inherit] bg-transparent px-3 py-2 text-[length:var(--text-patch-control)] outline-none placeholder:text-patch-text-tertiary\"\n            data-slot=\"textarea\"\n            rows={rows}\n            {...mergeProps(defaultProps, props)}\n          />\n        )}\n      />\n    </span>\n  );\n}\n\nexport { FieldPrimitive };\n",
+      "type": "registry:ui",
+      "target": "components/ui/textarea.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

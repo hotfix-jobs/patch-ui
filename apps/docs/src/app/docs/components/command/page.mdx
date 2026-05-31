@@ -1,0 +1,58 @@
+import { CommandDemo } from "./command-demo";
+
+# Command
+
+A command palette built on Base UI's Autocomplete (inline mode: the list is always visible, no positioned dropdown). Type to filter, arrow keys to move, Enter to select. Pass `items` for built-in filtering, or `filteredItems` to drive results from your own search index. Wrap in `CommandDialog` for a Cmd+K palette.
+
+<Install name="command" />
+
+<ComponentPreview label="Command">
+  <CommandDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandItem,
+} from "@patchui/react";
+
+const items = ["New file", "Open file", "Save"];
+
+<CommandDialog open={open} onOpenChange={setOpen} items={items}>
+  <CommandInput placeholder="Type a command..." />
+  <CommandList>
+    <CommandEmpty>No results found.</CommandEmpty>
+    <CommandCollection>
+      {(item) => (
+        <CommandItem key={item} value={item} onClick={() => run(item)}>
+          {item}
+        </CommandItem>
+      )}
+    </CommandCollection>
+  </CommandList>
+</CommandDialog>
+```
+
+For grouped results, wrap items in `CommandGroup` + `CommandGroupLabel` + `CommandCollection`. To drive results from a fuzzy index, hold the query in state via the input and pass your matched array as `filteredItems` instead of `items`.
+
+## Components
+
+- `Command` - root (Base UI Autocomplete in inline mode); takes `items` or `filteredItems`
+- `CommandDialog` - `Command` inside a `Dialog` for a Cmd+K palette
+- `CommandInput` - search input with a leading icon
+- `CommandList` - the results list; accepts a render function `(item) => <CommandItem />`
+- `CommandItem` - a selectable result (highlighted via keyboard); handle selection with `onClick`
+- `CommandEmpty` - shown when nothing matches
+- `CommandGroup` / `CommandGroupLabel` / `CommandCollection` - grouped sections
+- `CommandSeparator` - a divider between groups
+
+<Callout title="Notes">
+- **Built on Base UI Autocomplete** - filtering, roving focus, type-ahead, and ARIA are handled for you; no extra command library.
+- **Bring your own search:** pass `filteredItems` to render results from a fuzzy index (this docs site does exactly that for its Cmd+K search).
+- **Keyboard:** type to filter, Up/Down to move, Enter to select the highlighted item, Esc to close.
+</Callout>

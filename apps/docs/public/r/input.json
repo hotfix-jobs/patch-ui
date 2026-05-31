@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "input",
+  "title": "Input",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/input.tsx",
+      "content": "\"use client\";\n\nimport { Input as InputPrimitive } from \"@base-ui/react/input\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport type InputProps = Omit<\n  InputPrimitive.Props & React.RefAttributes<HTMLInputElement>,\n  \"size\"\n> & {\n  size?: \"sm\" | \"md\" | \"lg\" | number;\n  icon?: React.ReactNode;\n  prefix?: React.ReactNode;\n  suffix?: React.ReactNode;\n  unstyled?: boolean;\n  nativeInput?: boolean;\n};\n\nexport function Input({\n  className,\n  size = \"md\",\n  icon,\n  prefix,\n  suffix,\n  unstyled = false,\n  nativeInput = false,\n  ...props\n}: InputProps): React.ReactElement {\n  const inputClassName = cn(\n    \"h-10 w-full min-w-0 rounded-[inherit] border-none bg-transparent px-3.5 text-[length:var(--text-patch-control)] tracking-[-0.005em] shadow-none outline-none ring-0 placeholder:text-[var(--input-placeholder)] focus:outline-none focus:ring-0\",\n    icon && \"ps-0\",\n    prefix && \"ps-0\",\n    suffix && \"pe-0\",\n    size === \"sm\" && \"h-8 text-[length:var(--text-patch-mini)]\",\n    size === \"lg\" && \"h-11\",\n    props.type === \"search\" &&\n      \"[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none\",\n  );\n\n  const inputEl = nativeInput ? (\n    <input\n      className={inputClassName}\n      data-slot=\"input\"\n      size={typeof size === \"number\" ? size : undefined}\n      {...(props as React.InputHTMLAttributes<HTMLInputElement>)}\n    />\n  ) : (\n    <InputPrimitive\n      className={inputClassName}\n      data-slot=\"input\"\n      size={typeof size === \"number\" ? size : undefined}\n      {...props}\n    />\n  );\n\n  return (\n    <span\n      className={\n        cn(\n          !unstyled &&\n            \"relative inline-flex w-full items-center rounded-[var(--radius-patch-sm)] bg-patch-surface text-[length:var(--text-patch-control)] text-patch-text border-[0.5px] border-[var(--input-border)] transition-[color,background-color,border-color,outline-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)] has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)] has-focus-visible:border-[var(--input-border-focus)] has-focus-visible:bg-[var(--input-bg-focus)] has-disabled:opacity-50\",\n          className,\n        ) || undefined\n      }\n      data-size={size}\n      data-slot=\"input-control\"\n    >\n      {icon && (\n        <span className=\"flex shrink-0 items-center ps-3 pe-1.5 text-patch-text-tertiary [&_svg]:size-4\">\n          {icon}\n        </span>\n      )}\n      {prefix && (\n        <span className=\"flex shrink-0 items-center ps-3 text-patch-text-tertiary text-sm\">\n          {prefix}\n        </span>\n      )}\n      {inputEl}\n      {suffix && (\n        <span className=\"flex shrink-0 items-center pe-3 ps-2 ml-2 my-2 text-patch-text-tertiary text-[length:var(--text-patch-micro)] tracking-[-0.01em] border-l-[0.5px] border-[var(--input-border)]\">\n          {suffix}\n        </span>\n      )}\n    </span>\n  );\n}\n\nexport { InputPrimitive };\n",
+      "type": "registry:ui",
+      "target": "components/ui/input.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

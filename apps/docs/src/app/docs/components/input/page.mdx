@@ -1,0 +1,97 @@
+import { InputDemo } from "./input-demo";
+
+# Input
+
+A styled text input with support for sizes, icons, prefix/suffix elements, and an unstyled escape hatch.
+
+<Install name="input" />
+
+<ComponentPreview label="Input Examples">
+  <InputDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Input } from "@patchui/react";
+import { Search } from "lucide-react";
+
+// Basic
+<Input placeholder="Enter text…" />
+
+// With icon
+<Input icon={<Search className="h-4 w-4" />} placeholder="Search…" />
+
+// With prefix and suffix
+<Input prefix="$" placeholder="0.00" />
+<Input suffix=".com" placeholder="username" />
+
+// Sizes
+<Input size="sm" placeholder="Small" />
+<Input size="lg" placeholder="Large" />
+
+// Unstyled (bring your own styles)
+<Input unstyled className="my-custom-input" />
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg" | number',
+      default: '"md"',
+      description: "The size of the input. Pass a number to set the native HTML size attribute.",
+    },
+    {
+      name: "icon",
+      type: "ReactNode",
+      default: "-",
+      description: "An icon element rendered at the start of the input.",
+    },
+    {
+      name: "prefix",
+      type: "ReactNode",
+      default: "-",
+      description: "Content rendered before the input field (e.g. a currency symbol). Must be a string due to HTML attribute type constraints.",
+    },
+    {
+      name: "suffix",
+      type: "ReactNode",
+      default: "-",
+      description: "Content rendered after the input field (e.g. a visibility toggle).",
+    },
+    {
+      name: "unstyled",
+      type: "boolean",
+      default: "false",
+      description: "When true, removes all default styling so you can apply your own.",
+    },
+    {
+      name: "nativeInput",
+      type: "boolean",
+      default: "false",
+      description: "When true, renders a native <input> instead of the Base UI Input primitive.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the input, preventing interaction.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the outer wrapper.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Icon and prefix are mutually exclusive visually** - both render at the start of the input. Use `icon` for decorative icons and `prefix` for text-based prefixes like currency symbols.
+- **Unstyled mode:** Pass `unstyled` to strip all default styling. The component still renders the wrapper `<span>` and internal structure, giving you full control over appearance.
+- **Native input:** Use `nativeInput` when you need a plain `<input>` element instead of the Base UI primitive - useful for forms that rely on native browser validation.
+</Callout>

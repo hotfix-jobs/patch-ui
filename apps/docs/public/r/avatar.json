@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "avatar",
+  "title": "Avatar",
+  "dependencies": [
+    "@base-ui/react",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/avatar.tsx",
+      "content": "\"use client\";\n\nimport { Avatar as AvatarPrimitive } from \"@base-ui/react/avatar\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport const avatarVariants = cva(\n  \"relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-patch-text font-medium text-patch-bg\",\n  {\n    defaultVariants: {\n      size: \"md\",\n      shape: \"circle\",\n    },\n    variants: {\n      size: {\n        sm: \"size-7 text-[length:var(--text-patch-mini)]\",\n        md: \"size-9 text-[length:var(--text-patch-control)]\",\n        lg: \"size-11 text-[length:var(--text-patch-body)]\",\n      },\n      shape: {\n        circle: \"rounded-full\",\n        square: \"rounded-[var(--radius-patch-sm)]\",\n      },\n    },\n  },\n);\n\nexport interface AvatarProps\n  extends React.ComponentProps<typeof AvatarPrimitive.Root> {\n  size?: VariantProps<typeof avatarVariants>[\"size\"];\n  shape?: VariantProps<typeof avatarVariants>[\"shape\"];\n}\n\nexport function Avatar({\n  className,\n  size,\n  shape,\n  ...props\n}: AvatarProps): React.ReactElement {\n  return (\n    <AvatarPrimitive.Root\n      data-slot=\"avatar\"\n      className={cn(avatarVariants({ size, shape }), className)}\n      {...props}\n    />\n  );\n}\n\nexport function AvatarImage({\n  className,\n  ...props\n}: React.ComponentProps<typeof AvatarPrimitive.Image>): React.ReactElement {\n  return (\n    <AvatarPrimitive.Image\n      data-slot=\"avatar-image\"\n      className={cn(\"size-full object-cover\", className)}\n      {...props}\n    />\n  );\n}\n\nexport function AvatarFallback({\n  className,\n  ...props\n}: React.ComponentProps<typeof AvatarPrimitive.Fallback>): React.ReactElement {\n  return (\n    <AvatarPrimitive.Fallback\n      data-slot=\"avatar-fallback\"\n      className={cn(\"flex size-full items-center justify-center\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { AvatarPrimitive };\n",
+      "type": "registry:ui",
+      "target": "components/ui/avatar.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

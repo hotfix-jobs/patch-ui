@@ -1,0 +1,317 @@
+/* Layer 1: Runtime theme values */
+:root {
+  /*
+   * Text contrast contract (WCAG 2.1 AA, normal text = 4.5:1):
+   *   --patch-text           : body, headings             — AAA (>= 7:1)
+   *   --patch-text-secondary : supporting body copy       — AA  (>= 4.5:1)
+   *   --patch-text-tertiary  : labels, metadata, timestamps — AA  (>= 4.5:1)
+   *   --patch-text-quaternary: decorative / disabled ONLY — no guarantee
+   *
+   * Verified against --patch-bg AND --patch-surface via scripts/check-contrast.ts.
+   * DO NOT use --patch-text-tertiary for body paragraphs; use -secondary.
+   */
+  --patch-bg: #fafafa;
+  --patch-bg-deep: #ededed;             /* canvas behind dialogs/sheets */
+  --patch-surface: #ffffff;
+  --patch-surface-2: #f5f5f5;           /* nested/elevated card surface */
+  --patch-surface-hover: #f5f5f5;
+  --patch-surface-active: #ebebeb;
+  --patch-text: #171717;
+  --patch-text-secondary: #525252;
+  --patch-text-tertiary: #737373;
+  --patch-text-quaternary: #b5b5b5;
+  --patch-border: #e5e5e5;
+  --patch-border-subtle: rgba(from var(--patch-text) r g b / 0.06);
+  --patch-border-hover: #d4d4d4;
+  --patch-border-active: #a3a3a3;
+  /* Focus ring (1px solid outline) */
+  --patch-focus-ring: rgba(from var(--patch-text) r g b / 0.55);
+  --patch-focus-ring-offset: 1px;
+  --patch-error: #dc2626;
+  --patch-success: #16a34a;
+  --patch-warning: #d97706;
+
+  /* Button */
+  --btn-primary-bg: rgba(0,0,0,0.9);
+  --btn-primary-text: #ffffff;
+  --btn-primary-hover: #000000;
+  --btn-primary-active: #1a1a1a;
+  --btn-secondary-bg: rgba(0,0,0,0.05);
+  --btn-secondary-text: #171717;
+  --btn-secondary-border: rgba(0,0,0,0.1);
+  --btn-secondary-hover: rgba(0,0,0,0.08);
+  --btn-secondary-active: rgba(0,0,0,0.12);
+  --btn-danger-bg: rgba(239,68,68,0.08);
+  --btn-danger-text: #dc2626;
+  --btn-danger-border: rgba(239,68,68,0.15);
+  --btn-danger-hover: rgba(239,68,68,0.14);
+  --btn-danger-active: rgba(239,68,68,0.2);
+
+  /* Badge
+   * NOTE: text tokens are tuned so that each variant's foreground on its
+   * own translucent bg (composited over --patch-surface) meets WCAG AA
+   * (>= 4.5:1 for 14px body text). Do not lower without re-verifying.
+   */
+  --badge-default-bg: rgba(0,0,0,0.05);
+  --badge-default-text: #525252;
+  --badge-secondary-bg: rgba(0,0,0,0.08);
+  --badge-secondary-text: #525252;
+  --badge-success-bg: rgba(22,163,74,0.1);
+  --badge-success-text: #166534;
+  --badge-warning-bg: rgba(245,158,11,0.1);
+  --badge-warning-text: #d97706;
+  --badge-danger-bg: rgba(239,68,68,0.1);
+  --badge-danger-text: #dc2626;
+
+  /* Input */
+  --input-bg: transparent;
+  --input-border: rgba(0,0,0,0.08);
+  --input-border-focus: rgba(0,0,0,0.15);
+  --input-bg-focus: var(--patch-surface);
+  --input-placeholder: #737373;
+
+  /* Dialog */
+  --dialog-border: rgba(0,0,0,0.08);
+
+  /* Separator */
+  --separator-color: rgba(0,0,0,0.06);
+
+  /* Menu */
+  --menu-item-hover: rgba(0,0,0,0.04);
+
+
+  /* Easing curves */
+  --ease-patch-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-patch-micro: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* Timing */
+  --duration-patch-fast: 100ms;
+  --duration-patch-normal: 150ms;
+  --duration-patch-spring: 250ms;
+
+  /* Borders */
+  --border-patch: 0.5px solid var(--patch-border);
+  --border-patch-subtle: 0.5px solid rgba(from var(--patch-text) r g b / 0.06);
+
+  /* Hairline ring for elevated surfaces (mode-aware) */
+  --shadow-patch-ring: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+
+  /* Stagger */
+  --stagger-patch-row: 20ms;
+
+}
+
+.dark {
+  --patch-bg: #09090b;
+  --patch-bg-deep: #050506;             /* canvas behind dialogs/sheets */
+  --patch-surface: #111113;
+  --patch-surface-2: #161718;           /* nested/elevated card surface */
+  --patch-surface-hover: #191919;
+  --patch-surface-active: #222222;
+  --patch-text: #ededed;
+  --patch-text-secondary: #a1a1a1;
+  --patch-text-tertiary: #858585;
+  --patch-text-quaternary: #5a5a5a;
+  --patch-border: rgba(255,255,255,0.06);
+  --patch-border-hover: rgba(255,255,255,0.10);
+  --patch-border-active: rgba(255,255,255,0.15);
+  --patch-focus-ring: rgba(255, 255, 255, 0.5);
+  --patch-error: #f87171;
+  --patch-success: #4ade80;
+  --patch-warning: #fbbf24;
+
+  /* Button */
+  --btn-primary-bg: rgba(255,255,255,0.9);
+  --btn-primary-text: #0a0a0a;
+  --btn-primary-hover: #ffffff;
+  --btn-primary-active: #e5e5e5;
+  --btn-secondary-bg: rgba(255,255,255,0.08);
+  --btn-secondary-text: #ededed;
+  --btn-secondary-border: rgba(255,255,255,0.1);
+  --btn-secondary-hover: rgba(255,255,255,0.12);
+  --btn-secondary-active: rgba(255,255,255,0.16);
+  --btn-danger-bg: rgba(239,68,68,0.12);
+  --btn-danger-text: #ef4444;
+  --btn-danger-border: rgba(239,68,68,0.2);
+  --btn-danger-hover: rgba(239,68,68,0.18);
+  --btn-danger-active: rgba(239,68,68,0.26);
+
+  /* Badge — see note in :root */
+  --badge-default-bg: rgba(255,255,255,0.06);
+  --badge-default-text: #a3a3a3;
+  --badge-secondary-bg: rgba(255,255,255,0.12);
+  --badge-secondary-text: #a3a3a3;
+  --badge-success-bg: rgba(74,222,128,0.1);
+  --badge-success-text: #4ade80;
+  --badge-warning-bg: rgba(245,158,11,0.08);
+  --badge-warning-text: #f59e0b;
+  --badge-danger-bg: rgba(239,68,68,0.08);
+  --badge-danger-text: #ef4444;
+
+  /* Input */
+  --input-bg: transparent;
+  --input-border: rgba(255,255,255,0.06);
+  --input-border-focus: rgba(255,255,255,0.15);
+  --input-bg-focus: var(--patch-surface);
+  --input-placeholder: #858585;
+
+  /* Dialog */
+  --dialog-border: rgba(255,255,255,0.08);
+
+  /* Separator */
+  --separator-color: rgba(255,255,255,0.06);
+
+  /* Menu */
+  --menu-item-hover: rgba(255,255,255,0.06);
+
+  /* Hairline ring for elevated surfaces (mode-aware) */
+  --shadow-patch-ring: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+
+
+}
+
+/* Layer 2: Tailwind bridge (generates utility classes) */
+@theme inline {
+  --color-patch-bg: var(--patch-bg);
+  --color-patch-bg-deep: var(--patch-bg-deep);
+  --color-patch-surface: var(--patch-surface);
+  --color-patch-surface-2: var(--patch-surface-2);
+  --color-patch-surface-hover: var(--patch-surface-hover);
+  --color-patch-surface-active: var(--patch-surface-active);
+  --color-patch-text: var(--patch-text);
+  --color-patch-text-secondary: var(--patch-text-secondary);
+  --color-patch-text-tertiary: var(--patch-text-tertiary);
+  --color-patch-text-quaternary: var(--patch-text-quaternary);
+  --color-patch-border: var(--patch-border);
+  --color-patch-border-hover: var(--patch-border-hover);
+  --color-patch-border-active: var(--patch-border-active);
+  --color-patch-error: var(--patch-error);
+  --color-patch-success: var(--patch-success);
+  --color-patch-warning: var(--patch-warning);
+  /* Radius rule (rounded scale):
+   *   xs (4px) → Badges, pills, count chips
+   *   sm (8px) → Buttons, Inputs, Selects, small chrome
+   *   lg (12px) → Cards, Sheets, Dialogs, Menus, Toasts, larger surfaces
+   *   none (0) → uppercase utility variant only */
+  --radius-patch-xs: 4px;
+  --radius-patch-sm: 8px;
+  --radius-patch-lg: 12px;
+  --shadow-patch-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-patch-md: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-patch-lg: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-patch-overlay: 0 16px 48px -12px rgba(0,0,0,0.6);
+  --ease-patch: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-patch-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-patch-in: cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* Type scale. Controls=13, content/body=15. No 14px. */
+  --text-patch-micro: 11px;
+  --text-patch-mini: 12px;
+  --text-patch-control: 13px;
+  --text-patch-body: 15px;
+  --text-patch-lead: 18px;
+  --leading-patch-tight: 1.2;
+  --leading-patch-body: 1.5;
+
+  /* Letter-spacing scale */
+  --tracking-patch-display: -0.035em;   /* 40px+ headings */
+  --tracking-patch-display-xl: -0.04em; /* 44px+ page titles */
+  --tracking-patch-title: -0.0375em;    /* 20–26px titles */
+  --tracking-patch-body: -0.011em;      /* 14–17px body */
+  --tracking-patch-small: -0.005em;     /* 12–13px buttons, chips, meta */
+  --tracking-patch-label: 0.04em;       /* 11px UPPERCASE labels */
+  --tracking-patch-label-tight: 0.02em; /* 11px UPPERCASE footer/match */
+
+  /* Hero/display type scale - marketing only, used by DisplayHeading.
+   * Distinct from --tracking-patch-display* above which is for app-scale headings (40-44px).
+   * Hero scale is specifically for big-display marketing moments (56-124px). */
+  --text-patch-hero-md: 56px;
+  --text-patch-hero-lg: 88px;
+  --text-patch-hero-xl: 124px;
+  --tracking-patch-hero-md: -0.04em;
+  --tracking-patch-hero-lg: -0.045em;
+  --tracking-patch-hero-xl: -0.055em;
+
+  /* Section title scale - used by SectionLabel (36px/weight 500). */
+  --text-patch-section: 36px;
+  --tracking-patch-section: -0.035em;
+
+  /* Marketing section padding scale - rhythmic vertical padding for
+   * marketing surfaces. Use --spacing-patch-section-xl for major hero
+   * sections, lg/md/sm for progressively smaller gaps. */
+  --spacing-patch-section-xl: 88px;
+  --spacing-patch-section-lg: 64px;
+  --spacing-patch-section-md: 48px;
+  --spacing-patch-section-sm: 32px;
+}
+
+/* Layer 3: Component keyframes */
+@keyframes patch-theme-icon-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-90deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Spinner keyframes */
+@keyframes patch-spinner-fade {
+  from { opacity: 1; }
+  to { opacity: 0.15; }
+}
+
+@keyframes patch-dots-pulse {
+  0%, 80%, 100% { opacity: 0.25; transform: scale(0.6); }
+  40% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes patch-bars-scale {
+  0%, 80%, 100% { transform: scaleY(0.4); }
+  40% { transform: scaleY(1); }
+}
+
+@keyframes patch-ring-fill-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes patch-ring-fill-stroke {
+  0% {
+    stroke-dashoffset: 62.83;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes patch-row-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes patch-accent-in {
+  from { transform: scaleY(0); opacity: 0; }
+  to { transform: scaleY(1); opacity: 1; }
+}
+
+@keyframes patch-check-in {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes patch-skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ease-patch-spring: ease;
+    --ease-patch-micro: ease;
+    --duration-patch-spring: 0ms;
+    --stagger-patch-row: 0ms;
+  }
+}

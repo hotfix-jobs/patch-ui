@@ -1,0 +1,69 @@
+import { TextareaDemo } from "./textarea-demo";
+
+# Textarea
+
+A multi-line text input that wraps the native `<textarea>` with consistent styling and Field integration.
+
+<Install name="textarea" />
+
+<ComponentPreview label="Textarea Examples">
+  <TextareaDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Textarea } from "@patchui/react";
+
+// Basic
+<Textarea placeholder="Write something…" />
+
+// Custom rows
+<Textarea placeholder="Tall textarea" rows={6} />
+
+// Unstyled
+<Textarea unstyled className="my-custom-textarea" />
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "rows",
+      type: "number",
+      default: "-",
+      description: "The number of visible text rows. The textarea uses CSS field-sizing by default, so it auto-grows; set rows to enforce a minimum height.",
+    },
+    {
+      name: "unstyled",
+      type: "boolean",
+      default: "false",
+      description: "When true, removes all default styling so you can apply your own.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the textarea, preventing interaction.",
+    },
+    {
+      name: "placeholder",
+      type: "string",
+      default: "-",
+      description: "Placeholder text shown when the textarea is empty.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the outer wrapper.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Auto-growing:** The textarea uses `field-sizing: content` by default, so it grows with its content. The `rows` prop sets a minimum visible height.
+- **Field integration:** Internally wraps the native textarea with Base UI's `Field.Control`, enabling integration with the Field component for labels, descriptions, and validation messages.
+</Callout>

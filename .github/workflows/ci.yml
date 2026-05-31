@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build library
+        run: npm run build -w packages/react
+      - name: Contrast contract
+        run: npm run check:contrast -w packages/react
+      - name: Build registry (validates registry.json + generator)
+        run: npm run registry
+      - name: Typecheck docs
+        run: npx tsc --noEmit
+        working-directory: apps/docs

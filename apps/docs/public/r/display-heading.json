@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "display-heading",
+  "title": "Display Heading",
+  "dependencies": [
+    "@base-ui/react",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/display-heading.tsx",
+      "content": "\"use client\";\n\nimport { mergeProps } from \"@base-ui/react/merge-props\";\nimport { useRender } from \"@base-ui/react/use-render\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport const displayHeadingVariants = cva(\n  \"font-medium leading-[0.92] text-patch-text\",\n  {\n    defaultVariants: {\n      size: \"lg\",\n    },\n    variants: {\n      // Responsive: smaller on mobile, scales up at md/lg breakpoints to the\n      // token value. Mobile sizes prevent overflow on 360-400px viewports.\n      size: {\n        md: \"text-[36px] tracking-[-0.03em] md:text-[44px] md:tracking-[-0.035em] lg:text-[length:var(--text-patch-hero-md)] lg:tracking-[var(--tracking-patch-hero-md)]\",\n        lg: \"text-[44px] tracking-[-0.035em] md:text-[64px] md:tracking-[-0.04em] lg:text-[length:var(--text-patch-hero-lg)] lg:tracking-[var(--tracking-patch-hero-lg)]\",\n        xl: \"text-[52px] tracking-[-0.04em] md:text-[88px] md:tracking-[-0.045em] lg:text-[length:var(--text-patch-hero-xl)] lg:tracking-[var(--tracking-patch-hero-xl)]\",\n      },\n    },\n  },\n);\n\nexport interface DisplayHeadingProps extends useRender.ComponentProps<\"h1\"> {\n  size?: VariantProps<typeof displayHeadingVariants>[\"size\"];\n}\n\n/**\n * DisplayHeading - marketing-only big-display typography.\n *\n * Sizes: md (56px) / lg (88px) / xl (124px).\n * Uses --text-patch-hero-* and --tracking-patch-hero-* from tokens.\n * Renders as <h1> by default; pass `render` for a different element.\n */\nexport function DisplayHeading({\n  className,\n  size,\n  render,\n  ...props\n}: DisplayHeadingProps): React.ReactElement {\n  const defaultProps = {\n    className: cn(displayHeadingVariants({ size }), className),\n    \"data-slot\": \"display-heading\",\n  };\n\n  return useRender({\n    defaultTagName: \"h1\",\n    props: mergeProps<\"h1\">(defaultProps, props),\n    render,\n  });\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/display-heading.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

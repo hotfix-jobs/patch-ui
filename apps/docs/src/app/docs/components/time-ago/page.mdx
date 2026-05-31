@@ -1,0 +1,27 @@
+import { TimeAgoDemo } from "./time-ago-demo";
+
+# TimeAgo
+
+Relative time display ("3m ago", "2d ago"). Renders an absolute date during SSR / initial hydration and swaps to the relative string after mount, avoiding hydration mismatches.
+
+Defaults to mono numerals since timestamps are always numeric data.
+
+<Install name="time-ago" />
+
+<ComponentPreview label="TimeAgo">
+  <TimeAgoDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { TimeAgo } from "@patchui/react";
+
+<TimeAgo dateStr={post.publishedAt} />
+```
+
+## Props
+
+- `dateStr` - ISO date string
+- `fallback` - string rendered during SSR (defaults to formatted absolute date)
+- `variant` - `"mono"` (default) or `"sans"`

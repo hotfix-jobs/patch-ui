@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "time-ago",
+  "title": "Time Ago",
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/time-ago.tsx",
+      "content": "\"use client\";\n\nimport { useSyncExternalStore } from \"react\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\n// Pin timezone so server and client produce the same string during hydration.\nconst absoluteFmt = new Intl.DateTimeFormat(\"en-US\", {\n  month: \"short\",\n  day: \"numeric\",\n  timeZone: \"UTC\",\n});\n\nfunction formatTimeAgo(dateStr: string): string {\n  const seconds = (Date.now() - new Date(dateStr).getTime()) / 1000;\n  if (seconds < 60) return \"Just now\";\n  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;\n  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;\n  if (seconds < 604800) return `${Math.floor(seconds / 86400)}d ago`;\n  return `${Math.floor(seconds / 604800)}w ago`;\n}\n\n// useSyncExternalStore is the idiomatic \"has hydrated\" probe - returns false\n// during SSR via getServerSnapshot, true post-mount via getSnapshot. No\n// external store to subscribe to, so subscribe is a no-op.\nconst subscribe = () => () => {};\nconst getSnapshot = () => true;\nconst getServerSnapshot = () => false;\n\nexport interface TimeAgoProps extends Omit<React.TimeHTMLAttributes<HTMLTimeElement>, \"dateTime\"> {\n  /** ISO date string. */\n  dateStr: string;\n  /** Fallback rendered during SSR / initial hydration. Defaults to formatted absolute date. */\n  fallback?: string;\n  /**\n   * Typography variant. \"mono\" (default) applies tabular numerals with a\n   * tightened tracking, since timestamps are always numeric and benefit\n   * from column alignment in lists. \"sans\" inherits the parent's typography\n   * with no overrides. The variant name is retained for backwards compat\n   * across consumers; the rendering uses the body sans (Geist Sans) in\n   * both modes — only `font-variant-numeric` differs.\n   */\n  variant?: \"mono\" | \"sans\";\n}\n\n/**\n * TimeAgo - renders an absolute date during SSR / initial hydration and\n * swaps to a relative \"N ago\" string after mount.\n *\n * Avoids the Date.now()-induced hydration mismatch without resorting to\n * suppressHydrationWarning. Defaults to tabular numerals since timestamps\n * are always numeric data.\n */\nexport function TimeAgo({\n  dateStr,\n  fallback,\n  variant = \"mono\",\n  className,\n  ...props\n}: TimeAgoProps): React.ReactElement {\n  const mounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);\n\n  const absolute = absoluteFmt.format(new Date(dateStr));\n  return (\n    <time\n      dateTime={dateStr}\n      data-slot=\"time-ago\"\n      className={cn(\n        variant === \"mono\" && \"tabular-nums tracking-[-0.01em]\",\n        className,\n      )}\n      {...props}\n    >\n      {mounted ? formatTimeAgo(dateStr) : (fallback ?? absolute)}\n    </time>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/time-ago.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

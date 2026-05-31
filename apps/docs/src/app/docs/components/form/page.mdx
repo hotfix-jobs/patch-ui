@@ -1,0 +1,110 @@
+import { FormDemo } from "./form-demo";
+
+# Form
+
+A form wrapper that integrates with Field components for consolidated validation and submission handling. Wraps Base UI's Form primitive with Patch UI styling.
+
+<Install name="field" />
+
+<ComponentPreview label="Form Examples">
+  <FormDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Form,
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  Input,
+  Button,
+} from "@patchui/react";
+
+// Basic form with validation
+<Form onFormSubmit={(formValues) => console.log(formValues)}>
+  <Field name="email">
+    <FieldLabel>Email</FieldLabel>
+    <Input type="email" placeholder="you@example.com" required />
+    <FieldError />
+  </Field>
+
+  <Field name="password">
+    <FieldLabel>Password</FieldLabel>
+    <Input type="password" required />
+    <FieldError />
+  </Field>
+
+  <Button type="submit">Sign In</Button>
+</Form>
+
+// With custom validation
+<Form>
+  <Field
+    name="username"
+    validate={(value) => {
+      if (String(value).length < 3) return "Too short.";
+      return null;
+    }}
+    validationMode="onChange"
+  >
+    <FieldLabel>Username</FieldLabel>
+    <Input required />
+    <FieldError />
+  </Field>
+</Form>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "onFormSubmit",
+      type: "(formValues, eventDetails) => void",
+      default: "-",
+      description: "Callback fired when the form is submitted. preventDefault() is called automatically on the native submit event.",
+    },
+    {
+      name: "validationMode",
+      type: '"onSubmit" | "onBlur" | "onChange"',
+      default: '"onSubmit"',
+      description: "Default validation trigger for all fields. Individual Field validationMode props take precedence.",
+    },
+    {
+      name: "errors",
+      type: "Record<string, string | string[]>",
+      default: "-",
+      description: "Server-side validation errors. Keys correspond to Field name props, values are error message(s).",
+    },
+    {
+      name: "actionsRef",
+      type: "RefObject<Form.Actions | null>",
+      default: "-",
+      description: "Ref to imperative actions. Use actionsRef.current.validate() to programmatically validate all fields or a specific field by name.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes to apply to the form element.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "Form content - typically Field components with inputs and a submit button.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Built on HTML forms:** Form renders a native `<form>` element with built-in constraint validation and error consolidation from Base UI.
+- **Field integration:** Use `name` props on Field components to identify fields in `onFormSubmit` callbacks and `errors` mapping.
+- **Validation modes:** `"onSubmit"` validates all fields on submit (re-validates on change after first submission). `"onBlur"` validates on focus loss. `"onChange"` validates on every input change.
+- **Server errors:** Pass server-side validation errors via the `errors` prop after form submission - they're automatically displayed by FieldError components on the matching fields.
+- **FieldValidity:** Use inside a Field to access the raw validity state for custom validation UI beyond the standard FieldError message.
+</Callout>

@@ -1,0 +1,109 @@
+import { ButtonDemo } from "./button-demo";
+
+# Button
+
+A polymorphic button component with multiple variants, sizes, icon support, and loading state.
+
+<Install name="button" />
+
+<ComponentPreview label="Button Examples">
+  <ButtonDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Button } from "@patchui/react";
+
+// Basic
+<Button variant="primary">Click me</Button>
+
+// With icon
+<Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
+
+// Icon only
+<Button variant="secondary" icon={<Download className="h-4 w-4" />} />
+
+// Trailing arrow (apply pattern)
+<Button
+  variant="primary"
+  icon={<ArrowRight className="h-4 w-4" />}
+  iconPosition="right"
+>
+  Apply now
+</Button>
+
+// Loading state
+<Button loading>Saving...</Button>
+
+// As a link (polymorphic render prop)
+<Button render={<a href="/dashboard" />}>Go to Dashboard</Button>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "variant",
+      type: '"primary" | "secondary" | "outline" | "ghost" | "danger" | "link" | "uppercase"',
+      default: '"primary"',
+      description: "The visual style of the button.",
+    },
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "The size of the button.",
+    },
+    {
+      name: "icon",
+      type: "ReactNode",
+      default: "-",
+      description: "An icon element to render alongside the button text. When passed without children, renders as an icon-only button.",
+    },
+    {
+      name: "iconPosition",
+      type: '"left" | "right"',
+      default: '"left"',
+      description: "Which side of the label the icon appears on.",
+    },
+    {
+      name: "loading",
+      type: "boolean",
+      default: "false",
+      description: "Shows a spinner and disables the button.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the button, preventing interaction.",
+    },
+    {
+      name: "render",
+      type: "RenderProp<'button'>",
+      default: "-",
+      description: "Polymorphic render prop - pass a different element (e.g. <a>) to change the rendered tag while keeping button styles.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes to apply.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "The button label content.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Polymorphic rendering:** Use the `render` prop to render the button as any HTML element. For example, `render={<a href="/page" />}` renders an anchor tag with button styling.
+- **Icon-only buttons:** Pass an `icon` without `children` to create a square icon button. The size adjusts automatically.
+- **Loading state:** When `loading` is true, the button content is replaced with a spinner and the button is disabled to prevent double-submission.
+- **Touch targets:** All sizes include a minimum 44×44px touch target via a pseudo-element for accessibility on touch devices.
+</Callout>

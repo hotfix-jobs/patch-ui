@@ -1,0 +1,56 @@
+{
+  "name": "@patchui/react",
+  "version": "0.23.1",
+  "description": "A React component library built on Base UI primitives with Tailwind CSS v4 and a custom design token system. Source-of-truth for the @patchui/cli copy-in registry (not published as a runtime package).",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./theme/tokens.css": "./src/theme/tokens.css"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup",
+    "check:contrast": "tsx scripts/check-contrast.ts",
+    "dev": "tsup --watch"
+  },
+  "peerDependencies": {
+    "@base-ui/react": "^1.4.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.7.0",
+    "react-remove-scroll": "^2.7.0",
+    "tailwind-merge": "^3.3.0"
+  },
+  "devDependencies": {
+    "@base-ui/react": "^1.4.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tsup": "^8.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.0.0"
+  }
+}

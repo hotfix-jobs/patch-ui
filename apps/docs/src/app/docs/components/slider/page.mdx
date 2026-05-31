@@ -1,0 +1,125 @@
+import { SliderDemo } from "./slider-demo";
+
+# Slider
+
+A slider for selecting a single value or a range, with built-in track, thumb rendering, and an optional value display.
+
+<Install name="slider" />
+
+<ComponentPreview label="Slider Examples">
+  <SliderDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Slider, SliderValue } from "@patchui/react";
+
+// Single value
+<Slider defaultValue={50} />
+
+// With value display
+<Slider defaultValue={50}>
+  <SliderValue />
+</Slider>
+
+// Range (two thumbs)
+<Slider defaultValue={[20, 80]} />
+
+// Custom step
+<Slider defaultValue={50} step={10} min={0} max={100} />
+
+// Controlled
+const [value, setValue] = useState(30);
+<Slider value={value} onValueChange={(v) => setValue(v)} />
+```
+
+## Props
+
+### Slider
+
+<PropsTable
+  props={[
+    {
+      name: "defaultValue",
+      type: "number | number[]",
+      default: "[min]",
+      description: "The initial value. Pass an array for a range slider with multiple thumbs.",
+    },
+    {
+      name: "value",
+      type: "number | number[]",
+      default: "-",
+      description: "The controlled value. Use with onValueChange.",
+    },
+    {
+      name: "min",
+      type: "number",
+      default: "0",
+      description: "The minimum allowed value.",
+    },
+    {
+      name: "max",
+      type: "number",
+      default: "100",
+      description: "The maximum allowed value.",
+    },
+    {
+      name: "step",
+      type: "number",
+      default: "1",
+      description: "The step increment. The slider snaps to multiples of this value.",
+    },
+    {
+      name: "orientation",
+      type: '"horizontal" | "vertical"',
+      default: '"horizontal"',
+      description: "The orientation of the slider.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the slider, preventing interaction.",
+    },
+    {
+      name: "onValueChange",
+      type: "(value, details) => void",
+      default: "-",
+      description: "Callback fired while the slider value changes (during drag or keyboard input).",
+    },
+    {
+      name: "onValueCommitted",
+      type: "(value, details) => void",
+      default: "-",
+      description: "Callback fired when the user finishes dragging or releases the slider.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the slider root.",
+    },
+  ]}
+/>
+
+### SliderValue
+
+<PropsTable
+  props={[
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the value display.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Range slider:** Pass an array to `defaultValue` or `value` (e.g. `[20, 80]`) to create a range slider with two thumbs. The slider automatically renders one thumb per value.
+- **Value display:** Nest `<SliderValue />` inside `<Slider>` to show the current value. For range sliders, it displays both values separated by an en-dash.
+- **onValueChange vs onValueCommitted:** Use `onValueChange` for real-time updates (e.g. live preview). Use `onValueCommitted` for final values (e.g. saving to a database).
+- **Thumb alignment:** Thumbs are edge-aligned by default, meaning they don't overflow the track at the min/max positions.
+</Callout>

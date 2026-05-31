@@ -1,0 +1,219 @@
+import { FieldDemo } from "./field-demo";
+
+# Field
+
+A compound component for building accessible form fields with labels, descriptions, validation errors, and control binding. Wraps Base UI's Field primitive with Patch UI styling.
+
+<Install name="field" />
+
+<ComponentPreview label="Field Examples">
+  <FieldDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  FieldControl,
+  Input,
+} from "@patchui/react";
+
+// Basic field with Input
+<Field>
+  <FieldLabel>Username</FieldLabel>
+  <FieldDescription>Choose a unique username.</FieldDescription>
+  <Input placeholder="e.g. jane_doe" />
+</Field>
+
+// With native FieldControl and validation
+<Field>
+  <FieldLabel>Email</FieldLabel>
+  <FieldControl type="email" placeholder="you@example.com" required />
+  <FieldError />
+</Field>
+
+// Error state (controlled externally)
+<Field invalid>
+  <FieldLabel>Password</FieldLabel>
+  <Input type="password" />
+  <FieldError>Password must be at least 8 characters.</FieldError>
+</Field>
+```
+
+## Props
+
+### Field
+
+<PropsTable
+  props={[
+    {
+      name: "name",
+      type: "string",
+      default: "-",
+      description: "Identifies the field when a form is submitted. Takes precedence over the name on FieldControl.",
+    },
+    {
+      name: "invalid",
+      type: "boolean",
+      default: "false",
+      description: "Marks the field as invalid. Useful when field state is controlled externally.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the field and its control, preventing interaction.",
+    },
+    {
+      name: "validate",
+      type: "(value, formValues) => string | string[] | null",
+      default: "-",
+      description: "Custom validation function. Return error message(s) if invalid, or null if valid. Async functions are supported.",
+    },
+    {
+      name: "validationMode",
+      type: '"onSubmit" | "onBlur" | "onChange"',
+      default: '"onSubmit"',
+      description: "When to trigger validation. Takes precedence over Form's validationMode.",
+    },
+    {
+      name: "validationDebounceTime",
+      type: "number",
+      default: "0",
+      description: "Debounce interval (ms) for validate callbacks when using onChange mode.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes to apply to the field container.",
+    },
+  ]}
+/>
+
+### FieldLabel
+
+<PropsTable
+  props={[
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "The label text content. Automatically associated with the field control via accessibility attributes.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+### FieldDescription
+
+<PropsTable
+  props={[
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "Help text displayed below the label. Connected to the field control via aria-describedby.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+### FieldError
+
+<PropsTable
+  props={[
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "Custom error message. If omitted, displays the browser's native validation message.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+### FieldControl
+
+<PropsTable
+  props={[
+    {
+      name: "onValueChange",
+      type: "(value: string, details) => void",
+      default: "-",
+      description: "Callback fired when the value changes. Use when the control value is managed externally.",
+    },
+    {
+      name: "defaultValue",
+      type: "string",
+      default: "-",
+      description: "The initial value of the control.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+### FieldValidity
+
+<PropsTable
+  props={[
+    {
+      name: "children",
+      type: "(state: FieldValidityState) => ReactNode",
+      default: "-",
+      description: "Render function receiving the field's validity state (validity, error, errors, value).",
+    },
+  ]}
+/>
+
+### FieldItem
+
+<PropsTable
+  props={[
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "Content to render inside the field item. Used for grouping within checkbox/radio field groups.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Automatic labeling:** `FieldLabel` and `FieldDescription` are automatically connected to the field control via `aria-labelledby` and `aria-describedby`.
+- **FieldControl vs Input:** You can use either the native `FieldControl` (renders an `<input>`) or any Base UI input component (Input, Checkbox, Select, etc.) as the field's control - they integrate with Field automatically.
+- **FieldValidity:** Use as a render prop to access the field's full validity state for custom validation UI.
+- **FieldItem:** Used inside Field to group checkbox or radio items when building multi-option field groups.
+- **Validation modes:** Set `validationMode` on Field to control when validation fires. `"onSubmit"` (default) validates on form submit, `"onBlur"` on focus loss, and `"onChange"` on every keystroke.
+</Callout>

@@ -1,0 +1,81 @@
+import { AccordionDemo } from "./accordion-demo";
+
+# Accordion
+
+Collapsible sections built on Base UI's Accordion, with hairline row separators, an animated height transition, and a chevron that rotates on open. Panels stay mounted (`keepMounted`) so their content remains crawlable when collapsed.
+
+<Install name="accordion" />
+
+<ComponentPreview label="Accordion Example">
+  <AccordionDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionPanel,
+} from "@patchui/react";
+
+<Accordion defaultValue={["item-0"]}>
+  <AccordionItem value="item-0">
+    <AccordionTrigger>Question?</AccordionTrigger>
+    <AccordionPanel>Answer.</AccordionPanel>
+  </AccordionItem>
+</Accordion>
+```
+
+## Props
+
+### Accordion
+
+<PropsTable
+  props={[
+    {
+      name: "defaultValue",
+      type: "string[]",
+      default: "[]",
+      description: "Values of the items expanded by default (uncontrolled).",
+    },
+    {
+      name: "value",
+      type: "string[]",
+      default: "-",
+      description: "Controlled set of expanded item values.",
+    },
+    {
+      name: "onValueChange",
+      type: "(value: string[]) => void",
+      default: "-",
+      description: "Callback fired when the expanded set changes.",
+    },
+    {
+      name: "openMultiple",
+      type: "boolean",
+      default: "true",
+      description: "Whether more than one panel can be open at once.",
+    },
+  ]}
+/>
+
+### AccordionItem
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Unique identifier for the item, used to track open state.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Keyboard:** Triggers are focusable and toggle on Enter/Space, with the standard focus outline.
+- **SEO:** Panels render with `keepMounted`, so collapsed content stays in the DOM (height:0) and remains indexable.
+- **Single vs multiple:** Pass a single value (and `openMultiple={false}` if desired) to enforce one-open-at-a-time.
+</Callout>

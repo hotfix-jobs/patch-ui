@@ -1,0 +1,77 @@
+# Getting Started
+
+Patch UI is distributed as **copy-in components** - you add a component and its source lands in your own repo, fully yours to edit. There's no Patch UI package to install and no purge configuration to maintain.
+
+## Prerequisites
+
+- A React 19 project with **Tailwind CSS v4** (e.g. Next.js or Vite).
+- The `shadcn` CLI (run via `npx`, no install needed) - it's a generic registry client; it copies **Patch UI's** code, not shadcn's.
+
+## 1. Register the Patch UI namespace
+
+If you don't have a `components.json` yet, run `npx shadcn@latest init` once to create one. Then add the Patch UI registry under `registries`:
+
+```json
+// components.json
+{
+  "registries": {
+    "@patchui": "https://ui.hotfix.jobs/r/{name}.json"
+  }
+}
+```
+
+## 2. Add a component
+
+```bash
+npx shadcn@latest add @patchui/button
+```
+
+This copies the component source into your components directory (e.g. `components/ui/button.tsx`), pulls in anything it depends on (the `cn` helper, shared recipes, the design tokens), and installs the required npm packages (`@base-ui/react`, `class-variance-authority`, `clsx`, `tailwind-merge`).
+
+## 3. Wire up the tokens
+
+The first `add` also copies the `--patch-*` design tokens to `styles/patch-tokens.css`. Import them through your **Tailwind CSS** entry file (not a JS import - the `@theme` block needs Tailwind's pipeline):
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+@import "./styles/patch-tokens.css";
+```
+
+This registers the tokens as utilities (`bg-patch-surface`, `text-patch-text`, …) and powers light/dark.
+
+### Light / Dark mode
+
+Tokens cover both modes. Add the `dark` class to `<html>` to switch - no JS theme engine required:
+
+```html
+<html class="dark">
+```
+
+## 4. Use it
+
+```tsx
+import { Button } from "@/components/ui/button";
+
+export default function App() {
+  return (
+    <div className="flex gap-3">
+      <Button variant="primary">Save</Button>
+      <Button variant="secondary">Cancel</Button>
+      <Button variant="danger">Delete</Button>
+    </div>
+  );
+}
+```
+
+Button supports variants (`primary`, `secondary`, `outline`, `ghost`, `danger`, `link`, `uppercase`), three sizes (`sm`, `md`, `lg`), icons, and a loading state. See the [Button docs](/docs/components/button) for the full API.
+
+## Notes
+
+- **You own the code.** Copied components live in your repo - edit them freely. To pull updates, re-run `add` (review the diff).
+- **Base UI** is the one substantial dependency the components are built on; the rest are tiny utilities, all installed automatically.
+
+## Next steps
+
+- Browse the [Theme & Design Tokens](/docs/theme) reference
+- Explore the components, starting with [Button](/docs/components/button)

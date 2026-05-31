@@ -1,0 +1,108 @@
+import { TooltipDemo } from "./tooltip-demo";
+
+# Tooltip
+
+A popup that displays additional information when hovering over an element. Supports configurable placement, offset, and an optional arrow indicator.
+
+<Install name="tooltip" />
+
+<ComponentPreview label="Tooltip Examples">
+  <TooltipDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Button, Tooltip, TooltipProvider } from "@patchui/react";
+
+// Wrap tooltips in a provider for shared delay behavior
+<TooltipProvider>
+  {/* Basic tooltip */}
+  <Tooltip content="Helpful information">
+    <Button>Hover me</Button>
+  </Tooltip>
+
+  {/* With arrow and custom side */}
+  <Tooltip content="Save your changes" side="bottom" arrow>
+    <Button>Save</Button>
+  </Tooltip>
+</TooltipProvider>
+```
+
+## Props
+
+### Tooltip
+
+<PropsTable
+  props={[
+    {
+      name: "content",
+      type: "ReactNode",
+      default: "-",
+      description: "The text or content to display in the tooltip.",
+    },
+    {
+      name: "children",
+      type: "ReactElement",
+      default: "-",
+      description: "The trigger element that activates the tooltip on hover.",
+    },
+    {
+      name: "side",
+      type: '"top" | "bottom" | "left" | "right"',
+      default: '"top"',
+      description: "Which side of the trigger the tooltip appears on.",
+    },
+    {
+      name: "sideOffset",
+      type: "number",
+      default: "4",
+      description: "Distance in pixels between the tooltip and trigger.",
+    },
+    {
+      name: "arrow",
+      type: "boolean",
+      default: "false",
+      description: "Whether to render a directional arrow pointing at the trigger.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the tooltip popup.",
+    },
+  ]}
+/>
+
+### TooltipProvider
+
+<PropsTable
+  props={[
+    {
+      name: "delay",
+      type: "number",
+      default: "300",
+      description: "Milliseconds to wait before opening a tooltip.",
+    },
+    {
+      name: "closeDelay",
+      type: "number",
+      default: "0",
+      description: "Milliseconds to wait before closing a tooltip.",
+    },
+    {
+      name: "timeout",
+      type: "number",
+      default: "400",
+      description: "If a tooltip was recently closed, the next one opens instantly within this timeout (ms).",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **TooltipProvider:** Wrap multiple tooltips in a `TooltipProvider` for shared delay behavior - hovering between adjacent tooltips opens them instantly.
+- **Hover activation:** Tooltips appear on mouse hover and keyboard focus, after the configured delay.
+- **Portal rendering:** The tooltip renders outside the DOM tree via a portal, avoiding overflow clipping.
+- **Arrow indicator:** Set `arrow` to render a small triangle pointing from the tooltip to the trigger element.
+</Callout>

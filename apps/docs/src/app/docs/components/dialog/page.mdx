@@ -1,0 +1,94 @@
+import { DialogDemo } from "./dialog-demo";
+
+# Dialog
+
+A modal dialog overlay with backdrop, header, content area, and footer. Built on Base UI's Dialog primitive with scroll locking and focus trapping.
+
+<Install name="dialog" />
+
+<ComponentPreview label="Dialog Examples">
+  <DialogDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Button,
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@patchui/react";
+
+<Dialog>
+  <DialogTrigger render={<Button />}>Open Dialog</DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Edit Profile</DialogTitle>
+      <DialogDescription>
+        Make changes to your profile here.
+      </DialogDescription>
+    </DialogHeader>
+    <div className="p-6">
+      {/* Content goes here */}
+    </div>
+    <DialogFooter>
+      <DialogClose render={<Button variant="secondary" />}>
+        Cancel
+      </DialogClose>
+      <DialogClose render={<Button />}>Save</DialogClose>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+```
+
+## Props
+
+### DialogContent
+
+<PropsTable
+  props={[
+    {
+      name: "showCloseButton",
+      type: "boolean",
+      default: "true",
+      description: "Whether to render an X close button in the top-right corner.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the dialog popup.",
+    },
+  ]}
+/>
+
+## Compound Components
+
+<CompoundComponents
+  components={[
+    { name: "Dialog", description: "Root component managing open/close state. Accepts open and onOpenChange for controlled usage." },
+    { name: "DialogTrigger", description: "Renders the element that opens the dialog. Use render prop for polymorphism." },
+    { name: "DialogContent", description: "Portal-rendered popup with backdrop, scroll lock, and focus trap." },
+    { name: "DialogHeader", description: "Flex column container for title and description (padding included)." },
+    { name: "DialogTitle", description: "The dialog's heading text." },
+    { name: "DialogDescription", description: "Secondary description text below the title." },
+    { name: "DialogPanel", description: "Scrollable content area with padding." },
+    { name: "DialogFooter", description: "Footer area for action buttons. Stacks vertically on mobile." },
+    { name: "DialogClose", description: "Closes the dialog when clicked. Use render prop to style as a Button." },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Scroll locking:** The dialog automatically prevents body scrolling while open via `react-remove-scroll`.
+- **Focus trapping:** Focus is trapped inside the dialog and returned to the trigger when closed.
+- **Backdrop dismiss:** Clicking the backdrop closes the dialog by default.
+- **Polymorphic triggers:** Use `render={<Button />}` on `DialogTrigger` and `DialogClose` to render them as styled buttons.
+- **Controlled usage:** Pass `open` and `onOpenChange` to `Dialog` to control visibility programmatically.
+</Callout>

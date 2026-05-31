@@ -1,0 +1,86 @@
+import { SpinnerDemo } from "./spinner-demo";
+
+# Spinner
+
+A loading indicator with 5 visual variants. Uses `currentColor` so it adapts to any text color. Pure CSS animations - no JavaScript animation loops.
+
+<Install name="spinner" />
+
+<ComponentPreview label="Spinner Examples">
+  <SpinnerDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Spinner } from "@patchui/react";
+
+// Default ring spinner
+<Spinner />
+
+// iOS-style segmented bars
+<Spinner variant="spinner" />
+
+// Three pulsing dots
+<Spinner variant="dots" />
+
+// Vertical equalizer bars
+<Spinner variant="bars" />
+
+// Stroke-drawing ring
+<Spinner variant="ring-fill" />
+
+// Sizes
+<Spinner size="xs" />
+<Spinner size="sm" />
+<Spinner size="md" />
+<Spinner size="lg" />
+<Spinner size="xl" />
+
+// Inherits text color
+<div className="text-red-500">
+  <Spinner />
+</div>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "variant",
+      type: '"ring" | "spinner" | "dots" | "bars" | "ring-fill"',
+      default: '"ring"',
+      description: "The visual style of the spinner.",
+    },
+    {
+      name: "size",
+      type: '"xs" | "sm" | "md" | "lg" | "xl"',
+      default: '"md"',
+      description: "The size of the spinner.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+## Variants
+
+| Variant | Description |
+|---------|-------------|
+| `ring` | Rotating arc - single SVG circle with a gap. Lightest weight, universal default. |
+| `spinner` | iOS-style 8 bars fading in sequence. Premium feel, works at all sizes. |
+| `dots` | Three dots pulsing in sequence. Good for inline/chat typing indicators. |
+| `bars` | Three vertical bars scaling in height. Visually distinct equalizer pattern. |
+| `ring-fill` | SVG stroke that "draws" around a circle. Material Design feel. |
+
+<Callout title="Notes">
+- **Color inheritance:** All variants use `currentColor`, so they adapt to the parent's text color automatically. Wrap in a colored container to change the spinner color.
+- **Button loading:** Use `<Spinner size="sm" />` inside a Button's loading state. The `ring` and `spinner` variants work best at small sizes.
+- **No JS animation:** All animations are pure CSS (`transform` + `opacity` on the compositor thread). No `requestAnimationFrame` or JavaScript timers.
+- **Accessibility:** Renders with `role="status"` and `aria-label="Loading"` for screen readers.
+</Callout>

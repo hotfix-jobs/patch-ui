@@ -1,0 +1,181 @@
+import { SelectDemo } from "./select-demo";
+
+# Select
+
+A dropdown selection component with support for grouped items, separators, and multiple sizes. Built on top of Base UI's Select primitive.
+
+<Install name="select" />
+
+<ComponentPreview label="Select Examples">
+  <SelectDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectPopup,
+  SelectItem,
+  SelectGroup,
+  SelectGroupLabel,
+  SelectSeparator,
+} from "@patchui/react";
+
+// Basic select
+<Select defaultValue="apple">
+  <SelectTrigger>
+    <SelectValue placeholder="Choose a fruit…" />
+  </SelectTrigger>
+  <SelectPopup>
+    <SelectItem value="apple">Apple</SelectItem>
+    <SelectItem value="banana">Banana</SelectItem>
+    <SelectItem value="cherry">Cherry</SelectItem>
+  </SelectPopup>
+</Select>
+
+// Grouped items
+<Select defaultValue="react">
+  <SelectTrigger className="w-56">
+    <SelectValue placeholder="Choose a framework…" />
+  </SelectTrigger>
+  <SelectPopup>
+    <SelectGroup>
+      <SelectGroupLabel>Frontend</SelectGroupLabel>
+      <SelectItem value="react">React</SelectItem>
+      <SelectItem value="vue">Vue</SelectItem>
+    </SelectGroup>
+    <SelectSeparator />
+    <SelectGroup>
+      <SelectGroupLabel>Backend</SelectGroupLabel>
+      <SelectItem value="node">Node.js</SelectItem>
+    </SelectGroup>
+  </SelectPopup>
+</Select>
+```
+
+## Props
+
+### SelectTrigger
+
+<PropsTable
+  props={[
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "The size of the trigger button.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+### SelectValue
+
+<PropsTable
+  props={[
+    {
+      name: "placeholder",
+      type: "string",
+      default: "-",
+      description: "Text shown when no value is selected.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+### SelectPopup
+
+<PropsTable
+  props={[
+    {
+      name: "side",
+      type: '"top" | "bottom" | "left" | "right"',
+      default: '"bottom"',
+      description: "Which side of the trigger the popup appears on.",
+    },
+    {
+      name: "sideOffset",
+      type: "number",
+      default: "4",
+      description: "Distance in pixels between the popup and trigger.",
+    },
+    {
+      name: "align",
+      type: '"start" | "center" | "end"',
+      default: '"start"',
+      description: "Alignment of the popup relative to the trigger.",
+    },
+    {
+      name: "alignOffset",
+      type: "number",
+      default: "0",
+      description: "Offset for alignment in pixels.",
+    },
+    {
+      name: "alignItemWithTrigger",
+      type: "boolean",
+      default: "true",
+      description: "Whether to align the selected item with the trigger.",
+    },
+  ]}
+/>
+
+### SelectItem
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "The value of this option, used for form submission and selection state.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Whether this item is disabled.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+## Compound Components
+
+<CompoundComponents
+  components={[
+    { name: "Select", description: "Root component that manages open/close state and value." },
+    { name: "SelectTrigger", description: "Styled trigger button with size variants and chevron icon." },
+    { name: "SelectValue", description: "Displays the selected value text inside the trigger." },
+    { name: "SelectPopup", description: "Portal-rendered popup with positioner. Also exported as SelectContent." },
+    { name: "SelectItem", description: "An individual option with check indicator." },
+    { name: "SelectGroup", description: "Groups related items together." },
+    { name: "SelectGroupLabel", description: "Label for a group of items." },
+    { name: "SelectSeparator", description: "A visual separator between items or groups." },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Portal rendering:** The popup renders via a portal, so it appears above all other content regardless of overflow or stacking context.
+- **Composition:** Use `SelectTrigger` + `SelectValue` for the trigger. `SelectTrigger` renders the styled button with a chevron icon, and `SelectValue` displays the currently selected item text.
+- **Keyboard navigation:** Supports arrow keys, type-ahead search, Home/End, and Enter/Space for selection.
+</Callout>

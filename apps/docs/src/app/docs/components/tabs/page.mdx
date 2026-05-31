@@ -1,0 +1,87 @@
+import { TabsDemo } from "./tabs-demo";
+
+# Tabs
+
+Compound component built on Base UI Tabs. Two variants: `underline` (default) draws a single sliding underline via Base UI's `Tabs.Indicator`; `pill` gives the active tab a filled, rounded background. The `pill` variant works in both orientations, so one component can render a vertical sidebar on desktop and a horizontal strip on mobile.
+
+<Install name="tabs" />
+
+<ComponentPreview label="Tabs">
+  <TabsDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
+
+// Content tabs (underline)
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="settings">Settings</TabsTrigger>
+  </TabsList>
+  <TabsPanel value="overview">...</TabsPanel>
+  <TabsPanel value="settings">...</TabsPanel>
+</Tabs>
+
+// Nav-style, responsive: vertical pill on desktop, horizontal on mobile
+<Tabs variant="pill" orientation="vertical" defaultValue="profile">
+  <TabsList>
+    <TabsTrigger value="profile">Profile</TabsTrigger>
+    <TabsTrigger value="billing">Billing</TabsTrigger>
+  </TabsList>
+</Tabs>
+```
+
+## Props
+
+### Tabs
+
+<PropsTable
+  props={[
+    {
+      name: "variant",
+      type: '"underline" | "pill"',
+      default: '"underline"',
+      description: "underline draws a sliding indicator (content tabs); pill gives the active tab a filled rounded background (nav-style tabs).",
+    },
+    {
+      name: "orientation",
+      type: '"horizontal" | "vertical"',
+      default: '"horizontal"',
+      description: "Layout direction. The pill variant is designed to look consistent in both orientations.",
+    },
+    {
+      name: "defaultValue",
+      type: "string",
+      default: "-",
+      description: "Initially-selected tab value (uncontrolled).",
+    },
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Selected tab value (controlled).",
+    },
+    {
+      name: "onValueChange",
+      type: "(value: string) => void",
+      default: "-",
+      description: "Callback fired when the selected tab changes.",
+    },
+  ]}
+/>
+
+## Components
+
+- `Tabs` - root; accepts `variant`, `orientation`, `defaultValue` or controlled `value`/`onValueChange`
+- `TabsList` - container for triggers; renders the sliding indicator for the underline variant
+- `TabsTrigger` - individual tab; styled per the active variant
+- `TabsPanel` - matched panel for a trigger value
+
+<Callout title="Notes">
+- **Underline vs pill:** Use `underline` for switching content panels; use `pill` for navigation-style tabs (e.g. settings sections) where a filled active state reads better.
+- **Responsive nav:** With `variant="pill"`, render `orientation="vertical"` on larger screens and horizontal on small screens to get a consistent look across breakpoints from one component.
+- **Keyboard:** Triggers are arrow-key navigable (Base UI) and show the standard focus outline.
+</Callout>

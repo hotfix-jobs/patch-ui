@@ -1,0 +1,59 @@
+import { LabelDemo } from "./label-demo";
+
+# Label
+
+A styled form label with consistent typography. Connects to inputs via the standard `htmlFor` attribute.
+
+<Install name="label" />
+
+<ComponentPreview label="Label Examples">
+  <LabelDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Label } from "@patchui/react";
+
+// Basic
+<Label>Email address</Label>
+
+// With an input
+<Label htmlFor="email">Email</Label>
+<input id="email" type="email" />
+
+// As a different element (polymorphic render prop)
+<Label render={<span />}>Read-only label</Label>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "render",
+      type: "RenderProp<'label'>",
+      default: "-",
+      description: "Polymorphic render prop - pass a different element to change the rendered tag while keeping label styles.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes to apply.",
+    },
+    {
+      name: "htmlFor",
+      type: "string",
+      default: "-",
+      description: "The id of the form element this label is associated with.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Typography:** Renders as `text-xs font-medium` with muted tertiary text color, matching the design system's form label style.
+- **Polymorphic rendering:** Use the `render` prop to render as a `<span>` or other element when you need label styling without the semantic `<label>` tag.
+- **Accessibility:** Always pair with `htmlFor` pointing to the input's `id` to ensure screen readers associate the label with its control.
+</Callout>

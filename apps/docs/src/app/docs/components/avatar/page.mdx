@@ -1,0 +1,73 @@
+import { AvatarDemo } from "./avatar-demo";
+
+# Avatar
+
+A user avatar built on Base UI's Avatar. Shows an image, and gracefully falls back to a solid monogram (initials, or any node) while the image loads or if it fails. Sizes `sm`/`md`/`lg` and `circle`/`square` shapes. The fallback is a high-contrast monogram (dark fill + light initials) that inverts automatically in dark mode.
+
+<Install name="avatar" />
+
+<ComponentPreview label="Avatar">
+  <AvatarDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Avatar, AvatarImage, AvatarFallback } from "@patchui/react";
+
+<Avatar>
+  <AvatarImage src="/people/jane.jpg" alt="Jane Doe" />
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+
+// Fallback only (initials)
+<Avatar size="lg">
+  <AvatarFallback>JD</AvatarFallback>
+</Avatar>
+
+// Square
+<Avatar shape="square">
+  <AvatarImage src="/logo.png" alt="Acme" />
+  <AvatarFallback>A</AvatarFallback>
+</Avatar>
+```
+
+To stack avatars, place them in a `flex -space-x-2` container and add `ring-2 ring-patch-bg` to each so they separate cleanly.
+
+## Props
+
+### Avatar
+
+<PropsTable
+  props={[
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "Avatar diameter (28 / 36 / 44 px).",
+    },
+    {
+      name: "shape",
+      type: '"circle" | "square"',
+      default: '"circle"',
+      description: "Circle (rounded-full) or square (sm radius).",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes (e.g. ring utilities for stacking).",
+    },
+  ]}
+/>
+
+## Components
+
+- `Avatar` - root container with size/shape variants and a hairline ring
+- `AvatarImage` - the image; covers the container and hides itself if it fails to load
+- `AvatarFallback` - shown while the image loads or on error; typically initials
+
+<Callout title="Notes">
+- **Graceful fallback:** `AvatarFallback` renders until the image successfully loads, so there's no broken-image flash. Use 1-2 character initials, an icon, or any node.
+- **Stacking:** add `ring-2 ring-patch-bg` to each avatar in a `-space-x-2` row for an overlapping group.
+</Callout>

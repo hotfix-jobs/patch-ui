@@ -1,0 +1,13 @@
+{
+  "name": "patch-ui-monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w packages/react",
+    "registry": "node scripts/build-registry-source.mjs && shadcn build registry.json --output apps/docs/public/r"
+  },
+  "version": "0.0.1"
+}

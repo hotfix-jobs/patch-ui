@@ -1,0 +1,99 @@
+import { BadgeDemo } from "./badge-demo";
+
+# Badge
+
+A small status indicator for labels, counts, and tags. Supports multiple semantic variants and sizes.
+
+<Install name="badge" />
+
+<ComponentPreview label="Badge Examples">
+  <BadgeDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Badge } from "@patchui/react";
+
+// Basic
+<Badge>Default</Badge>
+
+// Semantic variants
+<Badge variant="success">Active</Badge>
+<Badge variant="warning">Pending</Badge>
+<Badge variant="danger">Error</Badge>
+
+// Sizes
+<Badge size="xs">Tiny</Badge>
+<Badge size="sm">Small</Badge>
+<Badge size="lg">Large</Badge>
+
+// Shape
+<Badge shape="rounded">Rounded</Badge>
+<Badge shape="pill">Pill</Badge>
+<Badge variant="success" shape="pill">Active</Badge>
+
+// As a link (polymorphic render prop)
+<Badge render={<a href="/status" />}>Linked</Badge>
+
+// Dismissible - renders a trailing × (applied filters, tokens, facets)
+<Badge variant="secondary" onRemove={() => removeFilter("Design")}>
+  Design
+</Badge>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "variant",
+      type: '"default" | "primary" | "secondary" | "ghost" | "success" | "warning" | "danger"',
+      default: '"default"',
+      description: "The visual style of the badge.",
+    },
+    {
+      name: "size",
+      type: '"xs" | "sm" | "md" | "lg"',
+      default: '"sm"',
+      description: "The size of the badge.",
+    },
+    {
+      name: "shape",
+      type: '"rounded" | "pill"',
+      default: '"rounded"',
+      description: "The border-radius style. Use pill for a fully rounded badge.",
+    },
+    {
+      name: "onRemove",
+      type: "() => void",
+      default: "-",
+      description: "When provided, renders a trailing × button that calls this handler. Turns the badge into a removable tag (applied filters, tokens, facets).",
+    },
+    {
+      name: "removeLabel",
+      type: "string",
+      default: '"Remove"',
+      description: "Accessible label for the × remove button.",
+    },
+    {
+      name: "render",
+      type: "RenderProp<'span'>",
+      default: "-",
+      description: "Polymorphic render prop - pass a different element (e.g. <a>) to change the rendered tag while keeping badge styles.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes to apply.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Polymorphic rendering:** Use the `render` prop to render the badge as any HTML element. For example, `render={<a href="/status" />}` renders an anchor tag with badge styling.
+- **Semantic variants:** Use `success`, `warning`, and `danger` for status indicators. Use `primary` for high-emphasis solid badges.
+- **Sizing:** The `xs` size uses a smaller font and tighter padding, suitable for inline use within text.
+</Callout>

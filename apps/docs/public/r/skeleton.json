@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "skeleton",
+  "title": "Skeleton",
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/skeleton.tsx",
+      "content": "import type React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport function Skeleton({\n  className,\n  ...props\n}: React.ComponentProps<\"div\">): React.ReactElement {\n  return (\n    <div\n      className={cn(\n        // Calm, restrained placeholder: a solid subtle surface block with a\n        // gentle opacity pulse (no border, no sweeping gradient).\n        \"rounded-[var(--radius-patch-sm)] bg-patch-surface-2 animate-[patch-skeleton-pulse_1.6s_ease-in-out_infinite] motion-reduce:animate-none\",\n        className,\n      )}\n      data-slot=\"skeleton\"\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/skeleton.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

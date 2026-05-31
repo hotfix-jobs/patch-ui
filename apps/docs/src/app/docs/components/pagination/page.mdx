@@ -1,0 +1,65 @@
+import { PaginationDemo } from "./pagination-demo";
+
+# Pagination
+
+A minimal page navigator: prev/next icon buttons around an inline list of page numbers. Numbers read as quiet navigation chrome rather than a row of stamped buttons; the active page gets bold text and a hairline underline. Renders nothing when there is only one page.
+
+<Install name="pagination" />
+
+<ComponentPreview label="Pagination Example">
+  <PaginationDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { useState } from "react";
+import { Pagination } from "@patchui/react";
+
+const [page, setPage] = useState(1);
+
+<Pagination page={page} totalPages={10} onPageChange={setPage} />
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "page",
+      type: "number",
+      default: "-",
+      description: "The current page (1-indexed).",
+    },
+    {
+      name: "totalPages",
+      type: "number",
+      default: "-",
+      description: "Total number of pages.",
+    },
+    {
+      name: "onPageChange",
+      type: "(page: number) => void",
+      default: "-",
+      description: "Fired when the user picks a new page (a value from 1 to totalPages).",
+    },
+    {
+      name: "showSummary",
+      type: "boolean",
+      default: "true",
+      description: 'Show the "Page X of Y" caption beside the controls.',
+    },
+    {
+      name: "ariaLabel",
+      type: "string",
+      default: '"Pagination"',
+      description: "Accessible label for the navigation landmark.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Tabular numerals:** Page numbers use tabular figures so digits stay column-aligned regardless of width.
+- **Truncation:** For large page counts the control shows the first, last, current ±1, and ellipsis markers for gaps.
+- **Keyboard:** Page buttons are focusable with the standard focus outline.
+</Callout>

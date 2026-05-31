@@ -1,0 +1,52 @@
+import { SkeletonDemo } from "./skeleton-demo";
+
+# Skeleton
+
+A pulsing placeholder that indicates content is loading. Style with className to match the shape of the content being loaded.
+
+<Install name="skeleton" />
+
+<ComponentPreview label="Skeleton Examples">
+  <SkeletonDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Skeleton } from "@patchui/react";
+
+// Text line
+<Skeleton className="h-4 w-full" />
+
+// Circle (avatar placeholder)
+<Skeleton className="h-12 w-12 rounded-full" />
+
+// Card layout
+<div className="flex items-start gap-4">
+  <Skeleton className="h-10 w-10 rounded-full" />
+  <div className="flex flex-1 flex-col gap-2">
+    <Skeleton className="h-4 w-1/3" />
+    <Skeleton className="h-4 w-full" />
+  </div>
+</div>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "CSS classes to control size, shape, and border-radius. Required to give the skeleton visible dimensions.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Shape via className:** Skeleton renders as an empty `div` with a pulse animation and rounded corners. Use Tailwind utilities like `h-4 w-full` for text lines, `h-12 w-12 rounded-full` for avatars, etc.
+- **Animation:** Uses a CSS `pulse` animation to indicate loading. The animation is inherited and cannot be disabled via props.
+- **Composition:** Compose multiple Skeleton elements in a flex layout to represent complex content structures like cards, lists, or profiles.
+</Callout>

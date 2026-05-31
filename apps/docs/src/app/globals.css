@@ -1,0 +1,73 @@
+@import "tailwindcss";
+@import "@patchui/react/theme/tokens.css";
+
+/* Scan the component library source so Tailwind detects its classes */
+@source "../../../../packages/react/src";
+@source "../../node_modules/@patchui/react/dist";
+
+body {
+  background: var(--patch-bg);
+  color: var(--patch-text);
+}
+
+/* ── Code block inner styles (rehype-pretty-code) ── */
+/* The outer wrapper is handled by CodeFigure component */
+
+/* Strip default figure margin - CodeFigure wraps with its own */
+[data-rehype-pretty-code-figure] {
+  margin: 0;
+}
+
+/* Optional code block title */
+[data-rehype-pretty-code-title] {
+  padding: 0.5rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  border-bottom: 1px solid var(--patch-border);
+  background: var(--patch-surface-hover);
+  color: var(--patch-text-secondary);
+}
+
+/* Pre block */
+[data-rehype-pretty-code-figure] pre {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  background: var(--patch-surface);
+}
+
+/* Code element */
+[data-rehype-pretty-code-figure] code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  display: grid;
+  counter-reset: line;
+}
+
+/* Individual code lines */
+[data-rehype-pretty-code-figure] code > [data-line] {
+  padding: 0 0.25rem;
+  border-left: 2px solid transparent;
+}
+
+/* Highlighted lines */
+[data-rehype-pretty-code-figure] code > [data-highlighted-line] {
+  background: rgba(99, 102, 241, 0.08);
+  border-left-color: var(--patch-border-active);
+}
+
+.dark [data-rehype-pretty-code-figure] code > [data-highlighted-line] {
+  background: rgba(99, 102, 241, 0.15);
+}
+
+/* Inline code (not in fenced blocks) */
+:not(pre) > code {
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  background: var(--patch-surface-hover);
+  color: var(--patch-text);
+}

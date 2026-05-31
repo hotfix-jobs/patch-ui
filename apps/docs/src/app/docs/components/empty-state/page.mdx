@@ -1,0 +1,31 @@
+import { EmptyStateDemo } from "./empty-state-demo";
+
+# EmptyState
+
+"No results" / "no data yet" placeholder. Hairline-bordered icon container, title, optional description and action.
+
+<Install name="empty-state" />
+
+<ComponentPreview label="EmptyState">
+  <EmptyStateDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { EmptyState, Button } from "@patchui/react";
+
+<EmptyState
+  title="No jobs match those filters"
+  description="Try removing a filter, or reset to see everything."
+  icon={<SearchIcon />}
+  action={<Button variant="primary">Browse jobs</Button>}
+/>
+```
+
+## Props
+
+- `title` - short headline
+- `description` - optional helper text
+- `icon` - optional icon, rendered in a 36×36 hairline-bordered box
+- `action` - optional CTA node (typically a `<Button>`); pass routing primitives by wrapping the Button with your router's Link

@@ -1,0 +1,58 @@
+import { NavigationMenuDemo } from "./navigation-menu-demo";
+
+# NavigationMenu
+
+A horizontal navigation bar built on Base UI's NavigationMenu. Items are either a plain link or a trigger with a dropdown panel; multiple panels share one popup that morphs (size and position) between them. It is designed to drop straight into a header, including inside `AppHeader`. The popup scaffold (portal, positioner, popup, viewport) is rendered for you, so you only write the list.
+
+<Install name="navigation-menu" />
+
+<ComponentPreview label="NavigationMenu">
+  <NavigationMenuDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+} from "@patchui/react";
+
+<NavigationMenu>
+  <NavigationMenuList>
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Product</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <div className="grid w-[440px] grid-cols-2 gap-1">
+          <NavigationMenuLink href="/features">Features</NavigationMenuLink>
+          <NavigationMenuLink href="/pricing">Pricing</NavigationMenuLink>
+        </div>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+    <NavigationMenuItem>
+      <NavigationMenuLink href="/docs">Docs</NavigationMenuLink>
+    </NavigationMenuItem>
+  </NavigationMenuList>
+</NavigationMenu>
+```
+
+Use the `render` prop on `NavigationMenuLink` to integrate your router (e.g. a Next.js `<Link>`): `<NavigationMenuLink render={<Link href="/docs" />}>Docs</NavigationMenuLink>`.
+
+## Components
+
+- `NavigationMenu` - root; also renders the shared popup (portal, positioner, popup, viewport) automatically
+- `NavigationMenuList` - the horizontal list of items
+- `NavigationMenuItem` - a single item (a link, or a trigger plus content)
+- `NavigationMenuTrigger` - opens a dropdown panel; includes a chevron that rotates on open
+- `NavigationMenuContent` - the panel for an item; rendered into the shared morphing popup
+- `NavigationMenuLink` - a navigable link, in the bar or inside content
+
+<Callout title="Notes">
+- **Fits AppHeader:** drop `NavigationMenu` between `AppHeaderBrand` and `AppHeaderRight` for a product-style header.
+- **Morphing popup:** all `NavigationMenuContent` panels share one popup that animates its size and position between items, with a direction-aware slide.
+- **Keyboard + a11y:** Base UI handles roving focus, arrow-key navigation, and the ARIA wiring. Triggers and links show the standard focus ring.
+</Callout>

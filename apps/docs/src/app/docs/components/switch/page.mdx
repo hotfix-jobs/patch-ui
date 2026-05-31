@@ -1,0 +1,89 @@
+import { SwitchDemo } from "./switch-demo";
+
+# Switch
+
+A toggle switch for binary on/off choices, with support for controlled, uncontrolled, and disabled states.
+
+<Install name="switch" />
+
+<ComponentPreview label="Switch Examples">
+  <SwitchDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Switch } from "@patchui/react";
+
+// Uncontrolled
+<Switch defaultChecked />
+
+// Controlled
+const [checked, setChecked] = useState(false);
+<Switch checked={checked} onCheckedChange={(c) => setChecked(c)} />
+
+// Disabled
+<Switch disabled />
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "checked",
+      type: "boolean",
+      default: "-",
+      description: "Whether the switch is currently active. Use for controlled switches.",
+    },
+    {
+      name: "defaultChecked",
+      type: "boolean",
+      default: "false",
+      description: "Whether the switch is initially active. Use for uncontrolled switches.",
+    },
+    {
+      name: "onCheckedChange",
+      type: "(checked: boolean, details) => void",
+      default: "-",
+      description: "Callback fired when the switch is toggled.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the switch, preventing interaction.",
+    },
+    {
+      name: "readOnly",
+      type: "boolean",
+      default: "false",
+      description: "Prevents the user from toggling the switch.",
+    },
+    {
+      name: "required",
+      type: "boolean",
+      default: "false",
+      description: "Whether the switch must be active before submitting a form.",
+    },
+    {
+      name: "name",
+      type: "string",
+      default: "-",
+      description: "Identifies the field when a form is submitted.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the switch root.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Switch vs Checkbox:** Use a switch for settings that take effect immediately (e.g. "Enable notifications"). Use a checkbox for options that require a form submission.
+- **Accessibility:** Renders a hidden `<input type="checkbox">` for native form participation and assistive technology support. The switch has a `role="switch"` for screen readers.
+- **Controlled vs uncontrolled:** Use `checked` + `onCheckedChange` for controlled usage. Use `defaultChecked` for uncontrolled.
+</Callout>

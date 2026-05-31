@@ -1,0 +1,23 @@
+import { ContrastDemo } from "./contrast-demo";
+
+# Contrast Audit
+
+Visual verification that every `--patch-text-*` token meets its declared WCAG contrast target against every surface token. The required thresholds are:
+
+- `patch-text` - AAA body text (≥ 7:1)
+- `patch-text-secondary` - AA body copy (≥ 4.5:1)
+- `patch-text-tertiary` - AA metadata/labels (≥ 4.5:1)
+- `patch-text-quaternary` - no guarantee; decorative use only
+
+Ratios re-compute when you toggle light/dark mode. Green pills = passing, red = failing. The same verification runs in CI via `npm run check:contrast -w packages/react`.
+
+<ComponentPreview label="Contrast matrix">
+  <ContrastDemo />
+</ComponentPreview>
+
+## When to use each tier
+
+- **`patch-text`** - primary body, headings, anything the user needs to read precisely.
+- **`patch-text-secondary`** - supporting body copy, descriptions, long-form prose.
+- **`patch-text-tertiary`** - labels, timestamps, metadata, section overlines. **Not for body paragraphs.**
+- **`patch-text-quaternary`** - decorative-only; placeholder hints, disabled states, accent detail.

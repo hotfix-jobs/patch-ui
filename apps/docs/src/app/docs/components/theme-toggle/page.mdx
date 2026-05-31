@@ -1,0 +1,102 @@
+import { ThemeToggleDemo } from "./theme-toggle-demo";
+
+# ThemeToggle
+
+A light/dark mode toggle button with animated sun/moon icons. Works uncontrolled with localStorage persistence, or controlled via props. Applies the `.dark` class to `<html>` by default.
+
+<Install name="theme-toggle" />
+
+<ComponentPreview label="ThemeToggle Examples">
+  <ThemeToggleDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { ThemeToggle } from "@patchui/react";
+
+// Uncontrolled - persists to localStorage, applies .dark class
+<ThemeToggle />
+
+// Controlled
+const [theme, setTheme] = useState<"light" | "dark">("light");
+<ThemeToggle
+  theme={theme}
+  onThemeChange={setTheme}
+/>
+
+// With next-themes
+import { useTheme } from "next-themes";
+
+function MyToggle() {
+  const { resolvedTheme, setTheme } = useTheme();
+  return (
+    <ThemeToggle
+      theme={resolvedTheme as "light" | "dark"}
+      onThemeChange={setTheme}
+      applyClass={false}
+      storageKey={false}
+    />
+  );
+}
+```
+
+## Flash Prevention
+
+Add this inline script to your `<head>` to prevent a flash of wrong theme on page load:
+
+```html
+<script>
+  (function() {
+    var t = localStorage.getItem('patch-ui-theme');
+    if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (t === 'dark') document.documentElement.classList.add('dark');
+  })();
+</script>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "theme",
+      type: '"light" | "dark" | "system"',
+      default: "-",
+      description: "Controlled theme value. Omit for uncontrolled mode.",
+    },
+    {
+      name: "onThemeChange",
+      type: "(theme: ResolvedTheme) => void",
+      default: "-",
+      description: "Called when the theme changes.",
+    },
+    {
+      name: "storageKey",
+      type: "string | false",
+      default: '"patch-ui-theme"',
+      description: "localStorage key for persistence. Set to false to disable.",
+    },
+    {
+      name: "applyClass",
+      type: "boolean",
+      default: "true",
+      description: "Whether to toggle the .dark class on <html>.",
+    },
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "Size of the toggle button.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Uncontrolled mode:** By default, ThemeToggle manages its own state, reads from localStorage on mount, and applies the `.dark` class to `<html>`. No provider needed.
+- **Controlled mode:** Pass `theme` and `onThemeChange` for external control (e.g. with `next-themes`). Set `applyClass={false}` and `storageKey={false}` to avoid conflicts.
+- **SSR safe:** Uses `useSyncExternalStore` to detect mount state. Renders a blank placeholder before hydration to prevent mismatch.
+- **Animation:** Icon transitions use a CSS keyframe (`patch-theme-icon-in`) defined in the patch-ui tokens CSS.
+- **System preference:** Pass `theme="system"` to resolve based on `prefers-color-scheme`.
+</Callout>

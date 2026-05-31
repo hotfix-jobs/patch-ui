@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "switch",
+  "title": "Switch",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/recipes.json",
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/switch.tsx",
+      "content": "\"use client\";\n\nimport { Switch as SwitchPrimitive } from \"@base-ui/react/switch\";\nimport type React from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { focusRing, colorTransition } from \"@/lib/recipes\";\n\nexport function Switch({\n  className,\n  ...props\n}: SwitchPrimitive.Root.Props): React.ReactElement {\n  return (\n    <SwitchPrimitive.Root\n      className={cn(\n        \"inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-px data-checked:bg-patch-text data-unchecked:bg-patch-border dark:data-unchecked:bg-patch-border-active data-disabled:cursor-not-allowed data-disabled:opacity-50\",\n        colorTransition,\n        focusRing,\n        className,\n      )}\n      data-slot=\"switch\"\n      {...props}\n    >\n      <SwitchPrimitive.Thumb\n        className=\"pointer-events-none block size-[18px] rounded-full bg-white shadow-[var(--shadow-patch-sm)] transition-[translate] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)] data-checked:translate-x-4 data-unchecked:translate-x-0 dark:bg-patch-bg\"\n        data-slot=\"switch-thumb\"\n      />\n    </SwitchPrimitive.Root>\n  );\n}\n\nexport { SwitchPrimitive };\n",
+      "type": "registry:ui",
+      "target": "components/ui/switch.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}
