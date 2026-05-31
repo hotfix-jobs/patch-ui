@@ -145,11 +145,13 @@ export function NavigationMenuContent({
 
 export function NavigationMenuLink({
   className,
+  closeOnClick = true,
   ...props
 }: React.ComponentProps<typeof NavigationMenuPrimitive.Link>): React.ReactElement {
   return (
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
+      closeOnClick={closeOnClick}
       className={cn(
         "block rounded-[var(--radius-patch-sm)] px-3 py-2 text-[length:var(--text-patch-control)] text-patch-text-secondary hover:bg-patch-surface-hover hover:text-patch-text",
         colorTransition,
