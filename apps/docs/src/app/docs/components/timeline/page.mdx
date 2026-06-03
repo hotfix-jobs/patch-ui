@@ -2,7 +2,7 @@ import { TimelineDemo } from "./timeline-demo";
 
 # Timeline
 
-Horizontally paginated sequential content. One step visible at a time inside a full-width frame, with prev/next pill chips carrying the adjacent step's eyebrow. All steps stay in the DOM so SEO crawlers and screen readers see the full content regardless of which one is on screen. Per-step background (color or image) crossfades on advance.
+Horizontally paginated sequential content. One step visible at a time inside a full-width frame, with Back/Next buttons and a step counter in a hairline-divided footer row. All steps stay in the DOM so SEO crawlers and screen readers see the full content regardless of which one is on screen. Per-step background (color or image) crossfades on advance.
 
 Intended for marketing surfaces: process explanations, brand chronicles, and similar ordered content.
 
@@ -16,33 +16,54 @@ Intended for marketing surfaces: process explanations, brand chronicles, and sim
 
 ```tsx
 import { Timeline } from "@patchui/react";
+import { Bell, Radar, SlidersHorizontal } from "lucide-react";
 
 <Timeline
-  eyebrow="History"
-  heading="Our story"
+  eyebrow="How it works"
+  heading="From source to your inbox."
   steps={[
-    { eyebrow: "2021", title: "Founded", body: "Two engineers, one office." },
-    { eyebrow: "2022", title: "First product line", body: "..." },
-    { eyebrow: "2024", title: "International rollout", body: "..." },
+    {
+      eyebrow: "01",
+      icon: <Radar />,
+      title: "We watch every source.",
+      body: "Direct API pulls from every customer's hiring system.",
+      details: ["Six integrations", "Live, not scraped", "Continuously refreshed"],
+      meta: "Updates twice daily",
+    },
+    {
+      eyebrow: "02",
+      icon: <SlidersHorizontal />,
+      title: "You set your preferences.",
+      body: "Match on role, salary, skills, and location.",
+    },
+    {
+      eyebrow: "03",
+      icon: <Bell />,
+      title: "We notify you.",
+      body: "Push when matches land. Apply before everyone else.",
+    },
   ]}
 />
 ```
 
 ## Props
 
-- `steps` — `TimelineStep[]`. Required. Each step has `eyebrow`, `title`, optional `body`, optional `bg`.
-- `heading` — Optional. Display heading rendered above the frame.
-- `eyebrow` — Optional. Small uppercase label rendered above the heading.
+- `steps`: `TimelineStep[]`. Required.
+- `heading`: optional display heading rendered above the frame.
+- `eyebrow`: optional small uppercase label rendered above the heading.
 
 ### TimelineStep
 
-- `eyebrow` — Small label on the step and on the nav pills (e.g. `"01"`, `"2022"`).
-- `title` — Step headline.
-- `body` — Optional supporting copy under the title.
-- `bg` — Optional per-step background. `{ type: "color", value: "..." }` for any CSS color, or `{ type: "image", src: "..." }` for a cover-fit image.
+- `eyebrow`: small uppercase label rendered above the title (e.g. `"01"`, `"2022"`).
+- `title`: step headline.
+- `body`: optional supporting paragraph under the title.
+- `icon`: optional decorative icon, typically a Lucide icon. Timeline standardizes the visual size.
+- `details`: optional short bullet list rendered as hairline-divided rows. Use for sub-points, integrations, or stats.
+- `meta`: optional small uppercase footer line below the details.
+- `bg`: optional per-step background. `{ type: "color", value: "..." }` for any CSS color, or `{ type: "image", src: "..." }` for a cover-fit image.
 
 ## Interaction
 
-- Touch: swipe horizontally across the frame
-- Keyboard: focus the timeline track and use Arrow Left / Right
-- Pointer: click the prev/next pill chips at the bottom-left and top-right of the frame
+- Touch: swipe horizontally across the frame.
+- Keyboard: focus the timeline track and use Arrow Left / Right.
+- Pointer: click the Back and Next buttons at the bottom of the frame.

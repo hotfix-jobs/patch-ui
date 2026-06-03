@@ -28,7 +28,7 @@ export interface TimelineStep {
   title: string;
   /** Optional supporting copy under the title. */
   body?: string;
-  /** Optional decorative icon — typically a Lucide icon — rendered above
+  /** Optional decorative icon (typically a Lucide icon) rendered above
    *  the eyebrow. Timeline standardizes the visual size (~28px) so the
    *  rhythm stays consistent across steps; caller's own size className
    *  on the icon is overridden. */
@@ -108,7 +108,7 @@ export function Timeline({
 
   const hasPrev = activeIndex > 0;
   const hasNext = activeIndex < steps.length - 1;
-  // Pad the counter to match the total digit width — "01 / 03" reads
+  // Pad the counter to match the total digit width: "01 / 03" reads
   // cleaner than "1 / 3", and "01 / 12" cleaner than "1 / 12".
   const totalDigits = String(steps.length).length;
   const counter = `${String(activeIndex + 1).padStart(totalDigits, "0")} / ${String(steps.length).padStart(totalDigits, "0")}`;
@@ -148,7 +148,7 @@ export function Timeline({
             </div>
           )}
 
-          {/* Scroll-snap track. The `<ol>` is the semantic spine — all steps
+          {/* Scroll-snap track. The `<ol>` is the semantic spine: all steps
               live in the DOM and are crawlable / readable regardless of which
               one is on screen. `tabIndex=0` lets keyboard users focus the
               track and use Arrow Left/Right (native scroll behavior). */}
@@ -177,7 +177,7 @@ export function Timeline({
           </ol>
 
           {/* Footer: counter + nav buttons on a hairline-divided row. No
-              progress bar — the counter ("01 / 03") between the buttons
+              progress bar. The counter ("01 / 03") between the buttons
               carries the position indication. */}
           <div className="relative border-t-[0.5px] border-patch-border bg-patch-surface/80 backdrop-blur-sm">
             <div className="flex items-center justify-between gap-3 px-5 md:px-8 py-3 md:py-4">
