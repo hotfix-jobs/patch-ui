@@ -29,8 +29,9 @@ export interface TimelineStep {
   /** Optional supporting copy under the title. */
   body?: string;
   /** Optional decorative icon — typically a Lucide icon — rendered above
-   *  the eyebrow inside a small bordered square. Caller controls size via
-   *  the icon's own className. */
+   *  the eyebrow. Timeline standardizes the visual size (~28px) so the
+   *  rhythm stays consistent across steps; caller's own size className
+   *  on the icon is overridden. */
   icon?: ReactNode;
   /** Optional short bullet list rendered after the body as hairline-
    *  divided rows. Use for concrete sub-points: integrations, stats,
@@ -224,7 +225,7 @@ function TimelineStepContent({ step }: { step: TimelineStep }) {
     <div className="relative flex min-h-[480px] md:min-h-[560px] flex-col justify-center p-8 md:p-14">
       <div className="max-w-[44rem]">
         {step.icon && (
-          <div className="mb-6 inline-flex size-12 items-center justify-center rounded-[var(--radius-patch-sm)] border-[0.5px] border-patch-border bg-patch-bg text-patch-text">
+          <div className="mb-6 text-patch-text [&_svg]:size-7">
             {step.icon}
           </div>
         )}
