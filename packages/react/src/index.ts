@@ -32,6 +32,7 @@ export {
   type SelectButtonProps,
 } from "./components/select";
 export { Switch, SwitchPrimitive } from "./components/switch";
+export { Checkbox, CheckboxPrimitive } from "./components/checkbox";
 export { Slider, SliderValue, SliderPrimitive } from "./components/slider";
 export {
   Card,

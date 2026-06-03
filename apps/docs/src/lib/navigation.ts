@@ -27,6 +27,7 @@ export const navigation: NavGroup[] = [
       { title: "Label", href: "/docs/components/label" },
       { title: "Select", href: "/docs/components/select" },
       { title: "Switch", href: "/docs/components/switch" },
+      { title: "Checkbox", href: "/docs/components/checkbox" },
       { title: "Slider", href: "/docs/components/slider" },
     ],
   },
