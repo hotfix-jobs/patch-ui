@@ -1,0 +1,128 @@
+import { RadioDemo } from "./radio-demo";
+
+# Radio
+
+A single-select group for choosing one option from a small set, with controlled, uncontrolled, and disabled states.
+
+<Install name="radio" />
+
+<ComponentPreview label="Radio Examples">
+  <RadioDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Radio, RadioGroup } from "@patchui/react";
+
+// Uncontrolled
+<RadioGroup defaultValue="weekly">
+  <label className="flex items-center gap-2">
+    <Radio value="daily" /> Daily
+  </label>
+  <label className="flex items-center gap-2">
+    <Radio value="weekly" /> Weekly
+  </label>
+</RadioGroup>
+
+// Controlled
+const [plan, setPlan] = useState("standard");
+<RadioGroup value={plan} onValueChange={(v) => setPlan(v as string)}>
+  <label className="flex items-center gap-2">
+    <Radio value="starter" /> Starter
+  </label>
+  <label className="flex items-center gap-2">
+    <Radio value="standard" /> Standard
+  </label>
+</RadioGroup>
+
+// Disabled (applies to the whole group)
+<RadioGroup defaultValue="yes" disabled>
+  <Radio value="yes" />
+  <Radio value="no" />
+</RadioGroup>
+```
+
+## Props
+
+### RadioGroup
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "The currently selected value. Use for controlled groups.",
+    },
+    {
+      name: "defaultValue",
+      type: "string",
+      default: "-",
+      description: "The initially selected value. Use for uncontrolled groups.",
+    },
+    {
+      name: "onValueChange",
+      type: "(value: string, details) => void",
+      default: "-",
+      description: "Callback fired when the selected value changes.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables every Radio inside the group.",
+    },
+    {
+      name: "readOnly",
+      type: "boolean",
+      default: "false",
+      description: "Prevents the user from changing the selection.",
+    },
+    {
+      name: "required",
+      type: "boolean",
+      default: "false",
+      description: "Whether the user must pick a value before submitting a form.",
+    },
+    {
+      name: "name",
+      type: "string",
+      default: "-",
+      description: "Identifies the field when a form is submitted.",
+    },
+  ]}
+/>
+
+### Radio
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "The value associated with this radio button. Must be unique within the group.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables this individual radio. Overrides group-level disabled when both are set.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the radio root.",
+    },
+  ]}
+/>
+
+
+<Callout title="Notes">
+- **Radio vs Checkbox:** Use a radio group when the user must pick exactly one option from a small set (less than 5 or so). For larger lists, prefer a [Select](/docs/components/select). For multiple selections, use [Checkbox](/docs/components/checkbox).
+- **Always pair with a label:** Each `Radio` should sit inside a `<label>` so clicking the text toggles selection.
+- **Accessibility:** The group renders with `role="radiogroup"` and arrow-key navigation between options. A hidden native `<input type="radio">` participates in form submission.
+- **Controlled vs uncontrolled:** Use `value` + `onValueChange` for controlled groups. Use `defaultValue` for uncontrolled.
+</Callout>

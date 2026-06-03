@@ -28,6 +28,7 @@ export const navigation: NavGroup[] = [
       { title: "Select", href: "/docs/components/select" },
       { title: "Switch", href: "/docs/components/switch" },
       { title: "Checkbox", href: "/docs/components/checkbox" },
+      { title: "Radio", href: "/docs/components/radio" },
       { title: "Slider", href: "/docs/components/slider" },
     ],
   },

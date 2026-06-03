@@ -378,6 +378,26 @@
       ]
     },
     {
+      "name": "radio",
+      "type": "registry:ui",
+      "title": "Radio",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/radio.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/radio.tsx"
+        }
+      ]
+    },
+    {
       "name": "section-label",
       "type": "registry:ui",
       "title": "Section Label",

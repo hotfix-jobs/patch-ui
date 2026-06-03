@@ -99,6 +99,7 @@ const [checked, setChecked] = useState(false);
 
 <Callout title="Notes">
 - **Checkbox vs Switch:** Use a checkbox for form options that take effect on submit (e.g. "I agree to the terms"). Use a [Switch](/docs/components/switch) for settings that apply immediately.
+- **Checkbox vs Radio:** Use checkboxes when zero or more options can be selected. Use a [Radio group](/docs/components/radio) when exactly one must be chosen.
 - **Indeterminate:** A visual-only state, useful for "select all" headers when only some children are ticked. The native input is still reported as unchecked.
 - **Accessibility:** Renders a hidden `<input type="checkbox">` for native form participation. Wrap the checkbox and its label in a `<label>` so clicking the label toggles the checkbox.
 - **Controlled vs uncontrolled:** Use `checked` + `onCheckedChange` for controlled usage. Use `defaultChecked` for uncontrolled.
