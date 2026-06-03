@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type ReactNode,
 } from "react";
 
 import { Badge } from "../../components/badge";
@@ -21,12 +22,18 @@ export type TimelineStepBg =
   | { type: "image"; src: string };
 
 export interface TimelineStep {
-  /** Small label rendered above the title and on the nav pills. e.g. "01" or "2022". */
+  /** Small label rendered on the step Badge. e.g. "01" or "2022". */
   eyebrow: string;
   /** Step headline. */
   title: string;
   /** Optional supporting copy under the title. */
   body?: string;
+  /** Optional decorative icon — typically a Lucide icon — rendered above
+   *  the eyebrow Badge inside a small bordered square. Caller controls
+   *  size via the icon's own className. */
+  icon?: ReactNode;
+  /** Optional small footer line below the body. Renders uppercase tracking. */
+  meta?: string;
   /** Optional background for the frame while this step is active. */
   bg?: TimelineStepBg;
 }
@@ -42,14 +49,15 @@ export interface TimelineProps extends React.HTMLAttributes<HTMLElement> {
 /**
  * Timeline – horizontally paginated sequential content block.
  *
- * One step visible at a time in a full-width frame. Prev/next pill chips
- * carry the adjacent step's eyebrow and advance via scroll-snap, which gives
- * touch swipe + keyboard arrows for free. All steps stay in the DOM so SEO
- * crawlers and screen readers see the full content regardless of which step
- * is on screen. Per-step `bg` (color or image) crossfades on advance.
+ * One step visible at a time in a full-width frame. Real Back/Next
+ * Buttons at the bottom corners, a step counter and progress bar
+ * between them, content left-aligned with a comfortable max-width.
+ * Touch swipe + keyboard arrows work via scroll-snap; all steps stay
+ * in the DOM for SEO + screen readers. Per-step `bg` (color or image)
+ * crossfades on advance.
  *
- * Intended for marketing surfaces: process explanations ("how it works"),
- * brand chronicles ("our story"), and similar ordered content.
+ * Intended for marketing surfaces: process explanations, brand
+ * chronicles, and similar ordered content.
  */
 export function Timeline({
   steps,
@@ -92,8 +100,13 @@ export function Timeline({
     track.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
   }, []);
 
-  const prev = activeIndex > 0 ? steps[activeIndex - 1] : null;
-  const next = activeIndex < steps.length - 1 ? steps[activeIndex + 1] : null;
+  const hasPrev = activeIndex > 0;
+  const hasNext = activeIndex < steps.length - 1;
+  const progressPct = ((activeIndex + 1) / steps.length) * 100;
+  // 2-digit step counter when the total step count itself fits in 2 digits;
+  // otherwise pad to match. "01 / 03" reads cleaner than "1 / 3".
+  const totalDigits = String(steps.length).length;
+  const counter = `${String(activeIndex + 1).padStart(totalDigits, "0")} / ${String(steps.length).padStart(totalDigits, "0")}`;
 
   return (
     <section
@@ -114,9 +127,7 @@ export function Timeline({
         )}
 
         <div className="relative overflow-hidden rounded-[var(--radius-patch-md)] border-[0.5px] border-patch-border bg-patch-surface">
-          {/* Per-step backgrounds, cross-fade on active change. Each layer is
-              absolutely positioned and toggles opacity – the underlying
-              surface stays visible during transitions so there is no flash. */}
+          {/* Per-step background layers, cross-fade on active change. */}
           {steps.some((s) => s.bg) && (
             <div aria-hidden="true" className="pointer-events-none absolute inset-0">
               {steps.map((step, i) => (
@@ -160,23 +171,53 @@ export function Timeline({
             ))}
           </ol>
 
-          {/* Nav pills. Bottom-left = prev, top-right = next. Hidden when no
-              adjacent step exists. The pills carry the adjacent eyebrow so
-              the user can preview where they're going. */}
-          {prev && (
-            <NavPill
-              direction="prev"
-              label={prev.eyebrow}
-              onClick={() => scrollTo(activeIndex - 1)}
-            />
-          )}
-          {next && (
-            <NavPill
-              direction="next"
-              label={next.eyebrow}
-              onClick={() => scrollTo(activeIndex + 1)}
-            />
-          )}
+          {/* Footer: progress bar + counter + nav buttons. Sits inside the
+              frame at the bottom with its own hairline divider so it reads
+              as one continuous card. */}
+          <div className="relative border-t-[0.5px] border-patch-border bg-patch-surface/80 backdrop-blur-sm">
+            {/* Thin progress bar across the very top of the footer row. */}
+            <div className="absolute inset-x-0 top-0 h-[2px] bg-patch-border-subtle">
+              <div
+                className="h-full bg-patch-text transition-[width] duration-[var(--duration-patch-spring)] ease-[var(--ease-patch-out)]"
+                style={{ width: `${progressPct}%` }}
+                aria-hidden="true"
+              />
+            </div>
+
+            <div className="flex items-center justify-between gap-3 px-5 md:px-8 py-3 md:py-4">
+              <Button
+                variant="outline"
+                size="sm"
+                icon={<ChevronLeft className="size-3.5" />}
+                iconPosition="left"
+                onClick={() => scrollTo(activeIndex - 1)}
+                disabled={!hasPrev}
+                aria-label="Previous step"
+              >
+                Back
+              </Button>
+
+              <span
+                className="text-[12px] tabular-nums tracking-[0.08em] uppercase font-medium text-patch-text-tertiary"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                {counter}
+              </span>
+
+              <Button
+                variant="outline"
+                size="sm"
+                icon={<ChevronRight className="size-3.5" />}
+                iconPosition="right"
+                onClick={() => scrollTo(activeIndex + 1)}
+                disabled={!hasNext}
+                aria-label="Next step"
+              >
+                Next
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -185,79 +226,35 @@ export function Timeline({
 
 function TimelineStepContent({ step }: { step: TimelineStep }) {
   return (
-    <div className="relative flex min-h-[420px] md:min-h-[520px] flex-col justify-end p-8 md:p-14">
-      {/* Marker dot + connecting line. Anchored to the eyebrow row of the
-          active content. Pure decoration, behind the text. */}
-      <div className="md:absolute md:right-14 md:top-14 md:bottom-14 md:left-[55%] flex flex-col">
-        <div className="hidden md:block relative h-full">
-          <span
-            aria-hidden="true"
-            className="absolute left-0 top-0 block size-2 rounded-full bg-[var(--patch-text)]"
-          />
-          <span
-            aria-hidden="true"
-            className="absolute left-[3.5px] top-2 bottom-[40%] w-[0.5px] bg-[var(--patch-border)]"
-          />
-          <div className="absolute left-6 right-0 bottom-0 max-w-[28rem]">
-            <Badge variant="ghost" size="sm" shape="pill" className="mb-3">
-              {step.eyebrow}
-            </Badge>
-            <h3 className="text-[22px] md:text-[28px] leading-[1.15] tracking-[-0.02em] font-medium text-patch-text">
-              {step.title}
-            </h3>
-            {step.body && (
-              <p className="mt-3 text-[14px] md:text-[15px] leading-relaxed text-patch-text-secondary">
-                {step.body}
-              </p>
-            )}
+    <div className="relative flex min-h-[420px] md:min-h-[520px] flex-col justify-center p-8 md:p-14">
+      <div className="max-w-[44rem]">
+        {step.icon && (
+          <div className="mb-6 inline-flex size-12 items-center justify-center rounded-[var(--radius-patch-sm)] border-[0.5px] border-patch-border bg-patch-bg text-patch-text">
+            {step.icon}
           </div>
-        </div>
+        )}
 
-        {/* Mobile: stacked, no rail. The dot/line metaphor doesn't earn its
-            keep on narrow viewports — just show the content cleanly. */}
-        <div className="md:hidden">
-          <Badge variant="ghost" size="sm" shape="pill" className="mb-3">
-            {step.eyebrow}
-          </Badge>
-          <h3 className="text-[22px] leading-[1.2] tracking-[-0.02em] font-medium text-patch-text">
-            {step.title}
-          </h3>
-          {step.body && (
-            <p className="mt-3 text-[14px] leading-relaxed text-patch-text-secondary">
-              {step.body}
-            </p>
-          )}
-        </div>
+        <Badge variant="ghost" size="lg" shape="pill" className="mb-5">
+          {step.eyebrow}
+        </Badge>
+
+        <h3 className="text-[28px] md:text-[36px] leading-[1.05] tracking-[-0.025em] font-medium text-patch-text">
+          {step.title}
+        </h3>
+
+        {step.body && (
+          <p className="mt-4 text-[15px] md:text-[16px] leading-relaxed text-patch-text-secondary max-w-[36rem]">
+            {step.body}
+          </p>
+        )}
+
+        {step.meta && (
+          <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.12em] text-patch-text-tertiary">
+            {step.meta}
+          </p>
+        )}
       </div>
     </div>
-  );
-}
-
-function NavPill({
-  direction,
-  label,
-  onClick,
-}: {
-  direction: "prev" | "next";
-  label: string;
-  onClick: () => void;
-}) {
-  const isPrev = direction === "prev";
-  return (
-    <Button
-      variant="outline"
-      size="sm"
-      icon={isPrev ? <ArrowLeft className="size-3.5" /> : <ArrowRight className="size-3.5" />}
-      iconPosition={isPrev ? "left" : "right"}
-      onClick={onClick}
-      aria-label={`Go to ${isPrev ? "previous" : "next"} step (${label})`}
-      className={cn(
-        "absolute z-10 !rounded-full bg-patch-bg/80 backdrop-blur-sm",
-        isPrev ? "bottom-6 left-6" : "top-6 right-6",
-      )}
-    >
-      {label}
-    </Button>
   );
 }
 
