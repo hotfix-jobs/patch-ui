@@ -672,7 +672,6 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/badge.json",
         "https://ui.hotfix.jobs/r/button.json",
         "https://ui.hotfix.jobs/r/display-heading.json",
         "https://ui.hotfix.jobs/r/section-label.json",

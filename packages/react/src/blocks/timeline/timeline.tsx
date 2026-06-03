@@ -11,7 +11,6 @@ import {
   type ReactNode,
 } from "react";
 
-import { Badge } from "../../components/badge";
 import { Button } from "../../components/button";
 import { DisplayHeading } from "../../components/display-heading";
 import { SectionLabel } from "../../components/section-label";
@@ -22,17 +21,23 @@ export type TimelineStepBg =
   | { type: "image"; src: string };
 
 export interface TimelineStep {
-  /** Small label rendered on the step Badge. e.g. "01" or "2022". */
+  /** Small uppercase label rendered above the title. e.g. "01" or "2022".
+   *  Rendered as plain SectionLabel-style text, not a Badge. */
   eyebrow: string;
   /** Step headline. */
   title: string;
   /** Optional supporting copy under the title. */
   body?: string;
   /** Optional decorative icon — typically a Lucide icon — rendered above
-   *  the eyebrow Badge inside a small bordered square. Caller controls
-   *  size via the icon's own className. */
+   *  the eyebrow inside a small bordered square. Caller controls size via
+   *  the icon's own className. */
   icon?: ReactNode;
-  /** Optional small footer line below the body. Renders uppercase tracking. */
+  /** Optional short bullet list rendered after the body as hairline-
+   *  divided rows. Use for concrete sub-points: integrations, stats,
+   *  technical detail. */
+  details?: string[];
+  /** Optional small footer line below the details. Renders uppercase
+   *  tracking. */
   meta?: string;
   /** Optional background for the frame while this step is active. */
   bg?: TimelineStepBg;
@@ -50,11 +55,11 @@ export interface TimelineProps extends React.HTMLAttributes<HTMLElement> {
  * Timeline – horizontally paginated sequential content block.
  *
  * One step visible at a time in a full-width frame. Real Back/Next
- * Buttons at the bottom corners, a step counter and progress bar
- * between them, content left-aligned with a comfortable max-width.
- * Touch swipe + keyboard arrows work via scroll-snap; all steps stay
- * in the DOM for SEO + screen readers. Per-step `bg` (color or image)
- * crossfades on advance.
+ * Buttons at the bottom corners with a step counter between them.
+ * Content left-aligned with a comfortable max-width. Touch swipe +
+ * keyboard arrows work via scroll-snap; all steps stay in the DOM
+ * for SEO + screen readers. Per-step `bg` (color or image) crossfades
+ * on advance.
  *
  * Intended for marketing surfaces: process explanations, brand
  * chronicles, and similar ordered content.
@@ -102,9 +107,8 @@ export function Timeline({
 
   const hasPrev = activeIndex > 0;
   const hasNext = activeIndex < steps.length - 1;
-  const progressPct = ((activeIndex + 1) / steps.length) * 100;
-  // 2-digit step counter when the total step count itself fits in 2 digits;
-  // otherwise pad to match. "01 / 03" reads cleaner than "1 / 3".
+  // Pad the counter to match the total digit width — "01 / 03" reads
+  // cleaner than "1 / 3", and "01 / 12" cleaner than "1 / 12".
   const totalDigits = String(steps.length).length;
   const counter = `${String(activeIndex + 1).padStart(totalDigits, "0")} / ${String(steps.length).padStart(totalDigits, "0")}`;
 
@@ -171,19 +175,10 @@ export function Timeline({
             ))}
           </ol>
 
-          {/* Footer: progress bar + counter + nav buttons. Sits inside the
-              frame at the bottom with its own hairline divider so it reads
-              as one continuous card. */}
+          {/* Footer: counter + nav buttons on a hairline-divided row. No
+              progress bar — the counter ("01 / 03") between the buttons
+              carries the position indication. */}
           <div className="relative border-t-[0.5px] border-patch-border bg-patch-surface/80 backdrop-blur-sm">
-            {/* Thin progress bar across the very top of the footer row. */}
-            <div className="absolute inset-x-0 top-0 h-[2px] bg-patch-border-subtle">
-              <div
-                className="h-full bg-patch-text transition-[width] duration-[var(--duration-patch-spring)] ease-[var(--ease-patch-out)]"
-                style={{ width: `${progressPct}%` }}
-                aria-hidden="true"
-              />
-            </div>
-
             <div className="flex items-center justify-between gap-3 px-5 md:px-8 py-3 md:py-4">
               <Button
                 variant="outline"
@@ -226,7 +221,7 @@ export function Timeline({
 
 function TimelineStepContent({ step }: { step: TimelineStep }) {
   return (
-    <div className="relative flex min-h-[420px] md:min-h-[520px] flex-col justify-center p-8 md:p-14">
+    <div className="relative flex min-h-[480px] md:min-h-[560px] flex-col justify-center p-8 md:p-14">
       <div className="max-w-[44rem]">
         {step.icon && (
           <div className="mb-6 inline-flex size-12 items-center justify-center rounded-[var(--radius-patch-sm)] border-[0.5px] border-patch-border bg-patch-bg text-patch-text">
@@ -234,18 +229,31 @@ function TimelineStepContent({ step }: { step: TimelineStep }) {
           </div>
         )}
 
-        <Badge variant="ghost" size="lg" shape="pill" className="mb-5">
+        <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-patch-text-tertiary">
           {step.eyebrow}
-        </Badge>
+        </div>
 
         <h3 className="text-[28px] md:text-[36px] leading-[1.05] tracking-[-0.025em] font-medium text-patch-text">
           {step.title}
         </h3>
 
         {step.body && (
-          <p className="mt-4 text-[15px] md:text-[16px] leading-relaxed text-patch-text-secondary max-w-[36rem]">
+          <p className="mt-4 text-[15px] md:text-[16px] leading-relaxed text-patch-text-secondary max-w-[40rem]">
             {step.body}
           </p>
+        )}
+
+        {step.details && step.details.length > 0 && (
+          <ul className="mt-6 max-w-[40rem] border-t-[0.5px] border-patch-border">
+            {step.details.map((detail, i) => (
+              <li
+                key={i}
+                className="border-b-[0.5px] border-patch-border py-2.5 text-[14px] leading-relaxed text-patch-text"
+              >
+                {detail}
+              </li>
+            ))}
+          </ul>
         )}
 
         {step.meta && (
