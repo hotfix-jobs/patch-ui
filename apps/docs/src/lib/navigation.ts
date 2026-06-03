@@ -42,6 +42,7 @@ export const navigation: NavGroup[] = [
   {
     title: "Layout",
     items: [
+      { title: "AppHeader", href: "/docs/components/app-header" },
       { title: "Card", href: "/docs/components/card" },
       { title: "ThemeToggle", href: "/docs/components/theme-toggle" },
     ],
@@ -83,17 +84,22 @@ export const navigation: NavGroup[] = [
     ],
   },
   {
+    title: "Typography",
+    items: [
+      { title: "DisplayHeading", href: "/docs/components/display-heading" },
+      { title: "SectionLabel", href: "/docs/components/section-label" },
+    ],
+  },
+  {
     title: "Utilities",
     items: [
-      { title: "SectionLabel", href: "/docs/components/section-label" },
       { title: "TimeAgo", href: "/docs/components/time-ago" },
     ],
   },
   {
     title: "Blocks",
     items: [
-      { title: "AppHeader", href: "/docs/components/app-header" },
-      { title: "DisplayHeading", href: "/docs/components/display-heading" },
+      { title: "Timeline", href: "/docs/components/timeline" },
     ],
   },
 ];

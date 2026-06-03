@@ -1,0 +1,48 @@
+import { TimelineDemo } from "./timeline-demo";
+
+# Timeline
+
+Horizontally paginated sequential content. One step visible at a time inside a full-width frame, with prev/next pill chips carrying the adjacent step's eyebrow. All steps stay in the DOM so SEO crawlers and screen readers see the full content regardless of which one is on screen. Per-step background (color or image) crossfades on advance.
+
+Intended for marketing surfaces: process explanations, brand chronicles, and similar ordered content.
+
+<Install name="timeline" />
+
+<ComponentPreview label="Timeline">
+  <TimelineDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Timeline } from "@patchui/react";
+
+<Timeline
+  eyebrow="History"
+  heading="Our story"
+  steps={[
+    { eyebrow: "2021", title: "Founded", body: "Two engineers, one office." },
+    { eyebrow: "2022", title: "First product line", body: "..." },
+    { eyebrow: "2024", title: "International rollout", body: "..." },
+  ]}
+/>
+```
+
+## Props
+
+- `steps` — `TimelineStep[]`. Required. Each step has `eyebrow`, `title`, optional `body`, optional `bg`.
+- `heading` — Optional. Display heading rendered above the frame.
+- `eyebrow` — Optional. Small uppercase label rendered above the heading.
+
+### TimelineStep
+
+- `eyebrow` — Small label on the step and on the nav pills (e.g. `"01"`, `"2022"`).
+- `title` — Step headline.
+- `body` — Optional supporting copy under the title.
+- `bg` — Optional per-step background. `{ type: "color", value: "..." }` for any CSS color, or `{ type: "image", src: "..." }` for a cover-fit image.
+
+## Interaction
+
+- Touch: swipe horizontally across the frame
+- Keyboard: focus the timeline track and use Arrow Left / Right
+- Pointer: click the prev/next pill chips at the bottom-left and top-right of the frame

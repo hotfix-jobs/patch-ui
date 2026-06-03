@@ -663,6 +663,29 @@
           "target": "components/ui/tooltip.tsx"
         }
       ]
+    },
+    {
+      "name": "timeline",
+      "type": "registry:block",
+      "title": "Timeline",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/badge.json",
+        "https://ui.hotfix.jobs/r/button.json",
+        "https://ui.hotfix.jobs/r/display-heading.json",
+        "https://ui.hotfix.jobs/r/section-label.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/blocks/timeline/timeline.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/timeline/timeline.tsx"
+        }
+      ]
     }
   ]
 }
