@@ -98,9 +98,11 @@ export function SheetHeader({
   className,
   ...props
 }: React.ComponentProps<"div">): React.ReactElement {
+  // pr-12 reserves space for the absolute-positioned X close button
+  // (end-3 top-5, h-7 w-7) so titles never overlap it.
   return (
     <div
-      className={cn("flex flex-col gap-2 p-6", className)}
+      className={cn("flex flex-col gap-2 p-6 pr-12", className)}
       data-slot="sheet-header"
       {...props}
     />

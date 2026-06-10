@@ -89,9 +89,11 @@ export function DialogHeader({
   className,
   ...props
 }: React.ComponentProps<"div">): React.ReactElement {
+  // pr-12 reserves space for the absolute-positioned X close button
+  // (end-3 top-3, h-7 w-7) so titles never overlap it.
   return (
     <div
-      className={cn("flex flex-col gap-2 p-4", className)}
+      className={cn("flex flex-col gap-2 p-4 pr-12", className)}
       data-slot="dialog-header"
       {...props}
     />
