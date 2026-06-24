@@ -80,13 +80,13 @@ export function Timeline({
 
   return (
     <section
-      className={cn("px-6 md:px-10 py-12 md:py-20", className)}
+      className={cn("px-6 md:px-10 py-8 md:py-12", className)}
       aria-roledescription="timeline"
       {...rest}
     >
       <div className="mx-auto max-w-[1280px]">
         {(eyebrow || heading) && (
-          <header className="mb-12 md:mb-16">
+          <header className="mb-6 md:mb-8 text-center">
             {eyebrow && <SectionLabel>{eyebrow}</SectionLabel>}
             {heading && (
               <DisplayHeading size="md" render={<h2 />}>
@@ -121,7 +121,7 @@ function TimelineRow({ step }: { step: TimelineStep }) {
   return (
     <article
       className={cn(
-        "relative grid grid-cols-1 gap-6 py-12 md:grid-cols-[120px_1fr] md:gap-10 md:py-20 lg:grid-cols-[160px_1fr] lg:gap-14 lg:py-24",
+        "relative grid grid-cols-1 gap-4 py-8 md:grid-cols-[120px_1fr] md:gap-10 md:py-10 lg:grid-cols-[160px_1fr] lg:gap-14 lg:py-12",
       )}
     >
       {hasBg && (
@@ -161,13 +161,13 @@ function TimelineRow({ step }: { step: TimelineStep }) {
         </h3>
 
         {step.body && (
-          <p className="mt-4 md:mt-5 max-w-[40rem] text-[15px] md:text-[17px] leading-relaxed text-patch-text-secondary">
+          <p className="mt-3 md:mt-4 max-w-[40rem] text-[15px] md:text-[17px] leading-relaxed text-patch-text-secondary">
             {step.body}
           </p>
         )}
 
         {step.details && step.details.length > 0 && (
-          <ul className="mt-6 md:mt-8 max-w-[40rem] border-t-[0.5px] border-patch-border">
+          <ul className="mt-4 md:mt-5 max-w-[40rem] border-t-[0.5px] border-patch-border">
             {step.details.map((detail, di) => (
               <li
                 key={di}
@@ -180,7 +180,7 @@ function TimelineRow({ step }: { step: TimelineStep }) {
         )}
 
         {step.meta && (
-          <p className="mt-6 md:mt-8 text-[length:var(--text-patch-micro)] font-medium uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
+          <p className="mt-4 md:mt-5 text-[length:var(--text-patch-micro)] font-medium uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
             {step.meta}
           </p>
         )}
