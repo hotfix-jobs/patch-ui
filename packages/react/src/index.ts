@@ -285,11 +285,3 @@ export {
   type TableCellProps,
   type TableCaptionProps,
 } from "./components/table";
-
-// ---- blocks ----
-export {
-  Timeline,
-  type TimelineProps,
-  type TimelineStep,
-  type TimelineStepBg,
-} from "./blocks/timeline/timeline";

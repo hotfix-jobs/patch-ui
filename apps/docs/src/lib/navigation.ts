@@ -108,10 +108,4 @@ export const navigation: NavGroup[] = [
       { title: "TimeAgo", href: "/docs/components/time-ago" },
     ],
   },
-  {
-    title: "Blocks",
-    items: [
-      { title: "Timeline", href: "/docs/components/timeline" },
-    ],
-  },
 ];
