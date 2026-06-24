@@ -50,9 +50,19 @@ import {
   </CardHeader>
 </Card>
 
-// Interactive variant (hover effect)
+// Interactive variant (hover + press feedback)
 <Card variant="interactive">
   <CardContent>Hover me</CardContent>
+</Card>
+
+// Editorial variant (flat, no radius — for gallery / grid layouts)
+<Card variant="editorial" className="px-6 py-10">
+  <CardContent>Flat editorial chrome</CardContent>
+</Card>
+
+// Selected — stronger border for selectable card grids
+<Card variant="interactive" selected={isSelected}>
+  ...
 </Card>
 
 // With meta footer (person attribution)
@@ -79,9 +89,15 @@ import {
   props={[
     {
       name: "variant",
-      type: '"default" | "elevated" | "interactive" | "ghost"',
+      type: '"default" | "elevated" | "interactive" | "ghost" | "editorial"',
       default: '"default"',
-      description: "The visual style of the card.",
+      description: "The visual style. default/elevated/interactive/ghost are 12px-rounded surfaces. editorial is flat (no radius) with a hairline border — suitable for gallery/grid layouts where the rounded corners would otherwise fight the layout.",
+    },
+    {
+      name: "selected",
+      type: "boolean",
+      default: "false",
+      description: "Switches the border to --patch-text for a stronger highlight. Use in selectable card grids (multi-pick galleries, job picker, plan comparison). Composes with any variant.",
     },
     {
       name: "render",
@@ -109,6 +125,8 @@ import {
 - **Compound component:** Card is built from composable sub-components: `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, and `CardFooter`. Use them in any combination.
 - **CardAction:** Place `CardAction` inside `CardHeader` to render an action button in the top-right corner. The header uses CSS grid to position it automatically.
 - **Polymorphic:** Card and all sub-components accept a `render` prop (via Base UI's `useRender`) to change the rendered element. For example, `render={<a href="/detail" />}` renders the card as a link.
-- **Interactive variant:** Use `variant="interactive"` for clickable cards - it adds hover and press feedback.
-- **CardMeta:** A layout primitive for a footer attribution row - an icon, primary and optional secondary text, and an optional trailing action. Renders a hairline border-top automatically. Works for person attribution (avatar + name + role), system attribution (brand mark + source + timestamp), or any similar pattern. `primary` and `secondary` accept any `ReactNode`.
+- **Interactive variant:** Use `variant="interactive"` for clickable cards. Hover changes bg + border tone; an `active:scale-[0.99]` press provides tactile feedback.
+- **Editorial variant:** Flat surface (no radius). Pair with explicit `className` padding (`px-6 py-10`, `px-5 py-4`, etc.) for editorial chrome — replaces the need for a custom Cell wrapper.
+- **Selected state:** `selected={true}` switches the border to `--patch-text` and sets `data-selected` + `aria-selected` for both styling and a11y. Combine with any variant.
+- **CardMeta:** A layout primitive for a footer attribution row — icon, primary + optional secondary text, optional trailing action. Renders a hairline border-top automatically. Works for person attribution, system attribution, or any similar pattern. `primary` and `secondary` accept any `ReactNode`.
 </Callout>

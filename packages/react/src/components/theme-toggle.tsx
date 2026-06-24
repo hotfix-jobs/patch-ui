@@ -1,9 +1,9 @@
 "use client";
 
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   useCallback,
   useEffect,
-  useMemo,
   useState,
   useSyncExternalStore,
 } from "react";
@@ -105,6 +105,7 @@ export function ThemeToggle({
   }, [resolved, controlledTheme, onThemeChange, storageKey]);
 
   const isDark = resolved === "dark";
+  const reduceMotion = useReducedMotion();
 
   const sizeClasses = {
     sm: "h-7 w-7 [&_svg]:size-3.5",
@@ -112,12 +113,16 @@ export function ThemeToggle({
     lg: "h-9 w-9 [&_svg]:size-5",
   };
 
+  const spring = reduceMotion
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 300, damping: 22, mass: 0.6 };
+
   return (
     <button
       type="button"
       onClick={toggle}
       className={cn(
-        "inline-flex items-center justify-center rounded-[var(--radius-patch-sm)] text-patch-text-secondary hover:bg-patch-surface-hover hover:text-patch-text",
+        "relative inline-flex items-center justify-center overflow-hidden rounded-[var(--radius-patch-sm)] text-patch-text-secondary hover:bg-patch-surface-hover hover:text-patch-text transition-transform duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-95",
         colorTransition,
         focusRing,
         sizeClasses[size],
@@ -134,42 +139,66 @@ export function ThemeToggle({
     >
       {!mounted ? (
         <span className="size-4" />
-      ) : isDark ? (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="transition-transform duration-[var(--duration-patch-spring)] ease-[var(--ease-patch-out)]"
-          style={{ animation: "patch-theme-icon-in 0.3s ease-out" }}
-        >
-          <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2" />
-          <path d="M12 20v2" />
-          <path d="m4.93 4.93 1.41 1.41" />
-          <path d="m17.66 17.66 1.41 1.41" />
-          <path d="M2 12h2" />
-          <path d="M20 12h2" />
-          <path d="m6.34 17.66-1.41 1.41" />
-          <path d="m19.07 4.93-1.41 1.41" />
-        </svg>
       ) : (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="transition-transform duration-[var(--duration-patch-spring)] ease-[var(--ease-patch-out)]"
-          style={{ animation: "patch-theme-icon-in 0.3s ease-out" }}
-        >
-          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-        </svg>
+        // Default sync mode: AnimatePresence renders both icons during
+        // transition (old still in DOM until its exit completes). Absolute
+        // positioning stacks them in the same spot so the exit + enter
+        // animations crossfade — no blank frame between the two icons.
+        <AnimatePresence initial={false}>
+          {isDark ? (
+            <motion.svg
+              key="sun"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="absolute"
+              initial={
+                reduceMotion ? false : { rotate: -90, scale: 0, opacity: 0 }
+              }
+              animate={{ rotate: 0, scale: 1, opacity: 1 }}
+              exit={
+                reduceMotion ? undefined : { rotate: 90, scale: 0, opacity: 0 }
+              }
+              transition={spring}
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2" />
+              <path d="M12 20v2" />
+              <path d="m4.93 4.93 1.41 1.41" />
+              <path d="m17.66 17.66 1.41 1.41" />
+              <path d="M2 12h2" />
+              <path d="M20 12h2" />
+              <path d="m6.34 17.66-1.41 1.41" />
+              <path d="m19.07 4.93-1.41 1.41" />
+            </motion.svg>
+          ) : (
+            <motion.svg
+              key="moon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="absolute"
+              initial={
+                reduceMotion ? false : { rotate: 90, scale: 0, opacity: 0 }
+              }
+              animate={{ rotate: 0, scale: 1, opacity: 1 }}
+              exit={
+                reduceMotion ? undefined : { rotate: -90, scale: 0, opacity: 0 }
+              }
+              transition={spring}
+            >
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </motion.svg>
+          )}
+        </AnimatePresence>
       )}
     </button>
   );

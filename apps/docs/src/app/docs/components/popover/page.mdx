@@ -1,0 +1,136 @@
+import { PopoverDemo } from "./popover-demo";
+
+# Popover
+
+A generic floating popup attached to any trigger. Holds arbitrary content — text, forms, lists, custom layouts — and opens on click or hover. Built on `@floating-ui/react` with motion-driven spring open / close.
+
+Use Popover for inline help, rich tooltips, mini settings panels, date / color pickers, notification panels. For static text labels on hover, use [Tooltip](/docs/components/tooltip). For a list of actions, use [Menu](/docs/components/menu). For an input with a floating filterable list, use [Combobox](/docs/components/combobox).
+
+<Install name="popover" />
+
+<ComponentPreview label="Popover">
+  <PopoverDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+  Button,
+} from "@patchui/react";
+
+// Click trigger
+<Popover>
+  <PopoverTrigger render={<Button variant="outline" />}>
+    Open
+  </PopoverTrigger>
+  <PopoverContent className="w-72 p-4">
+    <h3>Title</h3>
+    <p>Arbitrary content here...</p>
+  </PopoverContent>
+</Popover>
+
+// Hover trigger with arrow
+<Popover hover arrow>
+  <PopoverTrigger render={<Button variant="ghost" icon={<Info />} aria-label="Help" />} />
+  <PopoverContent className="max-w-[260px] p-3">
+    Short helper text on hover.
+  </PopoverContent>
+</Popover>
+
+// Form (modal — traps focus)
+<Popover modal>
+  <PopoverTrigger render={<Button />}>Edit name</PopoverTrigger>
+  <PopoverContent className="w-80 p-4">
+    <Input ... />
+    <PopoverClose render={<Button size="sm" />}>Save</PopoverClose>
+  </PopoverContent>
+</Popover>
+
+// Placement (default "bottom")
+<Popover placement="right">...</Popover>
+<Popover placement="top-start" sideOffset={8}>...</Popover>
+```
+
+## Props
+
+### Popover
+
+<PropsTable
+  props={[
+    {
+      name: "open",
+      type: "boolean",
+      default: "-",
+      description: "Controlled open state.",
+    },
+    {
+      name: "defaultOpen",
+      type: "boolean",
+      default: "false",
+      description: "Initial open state when uncontrolled.",
+    },
+    {
+      name: "onOpenChange",
+      type: "(open: boolean) => void",
+      default: "-",
+      description: "Called when the open state should change.",
+    },
+    {
+      name: "placement",
+      type: '"top" | "right" | "bottom" | "left" | "...-start" | "...-end"',
+      default: '"bottom"',
+      description: "Where the popup appears relative to the trigger. Auto-flips to the opposite side when there's no room.",
+    },
+    {
+      name: "sideOffset",
+      type: "number",
+      default: "6",
+      description: "Distance in pixels between the popup and trigger.",
+    },
+    {
+      name: "hover",
+      type: "boolean",
+      default: "false",
+      description: "Open on trigger hover with safe close timing (75ms open delay, 100ms close delay). When false, only click opens.",
+    },
+    {
+      name: "arrow",
+      type: "boolean",
+      default: "false",
+      description: "Render a small arrow pointing back to the trigger.",
+    },
+    {
+      name: "modal",
+      type: "boolean",
+      default: "false",
+      description: "Trap focus inside the popup while open. Use when the popup contains form inputs that need focus containment. Returns focus to the trigger on close.",
+    },
+  ]}
+/>
+
+### PopoverContent
+
+Accepts all standard `<div>` props plus `modal` (override at the content level).
+
+### PopoverTrigger / PopoverClose
+
+Both accept a `render` prop for polymorphism — pass any element (`Button`, `<a>`, custom) and Popover wires up the click + ARIA on it.
+
+```tsx
+<PopoverTrigger render={<Button variant="outline" />}>Open</PopoverTrigger>
+<PopoverClose render={<Button size="sm" />}>Save</PopoverClose>
+```
+
+<Callout title="Notes">
+- **Click vs hover:** Default is click — the standard interaction for non-tooltip popups. Set `hover` for tooltip-rich-content patterns where users discover via hover and the content reads as supplementary, not interactive.
+- **Modal vs non-modal:** Default is non-modal — the popup floats above content but doesn't trap focus. Pass `modal` for popovers with form inputs so the user can't tab past them by accident. Returns focus to the trigger on close in modal mode.
+- **Auto-positioning:** Uses `flip()` + `shift()` middleware so the popup never falls off the viewport. `autoUpdate` recalculates on scroll/resize.
+- **Motion:** Bidirectional spring (stiffness 400, damping 30, mass 0.6) via `AnimatePresence`. Respects `prefers-reduced-motion`.
+- **A11y:** Trigger gets `aria-expanded` + `aria-haspopup="dialog"`. Content is `role="dialog"`. Escape and outside-click both dismiss.
+- **`data-state`:** Trigger receives `data-state="open" | "closed"` for styling hooks (e.g. rotating a chevron icon).
+</Callout>

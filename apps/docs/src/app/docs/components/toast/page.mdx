@@ -2,7 +2,7 @@ import { ToastDemo } from "./toast-demo";
 
 # Toast
 
-Stackable notification toasts with support for multiple types (success, error, warning, info, loading), action buttons, and configurable positioning. Uses a global `toastManager` to trigger toasts imperatively.
+Stackable notification toasts built on [Sonner](https://sonner.emilkowal.ski/) with an editorial-styled wrapper. Supports types (success, error, warning, info, loading), descriptions, action buttons, swipe-to-dismiss, and configurable positioning. Trigger via the `toast()` function from anywhere in your app.
 
 <Install name="toast" />
 
@@ -13,41 +13,58 @@ Stackable notification toasts with support for multiple types (success, error, w
 ## Usage
 
 ```tsx
-import {
-  ToastProvider,
-  toastManager,
-  showToast,
-} from "@patchui/react";
+import { Toaster, toast } from "@patchui/react";
 
-// 1. Wrap your app (or page) with ToastProvider
+// 1. Mount Toaster once near the root of your app
 function App() {
   return (
-    <ToastProvider position="bottom-right">
+    <>
+      <Toaster position="bottom-right" />
       <MyContent />
-    </ToastProvider>
+    </>
   );
 }
 
-// 2. Trigger toasts from anywhere
-toastManager.add({ title: "Saved!", type: "success" });
-toastManager.add({ title: "Error occurred", type: "error" });
-toastManager.add({
-  title: "File deleted",
-  actionProps: {
-    children: "Undo",
-    onClick: () => { /* undo logic */ },
+// 2. Trigger from anywhere
+toast("Hello world");
+toast.success("Saved!");
+toast.error("Something went wrong");
+toast.warning("Check your input");
+toast.info("New version available");
+toast.loading("Uploading...");
+
+// With description
+toast.success("Scheduled: Catch up", {
+  description: "Friday at 5:57 PM",
+});
+
+// With action button
+toast.success("Message sent", {
+  action: {
+    label: "Undo",
+    onClick: () => undoSend(),
   },
 });
 
-// Shorthand helper
-showToast("Hello world");
-showToast.success("Saved!");
-showToast.error("Something went wrong");
+// Programmatic dismissal
+const id = toast.loading("Uploading...");
+toast.dismiss(id);
 ```
+
+## Editorial styling
+
+PatchUI's `Toaster` is a pre-configured Sonner wrapper. Compared to Sonner defaults:
+
+- **6px radius**, **0.5px hairline border**, **`--shadow-patch-popup`** drop shadow
+- **No background flood** for variants — instead, a **2px colored left-edge rail** in the variant color (success / warning / danger / info) keeps the surface neutral and the message restrained
+- **Compact padding** matching Menu / Dialog density
+- **Editorial type scale**: title is `--text-patch-control` semibold, description is `--text-patch-mini` in `--patch-text-secondary`
+- **Action button** styled like `Button variant="outline" size="sm"`
+- **Close button** styled like Dialog's `×`
 
 ## Props
 
-### ToastProvider
+### Toaster
 
 <PropsTable
   props={[
@@ -58,46 +75,33 @@ showToast.error("Something went wrong");
       description: "Where toasts appear on screen.",
     },
     {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "The app content that can trigger toasts.",
+      name: "theme",
+      type: '"light" | "dark" | "system"',
+      default: '"system"',
+      description: "Color scheme. `system` follows the user's OS preference.",
+    },
+    {
+      name: "duration",
+      type: "number",
+      default: "5000",
+      description: "Auto-dismiss delay in ms. Loading toasts persist until manually dismissed.",
+    },
+    {
+      name: "closeButton",
+      type: "boolean",
+      default: "true",
+      description: "Show a close button on each toast.",
     },
   ]}
 />
 
-## toastManager API
-
-The `toastManager` is a global singleton created with `Toast.createToastManager()`. Use it to add toasts imperatively from any component.
-
-```tsx
-toastManager.add({
-  title: string;        // Required - the toast heading
-  description?: string; // Optional secondary text
-  type?: "success" | "error" | "warning" | "info" | "loading";
-  actionProps?: {
-    children: ReactNode; // Action button label
-    onClick: () => void; // Action callback
-  };
-});
-```
-
-## showToast Helper
-
-A convenience wrapper around `toastManager.add`:
-
-```tsx
-showToast("Message");           // Default toast
-showToast.success("Saved!");    // Success toast
-showToast.error("Failed!");     // Error toast
-```
-
+`Toaster` accepts all other props from Sonner's `Toaster` component (for example `expand`, `visibleToasts`, `offset`, `gap`, `richColors`). PatchUI sets `richColors: false` by default to preserve the editorial neutral surface; setting `richColors: true` floods the toast with variant colors instead.
 
 <Callout title="Notes">
-- **ToastProvider is required:** Toasts only appear inside a `ToastProvider`. Without it, `toastManager.add()` calls are silently dropped. Place one provider at the root of your app.
-- **Global singleton:** `toastManager` is created once at module level - you can import and use it from any file without prop drilling.
-- **Stacking behavior:** Multiple toasts stack with a peek animation. Hover over the stack to expand all toasts.
-- **Auto-dismiss:** Toasts auto-dismiss after 5 seconds by default. Loading toasts persist until manually dismissed.
-- **Swipe to dismiss:** Toasts support swipe gestures on touch devices, with direction determined by the position.
-- **Action buttons:** Use `actionProps` to add a single action button (e.g. "Undo") to the toast.
+- **Mount Toaster once** at the root of your app or layout. Multiple Toasters render their own queues.
+- **Imperative API:** `toast()` and its variants (`toast.success`, `toast.error`, etc.) work from anywhere — no provider context needed (Sonner uses an internal queue).
+- **Stack behavior:** Multiple toasts stack with a peek animation. Hover over the stack to expand.
+- **Swipe to dismiss:** Touch and mouse drag dismissals are built in.
+- **Returns an id:** Every `toast()` call returns an id you can pass to `toast.dismiss(id)` for programmatic dismissal.
+- **Promise helper:** Use `toast.promise(myPromise, { loading, success, error })` to wire a toast to an async operation.
 </Callout>

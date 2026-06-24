@@ -26,6 +26,12 @@ export const displayHeadingVariants = cva(
 
 export interface DisplayHeadingProps extends useRender.ComponentProps<"h1"> {
   size?: VariantProps<typeof displayHeadingVariants>["size"];
+  /**
+   * Small uppercase label rendered above the heading (e.g. "Hiring",
+   * "New release"). Uses --tracking-patch-label and --text-patch-micro
+   * so it visually anchors a marketing display moment without competing.
+   */
+  eyebrow?: React.ReactNode;
 }
 
 /**
@@ -34,16 +40,39 @@ export interface DisplayHeadingProps extends useRender.ComponentProps<"h1"> {
  * Sizes: md (56px) / lg (88px) / xl (124px).
  * Uses --text-patch-hero-* and --tracking-patch-hero-* from tokens.
  * Renders as <h1> by default; pass `render` for a different element.
+ *
+ * The heading text is wrapped in a `text-wrap: balance` span so multi-line
+ * headlines distribute words evenly instead of leaving orphan tails.
  */
 export function DisplayHeading({
   className,
   size,
+  eyebrow,
+  children,
   render,
   ...props
 }: DisplayHeadingProps): React.ReactElement {
   const defaultProps = {
     className: cn(displayHeadingVariants({ size }), className),
     "data-slot": "display-heading",
+    children: (
+      <>
+        {eyebrow != null && (
+          <span
+            className="mb-3 block text-[length:var(--text-patch-micro)] font-medium uppercase tracking-[var(--tracking-patch-label)] text-patch-text-secondary"
+            data-slot="display-heading-eyebrow"
+          >
+            {eyebrow}
+          </span>
+        )}
+        <span
+          className="block text-balance"
+          data-slot="display-heading-text"
+        >
+          {children}
+        </span>
+      </>
+    ),
   };
 
   return useRender({

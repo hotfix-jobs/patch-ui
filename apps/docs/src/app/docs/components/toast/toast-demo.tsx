@@ -1,15 +1,12 @@
 "use client";
 
-import {
-  Button,
-  ToastProvider,
-  toastManager,
-} from "@patchui/react";
+import { Button, Toaster, toast } from "@patchui/react";
 
 /** Showcases Toast notifications with different types and actions. */
 export function ToastDemo() {
   return (
-    <ToastProvider position="bottom-right">
+    <>
+      <Toaster position="bottom-right" />
       <div className="flex flex-col gap-8">
         {/* Types */}
         <div>
@@ -19,41 +16,31 @@ export function ToastDemo() {
           <div className="flex flex-wrap gap-3">
             <Button
               variant="secondary"
-              onClick={() =>
-                toastManager.add({ title: "Event created successfully", type: "success" })
-              }
+              onClick={() => toast.success("Event created successfully")}
             >
               Success
             </Button>
             <Button
               variant="secondary"
-              onClick={() =>
-                toastManager.add({ title: "Something went wrong", type: "error" })
-              }
+              onClick={() => toast.error("Something went wrong")}
             >
               Error
             </Button>
             <Button
               variant="secondary"
-              onClick={() =>
-                toastManager.add({ title: "Please check your input", type: "warning" })
-              }
+              onClick={() => toast.warning("Please check your input")}
             >
               Warning
             </Button>
             <Button
               variant="secondary"
-              onClick={() =>
-                toastManager.add({ title: "A new version is available", type: "info" })
-              }
+              onClick={() => toast.info("A new version is available")}
             >
               Info
             </Button>
             <Button
               variant="secondary"
-              onClick={() =>
-                toastManager.add({ title: "Uploading files…", type: "loading" })
-              }
+              onClick={() => toast.loading("Uploading files...")}
             >
               Loading
             </Button>
@@ -67,9 +54,7 @@ export function ToastDemo() {
           </p>
           <Button
             variant="secondary"
-            onClick={() =>
-              toastManager.add({ title: "Hello! This is a toast." })
-            }
+            onClick={() => toast("Hello! This is a toast.")}
           >
             Show Toast
           </Button>
@@ -83,10 +68,8 @@ export function ToastDemo() {
           <Button
             variant="secondary"
             onClick={() =>
-              toastManager.add({
-                title: "Scheduled: Catch up",
+              toast.success("Scheduled: Catch up", {
                 description: "Friday, February 10, 2025 at 5:57 PM",
-                type: "success",
               })
             }
           >
@@ -102,14 +85,10 @@ export function ToastDemo() {
           <Button
             variant="secondary"
             onClick={() =>
-              toastManager.add({
-                title: "Message sent",
-                type: "success",
-                actionProps: {
-                  children: "Undo",
-                  onClick: () => {
-                    toastManager.add({ title: "Action undone", type: "info" });
-                  },
+              toast.success("Message sent", {
+                action: {
+                  label: "Undo",
+                  onClick: () => toast.info("Action undone"),
                 },
               })
             }
@@ -118,6 +97,6 @@ export function ToastDemo() {
           </Button>
         </div>
       </div>
-    </ToastProvider>
+    </>
   );
 }

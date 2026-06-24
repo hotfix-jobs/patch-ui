@@ -1,0 +1,55 @@
+import { SeparatorDemo } from "./separator-demo";
+
+# Separator
+
+A hairline divider — horizontal or vertical — with an optional inline label for "OR" / "AND" splits.
+
+<Install name="separator" />
+
+<ComponentPreview label="Separator">
+  <SeparatorDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Separator } from "@patchui/react";
+
+// Horizontal (default)
+<Separator />
+
+// With label
+<Separator label="or" />
+
+// Vertical (inside a flex row)
+<div className="flex h-8 items-center gap-4">
+  <span>Item A</span>
+  <Separator orientation="vertical" />
+  <span>Item B</span>
+</div>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "orientation",
+      type: '"horizontal" | "vertical"',
+      default: '"horizontal"',
+      description: "Direction. Vertical separators stretch to fill the parent's height — wrap in a flex/grid container with a defined height.",
+    },
+    {
+      name: "label",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional inline label (horizontal only) — renders the hairline split around the label for OR / AND patterns.",
+    },
+    {
+      name: "decorative",
+      type: "boolean",
+      default: "false",
+      description: 'When true, role="none" is used so screen readers ignore the separator. Use for purely visual hairlines that don\'t signify meaningful section breaks.',
+    },
+  ]}
+/>

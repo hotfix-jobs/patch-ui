@@ -1,0 +1,145 @@
+import { DropzoneDemo } from "./dropzone-demo";
+
+# Dropzone
+
+Drag-and-drop file upload with a click-to-browse fallback. Renders a preview row per file with a remove × button. Pure UI primitive — consumers wire `onValueChange` to their upload pipeline.
+
+Use for any file-upload UX: avatars, attachments, document uploads, resume parsers, batch image imports.
+
+<Install name="dropzone" />
+
+<ComponentPreview label="Dropzone">
+  <DropzoneDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Dropzone } from "@patchui/react";
+
+const [files, setFiles] = useState<File[]>([]);
+
+<Dropzone
+  value={files}
+  onValueChange={setFiles}
+  accept="image/*,application/pdf"
+  maxSize={5 * 1024 * 1024}  // 5 MB per file
+  maxFiles={10}
+  title="Drop files here or click to browse"
+  description="Up to 5 MB, images or PDFs"
+/>
+
+// Single file (no list)
+<Dropzone multiple={false} showFileList={false} />
+
+// Custom validation
+<Dropzone
+  validate={(file, current) => {
+    if (file.size > 2 * 1024 * 1024) return "File too large";
+    if (current.some((f) => f.name === file.name)) return "Duplicate";
+    return true;
+  }}
+/>
+
+// Custom file row
+<Dropzone
+  renderFile={(file, i, onRemove) => (
+    <div className="my-custom-row">
+      <img src={URL.createObjectURL(file)} />
+      <button onClick={onRemove}>×</button>
+    </div>
+  )}
+/>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "File[]",
+      default: "-",
+      description: "Controlled file list.",
+    },
+    {
+      name: "defaultValue",
+      type: "File[]",
+      default: "[]",
+      description: "Initial files when uncontrolled.",
+    },
+    {
+      name: "onValueChange",
+      type: "(files: File[]) => void",
+      default: "-",
+      description: "Called when the file list changes (add or remove).",
+    },
+    {
+      name: "accept",
+      type: "string",
+      default: "-",
+      description: 'MIME type filter passed to the file input (e.g. "image/*,application/pdf").',
+    },
+    {
+      name: "multiple",
+      type: "boolean",
+      default: "true",
+      description: "Allow selecting / dropping multiple files at once.",
+    },
+    {
+      name: "maxFiles",
+      type: "number",
+      default: "-",
+      description: "Cap the total file list at this size.",
+    },
+    {
+      name: "maxSize",
+      type: "number",
+      default: "-",
+      description: "Cap individual file size in bytes. Used by the default validate.",
+    },
+    {
+      name: "validate",
+      type: "(file: File, currentFiles: File[]) => boolean | string",
+      default: "size + accept checks",
+      description: "Validate a file before adding it.",
+    },
+    {
+      name: "renderFile",
+      type: "(file, index, onRemove) => ReactNode",
+      default: "-",
+      description: "Custom render function for each file row. Receives the file, its index, and a callback to remove it.",
+    },
+    {
+      name: "showFileList",
+      type: "boolean",
+      default: "true",
+      description: "Render the file list below the drop area.",
+    },
+    {
+      name: "title",
+      type: "ReactNode",
+      default: '"Drop files here or click to browse"',
+      description: "Visual title inside the drop area.",
+    },
+    {
+      name: "description",
+      type: "ReactNode",
+      default: "-",
+      description: "Helper text below the title (good place to call out size / type limits).",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disable interaction.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Native file input:** The drop area is a `<button>` (keyboard accessible — Enter / Space open the file picker). The underlying `<input type="file">` is `sr-only` and triggered via click.
+- **Drag-over feedback:** `data-drag-over` is set on the drop area while files hover. Default styling: border darkens to `--patch-text` and bg shifts to `--patch-accent`.
+- **Upload progress per file:** Wire `Progress` into your `renderFile` to show per-file upload status while your pipeline runs.
+- **No built-in upload:** Dropzone collects files; you call `fetch` / mutate / your storage SDK from `onValueChange`. Keeps the primitive framework-agnostic.
+</Callout>

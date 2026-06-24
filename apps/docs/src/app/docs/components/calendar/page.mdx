@@ -1,0 +1,115 @@
+import { CalendarDemo } from "./calendar-demo";
+
+# Calendar
+
+Month grid for date selection. Three modes — `single`, `range`, `multiple` — with editorial chrome and tabular nums for clean date alignment. Pure UI primitive; for an input-triggered popup, use [DatePicker](/docs/components/date-picker).
+
+<Install name="calendar" />
+
+<ComponentPreview label="Calendar">
+  <CalendarDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Calendar, type DateRange } from "@patchui/react";
+
+// Single date
+const [date, setDate] = useState<Date | null>(null);
+<Calendar mode="single" value={date} onValueChange={setDate} />
+
+// Range
+const [range, setRange] = useState<DateRange>({});
+<Calendar mode="range" value={range} onValueChange={setRange} />
+
+// Multiple
+const [dates, setDates] = useState<Date[]>([]);
+<Calendar mode="multiple" value={dates} onValueChange={setDates} />
+
+// Constraints
+<Calendar
+  mode="single"
+  fromDate={new Date("2026-01-01")}
+  toDate={new Date("2026-12-31")}
+  disabledDates={(d) => d.getDay() === 0 || d.getDay() === 6}  // disable weekends
+/>
+
+// Week starts on Monday (ISO)
+<Calendar weekStartsOn={1} />
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "mode",
+      type: '"single" | "range" | "multiple"',
+      default: '"single"',
+      description: "single returns Date|null; range returns { from, to }; multiple returns Date[].",
+    },
+    {
+      name: "value",
+      type: "Date | null | DateRange | Date[]",
+      default: "-",
+      description: "Controlled selection. Shape matches mode.",
+    },
+    {
+      name: "defaultValue",
+      type: "same as value",
+      default: "-",
+      description: "Initial selection when uncontrolled.",
+    },
+    {
+      name: "onValueChange",
+      type: "(value) => void",
+      default: "-",
+      description: "Called when the selection changes.",
+    },
+    {
+      name: "weekStartsOn",
+      type: "0 | 1 | 2 | 3 | 4 | 5 | 6",
+      default: "0",
+      description: "First day of the week (0 = Sunday, 1 = Monday for ISO).",
+    },
+    {
+      name: "fromDate",
+      type: "Date",
+      default: "-",
+      description: "Earliest selectable date.",
+    },
+    {
+      name: "toDate",
+      type: "Date",
+      default: "-",
+      description: "Latest selectable date.",
+    },
+    {
+      name: "disabledDates",
+      type: "(date: Date) => boolean",
+      default: "-",
+      description: "Disable arbitrary dates (return true to disable). Use for blackout dates, weekends, holidays.",
+    },
+    {
+      name: "defaultMonth",
+      type: "Date",
+      default: "selected date or today",
+      description: "Initial month to display.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disable the entire calendar.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Range mode flow:** First click sets `from` and clears `to`. Second click (after `from`) sets `to`. Clicking before `from` swaps them. Clicking the same day twice clears the selection.
+- **Range visual:** Days between `from` and `to` get a `--patch-accent` background; the endpoints get the full `--patch-text` solid fill. Lets users see the range at a glance.
+- **Today indicator:** Today's date renders with a hairline ring (`ring-1 ring-inset ring-patch-border`) when not selected.
+- **Outside-month days:** Days that spill into the previous / next month are dimmed (opacity 60%) but remain clickable — clicking jumps the view to that month.
+- **Tabular nums:** All numerals use `tabular-nums` so column alignment is perfect regardless of width.
+</Callout>

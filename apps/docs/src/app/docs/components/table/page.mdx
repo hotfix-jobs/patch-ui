@@ -38,6 +38,11 @@ import {
     </TableRow>
   </TableBody>
 </Table>
+
+// Editorial variant — flat (no radius, no outer bg), Bloomberg / NYT data-table feel
+<Table variant="editorial">
+  ...
+</Table>
 ```
 
 ## Props
@@ -46,6 +51,12 @@ import {
 
 <PropsTable
   props={[
+    {
+      name: "variant",
+      type: '"default" | "editorial"',
+      default: '"default"',
+      description: "default = 12px rounded outer with surface background and hairline border (dashboard / data-card feel). editorial = flat (no radius, no outer bg, no border) for NYT / Bloomberg-style data tables; row + header backgrounds and hairlines still render.",
+    },
     {
       name: "scrollable",
       type: "boolean",
@@ -82,6 +93,9 @@ import {
 
 <Callout title="Notes">
 - **Composition:** `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, and `TableCaption` map directly to the native table elements, so standard HTML attributes pass through.
+- **Default vs editorial:** Pick `default` for dashboard / data-card surfaces (rounded, surface bg, contained). Pick `editorial` when the table is the primary content of a longform editorial layout — it sheds the outer chrome and lets the hairline grid + typography carry the table's structure.
 - **Numerals:** Use `align="right"` on numeric `TableCell`s to right-align and enable tabular figures for clean column alignment.
+- **Hover:** Rows highlight on hover with `--menu-item-hover` (= `--patch-accent`), matching Menu / Select / Combobox item highlights for token consistency.
+- **TableHead tracking:** Uppercase micro-text uses `--tracking-patch-label` token (4% letter-spacing), aligned with `SectionLabel` and `MenuGroupLabel` for consistent label typography across the system.
 - **Key/value pairs:** For simple two-column key/value data, a two-cell `TableRow` per pair works well; reserve the header row for true tabular data.
 </Callout>

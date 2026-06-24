@@ -1,6 +1,7 @@
 "use client";
 
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
+import { useMemo } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 
@@ -39,7 +40,7 @@ export function Tooltip({
   arrow,
   className,
 }: TooltipProps): React.ReactElement {
-  const handle = TooltipPrimitive.createHandle();
+  const handle = useMemo(() => TooltipPrimitive.createHandle(), []);
 
   return (
     <>
@@ -53,7 +54,7 @@ export function Tooltip({
           >
             <TooltipPrimitive.Popup
               className={cn(
-                "rounded-[var(--radius-patch-sm)] bg-patch-text px-2.5 py-1.5 text-[length:var(--text-patch-micro)] text-patch-bg shadow-patch-md transition-[opacity,scale] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-spring)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+                "rounded-[var(--radius-patch-xs)] bg-patch-text px-2.5 py-1.5 text-[length:var(--text-patch-micro)] text-patch-bg shadow-patch-md transition-[opacity,scale] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-spring)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
                 className,
               )}
               data-slot="tooltip-content"
@@ -100,7 +101,7 @@ export function TooltipContent({
       >
         <TooltipPrimitive.Popup
           className={cn(
-            "rounded-[var(--radius-patch-sm)] bg-patch-text px-2.5 py-1.5 text-[length:var(--text-patch-micro)] text-patch-bg shadow-patch-md transition-[opacity,scale] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-spring)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+            "rounded-[var(--radius-patch-xs)] bg-patch-text px-2.5 py-1.5 text-[length:var(--text-patch-micro)] text-patch-bg shadow-patch-md transition-[opacity,scale] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-spring)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
             className,
           )}
           data-slot="tooltip-content"

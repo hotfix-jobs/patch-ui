@@ -1,0 +1,135 @@
+import { DatePickerDemo } from "./date-picker-demo";
+
+# DatePicker
+
+`Button` + `Popover` + `Calendar`. Single or range date selection from a button trigger that opens a popup calendar. The trigger label shows the formatted selected date(s); placeholder when empty.
+
+<Install name="date-picker" />
+
+<ComponentPreview label="DatePicker">
+  <DatePickerDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  DatePicker,
+  DateRangePicker,
+  type DateRange,
+} from "@patchui/react";
+
+// Single
+const [date, setDate] = useState<Date | null>(null);
+<DatePicker value={date} onValueChange={setDate} />
+
+// Range
+const [range, setRange] = useState<DateRange>({});
+<DateRangePicker value={range} onValueChange={setRange} />
+
+// Custom format
+<DatePicker
+  format={(d) => d.toISOString().slice(0, 10)}  // YYYY-MM-DD
+  placeholder="YYYY-MM-DD"
+/>
+
+// Constraints
+<DatePicker
+  fromDate={new Date()}  // no past dates
+  disabledDates={(d) => d.getDay() === 0}  // disable Sundays
+/>
+
+// Sizes match Button
+<DatePicker size="sm" />
+<DatePicker size="md" />  // default
+<DatePicker size="lg" />
+```
+
+## Props
+
+### DatePicker
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "Date | null",
+      default: "-",
+      description: "Controlled selected date.",
+    },
+    {
+      name: "defaultValue",
+      type: "Date | null",
+      default: "null",
+      description: "Initial selected date when uncontrolled.",
+    },
+    {
+      name: "onValueChange",
+      type: "(value: Date | null) => void",
+      default: "-",
+      description: "Called when the selection changes. Auto-closes the popover.",
+    },
+    {
+      name: "format",
+      type: "(date: Date) => string",
+      default: "Intl short month + day + year",
+      description: "Custom format for the trigger label.",
+    },
+    {
+      name: "placeholder",
+      type: "ReactNode",
+      default: '"Pick a date"',
+      description: "Trigger text when no date is selected.",
+    },
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "Trigger button size.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disable the trigger.",
+    },
+    {
+      name: "disabledDates",
+      type: "(date: Date) => boolean",
+      default: "-",
+      description: "Disable arbitrary dates inside the calendar.",
+    },
+    {
+      name: "fromDate",
+      type: "Date",
+      default: "-",
+      description: "Earliest selectable date.",
+    },
+    {
+      name: "toDate",
+      type: "Date",
+      default: "-",
+      description: "Latest selectable date.",
+    },
+    {
+      name: "weekStartsOn",
+      type: "0 | 1 | 2 | 3 | 4 | 5 | 6",
+      default: "0",
+      description: "First day of the week shown in the popover calendar.",
+    },
+  ]}
+/>
+
+### DateRangePicker
+
+Same props as DatePicker, except:
+
+- `value` / `defaultValue` / `onValueChange` use `DateRange` (`{ from?, to? }`)
+- Auto-closes when both `from` and `to` are picked (not on first click)
+- Label format: `"Jan 1, 2026 – Feb 5, 2026"` (or just the start date if only `from` is set)
+
+<Callout title="Notes">
+- **Composition over abstraction:** DatePicker is a thin shell around `Popover` + `Calendar`. If you need additional UI inside the popup (preset shortcuts like "Last 7 days", a time picker, footer actions), drop the wrapper and compose directly.
+- **Auto-close:** DatePicker closes when a date is selected. DateRangePicker stays open after the first click so the user can pick the end date, then closes once both are set.
+- **Calendar feature parity:** All `Calendar` props (`fromDate`, `toDate`, `disabledDates`, `weekStartsOn`, `defaultMonth`) pass through to the popover calendar.
+</Callout>

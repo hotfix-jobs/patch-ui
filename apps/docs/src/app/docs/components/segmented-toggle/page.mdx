@@ -1,0 +1,115 @@
+import { SegmentedToggleDemo } from "./segmented-toggle-demo";
+
+# SegmentedToggle
+
+A compact segmented radio control. Use for view-mode toggles (grid / list), sort direction, density, or any small set of mutually-exclusive options. The active background uses motion's `layoutId` so it **physically slides** between buttons when the selection changes.
+
+<Install name="segmented-toggle" />
+
+<ComponentPreview label="SegmentedToggle">
+  <SegmentedToggleDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  SegmentedToggle,
+  SegmentedToggleItem,
+} from "@patchui/react";
+import { LayoutGrid, Rows3 } from "lucide-react";
+
+// Icon-only view toggle
+<SegmentedToggle value={view} onValueChange={setView} aria-label="View">
+  <SegmentedToggleItem value="grid" aria-label="Grid view">
+    <LayoutGrid />
+  </SegmentedToggleItem>
+  <SegmentedToggleItem value="list" aria-label="List view">
+    <Rows3 />
+  </SegmentedToggleItem>
+</SegmentedToggle>
+
+// Text labels
+<SegmentedToggle value={sort} onValueChange={setSort} aria-label="Sort">
+  <SegmentedToggleItem value="newest">Newest</SegmentedToggleItem>
+  <SegmentedToggleItem value="oldest">Oldest</SegmentedToggleItem>
+</SegmentedToggle>
+
+// Small size for tight chrome
+<SegmentedToggle size="sm" value={view} onValueChange={setView} aria-label="View">
+  ...
+</SegmentedToggle>
+```
+
+## Props
+
+### SegmentedToggle
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Selected value (controlled).",
+    },
+    {
+      name: "defaultValue",
+      type: "string",
+      default: "-",
+      description: "Initial value (uncontrolled).",
+    },
+    {
+      name: "onValueChange",
+      type: "(value: string) => void",
+      default: "-",
+      description: "Called when the selection changes.",
+    },
+    {
+      name: "size",
+      type: '"sm" | "md"',
+      default: '"md"',
+      description: "Control density. sm = 24px height, md = 28px.",
+    },
+    {
+      name: "aria-label",
+      type: "string",
+      default: "-",
+      description: "Required for accessibility — describes what this group controls.",
+    },
+  ]}
+/>
+
+### SegmentedToggleItem
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Identifier matched against the parent's value.",
+    },
+    {
+      name: "aria-label",
+      type: "string",
+      default: "-",
+      description: "Required for icon-only items so screen readers can announce them.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the option.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Sliding indicator:** The active background is a `motion.div` with a unique `layoutId` per group. When the selection changes, motion animates the background between item positions with spring physics (stiffness 400, damping 30, mass 0.5).
+- **Active color inverts:** Active item text becomes `--patch-bg` over a `--patch-text` background — high contrast, instantly readable.
+- **Keyboard:** Arrow keys (any direction) cycle through items, Home jumps to first, End to last. The selected item is the only Tab stop (radio-group pattern).
+- **A11y:** Container is `role="radiogroup"` with `aria-label`; items are `role="radio"` with `aria-checked`. Icon-only items need their own `aria-label`.
+- **Reduced motion:** Respects `prefers-reduced-motion` — the indicator swaps instantly instead of sliding.
+- **Per-instance namespace:** Multiple SegmentedToggles on the same page each get a unique `layoutId` namespace via `useId()`, so indicators don't bleed across groups.
+</Callout>

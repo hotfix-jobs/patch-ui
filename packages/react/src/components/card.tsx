@@ -8,21 +8,30 @@ import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
 export const cardVariants = cva(
-  `relative flex flex-col rounded-[var(--radius-patch-lg)] text-patch-text ${colorTransition}`,
+  `relative flex flex-col text-patch-text ${colorTransition}`,
   {
     defaultVariants: {
       variant: "default",
     },
     variants: {
       variant: {
-        default: "bg-patch-surface border-[0.5px] border-[var(--patch-border)]",
+        default:
+          "rounded-[var(--radius-patch-lg)] bg-patch-surface border-[0.5px] border-[var(--patch-border)]",
         // Tonal elevation (nested surface tone), not a shadow — surfaces stay flat.
-        elevated: "bg-patch-surface-2 border-[0.5px] border-[var(--patch-border)]",
+        elevated:
+          "rounded-[var(--radius-patch-lg)] bg-patch-surface-2 border-[0.5px] border-[var(--patch-border)]",
         interactive: cn(
-          "bg-transparent border-[0.5px] border-[var(--patch-border)] hover:bg-patch-surface hover:border-[var(--patch-border-hover)] cursor-pointer",
+          "rounded-[var(--radius-patch-lg)] bg-transparent border-[0.5px] border-[var(--patch-border)] hover:bg-patch-surface hover:border-[var(--patch-border-hover)] cursor-pointer transition-transform duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-[0.99]",
           focusRing,
         ),
-        ghost: "bg-transparent border-b-[0.5px] border-[var(--separator-color)]",
+        ghost:
+          "rounded-[var(--radius-patch-lg)] bg-transparent border-b-[0.5px] border-[var(--separator-color)]",
+        // Flat editorial surface: no radius, hairline border, suitable for
+        // gallery/grid layouts where the BorderGrid pattern (gap-px + bg-border)
+        // would otherwise create rounded corners. Consumers can override the
+        // bg via className for transparent grid cells.
+        editorial:
+          "rounded-none bg-patch-surface border-[0.5px] border-[var(--patch-border)]",
       },
     },
   },
@@ -30,17 +39,29 @@ export const cardVariants = cva(
 
 export interface CardProps extends useRender.ComponentProps<"div"> {
   variant?: VariantProps<typeof cardVariants>["variant"];
+  /**
+   * When true, switches the border to `--patch-text` for a stronger
+   * highlight. Useful for selectable card grids (multi-pick galleries,
+   * job picker, plan comparison).
+   */
+  selected?: boolean;
 }
 
 export function Card({
   className,
   variant,
+  selected,
   render,
   ...props
 }: CardProps): React.ReactElement {
   const defaultProps = {
-    className: cn(cardVariants({ className, variant })),
+    className: cn(
+      cardVariants({ className, variant }),
+      selected && "!border-patch-text",
+    ),
     "data-slot": "card",
+    "data-selected": selected || undefined,
+    "aria-selected": selected || undefined,
   };
 
   return useRender({

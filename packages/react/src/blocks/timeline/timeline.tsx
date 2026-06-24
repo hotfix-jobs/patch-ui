@@ -1,17 +1,12 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
-  useCallback,
-  useEffect,
   useId,
-  useRef,
-  useState,
   type CSSProperties,
+  type HTMLAttributes,
   type ReactNode,
 } from "react";
 
-import { Button } from "../../components/button";
 import { DisplayHeading } from "../../components/display-heading";
 import { SectionLabel } from "../../components/section-label";
 import { cn } from "../../utils";
@@ -21,49 +16,58 @@ export type TimelineStepBg =
   | { type: "image"; src: string };
 
 export interface TimelineStep {
-  /** Small uppercase label rendered above the title. e.g. "01" or "2022".
-   *  Rendered as plain SectionLabel-style text, not a Badge. */
-  eyebrow: string;
+  /**
+   * Step index or label (e.g. "01", "2022", "First"). Rendered prominently
+   * on the left as the row's visual anchor.
+   */
+  n: string;
   /** Step headline. */
   title: string;
   /** Optional supporting copy under the title. */
   body?: string;
-  /** Optional decorative icon (typically a Lucide icon) rendered above
-   *  the eyebrow. Timeline standardizes the visual size (~28px) so the
-   *  rhythm stays consistent across steps; caller's own size className
-   *  on the icon is overridden. */
+  /**
+   * Optional decorative icon (typically a Lucide icon). Rendered in the
+   * index column above the number; Timeline standardizes the visual size
+   * (~28px) so the rhythm stays consistent across steps.
+   */
   icon?: ReactNode;
-  /** Optional short bullet list rendered after the body as hairline-
-   *  divided rows. Use for concrete sub-points: integrations, stats,
-   *  technical detail. */
+  /**
+   * Optional short list rendered after the body as hairline-divided rows.
+   * Use for concrete sub-points (integrations, stats, technical detail).
+   */
   details?: string[];
-  /** Optional small footer line below the details. Renders uppercase
-   *  tracking. */
+  /**
+   * Optional small footer line below the details. Renders uppercase
+   * with letter-spacing tracking.
+   */
   meta?: string;
-  /** Optional background for the frame while this step is active. */
+  /**
+   * Optional background for the row. Renders as an absolute layer behind
+   * the content with a subtle dim overlay so text stays readable.
+   */
   bg?: TimelineStepBg;
 }
 
-export interface TimelineProps extends React.HTMLAttributes<HTMLElement> {
+export interface TimelineProps extends HTMLAttributes<HTMLElement> {
   steps: TimelineStep[];
-  /** Optional section heading shown above the frame. */
+  /** Optional section heading shown above the rows. */
   heading?: string;
   /** Optional small eyebrow label above the heading. */
   eyebrow?: string;
 }
 
 /**
- * Timeline – horizontally paginated sequential content block.
+ * Timeline — a vertical sequence of numbered steps, editorial style.
  *
- * One step visible at a time in a full-width frame. Real Back/Next
- * Buttons at the bottom corners with a step counter between them.
- * Content left-aligned with a comfortable max-width. Touch swipe +
- * keyboard arrows work via scroll-snap; all steps stay in the DOM
- * for SEO + screen readers. Per-step `bg` (color or image) crossfades
- * on advance.
+ * Each step is a full-width row separated by hairline borders. The left
+ * column carries the step number and optional icon; the right column
+ * holds the title, body, optional details list, and meta line. Per-step
+ * background images render subtly behind the row with a dim overlay.
  *
- * Intended for marketing surfaces: process explanations, brand
- * chronicles, and similar ordered content.
+ * Intended for marketing surfaces: process explanations, brand chronicles,
+ * "how it works" sections, founder's notes — any ordered narrative
+ * content. For at-a-glance summaries with 3-4 items where all steps need
+ * to be visible at once, prefer a grid layout instead.
  */
 export function Timeline({
   steps,
@@ -73,45 +77,6 @@ export function Timeline({
   ...rest
 }: TimelineProps) {
   const baseId = useId();
-  const trackRef = useRef<HTMLOListElement | null>(null);
-  const stepRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  // Sync activeIndex from scroll position. IntersectionObserver fires when
-  // a step crosses the 60% visibility threshold inside the track – higher
-  // than 50% so mid-scroll states don't flicker the active index.
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          const idx = stepRefs.current.indexOf(entry.target as HTMLLIElement);
-          if (idx >= 0) setActiveIndex(idx);
-        }
-      },
-      { root: track, threshold: 0.6 },
-    );
-    for (const el of stepRefs.current) {
-      if (el) observer.observe(el);
-    }
-    return () => observer.disconnect();
-  }, [steps.length]);
-
-  const scrollTo = useCallback((idx: number) => {
-    const target = stepRefs.current[idx];
-    const track = trackRef.current;
-    if (!target || !track) return;
-    track.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
-  }, []);
-
-  const hasPrev = activeIndex > 0;
-  const hasNext = activeIndex < steps.length - 1;
-  // Pad the counter to match the total digit width: "01 / 03" reads
-  // cleaner than "1 / 3", and "01 / 12" cleaner than "1 / 12".
-  const totalDigits = String(steps.length).length;
-  const counter = `${String(activeIndex + 1).padStart(totalDigits, "0")} / ${String(steps.length).padStart(totalDigits, "0")}`;
 
   return (
     <section
@@ -121,7 +86,7 @@ export function Timeline({
     >
       <div className="mx-auto max-w-[1280px]">
         {(eyebrow || heading) && (
-          <header className="mb-8 md:mb-12">
+          <header className="mb-12 md:mb-16">
             {eyebrow && <SectionLabel>{eyebrow}</SectionLabel>}
             {heading && (
               <DisplayHeading size="md" render={<h2 />}>
@@ -131,124 +96,81 @@ export function Timeline({
           </header>
         )}
 
-        <div className="relative overflow-hidden rounded-[var(--radius-patch-md)] border-[0.5px] border-patch-border bg-patch-surface">
-          {/* Per-step background layers, cross-fade on active change. */}
-          {steps.some((s) => s.bg) && (
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-              {steps.map((step, i) => (
-                <div
-                  key={`${baseId}-bg-${i}`}
-                  className={cn(
-                    "absolute inset-0 transition-opacity duration-[var(--duration-patch-spring)] ease-[var(--ease-patch-out)]",
-                    i === activeIndex ? "opacity-100" : "opacity-0",
-                  )}
-                  style={bgToStyle(step.bg)}
-                />
-              ))}
-            </div>
-          )}
-
-          {/* Scroll-snap track. The `<ol>` is the semantic spine: all steps
-              live in the DOM and are crawlable / readable regardless of which
-              one is on screen. `tabIndex=0` lets keyboard users focus the
-              track and use Arrow Left/Right (native scroll behavior). */}
-          <ol
-            ref={trackRef}
-            tabIndex={0}
-            className={cn(
-              "relative flex snap-x snap-mandatory overflow-x-auto scroll-smooth",
-              "outline-none focus-visible:ring-1 focus-visible:ring-[var(--patch-focus-ring)]",
-              "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-            )}
-            aria-label="Timeline steps"
-          >
-            {steps.map((step, i) => (
-              <li
-                key={`${baseId}-step-${i}`}
-                ref={(el) => {
-                  stepRefs.current[i] = el;
-                }}
-                className="relative shrink-0 snap-center w-full"
-                aria-current={i === activeIndex ? "true" : undefined}
-              >
-                <TimelineStepContent step={step} />
-              </li>
-            ))}
-          </ol>
-
-          {/* Footer: counter + nav buttons on a hairline-divided row. No
-              progress bar. The counter ("01 / 03") between the buttons
-              carries the position indication. */}
-          <div className="relative border-t-[0.5px] border-patch-border bg-patch-surface/80 backdrop-blur-sm">
-            <div className="flex items-center justify-between gap-3 px-5 md:px-8 py-3 md:py-4">
-              <Button
-                variant="outline"
-                size="sm"
-                icon={<ChevronLeft className="size-3.5" />}
-                iconPosition="left"
-                onClick={() => scrollTo(activeIndex - 1)}
-                disabled={!hasPrev}
-                aria-label="Previous step"
-              >
-                Back
-              </Button>
-
-              <span
-                className="text-[12px] tabular-nums tracking-[0.08em] uppercase font-medium text-patch-text-tertiary"
-                aria-live="polite"
-                aria-atomic="true"
-              >
-                {counter}
-              </span>
-
-              <Button
-                variant="outline"
-                size="sm"
-                icon={<ChevronRight className="size-3.5" />}
-                iconPosition="right"
-                onClick={() => scrollTo(activeIndex + 1)}
-                disabled={!hasNext}
-                aria-label="Next step"
-              >
-                Next
-              </Button>
-            </div>
-          </div>
-        </div>
+        <ol className="border-y-[0.5px] border-patch-border">
+          {steps.map((step, i) => (
+            <li
+              key={`${baseId}-step-${i}`}
+              className={cn(
+                "relative",
+                i > 0 && "border-t-[0.5px] border-patch-border",
+              )}
+            >
+              <TimelineRow step={step} />
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
 }
 
-function TimelineStepContent({ step }: { step: TimelineStep }) {
+function TimelineRow({ step }: { step: TimelineStep }) {
+  const bgStyle = bgToStyle(step.bg);
+  const hasBg = step.bg != null;
+
   return (
-    <div className="relative flex min-h-[480px] md:min-h-[560px] flex-col justify-center p-8 md:p-14">
-      <div className="max-w-[44rem]">
+    <article
+      className={cn(
+        "relative grid grid-cols-1 gap-6 py-12 md:grid-cols-[120px_1fr] md:gap-10 md:py-20 lg:grid-cols-[160px_1fr] lg:gap-14 lg:py-24",
+      )}
+    >
+      {hasBg && (
+        <>
+          {/* Per-row background + subtle overlay so content stays readable. */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -mx-6 md:-mx-10"
+            style={bgStyle}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -mx-6 md:-mx-10 bg-patch-bg/55"
+          />
+        </>
+      )}
+
+      {/* Index column */}
+      <div className="relative flex flex-col items-start gap-3 md:gap-5">
         {step.icon && (
-          <div className="mb-6 text-patch-text [&_svg]:size-7">
+          <div
+            aria-hidden="true"
+            className="text-patch-text [&_svg]:size-7"
+          >
             {step.icon}
           </div>
         )}
-
-        <div className="mb-3 text-[11px] font-medium uppercase tracking-[0.12em] text-patch-text-tertiary">
-          {step.eyebrow}
+        <div className="font-medium tabular-nums tracking-[var(--tracking-patch-section)] text-patch-text-secondary text-[length:var(--text-patch-section)] leading-none">
+          {step.n}
         </div>
+      </div>
 
-        <h3 className="text-[28px] md:text-[36px] leading-[1.05] tracking-[-0.025em] font-medium text-patch-text">
+      {/* Content column */}
+      <div className="relative max-w-2xl">
+        <h3 className="text-balance text-[28px] md:text-[36px] lg:text-[44px] leading-[1.05] font-medium tracking-[-0.025em] text-patch-text">
           {step.title}
         </h3>
 
         {step.body && (
-          <p className="mt-4 text-[15px] md:text-[16px] leading-relaxed text-patch-text-secondary max-w-[40rem]">
+          <p className="mt-4 md:mt-5 max-w-[40rem] text-[15px] md:text-[17px] leading-relaxed text-patch-text-secondary">
             {step.body}
           </p>
         )}
 
         {step.details && step.details.length > 0 && (
-          <ul className="mt-6 max-w-[40rem] border-t-[0.5px] border-patch-border">
-            {step.details.map((detail, i) => (
+          <ul className="mt-6 md:mt-8 max-w-[40rem] border-t-[0.5px] border-patch-border">
+            {step.details.map((detail, di) => (
               <li
-                key={i}
+                key={di}
                 className="border-b-[0.5px] border-patch-border py-2.5 text-[14px] leading-relaxed text-patch-text"
               >
                 {detail}
@@ -258,12 +180,12 @@ function TimelineStepContent({ step }: { step: TimelineStep }) {
         )}
 
         {step.meta && (
-          <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.12em] text-patch-text-tertiary">
+          <p className="mt-6 md:mt-8 text-[length:var(--text-patch-micro)] font-medium uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
             {step.meta}
           </p>
         )}
       </div>
-    </div>
+    </article>
   );
 }
 

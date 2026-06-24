@@ -18,7 +18,30 @@ import { Pagination } from "@patchui/react";
 
 const [page, setPage] = useState(1);
 
+// Basic
 <Pagination page={page} totalPages={10} onPageChange={setPage} />
+
+// Wider sibling window (active ±2 instead of ±1)
+<Pagination page={page} totalPages={20} onPageChange={setPage} siblingCount={2} />
+
+// With First / Last jump buttons
+<Pagination page={page} totalPages={50} onPageChange={setPage} showFirstLast />
+
+// Compact — just prev/next + "Page X of Y", no numbered list
+<Pagination page={page} totalPages={10} onPageChange={setPage} compact />
+
+// Loading state during async page transitions
+<Pagination
+  page={page}
+  totalPages={10}
+  onPageChange={async (next) => {
+    setLoading(true);
+    await fetchPage(next);
+    setPage(next);
+    setLoading(false);
+  }}
+  loading={loading}
+/>
 ```
 
 ## Props
@@ -44,6 +67,30 @@ const [page, setPage] = useState(1);
       description: "Fired when the user picks a new page (a value from 1 to totalPages).",
     },
     {
+      name: "siblingCount",
+      type: "number",
+      default: "1",
+      description: "Number of adjacent pages to show on each side of the active page. 1 = ±1 window (the default editorial range); 2 = ±2 window for heavier data UIs.",
+    },
+    {
+      name: "showFirstLast",
+      type: "boolean",
+      default: "false",
+      description: 'Render "First" and "Last" text buttons that jump to page 1 / totalPages. Useful for data tables with many pages. Hidden in compact mode.',
+    },
+    {
+      name: "compact",
+      type: "boolean",
+      default: "false",
+      description: "Drops the numbered list entirely; renders only prev/next + summary. Use on narrow viewports or in chrome-tight footers.",
+    },
+    {
+      name: "loading",
+      type: "boolean",
+      default: "false",
+      description: "Disables every control and dims the nav. Sets aria-busy on the landmark. Use during async page transitions so users see something is loading.",
+    },
+    {
       name: "showSummary",
       type: "boolean",
       default: "true",
@@ -60,6 +107,10 @@ const [page, setPage] = useState(1);
 
 <Callout title="Notes">
 - **Tabular numerals:** Page numbers use tabular figures so digits stay column-aligned regardless of width.
-- **Truncation:** For large page counts the control shows the first, last, current ±1, and ellipsis markers for gaps.
-- **Keyboard:** Page buttons are focusable with the standard focus outline.
+- **Truncation:** Always shows the first and last page; ellipsis markers fill gaps when the active window doesn't reach the edges. Widen the window with `siblingCount={2}` or larger.
+- **Tap targets:** Numbered buttons are `min-w-[32px]` with `px-2 py-1.5` padding — a proper 32×32 touch target while keeping the inline-text feel.
+- **Press feedback:** Numbers scale to 95% on `active:` (matching `Button`), so clicks have tactile confirmation.
+- **Active semantics:** The active page button gets `aria-current="page"` and `aria-disabled` — semantically it isn't navigable since you're already there. Screen readers announce it as the current page.
+- **Loading state:** When `loading={true}`, every control is disabled, the nav fades, and `aria-busy="true"` signals to assistive tech that a transition is in progress.
+- **Keyboard:** All controls are Tab-focusable with the standard focus outline. Arrow keys aren't bound (they'd conflict with horizontal scroll containers); use Tab + Enter.
 </Callout>

@@ -8,17 +8,27 @@ import {
   CommandEmpty,
   CommandCollection,
   CommandItem,
+  CommandSection,
+  CommandSeparator,
   Button,
 } from "@patchui/react";
 
-const COMMANDS = [
-  "New file",
-  "Open file",
-  "Save",
-  "Go to dashboard",
-  "Go to settings",
-  "Toggle theme",
-  "Invite a teammate",
+type CommandEntry = {
+  id: string;
+  label: string;
+  group: "Navigate" | "Actions" | "Settings";
+  description?: string;
+};
+
+const COMMANDS: CommandEntry[] = [
+  { id: "go-dashboard", label: "Go to dashboard", group: "Navigate" },
+  { id: "go-projects", label: "Go to projects", group: "Navigate" },
+  { id: "go-settings", label: "Go to settings", group: "Navigate" },
+  { id: "new-file", label: "New file", group: "Actions", description: "Create an empty file in this workspace" },
+  { id: "open-file", label: "Open file", group: "Actions", description: "Browse and open a file from disk" },
+  { id: "save", label: "Save", group: "Actions", description: "Save the active file" },
+  { id: "toggle-theme", label: "Toggle theme", group: "Settings", description: "Switch between light and dark" },
+  { id: "invite-teammate", label: "Invite a teammate", group: "Settings" },
 ];
 
 export function CommandDemo() {
@@ -28,10 +38,15 @@ export function CommandDemo() {
 
   const q = query.trim().toLowerCase();
   const results = q
-    ? COMMANDS.filter((c) => c.toLowerCase().includes(q))
+    ? COMMANDS.filter((c) => c.label.toLowerCase().includes(q))
     : COMMANDS;
 
-  // Open with Cmd/Ctrl+K.
+  const grouped = {
+    Navigate: results.filter((r) => r.group === "Navigate"),
+    Actions: results.filter((r) => r.group === "Actions"),
+    Settings: results.filter((r) => r.group === "Settings"),
+  };
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -42,6 +57,12 @@ export function CommandDemo() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  const runCommand = (entry: CommandEntry) => {
+    setRan(entry.label);
+    setOpen(false);
+    setQuery("");
+  };
 
   return (
     <div className="flex flex-col items-center gap-3">
@@ -65,26 +86,62 @@ export function CommandDemo() {
         }}
         value={query}
         onValueChange={setQuery}
-        filteredItems={results}
       >
         <CommandInput placeholder="Type a command or search..." />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
-          <CommandCollection>
-            {(item: string) => (
-              <CommandItem
-                key={item}
-                value={item}
-                onClick={() => {
-                  setRan(item);
-                  setOpen(false);
-                  setQuery("");
-                }}
-              >
-                {item}
-              </CommandItem>
-            )}
-          </CommandCollection>
+          {grouped.Navigate.length > 0 && (
+            <CommandSection label="Navigate">
+              {grouped.Navigate.map((entry) => (
+                <CommandItem
+                  key={entry.id}
+                  value={entry.label}
+                  selected={ran === entry.label}
+                  onClick={() => runCommand(entry)}
+                >
+                  {entry.label}
+                </CommandItem>
+              ))}
+            </CommandSection>
+          )}
+          {grouped.Actions.length > 0 && (
+            <>
+              {grouped.Navigate.length > 0 && <CommandSeparator />}
+              <CommandSection label="Actions">
+                {grouped.Actions.map((entry) => (
+                  <CommandItem
+                    key={entry.id}
+                    value={entry.label}
+                    description={entry.description}
+                    selected={ran === entry.label}
+                    onClick={() => runCommand(entry)}
+                  >
+                    {entry.label}
+                  </CommandItem>
+                ))}
+              </CommandSection>
+            </>
+          )}
+          {grouped.Settings.length > 0 && (
+            <>
+              {(grouped.Navigate.length > 0 || grouped.Actions.length > 0) && (
+                <CommandSeparator />
+              )}
+              <CommandSection label="Settings">
+                {grouped.Settings.map((entry) => (
+                  <CommandItem
+                    key={entry.id}
+                    value={entry.label}
+                    description={entry.description}
+                    selected={ran === entry.label}
+                    onClick={() => runCommand(entry)}
+                  >
+                    {entry.label}
+                  </CommandItem>
+                ))}
+              </CommandSection>
+            </>
+          )}
         </CommandList>
       </CommandDialog>
     </div>

@@ -1,96 +1,341 @@
 "use client";
 
-import { Drawer as DrawerPrimitive } from "@base-ui/react/drawer";
+import {
+  FloatingFocusManager,
+  FloatingOverlay,
+  FloatingPortal,
+  useClick,
+  useDismiss,
+  useFloating,
+  useInteractions,
+  useRole,
+} from "@floating-ui/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import {
+  cloneElement,
+  createContext,
+  isValidElement,
+  useCallback,
+  useContext,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import type * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
-export const Sheet: typeof DrawerPrimitive.Root = DrawerPrimitive.Root;
+type SheetSide = "right" | "left" | "top" | "bottom";
 
-export function SheetTrigger(
-  props: DrawerPrimitive.Trigger.Props,
-): React.ReactElement {
-  return <DrawerPrimitive.Trigger data-slot="sheet-trigger" {...props} />;
+type SheetContextValue = {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  context: ReturnType<typeof useFloating>["context"];
+  refs: ReturnType<typeof useFloating>["refs"];
+  getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"];
+  getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"];
+  titleId: string;
+  descriptionId: string;
+};
+
+const SheetContext = createContext<SheetContextValue | null>(null);
+
+function useSheetContext(): SheetContextValue {
+  const ctx = useContext(SheetContext);
+  if (!ctx) throw new Error("Sheet subcomponents must be used inside <Sheet>");
+  return ctx;
 }
 
-export function SheetClose(
-  props: DrawerPrimitive.Close.Props,
-): React.ReactElement {
-  const nativeButton = props.render ? false : props.nativeButton;
-  return <DrawerPrimitive.Close data-slot="sheet-close" {...props} nativeButton={nativeButton} />;
+export interface SheetProps {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}
+
+/**
+ * Root component managing open/close state and ARIA wiring. Built on
+ * `@floating-ui/react` + `motion` with true bidirectional slide animations
+ * coordinated through AnimatePresence.
+ */
+export function Sheet({
+  open: controlledOpen,
+  onOpenChange,
+  defaultOpen = false,
+  children,
+}: SheetProps): React.ReactElement {
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
+  const open = controlledOpen ?? uncontrolledOpen;
+  const setOpen = (next: boolean) => {
+    if (controlledOpen === undefined) setUncontrolledOpen(next);
+    onOpenChange?.(next);
+  };
+
+  const { refs, context } = useFloating({
+    open,
+    onOpenChange: setOpen,
+  });
+
+  const click = useClick(context);
+  const dismiss = useDismiss(context, { outsidePressEvent: "mousedown" });
+  const role = useRole(context, { role: "dialog" });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    click,
+    dismiss,
+    role,
+  ]);
+
+  const titleId = useId();
+  const descriptionId = useId();
+
+  return (
+    <SheetContext.Provider
+      value={{
+        open,
+        setOpen,
+        context,
+        refs,
+        getReferenceProps,
+        getFloatingProps,
+        titleId,
+        descriptionId,
+      }}
+    >
+      {children}
+    </SheetContext.Provider>
+  );
+}
+
+export interface SheetTriggerProps {
+  render?: React.ReactElement;
+  children?: React.ReactNode;
+}
+
+export function SheetTrigger({
+  render,
+  children,
+  ...rest
+}: SheetTriggerProps & React.ButtonHTMLAttributes<HTMLButtonElement>): React.ReactElement {
+  const { refs, getReferenceProps } = useSheetContext();
+  const triggerProps = getReferenceProps({
+    ref: refs.setReference,
+    ...rest,
+  });
+
+  if (render && isValidElement(render)) {
+    return cloneElement(render, {
+      ...triggerProps,
+      "data-slot": "sheet-trigger",
+      children: (render.props as { children?: React.ReactNode }).children ?? children,
+    } as React.HTMLAttributes<HTMLElement>);
+  }
+  return (
+    <button type="button" data-slot="sheet-trigger" {...triggerProps}>
+      {children}
+    </button>
+  );
+}
+
+/**
+ * Motion enter/exit variants by edge.
+ */
+function getSlideVariants(side: SheetSide) {
+  switch (side) {
+    case "right":
+      return {
+        initial: { x: "100%" },
+        animate: { x: 0 },
+        exit: { x: "100%" },
+      };
+    case "left":
+      return {
+        initial: { x: "-100%" },
+        animate: { x: 0 },
+        exit: { x: "-100%" },
+      };
+    case "top":
+      return {
+        initial: { y: "-100%" },
+        animate: { y: 0 },
+        exit: { y: "-100%" },
+      };
+    case "bottom":
+      return {
+        initial: { y: "100%" },
+        animate: { y: 0 },
+        exit: { y: "100%" },
+      };
+  }
+}
+
+export interface SheetContentProps {
+  children?: React.ReactNode;
+  side?: SheetSide;
+  showCloseButton?: boolean;
+  className?: string;
 }
 
 export function SheetContent({
-  className,
   children,
   side = "right",
   showCloseButton = true,
-  ...props
-}: DrawerPrimitive.Popup.Props & {
-  side?: "right" | "left" | "top" | "bottom";
-  showCloseButton?: boolean;
-}): React.ReactElement {
+  className,
+}: SheetContentProps): React.ReactElement {
+  const { context, refs, open, titleId, descriptionId, getFloatingProps } =
+    useSheetContext();
+  const reduceMotion = useReducedMotion();
+  const variants = getSlideVariants(side);
+  // Mirror the floating element ref locally so FloatingFocusManager can
+  // receive a real RefObject (the floating-ui callback ref isn't one).
+  const popupRef = useRef<HTMLDivElement | null>(null);
+  const setPopupRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      popupRef.current = node;
+      refs.setFloating(node);
+    },
+    [refs],
+  );
+
   return (
-    <DrawerPrimitive.Portal>
-      {/* noIsolation: react-remove-scroll's default pointer-event lockout
-          isolates the sheet's tree, but that also blocks portaled popups
-          (Select, Menu, Tooltip) from receiving clicks. The Drawer's own
-          modal/backdrop already handles outside-click dismissal, so the
-          isolation is duplicative — turning it off lets nested portals
-          work without sacrificing scroll lock or backdrop dismiss. */}
-      <RemoveScroll noIsolation>
-      <DrawerPrimitive.Backdrop
-        className="fixed inset-0 z-70 bg-black/60 transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0"
-        data-slot="sheet-backdrop"
-      />
-      {/* Drawer.Viewport is required for the popup's transition lifecycle
-          (data-starting-style / data-ending-style) and swipe handling.
-          Without it, Base UI logs a warning and the sheet appears/disappears
-          with no animation. */}
-      <DrawerPrimitive.Viewport className="fixed inset-0 z-70 pointer-events-none">
-      <DrawerPrimitive.Popup
-        className={cn(
-          "fixed z-70 flex flex-col bg-patch-surface text-patch-text border-[0.5px] border-[var(--dialog-border)] shadow-patch-overlay pointer-events-auto transition-transform duration-[var(--duration-patch-spring)] ease-[var(--ease-patch-out)]",
-          side === "right" &&
-            "inset-y-0 right-0 h-full w-full max-w-md rounded-l-[var(--radius-patch-lg)] data-ending-style:translate-x-full data-starting-style:translate-x-full",
-          side === "left" &&
-            "inset-y-0 left-0 h-full w-full max-w-md rounded-r-[var(--radius-patch-lg)] data-ending-style:-translate-x-full data-starting-style:-translate-x-full",
-          side === "top" &&
-            "inset-x-0 top-0 w-full rounded-b-[var(--radius-patch-lg)] data-ending-style:-translate-y-full data-starting-style:-translate-y-full",
-          side === "bottom" &&
-            "inset-x-0 bottom-0 w-full rounded-t-[var(--radius-patch-lg)] data-ending-style:translate-y-full data-starting-style:translate-y-full",
-          className,
+    <FloatingPortal>
+      <AnimatePresence>
+        {open && (
+          <FloatingOverlay
+            lockScroll={false}
+            className="fixed inset-0 z-70"
+            data-slot="sheet-overlay"
+          >
+            <RemoveScroll noIsolation>
+              <motion.div
+                aria-hidden="true"
+                data-slot="sheet-backdrop"
+                className="absolute inset-0 bg-black/5 backdrop-blur-xs"
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={reduceMotion ? undefined : { opacity: 0 }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
+                }
+              />
+              <FloatingFocusManager
+                context={context}
+                // Focus the popup root rather than the first focusable
+                // child — focusing an Input or focusable element inside
+                // can trigger a scrollIntoView that hijacks the slide
+                // animation. Focusing the container keeps the trap
+                // working without disturbing layout.
+                initialFocus={popupRef as React.RefObject<HTMLElement>}
+              >
+                <motion.div
+                  ref={setPopupRef}
+                  tabIndex={-1}
+                  aria-labelledby={titleId}
+                  aria-describedby={descriptionId}
+                  data-slot="sheet-popup"
+                  {...getFloatingProps()}
+                  initial={reduceMotion ? false : variants.initial}
+                  animate={variants.animate}
+                  exit={reduceMotion ? undefined : variants.exit}
+                  transition={
+                    reduceMotion
+                      ? { duration: 0 }
+                      : {
+                          type: "spring",
+                          stiffness: 380,
+                          damping: 38,
+                          mass: 0.8,
+                        }
+                  }
+                  className={cn(
+                    "absolute z-70 flex flex-col bg-patch-surface text-patch-text border-[0.5px] border-[var(--dialog-border)] shadow-patch-overlay",
+                    side === "right" &&
+                      "inset-y-0 right-0 h-full w-full max-w-md rounded-l-[var(--radius-patch-sm)]",
+                    side === "left" &&
+                      "inset-y-0 left-0 h-full w-full max-w-md rounded-r-[var(--radius-patch-sm)]",
+                    side === "top" &&
+                      "inset-x-0 top-0 w-full rounded-b-[var(--radius-patch-sm)]",
+                    side === "bottom" &&
+                      "inset-x-0 bottom-0 w-full rounded-t-[var(--radius-patch-sm)]",
+                    className,
+                  )}
+                >
+                  {children}
+                  {showCloseButton && <SheetClose />}
+                </motion.div>
+              </FloatingFocusManager>
+            </RemoveScroll>
+          </FloatingOverlay>
         )}
-        data-slot="sheet-popup"
-        {...props}
+      </AnimatePresence>
+    </FloatingPortal>
+  );
+}
+
+export interface SheetCloseProps {
+  render?: React.ReactElement;
+  children?: React.ReactNode;
+}
+
+export function SheetClose({
+  render,
+  children,
+  ...rest
+}: SheetCloseProps & React.ButtonHTMLAttributes<HTMLButtonElement>): React.ReactElement {
+  const { setOpen } = useSheetContext();
+  const onClick = () => setOpen(false);
+
+  if (render && isValidElement(render)) {
+    return cloneElement(render, {
+      onClick,
+      "data-slot": "sheet-close",
+      ...rest,
+      children: (render.props as { children?: React.ReactNode }).children ?? children,
+    } as React.HTMLAttributes<HTMLElement>);
+  }
+  if (children) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        data-slot="sheet-close"
+        {...rest}
       >
         {children}
-        {showCloseButton && (
-          <DrawerPrimitive.Close
-            aria-label="Close"
-            className={cn("absolute end-3 top-5 flex h-7 w-7 items-center justify-center rounded-[var(--radius-patch-sm)] text-patch-text-tertiary transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] hover:bg-patch-surface-hover hover:text-patch-text", focusRing)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-          </DrawerPrimitive.Close>
-        )}
-      </DrawerPrimitive.Popup>
-      </DrawerPrimitive.Viewport>
-      </RemoveScroll>
-    </DrawerPrimitive.Portal>
+      </button>
+    );
+  }
+  // Default: corner × button used when SheetContent.showCloseButton is true.
+  return (
+    <button
+      type="button"
+      aria-label="Close"
+      onClick={onClick}
+      data-slot="sheet-close"
+      className={cn(
+        "absolute end-3 top-5 flex h-7 w-7 items-center justify-center rounded-[var(--radius-patch-sm)] text-patch-text-tertiary transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] hover:bg-patch-surface-hover hover:text-patch-text",
+        focusRing,
+      )}
+      {...rest}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </svg>
+    </button>
   );
 }
 
@@ -112,10 +357,15 @@ export function SheetHeader({
 export function SheetTitle({
   className,
   ...props
-}: DrawerPrimitive.Title.Props): React.ReactElement {
+}: React.ComponentProps<"h2">): React.ReactElement {
+  const { titleId } = useSheetContext();
   return (
-    <DrawerPrimitive.Title
-      className={cn("font-semibold text-lg leading-none text-patch-text", className)}
+    <h2
+      id={titleId}
+      className={cn(
+        "font-semibold text-lg leading-none text-patch-text",
+        className,
+      )}
       data-slot="sheet-title"
       {...props}
     />
@@ -125,9 +375,11 @@ export function SheetTitle({
 export function SheetDescription({
   className,
   ...props
-}: DrawerPrimitive.Description.Props): React.ReactElement {
+}: React.ComponentProps<"p">): React.ReactElement {
+  const { descriptionId } = useSheetContext();
   return (
-    <DrawerPrimitive.Description
+    <p
+      id={descriptionId}
       className={cn("text-patch-text-secondary text-sm", className)}
       data-slot="sheet-description"
       {...props}
@@ -178,5 +430,3 @@ export function SheetHandle({
     </div>
   );
 }
-
-export { DrawerPrimitive as SheetPrimitive };

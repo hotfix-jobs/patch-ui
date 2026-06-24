@@ -2,9 +2,9 @@ import { TimelineDemo } from "./timeline-demo";
 
 # Timeline
 
-Horizontally paginated sequential content. One step visible at a time inside a full-width frame, with Back/Next buttons and a step counter in a hairline-divided footer row. All steps stay in the DOM so SEO crawlers and screen readers see the full content regardless of which one is on screen. Per-step background (color or image) crossfades on advance.
+A vertical sequence of numbered steps, editorial style. Each step is a full-width row separated by hairline borders, with the step number anchored in a left column and the title, body, optional details list, and meta line in a content column on the right. Per-step background images render subtly behind the row with a dim overlay so text stays readable.
 
-Intended for marketing surfaces: process explanations, brand chronicles, and similar ordered content.
+Intended for marketing surfaces — process explanations, brand chronicles, founder's notes, "how it works" sections, any ordered narrative content. For at-a-glance summaries with 3-4 items where everything must be visible simultaneously and read in any order, prefer a 3-column grid layout instead.
 
 <Install name="timeline" />
 
@@ -16,31 +16,37 @@ Intended for marketing surfaces: process explanations, brand chronicles, and sim
 
 ```tsx
 import { Timeline } from "@patchui/react";
-import { Bell, Radar, SlidersHorizontal } from "lucide-react";
+import { Compass, Hammer, Send } from "lucide-react";
 
 <Timeline
-  eyebrow="How it works"
-  heading="From source to your inbox."
+  eyebrow="Process"
+  heading="Three phases. One outcome."
   steps={[
     {
-      eyebrow: "01",
-      icon: <Radar />,
-      title: "We watch every source.",
-      body: "Direct API pulls from every customer's hiring system.",
-      details: ["Six integrations", "Live, not scraped", "Continuously refreshed"],
-      meta: "Updates twice daily",
+      n: "01",
+      icon: <Compass />,
+      title: "Discover",
+      body: "Map the territory. Interviews, audits, and a clean read of where the product is today.",
+      meta: "Roughly two weeks",
     },
     {
-      eyebrow: "02",
-      icon: <SlidersHorizontal />,
-      title: "You set your preferences.",
-      body: "Match on role, salary, skills, and location.",
+      n: "02",
+      icon: <Hammer />,
+      title: "Build",
+      body: "Tight iterations against the brief. Prototypes in hand, weekly check-ins.",
+      details: [
+        "Design system in lockstep with engineering",
+        "Reviewable diffs over slide decks",
+        "Demos every Friday, no exceptions",
+      ],
+      meta: "Four to eight weeks, scoped",
     },
     {
-      eyebrow: "03",
-      icon: <Bell />,
-      title: "We notify you.",
-      body: "Push when matches land. Apply before everyone else.",
+      n: "03",
+      icon: <Send />,
+      title: "Ship",
+      body: "Launch readiness check, gradual rollout, quiet handoff.",
+      meta: "One week of polish and instrumentation",
     },
   ]}
 />
@@ -48,22 +54,84 @@ import { Bell, Radar, SlidersHorizontal } from "lucide-react";
 
 ## Props
 
-- `steps`: `TimelineStep[]`. Required.
-- `heading`: optional display heading rendered above the frame.
-- `eyebrow`: optional small uppercase label rendered above the heading.
+### Timeline
+
+<PropsTable
+  props={[
+    {
+      name: "steps",
+      type: "TimelineStep[]",
+      default: "-",
+      description: "Required. Ordered list of step entries; each renders as a row.",
+    },
+    {
+      name: "heading",
+      type: "string",
+      default: "-",
+      description: "Optional display heading rendered above the rows.",
+    },
+    {
+      name: "eyebrow",
+      type: "string",
+      default: "-",
+      description: "Optional small uppercase label rendered above the heading via SectionLabel.",
+    },
+  ]}
+/>
 
 ### TimelineStep
 
-- `eyebrow`: small uppercase label rendered above the title (e.g. `"01"`, `"2022"`).
-- `title`: step headline.
-- `body`: optional supporting paragraph under the title.
-- `icon`: optional decorative icon, typically a Lucide icon. Timeline standardizes the visual size.
-- `details`: optional short bullet list rendered as hairline-divided rows. Use for sub-points, integrations, or stats.
-- `meta`: optional small uppercase footer line below the details.
-- `bg`: optional per-step background. `{ type: "color", value: "..." }` for any CSS color, or `{ type: "image", src: "..." }` for a cover-fit image.
+<PropsTable
+  props={[
+    {
+      name: "n",
+      type: "string",
+      default: "-",
+      description: "Step index or label (e.g. '01', '2022', 'First'). Rendered prominently in the left column as the row's visual anchor.",
+    },
+    {
+      name: "title",
+      type: "string",
+      default: "-",
+      description: "Step headline. Rendered in display-style type (28-44px responsive) with text-balance for cleaner line breaks.",
+    },
+    {
+      name: "body",
+      type: "string",
+      default: "-",
+      description: "Optional supporting paragraph beneath the title. 15-17px responsive, comfortable line-height.",
+    },
+    {
+      name: "icon",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional decorative icon (typically Lucide). Rendered above the step number in the index column. Timeline standardizes the size.",
+    },
+    {
+      name: "details",
+      type: "string[]",
+      default: "-",
+      description: "Optional short list rendered after the body as hairline-divided rows. Use for concrete sub-points: integrations, stats, technical detail.",
+    },
+    {
+      name: "meta",
+      type: "string",
+      default: "-",
+      description: "Optional small footer line below the details. Uppercase with letter-spacing tracking.",
+    },
+    {
+      name: "bg",
+      type: '{ type: "color"; value: string } | { type: "image"; src: string }',
+      default: "-",
+      description: "Optional per-row background. Renders as an absolute layer behind the content with a subtle dim overlay so text stays readable.",
+    },
+  ]}
+/>
 
-## Interaction
-
-- Touch: swipe horizontally across the frame.
-- Keyboard: focus the timeline track and use Arrow Left / Right.
-- Pointer: click the Back and Next buttons at the bottom of the frame.
+<Callout title="Notes">
+- **Vertical layout:** Rows stack top-to-bottom, hairlines between. No pagination, no scroll mechanics, no nav buttons — Timeline reads like an editorial piece, not a widget.
+- **Index column:** 120px on md, 160px on lg, collapses on mobile. Carries the step number and optional icon.
+- **Background images:** When `bg` is set, an absolute layer renders behind the row's content with a `bg-patch-bg/55` overlay. Use sparingly — typically for one or two "hero" steps in a longer sequence.
+- **Heading slot:** The `heading` prop renders via `DisplayHeading` (size `md`); pass your own JSX above the Timeline if you need a different scale or alignment.
+- **SEO:** Every step renders to the DOM as a semantic `<li>` inside an ordered list. Crawlers and screen readers see the full sequence.
+</Callout>

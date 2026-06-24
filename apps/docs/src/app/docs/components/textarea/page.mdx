@@ -15,8 +15,16 @@ A multi-line text input that wraps the native `<textarea>` with consistent styli
 ```tsx
 import { Textarea } from "@patchui/react";
 
-// Basic
-<Textarea placeholder="Write something…" />
+// Basic (outlined is the default)
+<Textarea placeholder="Write something..." />
+
+// Variants
+<Textarea variant="outlined" placeholder="Outlined" />
+<Textarea variant="ghost" placeholder="Ghost" />          // no border / bg
+<Textarea variant="underline" placeholder="Underline" />  // bottom border only
+
+// Error state
+<Textarea invalid value={value} onChange={...} />
 
 // Custom rows
 <Textarea placeholder="Tall textarea" rows={6} />
@@ -29,6 +37,18 @@ import { Textarea } from "@patchui/react";
 
 <PropsTable
   props={[
+    {
+      name: "variant",
+      type: '"outlined" | "ghost" | "underline"',
+      default: '"outlined"',
+      description: "Visual style. outlined is the default boxed input. ghost has no border or background. underline shows only a bottom border, Material-style.",
+    },
+    {
+      name: "invalid",
+      type: "boolean",
+      default: "false",
+      description: "Visual error state. Sets aria-invalid and switches border to the error color.",
+    },
     {
       name: "rows",
       type: "number",
@@ -66,4 +86,6 @@ import { Textarea } from "@patchui/react";
 <Callout title="Notes">
 - **Auto-growing:** The textarea uses `field-sizing: content` by default, so it grows with its content. The `rows` prop sets a minimum visible height.
 - **Field integration:** Internally wraps the native textarea with Base UI's `Field.Control`, enabling integration with the Field component for labels, descriptions, and validation messages.
+- **Hover / focus:** Outlined and underline variants darken the border on hover (`--patch-border-hover`) and on focus-visible (`--patch-border-active`) plus the standard 1px focus ring outline.
+- **Variants mirror Input:** Same three variants as `Input` — keeps form chrome consistent across single-line and multi-line fields.
 </Callout>

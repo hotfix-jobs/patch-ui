@@ -25,23 +25,34 @@ export function Sidebar({
     <>
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/10 backdrop-blur-sm lg:hidden"
           onClick={onClose}
+          aria-hidden
         />
       )}
 
       <div
         className={cn(
-          "fixed top-14 bottom-0 left-0 z-50 w-64 overflow-y-auto border-r border-patch-border bg-patch-bg transition-transform duration-200 ease-in-out lg:translate-x-0 lg:z-0",
+          "fixed top-14 bottom-0 left-0 z-50 w-64 overflow-y-auto",
+          "border-r-[0.5px] border-patch-border bg-patch-bg",
+          "transition-transform duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+          "lg:translate-x-0 lg:z-0",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >
         <nav
           aria-label="Documentation"
-          className="flex flex-col gap-6 px-4 py-6"
+          className="flex flex-col px-4 py-6"
         >
-          {navigation.map((group) => (
-            <div key={group.title} className="flex flex-col gap-0.5">
+          {navigation.map((group, gi) => (
+            <div
+              key={group.title}
+              className={cn(
+                "flex flex-col gap-0.5",
+                gi > 0 &&
+                  "mt-6 pt-6 border-t-[0.5px] border-patch-border",
+              )}
+            >
               <div className="px-2 pb-1 text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
                 {group.title}
               </div>
@@ -55,11 +66,13 @@ export function Sidebar({
                     onClick={onClose}
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
-                      "rounded-[var(--radius-patch-sm)] px-2 py-1.5 text-[length:var(--text-patch-control)] transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
+                      "rounded-[var(--radius-patch-xs)] px-2 py-1.5",
+                      "text-[length:var(--text-patch-control)]",
+                      "transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
                       "outline-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-[var(--patch-focus-ring)] focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
                       isActive
-                        ? "bg-patch-surface-hover font-medium text-patch-text"
-                        : "text-patch-text-secondary hover:bg-patch-surface-hover hover:text-patch-text",
+                        ? "bg-[var(--menu-item-hover)] font-medium text-patch-text"
+                        : "text-patch-text-secondary hover:bg-[var(--menu-item-hover)] hover:text-patch-text",
                     )}
                   >
                     {item.title}

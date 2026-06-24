@@ -2,7 +2,7 @@ import { SelectDemo } from "./select-demo";
 
 # Select
 
-A dropdown selection component with support for grouped items, separators, and multiple sizes. Built on top of Base UI's Select primitive.
+A dropdown selection component with support for grouped items, separators, and multiple sizes. Custom-built on `@floating-ui/react` with `motion`-driven spring open/close, keyboard navigation, and type-ahead.
 
 <Install name="select" />
 
@@ -98,40 +98,7 @@ import {
 
 ### SelectPopup
 
-<PropsTable
-  props={[
-    {
-      name: "side",
-      type: '"top" | "bottom" | "left" | "right"',
-      default: '"bottom"',
-      description: "Which side of the trigger the popup appears on.",
-    },
-    {
-      name: "sideOffset",
-      type: "number",
-      default: "4",
-      description: "Distance in pixels between the popup and trigger.",
-    },
-    {
-      name: "align",
-      type: '"start" | "center" | "end"',
-      default: '"start"',
-      description: "Alignment of the popup relative to the trigger.",
-    },
-    {
-      name: "alignOffset",
-      type: "number",
-      default: "0",
-      description: "Offset for alignment in pixels.",
-    },
-    {
-      name: "alignItemWithTrigger",
-      type: "boolean",
-      default: "true",
-      description: "Whether to align the selected item with the trigger.",
-    },
-  ]}
-/>
+The popup auto-positions below the trigger with `bottom-start` placement, 4px offset, and auto-flip / shift middleware. It sizes itself to at least the trigger width and clamps its height to the available viewport (capped at 360px).
 
 ### SelectItem
 
@@ -175,7 +142,10 @@ import {
 
 
 <Callout title="Notes">
-- **Portal rendering:** The popup renders via a portal, so it appears above all other content regardless of overflow or stacking context.
+- **Portal rendering:** The popup renders via a `FloatingPortal`, so it appears above all other content regardless of overflow or stacking context.
 - **Composition:** Use `SelectTrigger` + `SelectValue` for the trigger. `SelectTrigger` renders the styled button with a chevron icon, and `SelectValue` displays the currently selected item text.
-- **Keyboard navigation:** Supports arrow keys, type-ahead search, Home/End, and Enter/Space for selection.
+- **Keyboard navigation:** Supports arrow keys, type-ahead, Home/End, and Enter/Space for selection.
+- **Motion:** Open and close both spring-animated (stiffness 400, damping 30, mass 0.6). Respects `prefers-reduced-motion`.
+- **Auto-positioning:** Uses `flip()` + `shift()` so the popup never overflows the viewport. `autoUpdate` recalculates on scroll/resize.
+- **Editorial defaults:** Popup uses `--radius-patch-sm` (6px), `--shadow-patch-popup`, and `--menu-item-hover` (= `--patch-accent`) for item highlight — visually consistent with Menu and Command.
 </Callout>

@@ -1,9 +1,15 @@
 "use client";
 
 import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete";
+import { createContext, useContext } from "react";
 import type * as React from "react";
+import { CheckIcon } from "../internal-icons";
 import { cn } from "../utils";
 import { Dialog, DialogContent } from "./dialog";
+
+type Density = "compact" | "comfortable";
+
+const CommandDensityContext = createContext<Density>("compact");
 
 /**
  * Command - a command palette / searchable list built on Base UI Autocomplete
@@ -50,31 +56,58 @@ export function CommandInput({
   className,
   ...props
 }: React.ComponentProps<typeof AutocompletePrimitive.Input>): React.ReactElement {
+  // Visually mirrors Input's `underline` variant + `lg` size: bottom border
+  // hairline, no other chrome, search icon left. Hand-built so the inner
+  // element can be Base UI's AutocompletePrimitive.Input (Command needs
+  // it for type-ahead + keyboard navigation).
   return (
-    <div className="flex items-center gap-2 border-b border-patch-border px-3">
-      <SearchIcon />
+    <span
+      className={cn(
+        "relative inline-flex w-full items-center",
+        "rounded-none bg-transparent",
+        "border-x-0 border-t-0 border-b-[0.5px] border-b-[var(--input-border)]",
+        "has-focus-visible:border-b-[var(--input-border-focus)]",
+        "transition-[color,border-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+      )}
+      data-slot="command-input-wrapper"
+    >
+      <span className="flex shrink-0 items-center ps-3 pe-2 text-patch-text-tertiary">
+        <SearchIcon />
+      </span>
       <AutocompletePrimitive.Input
         data-slot="command-input"
         className={cn(
-          "h-11 w-full flex-1 bg-transparent text-[length:var(--text-patch-control)] text-patch-text placeholder:text-patch-text-tertiary outline-none",
+          "h-11 w-full flex-1 border-none bg-transparent pe-3 text-[length:var(--text-patch-control)] tracking-[-0.005em] text-patch-text placeholder:text-[var(--input-placeholder)] outline-none ring-0 focus:outline-none focus:ring-0",
           className,
         )}
         {...props}
       />
-    </div>
+    </span>
   );
 }
 
 export function CommandList({
   className,
+  density = "compact",
+  children,
   ...props
-}: React.ComponentProps<typeof AutocompletePrimitive.List>): React.ReactElement {
+}: Omit<
+  React.ComponentProps<typeof AutocompletePrimitive.List>,
+  "children"
+> & {
+  density?: Density;
+  children?: React.ReactNode;
+}): React.ReactElement {
   return (
-    <AutocompletePrimitive.List
-      data-slot="command-list"
-      className={cn("max-h-[min(330px,60vh)] overflow-y-auto p-1", className)}
-      {...props}
-    />
+    <CommandDensityContext.Provider value={density}>
+      <AutocompletePrimitive.List
+        data-slot="command-list"
+        className={cn("max-h-[min(330px,60vh)] overflow-y-auto p-1", className)}
+        {...props}
+      >
+        {children}
+      </AutocompletePrimitive.List>
+    </CommandDensityContext.Provider>
   );
 }
 
@@ -102,17 +135,54 @@ export function CommandEmpty({
 
 export function CommandItem({
   className,
+  selected,
+  description,
+  children,
   ...props
-}: React.ComponentProps<typeof AutocompletePrimitive.Item>): React.ReactElement {
+}: React.ComponentProps<typeof AutocompletePrimitive.Item> & {
+  /** When true, renders a trailing check to indicate "currently chosen". */
+  selected?: boolean;
+  /** Secondary line below the title for two-line items. */
+  description?: React.ReactNode;
+}): React.ReactElement {
+  const density = useContext(CommandDensityContext);
+
+  const trailingCheck = selected && (
+    <CheckIcon
+      className="ms-auto size-3.5 shrink-0 text-patch-text-tertiary"
+      strokeWidth={2.25}
+    />
+  );
+
   return (
     <AutocompletePrimitive.Item
       data-slot="command-item"
       className={cn(
-        "flex cursor-default select-none items-center gap-2 rounded-[var(--radius-patch-sm)] px-2 py-1.5 text-[length:var(--text-patch-control)] text-patch-text-secondary outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-highlighted:bg-patch-surface-hover data-highlighted:text-patch-text [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0",
+        "cursor-default select-none rounded-[var(--radius-patch-xs)] text-patch-text-secondary outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-highlighted:bg-[var(--menu-item-hover)] data-highlighted:text-patch-text [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        density === "compact"
+          ? "min-h-7 px-2 py-1.5 text-[length:var(--text-patch-control)]"
+          : "min-h-11 px-3 py-2.5 text-[length:var(--text-patch-body)] [&_svg:not([class*='size-'])]:size-[18px]",
         className,
       )}
       {...props}
-    />
+    >
+      {description != null ? (
+        <span className="flex w-full flex-col">
+          <span className="flex items-center gap-2">
+            {children}
+            {trailingCheck}
+          </span>
+          <span className="mt-0.5 truncate text-[length:var(--text-patch-mini)] font-normal text-patch-text-tertiary">
+            {description}
+          </span>
+        </span>
+      ) : (
+        <span className="flex items-center gap-2">
+          {children}
+          {trailingCheck}
+        </span>
+      )}
+    </AutocompletePrimitive.Item>
   );
 }
 
@@ -120,6 +190,31 @@ export function CommandGroup(
   props: React.ComponentProps<typeof AutocompletePrimitive.Group>,
 ): React.ReactElement {
   return <AutocompletePrimitive.Group data-slot="command-group" {...props} />;
+}
+
+/**
+ * Compound section: a labeled group with consistent spacing.
+ * Sugar for <CommandGroup><CommandGroupLabel>...</CommandGroupLabel>...items...</CommandGroup>.
+ */
+export function CommandSection({
+  label,
+  children,
+  className,
+  ...props
+}: Omit<React.ComponentProps<typeof AutocompletePrimitive.Group>, "children"> & {
+  label?: React.ReactNode;
+  children: React.ReactNode;
+}): React.ReactElement {
+  return (
+    <AutocompletePrimitive.Group
+      className={cn("py-1 first:pt-0 last:pb-0", className)}
+      data-slot="command-section"
+      {...props}
+    >
+      {label != null && <CommandGroupLabel>{label}</CommandGroupLabel>}
+      {children}
+    </AutocompletePrimitive.Group>
+  );
 }
 
 export function CommandGroupLabel({
@@ -173,7 +268,8 @@ export function CommandDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-xl gap-0 overflow-hidden p-0"
+        size="xl"
+        className="gap-0 overflow-hidden p-0"
       >
         <Command {...commandProps}>{children}</Command>
       </DialogContent>

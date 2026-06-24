@@ -2,7 +2,7 @@ import { EmptyStateDemo } from "./empty-state-demo";
 
 # EmptyState
 
-"No results" / "no data yet" placeholder. Hairline-bordered icon container, title, optional description and action.
+"No results" / "no data yet" placeholder. Hairline-bordered icon container, title, optional description and action. Fades in on mount so the transition from loading or list-with-data feels intentional.
 
 <Install name="empty-state" />
 
@@ -14,18 +14,55 @@ import { EmptyStateDemo } from "./empty-state-demo";
 
 ```tsx
 import { EmptyState, Button } from "@patchui/react";
+import { Search } from "lucide-react";
 
 <EmptyState
   title="No jobs match those filters"
   description="Try removing a filter, or reset to see everything."
-  icon={<SearchIcon />}
+  icon={<Search className="size-4" />}
   action={<Button variant="primary">Browse jobs</Button>}
 />
 ```
 
 ## Props
 
-- `title` - short headline
-- `description` - optional helper text
-- `icon` - optional icon, rendered in a 36×36 hairline-bordered box
-- `action` - optional CTA node (typically a `<Button>`); pass routing primitives by wrapping the Button with your router's Link
+<PropsTable
+  props={[
+    {
+      name: "title",
+      type: "ReactNode",
+      default: "-",
+      description: "Required. Short headline describing the empty condition.",
+    },
+    {
+      name: "description",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional helper text expanding on the title.",
+    },
+    {
+      name: "icon",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional icon, rendered in a 36×36 hairline-bordered box above the title.",
+    },
+    {
+      name: "action",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional CTA. Typically a `<Button>`. Wrap with your router's Link for navigation primitives — Patch stays framework-agnostic.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes applied to the outer container.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Motion on mount:** Fades in with a subtle `opacity 0 → 1` + 8px y-translate on mount via `motion`. Respects `prefers-reduced-motion`. Makes transitions from skeleton or list-with-data into the empty state feel intentional rather than abrupt.
+- **Icon container:** Hairline-bordered 36×36 box with editorial radius. The icon inherits `--patch-text-tertiary` color; SVG inside scales automatically.
+- **Routing:** Pass any node as `action`. For framework integration (Next.js Link, React Router, etc.), wrap your `<Button>` inside the router's Link primitive — Patch stays framework-agnostic.
+</Callout>

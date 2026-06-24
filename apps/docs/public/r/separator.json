@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "separator",
+  "title": "Separator",
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/separator.tsx",
+      "content": "\"use client\";\n\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {\n  /** Horizontal (default) or vertical. */\n  orientation?: \"horizontal\" | \"vertical\";\n  /**\n   * Optional label rendered inline. Adds the \"OR\" / \"AND\" separator pattern\n   * with the hairline split around it. Horizontal only.\n   */\n  label?: React.ReactNode;\n  /**\n   * When true, the separator is purely decorative — the role is removed\n   * so screen readers don't announce it. Default false.\n   */\n  decorative?: boolean;\n}\n\n/**\n * Separator — a hairline divider. Horizontal or vertical, with optional\n * inline label for \"OR\" / \"AND\" patterns. Uses `--patch-border` for the\n * hairline and `--separator-color` semantically when appropriate.\n */\nexport function Separator({\n  orientation = \"horizontal\",\n  label,\n  decorative = false,\n  className,\n  ...props\n}: SeparatorProps): React.ReactElement {\n  const role = decorative ? \"none\" : \"separator\";\n  const ariaOrientation =\n    orientation === \"vertical\" ? \"vertical\" : \"horizontal\";\n\n  if (label && orientation === \"horizontal\") {\n    return (\n      <div\n        role={role}\n        aria-orientation={ariaOrientation}\n        data-slot=\"separator\"\n        data-orientation={orientation}\n        className={cn(\n          \"flex w-full items-center gap-3 text-[length:var(--text-patch-micro)] font-medium uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary\",\n          className,\n        )}\n        {...props}\n      >\n        <span className=\"h-px flex-1 bg-patch-border\" aria-hidden />\n        <span>{label}</span>\n        <span className=\"h-px flex-1 bg-patch-border\" aria-hidden />\n      </div>\n    );\n  }\n\n  return (\n    <div\n      role={role}\n      aria-orientation={ariaOrientation}\n      data-slot=\"separator\"\n      data-orientation={orientation}\n      className={cn(\n        \"bg-patch-border shrink-0\",\n        orientation === \"horizontal\" ? \"h-px w-full\" : \"h-full w-px\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/separator.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

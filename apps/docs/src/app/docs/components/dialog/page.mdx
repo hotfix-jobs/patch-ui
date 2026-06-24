@@ -2,7 +2,7 @@ import { DialogDemo } from "./dialog-demo";
 
 # Dialog
 
-A modal dialog overlay with backdrop, header, content area, and footer. Built on Base UI's Dialog primitive with scroll locking and focus trapping.
+A modal dialog overlay with backdrop, header, content area, and footer. Custom-built on `@floating-ui/react` primitives with `motion`-driven spring enter / exit, focus trapping, dismissable overlay, and scroll locking.
 
 <Install name="dialog" />
 
@@ -54,6 +54,12 @@ import {
 <PropsTable
   props={[
     {
+      name: "size",
+      type: '"sm" | "md" | "lg" | "xl" | "full"',
+      default: '"md"',
+      description: "Maximum width of the dialog. sm = 384px, md = 448px, lg = 512px, xl = 576px, full = unconstrained.",
+    },
+    {
       name: "showCloseButton",
       type: "boolean",
       default: "true",
@@ -91,4 +97,5 @@ import {
 - **Backdrop dismiss:** Clicking the backdrop closes the dialog by default.
 - **Polymorphic triggers:** Use `render={<Button />}` on `DialogTrigger` and `DialogClose` to render them as styled buttons.
 - **Controlled usage:** Pass `open` and `onOpenChange` to `Dialog` to control visibility programmatically.
+- **Motion:** Both enter and exit are spring-physics-driven via `motion` (stiffness 400, damping 35, mass 0.6). Backdrop fades on a 200ms ease-out. Respects `prefers-reduced-motion`.
 </Callout>

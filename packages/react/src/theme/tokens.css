@@ -12,10 +12,13 @@
    */
   --patch-bg: #fafafa;
   --patch-bg-deep: #ededed;             /* canvas behind dialogs/sheets */
+  --patch-page-bg: #f3f3f3;             /* outer fill behind framed editorial content */
   --patch-surface: #ffffff;
   --patch-surface-2: #f5f5f5;           /* nested/elevated card surface */
   --patch-surface-hover: #f5f5f5;
   --patch-surface-active: #ebebeb;
+  --patch-muted: #f0f0f0;                /* subtle neutral fill (cooler than surface-2) */
+  --patch-accent: #ebebeb;               /* interactive-highlight neutral (menu item hover, chips) */
   --patch-text: #171717;
   --patch-text-secondary: #525252;
   --patch-text-tertiary: #737373;
@@ -77,7 +80,7 @@
   --separator-color: rgba(0,0,0,0.06);
 
   /* Menu */
-  --menu-item-hover: rgba(0,0,0,0.04);
+  --menu-item-hover: var(--patch-accent);
 
 
   /* Easing curves */
@@ -96,6 +99,10 @@
   /* Hairline ring for elevated surfaces (mode-aware) */
   --shadow-patch-ring: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
 
+  /* Drop shadow for popup-tier overlays (Menu, Command, Select). Theme-varied
+   * because dark surfaces need a heavier shadow to read against dark canvas. */
+  --patch-shadow-popup: 0 8px 24px -8px rgba(0,0,0,0.12);
+
   /* Stagger */
   --stagger-patch-row: 20ms;
 
@@ -104,10 +111,13 @@
 .dark {
   --patch-bg: #09090b;
   --patch-bg-deep: #050506;             /* canvas behind dialogs/sheets */
+  --patch-page-bg: #030303;             /* outer fill behind framed editorial content */
   --patch-surface: #111113;
   --patch-surface-2: #161718;           /* nested/elevated card surface */
   --patch-surface-hover: #191919;
   --patch-surface-active: #222222;
+  --patch-muted: #1a1a1a;                /* subtle neutral fill */
+  --patch-accent: #191919;               /* interactive-highlight neutral */
   --patch-text: #ededed;
   --patch-text-secondary: #a1a1a1;
   --patch-text-tertiary: #858585;
@@ -162,11 +172,12 @@
   --separator-color: rgba(255,255,255,0.06);
 
   /* Menu */
-  --menu-item-hover: rgba(255,255,255,0.06);
+  --menu-item-hover: var(--patch-accent);
 
   /* Hairline ring for elevated surfaces (mode-aware) */
   --shadow-patch-ring: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 
+  --patch-shadow-popup: 0 8px 24px -8px rgba(0,0,0,0.5);
 
 }
 
@@ -178,6 +189,9 @@
   --color-patch-surface-2: var(--patch-surface-2);
   --color-patch-surface-hover: var(--patch-surface-hover);
   --color-patch-surface-active: var(--patch-surface-active);
+  --color-patch-page-bg: var(--patch-page-bg);
+  --color-patch-muted: var(--patch-muted);
+  --color-patch-accent: var(--patch-accent);
   --color-patch-text: var(--patch-text);
   --color-patch-text-secondary: var(--patch-text-secondary);
   --color-patch-text-tertiary: var(--patch-text-tertiary);
@@ -189,16 +203,17 @@
   --color-patch-success: var(--patch-success);
   --color-patch-warning: var(--patch-warning);
   /* Radius rule (rounded scale):
-   *   xs (4px) → Badges, pills, count chips
-   *   sm (8px) → Buttons, Inputs, Selects, small chrome
-   *   lg (12px) → Cards, Sheets, Dialogs, Menus, Toasts, larger surfaces
+   *   xs (4px) → Badges, pills, count chips, menu items
+   *   sm (6px) → Buttons, Inputs, Selects, Menus, Dialogs, Toasts, small chrome
+   *   lg (12px) → Cards, Sheets, larger surfaces
    *   none (0) → uppercase utility variant only */
   --radius-patch-xs: 4px;
-  --radius-patch-sm: 8px;
+  --radius-patch-sm: 6px;
   --radius-patch-lg: 12px;
   --shadow-patch-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-patch-md: 0 2px 4px rgba(0, 0, 0, 0.06);
   --shadow-patch-lg: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-patch-popup: var(--patch-shadow-popup);
   --shadow-patch-overlay: 0 16px 48px -12px rgba(0,0,0,0.6);
   --ease-patch: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-patch-out: cubic-bezier(0.16, 1, 0.3, 1);

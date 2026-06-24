@@ -105,5 +105,7 @@ import { Button } from "@patchui/react";
 - **Polymorphic rendering:** Use the `render` prop to render the button as any HTML element. For example, `render={<a href="/page" />}` renders an anchor tag with button styling.
 - **Icon-only buttons:** Pass an `icon` without `children` to create a square icon button. The size adjusts automatically.
 - **Loading state:** When `loading` is true, the button content is replaced with a spinner and the button is disabled to prevent double-submission.
+- **Press feedback:** Every variant gets a subtle `active:scale-[0.97]` press animation — tactile click feedback without motion overhead.
+- **Outline variant:** Hairline-bordered button with `--patch-border` and a subtle `--patch-accent` hover fill (editorial restrained). Distinct from `secondary` (no border, subtle fill).
 - **Touch targets:** All sizes include a minimum 44×44px touch target via a pseudo-element for accessibility on touch devices.
 </Callout>

@@ -29,11 +29,17 @@ import {
   <Input placeholder="e.g. jane_doe" />
 </Field>
 
-// With native FieldControl and validation
-<Field>
-  <FieldLabel>Email</FieldLabel>
-  <FieldControl type="email" placeholder="you@example.com" required />
+// Required field — renders a small red * after the label
+<Field name="email">
+  <FieldLabel required>Email</FieldLabel>
+  <FieldControl type="email" required />
   <FieldError />
+</Field>
+
+// Optional field — renders "(optional)" after the label
+<Field name="phone">
+  <FieldLabel optional>Phone</FieldLabel>
+  <Input type="tel" />
 </Field>
 
 // Error state (controlled externally)
@@ -104,6 +110,18 @@ import {
       type: "ReactNode",
       default: "-",
       description: "The label text content. Automatically associated with the field control via accessibility attributes.",
+    },
+    {
+      name: "required",
+      type: "boolean",
+      default: "false",
+      description: "Renders a small red * after the label (aria-hidden — the input still needs its own required attribute for HTML validation).",
+    },
+    {
+      name: "optional",
+      type: "boolean",
+      default: "false",
+      description: "Renders \"(optional)\" in tertiary text after the label. Ignored when required is true.",
     },
     {
       name: "className",
@@ -216,4 +234,7 @@ import {
 - **FieldValidity:** Use as a render prop to access the field's full validity state for custom validation UI.
 - **FieldItem:** Used inside Field to group checkbox or radio items when building multi-option field groups.
 - **Validation modes:** Set `validationMode` on Field to control when validation fires. `"onSubmit"` (default) validates on form submit, `"onBlur"` on focus loss, and `"onChange"` on every keystroke.
+- **Required / Optional indicators:** `<FieldLabel required>` and `<FieldLabel optional>` are visual hints only — they're `aria-hidden`. The underlying `<input required>` (or `validate` prop on Field) is what makes a field actually required.
+- **FieldError motion:** When the error message appears, it fades in with a subtle 2px slide via `motion`. Exit is instant (Base UI manages unmount). Respects `prefers-reduced-motion`.
+- **Form spacing:** `Form` renders with `gap-4` (16px) between fields for clearer separation — editorial spacing language.
 </Callout>

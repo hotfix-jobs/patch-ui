@@ -39,22 +39,30 @@ export interface TableProps
    *  long-content tables stay usable on narrow viewports without
    *  manual overflow handling at the call site. */
   scrollable?: boolean;
+  /**
+   * Visual treatment.
+   * - `default`: rounded 12px outer, hairline border, surface bg — dashboard / data-card feel.
+   * - `editorial`: flat (no radius, no outer bg, no border) — NYT / Bloomberg data-table feel.
+   *    Row + header backgrounds and hairlines still render.
+   */
+  variant?: "default" | "editorial";
 }
 
 export function Table({
   className,
   scrollable = true,
+  variant = "default",
   ...props
 }: TableProps): React.ReactElement {
   const tableEl = (
     <table
       data-slot="table"
+      data-variant={variant}
       className={cn(
         "w-full caption-bottom border-collapse",
         "text-[length:var(--text-patch-control)] text-patch-text",
-        "rounded-[var(--radius-patch-lg)] overflow-hidden",
-        "bg-patch-surface",
-        "border-[0.5px] border-patch-border",
+        variant === "default" &&
+          "rounded-[var(--radius-patch-lg)] overflow-hidden bg-patch-surface border-[0.5px] border-patch-border",
         className,
       )}
       {...props}
@@ -123,7 +131,7 @@ export function TableRow({
       data-slot="table-row"
       className={cn(
         "border-b-[0.5px] border-patch-border last:border-b-0",
-        "transition-colors hover:bg-patch-surface-hover",
+        "transition-colors hover:bg-[var(--menu-item-hover)]",
         className,
       )}
       {...props}
@@ -148,7 +156,7 @@ export function TableHead({
     <th
       data-slot="table-head"
       className={cn(
-        "h-9 px-3 py-2 text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[0.06em] text-patch-text-tertiary",
+        "h-9 px-3 py-2 text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary",
         "whitespace-nowrap",
         align === "right" && "text-right",
         align === "center" && "text-center",

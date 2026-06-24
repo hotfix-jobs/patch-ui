@@ -20,9 +20,22 @@ export function BadgeDemo() {
           <Badge variant="default">Default</Badge>
           <Badge variant="primary">Primary</Badge>
           <Badge variant="secondary">Secondary</Badge>
+          <Badge variant="ghost">Ghost</Badge>
           <Badge variant="success">Success</Badge>
           <Badge variant="warning">Warning</Badge>
           <Badge variant="danger">Danger</Badge>
+        </div>
+      </div>
+
+      {/* Outline variants */}
+      <div>
+        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          Outline variants
+        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge variant="successOutline">Success</Badge>
+          <Badge variant="warningOutline">Warning</Badge>
+          <Badge variant="dangerOutline">Danger</Badge>
         </div>
       </div>
 

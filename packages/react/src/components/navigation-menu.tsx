@@ -53,7 +53,7 @@ export function NavigationMenu({
           <NavigationMenuPrimitive.Popup
             data-slot="navigation-menu-popup"
             className={cn(
-              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-[var(--radius-patch-lg)] border-[0.5px] border-patch-border bg-patch-surface text-patch-text shadow-patch-md",
+              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-[var(--radius-patch-sm)] border-[0.5px] border-patch-border bg-patch-surface text-patch-text shadow-patch-popup",
               "transition-[opacity,transform,width,height] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
               "data-[starting-style]:opacity-0 data-[starting-style]:scale-[0.97] data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.97]",
             )}
@@ -109,7 +109,7 @@ export function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "group inline-flex items-center gap-1 rounded-[var(--radius-patch-sm)] px-3 py-1.5 text-[length:var(--text-patch-control)] font-medium text-patch-text-secondary hover:bg-patch-surface-hover hover:text-patch-text data-[popup-open]:bg-patch-surface-active data-[popup-open]:text-patch-text",
+        "group inline-flex items-center gap-1 rounded-[var(--radius-patch-sm)] px-3 py-1.5 text-[length:var(--text-patch-control)] font-medium text-patch-text-secondary hover:bg-[var(--menu-item-hover)] hover:text-patch-text data-[popup-open]:bg-[var(--menu-item-hover)] data-[popup-open]:text-patch-text",
         colorTransition,
         focusRing,
         className,
@@ -153,7 +153,7 @@ export function NavigationMenuLink({
       data-slot="navigation-menu-link"
       closeOnClick={closeOnClick}
       className={cn(
-        "block rounded-[var(--radius-patch-sm)] px-3 py-2 text-[length:var(--text-patch-control)] text-patch-text-secondary hover:bg-patch-surface-hover hover:text-patch-text",
+        "block rounded-[var(--radius-patch-xs)] px-3 py-2 text-[length:var(--text-patch-control)] text-patch-text-secondary hover:bg-[var(--menu-item-hover)] hover:text-patch-text",
         colorTransition,
         focusRing,
         className,

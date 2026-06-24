@@ -29,6 +29,9 @@ export const badgeVariants = cva(
         success: "bg-[var(--badge-success-bg)] text-[var(--badge-success-text)] border-0",
         warning: "bg-[var(--badge-warning-bg)] text-[var(--badge-warning-text)] border-0",
         danger: "bg-[var(--badge-danger-bg)] text-[var(--badge-danger-text)] border-0",
+        successOutline: "bg-transparent text-[var(--badge-success-text)] border-[0.5px] border-[var(--badge-success-text)]",
+        warningOutline: "bg-transparent text-[var(--badge-warning-text)] border-[0.5px] border-[var(--badge-warning-text)]",
+        dangerOutline: "bg-transparent text-[var(--badge-danger-text)] border-[0.5px] border-[var(--badge-danger-text)]",
       },
       shape: {
         rounded: "rounded-[var(--radius-patch-xs)]",
@@ -66,8 +69,10 @@ export function Badge({
   const defaultProps = {
     className: cn(
       badgeVariants({ className, size, variant, shape }),
-      // tighten trailing padding so the × sits closer to the edge
-      onRemove && "pe-1",
+      // tighten trailing padding so the × sits closer to the edge;
+      // `group` lets the × respond to badge-level hover, signaling
+      // "this whole chip is dismissible."
+      onRemove && "group pe-1",
     ),
     "data-slot": "badge",
     children: (
@@ -79,7 +84,7 @@ export function Badge({
             aria-label={removeLabel}
             onClick={onRemove}
             className={cn(
-              "-me-0.5 inline-flex size-3.5 shrink-0 items-center justify-center rounded-[var(--radius-patch-xs)] opacity-60 transition-opacity hover:opacity-100",
+              "-me-0.5 inline-flex size-3.5 shrink-0 items-center justify-center rounded-[var(--radius-patch-xs)] opacity-50 transition-[opacity,transform] duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] group-hover:opacity-80 hover:!opacity-100 active:scale-90",
               focusRing,
             )}
           >

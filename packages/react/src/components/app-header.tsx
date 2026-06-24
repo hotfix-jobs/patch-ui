@@ -5,22 +5,37 @@ import { useRender } from "@base-ui/react/use-render";
 import type * as React from "react";
 import { cn } from "../utils";
 
-export interface AppHeaderProps extends useRender.ComponentProps<"header"> {}
+export interface AppHeaderProps extends useRender.ComponentProps<"header"> {
+  /**
+   * When true (default), renders a hairline bottom border. Set false for
+   * borderless headers (e.g. headers laid over a hero image).
+   */
+  bordered?: boolean;
+  /**
+   * When true, pins the header to the top of its scroll container via
+   * `sticky top-0 z-50`. Default false (relative flow).
+   */
+  sticky?: boolean;
+}
 
 export function AppHeader({
   className,
+  bordered = true,
+  sticky = false,
   render,
   children,
   ...props
 }: AppHeaderProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "relative bg-patch-surface border-b-[0.5px] border-[var(--patch-border)]",
+      "bg-patch-surface",
+      bordered && "border-b-[0.5px] border-[var(--patch-border)]",
+      sticky ? "sticky top-0 z-50" : "relative",
       className,
     ),
     "data-slot": "app-header",
     children: (
-      <div className="mx-auto flex max-w-[1280px] items-center gap-4 px-4 py-3.5 sm:gap-10 sm:px-8">
+      <div className="flex w-full items-center gap-4 px-6 py-3.5 md:gap-10 md:px-12 lg:px-16">
         {children}
       </div>
     ),

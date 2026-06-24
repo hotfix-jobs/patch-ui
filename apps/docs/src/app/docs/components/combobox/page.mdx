@@ -1,0 +1,147 @@
+import { ComboboxDemo } from "./combobox-demo";
+
+# Combobox
+
+An `Input` paired with a floating popup that shows arbitrary filterable content — suggestions, recent searches, custom rows, banners. Built on `@floating-ui/react` with virtual focus (the input keeps real focus; items highlight via `aria-activedescendant`) and motion-driven open / close.
+
+Use Combobox when you need an input-driven dropdown with custom row shapes (recents with chips, sign-in nudges, mode-specific banners). For simple command palettes, use [Command](/docs/components/command). For trigger-button dropdowns, use [Menu](/docs/components/menu).
+
+<Install name="combobox" />
+
+<ComponentPreview label="Combobox">
+  <ComboboxDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopup,
+  ComboboxItem,
+} from "@patchui/react";
+import { Search } from "lucide-react";
+
+const [query, setQuery] = useState("");
+const matches = items.filter((i) =>
+  i.label.toLowerCase().includes(query.toLowerCase()),
+);
+
+<Combobox>
+  <ComboboxInput
+    value={query}
+    onChange={(e) => setQuery(e.target.value)}
+    icon={<Search />}
+    placeholder="Search..."
+  />
+  <ComboboxPopup>
+    {matches.map((item) => (
+      <ComboboxItem key={item.id} onSelect={() => pick(item)}>
+        {item.label}
+      </ComboboxItem>
+    ))}
+  </ComboboxPopup>
+</Combobox>
+```
+
+The popup accepts arbitrary JSX — only `ComboboxItem` gets keyboard navigation. Mix items with banners, headers, separators, or custom rows freely.
+
+```tsx
+<ComboboxPopup>
+  {/* Info banner — not navigable */}
+  <div className="flex items-center gap-1.5 border-b-[0.5px] border-patch-border px-3 py-2 text-mini text-patch-text-tertiary">
+    <Info className="h-3.5 w-3.5" /> Recents shown first
+  </div>
+
+  {/* Recents section (use ComboboxItem so they're keyboard-navigable) */}
+  {recents.map((r) => (
+    <ComboboxItem key={r.id} onSelect={() => useRecent(r)}>
+      <RecentRow search={r} />
+    </ComboboxItem>
+  ))}
+
+  {/* Live suggestions */}
+  {suggestions.map((s) => (
+    <ComboboxItem key={s} onSelect={() => pick(s)}>
+      {s}
+    </ComboboxItem>
+  ))}
+</ComboboxPopup>
+```
+
+## Props
+
+### Combobox
+
+<PropsTable
+  props={[
+    {
+      name: "open",
+      type: "boolean",
+      default: "-",
+      description: "Controlled open state.",
+    },
+    {
+      name: "defaultOpen",
+      type: "boolean",
+      default: "false",
+      description: "Initial open state (uncontrolled).",
+    },
+    {
+      name: "onOpenChange",
+      type: "(open: boolean) => void",
+      default: "-",
+      description: "Called when the popup should open or close.",
+    },
+  ]}
+/>
+
+### ComboboxInput
+
+Extends all `Input` props (icon, suffix, variant, size, invalid, loading, etc.) and adds:
+
+<PropsTable
+  props={[
+    {
+      name: "openOnFocus",
+      type: "boolean",
+      default: "true",
+      description: "Open the popup automatically when the input receives focus. Set false for input-first patterns where typing opens the popup instead.",
+    },
+  ]}
+/>
+
+### ComboboxItem
+
+<PropsTable
+  props={[
+    {
+      name: "onSelect",
+      type: "() => void",
+      default: "-",
+      description: "Fired on click or Enter while the item is keyboard-active. The popup closes automatically after select.",
+    },
+    {
+      name: "label",
+      type: "string",
+      default: "-",
+      description: "Override the type-ahead label. Defaults to children if it's a string.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables interaction.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Virtual focus:** The input retains real focus while you type and arrow through suggestions. Items get `aria-activedescendant` instead of taking focus — the proper ARIA combobox pattern. Screen readers announce the active option correctly.
+- **You own filtering:** Combobox doesn't filter — you filter your data based on the input value and pass the matches as children. This means any kind of matching (substring, fuzzy index, async API) works.
+- **Mix item shapes:** Anything inside `ComboboxPopup` renders. Only `ComboboxItem` is keyboard-navigable. Drop in banners, sections, dividers as plain JSX.
+- **Keyboard:** Arrow keys navigate, Enter selects, Esc closes, Down opens when closed. Typing is just text input — the popup stays open.
+- **Motion:** Spring-physics open / close via `AnimatePresence`. Respects `prefers-reduced-motion`.
+- **Positioning:** Anchored under the input with 8px offset, flips above when there's no room, shifts to stay 8px from edges, and `minWidth` matches the input width.
+</Callout>

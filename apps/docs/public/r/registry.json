@@ -30,6 +30,17 @@
       ]
     },
     {
+      "name": "internal-icons",
+      "type": "registry:lib",
+      "files": [
+        {
+          "path": "registry/lib/internal-icons.tsx",
+          "type": "registry:lib",
+          "target": "lib/internal-icons.tsx"
+        }
+      ]
+    },
+    {
       "name": "tokens",
       "type": "registry:file",
       "files": [
@@ -57,6 +68,27 @@
           "path": "registry/components/ui/accordion.tsx",
           "type": "registry:ui",
           "target": "components/ui/accordion.tsx"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/alert.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/alert.tsx"
         }
       ]
     },
@@ -143,6 +175,27 @@
       ]
     },
     {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/button.json",
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/calendar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/calendar.tsx"
+        }
+      ]
+    },
+    {
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
@@ -171,6 +224,7 @@
         "@base-ui/react"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -184,6 +238,27 @@
       ]
     },
     {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "dependencies": [
+        "@floating-ui/react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/input.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/combobox.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/combobox.tsx"
+        }
+      ]
+    },
+    {
       "name": "command",
       "type": "registry:ui",
       "title": "Command",
@@ -192,6 +267,7 @@
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/dialog.json",
+        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -204,11 +280,34 @@
       ]
     },
     {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "title": "Date Picker",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/button.json",
+        "https://ui.hotfix.jobs/r/calendar.json",
+        "https://ui.hotfix.jobs/r/popover.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/date-picker.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/date-picker.tsx"
+        }
+      ]
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
       "dependencies": [
-        "@base-ui/react",
+        "@floating-ui/react",
+        "motion",
         "react-remove-scroll"
       ],
       "registryDependencies": [
@@ -245,9 +344,32 @@
       ]
     },
     {
+      "name": "dropzone",
+      "type": "registry:ui",
+      "title": "Dropzone",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/dropzone.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/dropzone.tsx"
+        }
+      ]
+    },
+    {
       "name": "empty-state",
       "type": "registry:ui",
       "title": "Empty State",
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -265,7 +387,8 @@
       "type": "registry:ui",
       "title": "Field",
       "dependencies": [
-        "@base-ui/react"
+        "@base-ui/react",
+        "motion"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -287,6 +410,7 @@
         "@base-ui/react"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/spinner.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -295,6 +419,22 @@
           "path": "registry/components/ui/input.tsx",
           "type": "registry:ui",
           "target": "components/ui/input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/kbd.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/kbd.tsx"
         }
       ]
     },
@@ -322,9 +462,11 @@
       "type": "registry:ui",
       "title": "Menu",
       "dependencies": [
-        "@base-ui/react"
+        "@floating-ui/react",
+        "motion"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -378,6 +520,45 @@
       ]
     },
     {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "dependencies": [
+        "@floating-ui/react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/popover.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/popover.tsx"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/progress.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/progress.tsx"
+        }
+      ]
+    },
+    {
       "name": "radio",
       "type": "registry:ui",
       "title": "Radio",
@@ -418,15 +599,37 @@
       ]
     },
     {
+      "name": "segmented-toggle",
+      "type": "registry:ui",
+      "title": "Segmented Toggle",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/segmented-toggle.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/segmented-toggle.tsx"
+        }
+      ]
+    },
+    {
       "name": "select",
       "type": "registry:ui",
       "title": "Select",
       "dependencies": [
-        "@base-ui/react",
+        "@floating-ui/react",
         "class-variance-authority",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -440,11 +643,28 @@
       ]
     },
     {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/separator.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/separator.tsx"
+        }
+      ]
+    },
+    {
       "name": "sheet",
       "type": "registry:ui",
       "title": "Sheet",
       "dependencies": [
-        "@base-ui/react",
+        "@floating-ui/react",
+        "motion",
         "react-remove-scroll"
       ],
       "registryDependencies": [
@@ -555,7 +775,7 @@
       "type": "registry:ui",
       "title": "Tabs",
       "dependencies": [
-        "@base-ui/react"
+        "motion"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -567,6 +787,24 @@
           "path": "registry/components/ui/tabs.tsx",
           "type": "registry:ui",
           "target": "components/ui/tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tag-input",
+      "type": "registry:ui",
+      "title": "Tag Input",
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/badge.json",
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/tag-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/tag-input.tsx"
         }
       ]
     },
@@ -594,6 +832,9 @@
       "name": "theme-toggle",
       "type": "registry:ui",
       "title": "Theme Toggle",
+      "dependencies": [
+        "motion"
+      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -628,11 +869,10 @@
       "type": "registry:ui",
       "title": "Toast",
       "dependencies": [
-        "@base-ui/react",
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/button.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -642,6 +882,26 @@
           "path": "registry/components/ui/toast.tsx",
           "type": "registry:ui",
           "target": "components/ui/toast.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/toggle.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/toggle.tsx"
         }
       ]
     },
@@ -668,11 +928,7 @@
       "name": "timeline",
       "type": "registry:block",
       "title": "Timeline",
-      "dependencies": [
-        "lucide-react"
-      ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/button.json",
         "https://ui.hotfix.jobs/r/display-heading.json",
         "https://ui.hotfix.jobs/r/section-label.json",
         "https://ui.hotfix.jobs/r/tokens.json",

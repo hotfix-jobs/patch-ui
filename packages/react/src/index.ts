@@ -26,10 +26,14 @@ export {
   SelectGroup,
   SelectLabel,
   SelectGroupLabel,
-  SelectPrimitive,
   selectTriggerVariants,
-  selectTriggerIconClassName,
-  type SelectButtonProps,
+} from "./components/select";
+export type {
+  SelectProps,
+  SelectTriggerProps,
+  SelectValueProps,
+  SelectPopupProps,
+  SelectItemProps,
 } from "./components/select";
 export { Switch, SwitchPrimitive } from "./components/switch";
 export { Checkbox, CheckboxPrimitive } from "./components/checkbox";
@@ -58,9 +62,11 @@ export {
   Avatar,
   AvatarImage,
   AvatarFallback,
+  AvatarGroup,
   AvatarPrimitive,
   avatarVariants,
   type AvatarProps,
+  type AvatarGroupProps,
 } from "./components/avatar";
 export {
   SectionLabel,
@@ -90,11 +96,15 @@ export {
   SheetPanel,
   SheetFooter,
   SheetHandle,
-  SheetPrimitive,
+} from "./components/sheet";
+export type {
+  SheetProps,
+  SheetTriggerProps,
+  SheetContentProps,
+  SheetCloseProps,
 } from "./components/sheet";
 export {
   Dialog,
-  DialogCreateHandle,
   DialogTrigger,
   DialogClose,
   DialogContent,
@@ -103,15 +113,20 @@ export {
   DialogTitle,
   DialogDescription,
   DialogPanel,
-  DialogPrimitive,
+} from "./components/dialog";
+export type {
+  DialogProps,
+  DialogTriggerProps,
+  DialogContentProps,
+  DialogCloseProps,
 } from "./components/dialog";
 export {
   Menu,
-  MenuCreateHandle,
   MenuPortal,
   MenuTrigger,
   MenuPopup,
   MenuGroup,
+  MenuSection,
   MenuItem,
   MenuCheckboxItem,
   MenuRadioGroup,
@@ -122,7 +137,16 @@ export {
   MenuSub,
   MenuSubTrigger,
   MenuSubPopup,
-  MenuPrimitive,
+} from "./components/menu";
+export type {
+  MenuProps,
+  MenuTriggerProps,
+  MenuPopupProps,
+  MenuItemProps,
+  MenuCheckboxItemProps,
+  MenuRadioGroupProps,
+  MenuRadioItemProps,
+  MenuSubTriggerProps,
 } from "./components/menu";
 export {
   Tooltip,
@@ -131,14 +155,13 @@ export {
   TooltipContent,
 } from "./components/tooltip";
 export {
-  ToastProvider,
-  AnchoredToastProvider,
-  ToastPrimitive,
-  toastManager,
-  anchoredToastManager,
-  showToast,
+  Toaster,
+  toast,
+  type ToasterProps,
   type ToastPosition,
-  type ToastProviderProps,
+  type ToastType,
+  type ToastOptions,
+  type ToastAction,
 } from "./components/toast";
 export { Spinner, spinnerVariants, type SpinnerProps } from "./components/spinner";
 export { Skeleton } from "./components/skeleton";
@@ -152,7 +175,6 @@ export {
   TabsList,
   TabsTrigger,
   TabsPanel,
-  TabsPrimitive,
   type TabsProps,
   type TabsListProps,
   type TabsTriggerProps,
@@ -174,6 +196,7 @@ export {
   CommandEmpty,
   CommandItem,
   CommandGroup,
+  CommandSection,
   CommandGroupLabel,
   CommandCollection,
   CommandSeparator,
@@ -202,6 +225,50 @@ export {
   type ResolvedTheme,
 } from "./components/theme-toggle";
 export { Pagination, type PaginationProps } from "./components/pagination";
+export {
+  SegmentedToggle,
+  SegmentedToggleItem,
+  type SegmentedToggleProps,
+  type SegmentedToggleItemProps,
+} from "./components/segmented-toggle";
+export {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopup,
+  ComboboxItem,
+  type ComboboxProps,
+  type ComboboxInputProps,
+  type ComboboxPopupProps,
+  type ComboboxItemProps,
+} from "./components/combobox";
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+  type PopoverProps,
+  type PopoverTriggerProps,
+  type PopoverContentProps,
+  type PopoverCloseProps,
+} from "./components/popover";
+export { Alert, alertVariants, type AlertProps } from "./components/alert";
+export { Progress, type ProgressProps } from "./components/progress";
+export { Separator, type SeparatorProps } from "./components/separator";
+export { Kbd, type KbdProps } from "./components/kbd";
+export { Toggle, toggleVariants, type ToggleProps } from "./components/toggle";
+export { TagInput, type TagInputProps } from "./components/tag-input";
+export { Dropzone, type DropzoneProps } from "./components/dropzone";
+export {
+  Calendar,
+  type CalendarProps,
+  type DateRange,
+} from "./components/calendar";
+export {
+  DatePicker,
+  DateRangePicker,
+  type DatePickerProps,
+  type DateRangePickerProps,
+} from "./components/date-picker";
 export {
   Table,
   TableHeader,

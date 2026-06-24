@@ -27,9 +27,15 @@ export const navigation: NavGroup[] = [
       { title: "Label", href: "/docs/components/label" },
       { title: "Select", href: "/docs/components/select" },
       { title: "Switch", href: "/docs/components/switch" },
+      { title: "Toggle", href: "/docs/components/toggle" },
       { title: "Checkbox", href: "/docs/components/checkbox" },
       { title: "Radio", href: "/docs/components/radio" },
+      { title: "SegmentedToggle", href: "/docs/components/segmented-toggle" },
       { title: "Slider", href: "/docs/components/slider" },
+      { title: "TagInput", href: "/docs/components/tag-input" },
+      { title: "Dropzone", href: "/docs/components/dropzone" },
+      { title: "Calendar", href: "/docs/components/calendar" },
+      { title: "DatePicker", href: "/docs/components/date-picker" },
     ],
   },
   {
@@ -44,13 +50,16 @@ export const navigation: NavGroup[] = [
     items: [
       { title: "AppHeader", href: "/docs/components/app-header" },
       { title: "Card", href: "/docs/components/card" },
+      { title: "Separator", href: "/docs/components/separator" },
       { title: "ThemeToggle", href: "/docs/components/theme-toggle" },
     ],
   },
   {
     title: "Overlays",
     items: [
+      { title: "Combobox", href: "/docs/components/combobox" },
       { title: "Command", href: "/docs/components/command" },
+      { title: "Popover", href: "/docs/components/popover" },
       { title: "Dialog", href: "/docs/components/dialog" },
       { title: "Sheet", href: "/docs/components/sheet" },
       { title: "Menu", href: "/docs/components/menu" },
@@ -77,6 +86,8 @@ export const navigation: NavGroup[] = [
   {
     title: "Feedback",
     items: [
+      { title: "Alert", href: "/docs/components/alert" },
+      { title: "Progress", href: "/docs/components/progress" },
       { title: "Toast", href: "/docs/components/toast" },
       { title: "Spinner", href: "/docs/components/spinner" },
       { title: "Skeleton", href: "/docs/components/skeleton" },
@@ -93,6 +104,7 @@ export const navigation: NavGroup[] = [
   {
     title: "Utilities",
     items: [
+      { title: "Kbd", href: "/docs/components/kbd" },
       { title: "TimeAgo", href: "/docs/components/time-ago" },
     ],
   },

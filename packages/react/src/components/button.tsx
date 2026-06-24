@@ -9,7 +9,7 @@ import { cn } from "../utils";
 import { focusRing, controlSize, colorTransition } from "../recipes";
 
 export const buttonVariants = cva(
-  `relative inline-flex shrink-0 cursor-pointer items-center justify-center whitespace-nowrap font-medium tracking-[-0.005em] rounded-[var(--radius-patch-sm)] disabled:pointer-events-none disabled:opacity-50 pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 [&_svg]:pointer-events-none [&_svg]:shrink-0 ${focusRing} ${colorTransition}`,
+  `relative inline-flex shrink-0 cursor-pointer items-center justify-center whitespace-nowrap font-medium tracking-[-0.005em] rounded-[var(--radius-patch-sm)] disabled:pointer-events-none disabled:opacity-50 pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 [&_svg]:pointer-events-none [&_svg]:shrink-0 transition-transform duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-[0.97] ${focusRing} ${colorTransition}`,
   {
     defaultVariants: {
       size: "md",
@@ -28,9 +28,9 @@ export const buttonVariants = cva(
         // 'outline' variant.
         secondary:
           "bg-[var(--btn-secondary-bg)] text-[var(--btn-secondary-text)] border-none hover:bg-[var(--btn-secondary-hover)] active:bg-[var(--btn-secondary-active)]",
-        // Bolder bordered alternative to secondary.
+        // Hairline-bordered button with a subtle neutral hover fill.
         outline:
-          "bg-transparent text-[var(--patch-text)] border-[0.5px] border-[var(--patch-text)] hover:bg-[var(--patch-text)] hover:text-[var(--patch-bg)]",
+          "bg-transparent text-[var(--patch-text)] border-[0.5px] border-[var(--patch-border)] hover:bg-[var(--patch-accent)]",
         ghost:
           "bg-transparent text-[var(--patch-text)] border-none hover:bg-[var(--patch-surface-hover)] active:bg-[var(--patch-surface-active)]",
         danger:

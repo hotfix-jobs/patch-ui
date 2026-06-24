@@ -1,0 +1,49 @@
+import { KbdDemo } from "./kbd-demo";
+
+# Kbd
+
+Keyboard key display. Renders as a small key-cap-styled element. Compose multiple for shortcut combinations.
+
+<Install name="kbd" />
+
+<ComponentPreview label="Kbd">
+  <KbdDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Kbd } from "@patchui/react";
+
+// Single key
+<Kbd>⌘</Kbd>
+
+// Combo
+<Kbd>⌘</Kbd> <Kbd>K</Kbd>
+
+// Inline within text
+<p>Press <Kbd size="sm">Esc</Kbd> to close.</p>
+
+// Sizes
+<Kbd size="sm">⌘</Kbd>   // Small — for inline body text
+<Kbd size="md">⌘</Kbd>   // Medium (default) — for shortcut hints
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "size",
+      type: '"sm" | "md"',
+      default: '"md"',
+      description: "sm = 18px (inline body text); md = 20px (shortcut hints in dialogs / menus).",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Native `<kbd>` element:** Semantic HTML. Screen readers announce key presses correctly.
+- **Inset shadow:** Subtle `inset 0 -1px 0` shadow gives the key a tiny key-cap depth.
+- **Letter rendering:** Use Unicode symbols (`⌘`, `⌥`, `⇧`, `↑`, `↵`) for modifiers — they render correctly across platforms.
+</Callout>

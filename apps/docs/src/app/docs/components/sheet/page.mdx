@@ -2,7 +2,7 @@ import { SheetDemo } from "./sheet-demo";
 
 # Sheet
 
-A slide-out panel (drawer) that enters from any edge of the screen. Built on Base UI's Drawer primitive with backdrop, scroll locking, and focus trapping.
+A slide-out panel (drawer) that enters from any edge of the screen. Custom-built on `@floating-ui/react` primitives with `motion`-driven spring slide animations, focus trapping, dismissable overlay, and scroll locking.
 
 <Install name="sheet" />
 
@@ -84,8 +84,10 @@ import {
 
 
 <Callout title="Notes">
-- **Directional animation:** The sheet slides in from the specified `side` with a smooth cubic-bezier transition.
-- **Scroll locking:** Body scrolling is disabled while the sheet is open.
+- **Motion:** Backdrop fades via motion ease-out. Popup slides via motion spring (stiffness 380, damping 38) — true bidirectional enter / exit. Respects `prefers-reduced-motion`.
+- **Scroll locking:** Body scrolling is disabled while the sheet is open via `react-remove-scroll`.
 - **Width/height:** Left and right sheets default to `max-w-md`. Top and bottom sheets span the full width.
-- **Backdrop dismiss:** Clicking the backdrop closes the sheet by default.
+- **Backdrop dismiss:** Clicking the backdrop closes the sheet. Press Escape to dismiss.
+- **Polymorphic triggers:** Use `render={<Button />}` on `SheetTrigger` and `SheetClose` to render them as styled buttons.
+- **Controlled usage:** Pass `open` and `onOpenChange` (or `defaultOpen` for uncontrolled with a starting value) to `Sheet`.
 </Callout>

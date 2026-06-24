@@ -5,11 +5,10 @@ import {
   FieldLabel,
   FieldDescription,
   FieldError,
-  FieldControl,
   Input,
 } from "@patchui/react";
 
-/** Showcases Field compound component with valid and error states. */
+/** Showcases Field compound: required, optional, error, disabled. */
 export function FieldDemo() {
   return (
     <div className="flex w-full flex-col gap-8">
@@ -25,21 +24,28 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      {/* Required Field with FieldControl */}
+      {/* Required */}
       <div>
         <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Required with FieldControl
+          Required label
         </p>
         <Field className="max-w-sm">
-          <FieldLabel>Email</FieldLabel>
+          <FieldLabel required>Email</FieldLabel>
           <FieldDescription>We&apos;ll use this to send notifications.</FieldDescription>
-          <FieldControl
-            type="email"
-            placeholder="you@example.com"
-            required
-            className="flex h-9 w-full rounded-md border border-patch-border bg-patch-bg px-3 py-1 text-sm text-patch-text shadow-sm transition-colors placeholder:text-patch-text-tertiary focus-visible:border-patch-primary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-          />
+          <Input type="email" placeholder="you@example.com" required />
           <FieldError />
+        </Field>
+      </div>
+
+      {/* Optional */}
+      <div>
+        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          Optional label
+        </p>
+        <Field className="max-w-sm">
+          <FieldLabel optional>Phone</FieldLabel>
+          <FieldDescription>Used for SMS notifications only.</FieldDescription>
+          <Input type="tel" placeholder="+1 (555) 555-5555" />
         </Field>
       </div>
 
@@ -49,9 +55,9 @@ export function FieldDemo() {
           Error State
         </p>
         <Field invalid className="max-w-sm">
-          <FieldLabel>Password</FieldLabel>
+          <FieldLabel required>Password</FieldLabel>
           <FieldDescription>Must be at least 8 characters.</FieldDescription>
-          <Input type="password" defaultValue="abc" />
+          <Input type="password" defaultValue="abc" invalid />
           <FieldError>Password must be at least 8 characters long.</FieldError>
         </Field>
       </div>

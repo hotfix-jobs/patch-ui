@@ -2,9 +2,9 @@ import { TimeAgoDemo } from "./time-ago-demo";
 
 # TimeAgo
 
-Relative time display ("3m ago", "2d ago"). Renders an absolute date during SSR / initial hydration and swaps to the relative string after mount, avoiding hydration mismatches.
+Relative time display ("3m ago", "2d ago", "in 5h"). Renders an absolute date during SSR / initial hydration and swaps to the relative string after mount — no hydration mismatches. Supports past and future dates, ranges from seconds to years, and refreshes itself on a smart interval so "Just now" doesn't stick around for half an hour.
 
-Defaults to mono numerals since timestamps are always numeric data.
+Defaults to mono numerals since timestamps are numeric data and benefit from column alignment in lists.
 
 <Install name="time-ago" />
 
@@ -17,11 +17,72 @@ Defaults to mono numerals since timestamps are always numeric data.
 ```tsx
 import { TimeAgo } from "@patchui/react";
 
+// Basic — past date
 <TimeAgo dateStr={post.publishedAt} />
+
+// Future date — renders "in 5h", "in 3d", etc.
+<TimeAgo dateStr={event.startsAt} />
+
+// Inherit parent typography (no tabular nums)
+<TimeAgo dateStr={post.publishedAt} variant="sans" />
+
+// Disable live updates if you're rendering many TimeAgos and don't need
+// per-second freshness (e.g. archive lists where age changes slowly).
+<TimeAgo dateStr={post.publishedAt} liveUpdate={false} />
+
+// Hover for the absolute date via Tooltip composition
+<Tooltip content={new Date(post.publishedAt).toLocaleString()}>
+  <TimeAgo dateStr={post.publishedAt} />
+</Tooltip>
 ```
+
+## Output ranges
+
+| Age | Past | Future |
+|---|---|---|
+| Under 1 minute | `Just now` | `Soon` |
+| Under 1 hour | `Xm ago` | `in Xm` |
+| Under 1 day | `Xh ago` | `in Xh` |
+| Under 1 week | `Xd ago` | `in Xd` |
+| Under 1 month | `Xw ago` | `in Xw` |
+| Under 1 year | `Xmo ago` | `in Xmo` |
+| 1 year+ | `Xy ago` | `in Xy` |
 
 ## Props
 
-- `dateStr` - ISO date string
-- `fallback` - string rendered during SSR (defaults to formatted absolute date)
-- `variant` - `"mono"` (default) or `"sans"`
+<PropsTable
+  props={[
+    {
+      name: "dateStr",
+      type: "string",
+      default: "-",
+      description: "Required. ISO date string. Past or future.",
+    },
+    {
+      name: "fallback",
+      type: "string",
+      default: "absolute date",
+      description: "Rendered during SSR / initial hydration. Defaults to a formatted absolute date in UTC.",
+    },
+    {
+      name: "variant",
+      type: '"mono" | "sans"',
+      default: '"mono"',
+      description: "mono applies tabular numerals + tighter tracking for column-aligned timestamps in lists. sans inherits parent typography with no overrides.",
+    },
+    {
+      name: "liveUpdate",
+      type: "boolean",
+      default: "true",
+      description: "Re-render on a smart interval so the label stays accurate without effort. Refresh frequency scales with age (10s under 1m, 30s under 1h, 60s under 1d, 1h under 1w). Above 1 week the label rolls over too slowly to bother — no further refresh scheduled.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Hydration-safe:** Server and initial-render output a stable absolute date (UTC); the relative label only appears after `useSyncExternalStore` confirms the client has hydrated. No flash, no warnings.
+- **Live updates:** When mounted, an internal tick state schedules the next refresh based on the *current* age — so a fresh `0m ago` ticks to `1m ago` 10s later, then to `2m ago` 30s after that, etc. Cancels itself once labels start changing by hour or longer.
+- **Future dates:** Pass an ISO string in the future and TimeAgo renders `in Xm`, `in Xh`, etc. — no math on your end. Edge case: a date less than 60s in the future renders as `Soon`.
+- **Months & years:** Uses ~30.44-day months and 365.25-day years (Gregorian average) so the label rolls over at sensible thresholds without timezone drift.
+- **Combined with Tooltip:** Wrap in a `Tooltip` to expose the precise absolute date on hover. One-line composition; no built-in tooltip prop.
+</Callout>

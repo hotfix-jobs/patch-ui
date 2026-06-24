@@ -13,6 +13,9 @@ export default defineConfig({
     "react/jsx-runtime",
     "@base-ui/react",
     /^@base-ui\/react\//,
+    "motion",
+    /^motion\//,
+    "@floating-ui/react",
   ],
   esbuildOptions(options) {
     options.banner = {

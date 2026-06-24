@@ -2,6 +2,7 @@
 
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 import type React from "react";
+import { CheckIcon } from "../internal-icons";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
@@ -25,19 +26,10 @@ export function Checkbox({
         data-slot="checkbox-indicator"
         keepMounted
       >
-        <svg
-          aria-hidden="true"
+        <CheckIcon
           className="size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2.5"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M5.252 12.7 10.2 18.63 18.748 5.37" />
-        </svg>
+          strokeWidth={2.5}
+        />
         <svg
           aria-hidden="true"
           className="hidden size-3 group-data-indeterminate:block"
@@ -47,7 +39,6 @@ export function Checkbox({
           strokeLinejoin="round"
           strokeWidth="2.5"
           viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
         >
           <path d="M5 12h14" />
         </svg>

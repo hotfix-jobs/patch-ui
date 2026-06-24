@@ -31,7 +31,14 @@ export const spinnerVariants = cva("inline-flex items-center justify-center", {
 
 export interface SpinnerProps
   extends React.ComponentProps<"span">,
-    VariantProps<typeof spinnerVariants> {}
+    VariantProps<typeof spinnerVariants> {
+  /**
+   * Accessible label announced to assistive tech. Use to communicate
+   * loading context — "Saving", "Uploading 3 of 12", "Processing
+   * payment" — instead of the generic default.
+   */
+  label?: string;
+}
 
 // ─── Spinner ────────────────────────────────────────────────────────────
 
@@ -39,12 +46,13 @@ export function Spinner({
   className,
   size,
   variant = "ring",
+  label = "Loading",
   ...props
 }: SpinnerProps): React.ReactElement {
   return (
     <span
       role="status"
-      aria-label="Loading"
+      aria-label={label}
       className={cn(spinnerVariants({ size, variant, className }))}
       data-slot="spinner"
       data-variant={variant}
@@ -55,7 +63,7 @@ export function Spinner({
       {variant === "dots" && <DotsSpinner />}
       {variant === "bars" && <BarsSpinner />}
       {variant === "ring-fill" && <RingFillSpinner />}
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">{label}</span>
     </span>
   );
 }
@@ -69,7 +77,7 @@ function RingSpinner() {
       viewBox="0 0 24 24"
       fill="none"
       className="size-full animate-spin"
-      style={{ animationDuration: "750ms" }}
+      style={{ animationDuration: "900ms" }}
     >
       <circle
         cx="12"

@@ -19,6 +19,7 @@ import {
   CommandList,
   CommandEmpty,
   CommandItem,
+  CommandSection,
 } from "@patchui/react";
 
 const items = ["New file", "Open file", "Save"];
@@ -36,23 +37,77 @@ const items = ["New file", "Open file", "Save"];
     </CommandCollection>
   </CommandList>
 </CommandDialog>
+
+// With a trailing "currently chosen" check
+<CommandItem selected={value === item} value={item} onClick={...}>
+  {item}
+</CommandItem>
+
+// Two-line item with a description
+<CommandItem description="Switch between light and dark" value="Toggle theme">
+  Toggle theme
+</CommandItem>
+
+// Sections (sugar for CommandGroup + CommandGroupLabel)
+<CommandSection label="Navigate">
+  <CommandItem>Go to dashboard</CommandItem>
+  <CommandItem>Go to projects</CommandItem>
+</CommandSection>
+
+// Comfortable density (larger items + body type size)
+<CommandList density="comfortable">...</CommandList>
 ```
 
-For grouped results, wrap items in `CommandGroup` + `CommandGroupLabel` + `CommandCollection`. To drive results from a fuzzy index, hold the query in state via the input and pass your matched array as `filteredItems` instead of `items`.
+For grouped results, wrap items in `CommandSection` (or `CommandGroup` + `CommandGroupLabel`) + `CommandCollection`. To drive results from a fuzzy index, hold the query in state via the input and pass your matched array as `filteredItems` instead of `items`.
+
+## Props
+
+### CommandItem
+
+<PropsTable
+  props={[
+    {
+      name: "selected",
+      type: "boolean",
+      default: "false",
+      description: "Renders a trailing check to indicate the currently chosen item.",
+    },
+    {
+      name: "description",
+      type: "ReactNode",
+      description: "Secondary line shown beneath the title for two-line items.",
+    },
+  ]}
+/>
+
+### CommandList
+
+<PropsTable
+  props={[
+    {
+      name: "density",
+      type: '"compact" | "comfortable"',
+      default: '"compact"',
+      description: "Vertical density of contained items. Compact targets dense palettes; comfortable bumps min-height and padding for larger-action lists.",
+    },
+  ]}
+/>
 
 ## Components
 
 - `Command` - root (Base UI Autocomplete in inline mode); takes `items` or `filteredItems`
 - `CommandDialog` - `Command` inside a `Dialog` for a Cmd+K palette
 - `CommandInput` - search input with a leading icon
-- `CommandList` - the results list; accepts a render function `(item) => <CommandItem />`
-- `CommandItem` - a selectable result (highlighted via keyboard); handle selection with `onClick`
+- `CommandList` - the results list; supports `density`
+- `CommandItem` - a selectable result; supports `selected` and `description`
 - `CommandEmpty` - shown when nothing matches
-- `CommandGroup` / `CommandGroupLabel` / `CommandCollection` - grouped sections
+- `CommandSection` - labeled group with consistent spacing, sugar for `CommandGroup` + `CommandGroupLabel`
+- `CommandGroup` / `CommandGroupLabel` / `CommandCollection` - low-level grouped sections
 - `CommandSeparator` - a divider between groups
 
 <Callout title="Notes">
 - **Built on Base UI Autocomplete** - filtering, roving focus, type-ahead, and ARIA are handled for you; no extra command library.
 - **Bring your own search:** pass `filteredItems` to render results from a fuzzy index (this docs site does exactly that for its Cmd+K search).
 - **Keyboard:** type to filter, Up/Down to move, Enter to select the highlighted item, Esc to close.
+- **`selected` vs filtering:** `selected` is purely visual (renders the trailing check). It does not affect filtering or focus. Use it to mark a "currently chosen" item in single-select pickers.
 </Callout>

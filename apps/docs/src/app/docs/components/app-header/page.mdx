@@ -2,7 +2,7 @@ import { AppHeaderDemo } from "./app-header-demo";
 
 # AppHeader
 
-An application-level header block: a centered, max-width row with a brand, primary navigation, and right-aligned actions. Composed from `AppHeaderBrand`, `AppHeaderNav`, `AppHeaderNavItem`, and `AppHeaderRight`. This is a **Block** - an opinionated layout assembled from primitives, rather than a low-level primitive itself.
+An application-level header block: a full-width row with editorial gutter padding, brand, primary navigation, and right-aligned actions. Composed from `AppHeaderBrand`, `AppHeaderNav`, `AppHeaderNavItem`, and `AppHeaderRight`. This is a **Block** - an opinionated layout assembled from primitives, rather than a low-level primitive itself.
 
 <Install name="app-header" />
 
@@ -38,6 +38,31 @@ import {
 
 ## Props
 
+### AppHeader
+
+<PropsTable
+  props={[
+    {
+      name: "bordered",
+      type: "boolean",
+      default: "true",
+      description: "Renders a hairline bottom border. Set false for borderless headers (e.g. laid over a hero image).",
+    },
+    {
+      name: "sticky",
+      type: "boolean",
+      default: "false",
+      description: "Pins the header to the top of its scroll container via sticky top-0 z-50.",
+    },
+    {
+      name: "render",
+      type: "RenderProp<'header'>",
+      default: "-",
+      description: "Polymorphic render prop.",
+    },
+  ]}
+/>
+
 ### AppHeaderNavItem
 
 <PropsTable
@@ -64,6 +89,7 @@ import {
 />
 
 <Callout title="Notes">
+- **Editorial defaults:** Full-width (no max-width constraint), with responsive gutter padding `px-6 md:px-12 lg:px-16`. Vertical padding `py-3.5` gives ~60px header height.
 - **Composition:** `AppHeaderRight` pushes its content to the far end with `ml-auto`, so it sits opposite the brand/nav.
 - **Routing:** Use the `render` prop on `AppHeaderBrand` and `AppHeaderNavItem` to integrate your router's link component.
 - **Block:** AppHeader is an opinionated layout. For full control, compose your own header from the underlying primitives.
