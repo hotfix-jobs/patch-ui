@@ -200,7 +200,7 @@ export function DialogContent({
                     : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
                 }
               />
-              <div className="absolute inset-0 flex items-center justify-center p-4 max-sm:items-start max-sm:p-0 max-sm:pt-12">
+              <div className="absolute inset-0 flex items-center justify-center p-4">
                 <FloatingFocusManager context={context}>
                   <motion.div
                     ref={refs.setFloating}
@@ -209,7 +209,7 @@ export function DialogContent({
                     data-slot="dialog-popup"
                     {...getFloatingProps()}
                     className={cn(
-                      "relative flex max-h-[calc(100vh-2rem)] min-h-0 w-full min-w-0 origin-center flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface text-patch-text border-[0.5px] border-[var(--patch-border)] shadow-patch-overlay max-sm:max-w-none max-sm:rounded-none max-sm:border-0 max-sm:max-h-[calc(100vh-3rem)]",
+                      "relative flex max-h-[calc(100vh-2rem)] min-h-0 w-full min-w-0 origin-center flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface text-patch-text border-[0.5px] border-[var(--patch-border)] shadow-patch-overlay",
                       SIZE_CLASSES[size],
                       className,
                     )}
