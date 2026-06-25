@@ -52,7 +52,6 @@ export const navigation: NavGroup[] = [
       { title: "Card", href: "/docs/components/card" },
       { title: "Separator", href: "/docs/components/separator" },
       { title: "ThemeToggle", href: "/docs/components/theme-toggle" },
-      { title: "Wizard", href: "/docs/components/wizard" },
     ],
   },
   {

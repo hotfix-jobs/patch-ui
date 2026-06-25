@@ -285,4 +285,3 @@ export {
   type TableCellProps,
   type TableCaptionProps,
 } from "./components/table";
-export { Wizard, type WizardProps } from "./components/wizard";

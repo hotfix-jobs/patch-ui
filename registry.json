@@ -923,27 +923,6 @@
           "target": "components/ui/tooltip.tsx"
         }
       ]
-    },
-    {
-      "name": "wizard",
-      "type": "registry:ui",
-      "title": "Wizard",
-      "dependencies": [
-        "lucide-react",
-        "motion"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/button.json",
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/wizard.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/wizard.tsx"
-        }
-      ]
     }
   ]
 }
