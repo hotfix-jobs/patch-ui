@@ -5,6 +5,7 @@ import { useCallback, useRef, useState } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
+import { Progress } from "./progress";
 
 export interface DropzoneProps
   extends Omit<
@@ -44,6 +45,13 @@ export interface DropzoneProps
   title?: React.ReactNode;
   /** Helper text rendered below the title. */
   description?: React.ReactNode;
+  /**
+   * When set, the dropzone is in an uploading state: interactions are
+   * disabled and a Progress bar replaces the size text on each file row.
+   * Pass a number 0-100 for determinate, `null` for indeterminate.
+   * Omit to hide.
+   */
+  progress?: number | null;
 }
 
 function formatBytes(bytes: number): string {
@@ -77,9 +85,12 @@ export function Dropzone({
   renderFile,
   title = "Drop files here or click to browse",
   description,
+  progress,
   className,
   ...props
 }: DropzoneProps): React.ReactElement {
+  const isUploading = progress !== undefined;
+  const interactionDisabled = disabled || isUploading;
   const [uncontrolled, setUncontrolled] = useState<File[]>(defaultValue ?? []);
   const files = controlledValue ?? uncontrolled;
   const setFiles = useCallback(
@@ -134,23 +145,23 @@ export function Dropzone({
     >
       <div
         role="button"
-        tabIndex={disabled ? -1 : 0}
-        aria-disabled={disabled || undefined}
+        tabIndex={interactionDisabled ? -1 : 0}
+        aria-disabled={interactionDisabled || undefined}
         data-slot="dropzone"
         data-drag-over={isDragOver || undefined}
         onClick={() => {
-          if (disabled) return;
+          if (interactionDisabled) return;
           inputRef.current?.click();
         }}
         onKeyDown={(e) => {
-          if (disabled) return;
+          if (interactionDisabled) return;
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             inputRef.current?.click();
           }
         }}
         onDragOver={(e) => {
-          if (disabled) return;
+          if (interactionDisabled) return;
           e.preventDefault();
           if (!isDragOver) setIsDragOver(true);
         }}
@@ -161,7 +172,7 @@ export function Dropzone({
         onDrop={(e) => {
           e.preventDefault();
           setIsDragOver(false);
-          if (disabled) return;
+          if (interactionDisabled) return;
           if (e.dataTransfer.files.length > 0) {
             accept_files(e.dataTransfer.files);
           }
@@ -169,9 +180,10 @@ export function Dropzone({
         className={cn(
           "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-patch-sm)] border-[0.5px] border-dashed border-patch-border px-6 py-10",
           "text-center transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-          "hover:border-[var(--patch-border-hover)] hover:bg-patch-surface",
+          "hover:border-[var(--patch-border-hover)] hover:bg-patch-surface-hover",
           "data-[drag-over]:border-patch-text data-[drag-over]:bg-patch-accent",
           disabled && "pointer-events-none opacity-50",
+          isUploading && "pointer-events-none",
           focusRing,
         )}
       >
@@ -196,7 +208,7 @@ export function Dropzone({
           type="file"
           accept={accept}
           multiple={multiple}
-          disabled={disabled}
+          disabled={interactionDisabled}
           onChange={(e) => {
             if (e.target.files) accept_files(e.target.files);
             e.target.value = "";
@@ -218,25 +230,36 @@ export function Dropzone({
               <li
                 key={`${f.name}-${i}`}
                 data-slot="dropzone-file"
+                data-state={isUploading ? "uploading" : undefined}
                 className="flex items-center gap-3 rounded-[var(--radius-patch-xs)] border-[0.5px] border-patch-border bg-patch-surface px-3 py-2"
               >
                 <File className="size-4 shrink-0 text-patch-text-tertiary" />
-                <div className="flex min-w-0 flex-1 flex-col">
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
                   <span className="truncate text-[length:var(--text-patch-control)] text-patch-text">
                     {f.name}
                   </span>
-                  <span className="text-[length:var(--text-patch-micro)] text-patch-text-tertiary">
-                    {formatBytes(f.size)}
-                  </span>
+                  {isUploading ? (
+                    <Progress
+                      value={progress}
+                      size="sm"
+                      label={`Uploading ${f.name}`}
+                    />
+                  ) : (
+                    <span className="text-[length:var(--text-patch-micro)] text-patch-text-tertiary">
+                      {formatBytes(f.size)}
+                    </span>
+                  )}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => removeAt(i)}
-                  aria-label={`Remove ${f.name}`}
-                  className="inline-flex size-6 shrink-0 items-center justify-center rounded-[var(--radius-patch-xs)] text-patch-text-tertiary transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] hover:bg-patch-surface-hover hover:text-patch-text active:scale-90"
-                >
-                  <X className="size-3.5" />
-                </button>
+                {!isUploading && (
+                  <button
+                    type="button"
+                    onClick={() => removeAt(i)}
+                    aria-label={`Remove ${f.name}`}
+                    className="inline-flex size-6 shrink-0 items-center justify-center rounded-[var(--radius-patch-xs)] text-patch-text-tertiary transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] hover:bg-patch-surface-hover hover:text-patch-text active:scale-90"
+                  >
+                    <X className="size-3.5" />
+                  </button>
+                )}
               </li>
             ),
           )}

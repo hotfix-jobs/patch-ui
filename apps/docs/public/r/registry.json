@@ -351,6 +351,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/progress.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
