@@ -15,6 +15,7 @@ import {
   cloneElement,
   createContext,
   isValidElement,
+  useCallback,
   useContext,
   useId,
   useState,
@@ -171,6 +172,10 @@ export function DialogContent({
 }: DialogContentProps): React.ReactElement {
   const { context, refs, open, titleId, descriptionId, getFloatingProps } =
     useDialogContext();
+  const setFloating = useCallback(
+    (node: HTMLElement | null) => refs.setFloating(node),
+    [refs],
+  );
   const reduceMotion = useReducedMotion();
 
   return (
@@ -203,7 +208,7 @@ export function DialogContent({
               <div className="absolute inset-0 flex items-center justify-center p-4">
                 <FloatingFocusManager context={context}>
                   <motion.div
-                    ref={refs.setFloating}
+                    ref={setFloating}
                     aria-labelledby={titleId}
                     aria-describedby={descriptionId}
                     data-slot="dialog-popup"

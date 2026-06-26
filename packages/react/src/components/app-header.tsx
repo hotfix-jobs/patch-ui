@@ -48,7 +48,7 @@ export function AppHeader({
   });
 }
 
-export interface AppHeaderBrandProps extends useRender.ComponentProps<"div"> {}
+export type AppHeaderBrandProps = useRender.ComponentProps<"div">;
 
 export function AppHeaderBrand({
   className,
@@ -70,7 +70,7 @@ export function AppHeaderBrand({
   });
 }
 
-export interface AppHeaderNavProps extends useRender.ComponentProps<"nav"> {}
+export type AppHeaderNavProps = useRender.ComponentProps<"nav">;
 
 export function AppHeaderNav({
   className,
@@ -118,7 +118,7 @@ export function AppHeaderNavItem({
   });
 }
 
-export interface AppHeaderRightProps extends useRender.ComponentProps<"div"> {}
+export type AppHeaderRightProps = useRender.ComponentProps<"div">;
 
 export function AppHeaderRight({
   className,

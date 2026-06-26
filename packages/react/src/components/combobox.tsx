@@ -263,6 +263,10 @@ export function ComboboxPopup({
 }: ComboboxPopupProps): React.ReactElement | null {
   const { open, context, refs, floatingStyles, getFloatingProps, baseId } =
     useComboboxContext();
+  const setFloating = useCallback(
+    (node: HTMLElement | null) => refs.setFloating(node),
+    [refs],
+  );
   const reduceMotion = useReducedMotion();
 
   return (
@@ -283,7 +287,7 @@ export function ComboboxPopup({
             visuallyHiddenDismiss
           >
             <motion.div
-              ref={refs.setFloating}
+              ref={setFloating}
               id={`${baseId}-popup`}
               data-slot="combobox-popup"
               {...getFloatingProps()}

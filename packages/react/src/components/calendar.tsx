@@ -187,14 +187,20 @@ export function Calendar(props: CalendarProps): React.ReactElement {
     mode === "single"
       ? ((props as SingleCalendarProps).value ?? singleUncontrolled)
       : null;
-  const rangeValue =
-    mode === "range"
-      ? ((props as RangeCalendarProps).value ?? rangeUncontrolled)
-      : {};
-  const multipleValue =
-    mode === "multiple"
-      ? ((props as MultipleCalendarProps).value ?? multipleUncontrolled)
-      : [];
+  const rangeValue = useMemo(
+    () =>
+      mode === "range"
+        ? ((props as RangeCalendarProps).value ?? rangeUncontrolled)
+        : ({} as DateRange),
+    [mode, props, rangeUncontrolled],
+  );
+  const multipleValue = useMemo(
+    () =>
+      mode === "multiple"
+        ? ((props as MultipleCalendarProps).value ?? multipleUncontrolled)
+        : [],
+    [mode, props, multipleUncontrolled],
+  );
 
   const isDateDisabled = useCallback(
     (date: Date): boolean => {

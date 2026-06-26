@@ -66,21 +66,17 @@ export function ThemeToggle({
 }: ThemeToggleProps): React.ReactElement {
   const mounted = useMounted();
 
-  // Internal state for uncontrolled mode
-  const [internalTheme, setInternalTheme] = useState<ResolvedTheme>("light");
-
-  // Initialize from storage or system preference
-  useEffect(() => {
-    if (controlledTheme !== undefined) return;
-    let initial: ResolvedTheme = getSystemTheme();
-    if (storageKey !== false && typeof window !== "undefined") {
+  // Internal state for uncontrolled mode. Lazy initializer reads from storage
+  // / system preference once at mount, so the first render already reflects
+  // the persisted choice (no flash + no setState-in-effect).
+  const [internalTheme, setInternalTheme] = useState<ResolvedTheme>(() => {
+    if (typeof window === "undefined") return "light";
+    if (storageKey !== false) {
       const stored = localStorage.getItem(storageKey);
-      if (stored === "light" || stored === "dark") {
-        initial = stored;
-      }
+      if (stored === "light" || stored === "dark") return stored;
     }
-    setInternalTheme(initial);
-  }, [controlledTheme, storageKey]);
+    return getSystemTheme();
+  });
 
   const resolved: ResolvedTheme =
     controlledTheme !== undefined

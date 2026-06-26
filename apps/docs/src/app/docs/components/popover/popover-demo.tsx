@@ -95,11 +95,11 @@ export function PopoverDemo() {
 function FormPopover() {
   const [name, setName] = useState("");
   return (
-    <Popover modal>
+    <Popover>
       <PopoverTrigger render={<Button variant="outline" />}>
         Edit name
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-4">
+      <PopoverContent modal className="w-80 p-4">
         <h3 className="text-[length:var(--text-patch-control)] font-semibold text-patch-text">
           Display name
         </h3>

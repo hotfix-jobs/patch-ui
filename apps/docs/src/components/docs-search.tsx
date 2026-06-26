@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MiniSearch from "minisearch";
 import {
@@ -27,12 +27,11 @@ export function DocsSearch() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const router = useRouter();
-  const miniRef = useRef<MiniSearch | null>(null);
-  const [indexReady, setIndexReady] = useState(false);
+  const [mini, setMini] = useState<MiniSearch | null>(null);
 
   // Lazily load the full-text index the first time search is opened.
   useEffect(() => {
-    if (!open || miniRef.current) return;
+    if (!open || mini) return;
     let cancelled = false;
     fetch("/search-index.json")
       .then((r) => r.json())
@@ -49,14 +48,13 @@ export function DocsSearch() {
           },
         });
         ms.addAll(docs);
-        miniRef.current = ms;
-        setIndexReady(true);
+        setMini(ms);
       })
       .catch(() => {});
     return () => {
       cancelled = true;
     };
-  }, [open]);
+  }, [open, mini]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -73,8 +71,8 @@ export function DocsSearch() {
   const results = useMemo<FlatItem[]>(() => {
     const q = query.trim();
     if (!q) return FLAT_ITEMS;
-    if (miniRef.current && indexReady) {
-      return miniRef.current
+    if (mini) {
+      return mini
         .search(q)
         .slice(0, 24)
         .map((r) => ({
@@ -89,7 +87,7 @@ export function DocsSearch() {
         it.title.toLowerCase().includes(lq) ||
         it.group.toLowerCase().includes(lq),
     );
-  }, [query, indexReady]);
+  }, [query, mini]);
 
   const go = (href: string) => {
     setOpen(false);

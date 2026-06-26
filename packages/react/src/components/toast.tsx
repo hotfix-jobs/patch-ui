@@ -21,6 +21,11 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+
+const emptySubscribe = () => () => {};
+function useMounted(): boolean {
+  return useSyncExternalStore(emptySubscribe, () => true, () => false);
+}
 import type * as React from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../utils";
@@ -236,14 +241,8 @@ export function Toaster({
     store.getSnapshot,
     store.getSnapshot,
   );
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMounted();
   const [isPaused, setIsPaused] = useState(false);
-  const [hostRef, setHostRef] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-    setHostRef(document.body);
-  }, []);
 
   // Newest at end of array; show most-recent N. For top positions we want
   // newest visually at the top; for bottom positions, newest at the bottom.
@@ -252,7 +251,7 @@ export function Toaster({
     return isTopPosition(position) ? slice.reverse() : slice;
   }, [toasts, visibleToasts, position]);
 
-  if (!mounted || !hostRef) return null;
+  if (!mounted) return null;
 
   const topPos = isTopPosition(position);
 
@@ -280,7 +279,6 @@ export function Toaster({
               key={t.id}
               toast={t}
               stackIndex={stackIndex}
-              total={visible.length}
               isPaused={isPaused}
               position={position}
             />
@@ -288,7 +286,7 @@ export function Toaster({
         })}
       </AnimatePresence>
     </div>,
-    hostRef,
+    document.body,
   );
 }
 
@@ -297,13 +295,11 @@ export function Toaster({
 function ToastItem({
   toast: t,
   stackIndex,
-  total,
   isPaused,
   position,
 }: {
   toast: ToastData;
   stackIndex: number;
-  total: number;
   isPaused: boolean;
   position: ToastPosition;
 }): React.ReactElement {

@@ -24,7 +24,7 @@ import {
   isValidElement,
   useCallback,
   useContext,
-  useRef,
+  useMemo,
   useState,
 } from "react";
 import type * as React from "react";
@@ -58,7 +58,8 @@ type PopoverContextValue = {
   context: ReturnType<typeof useFloating>["context"];
   getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"];
   getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"];
-  arrowRef: React.RefObject<SVGSVGElement | null>;
+  arrowEl: SVGSVGElement | null;
+  setArrowEl: (el: SVGSVGElement | null) => void;
   showArrow: boolean;
 };
 
@@ -92,11 +93,6 @@ export interface PopoverProps {
   hover?: boolean;
   /** Show a small arrow pointing back to the trigger. Default false. */
   arrow?: boolean;
-  /**
-   * Trap focus inside the popup while open. Default false (non-modal).
-   * Set true for popovers with form inputs that need focus containment.
-   */
-  modal?: boolean;
   children: React.ReactNode;
 }
 
@@ -108,7 +104,6 @@ export function Popover({
   sideOffset = 6,
   hover = false,
   arrow: showArrow = false,
-  modal: _modal = false,
   children,
 }: PopoverProps): React.ReactElement {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
@@ -121,19 +116,24 @@ export function Popover({
     [controlledOpen, onOpenChange],
   );
 
-  const arrowRef = useRef<SVGSVGElement | null>(null);
+  const [arrowEl, setArrowEl] = useState<SVGSVGElement | null>(null);
+
+  const middleware = useMemo(
+    () => [
+      offset(sideOffset),
+      flip({ padding: 8 }),
+      shift({ padding: 8 }),
+      ...(showArrow && arrowEl ? [arrow({ element: arrowEl })] : []),
+    ],
+    [sideOffset, showArrow, arrowEl],
+  );
 
   const { refs, floatingStyles, context } = useFloating({
     open,
     onOpenChange: setOpen,
     placement,
     transform: false,
-    middleware: [
-      offset(sideOffset),
-      flip({ padding: 8 }),
-      shift({ padding: 8 }),
-      ...(showArrow ? [arrow({ element: arrowRef })] : []),
-    ],
+    middleware,
     whileElementsMounted: autoUpdate,
   });
 
@@ -163,7 +163,8 @@ export function Popover({
         context,
         getReferenceProps,
         getFloatingProps,
-        arrowRef,
+        arrowEl,
+        setArrowEl,
         showArrow,
       }}
     >
@@ -238,9 +239,13 @@ export function PopoverContent({
     refs,
     floatingStyles,
     getFloatingProps,
-    arrowRef,
+    setArrowEl,
     showArrow,
   } = usePopoverContext();
+  const setFloating = useCallback(
+    (node: HTMLElement | null) => refs.setFloating(node),
+    [refs],
+  );
   const reduceMotion = useReducedMotion();
 
   return (
@@ -254,7 +259,7 @@ export function PopoverContent({
             returnFocus={modal}
           >
             <motion.div
-              ref={refs.setFloating}
+              ref={setFloating}
               data-slot="popover-content"
               {...getFloatingProps(props)}
               style={{
@@ -282,7 +287,7 @@ export function PopoverContent({
               {children}
               {showArrow && (
                 <FloatingArrow
-                  ref={arrowRef}
+                  ref={setArrowEl}
                   context={context}
                   width={12}
                   height={6}

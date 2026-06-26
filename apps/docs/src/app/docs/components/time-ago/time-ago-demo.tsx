@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { TimeAgo } from "@patchui/react";
 
 interface DemoDates {
@@ -11,23 +11,33 @@ interface DemoDates {
   lastWeek: string;
 }
 
-export function TimeAgoDemo() {
-  // Compute relative dates only after mount. Doing this during render would
-  // produce different timestamps on the server vs the client (Date.now drifts
-  // by milliseconds between the two), causing a hydration mismatch.
-  const [dates, setDates] = useState<DemoDates | null>(null);
+// Capture Date.now() once on the client (after hydration). Module-level cache
+// keeps the snapshot stable across re-renders so useSyncExternalStore's
+// getSnapshot stays pure. Server snapshot is null so SSR renders placeholders
+// and avoids a hydration mismatch from server/client timestamp drift.
+let cachedClientNow: number | null = null;
+const noopSubscribe = () => () => {};
+function getClientNow(): number {
+  if (cachedClientNow == null) cachedClientNow = Date.now();
+  return cachedClientNow;
+}
+function useClientNow(): number | null {
+  return useSyncExternalStore(noopSubscribe, getClientNow, () => null);
+}
 
-  useEffect(() => {
-    const t = Date.now();
-    const iso = (msAgo: number) => new Date(t - msAgo).toISOString();
-    setDates({
+export function TimeAgoDemo() {
+  const now = useClientNow();
+  const dates = useMemo<DemoDates | null>(() => {
+    if (now == null) return null;
+    const iso = (msAgo: number) => new Date(now - msAgo).toISOString();
+    return {
       now: iso(0),
       fiveMinAgo: iso(5 * 60 * 1000),
       threeHoursAgo: iso(3 * 60 * 60 * 1000),
       twoDaysAgo: iso(2 * 24 * 60 * 60 * 1000),
       lastWeek: iso(9 * 24 * 60 * 60 * 1000),
-    });
-  }, []);
+    };
+  }, [now]);
 
   const placeholder = <span className="text-patch-text-quaternary">…</span>;
 

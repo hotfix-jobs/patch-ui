@@ -6,7 +6,6 @@ import {
   CommandInput,
   CommandList,
   CommandEmpty,
-  CommandCollection,
   CommandItem,
   CommandSection,
   CommandSeparator,

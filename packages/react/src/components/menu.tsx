@@ -33,7 +33,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useId,
   useRef,
   useState,
 } from "react";
@@ -270,6 +269,10 @@ export function MenuPopup({
 }: MenuPopupProps): React.ReactElement | null {
   const { open, context, refs, floatingStyles, getFloatingProps, isNested } =
     useMenuContext();
+  const setFloating = useCallback(
+    (node: HTMLElement | null) => refs.setFloating(node),
+    [refs],
+  );
   const reduceMotion = useReducedMotion();
 
   return (
@@ -283,7 +286,7 @@ export function MenuPopup({
             returnFocus={!isNested}
           >
             <motion.div
-              ref={refs.setFloating}
+              ref={setFloating}
               data-slot="menu-popup"
               {...getFloatingProps()}
               style={{
@@ -688,8 +691,7 @@ export function MenuSubTrigger({
   label,
   children,
 }: MenuSubTriggerProps): React.ReactElement {
-  const { activeIndex, getItemProps, refs, getReferenceProps, open } =
-    useMenuContext();
+  const { refs, getReferenceProps, open } = useMenuContext();
   const parent = useMenuContext().parent;
   if (!parent) throw new Error("MenuSubTrigger must be inside <MenuSub>");
   const density = useContext(MenuDensityContext);

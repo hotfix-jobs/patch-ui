@@ -25,7 +25,7 @@ export function FormDemo() {
         </p>
         <Form
           className="max-w-sm"
-          onFormSubmit={(formValues) => {
+          onFormSubmit={() => {
             setSubmitted(true);
             setTimeout(() => setSubmitted(false), 3000);
           }}

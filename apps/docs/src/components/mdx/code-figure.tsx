@@ -20,7 +20,7 @@ export function CodeFigure({
       figureRef.current?.querySelector("code")?.textContent || "";
     try {
       await navigator.clipboard.writeText(code);
-    } catch (err) {
+    } catch {
       const textarea = document.createElement("textarea");
       textarea.value = code;
       textarea.style.position = "fixed";

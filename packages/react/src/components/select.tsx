@@ -15,7 +15,6 @@ import {
   useInteractions,
   useListItem,
   useListNavigation,
-  useMergeRefs,
   useRole,
   useTypeahead,
 } from "@floating-ui/react";
@@ -299,6 +298,10 @@ export function SelectPopup({
 }: SelectPopupProps): React.ReactElement | null {
   const { open, context, refs, floatingStyles, getFloatingProps } =
     useSelectContext();
+  const setFloating = useCallback(
+    (node: HTMLElement | null) => refs.setFloating(node),
+    [refs],
+  );
   const reduceMotion = useReducedMotion();
 
   return (
@@ -307,7 +310,7 @@ export function SelectPopup({
         {open && (
           <FloatingFocusManager context={context} modal={false}>
             <motion.div
-              ref={refs.setFloating}
+              ref={setFloating}
               data-slot="select-popup"
               {...getFloatingProps()}
               style={{

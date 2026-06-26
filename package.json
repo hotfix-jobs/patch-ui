@@ -7,7 +7,17 @@
   ],
   "scripts": {
     "build": "npm run build -w packages/react",
-    "registry": "node scripts/build-registry-source.mjs && shadcn build registry.json --output apps/docs/public/r"
+    "registry": "node scripts/build-registry-source.mjs && shadcn build registry.json --output apps/docs/public/r",
+    "lint": "eslint packages/react/src apps/docs/src",
+    "lint:fix": "eslint packages/react/src apps/docs/src --fix"
   },
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "devDependencies": {
+    "@eslint/js": "9.39.4",
+    "eslint": "9.39.4",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "6.1.1",
+    "globals": "16.5.0",
+    "typescript-eslint": "8.62.0"
+  }
 }
