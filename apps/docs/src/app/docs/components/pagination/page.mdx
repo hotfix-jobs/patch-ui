@@ -2,7 +2,7 @@ import { PaginationDemo } from "./pagination-demo";
 
 # Pagination
 
-A minimal page navigator: prev/next icon buttons around an inline list of page numbers. Numbers read as quiet navigation chrome rather than a row of stamped buttons; the active page gets bold text and a hairline underline. Renders nothing when there is only one page.
+A minimal page navigator: prev/next chevron buttons flanking a sliding window of up to five page-number buttons. The number row reads as the caption (no "Page X of Y" text), and the active page sits centered as the window slides. Renders nothing when there is only one page.
 
 <Install name="pagination" />
 
@@ -19,21 +19,12 @@ import { Pagination } from "@patchui/react";
 const [page, setPage] = useState(1);
 
 // Basic
-<Pagination page={page} totalPages={10} onPageChange={setPage} />
-
-// Wider sibling window (active ±2 instead of ±1)
-<Pagination page={page} totalPages={20} onPageChange={setPage} siblingCount={2} />
-
-// With First / Last jump buttons
-<Pagination page={page} totalPages={50} onPageChange={setPage} showFirstLast />
-
-// Compact — just prev/next + "Page X of Y", no numbered list
-<Pagination page={page} totalPages={10} onPageChange={setPage} compact />
+<Pagination page={page} totalPages={12} onPageChange={setPage} />
 
 // Loading state during async page transitions
 <Pagination
   page={page}
-  totalPages={10}
+  totalPages={12}
   onPageChange={async (next) => {
     setLoading(true);
     await fetchPage(next);
@@ -67,50 +58,26 @@ const [page, setPage] = useState(1);
       description: "Fired when the user picks a new page (a value from 1 to totalPages).",
     },
     {
-      name: "siblingCount",
-      type: "number",
-      default: "1",
-      description: "Number of adjacent pages to show on each side of the active page. 1 = ±1 window (the default editorial range); 2 = ±2 window for heavier data UIs.",
-    },
-    {
-      name: "showFirstLast",
-      type: "boolean",
-      default: "false",
-      description: 'Render "First" and "Last" text buttons that jump to page 1 / totalPages. Useful for data tables with many pages. Hidden in compact mode.',
-    },
-    {
-      name: "compact",
-      type: "boolean",
-      default: "false",
-      description: "Drops the numbered list entirely; renders only prev/next + summary. Use on narrow viewports or in chrome-tight footers.",
-    },
-    {
       name: "loading",
       type: "boolean",
       default: "false",
       description: "Disables every control and dims the nav. Sets aria-busy on the landmark. Use during async page transitions so users see something is loading.",
     },
     {
-      name: "showSummary",
-      type: "boolean",
-      default: "true",
-      description: 'Show the "Page X of Y" caption beside the controls.',
-    },
-    {
-      name: "ariaLabel",
+      name: "className",
       type: "string",
-      default: '"Pagination"',
-      description: "Accessible label for the navigation landmark.",
+      default: "-",
+      description: "Extra classes appended to the nav landmark.",
     },
   ]}
 />
 
 <Callout title="Notes">
+- **Sliding window:** Always renders up to five number buttons, centered on the active page, clamped so the window never crosses 1 or totalPages. On page 1 the window is 1, 2, 3, 4, 5; on page 7 of 14 it is 5, 6, 7, 8, 9; on page 14 it is 10, 11, 12, 13, 14.
+- **No caption:** The number row is the caption, so there is no "Page X of Y" text to maintain or localize.
 - **Tabular numerals:** Page numbers use tabular figures so digits stay column-aligned regardless of width.
-- **Truncation:** Always shows the first and last page; ellipsis markers fill gaps when the active window doesn't reach the edges. Widen the window with `siblingCount={2}` or larger.
-- **Tap targets:** Numbered buttons are `min-w-[32px]` with `px-2 py-1.5` padding — a proper 32×32 touch target while keeping the inline-text feel.
-- **Press feedback:** Numbers scale to 95% on `active:` (matching `Button`), so clicks have tactile confirmation.
-- **Active semantics:** The active page button gets `aria-current="page"` and `aria-disabled` — semantically it isn't navigable since you're already there. Screen readers announce it as the current page.
+- **Tap targets:** Each number button is `h-8 min-w-8 px-2`, large enough for touch while sitting in the editorial-chrome aesthetic.
+- **Active semantics:** The active page button gets `aria-current="page"`, renders with the `secondary` Button variant, and is non-interactive (clicking it is a no-op since you are already there).
 - **Loading state:** When `loading={true}`, every control is disabled, the nav fades, and `aria-busy="true"` signals to assistive tech that a transition is in progress.
-- **Keyboard:** All controls are Tab-focusable with the standard focus outline. Arrow keys aren't bound (they'd conflict with horizontal scroll containers); use Tab + Enter.
+- **Keyboard:** All controls are Tab-focusable with the standard Button focus outline. Use Tab + Enter or Space to navigate; arrow keys are intentionally unbound so the control composes inside horizontal scroll containers.
 </Callout>
