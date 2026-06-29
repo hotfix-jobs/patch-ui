@@ -40,7 +40,7 @@ export function SheetDemo() {
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="sheet-email">Email</Label>
-                <Input id="sheet-email" type="email" defaultValue="casey@example.com" />
+                <Input id="sheet-email" type="email" defaultValue="jane@example.com" />
               </div>
             </div>
             <SheetFooter>

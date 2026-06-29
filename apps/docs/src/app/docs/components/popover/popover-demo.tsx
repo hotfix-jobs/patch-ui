@@ -112,7 +112,7 @@ function FormPopover() {
             id="display-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Casey"
+            placeholder="Jane"
           />
         </div>
         <div className="mt-4 flex justify-end gap-2">
