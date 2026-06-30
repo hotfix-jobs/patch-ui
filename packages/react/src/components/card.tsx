@@ -26,12 +26,6 @@ export const cardVariants = cva(
         ),
         ghost:
           "rounded-[var(--radius-patch-lg)] bg-transparent border-b border-[var(--separator-color)]",
-        // Flat editorial surface: no radius, hairline border, suitable for
-        // gallery/grid layouts where the BorderGrid pattern (gap-px + bg-border)
-        // would otherwise create rounded corners. Consumers can override the
-        // bg via className for transparent grid cells.
-        editorial:
-          "rounded-none bg-patch-surface border border-[var(--patch-border)]",
       },
     },
   },

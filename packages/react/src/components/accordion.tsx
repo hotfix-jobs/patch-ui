@@ -8,14 +8,20 @@ import { focusRing } from "../recipes";
 /**
  * Accordion - compound component built on Base UI Accordion.
  *
- * Hairline row separators and a chevron that rotates 180deg on open. Panels
- * animate their height open/close via Base UI's `--accordion-panel-height`
- * CSS variable and render `keepMounted` so collapsed content stays in the
+ * Unstyled item wrapper plus a chevron that rotates 180deg on open.
+ * Consumers supply their own row/card chrome (e.g. add
+ * `border-t border-patch-border last:border-b` to AccordionItem for the
+ * hairline row pattern, or wrap each item in a Card). Panels animate
+ * their height open/close via Base UI's `--accordion-panel-height` CSS
+ * variable and render `keepMounted` so collapsed content stays in the
  * DOM (still crawlable, just height:0/overflow-hidden when closed).
  *
  * Usage:
  *   <Accordion defaultValue={["item-0"]}>
- *     <AccordionItem value="item-0">
+ *     <AccordionItem
+ *       value="item-0"
+ *       className="border-t border-patch-border last:border-b"
+ *     >
  *       <AccordionTrigger>Question?</AccordionTrigger>
  *       <AccordionPanel>Answer.</AccordionPanel>
  *     </AccordionItem>
@@ -34,7 +40,7 @@ export function AccordionItem({
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn("border-t border-patch-border last:border-b", className)}
+      className={className}
       {...props}
     />
   );
