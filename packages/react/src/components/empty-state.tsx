@@ -56,7 +56,7 @@ export function EmptyState({
       {icon && (
         <div
           aria-hidden
-          className="mb-4 flex w-9 h-9 items-center justify-center rounded-[var(--radius-patch-sm)] border-[0.5px] border-patch-border text-patch-text-tertiary"
+          className="mb-4 flex w-9 h-9 items-center justify-center rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)] text-patch-text-tertiary"
         >
           {icon}
         </div>

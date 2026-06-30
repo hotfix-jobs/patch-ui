@@ -27,8 +27,8 @@ export function Kbd({
       data-size={size}
       className={cn(
         "inline-flex items-center justify-center font-sans font-medium tabular-nums text-patch-text-secondary",
-        "rounded-[var(--radius-patch-xs)] border-[0.5px] border-patch-border bg-patch-surface",
-        "shadow-[inset_0_-1px_0_0_var(--patch-border)]",
+        "rounded-[var(--radius-patch-xs)] bg-patch-surface",
+        "border border-patch-border shadow-[inset_0_-1px_0_0_var(--patch-border)]",
         size === "sm" &&
           "h-[18px] min-w-[18px] px-1 text-[length:var(--text-patch-micro)]",
         size === "md" &&

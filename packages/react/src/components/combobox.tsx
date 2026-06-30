@@ -309,7 +309,7 @@ export function ComboboxPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border-[0.5px] border-[var(--patch-border)] shadow-patch-popup outline-none overflow-hidden",
+                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border border-[var(--patch-border)] shadow-patch-popup outline-none overflow-hidden",
                 className,
               )}
             >

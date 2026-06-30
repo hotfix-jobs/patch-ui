@@ -309,7 +309,7 @@ export function MenuPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border-[0.5px] border-[var(--patch-border)] shadow-patch-popup outline-none focus:outline-none",
+                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border border-[var(--patch-border)] shadow-patch-popup outline-none focus:outline-none",
                 density === "compact"
                   ? "not-[class*='w-']:min-w-32"
                   : "not-[class*='w-']:min-w-56",

@@ -30,11 +30,11 @@ export const buttonVariants = cva(
           "bg-[var(--btn-secondary-bg)] text-[var(--btn-secondary-text)] border-none hover:bg-[var(--btn-secondary-hover)] active:bg-[var(--btn-secondary-active)]",
         // Hairline-bordered button with a subtle neutral hover fill.
         outline:
-          "bg-transparent text-[var(--patch-text)] border-[0.5px] border-[var(--patch-border)] hover:bg-[var(--patch-accent)]",
+          "bg-transparent text-[var(--patch-text)] border border-[var(--patch-border)] hover:bg-[var(--patch-accent)]",
         ghost:
           "bg-transparent text-[var(--patch-text)] border-none hover:bg-[var(--patch-surface-hover)] active:bg-[var(--patch-surface-active)]",
         danger:
-          "bg-[var(--btn-danger-bg)] text-[var(--btn-danger-text)] border-[0.5px] border-[var(--btn-danger-border)] hover:bg-[var(--btn-danger-hover)] active:bg-[var(--btn-danger-active)]",
+          "bg-[var(--btn-danger-bg)] text-[var(--btn-danger-text)] border border-[var(--btn-danger-border)] hover:bg-[var(--btn-danger-hover)] active:bg-[var(--btn-danger-active)]",
         // Inline text action with an animated draw-underline on hover.
         link: "bg-transparent text-[var(--patch-text)] border-none rounded-none px-0 h-auto relative pb-0.5 before:content-[''] before:absolute before:inset-x-0 before:bottom-[2px] before:h-[0.5px] before:bg-[var(--patch-text)] before:scale-x-[0.3] before:origin-left before:transition-[scale] before:duration-[var(--duration-patch-spring)] before:ease-[var(--ease-patch-out)] hover:before:scale-x-100",
         // Uppercase utility CTA (marketing/utility).

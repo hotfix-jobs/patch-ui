@@ -56,17 +56,17 @@ export interface TagInputProps
 
 const WRAPPER_VARIANT = {
   outlined:
-    "rounded-[var(--radius-patch-sm)] border-[0.5px] border-[var(--input-border)] bg-patch-surface " +
-    "hover:border-[var(--patch-border-hover)] " +
-    "focus-within:border-[var(--patch-border-active)] " +
+    "rounded-[var(--radius-patch-sm)] border border-[var(--input-border)] bg-patch-surface " +
+    "hover:border border-[var(--patch-border-hover)] " +
+    "focus-within:border border-[var(--patch-border-active)] " +
     "focus-within:outline focus-within:outline-1 focus-within:outline-[var(--patch-focus-ring)] focus-within:outline-offset-[var(--patch-focus-ring-offset)]",
   ghost:
     "rounded-[var(--radius-patch-sm)] bg-transparent border-none " +
     "focus-within:outline focus-within:outline-1 focus-within:outline-[var(--patch-focus-ring)] focus-within:outline-offset-[var(--patch-focus-ring-offset)]",
   underline:
-    "rounded-none bg-transparent border-x-0 border-t-0 border-b-[0.5px] border-b-[var(--input-border)] " +
-    "hover:border-b-[var(--patch-border-hover)] " +
-    "focus-within:border-b-[var(--patch-border-active)]",
+    "rounded-none bg-transparent border-b border-[var(--input-border)] " +
+    "hover:border-b border-[var(--patch-border-hover)] " +
+    "focus-within:border-b border-[var(--patch-border-active)]",
 } as const;
 
 const INVALID_BY_VARIANT = {
@@ -74,7 +74,7 @@ const INVALID_BY_VARIANT = {
     "!border-[var(--patch-error)] focus-within:!border-[var(--patch-error)] focus-within:!outline-[var(--patch-error)]",
   ghost: "focus-within:!outline-[var(--patch-error)]",
   underline:
-    "!border-b-[var(--patch-error)] focus-within:!border-b-[var(--patch-error)]",
+    "!border-b border-[var(--patch-error)] focus-within:!border-b border-[var(--patch-error)]",
 } as const;
 
 const DEFAULT_TRANSFORM = (raw: string) => raw.trim();
@@ -192,7 +192,7 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
         onClick={() => innerRef.current?.focus()}
         className={cn(
           "relative flex w-full flex-wrap items-center gap-1.5 px-2.5 py-1.5 text-[length:var(--text-patch-control)] text-patch-text",
-          "transition-[color,background-color,border-color,outline-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+          "transition-[color,background-color,box-shadow,outline-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
           "has-disabled:opacity-50 cursor-text",
           WRAPPER_VARIANT[variant],
           invalid && INVALID_BY_VARIANT[variant],

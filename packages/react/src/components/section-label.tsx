@@ -15,7 +15,7 @@ export const sectionLabelVariants = cva(
     variants: {
       variant: {
         bare: "mb-3",
-        divided: "mb-5 pb-3 border-b-[0.5px] border-[var(--patch-border)]",
+        divided: "mb-5 pb-3 border-b border-[var(--patch-border)]",
       },
     },
   },

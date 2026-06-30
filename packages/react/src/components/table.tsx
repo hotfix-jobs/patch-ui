@@ -62,7 +62,7 @@ export function Table({
         "w-full caption-bottom border-collapse",
         "text-[length:var(--text-patch-control)] text-patch-text",
         variant === "default" &&
-          "rounded-[var(--radius-patch-lg)] overflow-hidden bg-patch-surface border-[0.5px] border-patch-border",
+          "rounded-[var(--radius-patch-lg)] overflow-hidden bg-patch-surface border border-[var(--patch-border)]",
         className,
       )}
       {...props}
@@ -89,7 +89,7 @@ export function TableHeader({
     <thead
       data-slot="table-header"
       className={cn(
-        "bg-patch-surface-2 border-b-[0.5px] border-patch-border",
+        "bg-patch-surface-2 border-b border-[var(--patch-border)]",
         className,
       )}
       {...props}
@@ -112,7 +112,7 @@ export function TableFooter({
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "bg-patch-surface-2 border-t-[0.5px] border-patch-border font-medium",
+        "bg-patch-surface-2 border-t border-[var(--patch-border)] font-medium",
         className,
       )}
       {...props}
@@ -130,7 +130,7 @@ export function TableRow({
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b-[0.5px] border-patch-border last:border-b-0",
+        "border-b border-[var(--patch-border)] last:shadow-none",
         "transition-colors hover:bg-[var(--menu-item-hover)]",
         className,
       )}

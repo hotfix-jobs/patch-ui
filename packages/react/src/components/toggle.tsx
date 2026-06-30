@@ -23,7 +23,7 @@ export const toggleVariants = cva(
         ghost:
           "bg-transparent text-patch-text-secondary hover:bg-patch-accent hover:text-patch-text data-[state=on]:bg-patch-text data-[state=on]:text-patch-bg",
         outline:
-          "bg-transparent text-patch-text-secondary border-[0.5px] border-patch-border hover:bg-patch-accent hover:text-patch-text data-[state=on]:bg-patch-text data-[state=on]:text-patch-bg data-[state=on]:border-patch-text",
+          "bg-transparent text-patch-text-secondary border border-[var(--patch-border)] hover:bg-patch-accent hover:text-patch-text data-[state=on]:bg-patch-text data-[state=on]:text-patch-bg data-[state=on]:border border-[var(--patch-text)]",
       },
     },
   },

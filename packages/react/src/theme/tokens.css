@@ -23,9 +23,10 @@
   --patch-text-secondary: #525252;
   --patch-text-tertiary: #737373;
   --patch-text-quaternary: #b5b5b5;
-  --patch-border: #d4d4d4;
+  /* Hairline borders. Softened so 1px reads as a visual hairline. */
+  --patch-border: #e5e5e5;
   --patch-border-subtle: rgba(from var(--patch-text) r g b / 0.06);
-  --patch-border-hover: #b8b8b8;
+  --patch-border-hover: #c8c8c8;
   --patch-border-active: #a3a3a3;
   /* Focus ring (1px solid outline) */
   --patch-focus-ring: rgba(from var(--patch-text) r g b / 0.55);
@@ -122,8 +123,9 @@
   --patch-text-secondary: #a1a1a1;
   --patch-text-tertiary: #858585;
   --patch-text-quaternary: #5a5a5a;
-  --patch-border: rgba(255,255,255,0.15);
-  --patch-border-hover: rgba(255,255,255,0.22);
+  /* Hairline borders. Softened so 1px reads as a visual hairline. */
+  --patch-border: rgba(255,255,255,0.08);
+  --patch-border-hover: rgba(255,255,255,0.16);
   --patch-border-active: rgba(255,255,255,0.30);
   --patch-focus-ring: rgba(255, 255, 255, 0.5);
   --patch-error: #f87171;

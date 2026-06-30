@@ -53,7 +53,7 @@ export function NavigationMenu({
           <NavigationMenuPrimitive.Popup
             data-slot="navigation-menu-popup"
             className={cn(
-              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-[var(--radius-patch-sm)] border-[0.5px] border-patch-border bg-patch-surface text-patch-text shadow-patch-popup",
+              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-[var(--radius-patch-sm)] bg-patch-surface text-patch-text border border-[var(--patch-border)] shadow-patch-popup",
               "transition-[opacity,transform,width,height] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
               "data-[starting-style]:opacity-0 data-[starting-style]:scale-[0.97] data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.97]",
             )}

@@ -87,7 +87,7 @@ export function SegmentedToggle({
           // w-fit + self-start: keep the control content-sized when the
           //   parent is a flex column with the default align-items:
           //   stretch (would otherwise pull the inline-flex full-width).
-          "isolate inline-flex w-fit self-start items-center rounded-[var(--radius-patch-sm)] border-[0.5px] border-[var(--patch-border)] p-0.5",
+          "isolate inline-flex w-fit self-start items-center rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)] p-0.5",
           className,
         )}
         {...props}

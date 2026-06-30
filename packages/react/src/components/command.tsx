@@ -65,9 +65,9 @@ export function CommandInput({
       className={cn(
         "relative inline-flex w-full items-center",
         "rounded-none bg-transparent",
-        "border-x-0 border-t-0 border-b-[0.5px] border-b-[var(--input-border)]",
-        "has-focus-visible:border-b-[var(--input-border-focus)]",
-        "transition-[color,border-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+        "border-b border-[var(--input-border)]",
+        "has-focus-visible:border-b border-[var(--input-border-focus)]",
+        "transition-[color,box-shadow] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
       )}
       data-slot="command-input-wrapper"
     >

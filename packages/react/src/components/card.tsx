@@ -16,22 +16,22 @@ export const cardVariants = cva(
     variants: {
       variant: {
         default:
-          "rounded-[var(--radius-patch-lg)] bg-patch-surface border-[0.5px] border-[var(--patch-border)]",
+          "rounded-[var(--radius-patch-lg)] bg-patch-surface border border-[var(--patch-border)]",
         // Tonal elevation (nested surface tone), not a shadow — surfaces stay flat.
         elevated:
-          "rounded-[var(--radius-patch-lg)] bg-patch-surface-2 border-[0.5px] border-[var(--patch-border)]",
+          "rounded-[var(--radius-patch-lg)] bg-patch-surface-2 border border-[var(--patch-border)]",
         interactive: cn(
-          "rounded-[var(--radius-patch-lg)] bg-transparent border-[0.5px] border-[var(--patch-border)] hover:bg-patch-surface hover:border-[var(--patch-border-hover)] cursor-pointer transition-transform duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-[0.99]",
+          "rounded-[var(--radius-patch-lg)] bg-transparent border border-[var(--patch-border)] hover:bg-patch-surface-hover hover:border-[var(--patch-border-hover)] cursor-pointer transition-[transform,background-color,border-color] duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-[0.99]",
           focusRing,
         ),
         ghost:
-          "rounded-[var(--radius-patch-lg)] bg-transparent border-b-[0.5px] border-[var(--separator-color)]",
+          "rounded-[var(--radius-patch-lg)] bg-transparent border-b border-[var(--separator-color)]",
         // Flat editorial surface: no radius, hairline border, suitable for
         // gallery/grid layouts where the BorderGrid pattern (gap-px + bg-border)
         // would otherwise create rounded corners. Consumers can override the
         // bg via className for transparent grid cells.
         editorial:
-          "rounded-none bg-patch-surface border-[0.5px] border-[var(--patch-border)]",
+          "rounded-none bg-patch-surface border border-[var(--patch-border)]",
       },
     },
   },
@@ -57,7 +57,7 @@ export function Card({
   const defaultProps = {
     className: cn(
       cardVariants({ className, variant }),
-      selected && "!border-patch-text",
+      selected && "!border-[var(--patch-text)]",
     ),
     "data-slot": "card",
     "data-selected": selected || undefined,
@@ -168,7 +168,7 @@ export function CardFooter({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("flex items-center px-5 py-4 border-t-[0.5px] border-[var(--patch-border)]", className),
+    className: cn("flex items-center px-5 py-4 border-t border-[var(--patch-border)]", className),
     "data-slot": "card-footer",
   };
 
@@ -197,7 +197,7 @@ export function CardMeta({
 }: CardMetaProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex items-center justify-between gap-3 border-t-[0.5px] border-[var(--patch-border)] px-5 py-4",
+      "flex items-center justify-between gap-3 border-t border-[var(--patch-border)] px-5 py-4",
       className,
     ),
     "data-slot": "card-meta",

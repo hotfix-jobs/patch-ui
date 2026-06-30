@@ -14,20 +14,20 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export const alertVariants = cva(
-  "relative grid grid-cols-[auto_1fr_auto] items-start gap-3 rounded-[var(--radius-patch-sm)] border-[0.5px] px-4 py-3 text-patch-text",
+  "relative grid grid-cols-[auto_1fr_auto] items-start gap-3 rounded-[var(--radius-patch-sm)] px-4 py-3 text-patch-text",
   {
     defaultVariants: {
       variant: "info",
     },
     variants: {
       variant: {
-        info: "border-patch-border bg-patch-surface [&_[data-slot=alert-icon]]:text-patch-text-secondary",
+        info: "bg-patch-surface border border-[var(--patch-border)] [&_[data-slot=alert-icon]]:text-patch-text-secondary",
         success:
-          "border-[var(--badge-success-text)]/30 bg-[color-mix(in_oklab,var(--badge-success-text)_8%,var(--patch-surface))] [&_[data-slot=alert-icon]]:text-[var(--badge-success-text)]",
+          "bg-[color-mix(in_oklab,var(--badge-success-text)_8%,var(--patch-surface))] border border-[var(--badge-success-text)]/30 [&_[data-slot=alert-icon]]:text-[var(--badge-success-text)]",
         warning:
-          "border-[var(--badge-warning-text)]/30 bg-[color-mix(in_oklab,var(--badge-warning-text)_8%,var(--patch-surface))] [&_[data-slot=alert-icon]]:text-[var(--badge-warning-text)]",
+          "bg-[color-mix(in_oklab,var(--badge-warning-text)_8%,var(--patch-surface))] border border-[var(--badge-warning-text)]/30 [&_[data-slot=alert-icon]]:text-[var(--badge-warning-text)]",
         danger:
-          "border-[var(--badge-danger-text)]/30 bg-[color-mix(in_oklab,var(--badge-danger-text)_8%,var(--patch-surface))] [&_[data-slot=alert-icon]]:text-[var(--badge-danger-text)]",
+          "bg-[color-mix(in_oklab,var(--badge-danger-text)_8%,var(--patch-surface))] border border-[var(--badge-danger-text)]/30 [&_[data-slot=alert-icon]]:text-[var(--badge-danger-text)]",
       },
     },
   },

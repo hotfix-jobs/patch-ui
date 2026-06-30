@@ -29,7 +29,7 @@ export function AppHeader({
   const defaultProps = {
     className: cn(
       "bg-patch-surface",
-      bordered && "border-b-[0.5px] border-[var(--patch-border)]",
+      bordered && "border-b border-[var(--patch-border)]",
       sticky ? "sticky top-0 z-50" : "relative",
       className,
     ),

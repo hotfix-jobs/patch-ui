@@ -34,7 +34,7 @@ export function AccordionItem({
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={cn("border-t-[0.5px] border-patch-border last:border-b-[0.5px]", className)}
+      className={cn("border-t border-patch-border last:border-b", className)}
       {...props}
     />
   );

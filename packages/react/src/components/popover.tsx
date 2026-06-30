@@ -280,7 +280,7 @@ export function PopoverContent({
                     }
               }
               className={cn(
-                "z-[80] rounded-[var(--radius-patch-sm)] bg-patch-surface border-[0.5px] border-[var(--patch-border)] shadow-patch-popup outline-none",
+                "z-[80] rounded-[var(--radius-patch-sm)] bg-patch-surface border border-[var(--patch-border)] shadow-patch-popup outline-none",
                 className,
               )}
             >

@@ -115,8 +115,8 @@ export function TabsList({
         "relative flex",
         variant === "underline" && [
           orientation === "horizontal"
-            ? "items-center gap-6 border-b-[0.5px] border-patch-border"
-            : "flex-col items-stretch gap-4 border-l-[0.5px] border-patch-border",
+            ? "items-center gap-6 border-b border-[var(--patch-border)]"
+            : "flex-col items-stretch gap-4 border-l border-[var(--patch-border)]",
         ],
         variant === "pill" && [
           "gap-0.5",

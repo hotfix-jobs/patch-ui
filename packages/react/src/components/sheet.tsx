@@ -251,7 +251,7 @@ export function SheetContent({
                         }
                   }
                   className={cn(
-                    "absolute z-70 flex flex-col bg-patch-surface text-patch-text border-[0.5px] border-[var(--dialog-border)] shadow-patch-overlay",
+                    "absolute z-70 flex flex-col bg-patch-surface text-patch-text border border-[var(--dialog-border)] shadow-patch-overlay",
                     side === "right" &&
                       "inset-y-0 right-0 h-full w-full max-w-md rounded-l-[var(--radius-patch-sm)]",
                     side === "left" &&
@@ -407,7 +407,7 @@ export function SheetFooter({
   return (
     <div
       className={cn(
-        "flex flex-col-reverse gap-2 border-t-[0.5px] border-patch-border px-6 py-4 sm:flex-row sm:justify-end",
+        "flex flex-col-reverse gap-2 border-t border-[var(--patch-border)] px-6 py-4 sm:flex-row sm:justify-end",
         className,
       )}
       data-slot="sheet-footer"

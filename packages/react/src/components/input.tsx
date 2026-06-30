@@ -32,17 +32,17 @@ export type InputProps = Omit<
 
 const WRAPPER_VARIANT: Record<InputVariant, string> = {
   outlined:
-    "rounded-[var(--radius-patch-sm)] border-[0.5px] border-[var(--input-border)] bg-patch-surface " +
-    "hover:border-[var(--patch-border-hover)] " +
-    "has-focus-visible:border-[var(--patch-border-active)] " +
+    "rounded-[var(--radius-patch-sm)] border border-[var(--input-border)] bg-patch-surface " +
+    "hover:border border-[var(--patch-border-hover)] " +
+    "has-focus-visible:border border-[var(--patch-border-active)] " +
     "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
   ghost:
     "rounded-[var(--radius-patch-sm)] bg-transparent border-none " +
     "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
   underline:
-    "rounded-none bg-transparent border-x-0 border-t-0 border-b-[0.5px] border-b-[var(--input-border)] " +
-    "hover:border-b-[var(--patch-border-hover)] " +
-    "has-focus-visible:border-b-[var(--patch-border-active)]",
+    "rounded-none bg-transparent border-b border-[var(--input-border)] " +
+    "hover:border-b border-[var(--patch-border-hover)] " +
+    "has-focus-visible:border-b border-[var(--patch-border-active)]",
 };
 
 const INVALID_BY_VARIANT: Record<InputVariant, string> = {
@@ -51,7 +51,7 @@ const INVALID_BY_VARIANT: Record<InputVariant, string> = {
   ghost:
     "has-focus-visible:!outline-[var(--patch-error)]",
   underline:
-    "!border-b-[var(--patch-error)] has-focus-visible:!border-b-[var(--patch-error)]",
+    "!border-b border-[var(--patch-error)] has-focus-visible:!border-b border-[var(--patch-error)]",
 };
 
 export function Input({
@@ -116,7 +116,7 @@ export function Input({
           !unstyled && [
             "relative inline-flex w-full items-center",
             "text-[length:var(--text-patch-control)] text-patch-text",
-            "transition-[color,background-color,border-color,outline-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+            "transition-[color,background-color,box-shadow,outline-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
             "has-disabled:opacity-50",
             WRAPPER_VARIANT[variant],
             invalid && INVALID_BY_VARIANT[variant],
@@ -181,7 +181,7 @@ export function Input({
         </span>
       )}
       {suffix && !trailingSpinner && (
-        <span className="flex shrink-0 items-center pe-3 ps-2 ml-2 my-2 text-patch-text-tertiary text-[length:var(--text-patch-micro)] tracking-[-0.01em] border-l-[0.5px] border-[var(--input-border)]">
+        <span className="flex shrink-0 items-center pe-3 ps-2 ml-2 my-2 text-patch-text-tertiary text-[length:var(--text-patch-micro)] tracking-[-0.01em] border-l border-[var(--input-border)]">
           {suffix}
         </span>
       )}

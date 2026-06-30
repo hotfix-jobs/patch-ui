@@ -184,7 +184,7 @@ export function Select({
 /* --------------------------- Trigger --------------------------- */
 
 export const selectTriggerVariants = cva(
-  `relative inline-flex h-10 w-full min-w-36 select-none items-center justify-between gap-2 rounded-[var(--radius-patch-sm)] bg-patch-surface px-3.5 text-left text-[length:var(--text-patch-control)] tracking-[-0.005em] text-patch-text border-[0.5px] border-[var(--input-border)] hover:border-[var(--patch-border-hover)] focus-visible:border-[var(--patch-border-active)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer ${colorTransition} ${focusRing}`,
+  `relative inline-flex h-10 w-full min-w-36 select-none items-center justify-between gap-2 rounded-[var(--radius-patch-sm)] bg-patch-surface px-3.5 text-left text-[length:var(--text-patch-control)] tracking-[-0.005em] text-patch-text border border-[var(--input-border)] hover:border border-[var(--patch-border-hover)] focus-visible:border border-[var(--patch-border-active)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer ${colorTransition} ${focusRing}`,
   {
     defaultVariants: { size: "md" },
     variants: {
@@ -331,7 +331,7 @@ export function SelectPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border-[0.5px] border-[var(--patch-border)] shadow-patch-popup outline-none focus:outline-none overflow-hidden",
+                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border border-[var(--patch-border)] shadow-patch-popup outline-none focus:outline-none overflow-hidden",
                 className,
               )}
             >

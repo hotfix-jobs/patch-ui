@@ -24,14 +24,14 @@ export const badgeVariants = cva(
       variant: {
         default: "bg-[var(--badge-default-bg)] text-[var(--badge-default-text)] border-0",
         primary: "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] border-0",
-        ghost: "bg-transparent text-[var(--patch-text)] border-[0.5px] border-[var(--patch-border)]",
+        ghost: "bg-transparent text-[var(--patch-text)] border border-[var(--patch-border)]",
         secondary: "bg-[var(--badge-secondary-bg)] text-[var(--badge-secondary-text)] border-0",
         success: "bg-[var(--badge-success-bg)] text-[var(--badge-success-text)] border-0",
         warning: "bg-[var(--badge-warning-bg)] text-[var(--badge-warning-text)] border-0",
         danger: "bg-[var(--badge-danger-bg)] text-[var(--badge-danger-text)] border-0",
-        successOutline: "bg-transparent text-[var(--badge-success-text)] border-[0.5px] border-[var(--badge-success-text)]",
-        warningOutline: "bg-transparent text-[var(--badge-warning-text)] border-[0.5px] border-[var(--badge-warning-text)]",
-        dangerOutline: "bg-transparent text-[var(--badge-danger-text)] border-[0.5px] border-[var(--badge-danger-text)]",
+        successOutline: "bg-transparent text-[var(--badge-success-text)] border border-[var(--badge-success-text)]",
+        warningOutline: "bg-transparent text-[var(--badge-warning-text)] border border-[var(--badge-warning-text)]",
+        dangerOutline: "bg-transparent text-[var(--badge-danger-text)] border border-[var(--badge-danger-text)]",
       },
       shape: {
         rounded: "rounded-[var(--radius-patch-xs)]",

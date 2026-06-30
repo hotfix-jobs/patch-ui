@@ -400,9 +400,9 @@ function ToastItem({
       data-type={t.type}
       className={cn(
         "pointer-events-auto relative w-full select-none",
-        "rounded-[var(--radius-patch-sm)] border-[0.5px] border-[var(--patch-border)]",
+        "rounded-[var(--radius-patch-sm)]",
         "bg-patch-surface text-patch-text",
-        "shadow-patch-popup",
+        "border border-[var(--patch-border)] shadow-patch-popup",
         "px-3 py-3 pe-10",
         "flex items-start gap-2.5",
         "tracking-[var(--tracking-patch-small)]",
@@ -438,7 +438,7 @@ function ToastItem({
             }}
             className={cn(
               "mt-2 inline-flex items-center justify-center",
-              "rounded-[var(--radius-patch-sm)] border-[0.5px] border-[var(--patch-border)]",
+              "rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)]",
               "bg-transparent px-2.5 py-1",
               "text-[length:var(--text-patch-control)] font-medium text-patch-text",
               "transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",

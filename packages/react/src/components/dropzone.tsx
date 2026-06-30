@@ -178,7 +178,7 @@ export function Dropzone({
           }
         }}
         className={cn(
-          "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-patch-sm)] border-[0.5px] border-dashed border-patch-border px-6 py-10",
+          "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-patch-sm)] border border-dashed border-patch-border px-6 py-10",
           "text-center transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
           "hover:border-[var(--patch-border-hover)] hover:bg-patch-surface-hover",
           "data-[drag-over]:border-patch-text data-[drag-over]:bg-patch-accent",
@@ -189,7 +189,7 @@ export function Dropzone({
       >
         <div
           aria-hidden
-          className="flex size-10 items-center justify-center rounded-[var(--radius-patch-sm)] border-[0.5px] border-patch-border bg-patch-surface text-patch-text-secondary"
+          className="flex size-10 items-center justify-center rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)] bg-patch-surface text-patch-text-secondary"
         >
           <Upload className="size-5" />
         </div>
@@ -231,7 +231,7 @@ export function Dropzone({
                 key={`${f.name}-${i}`}
                 data-slot="dropzone-file"
                 data-state={isUploading ? "uploading" : undefined}
-                className="flex items-center gap-3 rounded-[var(--radius-patch-xs)] border-[0.5px] border-patch-border bg-patch-surface px-3 py-2"
+                className="flex items-center gap-3 rounded-[var(--radius-patch-xs)] border border-[var(--patch-border)] bg-patch-surface px-3 py-2"
               >
                 <File className="size-4 shrink-0 text-patch-text-tertiary" />
                 <div className="flex min-w-0 flex-1 flex-col gap-1">

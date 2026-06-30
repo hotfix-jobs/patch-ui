@@ -214,7 +214,7 @@ export function DialogContent({
                     data-slot="dialog-popup"
                     {...getFloatingProps()}
                     className={cn(
-                      "relative flex max-h-[calc(100vh-2rem)] min-h-0 w-full min-w-0 origin-center flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface text-patch-text border-[0.5px] border-[var(--patch-border)] shadow-patch-overlay",
+                      "relative flex max-h-[calc(100vh-2rem)] min-h-0 w-full min-w-0 origin-center flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface text-patch-text border border-[var(--patch-border)] shadow-patch-overlay",
                       SIZE_CLASSES[size],
                       className,
                     )}
