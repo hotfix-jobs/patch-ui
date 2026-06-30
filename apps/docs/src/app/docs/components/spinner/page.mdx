@@ -92,6 +92,6 @@ import { Spinner } from "@patchui/react";
 - **Color inheritance:** All variants use `currentColor`, so they adapt to the parent's text color automatically. Wrap in a colored container to change the spinner color.
 - **Button loading:** Use `<Spinner size="sm" />` inside a Button's loading state. The `ring` and `spinner` variants work best at small sizes.
 - **No JS animation:** All animations are pure CSS (`transform` + `opacity` on the compositor thread). No `requestAnimationFrame` or JavaScript timers.
-- **Editorial ring duration:** The default `ring` variant spins on a 900ms cycle — calmer than typical 600-750ms spinners, intentional for the editorial feel.
+- **Ring duration:** The default `ring` variant spins on a 900ms cycle — calmer than typical 600-750ms spinners, intentional for a quieter feel.
 - **Accessibility:** Renders with `role="status"` plus your `label` (default `"Loading"`) on `aria-label` and an sr-only span. Override `label` to surface specific async context to assistive tech.
 </Callout>

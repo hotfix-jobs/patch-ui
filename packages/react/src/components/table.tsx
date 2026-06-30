@@ -42,10 +42,10 @@ export interface TableProps
   /**
    * Visual treatment.
    * - `default`: rounded 12px outer, hairline border, surface bg — dashboard / data-card feel.
-   * - `editorial`: flat (no radius, no outer bg, no border) — NYT / Bloomberg data-table feel.
+   * - `flat`: no radius, no outer bg, no border — NYT / Bloomberg data-table feel.
    *    Row + header backgrounds and hairlines still render.
    */
-  variant?: "default" | "editorial";
+  variant?: "default" | "flat";
 }
 
 export function Table({

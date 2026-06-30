@@ -55,7 +55,7 @@ export interface DatePickerProps {
 /**
  * DatePicker — Button trigger + Popover + Calendar. Single date selection
  * with formatted label, polymorphic trigger via PopoverTrigger, and the
- * full editorial Popover chrome.
+ * full Popover chrome.
  */
 export function DatePicker({
   value: controlledValue,

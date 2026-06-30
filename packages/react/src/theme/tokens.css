@@ -12,7 +12,7 @@
    */
   --patch-bg: #fafafa;
   --patch-bg-deep: #ededed;             /* canvas behind dialogs/sheets */
-  --patch-page-bg: #fafafa;             /* matches --patch-bg so the editorial frame reads as a width container, not a colored inset */
+  --patch-page-bg: #fafafa;             /* matches --patch-bg so the page frame reads as a width container, not a colored inset */
   --patch-surface: #ffffff;
   --patch-surface-2: #f5f5f5;           /* nested/elevated card surface */
   --patch-surface-hover: #f5f5f5;
@@ -112,7 +112,7 @@
 .dark {
   --patch-bg: #0a0a0b;
   --patch-bg-deep: #050506;             /* canvas behind dialogs/sheets */
-  --patch-page-bg: #0a0a0b;             /* matches --patch-bg so the editorial frame reads as a width container, not a colored inset */
+  --patch-page-bg: #0a0a0b;             /* matches --patch-bg so the page frame reads as a width container, not a colored inset */
   --patch-surface: #111113;
   --patch-surface-2: #161718;           /* nested/elevated card surface */
   --patch-surface-hover: #191919;

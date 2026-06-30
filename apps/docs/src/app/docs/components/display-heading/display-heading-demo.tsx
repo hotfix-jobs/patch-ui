@@ -17,7 +17,7 @@ export function DisplayHeadingDemo() {
       </DisplayHeading>
 
       <DisplayHeading size="md" eyebrow="New release">
-        v0.24 ships with editorial defaults across every component.
+        v0.24 ships with refined defaults across every component.
       </DisplayHeading>
     </div>
   );

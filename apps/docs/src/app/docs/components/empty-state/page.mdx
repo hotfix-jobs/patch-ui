@@ -63,6 +63,6 @@ import { Search } from "lucide-react";
 
 <Callout title="Notes">
 - **Motion on mount:** Fades in with a subtle `opacity 0 → 1` + 8px y-translate on mount via `motion`. Respects `prefers-reduced-motion`. Makes transitions from skeleton or list-with-data into the empty state feel intentional rather than abrupt.
-- **Icon container:** Hairline-bordered 36×36 box with editorial radius. The icon inherits `--patch-text-tertiary` color; SVG inside scales automatically.
+- **Icon container:** Hairline-bordered 36×36 box with the standard `--radius-patch-md` corner. The icon inherits `--patch-text-tertiary` color; SVG inside scales automatically.
 - **Routing:** Pass any node as `action`. For framework integration (Next.js Link, React Router, etc.), wrap your `<Button>` inside the router's Link primitive — Patch stays framework-agnostic.
 </Callout>

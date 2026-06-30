@@ -55,7 +55,7 @@ import { Badge } from "@patchui/react";
       name: "variant",
       type: '"default" | "primary" | "secondary" | "ghost" | "success" | "warning" | "danger" | "successOutline" | "warningOutline" | "dangerOutline"',
       default: '"default"',
-      description: "The visual style. Solid (success/warning/danger) flood the badge with a tinted bg + colored text. Outline variants (*Outline) are transparent with a colored hairline border + matching text — restrained editorial alternative.",
+      description: "The visual style. Solid (success/warning/danger) flood the badge with a tinted bg + colored text. Outline variants (*Outline) are transparent with a colored hairline border + matching text — restrained alternative.",
     },
     {
       name: "size",
@@ -99,7 +99,7 @@ import { Badge } from "@patchui/react";
 
 <Callout title="Notes">
 - **Polymorphic rendering:** Use the `render` prop to render the badge as any HTML element. For example, `render={<a href="/status" />}` renders an anchor tag with badge styling.
-- **Solid vs Outline variants:** Solid (`success` / `warning` / `danger`) flood the badge with a tinted background — use for high-emphasis status. Outline (`successOutline` etc.) are transparent with a colored hairline border — quieter, fits restrained editorial pages.
+- **Solid vs Outline variants:** Solid (`success` / `warning` / `danger`) flood the badge with a tinted background — use for high-emphasis status. Outline (`successOutline` etc.) are transparent with a colored hairline border — quieter, for restrained surfaces.
 - **Dismissible hover:** When `onRemove` is set, the × button is 50% opacity at rest, fades up to 80% on badge hover (signals "this whole chip is clickable"), and 100% on direct × hover. Tactile click adds an `active:scale-90` micro-press.
 - **Sizing:** The `xs` size uses a smaller font and tighter padding, suitable for inline use within text.
 </Callout>

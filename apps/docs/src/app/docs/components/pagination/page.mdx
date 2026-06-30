@@ -76,7 +76,7 @@ const [page, setPage] = useState(1);
 - **Sliding window:** Always renders up to five number buttons, centered on the active page, clamped so the window never crosses 1 or totalPages. On page 1 the window is 1, 2, 3, 4, 5; on page 7 of 14 it is 5, 6, 7, 8, 9; on page 14 it is 10, 11, 12, 13, 14.
 - **No caption:** The number row is the caption, so there is no "Page X of Y" text to maintain or localize.
 - **Tabular numerals:** Page numbers use tabular figures so digits stay column-aligned regardless of width.
-- **Tap targets:** Each number button is `h-8 min-w-8 px-2`, large enough for touch while sitting in the editorial-chrome aesthetic.
+- **Tap targets:** Each number button is `h-8 min-w-8 px-2`, large enough for touch while staying visually compact.
 - **Active semantics:** The active page button gets `aria-current="page"`, renders with the `secondary` Button variant, and is non-interactive (clicking it is a no-op since you are already there).
 - **Loading state:** When `loading={true}`, every control is disabled, the nav fades, and `aria-busy="true"` signals to assistive tech that a transition is in progress.
 - **Keyboard:** All controls are Tab-focusable with the standard Button focus outline. Use Tab + Enter or Space to navigate; arrow keys are intentionally unbound so the control composes inside horizontal scroll containers.
