@@ -21,7 +21,7 @@ export const cardVariants = cva(
         elevated:
           "rounded-[var(--radius-patch-lg)] bg-patch-surface-2 border border-[var(--patch-border)]",
         interactive: cn(
-          "rounded-[var(--radius-patch-lg)] bg-transparent border border-[var(--patch-border)] hover:bg-patch-surface-hover hover:border-[var(--patch-border-hover)] cursor-pointer transition-[transform,background-color,border-color] duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-[0.99]",
+          "rounded-[var(--radius-patch-lg)] bg-transparent border border-[var(--patch-border)] hover:bg-patch-surface hover:border-[var(--patch-border)] cursor-pointer transition-[transform,background-color,border-color] duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-[0.99]",
           focusRing,
         ),
         ghost:

@@ -12,7 +12,7 @@ export function Switch({
   return (
     <SwitchPrimitive.Root
       className={cn(
-        "inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-px data-checked:bg-patch-text data-unchecked:bg-patch-border dark:data-unchecked:bg-patch-border-active data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-px data-checked:bg-patch-text data-unchecked:bg-patch-border-hover data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
         focusRing,
         className,
@@ -21,7 +21,7 @@ export function Switch({
       {...props}
     >
       <SwitchPrimitive.Thumb
-        className="pointer-events-none block size-[18px] rounded-full bg-white shadow-[var(--shadow-patch-sm)] transition-[translate] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)] data-checked:translate-x-4 data-unchecked:translate-x-0 dark:bg-patch-bg"
+        className="pointer-events-none block size-[18px] rounded-full bg-patch-surface shadow-[var(--shadow-patch-sm)] transition-[translate] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)] data-checked:translate-x-4 data-unchecked:translate-x-0"
         data-slot="switch-thumb"
       />
     </SwitchPrimitive.Root>

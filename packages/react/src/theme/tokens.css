@@ -11,14 +11,14 @@
    * DO NOT use --patch-text-tertiary for body paragraphs; use -secondary.
    */
   --patch-bg: #fafafa;
-  --patch-bg-deep: #ededed;             /* canvas behind dialogs/sheets */
+  --patch-bg-deep: #e5e5e5;             /* canvas behind dialogs/sheets — deepest surface */
   --patch-page-bg: #fafafa;             /* matches --patch-bg so the page frame reads as a width container, not a colored inset */
   --patch-surface: #ffffff;
   --patch-surface-2: #f5f5f5;           /* nested/elevated card surface */
-  --patch-surface-hover: #f5f5f5;
+  --patch-surface-hover: #f0f0f0;       /* one step deeper than surface-2 */
   --patch-surface-active: #ebebeb;
   --patch-muted: #f0f0f0;                /* subtle neutral fill (cooler than surface-2) */
-  --patch-accent: #ebebeb;               /* interactive-highlight neutral (menu item hover, chips) */
+  --patch-accent: #eeeeee;               /* interactive-highlight neutral (menu item hover, chips) */
   --patch-text: #171717;
   --patch-text-secondary: #525252;
   --patch-text-tertiary: #737373;
@@ -113,7 +113,7 @@
   --patch-bg: #0a0a0b;
   --patch-bg-deep: #050506;             /* canvas behind dialogs/sheets */
   --patch-page-bg: #0a0a0b;             /* matches --patch-bg so the page frame reads as a width container, not a colored inset */
-  --patch-surface: #111113;
+  --patch-surface: #0f0f11;
   --patch-surface-2: #161718;           /* nested/elevated card surface */
   --patch-surface-hover: #191919;
   --patch-surface-active: #222222;
@@ -127,7 +127,7 @@
   --patch-border: rgba(255,255,255,0.08);
   --patch-border-hover: rgba(255,255,255,0.16);
   --patch-border-active: rgba(255,255,255,0.30);
-  --patch-focus-ring: rgba(255, 255, 255, 0.5);
+  --patch-focus-ring: rgba(from var(--patch-text) r g b / 0.55);
   --patch-error: #f87171;
   --patch-success: #4ade80;
   --patch-warning: #fbbf24;
@@ -137,13 +137,13 @@
   --btn-primary-text: #0a0a0a;
   --btn-primary-hover: #ffffff;
   --btn-primary-active: #e5e5e5;
-  --btn-secondary-bg: rgba(255,255,255,0.08);
+  --btn-secondary-bg: rgba(255,255,255,0.05);
   --btn-secondary-text: #ededed;
   --btn-secondary-border: rgba(255,255,255,0.1);
-  --btn-secondary-hover: rgba(255,255,255,0.12);
-  --btn-secondary-active: rgba(255,255,255,0.16);
+  --btn-secondary-hover: rgba(255,255,255,0.08);
+  --btn-secondary-active: rgba(255,255,255,0.12);
   --btn-danger-bg: rgba(239,68,68,0.12);
-  --btn-danger-text: #ef4444;
+  --btn-danger-text: #f87171;
   --btn-danger-border: rgba(239,68,68,0.2);
   --btn-danger-hover: rgba(239,68,68,0.18);
   --btn-danger-active: rgba(239,68,68,0.26);
@@ -151,14 +151,14 @@
   /* Badge — see note in :root */
   --badge-default-bg: rgba(255,255,255,0.06);
   --badge-default-text: #a3a3a3;
-  --badge-secondary-bg: rgba(255,255,255,0.12);
+  --badge-secondary-bg: rgba(255,255,255,0.08);
   --badge-secondary-text: #a3a3a3;
   --badge-success-bg: rgba(74,222,128,0.1);
   --badge-success-text: #4ade80;
   --badge-warning-bg: rgba(245,158,11,0.08);
-  --badge-warning-text: #f59e0b;
+  --badge-warning-text: #fbbf24;
   --badge-danger-bg: rgba(239,68,68,0.08);
-  --badge-danger-text: #ef4444;
+  --badge-danger-text: #f87171;
 
   /* Input */
   --input-bg: transparent;

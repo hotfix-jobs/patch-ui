@@ -26,7 +26,7 @@ export function Radio({
   return (
     <RadioPrimitive.Root
       className={cn(
-        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full bg-transparent border border-[var(--patch-border)] dark:border border-[var(--patch-border-active)] data-checked:border border-[var(--patch-text)] data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full bg-transparent border border-patch-border-hover data-checked:border-patch-text data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
         focusRing,
         className,
