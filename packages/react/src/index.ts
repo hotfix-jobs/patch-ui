@@ -140,6 +140,14 @@ export {
 export { Spinner, type SpinnerProps } from "./components/spinner";
 export { Skeleton, type SkeletonProps } from "./components/skeleton";
 export {
+  ListRow,
+  ListRowContent,
+  ListRowList,
+  type ListRowProps,
+  type ListRowContentProps,
+  type ListRowListProps,
+} from "./components/list-row";
+export {
   Tabs,
   TabsList,
   TabsTrigger,

@@ -400,6 +400,22 @@
       ]
     },
     {
+      "name": "list-row",
+      "type": "registry:ui",
+      "title": "List Row",
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/list-row.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/list-row.tsx"
+        }
+      ]
+    },
+    {
       "name": "load-more",
       "type": "registry:ui",
       "title": "Load More",
