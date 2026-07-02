@@ -2,7 +2,7 @@ import { TooltipDemo } from "./tooltip-demo";
 
 # Tooltip
 
-A popup that displays additional information when hovering over an element. Supports configurable placement, offset, and an optional arrow indicator.
+A popup that displays additional information when hovering over an element. Supports configurable placement and offset.
 
 <Install name="tooltip" />
 
@@ -22,8 +22,8 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
     <Button>Hover me</Button>
   </Tooltip>
 
-  {/* With arrow and custom side */}
-  <Tooltip content="Save your changes" side="bottom" arrow>
+  {/* Custom side */}
+  <Tooltip content="Save your changes" side="bottom">
     <Button>Save</Button>
   </Tooltip>
 </TooltipProvider>
@@ -58,12 +58,6 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
       type: "number",
       default: "4",
       description: "Distance in pixels between the tooltip and trigger.",
-    },
-    {
-      name: "arrow",
-      type: "boolean",
-      default: "false",
-      description: "Whether to render a directional arrow pointing at the trigger.",
     },
     {
       name: "className",
@@ -104,6 +98,5 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
 - Wrap a rail of tooltips in `<TooltipProvider>` so moving between adjacent triggers opens each one without the delay firing again. Tune the group delay on the provider.
 - Tooltips open on hover *and* keyboard focus so keyboard users don't miss the hint. Any focusable trigger (Button, link, icon-only button) works.
 - The popup renders through a portal so it's not clipped by nearby `overflow-hidden` containers.
-- Pass `arrow` for a small triangle that anchors the popup to its trigger. Skip it when the popup is close enough (default 4px offset) that the anchor is obvious.
-- Keep the content short — a sentence at most. If the tip needs a paragraph, promote it to a `Popover`.
+- Keep the content short, a sentence at most. If the tip needs a paragraph, promote it to a `Popover`.
 </Callout>
