@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../utils";
 
-const sizeVariants = cva("inline-flex shrink-0 items-center justify-center", {
+const wrapperVariants = cva("relative inline-flex shrink-0 items-center justify-center", {
   defaultVariants: { size: "md" },
   variants: {
     size: {
@@ -20,19 +20,35 @@ const sizeVariants = cva("inline-flex shrink-0 items-center justify-center", {
   },
 });
 
+/**
+ * Border thickness scales with diameter (~1/8 of the size). Tailwind's
+ * border-N picks up here for standard values, otherwise we drop to an
+ * arbitrary border-[Npx].
+ */
+const ringBySize: Record<
+  NonNullable<VariantProps<typeof wrapperVariants>["size"]>,
+  string
+> = {
+  xs: "border-2",
+  sm: "border-2",
+  md: "border-[3px]",
+  lg: "border-[3px]",
+  xl: "border-4",
+  "2xl": "border-[5px]",
+  "3xl": "border-[6px]",
+  "4xl": "border-[8px]",
+};
+
 export interface SpinnerProps
   extends React.ComponentProps<"span">,
-    VariantProps<typeof sizeVariants> {
+    VariantProps<typeof wrapperVariants> {
   /** Accessible label. Use for context — "Saving", "Uploading 3 of 12". */
   label?: string;
 }
 
-const BAR_COUNT = 12;
-const CYCLE_MS = 1200;
-
 export function Spinner({
   className,
-  size,
+  size = "md",
   label = "Loading",
   ...props
 }: SpinnerProps): React.ReactElement {
@@ -41,26 +57,17 @@ export function Spinner({
       role="status"
       aria-label={label}
       data-slot="spinner"
-      className={cn(sizeVariants({ size, className }))}
+      className={cn(wrapperVariants({ size, className }))}
       {...props}
     >
-      <span className="relative size-full">
-        {Array.from({ length: BAR_COUNT }, (_, i) => (
-          <span
-            key={i}
-            className="absolute left-1/2 top-0 h-full"
-            style={{
-              width: "8%",
-              marginLeft: "-4%",
-              transform: `rotate(${(i * 360) / BAR_COUNT}deg)`,
-              animation: `patch-spinner-fade ${CYCLE_MS}ms linear infinite`,
-              animationDelay: `${-((BAR_COUNT - i) / BAR_COUNT) * CYCLE_MS}ms`,
-            }}
-          >
-            <span className="block h-[26%] w-full rounded-full bg-current" />
-          </span>
-        ))}
-      </span>
+      <span
+        aria-hidden="true"
+        className={cn(
+          "size-full rounded-full border-solid border-current border-e-transparent",
+          "animate-spin motion-reduce:animate-[spin_1.5s_linear_infinite]",
+          ringBySize[size ?? "md"],
+        )}
+      />
       <span className="sr-only">{label}</span>
     </span>
   );
