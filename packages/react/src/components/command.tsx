@@ -136,7 +136,7 @@ export function CommandEmpty({
     <AutocompletePrimitive.Empty
       data-slot="command-empty"
       className={cn(
-        "block px-3 py-6 text-center text-label-12 text-gray-800",
+        "px-3 py-6 text-center text-label-12 text-gray-800",
         className,
       )}
       {...props}
