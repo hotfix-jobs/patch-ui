@@ -268,7 +268,6 @@ export function CommandDialog({
     <Modal
       active={open ?? false}
       onClickOutside={() => onOpenChange?.(false)}
-      showCloseButton={false}
       size="xl"
       className="gap-0 overflow-hidden p-0"
     >
