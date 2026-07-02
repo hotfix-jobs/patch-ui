@@ -75,7 +75,11 @@ export function MiddleTruncate({
       }
 
       const ellipsisWidth = ctx.measureText(ellipsis).width;
-      const target = containerWidth - ellipsisWidth;
+      // 2px safety margin — canvas measurement can differ from the
+      // browser's rendered width by a subpixel due to font hinting;
+      // undercutting slightly guarantees the rendered string fits
+      // rather than overflowing and getting clipped a second time.
+      const target = containerWidth - ellipsisWidth - 2;
 
       // Binary search for the largest symmetric split (head length = tail
       // length = k) such that value.slice(0, k) + value.slice(-k) fits
@@ -123,7 +127,14 @@ export function MiddleTruncate({
       data-slot="middle-truncate"
       title={value}
       aria-label={value}
-      className={cn("block truncate", className)}
+      // No text-overflow: ellipsis on the wrapper — we already inserted
+      // the ellipsis at the measured truncation point. `truncate` would
+      // stack a browser end-ellipsis on top when subpixel differences
+      // make the rendered string a fraction wider than the container.
+      className={cn(
+        "block overflow-hidden whitespace-nowrap",
+        className,
+      )}
       style={style}
       {...props}
     >
