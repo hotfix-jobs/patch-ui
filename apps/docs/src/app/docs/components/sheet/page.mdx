@@ -91,7 +91,7 @@ import {
 <Callout title="Notes">
 - **Floating card.** Sheet renders as a rounded card inset a few pixels from every viewport edge — the backdrop peeks around all four corners so the panel reads as a distinct surface, not a tucked-in drawer.
 - **Modal by default.** Backdrop appears, page underneath is paused. Pass `modal={false}` for a persistent inspector (record detail, help drawer) that keeps the page interactive.
-- **Outside-click doesn't dismiss.** Only Escape and an explicit `<SheetClose>` close the sheet. Prevents accidental dismissal when the sheet holds an unsaved form.
+- **Outside-click, Escape, and `<SheetClose>` all dismiss.** For sheets holding unsaved input, wrap Save/Cancel in `SheetClose` and gate the dismiss with a confirmation step upstream.
 - **Side matters.** Right for detail inspectors, left for navigation, bottom for mobile-first pickers. Keep the direction consistent across similar patterns in the app.
 - **Focus return.** Focus returns to the trigger on close.
 </Callout>

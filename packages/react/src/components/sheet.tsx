@@ -88,12 +88,7 @@ export function Sheet({
   });
 
   const click = useClick(context);
-  const dismiss = useDismiss(context, {
-    // Vercel Sheet spec: outside click doesn't dismiss by default;
-    // only escape + explicit close.
-    outsidePress: false,
-    escapeKey: true,
-  });
+  const dismiss = useDismiss(context, { outsidePressEvent: "mousedown" });
   const role = useRole(context, { role: "dialog" });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
