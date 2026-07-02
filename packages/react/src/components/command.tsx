@@ -9,7 +9,7 @@ import { Modal } from "./modal";
 
 type Density = "compact" | "comfortable";
 
-const CommandDensityContext = createContext<Density>("compact");
+const CommandDensityContext = createContext<Density>("comfortable");
 
 /**
  * Command - a command palette / searchable list built on Base UI Autocomplete
@@ -63,11 +63,7 @@ export function CommandInput({
   return (
     <span
       className={cn(
-        "relative inline-flex w-full items-center",
-        "rounded-none bg-transparent",
-        "border-b border-[var(--input-border)]",
-        "has-focus-visible:border-b border-[var(--input-border-focus)]",
-        "transition-[color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "relative inline-flex w-full items-center border-b border-gray-alpha-400 bg-transparent",
       )}
       data-slot="command-input-wrapper"
     >
@@ -77,7 +73,7 @@ export function CommandInput({
       <AutocompletePrimitive.Input
         data-slot="command-input"
         className={cn(
-          "h-11 w-full flex-1 border-none bg-transparent pe-3 text-label-13 tracking-[-0.005em] text-gray-1000 placeholder:text-[var(--input-placeholder)] outline-none ring-0 focus:outline-none focus:ring-0",
+          "h-12 w-full flex-1 border-none bg-transparent pe-3 text-copy-14 text-gray-1000 placeholder:text-gray-700 outline-none ring-0 focus:outline-none focus:ring-0",
           className,
         )}
         {...props}
@@ -88,7 +84,7 @@ export function CommandInput({
 
 export function CommandList({
   className,
-  density = "compact",
+  density = "comfortable",
   children,
   ...props
 }: Omit<
@@ -158,7 +154,7 @@ export function CommandItem({
     <AutocompletePrimitive.Item
       data-slot="command-item"
       className={cn(
-        "cursor-default select-none rounded-[var(--radius-6)] text-gray-900 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-highlighted:bg-[var(--menu-item-hover)] data-highlighted:text-gray-1000 [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 outline-none data-highlighted:bg-gray-alpha-100 [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         density === "compact"
           ? "min-h-7 px-2 py-1.5 text-label-13"
           : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
@@ -225,7 +221,7 @@ export function CommandGroupLabel({
     <AutocompletePrimitive.GroupLabel
       data-slot="command-group-label"
       className={cn(
-        "px-2 pb-1 pt-2 text-label-12 font-semibold uppercase tracking-tight text-gray-800",
+        "px-3 py-1.5 text-label-14 text-gray-800",
         className,
       )}
       {...props}
