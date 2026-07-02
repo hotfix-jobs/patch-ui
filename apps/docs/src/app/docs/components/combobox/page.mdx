@@ -99,7 +99,7 @@ The popup accepts arbitrary JSX — only `ComboboxItem` gets keyboard navigation
 
 ### ComboboxInput
 
-Extends all `Input` props (icon, suffix, variant, size, invalid, loading, etc.) and adds:
+Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `label`, etc.) and adds:
 
 <PropsTable
   props={[
@@ -108,6 +108,24 @@ Extends all `Input` props (icon, suffix, variant, size, invalid, loading, etc.) 
       type: "boolean",
       default: "true",
       description: "Open the popup automatically when the input receives focus. Set false for input-first patterns where typing opens the popup instead.",
+    },
+    {
+      name: "hideChevron",
+      type: "boolean",
+      default: "false",
+      description: "By default the input renders a chevron suffix that flips between down (closed) and up (open). Set true to hide it (e.g. for pure search boxes).",
+    },
+    {
+      name: "clearable",
+      type: "boolean",
+      default: "false",
+      description: "When true and the input has a non-empty value, renders a trailing × button. Pair with `onClear` to reset your value state.",
+    },
+    {
+      name: "onClear",
+      type: "() => void",
+      default: "-",
+      description: "Fired when the × is clicked. Reset your local value state here.",
     },
   ]}
 />
@@ -138,10 +156,12 @@ Extends all `Input` props (icon, suffix, variant, size, invalid, loading, etc.) 
 />
 
 <Callout title="Notes">
-- **Virtual focus:** The input retains real focus while you type and arrow through suggestions. Items get `aria-activedescendant` instead of taking focus — the proper ARIA combobox pattern. Screen readers announce the active option correctly.
-- **You own filtering:** Combobox doesn't filter — you filter your data based on the input value and pass the matches as children. This means any kind of matching (substring, fuzzy index, async API) works.
-- **Mix item shapes:** Anything inside `ComboboxPopup` renders. Only `ComboboxItem` is keyboard-navigable. Drop in banners, sections, dividers as plain JSX.
-- **Keyboard:** Arrow keys navigate, Enter selects, Esc closes, Down opens when closed. Typing is just text input — the popup stays open.
-- **Motion:** Spring-physics open / close via `AnimatePresence`. Respects `prefers-reduced-motion`.
-- **Positioning:** Anchored under the input with 8px offset, flips above when there's no room, shifts to stay 8px from edges, and `minWidth` matches the input width.
+- The input keeps real focus while you type and arrow through options. Items get `aria-activedescendant` instead of taking focus, which is the proper ARIA combobox pattern — screen readers announce the active option without interrupting typing.
+- Combobox doesn't filter for you. Filter your data based on the current input value and render the matches as `<ComboboxItem>` children. Substring, fuzzy index, async API — any strategy works.
+- Anything inside `ComboboxPopup` renders. Only `<ComboboxItem>` is keyboard-navigable, so you can drop in banners, section headers, and dividers as plain JSX between item groups.
+- Keyboard: Arrow keys navigate, Enter selects, Esc closes, ↓ opens when closed. Typing is just text input — the popup stays open.
+- The chevron suffix auto-flips based on open state. Use `hideChevron` when the input is pure search (no dropdown affordance needed).
+- `clearable` renders a trailing × when the input has a value. Reset your `value` state in `onClear` — the component doesn't own the value.
+- Motion: spring-physics open / close. Respects `prefers-reduced-motion`.
+- Anchored 8px below the input, flips above when there's no room, shifts to stay 8px from edges. Popup `minWidth` matches the input width.
 </Callout>

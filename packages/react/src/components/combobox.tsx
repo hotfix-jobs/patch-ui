@@ -29,6 +29,7 @@ import {
 import type * as React from "react";
 import { cn } from "../utils";
 import { Input, type InputProps } from "./input";
+import { XIcon } from "../internal-icons";
 
 /**
  * Combobox - an Input paired with a floating popup that shows arbitrary
@@ -176,9 +177,38 @@ export function Combobox({
 
 /* --------------------------- ComboboxInput --------------------------- */
 
+function ChevronIndicator({ open }: { open: boolean }): React.ReactElement {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn(
+        "size-4 text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        open ? "rotate-180" : "rotate-0",
+      )}
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
 export interface ComboboxInputProps extends InputProps {
   /** Open the popup automatically when the input receives focus. Default true. */
   openOnFocus?: boolean;
+  /** Hide the auto-added chevron suffix that indicates open/close state. */
+  hideChevron?: boolean;
+  /**
+   * When true and the input has a non-empty value, renders a trailing × that
+   * clears the input. Wire `onClear` to reset your value state.
+   */
+  clearable?: boolean;
+  /** Fired when the user clicks the × to clear. */
+  onClear?: () => void;
 }
 
 export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
@@ -188,12 +218,46 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
       onFocus,
       onKeyDown,
       onClick,
+      hideChevron,
+      clearable,
+      onClear,
+      value,
+      suffix: userSuffix,
+      suffixStyling,
       ...props
     },
     forwardedRef,
   ) {
     const { open, setOpen, refs, getReferenceProps, baseId, activeIndex } =
       useComboboxContext();
+
+    const hasValue =
+      value != null && value !== "" && (typeof value !== "number" || !Number.isNaN(value));
+    const showClear = clearable && hasValue && !props.disabled;
+
+    // Build the combobox suffix: user-provided suffix + optional clear × + chevron.
+    // Wrapped as a single node passed to Input's `suffix` slot with styling disabled
+    // so it floats inline with the input area.
+    const suffix = (userSuffix || showClear || !hideChevron) ? (
+      <span className="inline-flex items-center gap-1.5">
+        {userSuffix}
+        {showClear && (
+          <button
+            type="button"
+            tabIndex={-1}
+            aria-label="Clear"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClear?.();
+            }}
+            className="inline-flex size-5 items-center justify-center rounded-full text-gray-800 hover:bg-gray-alpha-200 hover:text-gray-1000 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]"
+          >
+            <XIcon className="size-3" />
+          </button>
+        )}
+        {!hideChevron && <ChevronIndicator open={open} />}
+      </span>
+    ) : undefined;
     // The Input component wraps the actual <input> in a <span> for icons /
     // suffix / clear button. The visible "field" box is the wrapper span,
     // not the inner input — so anchor floating-ui to the parent element so
@@ -244,6 +308,9 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
           activeIndex != null ? `${baseId}-item-${activeIndex}` : undefined
         }
         autoComplete="off"
+        value={value}
+        suffix={suffix}
+        suffixStyling={suffixStyling ?? false}
         {...mergedProps}
       />
     );
