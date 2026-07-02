@@ -82,7 +82,7 @@ export function Badge({
   const defaultProps = {
     className: cn(
       badgeVariants({ size, variant, shape, outline }),
-      onRemove && "group pe-1.5",
+      onRemove && "group gap-2",
       className,
     ),
     "data-slot": "badge",
@@ -95,8 +95,8 @@ export function Badge({
             aria-label={removeLabel}
             onClick={onRemove}
             className={cn(
-              "inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-70",
-              "hover:opacity-100 hover:bg-gray-alpha-200",
+              "inline-flex size-4 shrink-0 items-center justify-center rounded-full text-gray-800",
+              "hover:bg-gray-alpha-300 hover:text-gray-1000",
               focusRing,
               colorTransition,
             )}
