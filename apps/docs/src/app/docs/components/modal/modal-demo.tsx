@@ -79,7 +79,7 @@ export function ModalDemo() {
         </Modal>
       </div>
 
-      {/* Destructive with type-to-confirm gate */}
+      {/* Destructive with type-to-confirm gate (Vercel destructive-action-modal pattern) */}
       <div>
         <SectionLabel>Destructive with typed confirmation</SectionLabel>
         <Button variant="error" onClick={() => setDestructive(true)}>
@@ -90,30 +90,60 @@ export function ModalDemo() {
           onClickOutside={() => setDestructive(false)}
         >
           <ModalBody>
-            <h2 className="text-heading-16 text-gray-1000">Delete Project</h2>
-            <p className="text-copy-14 text-gray-800">
-              Type the project name below to confirm. This action cannot be
-              undone.
+            <h2 className="text-heading-20 font-semibold text-gray-1000">
+              Delete Project
+            </h2>
+            <p className="text-copy-14 text-gray-1000">
+              <span className="font-semibold">next-year-boilerplate</span> and
+              all its deployments, domains, and environment variables will be
+              permanently deleted.
             </p>
-            <ModalInset>
-              <p className="text-label-13 text-gray-800">Project</p>
-              <p className="text-copy-14 text-gray-1000">acme-web</p>
-            </ModalInset>
-            <input
-              type="text"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              placeholder="Type acme-web to confirm"
-              className="w-full rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 px-3 h-10 text-copy-14 outline-none placeholder:text-gray-700 hover:border-gray-alpha-500 focus-visible:border-gray-alpha-600"
-            />
+            {/* Irreversibility band */}
+            <div className="flex items-center gap-2 rounded-[var(--radius-6)] border border-red-300 bg-red-100 px-3 py-2 text-red-800 dark:bg-red-200">
+              <svg
+                aria-hidden="true"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="shrink-0"
+              >
+                <path d="M7.86 2h8.28L22 7.86v8.28L16.14 22H7.86L2 16.14V7.86L7.86 2z" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <p className="text-label-13">
+                Deleting next-year-boilerplate cannot be undone.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="delete-confirm"
+                className="text-label-14 text-gray-1000"
+              >
+                To confirm, type the project name{" "}
+                <span className="font-semibold">"next-year-boilerplate"</span>
+              </label>
+              <input
+                id="delete-confirm"
+                type="text"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                className="w-full rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 px-3 h-10 text-copy-14 outline-none hover:border-gray-alpha-500 focus-visible:border-gray-alpha-600"
+              />
+            </div>
           </ModalBody>
-          <ModalActions>
+          <ModalActions className="sm:justify-between">
             <ModalAction onClick={() => setDestructive(false)}>
               Cancel
             </ModalAction>
             <ModalAction
               variant="error"
-              disabled={projectName !== "acme-web"}
+              disabled={projectName !== "next-year-boilerplate"}
               onClick={() => {
                 setDestructive(false);
                 setProjectName("");

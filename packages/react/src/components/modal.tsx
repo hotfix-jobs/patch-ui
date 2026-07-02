@@ -21,7 +21,6 @@ import {
 import type * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
 import { Button, type ButtonProps } from "./button";
 
 /**
@@ -77,8 +76,6 @@ export interface ModalProps {
   initialFocusRef?: React.RefObject<HTMLElement | null>;
   /** Max-width. Only applies on tablet+; mobile is always full-width. Default `md`. */
   size?: ModalSize;
-  /** Show the default × close button in the top-right corner. Default true. */
-  showCloseButton?: boolean;
   className?: string;
   children: React.ReactNode;
 }
@@ -88,7 +85,6 @@ export function Modal({
   onClickOutside,
   initialFocusRef,
   size = "md",
-  showCloseButton = true,
   className,
   children,
 }: ModalProps): React.ReactElement {
@@ -174,8 +170,7 @@ export function Modal({
                       {...getFloatingProps()}
                       className={cn(
                         // Base container: full-width bottom sheet on mobile, centered popup on desktop.
-                        // Dark mode is pure black to match canvas — the border + shadow do the distinguishing.
-                        "relative flex w-full min-w-0 min-h-0 flex-col overflow-hidden bg-background-100 dark:bg-black text-gray-1000 border border-gray-alpha-400 shadow-modal",
+                        "relative flex w-full min-w-0 min-h-0 flex-col overflow-hidden bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-modal",
                         // Rounded only at top on mobile (sheet), fully rounded on desktop.
                         "rounded-t-[var(--radius-12)] sm:rounded-[var(--radius-12)]",
                         // Height: cap at 85vh on mobile, calc(100vh-2rem) on desktop.
@@ -189,33 +184,6 @@ export function Modal({
                       transition={transition}
                     >
                       {children}
-                      {showCloseButton && (
-                        <button
-                          type="button"
-                          aria-label="Close"
-                          onClick={() => onClickOutside?.()}
-                          data-slot="modal-close"
-                          className={cn(
-                            "absolute end-3 top-3 flex h-7 w-7 items-center justify-center rounded-[var(--radius-6)] text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 hover:text-gray-1000",
-                            focusRing,
-                          )}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <path d="M18 6 6 18" />
-                            <path d="m6 6 12 12" />
-                          </svg>
-                        </button>
-                      )}
                     </motion.div>
                   </FloatingFocusManager>
                 </div>
@@ -238,7 +206,7 @@ export function ModalHeader({
     <div
       data-slot="modal-header"
       className={cn(
-        "flex flex-col gap-1 border-b border-gray-alpha-400 px-5 py-4 pr-12",
+        "flex flex-col gap-1 border-b border-gray-alpha-400 px-5 py-4",
         className,
       )}
       {...props}
