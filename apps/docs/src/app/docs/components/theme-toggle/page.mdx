@@ -94,9 +94,9 @@ Add this inline script to your `<head>` to prevent a flash of wrong theme on pag
 
 
 <Callout title="Notes">
-- **Uncontrolled mode:** By default, ThemeToggle manages its own state, reads from localStorage on mount, and applies the `.dark` class to `<html>`. No provider needed.
-- **Controlled mode:** Pass `theme` and `onThemeChange` for external control (e.g. with `next-themes`). Set `applyClass={false}` and `storageKey={false}` to avoid conflicts.
-- **SSR safe:** Uses `useSyncExternalStore` to detect mount state. Renders a blank placeholder before hydration to prevent mismatch.
-- **Animation:** Icon transitions use a CSS keyframe (`patch-theme-icon-in`) defined in the patch-ui tokens CSS.
-- **System preference:** Pass `theme="system"` to resolve based on `prefers-color-scheme`.
+- Uncontrolled mode is the common path: ThemeToggle reads from localStorage on mount, applies the `.dark` class to `<html>`, and persists on every toggle. No provider needed.
+- For controlled mode (usually alongside `next-themes`), pass `theme` and `onThemeChange`, then set `applyClass={false}` and `storageKey={false}` so ThemeToggle doesn't double-write.
+- SSR-safe via `useSyncExternalStore` — the button renders a blank placeholder before hydration so the first client render matches the server.
+- The sun/moon icons crossfade with a spring rotation on toggle. Reduced motion swaps them instantly.
+- Naming note: Vercel Geist ships `ThemeSwitcher` — a 3-option segmented control (Light / System / Dark). Ours is a simpler binary icon button. If you need System as a first-class option, compose one with `SegmentedToggle` and three icons.
 </Callout>
