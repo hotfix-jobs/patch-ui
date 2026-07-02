@@ -186,9 +186,11 @@ export function Scroller({
       className={cn(
         "relative w-full",
         scrollAxisClass,
-        // Momentum scrolling + hide the ugly default scrollbar on mac
-        // trackpads while keeping keyboard scroll working.
+        // Momentum scrolling + hide the browser scrollbar (mac trackpad
+        // overlay bars, Windows/Linux gutters, IE10+). Keyboard + wheel
+        // + touch scroll still work.
         "[-webkit-overflow-scrolling:touch]",
+        "[&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]",
         focusRing,
         className,
       )}
