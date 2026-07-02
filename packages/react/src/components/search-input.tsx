@@ -7,12 +7,14 @@ import { Kbd } from "./kbd";
 
 /**
  * SearchInput — a scoped search field aligned with Geist. Renders a
- * magnifying-glass prefix, an Esc-hint suffix (when the value is non-empty),
- * and clears the input on Escape. Compose with `value`/`onChange` for
- * controlled use.
+ * magnifying-glass prefix, a clickable Esc-hint Kbd (when the value is
+ * non-empty), and clears the input on Escape or click.
  */
-export type SearchInputProps = Omit<InputProps, "prefix" | "prefixStyling" | "suffix" | "suffixStyling" | "type"> & {
-  /** Hide the Esc hint chip when a value is present. Defaults to false. */
+export type SearchInputProps = Omit<
+  InputProps,
+  "prefix" | "prefixStyling" | "suffix" | "suffixStyling" | "type"
+> & {
+  /** Hide the Esc hint chip even when a value is present. */
   hideEscHint?: boolean;
 };
 
@@ -37,7 +39,6 @@ function SearchIcon({ className }: { className?: string }): React.ReactElement {
 export function SearchInput({
   hideEscHint,
   onKeyDown,
-  onClear,
   onChange,
   value,
   placeholder = "Search",
@@ -47,19 +48,15 @@ export function SearchInput({
     value != null && value !== "" && (typeof value !== "number" || !Number.isNaN(value));
 
   const handleClear = useCallback(() => {
-    if (onClear) {
-      onClear();
-      return;
-    }
     if (onChange) {
-      // Synthesize an empty change event so uncontrolled+controlled both work.
+      // Synthesize an empty change event so both controlled and uncontrolled work.
       const evt = {
         target: { value: "" },
         currentTarget: { value: "" },
       } as unknown as Parameters<NonNullable<typeof onChange>>[0];
       onChange(evt);
     }
-  }, [onClear, onChange]);
+  }, [onChange]);
 
   const handleKeyDown = useCallback(
     (e: Parameters<NonNullable<typeof onKeyDown>>[0]) => {
@@ -83,7 +80,7 @@ export function SearchInput({
       placeholder={placeholder}
       prefix={<SearchIcon />}
       prefixStyling={false}
-      suffix={showEscHint ? <Kbd size="sm">Esc</Kbd> : undefined}
+      suffix={showEscHint ? <Kbd size="sm" onClick={handleClear} aria-label="Clear search">Esc</Kbd> : undefined}
       suffixStyling={false}
       {...props}
     />

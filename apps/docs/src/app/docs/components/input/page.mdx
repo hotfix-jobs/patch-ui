@@ -42,11 +42,11 @@ import { Search, Mail, ArrowUpCircle } from "lucide-react";
 // Loading — disables input, shows spinner
 <Input loading value={value} />
 
-// Clear button — appears when value is non-empty
-<Input
+// For clearable search, use SearchInput (clears on Esc key or Esc chip click)
+<SearchInput
   value={query}
   onChange={(e) => setQuery(e.target.value)}
-  onClear={() => setQuery("")}
+  placeholder="Search projects"
 />
 ```
 
@@ -113,12 +113,6 @@ import { Search, Mail, ArrowUpCircle } from "lucide-react";
       type: "boolean",
       default: "false",
       description: "Disables the input and renders a small spinner in the trailing slot.",
-    },
-    {
-      name: "onClear",
-      type: "() => void",
-      default: "-",
-      description: "When provided and the input has a non-empty value, renders a trailing × button that calls this handler.",
     },
     {
       name: "disabled",

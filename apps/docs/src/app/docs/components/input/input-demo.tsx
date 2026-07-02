@@ -74,15 +74,12 @@ export function InputDemo() {
             prefix={<Search />}
             prefixStyling={false}
             placeholder="Search"
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            onClear={() => setSearchValue("")}
           />
         </div>
       </div>
 
       <div>
-        <Label>SearchInput (clears on Escape, shows Esc hint)</Label>
+        <Label>SearchInput (clears on Escape or Esc chip click)</Label>
         <div className="flex flex-col gap-3 max-w-xs">
           <SearchInput
             placeholder="Search projects"

@@ -4,7 +4,6 @@ import { Input as InputPrimitive } from "@base-ui/react/input";
 import type * as React from "react";
 import { cn } from "../utils";
 import { Spinner } from "./spinner";
-import { XIcon } from "../internal-icons";
 
 export type InputSize = "sm" | "md" | "lg";
 
@@ -31,8 +30,6 @@ export type InputProps = Omit<
   loading?: boolean;
   /** Renders a full-radius (pill-shaped) input. */
   rounded?: boolean;
-  /** When set with a non-empty value, renders a trailing × that clears the input. */
-  onClear?: () => void;
 };
 
 const heightBySize: Record<InputSize, string> = {
@@ -111,22 +108,18 @@ export function Input({
   error,
   loading,
   rounded,
-  onClear,
   disabled,
   value,
   ...props
 }: InputProps): React.ReactElement {
   const isDisabled = disabled || loading;
-  const hasValue =
-    value != null && value !== "" && (typeof value !== "number" || !Number.isNaN(value));
-  const showClear = onClear != null && hasValue && !isDisabled;
   const trailingSpinner = loading ? <Spinner size="sm" /> : null;
   const hasErrorMessage = typeof error === "string" && error.length > 0;
   const hasError = Boolean(error);
   const shape = rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
   const errorId = id ? `${id}-error` : undefined;
 
-  const hasTrailing = Boolean(suffix) || showClear || Boolean(trailingSpinner);
+  const hasTrailing = Boolean(suffix) || Boolean(trailingSpinner);
 
   const inputElement = (
     <InputPrimitive
@@ -174,22 +167,6 @@ export function Input({
           <UnstyledAffix side="start">{prefix}</UnstyledAffix>
         ))}
       {inputElement}
-      {showClear && (
-        <button
-          type="button"
-          tabIndex={-1}
-          aria-label="Clear input"
-          onClick={onClear}
-          data-slot="input-clear"
-          className={cn(
-            "flex shrink-0 items-center justify-center size-6 me-1.5 rounded-full",
-            "text-gray-800 hover:bg-gray-alpha-200 hover:text-gray-1000",
-            "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          )}
-        >
-          <XIcon className="size-3" />
-        </button>
-      )}
       {trailingSpinner && (
         <span className="flex shrink-0 items-center pe-3 text-gray-800" data-slot="input-loading">
           {trailingSpinner}
