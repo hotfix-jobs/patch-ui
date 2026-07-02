@@ -2,7 +2,7 @@ import { InputDemo } from "./input-demo";
 
 # Input
 
-A styled text input with three visual variants (outlined, ghost, underline), sizes, icons, prefix/suffix slots, error and loading states, a clear button, and an unstyled escape hatch.
+A text input with three sizes, icon and prefix/suffix slots, and built-in error, loading, and clear states. Follows the single input pattern from the design bar: `background-100` fill, translucent border, 6px radius.
 
 <Install name="input" />
 
@@ -16,40 +16,33 @@ A styled text input with three visual variants (outlined, ghost, underline), siz
 import { Input } from "@patchui/react";
 import { Search } from "lucide-react";
 
-// Basic (outlined is the default)
-<Input placeholder="Enter text..." />
+// Basic
+<Input placeholder="Enter text" />
 
-// Variants
-<Input variant="outlined" placeholder="Outlined" />
-<Input variant="ghost" placeholder="Ghost" />          // no border / bg, embedded
-<Input variant="underline" placeholder="Underline" />  // bottom border only
+// Sizes
+<Input size="sm" placeholder="Small" />   // 32px
+<Input size="md" placeholder="Medium" />  // 40px (default)
+<Input size="lg" placeholder="Large" />   // 48px
 
 // With icon
-<Input icon={<Search className="h-4 w-4" />} placeholder="Search..." />
+<Input icon={<Search className="h-4 w-4" />} placeholder="Search" />
 
-// With prefix and suffix
+// Prefix and suffix
 <Input prefix="$" placeholder="0.00" />
 <Input suffix=".com" placeholder="username" />
 
-// Sizes
-<Input size="sm" placeholder="Small" />
-<Input size="lg" placeholder="Large" />
-
 // Error state
-<Input invalid value={email} onChange={...} />
+<Input invalid value={email} onChange={…} />
 
-// Loading state — disables input, shows spinner
+// Loading — disables input, shows spinner in trailing slot
 <Input loading value={value} />
 
-// Clear button — appears on the right when value is non-empty
+// Clear button — appears when value is non-empty
 <Input
   value={query}
   onChange={(e) => setQuery(e.target.value)}
   onClear={() => setQuery("")}
 />
-
-// Unstyled (bring your own styles)
-<Input unstyled className="my-custom-input" />
 ```
 
 ## Props
@@ -57,16 +50,10 @@ import { Search } from "lucide-react";
 <PropsTable
   props={[
     {
-      name: "variant",
-      type: '"outlined" | "ghost" | "underline"',
-      default: '"outlined"',
-      description: "Visual style. outlined is the default boxed input. ghost has no border or background — useful when embedding in another container. underline shows only a bottom border, Material-style.",
-    },
-    {
       name: "size",
-      type: '"sm" | "md" | "lg" | number',
+      type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "Control height. Pass a number to set the native HTML size attribute instead.",
+      description: "Control height. 32 / 40 / 48px.",
     },
     {
       name: "icon",
@@ -78,19 +65,19 @@ import { Search } from "lucide-react";
       name: "prefix",
       type: "ReactNode",
       default: "-",
-      description: "Content rendered before the input field (e.g. a currency symbol).",
+      description: "Content rendered before the input (e.g. a currency symbol).",
     },
     {
       name: "suffix",
       type: "ReactNode",
       default: "-",
-      description: "Content rendered after the input field (e.g. a unit label or visibility toggle). Hidden while loading.",
+      description: "Content rendered after the input (e.g. a unit label). Hidden while loading.",
     },
     {
       name: "invalid",
       type: "boolean",
       default: "false",
-      description: "Visual error state. Sets aria-invalid, switches border and focus ring to the error color.",
+      description: "Visual error state. Sets `aria-invalid` and switches border and focus ring to the error token.",
     },
     {
       name: "loading",
@@ -102,19 +89,7 @@ import { Search } from "lucide-react";
       name: "onClear",
       type: "() => void",
       default: "-",
-      description: "When provided and the input has a non-empty value, renders a small × clear button on the right that calls this handler.",
-    },
-    {
-      name: "unstyled",
-      type: "boolean",
-      default: "false",
-      description: "Removes all default chrome so you can apply your own.",
-    },
-    {
-      name: "nativeInput",
-      type: "boolean",
-      default: "false",
-      description: "Renders a native <input> instead of the Base UI Input primitive — useful for forms that rely on native browser validation.",
+      description: "When provided and the input has a non-empty value, renders a trailing × button that calls this handler.",
     },
     {
       name: "disabled",
@@ -131,12 +106,10 @@ import { Search } from "lucide-react";
   ]}
 />
 
-
 <Callout title="Notes">
-- **Variant + size compose:** every variant accepts `sm` / `md` / `lg` — for example `<Input variant="underline" size="lg" />` is the search input used inside `CommandDialog`.
-- **`icon` vs `prefix`:** both render at the start of the input. Use `icon` for SVG icons and `prefix` for text-based prefixes like `$` or `@`.
-- **`onClear` ergonomics:** the × button auto-hides while the input is empty, disabled, or loading. It also sets `tabIndex={-1}` so Tab doesn't stop on it.
+- **Single pattern:** one style — `background-100` fill, `gray-alpha-400` border stepping to `-500` on hover and `-600` on focus, 6px radius. No variant sprawl.
+- **`icon` vs `prefix`:** both render at the start. Use `icon` for SVG icons and `prefix` for text prefixes like `$` or `@`.
+- **`onClear` ergonomics:** the × auto-hides while empty, disabled, or loading. `tabIndex={-1}` so Tab doesn't stop on it.
 - **Loading overrides suffix:** while `loading` is true, the spinner replaces any user-provided `suffix` to avoid layout collisions.
-- **Unstyled mode:** still renders the wrapper `<span>` and slot structure so you can layer your own classes on top.
-- **Validation messaging:** for description and error text *below* the input, use the `Field` component which wires `aria-describedby` to your message.
+- **Validation messaging:** for description and error text below the input, use `Field` which wires `aria-describedby` to your message.
 </Callout>

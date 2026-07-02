@@ -4,31 +4,15 @@ import { useState } from "react";
 import { Input } from "@patchui/react";
 import { Mail, Search } from "lucide-react";
 
-/** Showcases Input variants, sizes, icon, prefix/suffix, states, and clear. */
 export function InputDemo() {
   const [searchValue, setSearchValue] = useState("");
   const [emailValue, setEmailValue] = useState("not-an-email");
-  const [savingValue, setSavingValue] = useState("Saving this...");
+  const [savingValue, setSavingValue] = useState("Saving this…");
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Variants */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Variants
-        </p>
-        <div className="flex flex-col gap-3 max-w-xs">
-          <Input variant="outlined" placeholder="Outlined (default)" />
-          <Input variant="ghost" placeholder="Ghost" />
-          <Input variant="underline" placeholder="Underline" />
-        </div>
-      </div>
-
-      {/* Sizes */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Sizes
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Sizes</p>
         <div className="flex flex-col gap-3 max-w-xs">
           <Input size="sm" placeholder="Small" />
           <Input size="md" placeholder="Default" />
@@ -36,37 +20,28 @@ export function InputDemo() {
         </div>
       </div>
 
-      {/* With Icon */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          With Icon
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">With Icon</p>
         <div className="flex flex-col gap-3 max-w-xs">
-          <Input icon={<Search className="h-4 w-4" />} placeholder="Search..." />
+          <Input icon={<Search className="h-4 w-4" />} placeholder="Search" />
           <Input icon={<Mail className="h-4 w-4" />} placeholder="Email" />
         </div>
       </div>
 
-      {/* Prefix & Suffix */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Prefix & Suffix
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Prefix and Suffix</p>
         <div className="flex flex-col gap-3 max-w-xs">
-          <Input prefix={"$"} placeholder="0.00" />
-          <Input suffix={".com"} placeholder="username" />
+          <Input prefix="$" placeholder="0.00" />
+          <Input suffix=".com" placeholder="username" />
         </div>
       </div>
 
-      {/* Clear button */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Clear button
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Clear</p>
         <div className="max-w-xs">
           <Input
             icon={<Search className="h-4 w-4" />}
-            placeholder="Type to see the × clear"
+            placeholder="Type to show the clear button"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onClear={() => setSearchValue("")}
@@ -74,12 +49,9 @@ export function InputDemo() {
         </div>
       </div>
 
-      {/* Invalid */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Invalid state
-        </p>
-        <div className="flex flex-col gap-3 max-w-xs">
+        <p className="mb-3 text-label-12 text-gray-800">Invalid</p>
+        <div className="max-w-xs">
           <Input
             icon={<Mail className="h-4 w-4" />}
             invalid
@@ -87,15 +59,11 @@ export function InputDemo() {
             onChange={(e) => setEmailValue(e.target.value)}
             placeholder="Email"
           />
-          <Input variant="underline" invalid placeholder="Underline invalid" />
         </div>
       </div>
 
-      {/* Loading */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Loading state
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Loading</p>
         <div className="max-w-xs">
           <Input
             loading
@@ -105,11 +73,8 @@ export function InputDemo() {
         </div>
       </div>
 
-      {/* Disabled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Disabled
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Disabled</p>
         <div className="max-w-xs">
           <Input placeholder="Disabled input" disabled />
         </div>

@@ -5,67 +5,42 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { Spinner } from "./spinner";
 
-type InputVariant = "outlined" | "ghost" | "underline";
+export type InputSize = "sm" | "md" | "lg";
 
 export type InputProps = Omit<
   InputPrimitive.Props & React.RefAttributes<HTMLInputElement>,
   "size"
 > & {
-  size?: "sm" | "md" | "lg" | number;
-  variant?: InputVariant;
+  size?: InputSize;
   icon?: React.ReactNode;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
-  /** Visual error state. Sets `aria-invalid` and switches border/focus to error tokens. */
+  /** Visual error state. Sets `aria-invalid` and switches border/focus to the error token. */
   invalid?: boolean;
   /** Disables the input and renders a spinner in the trailing slot. */
   loading?: boolean;
   /**
    * When provided AND the input has a non-empty value, renders a trailing
-   * × clear button that calls this handler. Use for search inputs, filter
-   * fields, tag entry — anywhere "wipe my input" is a common action.
+   * × clear button that calls this handler.
    */
   onClear?: () => void;
-  unstyled?: boolean;
-  nativeInput?: boolean;
 };
 
-const WRAPPER_VARIANT: Record<InputVariant, string> = {
-  outlined:
-    "rounded-[var(--radius-6)] border border-[var(--input-border)] bg-background-100 " +
-    "hover:border border-[var(--gray-alpha-500)] " +
-    "has-focus-visible:border border-[var(--gray-alpha-600)] " +
-    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
-  ghost:
-    "rounded-[var(--radius-6)] bg-transparent border-none " +
-    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
-  underline:
-    "rounded-none bg-transparent border-b border-[var(--input-border)] " +
-    "hover:border-b border-[var(--gray-alpha-500)] " +
-    "has-focus-visible:border-b border-[var(--gray-alpha-600)]",
-};
-
-const INVALID_BY_VARIANT: Record<InputVariant, string> = {
-  outlined:
-    "!border-[var(--error)] has-focus-visible:!border-[var(--error)] has-focus-visible:!outline-[var(--error)]",
-  ghost:
-    "has-focus-visible:!outline-[var(--error)]",
-  underline:
-    "!border-b border-[var(--error)] has-focus-visible:!border-b border-[var(--error)]",
+const heightBySize: Record<InputSize, string> = {
+  sm: "h-8 text-label-12",
+  md: "h-10 text-copy-14",
+  lg: "h-12 text-copy-16",
 };
 
 export function Input({
   className,
   size = "md",
-  variant = "outlined",
   icon,
   prefix,
   suffix,
   invalid,
   loading,
   onClear,
-  unstyled = false,
-  nativeInput = false,
   disabled,
   value,
   ...props
@@ -77,57 +52,27 @@ export function Input({
   const trailingSpinner = loading ? <Spinner size="sm" /> : null;
 
   const inputClassName = cn(
-    "h-10 w-full min-w-0 rounded-[inherit] border-none bg-transparent px-3.5 text-label-13 tracking-[-0.005em] shadow-none outline-none ring-0 placeholder:text-[var(--input-placeholder)] focus:outline-none focus:ring-0",
-    icon && "ps-0",
-    prefix && "ps-0",
+    "w-full min-w-0 border-none bg-transparent px-3.5 shadow-none outline-none ring-0",
+    "placeholder:text-gray-700 focus:outline-none focus:ring-0",
+    heightBySize[size],
+    (icon || prefix) && "ps-0",
     (suffix || showClear || trailingSpinner) && "pe-0",
-    size === "sm" && "h-8 text-label-12",
-    size === "lg" && "h-11",
     props.type === "search" &&
-      "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none",
-  );
-
-  const inputEl = nativeInput ? (
-    <input
-      className={inputClassName}
-      data-slot="input"
-      size={typeof size === "number" ? size : undefined}
-      disabled={isDisabled}
-      value={value}
-      aria-invalid={invalid || undefined}
-      {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
-    />
-  ) : (
-    <InputPrimitive
-      className={inputClassName}
-      data-slot="input"
-      size={typeof size === "number" ? size : undefined}
-      disabled={isDisabled}
-      value={value}
-      aria-invalid={invalid || undefined}
-      {...props}
-    />
+      "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none",
   );
 
   return (
     <span
-      className={
-        cn(
-          !unstyled && [
-            "relative inline-flex w-full items-center",
-            "text-label-13 text-gray-1000",
-            "transition-[color,background-color,box-shadow,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-            "has-disabled:opacity-50",
-            WRAPPER_VARIANT[variant],
-            invalid && INVALID_BY_VARIANT[variant],
-          ],
-          className,
-        ) || undefined
-      }
-      data-size={size}
-      data-variant={variant}
-      data-invalid={invalid || undefined}
-      data-loading={loading || undefined}
+      className={cn(
+        "relative inline-flex w-full items-center rounded-[var(--radius-6)]",
+        "bg-background-100 border border-gray-alpha-400 text-gray-1000",
+        "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "hover:border-gray-alpha-500",
+        "has-focus-visible:border-gray-alpha-600 has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
+        "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
+        invalid && "!border-[var(--error)] has-focus-visible:!border-[var(--error)] has-focus-visible:!outline-[var(--error)]",
+        className,
+      )}
       data-slot="input-control"
     >
       {icon && (
@@ -136,25 +81,30 @@ export function Input({
         </span>
       )}
       {prefix && (
-        <span className="flex shrink-0 items-center ps-3 text-gray-800 text-sm">
+        <span className="flex shrink-0 items-center ps-3 text-gray-800 text-label-13">
           {prefix}
         </span>
       )}
-      {inputEl}
+      <InputPrimitive
+        className={inputClassName}
+        data-slot="input"
+        disabled={isDisabled}
+        value={value}
+        aria-invalid={invalid || undefined}
+        {...props}
+      />
       {showClear && (
         <button
           type="button"
           tabIndex={-1}
           aria-label="Clear input"
           onClick={onClear}
-          className={cn(
-            "flex shrink-0 items-center justify-center",
-            "size-6 me-1.5 rounded-[var(--radius-6)]",
-            "text-gray-800",
-            "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-            "hover:bg-gray-200 hover:text-gray-1000",
-          )}
           data-slot="input-clear"
+          className={cn(
+            "flex shrink-0 items-center justify-center size-6 me-1.5 rounded-[var(--radius-6)]",
+            "text-gray-800 hover:bg-gray-200 hover:text-gray-1000",
+            "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          )}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -173,15 +123,12 @@ export function Input({
         </button>
       )}
       {trailingSpinner && (
-        <span
-          className="flex shrink-0 items-center pe-3 text-gray-800"
-          data-slot="input-loading"
-        >
+        <span className="flex shrink-0 items-center pe-3 text-gray-800" data-slot="input-loading">
           {trailingSpinner}
         </span>
       )}
       {suffix && !trailingSpinner && (
-        <span className="flex shrink-0 items-center pe-3 ps-2 ml-2 my-2 text-gray-800 text-label-12 tracking-[-0.01em] border-l border-[var(--input-border)]">
+        <span className="flex shrink-0 items-center pe-3 ps-2 my-2 border-l border-gray-alpha-400 text-gray-800 text-label-12">
           {suffix}
         </span>
       )}
