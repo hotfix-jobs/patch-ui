@@ -440,12 +440,14 @@
   --text-label-14: var(--label-14-size);
   --text-label-13: var(--label-13-size);
   --text-label-12: var(--label-12-size);
-  /* label-11 and label-10 (caption tier) are NOT registered as --text-*
-     @theme entries — that would let Tailwind autogenerate a competing
-     font-size-only utility that overrides our full text-label-* rules
-     (which also set line-height / tracking / weight). The hand-written
-     `.text-label-11` and `.text-label-10` classes in @layer utilities
-     below own these sizes exclusively. */
+  /* Caption tier — MUST be registered here so Tailwind v4 autogenerates
+     a text-label-{11,10} font-size utility. Without these entries,
+     Tailwind emits a broken utility for any text-* class name it sees
+     in source, which silently overrides our hand-written full utilities
+     below and leaves font-size unset. Our .text-label-* classes in
+     @layer utilities then add line-height / tracking / weight on top. */
+  --text-label-11: var(--label-11-size);
+  --text-label-10: var(--label-10-size);
 
   --text-copy-24: var(--copy-24-size);
   --text-copy-20: var(--copy-20-size);
