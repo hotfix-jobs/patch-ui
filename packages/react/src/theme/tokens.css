@@ -207,12 +207,15 @@
 
 /* Dark-mode override. Same intent contract, inverted values. */
 .dark {
-  --background-100: #0a0a0a;
-  --background-200: #111111;
+  /* Canvas is #000; background-100 is the elevated surface that inputs,
+     cards, and dialogs use — always a tick above the canvas so it reads
+     as raised without needing a shadow. */
+  --background-100: #111111;
+  --background-200: #1a1a1a;
 
-  --gray-100: #1a1a1a;
-  --gray-200: #222222;
-  --gray-300: #2e2e2e;
+  --gray-100: #1f1f1f;
+  --gray-200: #2a2a2a;
+  --gray-300: #333333;
   --gray-400: #3d3d3d;
   --gray-500: #575757;
   --gray-600: #7a7a7a;
