@@ -63,7 +63,7 @@ const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
-const DAY_NAMES_SHORT = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const DAY_NAMES_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function startOfDay(d: Date): Date {
   const x = new Date(d);
@@ -304,7 +304,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
       data-slot="calendar"
       data-mode={mode}
       className={cn(
-        "w-fit select-none rounded-[var(--radius-6)] bg-background-100 p-3 text-gray-1000",
+        "w-fit select-none rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100 p-3 text-gray-1000",
         className,
       )}
     >
@@ -317,7 +317,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
           onClick={() => setViewMonth((m) => addMonths(m, -1))}
           aria-label="Previous month"
         />
-        <div className="text-label-13 font-semibold tabular-nums">
+        <div className="text-copy-14 font-medium tabular-nums text-gray-1000">
           {monthLabel}
         </div>
         <Button
@@ -334,7 +334,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
         {dayNames.map((d, i) => (
           <div
             key={i}
-            className="text-center text-label-12 font-semibold uppercase tracking-tight text-gray-800"
+            className="text-center text-label-11 text-gray-800"
           >
             {d}
           </div>
@@ -363,18 +363,18 @@ export function Calendar(props: CalendarProps): React.ReactElement {
               data-selected={selected || undefined}
               data-in-range={inSelectedRange || undefined}
               className={cn(
-                "relative inline-flex h-8 w-8 items-center justify-center tabular-nums text-label-13 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+                "relative inline-flex h-9 w-9 items-center justify-center tabular-nums text-copy-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
                 "rounded-[var(--radius-6)]",
-                outside && "text-gray-800 opacity-60",
+                outside && "text-gray-700",
                 !outside && !selected && "text-gray-1000",
                 !selected &&
                   !disabledDay &&
                   "hover:bg-gray-alpha-100",
                 isToday &&
                   !selected &&
-                  "font-semibold ring-1 ring-inset ring-gray-alpha-400",
+                  "font-medium ring-1 ring-inset ring-gray-alpha-400",
                 selected &&
-                  "bg-gray-1000 text-background-100 font-semibold hover:bg-gray-1000",
+                  "bg-gray-1000 text-background-100 font-medium hover:bg-gray-1000",
                 inSelectedRange && !selected && "bg-gray-alpha-100",
                 disabledDay && "pointer-events-none opacity-30",
                 focusRing,
