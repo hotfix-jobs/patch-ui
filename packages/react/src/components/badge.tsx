@@ -9,9 +9,9 @@ import { focusRing, colorTransition } from "../recipes";
 
 export const badgeVariants = cva(
   [
-    "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap",
+    "relative inline-flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap",
     "text-label-12 font-medium",
-    "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
   ].join(" "),
   {
     defaultVariants: {
@@ -22,8 +22,8 @@ export const badgeVariants = cva(
     },
     variants: {
       size: {
-        sm: "px-2 py-[3px]",
-        lg: "px-2.5 py-1",
+        sm: "px-2.5 py-1",
+        lg: "px-3 py-1.5",
       },
       variant: {
         default: "",
@@ -42,12 +42,12 @@ export const badgeVariants = cva(
     },
     compoundVariants: [
       // Solid (fill + text)
-      { variant: "default", outline: false, class: "bg-gray-200 text-gray-900" },
+      { variant: "default", outline: false, class: "bg-gray-200 text-gray-1000" },
       { variant: "success", outline: false, class: "bg-green-100 text-green-900" },
       { variant: "warning", outline: false, class: "bg-amber-100 text-amber-900" },
       { variant: "error",   outline: false, class: "bg-red-100 text-red-900" },
       // Outline (border + text, transparent fill)
-      { variant: "default", outline: true, class: "border-gray-alpha-400 text-gray-1000" },
+      { variant: "default", outline: true, class: "border-gray-alpha-500 text-gray-1000" },
       { variant: "success", outline: true, class: "border-green-700 text-green-700" },
       { variant: "warning", outline: true, class: "border-amber-700 text-amber-700" },
       { variant: "error",   outline: true, class: "border-red-700 text-red-700" },
