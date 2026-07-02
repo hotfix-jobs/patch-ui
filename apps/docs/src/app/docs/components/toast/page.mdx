@@ -55,12 +55,12 @@ toast.dismiss(id);
 
 PatchUI's `Toaster` is a pre-configured Sonner wrapper. Compared to Sonner defaults:
 
-- **6px radius**, **0.5px hairline border**, **`--shadow-menu`** drop shadow
-- **No background flood** for variants — instead, a **2px colored left-edge rail** in the variant color (success / warning / danger / info) keeps the surface neutral and the message restrained
-- **Compact padding** matching Menu / Modal density
-- **Type scale**: title is `--text-patch-control` semibold, description is `--text-patch-mini` in `--patch-text-secondary`
-- **Action button** styled like `Button variant="outline" size="sm"`
-- **Close button** styled like Modal's `×`
+- **radius-12** rounded corners, **1px** hairline border in `gray-alpha-400`, `shadow-modal` drop shadow — matches Modal / Sheet / Menu chrome
+- **Semantic icon color** signals the variant: `--success` (green) for success, `--error` (red) for error, `--warning` (amber) for warning. No background flood on the toast itself.
+- **Compact padding** matching Menu density
+- **Typography**: title is `text-label-13 font-semibold`, description is `text-label-12 text-gray-800`
+- **Action button** renders as a bordered secondary button inside the toast
+- **Close button** matches the `XIcon` used across pill Button + Combobox clear
 
 ## Props
 

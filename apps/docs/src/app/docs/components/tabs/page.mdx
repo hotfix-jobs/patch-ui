@@ -81,7 +81,7 @@ import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
 - `TabsPanel` - matched panel for a trigger value
 
 <Callout title="Notes">
-- **Sliding indicator:** Both variants share the same `Tabs.Indicator` infrastructure. Underline draws a 1.5px bar; pill paints a `--menu-item-hover` background. Spring-eased CSS transitions smoothly animate the indicator between active tabs.
+- **Sliding indicator:** Both variants share the same motion `layoutId` infrastructure. Underline draws a 2px `gray-1000` bar under the active tab; pill paints a `gray-alpha-100` wash behind the active tab. Motion springs the indicator between active tabs.
 - **Underline vs pill:** Use `underline` for switching content panels; use `pill` for navigation-style tabs (settings sections, sidebar nav) where a filled active state reads better.
 - **Responsive nav:** With `variant="pill"`, render `orientation="vertical"` on larger screens and horizontal on small screens — the sliding indicator works in both.
 - **Keyboard:** Triggers are arrow-key navigable (Base UI) and show the standard focus outline.
