@@ -17,8 +17,8 @@ import {
 } from "@patchui/react";
 import { ChevronDown } from "lucide-react";
 
-const DASHBOARD_NAV = ["Overview", "Deployments", "Analytics", "Settings"];
-const MARKETING_NAV = ["Products", "Resources", "Enterprise", "Pricing"];
+const DASHBOARD_NAV = ["Home", "Jobs", "Insights", "Team"];
+const MARKETING_NAV = ["Product", "Customers", "Company", "Pricing"];
 
 function MenuIcon() {
   return (
@@ -55,13 +55,13 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 export function AppHeaderDemo() {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("Overview");
+  const [active, setActive] = useState("Home");
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Dashboard pattern — underlined active state */}
+      {/* Dashboard pattern — active nav item as primary color */}
       <div>
-        <SectionLabel>Dashboard (underlined active state)</SectionLabel>
+        <SectionLabel>Dashboard</SectionLabel>
         <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100">
           <AppHeader bordered={false}>
             <AppHeaderBrand>
@@ -87,7 +87,7 @@ export function AppHeaderDemo() {
 
             <AppHeaderRight>
               <Button variant="tertiary" size="sm" className="hidden sm:inline-flex">
-                Feedback
+                Send feedback
               </Button>
               <Avatar size="sm" letter="A" className="hidden sm:inline-flex" />
               <Button
@@ -104,15 +104,15 @@ export function AppHeaderDemo() {
           <div className="border-t border-gray-alpha-400 bg-background-200 px-6 py-8">
             <p className="text-copy-14 text-gray-1000">{active}</p>
             <p className="mt-1 text-copy-14 text-gray-800">
-              Content for the selected tab renders here.
+              Content for the selected page renders here.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Marketing pattern — no active state, chevron on dropdowns, pill CTAs */}
+      {/* Marketing pattern — chevron dropdowns, secondary CTAs on the right */}
       <div>
-        <SectionLabel>Marketing (chevron dropdowns, pill CTAs)</SectionLabel>
+        <SectionLabel>Marketing</SectionLabel>
         <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100">
           <AppHeader bordered={false}>
             <AppHeaderBrand>
@@ -122,7 +122,7 @@ export function AppHeaderDemo() {
 
             <AppHeaderNav className="hidden sm:flex">
               {MARKETING_NAV.map((item, i) => {
-                const hasDropdown = i < 2; // First two open panels
+                const hasDropdown = i < 2;
                 return (
                   <AppHeaderNavItem
                     key={item}
@@ -140,13 +140,12 @@ export function AppHeaderDemo() {
             </AppHeaderNav>
 
             <AppHeaderRight>
-              <Button variant="secondary" size="sm" shape="pill" className="hidden sm:inline-flex">
-                Ask AI
+              <Button variant="tertiary" size="sm" className="hidden sm:inline-flex">
+                Sign in
               </Button>
-              <Button variant="secondary" size="sm" shape="pill" className="hidden sm:inline-flex">
-                Dashboard
+              <Button variant="primary" size="sm" className="hidden sm:inline-flex">
+                Get started
               </Button>
-              <Avatar size="sm" letter="A" className="hidden sm:inline-flex" />
               <Button
                 variant="tertiary"
                 size="sm"
