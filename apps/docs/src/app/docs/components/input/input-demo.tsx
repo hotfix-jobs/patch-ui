@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import { Input } from "@patchui/react";
-import { Mail, Search } from "lucide-react";
+import { ArrowUpCircle, Mail, Search } from "lucide-react";
+
+function Label({ children }: { children: React.ReactNode }) {
+  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
+}
 
 export function InputDemo() {
   const [searchValue, setSearchValue] = useState("");
@@ -12,7 +16,7 @@ export function InputDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Sizes</p>
+        <Label>Sizes</Label>
         <div className="flex flex-col gap-3 max-w-xs">
           <Input size="sm" placeholder="Small" />
           <Input size="md" placeholder="Default" />
@@ -21,27 +25,55 @@ export function InputDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">With Icon</p>
+        <Label>Prefix and suffix (styled, default)</Label>
         <div className="flex flex-col gap-3 max-w-xs">
-          <Input icon={<Search className="h-4 w-4" />} placeholder="Search" />
-          <Input icon={<Mail className="h-4 w-4" />} placeholder="Email" />
+          <Input prefix={<ArrowUpCircle />} placeholder="Default" />
+          <Input suffix={<ArrowUpCircle />} placeholder="Default" />
+          <Input prefix="https://" suffix=".com" placeholder="Default" />
         </div>
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Prefix and Suffix</p>
+        <Label>Prefix and suffix (unstyled, floating)</Label>
         <div className="flex flex-col gap-3 max-w-xs">
-          <Input prefix="$" placeholder="0.00" />
-          <Input suffix=".com" placeholder="username" />
-        </div>
-      </div>
-
-      <div>
-        <p className="mb-3 text-label-12 text-gray-800">Clear</p>
-        <div className="max-w-xs">
           <Input
-            icon={<Search className="h-4 w-4" />}
-            placeholder="Type to show the clear button"
+            prefix={<ArrowUpCircle />}
+            prefixStyling={false}
+            suffix={<ArrowUpCircle />}
+            suffixStyling={false}
+            placeholder="Default"
+          />
+          <Input
+            prefix={<Search />}
+            prefixStyling={false}
+            placeholder="Search projects"
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label>Label + error message</Label>
+        <div className="flex flex-col gap-3 max-w-xs">
+          <Input id="demo-label" label="Domain" placeholder="example.com" />
+          <Input
+            id="demo-err"
+            label="Email"
+            prefix={<Mail />}
+            value={emailValue}
+            onChange={(e) => setEmailValue(e.target.value)}
+            error="Enter a valid email address."
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label>Rounded (pill-shaped)</Label>
+        <div className="flex flex-col gap-3 max-w-xs">
+          <Input
+            rounded
+            prefix={<Search />}
+            prefixStyling={false}
+            placeholder="Search"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onClear={() => setSearchValue("")}
@@ -50,20 +82,7 @@ export function InputDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Invalid</p>
-        <div className="max-w-xs">
-          <Input
-            icon={<Mail className="h-4 w-4" />}
-            invalid
-            value={emailValue}
-            onChange={(e) => setEmailValue(e.target.value)}
-            placeholder="Email"
-          />
-        </div>
-      </div>
-
-      <div>
-        <p className="mb-3 text-label-12 text-gray-800">Loading</p>
+        <Label>Loading</Label>
         <div className="max-w-xs">
           <Input
             loading
@@ -74,9 +93,10 @@ export function InputDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Disabled</p>
-        <div className="max-w-xs">
-          <Input placeholder="Disabled input" disabled />
+        <Label>Disabled</Label>
+        <div className="flex flex-col gap-3 max-w-xs">
+          <Input placeholder="Disabled" disabled />
+          <Input prefix="https://" suffix=".com" placeholder="Disabled" disabled />
         </div>
       </div>
     </div>

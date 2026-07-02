@@ -57,7 +57,7 @@ export function FieldDemo() {
         <Field invalid className="max-w-sm">
           <FieldLabel required>Password</FieldLabel>
           <FieldDescription>Must be at least 8 characters.</FieldDescription>
-          <Input type="password" defaultValue="abc" invalid />
+          <Input type="password" defaultValue="abc" error />
           <FieldError>Password must be at least 8 characters long.</FieldError>
         </Field>
       </div>

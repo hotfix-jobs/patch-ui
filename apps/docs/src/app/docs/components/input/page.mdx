@@ -2,7 +2,7 @@ import { InputDemo } from "./input-demo";
 
 # Input
 
-A text input with three sizes, icon and prefix/suffix slots, and built-in error, loading, and clear states. Follows the single input pattern from the design bar: `background-100` fill, translucent border, 6px radius.
+A text input aligned with Geist. Three sizes, styled/unstyled `prefix` + `suffix` slots, built-in `label` and `error` message, and a `rounded` (pill) variant. Uses `background-100` fill and translucent borders that step through hover/focus.
 
 <Install name="input" />
 
@@ -14,7 +14,7 @@ A text input with three sizes, icon and prefix/suffix slots, and built-in error,
 
 ```tsx
 import { Input } from "@patchui/react";
-import { Search } from "lucide-react";
+import { Search, Mail, ArrowUpCircle } from "lucide-react";
 
 // Basic
 <Input placeholder="Enter text" />
@@ -24,17 +24,22 @@ import { Search } from "lucide-react";
 <Input size="md" placeholder="Medium" />  // 40px (default)
 <Input size="lg" placeholder="Large" />   // 48px
 
-// With icon
-<Input icon={<Search className="h-4 w-4" />} placeholder="Search" />
+// Prefix and suffix (styled by default — own container + separator)
+<Input prefix={<ArrowUpCircle />} placeholder="Default" />
+<Input suffix={<ArrowUpCircle />} placeholder="Default" />
+<Input prefix="https://" suffix=".com" placeholder="Default" />
 
-// Prefix and suffix
-<Input prefix="$" placeholder="0.00" />
-<Input suffix=".com" placeholder="username" />
+// Unstyled prefix/suffix (icons float inside the input area)
+<Input prefix={<Search />} prefixStyling={false} placeholder="Search" />
 
-// Error state
-<Input invalid value={email} onChange={…} />
+// Inline label and error message
+<Input id="domain" label="Domain" placeholder="example.com" />
+<Input id="email" label="Email" error="Enter a valid email address." />
 
-// Loading — disables input, shows spinner in trailing slot
+// Rounded (pill-shaped)
+<Input rounded prefix={<Search />} prefixStyling={false} placeholder="Search" />
+
+// Loading — disables input, shows spinner
 <Input loading value={value} />
 
 // Clear button — appears when value is non-empty
@@ -56,28 +61,52 @@ import { Search } from "lucide-react";
       description: "Control height. 32 / 40 / 48px.",
     },
     {
-      name: "icon",
-      type: "ReactNode",
-      default: "-",
-      description: "An icon element rendered at the start of the input.",
-    },
-    {
       name: "prefix",
       type: "ReactNode",
       default: "-",
-      description: "Content rendered before the input (e.g. a currency symbol).",
+      description: "Content rendered at the start (icon, unit symbol, or text like `https://`).",
     },
     {
       name: "suffix",
       type: "ReactNode",
       default: "-",
-      description: "Content rendered after the input (e.g. a unit label). Hidden while loading.",
+      description: "Content rendered at the end (icon, unit label, or text like `.com`). Hidden while loading.",
     },
     {
-      name: "invalid",
+      name: "prefixStyling",
+      type: "boolean",
+      default: "true",
+      description: "Wraps prefix in a styled container (subtle bg + separator). Set false to float the prefix inside the input area.",
+    },
+    {
+      name: "suffixStyling",
+      type: "boolean",
+      default: "true",
+      description: "Wraps suffix in a styled container (subtle bg + separator). Set false to float the suffix inside the input area.",
+    },
+    {
+      name: "label",
+      type: "string",
+      default: "-",
+      description: "Renders a `<label>` above the input. When set, requires `id`.",
+    },
+    {
+      name: "id",
+      type: "string",
+      default: "-",
+      description: "Required when `label` is a string. Wires up `htmlFor` and `aria-describedby`.",
+    },
+    {
+      name: "error",
+      type: "boolean | string",
+      default: "false",
+      description: "Visual error state. Pass a string to render an inline error message below the input.",
+    },
+    {
+      name: "rounded",
       type: "boolean",
       default: "false",
-      description: "Visual error state. Sets `aria-invalid` and switches border and focus ring to the error token.",
+      description: "Renders a full-radius (pill-shaped) input.",
     },
     {
       name: "loading",
@@ -101,15 +130,17 @@ import { Search } from "lucide-react";
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the outer wrapper.",
+      description: "Additional CSS classes applied to the outer wrapper (or the fieldset when `label`/`error` is set).",
     },
   ]}
 />
 
-<Callout title="Notes">
-- **Single pattern:** one style — `background-100` fill, `gray-alpha-400` border stepping to `-500` on hover and `-600` on focus, 6px radius. No variant sprawl.
-- **`icon` vs `prefix`:** both render at the start. Use `icon` for SVG icons and `prefix` for text prefixes like `$` or `@`.
-- **`onClear` ergonomics:** the × auto-hides while empty, disabled, or loading. `tabIndex={-1}` so Tab doesn't stop on it.
-- **Loading overrides suffix:** while `loading` is true, the spinner replaces any user-provided `suffix` to avoid layout collisions.
-- **Validation messaging:** for description and error text below the input, use `Field` which wires `aria-describedby` to your message.
+<Callout title="Best practices">
+- **Validate on blur**, not on every keystroke. Surface the message by passing a string to `error`.
+- **Trim** leading/trailing whitespace before submit so `example.com` and ` example.com ` resolve to one value.
+- **Placeholders** show an example value (`my-awesome-project`, `example.com`), not instructions like `Enter your project name`.
+- **Labels** are Title Case nouns: `Project Name`, `Domain`, `Environment Variable Name`.
+- **Error messages** name the field and the constraint, end in a period: `Project name is required.`, `Code must be 6 digits.`
+- **Prefix / suffix**: styled containers create a distinct visual block for scheme (`https://`) or domain (`.com`). Unstyled (`prefixStyling={false}`) is right for search icons and inline affordances.
+- **Icon-only affordances** inside a row of inputs use `<Button shape="circle" aria-label="…">` rather than an unlabeled icon.
 </Callout>
