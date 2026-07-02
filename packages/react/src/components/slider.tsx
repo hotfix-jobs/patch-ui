@@ -43,12 +43,12 @@ export function Slider({
           data-slot="slider-track"
         >
           <SliderPrimitive.Indicator
-            className="select-none rounded-[var(--radius-6)] bg-patch-text"
+            className="select-none rounded-[var(--radius-6)] bg-gray-1000"
             data-slot="slider-indicator"
           />
           {Array.from({ length: _values.length }, (_, index) => (
             <SliderPrimitive.Thumb
-              className="block size-4 shrink-0 select-none rounded-full border-2 border-patch-text bg-background-100 outline-none transition-[scale] duration-[var(--duration-state)] has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-2 data-dragging:scale-110"
+              className="block size-4 shrink-0 select-none rounded-full border-2 border-gray-1000 bg-background-100 outline-none transition-[scale] duration-[var(--duration-state)] has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-2 data-dragging:scale-110"
               data-slot="slider-thumb"
               index={index}
               key={String(index)}
