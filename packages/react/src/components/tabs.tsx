@@ -115,8 +115,8 @@ export function TabsList({
         "relative flex",
         variant === "underline" && [
           orientation === "horizontal"
-            ? "items-center gap-6 border-b border-[var(--gray-alpha-400)]"
-            : "flex-col items-stretch gap-4 border-l border-[var(--gray-alpha-400)]",
+            ? "items-center gap-6 border-b border-gray-alpha-400"
+            : "flex-col items-stretch gap-4 border-l border-gray-alpha-400",
         ],
         variant === "pill" && [
           "gap-0.5",
@@ -215,12 +215,12 @@ export function TabsTrigger({
       onClick={() => setValue(value)}
       onKeyDown={handleKeyDown}
       className={cn(
-        "relative font-medium tracking-[-0.005em] text-label-13 transition-colors disabled:pointer-events-none disabled:opacity-50",
+        "relative text-copy-14 transition-colors disabled:pointer-events-none disabled:opacity-50",
         focusRing,
         variant === "underline" &&
-          "py-2 text-gray-900 hover:text-gray-1000 data-[active]:text-gray-1000",
+          "py-2.5 text-gray-800 hover:text-gray-1000 data-[active]:text-gray-1000",
         variant === "pill" && [
-          "z-10 rounded-[var(--radius-6)] px-2.5 py-1.5 text-left text-gray-900",
+          "z-10 rounded-[var(--radius-6)] px-3 py-1.5 text-left text-gray-800",
           "hover:text-gray-1000 data-[active]:text-gray-1000",
         ],
         className,
@@ -233,7 +233,7 @@ export function TabsTrigger({
         <motion.div
           layoutId={`tabs-pill-${baseId}`}
           data-slot="tabs-indicator"
-          className="absolute inset-0 -z-10 rounded-[var(--radius-6)] bg-[var(--menu-item-hover)]"
+          className="absolute inset-0 -z-10 rounded-[var(--radius-6)] bg-gray-alpha-100"
           transition={indicatorTransition}
         />
       )}
@@ -242,10 +242,10 @@ export function TabsTrigger({
           layoutId={`tabs-underline-${baseId}`}
           data-slot="tabs-indicator"
           className={cn(
-            "absolute bg-patch-text",
+            "absolute bg-gray-1000",
             orientation === "horizontal"
-              ? "bottom-[-0.5px] left-0 right-0 h-[1.5px]"
-              : "top-0 bottom-0 left-[-0.5px] w-[1.5px]",
+              ? "-bottom-px left-0 right-0 h-[2px]"
+              : "top-0 bottom-0 -left-px w-[2px]",
           )}
           transition={indicatorTransition}
         />
