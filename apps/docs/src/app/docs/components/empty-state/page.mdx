@@ -2,7 +2,7 @@ import { EmptyStateDemo } from "./empty-state-demo";
 
 # EmptyState
 
-"No results" / "no data yet" placeholder. Hairline-bordered icon container, title, optional description and action. Fades in on mount so the transition from loading or list-with-data feels intentional.
+A "no results" / "no data yet" placeholder. Structured as icon → title → description → primary action → optional secondary content. Fades in on mount so the transition from a loading state or list-with-data feels intentional.
 
 <Install name="empty-state" />
 
@@ -14,14 +14,28 @@ import { EmptyStateDemo } from "./empty-state-demo";
 
 ```tsx
 import { EmptyState, Button } from "@patchui/react";
-import { Search } from "lucide-react";
+import { BarChart3, ExternalLink } from "lucide-react";
 
+// Basic
 <EmptyState
-  title="No jobs match those filters"
-  description="Try removing a filter, or reset to see everything."
-  icon={<Search className="size-4" />}
-  action={<Button variant="primary">Browse jobs</Button>}
+  title="No results match your filters"
+  description="Try removing a filter, or clear all to see every result."
+  icon={<BarChart3 />}
+  action={<Button variant="secondary">Clear Filters</Button>}
 />
+
+// With a secondary Learn more link
+<EmptyState
+  title="Title"
+  description="This should detail the actions you can take on this screen, as well as why it's valuable."
+  icon={<BarChart3 />}
+  action={<Button variant="secondary">Primary Action</Button>}
+>
+  <a href="#" className="inline-flex items-center gap-1 text-copy-14 text-gray-900 hover:text-gray-1000">
+    Learn more
+    <ExternalLink className="size-3.5" />
+  </a>
+</EmptyState>
 ```
 
 ## Props
@@ -32,37 +46,46 @@ import { Search } from "lucide-react";
       name: "title",
       type: "ReactNode",
       default: "-",
-      description: "Required. Short headline describing the empty condition.",
+      description: "Required. Title-case headline describing the empty condition.",
     },
     {
       name: "description",
       type: "ReactNode",
       default: "-",
-      description: "Optional helper text expanding on the title.",
+      description: "Sentence-case helper text expanding on the title. Two lines max reads best.",
     },
     {
       name: "icon",
       type: "ReactNode",
       default: "-",
-      description: "Optional icon, rendered in a 36×36 hairline-bordered box above the title.",
+      description: "Optional icon rendered in a 56×56 rounded-square container above the title.",
     },
     {
       name: "action",
       type: "ReactNode",
       default: "-",
-      description: "Optional CTA. Typically a `<Button>`. Wrap with your router's Link for navigation primitives — Patch stays framework-agnostic.",
+      description: "Primary CTA. Typically a `<Button>`. For navigation, wrap with your router's Link primitive.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "Additional slots rendered below the primary action. Use for a secondary link (`Learn more`) or supporting content.",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the outer container.",
+      description: "Additional CSS classes.",
     },
   ]}
 />
 
 <Callout title="Notes">
-- **Motion on mount:** Fades in with a subtle `opacity 0 → 1` + 8px y-translate on mount via `motion`. Respects `prefers-reduced-motion`. Makes transitions from skeleton or list-with-data into the empty state feel intentional rather than abrupt.
-- **Icon container:** Hairline-bordered 36×36 box with the standard `--radius-patch-md` corner. The icon inherits `--patch-text-tertiary` color; SVG inside scales automatically.
-- **Routing:** Pass any node as `action`. For framework integration (Next.js Link, React Router, etc.), wrap your `<Button>` inside the router's Link primitive — Patch stays framework-agnostic.
+- Fades in on mount with a subtle opacity + 8px y-translate via `motion`. Respects `prefers-reduced-motion`.
+- The icon container is a 56px rounded square with a hairline border, filled with `background-100`. Icons should be 24px (`size-6`) — the wrapper auto-sizes them.
+- Cap at one primary CTA in `action`. Use `children` for a secondary link (typical: "Learn more" with an external-link icon) or supporting content.
+- Content guidance: title is Title Case (`No Logs Match Your Filter`); description is sentence case and adds new information, not a rephrasing of the title. CTA labels are Title Case Verb + Noun (`Deploy Project`, `Browse Items`), never `Get Started` or `Continue`.
+- For an async filter change, wrap the region in `aria-live="polite"` so screen readers announce the new state.
+- Wraps well inside a `<Card>` for the settings-page or dashboard empty section look.
 </Callout>

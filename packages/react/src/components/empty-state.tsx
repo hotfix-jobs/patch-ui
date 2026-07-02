@@ -4,32 +4,37 @@ import { motion, useReducedMotion } from "motion/react";
 import type * as React from "react";
 import { cn } from "../utils";
 
-export interface EmptyStateProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  /** Title - typically a short sentence describing the empty condition. */
+export interface EmptyStateProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
+  /** Title — a short sentence describing the empty condition. */
   title: React.ReactNode;
-  /** Helper text expanding on the title. */
+  /** Helper text expanding on the title. Two lines max reads best. */
   description?: React.ReactNode;
-  /** Optional icon, rendered in a hairline-bordered 36×36 box above the title. */
+  /** Optional icon, rendered in a rounded-square container above the title. */
   icon?: React.ReactNode;
-  /**
-   * Optional CTA. Pass any node — typically a `<Button>` from this library.
-   * Routing primitives (e.g. `next/link`) are intentionally not coupled to
-   * keep patch-ui framework-agnostic; wrap the Button with your router's Link.
-   */
+  /** Primary CTA — typically a `<Button>`. */
   action?: React.ReactNode;
+  /**
+   * Additional slots rendered below the primary action. Use for a
+   * secondary link ("Learn more") or supporting content.
+   */
+  children?: React.ReactNode;
 }
 
 /**
- * EmptyState - "no results" / "no data yet" placeholder.
+ * EmptyState — "no results" / "no data yet" placeholder.
  *
- * Used for zero-result, empty-list, and first-run states.
- * Refined to the new system: hairline icon container, tighter typography.
+ * Structure: icon → title → description → primary action → optional
+ * secondary children. Everything horizontally centered with generous
+ * vertical spacing. Fades in on mount so the transition from a loading
+ * state or a list-with-data feels intentional rather than abrupt.
  */
 export function EmptyState({
   title,
   description,
   icon,
   action,
+  children,
   className,
   ...props
 }: EmptyStateProps): React.ReactElement {
@@ -38,8 +43,6 @@ export function EmptyState({
   return (
     <motion.div
       data-slot="empty-state"
-      // Fade in on mount so transitions from skeleton / list-with-data
-      // into the empty state feel intentional rather than abrupt.
       initial={reduceMotion ? false : { opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={
@@ -48,7 +51,7 @@ export function EmptyState({
           : { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
       }
       className={cn(
-        "flex flex-col items-center justify-center px-6 py-12 text-center",
+        "flex flex-col items-center justify-center px-6 py-14 text-center",
         className,
       )}
       {...(props as React.ComponentProps<typeof motion.div>)}
@@ -56,20 +59,36 @@ export function EmptyState({
       {icon && (
         <div
           aria-hidden
-          className="mb-4 flex w-9 h-9 items-center justify-center rounded-[var(--radius-6)] border border-[var(--gray-alpha-400)] text-gray-800"
+          className="mb-5 flex size-14 items-center justify-center rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 text-gray-1000 [&_svg]:size-6"
+          data-slot="empty-state-icon"
         >
           {icon}
         </div>
       )}
-      <h3 className="text-copy-14 font-medium tracking-[-0.015em] text-gray-1000">
+      <h3
+        className="text-heading-20 text-gray-1000"
+        data-slot="empty-state-title"
+      >
         {title}
       </h3>
       {description && (
-        <p className="mt-1.5 max-w-xs text-label-12 leading-relaxed text-gray-900">
+        <p
+          className="mt-2 max-w-md text-copy-14 text-gray-900"
+          data-slot="empty-state-description"
+        >
           {description}
         </p>
       )}
-      {action && <div className="mt-4">{action}</div>}
+      {action && (
+        <div className="mt-5" data-slot="empty-state-action">
+          {action}
+        </div>
+      )}
+      {children && (
+        <div className="mt-4 flex flex-col items-center gap-2" data-slot="empty-state-extras">
+          {children}
+        </div>
+      )}
     </motion.div>
   );
 }
