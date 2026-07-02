@@ -66,13 +66,30 @@ export function Table({
         // identical to a collapsed table; row-dividers live on cells
         // via border-b instead of on tr.
         "w-full caption-bottom border-separate border-spacing-0 text-copy-14 text-gray-1000",
-        variant === "default" &&
-          "overflow-hidden rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400",
         className,
       )}
       {...props}
     />
   );
+
+  // Default variant: outer chrome (border, radius, bg) lives on the
+  // container div so we can pad the table inside — cells stay inset
+  // from the outer border and the interactive hover pill has room to
+  // breathe without touching the edges.
+  if (variant === "default") {
+    return (
+      <div
+        data-slot="table-container"
+        className={cn(
+          "relative w-full overflow-hidden rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400",
+          scrollable && "overflow-x-auto",
+        )}
+      >
+        <div className="p-1">{tableEl}</div>
+      </div>
+    );
+  }
+
   if (!scrollable) return tableEl;
   return (
     <div
