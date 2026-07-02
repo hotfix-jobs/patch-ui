@@ -266,8 +266,8 @@
         "@base-ui/react"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/dialog.json",
         "https://ui.hotfix.jobs/r/internal-icons.json",
+        "https://ui.hotfix.jobs/r/modal.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -298,28 +298,6 @@
           "path": "registry/components/ui/date-picker.tsx",
           "type": "registry:ui",
           "target": "components/ui/date-picker.tsx"
-        }
-      ]
-    },
-    {
-      "name": "dialog",
-      "type": "registry:ui",
-      "title": "Dialog",
-      "dependencies": [
-        "@floating-ui/react",
-        "motion",
-        "react-remove-scroll"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/recipes.json",
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/dialog.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/dialog.tsx"
         }
       ]
     },
@@ -496,6 +474,29 @@
           "path": "registry/components/ui/menu.tsx",
           "type": "registry:ui",
           "target": "components/ui/menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "modal",
+      "type": "registry:ui",
+      "title": "Modal",
+      "dependencies": [
+        "@floating-ui/react",
+        "motion",
+        "react-remove-scroll"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/button.json",
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/modal.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/modal.tsx"
         }
       ]
     },

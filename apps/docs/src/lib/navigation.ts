@@ -59,7 +59,7 @@ export const navigation: NavGroup[] = [
     items: [
       { title: "Combobox", href: "/docs/components/combobox" },
       { title: "Command", href: "/docs/components/command" },
-      { title: "Dialog", href: "/docs/components/dialog" },
+      { title: "Modal", href: "/docs/components/modal" },
       { title: "Sheet", href: "/docs/components/sheet" },
       { title: "Menu", href: "/docs/components/menu" },
       { title: "Tooltip", href: "/docs/components/tooltip" },

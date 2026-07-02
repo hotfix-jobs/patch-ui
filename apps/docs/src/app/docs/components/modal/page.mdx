@@ -1,0 +1,146 @@
+import { ModalDemo } from "./modal-demo";
+
+# Modal
+
+A floating dialog surface for content that requires user attention. Controlled externally via `active` so consumers own state; dismisses on Escape and outside-click by default. Focus is trapped inside while open and returned to the trigger on close.
+
+<Install name="modal" />
+
+<ComponentPreview label="Modal Examples">
+  <ModalDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  ModalSubtitle,
+  ModalActions,
+  ModalAction,
+} from "@patchui/react";
+
+const [open, setOpen] = useState(false);
+
+<Button onClick={() => setOpen(true)}>Update project</Button>
+
+<Modal active={open} onClickOutside={() => setOpen(false)}>
+  <ModalBody>
+    <ModalHeader>
+      <ModalTitle>Update Project</ModalTitle>
+      <ModalSubtitle>
+        Bumping the framework to the latest major.
+      </ModalSubtitle>
+    </ModalHeader>
+  </ModalBody>
+  <ModalActions>
+    <ModalAction onClick={() => setOpen(false)}>Cancel</ModalAction>
+    <ModalAction variant="primary" onClick={confirm}>
+      Update Project
+    </ModalAction>
+  </ModalActions>
+</Modal>
+```
+
+## Props
+
+### Modal
+
+<PropsTable
+  props={[
+    {
+      name: "active",
+      type: "boolean",
+      default: "false",
+      description: "Whether the modal is visible. Controlled entirely by the consumer.",
+    },
+    {
+      name: "onClickOutside",
+      type: "() => void",
+      default: "-",
+      description: "Called when the user presses Escape or clicks the backdrop. Wire it to close the modal.",
+    },
+    {
+      name: "sticky",
+      type: "boolean",
+      default: "false",
+      description: "Locks the header and footer while the body scrolls. Useful for long forms and release notes.",
+    },
+    {
+      name: "initialFocusRef",
+      type: "RefObject<HTMLElement>",
+      default: "-",
+      description: "Element to focus when the modal opens. Defaults to the first focusable element.",
+    },
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg" | "xl" | "full"',
+      default: '"md"',
+      description: "Max-width of the popup.",
+    },
+    {
+      name: "showCloseButton",
+      type: "boolean",
+      default: "true",
+      description: "Show the default × close button in the top-right corner.",
+    },
+  ]}
+/>
+
+### ModalAction
+
+<PropsTable
+  props={[
+    {
+      name: "variant",
+      type: '"primary" | "secondary" | "tertiary" | "error" | "warning"',
+      default: '"secondary"',
+      description: "Passed straight to Button. Primary for the confirming action; secondary for Cancel; error for destructive confirmation.",
+    },
+    {
+      name: "fullWidth",
+      type: "boolean",
+      default: "false",
+      description: "Stretch to fill the actions row. Pair with `stacked` on ModalActions for narrow-mobile layouts.",
+    },
+    {
+      name: "onClick",
+      type: "(event: MouseEvent) => void",
+      default: "-",
+      description: "Click handler. Typically closes the modal and runs the action.",
+    },
+    {
+      name: "prefix",
+      type: "ReactNode",
+      default: "-",
+      description: "Leading icon slot (from Button).",
+    },
+  ]}
+/>
+
+## Compound Components
+
+<CompoundComponents
+  components={[
+    { name: "Modal", description: "Root popup, handles portal, focus trap, backdrop, and dismiss." },
+    { name: "ModalBody", description: "Scrollable content region. Holds the header and main content." },
+    { name: "ModalHeader", description: "Wraps the title and subtitle." },
+    { name: "ModalTitle", description: "Primary heading in Title Case. Wired to aria-labelledby." },
+    { name: "ModalSubtitle", description: "Supporting sentence-case text below the title." },
+    { name: "ModalInset", description: "Visually distinct block inside the body. Use for previews, code, or 'here's what changes' summaries." },
+    { name: "ModalActions", description: "Footer row for action buttons. `stacked` prop stacks them vertically for narrow layouts." },
+    { name: "ModalAction", description: "Button inside ModalActions. Wraps our Button so consumers get consistent sizing and API." },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Controlled only.** No trigger subcomponent — consumers wire `active` and `onClickOutside` themselves. This keeps state ownership obvious and avoids surprises with imperative refs.
+- **Title vs subtitle voice.** Titles are Title Case statements, never questions. Subtitles are sentence case, 1–3 sentences. Primary action button follows a Verb + Noun pattern that mirrors the title ("Delete Project" → "Delete Project").
+- **Destructive flows.** For destructive actions with unsaved input, gate the destructive button behind a confirmation input (see the demo). Keep Cancel literal — screen reader users depend on it.
+- **Sticky mode.** With `sticky`, the header stays anchored at the top and the actions row stays at the bottom while the body scrolls independently. Only turn it on when the body is meaningfully long.
+- **Focus return.** After the modal closes, focus returns to whatever was focused when it opened (usually the trigger). No need to wire this manually.
+</Callout>

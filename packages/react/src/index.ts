@@ -79,22 +79,19 @@ export type {
   SheetCloseProps,
 } from "./components/sheet";
 export {
-  Dialog,
-  DialogTrigger,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-  DialogPanel,
-} from "./components/dialog";
-export type {
-  DialogProps,
-  DialogTriggerProps,
-  DialogContentProps,
-  DialogCloseProps,
-} from "./components/dialog";
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  ModalSubtitle,
+  ModalInset,
+  ModalActions,
+  ModalAction,
+  type ModalProps,
+  type ModalSize,
+  type ModalActionsProps,
+  type ModalActionProps,
+} from "./components/modal";
 export {
   Menu,
   MenuPortal,

@@ -129,7 +129,7 @@ Same props as DatePicker, except:
 - Label format: `"Jan 1, 2026 – Feb 5, 2026"` (or just the start date if only `from` is set)
 
 <Callout title="Notes">
-- **Composition over abstraction:** DatePicker is a thin shell around a button trigger and `Calendar`. If you need additional UI inside the popup (preset shortcuts like "Last 7 days", a time picker, footer actions), drop the wrapper and compose a `Menu` or `Dialog` around `Calendar` directly.
+- **Composition over abstraction:** DatePicker is a thin shell around a button trigger and `Calendar`. If you need additional UI inside the popup (preset shortcuts like "Last 7 days", a time picker, footer actions), drop the wrapper and compose a `Menu` or `Modal` around `Calendar` directly.
 - **Auto-close:** DatePicker closes when a date is selected. DateRangePicker stays open after the first click so the user can pick the end date, then closes once both are set.
 - **Calendar feature parity:** All `Calendar` props (`fromDate`, `toDate`, `disabledDates`, `weekStartsOn`, `defaultMonth`) pass through to the inner calendar.
 </Callout>

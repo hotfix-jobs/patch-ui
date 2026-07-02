@@ -5,7 +5,7 @@ import { createContext, useContext } from "react";
 import type * as React from "react";
 import { CheckIcon } from "../internal-icons";
 import { cn } from "../utils";
-import { Dialog, DialogContent } from "./dialog";
+import { Modal } from "./modal";
 
 type Density = "compact" | "comfortable";
 
@@ -265,15 +265,15 @@ export function CommandDialog({
   ...commandProps
 }: CommandDialogProps): React.ReactElement {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        showCloseButton={false}
-        size="xl"
-        className="gap-0 overflow-hidden p-0"
-      >
-        <Command {...commandProps}>{children}</Command>
-      </DialogContent>
-    </Dialog>
+    <Modal
+      active={open ?? false}
+      onClickOutside={() => onOpenChange?.(false)}
+      showCloseButton={false}
+      size="xl"
+      className="gap-0 overflow-hidden p-0"
+    >
+      <Command {...commandProps}>{children}</Command>
+    </Modal>
   );
 }
 
