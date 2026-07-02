@@ -430,7 +430,7 @@ export function ComboboxItem({
       data-active={isActive ? "" : undefined}
       data-disabled={disabled ? "" : undefined}
       className={cn(
-        "mx-1 flex cursor-default items-center gap-2 rounded-[var(--radius-6)] px-3 py-2 text-copy-14 text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "mx-1 flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-copy-14 text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 data-[active]:bg-gray-alpha-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className,
       )}
       {...getItemProps({
