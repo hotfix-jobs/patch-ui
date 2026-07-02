@@ -62,10 +62,11 @@ export function Table({
       data-variant={variant}
       className={cn(
         // border-separate so cells accept border-radius (needed for
-        // interactive hover pill). border-spacing:0 keeps the visual
-        // identical to a collapsed table; row-dividers live on cells
-        // via border-b instead of on tr.
-        "w-full caption-bottom border-separate border-spacing-0 text-copy-14 text-gray-1000",
+        // interactive hover pill). Tiny vertical border-spacing gives
+        // the hover pill breathing room above/below without changing
+        // perceived row density. Row-dividers live on cells via
+        // border-b instead of on tr.
+        "w-full caption-bottom border-separate [border-spacing:0_2px] text-copy-14 text-gray-1000",
         className,
       )}
       {...props}

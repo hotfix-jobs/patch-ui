@@ -253,7 +253,7 @@ export function CommandGroupLabel({
     <AutocompletePrimitive.GroupLabel
       data-slot="command-group-label"
       className={cn(
-        "px-3 pb-1 pt-2 text-label-10 text-gray-700",
+        "px-3 pb-1 pt-2 text-label-12 text-gray-700",
         className,
       )}
       {...props}
