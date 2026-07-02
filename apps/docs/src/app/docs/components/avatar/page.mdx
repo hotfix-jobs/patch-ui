@@ -178,9 +178,10 @@ import {
 - `AvatarGroup` — overlapping row with data-driven or children API, auto-scaling overlap, and `+N` overflow chip
 
 <Callout title="Notes">
-- **Numeric sizes** are the primary path for pixel-precise use in dense UI. Enums are ergonomic defaults.
-- **Group ring:** `AvatarGroup` adds a `ring-background-100` between avatars so they visually separate despite overlap.
-- **Overflow chip:** the `+N` chip uses `bg-gray-100` + `text-gray-900` so it reads as a counter, not another person.
-- **`members` vs children:** use `members` for data-driven lists (fetched from API). Use children when you need per-avatar customization (custom fallback, click handler, wrapping tooltip).
-- **`reverse`** matters for author attribution: default puts the first credited author on top; `reverse` puts the most recent contributor on top.
+- Both size APIs coexist. Reach for the enum when a preset lines up (`sm`, `md`, `lg`…). Reach for a number when the layout needs an exact pixel diameter.
+- Inside a group, each avatar picks up a `ring-background-100` hairline. That's what keeps overlapping avatars from bleeding into each other.
+- The overflow chip uses `bg-gray-100` + `text-gray-900` — visibly different from a real avatar, reads as a counter.
+- Pick the `members` prop for lists coming from data, keep children when individual avatars need their own tooltip, click handler, or fallback.
+- `reverse` flips the z-stack. Left-to-right visual order stays the same; what changes is who sits on top when they overlap.
+- The `icon` prop is a small status badge tucked into the bottom-left corner, not a replacement for the avatar body. The main avatar (image/letter/placeholder) still renders behind it.
 </Callout>

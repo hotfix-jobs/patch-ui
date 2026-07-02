@@ -129,12 +129,11 @@ import { Search, Mail, ArrowUpCircle } from "lucide-react";
   ]}
 />
 
-<Callout title="Best practices">
-- **Validate on blur**, not on every keystroke. Surface the message by passing a string to `error`.
-- **Trim** leading/trailing whitespace before submit so `example.com` and ` example.com ` resolve to one value.
-- **Placeholders** show an example value (`my-awesome-project`, `example.com`), not instructions like `Enter your project name`.
-- **Labels** are Title Case nouns: `Project Name`, `Domain`, `Environment Variable Name`.
-- **Error messages** name the field and the constraint, end in a period: `Project name is required.`, `Code must be 6 digits.`
-- **Prefix / suffix**: styled containers create a distinct visual block for scheme (`https://`) or domain (`.com`). Unstyled (`prefixStyling={false}`) is right for search icons and inline affordances.
-- **Icon-only affordances** inside a row of inputs use `<Button shape="circle" aria-label="…">` rather than an unlabeled icon.
+<Callout title="Notes">
+- The `error` prop takes a boolean (just the visual state) or a string (renders the message inline with `role="alert"`). Prefer strings.
+- Whitespace-trim the value at submit time so a stray space doesn't slip past a required check.
+- Placeholders should look like a real value the user would type — `example.com`, `my-project`. Skip the "Enter your…" instructions; the label already does that job.
+- Styled prefixes and suffixes read as their own module — good for `https://` schemes, `.com` domains, currency units. Turn styling off (`prefixStyling={false}`) when the affix is really an icon that lives inside the field.
+- For an action button that sits inside an input row, use `<Button shape="circle">` with `aria-label`, not a naked icon.
+- Use `<SearchInput>` for search boxes so keyboard Esc and the Esc chip both clear the value.
 </Callout>

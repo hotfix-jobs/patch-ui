@@ -145,15 +145,12 @@ import { Button } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- **Primary** fills with `gray-1000`. Reserve for the single hero action on a view.
-- **Secondary** is `background-100` with a translucent border — the workhorse alternative.
-- **Tertiary** is transparent with a subtle hover tint — low-emphasis actions.
-- **Warning** is solid `amber-700` — reserve for actions with caution or reversible risk.
-- **Error** is solid `red-700` — reserve for destructive actions.
-- **Icon-only:** pass `icon` without `children`. The width becomes square (or circular / rounded) to match the size. **`aria-label` is required** — a dev warning fires without it.
-- **`shape="rounded"` + marketing:** the 12px radius shape pairs with hero CTAs on marketing pages.
-- **Polymorphic:** pass `render={<a href="…" />}` to render as an anchor while keeping button styles.
-- **Loading state:** the button content is replaced with a spinner and the button is disabled to prevent double-submission.
-- **Touch targets:** all sizes include a minimum 44×44px touch target via a pseudo-element.
-- **Content:** Title Case, verb + noun (`Deploy Project`, `Delete Member`). Avoid bare `Submit` or `OK`.
+- Each variant maps to a specific token: `primary` = `gray-1000`, `secondary` = `background-100` + `gray-alpha-400` border, `tertiary` = transparent + hover tint, `warning` = `amber-700`, `error` = `red-700`.
+- Reserve `primary` for the one hero action on a view. Reserve `error` for actions the user cannot undo without work.
+- Icon-only buttons: pass `icon` with no `children`. The button squares up to match the size. `aria-label` is required; a dev-time warning fires when it's missing.
+- `shape="rounded"` alongside `shadow` produces the taller marketing pill (12px radius + soft lift) used on hero CTAs.
+- Polymorphism: pass `render={<a href="…" />}` (or a `<Link>`) to render as an anchor with the button's styling and behavior.
+- `loading` swaps the content for a spinner and disables interaction so a double-tap can't fire twice.
+- Every size ships a hidden 44×44 touch target underneath, so the tap area works on coarse pointers even for a small button.
+- Labels: Title Case, verb + noun (`Deploy Project`, `Delete Member`). A lone `Submit` or `OK` tells the user nothing about what will happen.
 </Callout>
