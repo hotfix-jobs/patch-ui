@@ -32,6 +32,15 @@ import { Slider, SliderValue } from "@patchui/react";
 // Controlled
 const [value, setValue] = useState(30);
 <Slider value={value} onValueChange={(v) => setValue(v)} />
+
+// Range with numeric inputs on each end (range mode only)
+const [range, setRange] = useState([50, 75]);
+<Slider
+  value={range}
+  onValueChange={setRange}
+  showStartInput
+  showEndInput
+/>
 ```
 
 ## Props
@@ -93,6 +102,18 @@ const [value, setValue] = useState(30);
       type: "(value, details) => void",
       default: "-",
       description: "Callback fired when the user finishes dragging or releases the slider.",
+    },
+    {
+      name: "showStartInput",
+      type: "boolean",
+      default: "false",
+      description: "Renders a small numeric Input to the left of the track, wired to values[0]. Range mode only.",
+    },
+    {
+      name: "showEndInput",
+      type: "boolean",
+      default: "false",
+      description: "Renders a small numeric Input to the right of the track, wired to values[1]. Range mode only.",
     },
     {
       name: "className",
