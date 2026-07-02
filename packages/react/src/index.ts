@@ -12,6 +12,7 @@ export {
 } from "./components/accordion";
 export { Button, buttonVariants, type ButtonProps } from "./components/button";
 export { Input, InputPrimitive, type InputProps } from "./components/input";
+export { SearchInput, type SearchInputProps } from "./components/search-input";
 export { Textarea, type TextareaProps } from "./components/textarea";
 export { Label } from "./components/label";
 export {

@@ -41,13 +41,19 @@ const heightBySize: Record<InputSize, string> = {
   lg: "h-12 text-copy-16",
 };
 
-const paddingBySize: Record<InputSize, string> = {
-  sm: "px-3",
-  md: "px-3.5",
-  lg: "px-4",
+const leadingPad: Record<InputSize, string> = {
+  sm: "ps-3",
+  md: "ps-3.5",
+  lg: "ps-4",
 };
 
-/** Styled affix wrapper — own bg + border on the input-facing side. */
+const trailingPad: Record<InputSize, string> = {
+  sm: "pe-3",
+  md: "pe-3.5",
+  lg: "pe-4",
+};
+
+/** Styled affix wrapper — own bg + border on the input-facing side, stretched to input height. */
 function StyledAffix({
   side,
   children,
@@ -62,7 +68,7 @@ function StyledAffix({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center bg-gray-100 border-gray-alpha-400 text-gray-800",
+        "self-stretch inline-flex shrink-0 items-center bg-gray-100 border-gray-alpha-400 text-gray-800",
         border,
         pad,
         "[&_svg]:size-4",
@@ -120,6 +126,8 @@ export function Input({
   const shape = rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
   const errorId = id ? `${id}-error` : undefined;
 
+  const hasTrailing = Boolean(suffix) || showClear || Boolean(trailingSpinner);
+
   const inputElement = (
     <InputPrimitive
       id={id}
@@ -127,12 +135,10 @@ export function Input({
         "w-full min-w-0 bg-transparent border-none shadow-none outline-none ring-0",
         "placeholder:text-gray-700 focus:outline-none focus:ring-0",
         heightBySize[size],
-        // Only apply padding when there's no styled prefix/suffix taking the slot
-        !prefix && paddingBySize[size],
-        prefix && !prefixStyling && "ps-0",
-        suffix && !suffixStyling && "pe-0",
-        (suffix || showClear || trailingSpinner) && "pe-0",
-        !suffix && !showClear && !trailingSpinner && paddingBySize[size],
+        // Leading padding: apply unless an unstyled prefix is handling it
+        (!prefix || prefixStyling) ? leadingPad[size] : "ps-0",
+        // Trailing padding: apply unless an unstyled suffix / clear / spinner sits there
+        (!hasTrailing || (suffix && suffixStyling)) ? trailingPad[size] : "pe-0",
         props.type === "search" &&
           "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none",
       )}

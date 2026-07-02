@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@patchui/react";
+import { Input, SearchInput } from "@patchui/react";
 import { ArrowUpCircle, Mail, Search } from "lucide-react";
 
 function Label({ children }: { children: React.ReactNode }) {
@@ -77,6 +77,17 @@ export function InputDemo() {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             onClear={() => setSearchValue("")}
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label>SearchInput (clears on Escape, shows Esc hint)</Label>
+        <div className="flex flex-col gap-3 max-w-xs">
+          <SearchInput
+            placeholder="Search projects"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
       </div>
