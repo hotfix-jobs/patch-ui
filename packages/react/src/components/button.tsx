@@ -42,6 +42,7 @@ export const buttonVariants = cva(
       },
       shape: {
         square: "rounded-[var(--radius-6)]",
+        pill: "rounded-full",
         circle: "rounded-full",
         rounded: "rounded-[var(--radius-12)]",
       },
