@@ -78,11 +78,17 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Desktop: sticky column in document flow */}
+      {/* Desktop: fixed column pinned under the sticky header. Not sticky
+          because a sticky sidebar unsticks when its parent container ends
+          (at the footer), letting the sticky header cover it as the user
+          scrolls past. Fixed positioning stays predictable across the
+          whole page height. */}
       <aside
         className={cn(
-          "hidden lg:block lg:w-64 lg:shrink-0 lg:border-r lg:border-gray-alpha-400",
-          "lg:sticky lg:top-14 lg:h-[calc(100vh-3.5rem)] lg:overflow-y-auto",
+          "hidden lg:block lg:w-64",
+          "lg:fixed lg:top-14 lg:bottom-0 lg:left-0 lg:z-30",
+          "lg:border-r lg:border-gray-alpha-400 lg:bg-background-100",
+          "lg:overflow-y-auto",
         )}
       >
         {navContent}
