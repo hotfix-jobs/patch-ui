@@ -2,7 +2,9 @@ import { LabelDemo } from "./label-demo";
 
 # Label
 
-A form label with the standard label typography (`label-14`, `gray-1000`). Connects to inputs via the native `htmlFor` attribute.
+A styled `<label>` at `text-label-14 gray-1000`. Use it standalone when you want the label positioned separately from the control, or wrap it around a `Switch` / `Checkbox` / `Radio` for click-to-toggle behavior.
+
+For a single input where the label sits directly above, `<Input label="…" id="…" />` is the more compact path — it wires up `htmlFor` and `aria-describedby` for you.
 
 <Install name="label" />
 
@@ -13,14 +15,17 @@ A form label with the standard label typography (`label-14`, `gray-1000`). Conne
 ## Usage
 
 ```tsx
-import { Label, Input } from "@patchui/react";
+import { Label, Input, Switch, Checkbox } from "@patchui/react";
 
-// Basic
-<Label>Email address</Label>
-
-// With an input
+// Standalone with an input
 <Label htmlFor="email">Email</Label>
 <Input id="email" type="email" />
+
+// Wrapping a Switch or Checkbox — the whole label becomes clickable
+<Label>
+  <Switch />
+  <span>Receive weekly digest</span>
+</Label>
 
 // As a different element (polymorphic render prop)
 <Label render={<span />}>Read-only label</Label>
@@ -46,13 +51,14 @@ import { Label, Input } from "@patchui/react";
       name: "htmlFor",
       type: "string",
       default: "-",
-      description: "The `id` of the form element this label is associated with.",
+      description: "The `id` of the form element this label is associated with. Standard HTML attribute.",
     },
   ]}
 />
 
 <Callout title="Notes">
-- **Typography:** `text-label-14` at `text-gray-1000` — reads as primary form chrome.
-- **Polymorphic:** `render={<span />}` renders a `<span>` when you want the label style without the semantic tag.
-- **Accessibility:** always pair with `htmlFor` matching the input's `id` so screen readers associate the label with its control.
+- `<Label>` is a plain `<label>` under the hood. Every native attribute (`htmlFor`, `form`, etc.) passes through.
+- For the common "label above input" pattern, `<Input label="Email" id="email" />` is one prop instead of two elements. Reach for standalone `<Label>` when the layout is custom or the control isn't an Input.
+- Wrapping the label around a `Switch`, `Checkbox`, or `Radio` makes the whole label click to toggle — no `htmlFor` needed. Add `cursor-pointer` so the cursor confirms it.
+- Rendered as `<span>` via `render={<span />}` when you want the visual weight without the form semantics.
 </Callout>
