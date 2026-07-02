@@ -376,7 +376,7 @@ export function ComboboxPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-6)] bg-background-100 border border-gray-alpha-400 shadow-menu outline-none overflow-hidden",
+                "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400 shadow-menu outline-none overflow-hidden",
                 className,
               )}
             >
@@ -430,7 +430,7 @@ export function ComboboxItem({
       data-active={isActive ? "" : undefined}
       data-disabled={disabled ? "" : undefined}
       className={cn(
-        "flex cursor-default items-center gap-2 rounded-[var(--radius-6)] px-2 py-1.5 text-label-13 text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "flex cursor-default items-center gap-2 px-3 py-2 text-copy-14 text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className,
       )}
       {...getItemProps({
