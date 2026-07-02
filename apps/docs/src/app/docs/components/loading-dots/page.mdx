@@ -1,0 +1,75 @@
+import { LoadingDotsDemo } from "./loading-dots-demo";
+
+# LoadingDots
+
+Three dots pulsing in sequence. Use inline in copy for short, indeterminate waits — `Saving`, `Deploying`, `Uploading`. For icon-sized indeterminate waits use `Spinner`; for layout placeholders use `Skeleton`; for known progress use `Progress`.
+
+<Install name="loading-dots" />
+
+<ComponentPreview label="LoadingDots">
+  <LoadingDotsDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { LoadingDots } from "@patchui/react";
+
+// Standalone
+<LoadingDots size="sm" />
+<LoadingDots size="md" />
+<LoadingDots size="lg" />
+
+// With trailing text ("Saving...")
+<LoadingDots size="md">Saving</LoadingDots>
+
+// Inline in copy
+<p>Your changes are being applied <LoadingDots /></p>
+
+// Custom color — inherits currentColor
+<div className="text-blue-700">
+  <LoadingDots />
+</div>
+
+// Custom dot diameter
+<LoadingDots dotSize={5} />
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "Dot diameter preset. `sm` = 4px, `md` = 6px, `lg` = 8px.",
+    },
+    {
+      name: "dotSize",
+      type: "number",
+      default: "-",
+      description: "Custom dot diameter in pixels. Overrides the `size` preset when the default doesn't line up with adjacent type.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional trailing text label rendered before the dots (e.g. `Saving`, `Deploying`).",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- LoadingDots is inline. Wrap it inside the sentence or button label that describes the work — `Saving<LoadingDots />` — not next to it as a separate glyph.
+- For buttons, use `<Button loading>` instead of dropping LoadingDots into a label. The Button spinner is sized and busy-state-wired for you.
+- The wrapper has `aria-live="polite"` so screen readers announce the label change (`Saving` → `Saved`) without interrupting. The dots themselves are decorative.
+- Colors inherit from `currentColor`. Wrap in a colored parent to tint.
+- Never string LoadingDots after a completed verb (`Saved…`). The dots imply ongoing work.
+</Callout>

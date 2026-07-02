@@ -2,7 +2,7 @@
 
 import { Spinner } from "@patchui/react";
 
-const SIZES = ["xs", "sm", "md", "lg", "xl"] as const;
+const SIZES = ["xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl"] as const;
 
 export function SpinnerDemo() {
   return (

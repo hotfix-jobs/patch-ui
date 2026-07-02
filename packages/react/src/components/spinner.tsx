@@ -13,6 +13,9 @@ const sizeVariants = cva("inline-flex shrink-0 items-center justify-center", {
       md: "size-5",
       lg: "size-6",
       xl: "size-8",
+      "2xl": "size-10",
+      "3xl": "size-12",
+      "4xl": "size-16",
     },
   },
 });

@@ -165,6 +165,7 @@ export {
   type ToastAction,
 } from "./components/toast";
 export { Spinner, type SpinnerProps } from "./components/spinner";
+export { LoadingDots, type LoadingDotsProps } from "./components/loading-dots";
 export { Skeleton } from "./components/skeleton";
 export {
   DisplayHeading,
