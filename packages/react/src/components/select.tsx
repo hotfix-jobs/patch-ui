@@ -122,6 +122,15 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
   const hasError = Boolean(error);
   const errorId = id ? `${id}-error` : undefined;
 
+  const isControlled = value !== undefined;
+  const resolvedDefault = isControlled
+    ? undefined
+    : defaultValue !== undefined
+      ? defaultValue
+      : placeholder
+        ? ""
+        : undefined;
+
   const selectElement = (
     <select
       ref={ref}
@@ -137,8 +146,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
       data-slot="select"
       disabled={disabled}
       required={required}
-      value={value}
-      defaultValue={defaultValue ?? (placeholder ? "" : undefined)}
+      {...(isControlled ? { value } : { defaultValue: resolvedDefault })}
       aria-invalid={hasError || undefined}
       aria-describedby={hasErrorMessage ? errorId : props["aria-describedby"]}
       {...props}
