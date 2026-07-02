@@ -71,10 +71,8 @@ export function Tooltip({
             >
               {content}
               {arrow && (
-                <TooltipPrimitive.Arrow className="text-gray-1000 data-[side=top]:-bottom-[5px] data-[side=bottom]:-top-[5px] data-[side=bottom]:rotate-180 data-[side=left]:-right-[5px] data-[side=left]:rotate-90 data-[side=right]:-left-[5px] data-[side=right]:-rotate-90">
-                  <svg width="10" height="5" viewBox="0 0 10 5" fill="currentColor">
-                    <path d="M0 0L5 5L10 0Z" />
-                  </svg>
+                <TooltipPrimitive.Arrow className="group flex items-center justify-center">
+                  <div className="size-2 rotate-45 bg-gray-1000 group-data-[side=top]:-translate-y-1/2 group-data-[side=bottom]:translate-y-1/2 group-data-[side=left]:-translate-x-1/2 group-data-[side=right]:translate-x-1/2" />
                 </TooltipPrimitive.Arrow>
               )}
             </TooltipPrimitive.Popup>
