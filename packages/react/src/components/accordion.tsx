@@ -1,46 +1,77 @@
 "use client";
 
 import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
+import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
 /**
- * Accordion - compound component built on Base UI Accordion.
+ * Accordion — compound built on Base UI Accordion.
  *
- * Unstyled item wrapper plus a chevron that rotates 180deg on open.
- * Consumers supply their own row/card chrome (e.g. add
- * `border-t border-gray-alpha-400 last:border-b` to AccordionItem for the
- * hairline row pattern, or wrap each item in a Card). Panels animate
- * their height open/close via Base UI's `--accordion-panel-height` CSS
- * variable and render `keepMounted` so collapsed content stays in the
- * DOM (still crawlable, just height:0/overflow-hidden when closed).
+ * Titles are visually-primary heading-14, content sits in copy-14 body
+ * type. Set `bordered` on the root to auto-apply the hairline row
+ * pattern to every item (Vercel Geist Collapse look). Pass `multiple`
+ * to allow more than one item open at once (Vercel's CollapseGroup.multiple).
+ *
+ * Panels stay mounted for find-in-page compatibility; they collapse via
+ * Base UI's `--accordion-panel-height` CSS var with a smooth transition.
  *
  * Usage:
- *   <Accordion defaultValue={["item-0"]}>
- *     <AccordionItem
- *       value="item-0"
- *       className="border-t border-gray-alpha-400 last:border-b"
- *     >
- *       <AccordionTrigger>Question?</AccordionTrigger>
- *       <AccordionPanel>Answer.</AccordionPanel>
+ *   <Accordion bordered defaultValue={["item-1"]}>
+ *     <AccordionItem value="item-1">
+ *       <AccordionTrigger>How do I get started?</AccordionTrigger>
+ *       <AccordionPanel>Install the package…</AccordionPanel>
  *     </AccordionItem>
  *   </Accordion>
  */
 
-export const Accordion = AccordionPrimitive.Root;
+type AccordionContextValue = {
+  bordered: boolean;
+};
+
+const AccordionContext = createContext<AccordionContextValue>({
+  bordered: false,
+});
+
+export type AccordionProps = React.ComponentProps<typeof AccordionPrimitive.Root> & {
+  /** Auto-apply the hairline row pattern to every child item. */
+  bordered?: boolean;
+};
+
+export function Accordion({
+  bordered = false,
+  className,
+  ...props
+}: AccordionProps): React.ReactElement {
+  return (
+    <AccordionContext.Provider value={{ bordered }}>
+      <AccordionPrimitive.Root
+        data-slot="accordion"
+        data-bordered={bordered ? "" : undefined}
+        className={className}
+        {...props}
+      />
+    </AccordionContext.Provider>
+  );
+}
 
 export type AccordionItemProps = React.ComponentProps<
   typeof AccordionPrimitive.Item
 >;
+
 export function AccordionItem({
   className,
   ...props
 }: AccordionItemProps): React.ReactElement {
+  const { bordered } = useContext(AccordionContext);
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={className}
+      className={cn(
+        bordered && "border-t border-gray-alpha-400 last:border-b",
+        className,
+      )}
       {...props}
     />
   );
@@ -49,6 +80,7 @@ export function AccordionItem({
 export type AccordionTriggerProps = React.ComponentProps<
   typeof AccordionPrimitive.Trigger
 >;
+
 export function AccordionTrigger({
   className,
   children,
@@ -59,16 +91,14 @@ export function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "group flex w-full items-start justify-between gap-3 py-3.5 text-left",
-          "text-copy-14 font-medium text-gray-1000",
+          "group flex w-full items-start justify-between gap-3 py-4 text-left",
+          "text-heading-14 text-gray-1000",
           focusRing,
           className,
         )}
         {...props}
       >
         <span>{children}</span>
-        {/* Chevron that rotates 180deg on open. Inline SVG so the shape
-            renders independent of Tailwind class generation. */}
         <svg
           aria-hidden
           viewBox="0 0 24 24"
@@ -89,6 +119,7 @@ export function AccordionTrigger({
 export type AccordionPanelProps = React.ComponentProps<
   typeof AccordionPrimitive.Panel
 >;
+
 export function AccordionPanel({
   className,
   children,
@@ -106,7 +137,7 @@ export function AccordionPanel({
       )}
       {...props}
     >
-      <div className="pb-3.5 text-copy-14 leading-relaxed text-gray-900">
+      <div className="pb-4 text-copy-14 text-gray-1000">
         {children}
       </div>
     </AccordionPrimitive.Panel>

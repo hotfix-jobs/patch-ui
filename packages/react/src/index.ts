@@ -6,6 +6,7 @@ export {
   AccordionTrigger,
   AccordionPanel,
   AccordionPrimitive,
+  type AccordionProps,
   type AccordionItemProps,
   type AccordionTriggerProps,
   type AccordionPanelProps,
