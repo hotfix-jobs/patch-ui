@@ -12,10 +12,12 @@ export interface SectionLabelProps extends useRender.ComponentProps<"p"> {}
  * within a larger surface: sidebar nav groups, showcase-wall cells, demo
  * variant clusters, foundations-page charts.
  *
- * Typography only. Weight is `font-semibold` (600), heavy enough to anchor
- * without competing with real headings. Layout is the parent's job: reach
- * for `space-y-*`, `gap-*`, or explicit margin on the wrapper. No baked-in
- * spacing means no callsite has to fight a default.
+ * Typography only. Weight is `font-medium` (500) — the recipe common to
+ * small metadata-style labels across Vercel Geist, Linear, Notion. At
+ * 12px, `font-semibold` reads chunky in a muted color. Layout is the
+ * parent's job: reach for `space-y-*`, `gap-*`, or explicit margin on
+ * the wrapper. No baked-in spacing means no callsite has to fight a
+ * default.
  *
  *   <div className="space-y-3">
  *     <SectionLabel>Bordered variants</SectionLabel>
@@ -30,7 +32,7 @@ export function SectionLabel({
   const defaultProps = {
     "data-slot": "section-label",
     className: cn(
-      "text-label-12 font-semibold text-gray-800",
+      "text-label-12 font-medium text-gray-800",
       className,
     ),
   };
