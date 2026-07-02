@@ -91,11 +91,23 @@ export function AvatarDemo() {
       </div>
 
       <div>
-        <Label>With custom icon</Label>
-        <div className="flex items-center gap-3">
-          <Avatar icon={<ArrowDownCircle className="size-3.5" />} size={32} />
-          <Avatar icon={<CheckCircle className="size-3.5" />} size={32} />
-          <Avatar icon={<Clock className="size-3.5" />} size={32} />
+        <Label>With custom icon (status badge overlay)</Label>
+        <div className="flex items-center gap-4">
+          <Avatar
+            placeholder
+            size={40}
+            icon={<ArrowDownCircle className="size-3" />}
+          />
+          <Avatar
+            placeholder
+            size={40}
+            icon={<CheckCircle className="size-3" />}
+          />
+          <Avatar
+            placeholder
+            size={40}
+            icon={<Clock className="size-3" />}
+          />
         </div>
       </div>
 

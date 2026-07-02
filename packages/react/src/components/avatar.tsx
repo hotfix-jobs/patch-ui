@@ -86,15 +86,12 @@ export function Avatar({
 }: AvatarProps): React.ReactElement {
   // Numeric size: apply width/height inline; enum size: use the size variant class.
   const numericSize = typeof size === "number";
+  const px = toPx(size);
   const inlineSize = numericSize ? { width: size, height: size } : undefined;
 
-  // Icon mode + placeholder mode both use the subtle neutral fill.
-  const usesNeutralFill = placeholder || (icon && iconBackground);
-  const fillClass = usesNeutralFill
+  const fillClass = placeholder
     ? "bg-gray-100 text-gray-800"
-    : icon && !iconBackground
-      ? "bg-transparent text-gray-800"
-      : "bg-gray-1000 text-background-100";
+    : "bg-gray-1000 text-background-100";
 
   const baseClass = numericSize
     ? cn(
@@ -105,22 +102,50 @@ export function Avatar({
       )
     : cn(
         avatarVariants({ size, shape }),
-        usesNeutralFill && "!bg-gray-100 !text-gray-800",
-        icon && !iconBackground && "!bg-transparent !text-gray-800",
+        placeholder && "!bg-gray-100 !text-gray-800",
       );
 
-  // Priority: icon > children > letter > placeholder icon.
-  const resolvedChildren = icon ? (
-    <span className="flex size-full items-center justify-center">{icon}</span>
-  ) : (
-    children ?? (
-      letter ? (
-        <AvatarFallback>{letter}</AvatarFallback>
-      ) : placeholder ? (
-        <PlaceholderIcon />
-      ) : null
-    )
-  );
+  // Main avatar body: children > letter > placeholder icon.
+  const body =
+    children ??
+    (letter ? (
+      <AvatarFallback>{letter}</AvatarFallback>
+    ) : placeholder ? (
+      <PlaceholderIcon />
+    ) : null);
+
+  // Badge overlay sits in the bottom-left corner and is roughly 45% of avatar size.
+  // Uses `overflow-visible` on the wrapper so the badge can extend past the avatar edge.
+  if (icon) {
+    const badgePx = Math.max(14, Math.round(px * 0.45));
+    return (
+      <span
+        className={cn("relative inline-flex shrink-0", inlineSize && "")}
+        style={inlineSize}
+      >
+        <AvatarPrimitive.Root
+          data-slot="avatar"
+          className={cn(baseClass, className)}
+          style={{ ...inlineSize, ...style }}
+          {...props}
+        >
+          {body}
+        </AvatarPrimitive.Root>
+        <span
+          data-slot="avatar-badge"
+          aria-hidden="true"
+          className={cn(
+            "absolute -bottom-0.5 -left-0.5 inline-flex items-center justify-center rounded-full",
+            "ring-2 ring-background-100",
+            iconBackground ? "bg-gray-1000 text-background-100" : "bg-background-100 text-gray-800",
+          )}
+          style={{ width: badgePx, height: badgePx }}
+        >
+          {icon}
+        </span>
+      </span>
+    );
+  }
 
   return (
     <AvatarPrimitive.Root
@@ -129,7 +154,7 @@ export function Avatar({
       style={{ ...inlineSize, ...style }}
       {...props}
     >
-      {resolvedChildren}
+      {body}
     </AvatarPrimitive.Root>
   );
 }

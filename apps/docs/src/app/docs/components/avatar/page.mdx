@@ -104,13 +104,13 @@ import {
       name: "icon",
       type: "ReactNode",
       default: "-",
-      description: "Render an icon inside the avatar (status/action pattern). Overrides image and letter.",
+      description: "Render an icon as a small badge overlay in the bottom-left corner. The main avatar (image/letter/placeholder) still renders behind it.",
     },
     {
       name: "iconBackground",
       type: "boolean",
       default: "true",
-      description: "When `icon` is set, uses the subtle neutral fill. Set false for a transparent avatar shape around the icon.",
+      description: "When `icon` is set: `true` = dark badge with light icon (default), `false` = light badge with dark icon.",
     },
     {
       name: "className",
