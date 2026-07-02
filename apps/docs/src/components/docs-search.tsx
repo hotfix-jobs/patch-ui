@@ -100,11 +100,11 @@ export function DocsSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="hidden md:inline-flex items-center gap-2 rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 px-3 py-1.5 text-sm text-gray-800 transition-colors hover:border-gray-alpha-500 hover:text-gray-900"
+        className="hidden md:inline-flex cursor-pointer items-center gap-2 rounded-[var(--radius-6)] border-[0.5px] border-gray-alpha-400 bg-background-100 px-3 py-1.5 text-label-13 text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-100 hover:text-gray-1000 outline-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-[var(--focus-ring-color)] focus-visible:outline-offset-[var(--focus-ring-offset)]"
       >
         <SearchIcon size={14} />
-        <span>Search docs...</span>
-        <kbd className="pointer-events-none ml-4 inline-flex h-5 select-none items-center gap-0.5 rounded border border-gray-alpha-400 bg-background-100 px-1.5 font-mono text-[10px] font-medium text-gray-700">
+        <span>Search docs</span>
+        <kbd className="pointer-events-none ml-4 inline-flex h-5 select-none items-center gap-0.5 rounded border-[0.5px] border-gray-alpha-400 bg-background-100 px-1.5 font-mono text-[10px] font-medium text-gray-700">
           <span className="text-xs">⌘</span>K
         </kbd>
       </button>
@@ -112,7 +112,7 @@ export function DocsSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex md:hidden h-8 w-8 items-center justify-center rounded-[var(--radius-6)] text-gray-900 transition-colors hover:bg-gray-200 hover:text-gray-1000"
+        className="inline-flex md:hidden cursor-pointer size-9 items-center justify-center rounded-full text-gray-900 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-100 hover:text-gray-1000 outline-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-[var(--focus-ring-color)] focus-visible:outline-offset-[var(--focus-ring-offset)]"
         aria-label="Search docs"
       >
         <SearchIcon size={16} />

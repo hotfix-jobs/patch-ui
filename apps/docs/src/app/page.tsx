@@ -46,6 +46,7 @@ export default function Home() {
 
         <div className="mt-8 flex gap-3">
           <Button
+            shape="pill"
             icon={<ArrowRight className="size-4" />}
             iconPosition="right"
             render={<Link href="/docs/getting-started" />}
@@ -53,6 +54,7 @@ export default function Home() {
             Get started
           </Button>
           <Button
+            shape="pill"
             variant="secondary"
             render={<Link href="/docs/components/button" />}
           >
