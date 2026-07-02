@@ -57,6 +57,17 @@ export {
   type CardProps,
   type CardMetaProps,
 } from "./components/card";
+export {
+  Section,
+  SectionHeader,
+  SectionTitle,
+  SectionSubtitle,
+  SectionContent,
+  SectionFooter,
+  SectionFooterStatus,
+  SectionFooterActions,
+  type SectionFooterProps,
+} from "./components/section";
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
 export {
   Avatar,

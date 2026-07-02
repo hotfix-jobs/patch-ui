@@ -49,6 +49,7 @@ export const navigation: NavGroup[] = [
     items: [
       { title: "AppHeader", href: "/docs/components/app-header" },
       { title: "Card", href: "/docs/components/card" },
+      { title: "Section", href: "/docs/components/section" },
       { title: "Separator", href: "/docs/components/separator" },
       { title: "ThemeToggle", href: "/docs/components/theme-toggle" },
     ],
