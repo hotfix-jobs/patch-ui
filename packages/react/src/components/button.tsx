@@ -19,7 +19,7 @@ export const buttonVariants = cva(
     disabled,
   ].join(" "),
   {
-    defaultVariants: { size: "md", variant: "primary", shape: "square" },
+    defaultVariants: { size: "md", variant: "primary", shape: "square", shadow: false },
     variants: {
       size: {
         tiny: "h-6 px-2 gap-1 text-button-12",
@@ -44,6 +44,10 @@ export const buttonVariants = cva(
         circle: "rounded-full",
         rounded: "rounded-[var(--radius-12)]",
       },
+      shadow: {
+        true: "shadow-card",
+        false: "",
+      },
     },
   },
 );
@@ -53,6 +57,8 @@ export interface ButtonProps extends useRender.ComponentProps<"button"> {
   size?: VariantProps<typeof buttonVariants>["size"];
   /** Corner shape. `square` (6px) is default; `circle` for icon-only, `rounded` (12px) for marketing. */
   shape?: VariantProps<typeof buttonVariants>["shape"];
+  /** Adds a subtle elevation shadow. Typically paired with `shape="rounded"` on marketing pages. */
+  shadow?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   loading?: boolean;
@@ -71,6 +77,7 @@ export function Button({
   variant,
   size,
   shape,
+  shadow,
   icon,
   iconPosition = "left",
   loading,
@@ -103,7 +110,7 @@ export function Button({
     render ? undefined : "button";
 
   const defaultProps = {
-    className: cn(buttonVariants({ size: effectiveSize, variant, shape }), iconOnly, className),
+    className: cn(buttonVariants({ size: effectiveSize, variant, shape, shadow }), iconOnly, className),
     "data-slot": "button",
     type: typeValue,
     disabled: isDisabled || loading,

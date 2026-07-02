@@ -60,13 +60,14 @@ export function ButtonDemo() {
         <div className="flex flex-wrap items-center gap-3">
           <Button
             shape="rounded"
+            shadow
             variant="primary"
             icon={<ArrowRight className="h-4 w-4" />}
             iconPosition="right"
           >
             Start Free Trial
           </Button>
-          <Button shape="rounded" variant="secondary">
+          <Button shape="rounded" shadow variant="secondary">
             Learn More
           </Button>
         </div>

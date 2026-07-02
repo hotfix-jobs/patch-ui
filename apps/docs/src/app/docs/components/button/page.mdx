@@ -35,8 +35,8 @@ import { Button } from "@patchui/react";
 <Button shape="square" aria-label="Add" icon={<Plus />} />
 <Button shape="circle" aria-label="Add" icon={<Plus />} />
 
-// Rounded marketing shape
-<Button shape="rounded" variant="primary" icon={<ArrowRight />} iconPosition="right">
+// Rounded marketing shape (typically paired with shadow)
+<Button shape="rounded" shadow variant="primary" icon={<ArrowRight />} iconPosition="right">
   Start Free Trial
 </Button>
 
@@ -68,6 +68,12 @@ import { Button } from "@patchui/react";
       type: '"square" | "circle" | "rounded"',
       default: '"square"',
       description: "Corner shape. `square` = 6px radius (default). `circle` = full radius (icon-only). `rounded` = 12px radius (marketing).",
+    },
+    {
+      name: "shadow",
+      type: "boolean",
+      default: "false",
+      description: "Adds a subtle elevation shadow. Typically paired with `shape=\"rounded\"` on marketing pages.",
     },
     {
       name: "icon",
