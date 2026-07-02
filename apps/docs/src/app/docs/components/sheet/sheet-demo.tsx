@@ -26,9 +26,9 @@ export function SheetDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Right side — profile inspector (non-modal) */}
+      {/* Right side — editable profile */}
       <div>
-        <SectionLabel>Inspector (non-modal)</SectionLabel>
+        <SectionLabel>Editable profile</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
             Open profile
@@ -37,10 +37,8 @@ export function SheetDemo() {
             <SheetHeader>
               <SheetTitle>Profile</SheetTitle>
               <SheetDescription>
-                Details for the currently selected member. The page underneath
-                stays interactive while this stays open.
+                Update the member's name and contact details.
               </SheetDescription>
-              <SheetClose />
             </SheetHeader>
             <SheetBody>
               <div className="flex flex-col gap-2">
@@ -69,31 +67,27 @@ export function SheetDemo() {
         </Sheet>
       </div>
 
-      {/* Modal variant with backdrop */}
+      {/* Non-modal inspector */}
       <div>
-        <SectionLabel>Modal (with backdrop)</SectionLabel>
+        <SectionLabel>Non-modal inspector</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
-            Open filters
+            Open inspector
           </SheetTrigger>
-          <SheetContent modal>
+          <SheetContent modal={false}>
             <SheetHeader>
-              <SheetTitle>Filters</SheetTitle>
+              <SheetTitle>Deployment details</SheetTitle>
               <SheetDescription>
-                Refine what's shown in the deployment list.
+                Non-modal: the page underneath stays interactive so you can
+                keep browsing while this stays open.
               </SheetDescription>
-              <SheetClose />
             </SheetHeader>
             <SheetBody>
               <p className="text-copy-14 text-gray-1000">
-                Modal sheets block the page and darken the backdrop, useful
-                when the sheet configures the exact view underneath.
+                Use `modal={false}` for persistent side panels that pair with
+                the page underneath (record inspectors, help drawers).
               </p>
             </SheetBody>
-            <SheetFooter>
-              <SheetClose render={<Button variant="secondary">Cancel</Button>} />
-              <SheetClose render={<Button variant="primary">Apply</Button>} />
-            </SheetFooter>
           </SheetContent>
         </Sheet>
       </div>
@@ -108,7 +102,6 @@ export function SheetDemo() {
           <SheetContent side="left">
             <SheetHeader>
               <SheetTitle>Menu</SheetTitle>
-              <SheetClose />
             </SheetHeader>
             <SheetBody>
               {[
@@ -141,7 +134,6 @@ export function SheetDemo() {
           <SheetContent side="bottom" modal>
             <SheetHeader>
               <SheetTitle>Choose a region</SheetTitle>
-              <SheetClose />
             </SheetHeader>
             <SheetBody>
               {["US East", "US West", "EU West", "Asia Pacific"].map((r) => (

@@ -24,7 +24,6 @@ import {
 import type * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
 
 /**
  * Sheet — an edge-anchored panel that slides in from the top/right/bottom/left
@@ -175,7 +174,7 @@ function getSlideVariants(side: SheetSide) {
 
 export interface SheetContentProps {
   side?: SheetSide;
-  /** When true, renders a darkening backdrop and blocks page interaction. Default false (Vercel spec). */
+  /** When true (default), renders a darkening backdrop and blocks page interaction. Pass `modal={false}` for a persistent inspector that keeps the page interactive. */
   modal?: boolean;
   className?: string;
   children?: React.ReactNode;
@@ -183,7 +182,7 @@ export interface SheetContentProps {
 
 export function SheetContent({
   side = "right",
-  modal = false,
+  modal = true,
   className,
   children,
 }: SheetContentProps): React.ReactElement {
@@ -224,15 +223,13 @@ export function SheetContent({
             : { type: "spring", stiffness: 380, damping: 38, mass: 0.8 }
         }
         className={cn(
-          "fixed z-70 flex flex-col overflow-hidden bg-background-100 text-gray-1000 border-gray-alpha-400 shadow-modal",
-          side === "right" &&
-            "inset-y-0 right-0 h-full w-full max-w-md border-l rounded-l-[var(--radius-12)]",
-          side === "left" &&
-            "inset-y-0 left-0 h-full w-full max-w-md border-r rounded-r-[var(--radius-12)]",
-          side === "top" &&
-            "inset-x-0 top-0 w-full border-b rounded-b-[var(--radius-12)]",
-          side === "bottom" &&
-            "inset-x-0 bottom-0 w-full border-t rounded-t-[var(--radius-12)]",
+          // Floating rounded card, small inset from the viewport edges so
+          // the backdrop peeks around it and all four corners can be seen.
+          "fixed z-70 flex flex-col overflow-hidden bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-modal rounded-[var(--radius-12)]",
+          side === "right" && "top-4 bottom-4 right-4 w-full max-w-md",
+          side === "left" && "top-4 bottom-4 left-4 w-full max-w-md",
+          side === "top" && "top-4 left-4 right-4",
+          side === "bottom" && "bottom-4 left-4 right-4",
           className,
         )}
       >
@@ -286,6 +283,11 @@ export interface SheetCloseProps {
   children?: React.ReactNode;
 }
 
+/**
+ * SheetClose — wraps a consumer-provided element to close the sheet on click.
+ * Use with `render={<Button />}` inside SheetFooter, or as children of any
+ * element that should dismiss the sheet.
+ */
 export function SheetClose({
   render,
   children,
@@ -304,44 +306,14 @@ export function SheetClose({
         (render.props as { children?: React.ReactNode }).children ?? children,
     } as React.HTMLAttributes<HTMLElement>);
   }
-  if (children) {
-    return (
-      <button
-        type="button"
-        onClick={onClick}
-        data-slot="sheet-close"
-        {...rest}
-      >
-        {children}
-      </button>
-    );
-  }
-  // Default: corner × button, mirrors Modal's close geometry.
   return (
     <button
       type="button"
-      aria-label="Close"
       onClick={onClick}
       data-slot="sheet-close"
-      className={cn(
-        "absolute end-3 top-3 flex h-7 w-7 items-center justify-center rounded-[var(--radius-6)] text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 hover:text-gray-1000",
-        focusRing,
-      )}
       {...rest}
     >
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M18 6 6 18" />
-        <path d="m6 6 12 12" />
-      </svg>
+      {children}
     </button>
   );
 }
@@ -356,7 +328,7 @@ export function SheetHeader({
     <div
       data-slot="sheet-header"
       className={cn(
-        "relative flex flex-col gap-1 border-b border-gray-alpha-400 px-5 py-4 pr-12",
+        "flex flex-col gap-1 border-b border-gray-alpha-400 px-5 py-4",
         className,
       )}
       {...props}

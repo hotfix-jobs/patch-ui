@@ -2,7 +2,7 @@ import { SheetDemo } from "./sheet-demo";
 
 # Sheet
 
-An edge-anchored panel that slides in from the top, right, bottom, or left. Non-modal by default: the page underneath stays interactive so consumers can inspect one entity while browsing the list. Pass `modal` to darken the backdrop and block the page.
+An edge-anchored floating panel that slides in from the top, right, bottom, or left. Renders as a rounded card inset from the viewport edges with a darkening backdrop by default. Pass `modal={false}` for a persistent inspector that keeps the page underneath interactive.
 
 <Install name="sheet" />
 
@@ -60,8 +60,8 @@ import {
     {
       name: "modal",
       type: "boolean",
-      default: "false",
-      description: "When true, darkens a backdrop and blocks page interaction. Default (false) keeps the page underneath interactive, matching the Vercel Geist Sheet behavior.",
+      default: "true",
+      description: "Default: darkens a backdrop and blocks page interaction. Set to false for a persistent inspector where the page underneath stays interactive.",
     },
     {
       name: "className",
@@ -89,9 +89,9 @@ import {
 />
 
 <Callout title="Notes">
-- **Non-modal by default.** No backdrop, page underneath keeps its own interactivity and scrolls independently. This matches the Vercel Geist default: sheets are for persistent inspectors alongside the page, not confirmations that require full attention.
+- **Floating card.** Sheet renders as a rounded card inset a few pixels from every viewport edge — the backdrop peeks around all four corners so the panel reads as a distinct surface, not a tucked-in drawer.
+- **Modal by default.** Backdrop appears, page underneath is paused. Pass `modal={false}` for a persistent inspector (record detail, help drawer) that keeps the page interactive.
 - **Outside-click doesn't dismiss.** Only Escape and an explicit `<SheetClose>` close the sheet. Prevents accidental dismissal when the sheet holds an unsaved form.
-- **Modal mode.** Pass `modal` to `SheetContent` when the sheet configures the view underneath (filters, region picker) — you want the page paused while the choice is made.
 - **Side matters.** Right for detail inspectors, left for navigation, bottom for mobile-first pickers. Keep the direction consistent across similar patterns in the app.
 - **Focus return.** Focus returns to the trigger on close.
 </Callout>
