@@ -2,7 +2,7 @@ import { SwitchDemo } from "./switch-demo";
 
 # Switch
 
-A toggle switch for binary on/off choices, with support for controlled, uncontrolled, and disabled states.
+A binary on/off slider for settings that take effect immediately. Aligned to Vercel Geist's Toggle spec: three sizes, four intent variants for the on-state fill, and optional icons inside the thumb per state.
 
 <Install name="switch" />
 
@@ -14,13 +14,30 @@ A toggle switch for binary on/off choices, with support for controlled, uncontro
 
 ```tsx
 import { Switch } from "@patchui/react";
+import { Lock, Unlock } from "lucide-react";
 
 // Uncontrolled
 <Switch defaultChecked />
 
 // Controlled
 const [checked, setChecked] = useState(false);
-<Switch checked={checked} onCheckedChange={(c) => setChecked(c)} />
+<Switch checked={checked} onCheckedChange={setChecked} />
+
+// Sizes
+<Switch size="sm" />
+<Switch size="md" />  // default
+<Switch size="lg" />
+
+// Variants (on-state fill color)
+<Switch variant="success" defaultChecked />
+<Switch variant="warning" defaultChecked />
+<Switch variant="error" defaultChecked />
+
+// Icons inside the thumb, one per state
+<Switch
+  variant="success"
+  icon={{ checked: <Lock />, unchecked: <Unlock /> }}
+/>
 
 // Disabled
 <Switch disabled />
@@ -34,56 +51,75 @@ const [checked, setChecked] = useState(false);
       name: "checked",
       type: "boolean",
       default: "-",
-      description: "Whether the switch is currently active. Use for controlled switches.",
+      description: "Controlled active state.",
     },
     {
       name: "defaultChecked",
       type: "boolean",
       default: "false",
-      description: "Whether the switch is initially active. Use for uncontrolled switches.",
+      description: "Uncontrolled initial active state.",
     },
     {
       name: "onCheckedChange",
       type: "(checked: boolean, details) => void",
       default: "-",
-      description: "Callback fired when the switch is toggled.",
+      description: "Fired when the switch is toggled.",
+    },
+    {
+      name: "variant",
+      type: '"default" | "success" | "warning" | "error"',
+      default: '"default"',
+      description: "Fill color when checked. `default` = `gray-1000`; success/warning/error use the matching hue-700.",
+    },
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "Track size preset.",
+    },
+    {
+      name: "icon",
+      type: "{ checked?: ReactNode; unchecked?: ReactNode }",
+      default: "-",
+      description: "Icons rendered inside the thumb. `checked` shows when on, `unchecked` shows when off. Icons auto-size to ~60% of the thumb.",
     },
     {
       name: "disabled",
       type: "boolean",
       default: "false",
-      description: "Disables the switch, preventing interaction.",
+      description: "Disables the switch.",
     },
     {
       name: "readOnly",
       type: "boolean",
       default: "false",
-      description: "Prevents the user from toggling the switch.",
+      description: "Prevents the user from toggling.",
     },
     {
       name: "required",
       type: "boolean",
       default: "false",
-      description: "Whether the switch must be active before submitting a form.",
+      description: "Requires the switch to be on before form submission.",
     },
     {
       name: "name",
       type: "string",
       default: "-",
-      description: "Identifies the field when a form is submitted.",
+      description: "Field name when submitted as part of a form.",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the switch root.",
+      description: "Additional CSS classes on the switch root.",
     },
   ]}
 />
 
-
 <Callout title="Notes">
-- **Switch vs Checkbox:** Use a switch for settings that take effect immediately (e.g. "Enable notifications"). Use a [Checkbox](/docs/components/checkbox) for options that require a form submission.
-- **Accessibility:** Renders a hidden `<input type="checkbox">` for native form participation and assistive technology support. The switch has a `role="switch"` for screen readers.
-- **Controlled vs uncontrolled:** Use `checked` + `onCheckedChange` for controlled usage. Use `defaultChecked` for uncontrolled.
+- Reach for Switch when the state is a setting that saves the moment the user flips it — `Dark mode`, `Enable notifications`. Use `Checkbox` when the value only commits with a form submit.
+- The on-state color signals what happens: default gray for a plain toggle, warning/error when turning it on has consequence (`Enable public access`).
+- Icons inside the thumb make the state readable without a label — a lock/unlock pair, sun/moon, on/off. Icons inherit `text-gray-900` and size to ~60% of the thumb.
+- Rendered as a `<button role="switch">` on top of a hidden `<input type="checkbox">`, so both keyboard users and native forms work as expected.
+- Naming note: Vercel Geist calls this component `Toggle`. Our `Toggle` is the toolbar press-button pattern (Bold / Italic / Star).
 </Callout>
