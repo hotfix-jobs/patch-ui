@@ -247,17 +247,25 @@ export function CommandSection({
 
 export function CommandGroupLabel({
   className,
+  children,
   ...props
-}: React.ComponentProps<typeof AutocompletePrimitive.GroupLabel>): React.ReactElement {
+}: React.HTMLAttributes<HTMLDivElement>): React.ReactElement {
+  // Base UI's AutocompletePrimitive.GroupLabel intercepts our className and
+  // applies its own font-size — verified by watching text-label-12 fail to
+  // shrink the label. We render a plain div with role="presentation" so
+  // grouping still reads correctly for AT while our tokens actually apply.
   return (
-    <AutocompletePrimitive.GroupLabel
+    <div
+      role="presentation"
       data-slot="command-group-label"
       className={cn(
-        "px-3 pb-1 pt-2 text-label-10 text-gray-700",
+        "px-3 pb-1 pt-2 text-label-11 text-gray-700",
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+    </div>
   );
 }
 
