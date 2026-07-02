@@ -14,7 +14,7 @@ export const badgeVariants = cva(
     "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3",
   ].join(" "),
   {
-    defaultVariants: { size: "sm", variant: "default", shape: "rounded" },
+    defaultVariants: { size: "sm", variant: "default", shape: "pill" },
     variants: {
       size: {
         sm: "px-2 py-[3px]",
