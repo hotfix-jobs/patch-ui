@@ -36,8 +36,7 @@ export function MiddleTruncateDemo() {
             style={{ width }}
           >
             <MiddleTruncate
-              value="packages/react/src/components/middle-truncate/really-long-example-file-name.tsx"
-             
+              value="apps/docs/src/app/docs/blocks/app-header/index.tsx"
               className="text-copy-14 font-mono text-gray-1000"
             />
           </div>
