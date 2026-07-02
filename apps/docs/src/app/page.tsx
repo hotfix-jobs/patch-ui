@@ -9,49 +9,14 @@ import {
   Button,
   Checkbox,
   Grid,
-  GridCell,
   Input,
   SectionLabel,
   Switch,
 } from "@patchui/react";
-import {
-  AppHeader,
-  AppHeaderBrand,
-  AppHeaderNav,
-  AppHeaderNavItem,
-  AppHeaderRight,
-} from "@patchui/react/blocks/app-header";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-background-100 text-gray-1000">
-      <AppHeader sticky>
-        <AppHeaderBrand render={<Link href="/" />}>Patch UI</AppHeaderBrand>
-        <AppHeaderNav className="hidden sm:flex">
-          <AppHeaderNavItem render={<Link href="/docs/getting-started" />}>
-            Docs
-          </AppHeaderNavItem>
-          <AppHeaderNavItem render={<Link href="/docs/components/button" />}>
-            Components
-          </AppHeaderNavItem>
-        </AppHeaderNav>
-        <AppHeaderRight>
-          <Button
-            variant="secondary"
-            size="sm"
-            render={
-              <a
-                href="https://github.com/hotfix-jobs/patch-ui"
-                target="_blank"
-                rel="noreferrer"
-              />
-            }
-          >
-            GitHub
-          </Button>
-        </AppHeaderRight>
-      </AppHeader>
-
+    <div className="flex flex-col bg-background-100 text-gray-1000">
       {/* Hero */}
       <section className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center px-6 py-12 text-center">
         <h1 className="max-w-3xl text-balance text-[40px] font-semibold leading-[1.05] tracking-[-0.025em] text-gray-1000 sm:text-[56px] md:text-[68px]">
@@ -186,38 +151,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t-[0.5px] border-gray-alpha-400 px-6 py-8 md:px-12 lg:px-16">
-        <div className="mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-4 text-label-12 text-gray-800">
-          <span>MIT licensed. Copyright © Hotfix.</span>
-          <div className="flex items-center gap-5">
-            <Link href="/docs" className="font-medium hover:text-gray-1000">
-              Docs
-            </Link>
-            <Link
-              href="/docs/components/button"
-              className="font-medium hover:text-gray-1000"
-            >
-              Components
-            </Link>
-            <Link
-              href="/docs/credits"
-              className="font-medium hover:text-gray-1000"
-            >
-              Credits
-            </Link>
-            <a
-              href="https://github.com/hotfix-jobs/patch-ui"
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium hover:text-gray-1000"
-            >
-              GitHub
-            </a>
-          </div>
-        </div>
-      </footer>
-    </main>
+    </div>
   );
 }
 
