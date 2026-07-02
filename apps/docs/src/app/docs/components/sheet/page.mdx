@@ -2,7 +2,7 @@ import { SheetDemo } from "./sheet-demo";
 
 # Sheet
 
-A slide-out panel (drawer) that enters from any edge of the screen. Custom-built on `@floating-ui/react` primitives with `motion`-driven spring slide animations, focus trapping, dismissable overlay, and scroll locking.
+An edge-anchored panel that slides in from the top, right, bottom, or left. Non-modal by default: the page underneath stays interactive so consumers can inspect one entity while browsing the list. Pass `modal` to darken the backdrop and block the page.
 
 <Install name="sheet" />
 
@@ -21,19 +21,25 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
+  SheetBody,
   SheetFooter,
+  SheetClose,
 } from "@patchui/react";
 
 <Sheet>
-  <SheetTrigger render={<Button />}>Open Sheet</SheetTrigger>
-  <SheetContent side="right">
+  <SheetTrigger render={<Button variant="secondary">Open profile</Button>} />
+  <SheetContent>
     <SheetHeader>
-      <SheetTitle>Settings</SheetTitle>
-      <SheetDescription>Update your preferences.</SheetDescription>
+      <SheetTitle>Profile</SheetTitle>
+      <SheetDescription>Details for the selected member.</SheetDescription>
+      <SheetClose />
     </SheetHeader>
-    <div className="p-6">{/* Content */}</div>
+    <SheetBody>
+      {/* form / inspector content */}
+    </SheetBody>
     <SheetFooter>
-      <Button>Save</Button>
+      <SheetClose render={<Button variant="secondary">Cancel</Button>} />
+      <SheetClose render={<Button variant="primary">Save</Button>} />
     </SheetFooter>
   </SheetContent>
 </Sheet>
@@ -47,21 +53,21 @@ import {
   props={[
     {
       name: "side",
-      type: '"right" | "left" | "top" | "bottom"',
+      type: '"top" | "right" | "bottom" | "left"',
       default: '"right"',
-      description: "Which edge of the screen the sheet slides in from.",
+      description: "Which edge the sheet slides in from.",
     },
     {
-      name: "showCloseButton",
+      name: "modal",
       type: "boolean",
-      default: "true",
-      description: "Whether to render an X close button in the top-right corner.",
+      default: "false",
+      description: "When true, darkens a backdrop and blocks page interaction. Default (false) keeps the page underneath interactive, matching the Vercel Geist Sheet behavior.",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the sheet popup.",
+      description: "Additional CSS classes applied to the panel.",
     },
   ]}
 />
@@ -70,24 +76,22 @@ import {
 
 <CompoundComponents
   components={[
-    { name: "Sheet", description: "Root component managing open/close state. Accepts open and onOpenChange for controlled usage." },
-    { name: "SheetTrigger", description: "Renders the element that opens the sheet. Use render prop for polymorphism." },
-    { name: "SheetContent", description: "Portal-rendered panel with backdrop, scroll lock, and directional animation." },
-    { name: "SheetHeader", description: "Container for title and description." },
-    { name: "SheetTitle", description: "The sheet's heading." },
-    { name: "SheetDescription", description: "Secondary description text." },
-    { name: "SheetPanel", description: "Scrollable content area with padding." },
-    { name: "SheetFooter", description: "Footer area for action buttons with a top border." },
-    { name: "SheetClose", description: "Closes the sheet when clicked." },
+    { name: "Sheet", description: "Root, manages open/close state and portal wiring." },
+    { name: "SheetTrigger", description: "Element that opens the sheet on click. `render` prop composes with any element." },
+    { name: "SheetContent", description: "The sliding panel. Owns side, modal, and backdrop." },
+    { name: "SheetHeader", description: "Top region with border-b hairline. Holds title, description, and a close button." },
+    { name: "SheetTitle", description: "Primary heading. Wired to aria-labelledby." },
+    { name: "SheetDescription", description: "Supporting sentence-case text under the title." },
+    { name: "SheetBody", description: "Scrollable middle region." },
+    { name: "SheetFooter", description: "Bottom region with border-t + subtle bg-background-200 lift. Actions row like Modal." },
+    { name: "SheetClose", description: "Element that closes the sheet on click. With no render/children, renders a default × button positioned top-right of the header." },
   ]}
 />
 
-
 <Callout title="Notes">
-- **Motion:** Backdrop fades via motion ease-out. Popup slides via motion spring (stiffness 380, damping 38) — true bidirectional enter / exit. Respects `prefers-reduced-motion`.
-- **Scroll locking:** Body scrolling is disabled while the sheet is open via `react-remove-scroll`.
-- **Width/height:** Left and right sheets default to `max-w-md`. Top and bottom sheets span the full width.
-- **Backdrop dismiss:** Clicking the backdrop closes the sheet. Press Escape to dismiss.
-- **Polymorphic triggers:** Use `render={<Button />}` on `SheetTrigger` and `SheetClose` to render them as styled buttons.
-- **Controlled usage:** Pass `open` and `onOpenChange` (or `defaultOpen` for uncontrolled with a starting value) to `Sheet`.
+- **Non-modal by default.** No backdrop, page underneath keeps its own interactivity and scrolls independently. This matches the Vercel Geist default: sheets are for persistent inspectors alongside the page, not confirmations that require full attention.
+- **Outside-click doesn't dismiss.** Only Escape and an explicit `<SheetClose>` close the sheet. Prevents accidental dismissal when the sheet holds an unsaved form.
+- **Modal mode.** Pass `modal` to `SheetContent` when the sheet configures the view underneath (filters, region picker) — you want the page paused while the choice is made.
+- **Side matters.** Right for detail inspectors, left for navigation, bottom for mobile-first pickers. Keep the direction consistent across similar patterns in the app.
+- **Focus return.** Focus returns to the trigger on close.
 </Callout>

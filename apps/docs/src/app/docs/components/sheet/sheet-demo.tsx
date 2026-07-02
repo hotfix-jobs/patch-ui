@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Button,
   Sheet,
@@ -8,94 +9,152 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
+  SheetBody,
   SheetFooter,
-  Input,
+  SheetClose,
   Label,
+  Input,
 } from "@patchui/react";
 
-/** Showcases Sheet from different directions. */
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return <p className="mb-3 text-xs font-medium text-gray-800">{children}</p>;
+}
+
 export function SheetDemo() {
+  const [name, setName] = useState("Casey Ferrara");
+  const [email, setEmail] = useState("casey@example.com");
+
   return (
     <div className="flex flex-col gap-8">
-      {/* Default (Right) */}
+      {/* Right side — profile inspector (non-modal) */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Right (Default)
-        </p>
+        <SectionLabel>Inspector (non-modal)</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
-            Open Sheet
+            Open profile
           </SheetTrigger>
-          <SheetContent side="right">
+          <SheetContent>
             <SheetHeader>
-              <SheetTitle>Account Settings</SheetTitle>
+              <SheetTitle>Profile</SheetTitle>
               <SheetDescription>
-                Update your account preferences here.
+                Details for the currently selected member. The page underneath
+                stays interactive while this stays open.
               </SheetDescription>
+              <SheetClose />
             </SheetHeader>
-            <div className="flex flex-col gap-4 p-6">
+            <SheetBody>
               <div className="flex flex-col gap-2">
-                <Label htmlFor="sheet-name">Display Name</Label>
-                <Input id="sheet-name" defaultValue="Jane Doe" />
+                <Label htmlFor="sheet-name">Name</Label>
+                <Input
+                  id="sheet-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="sheet-email">Email</Label>
-                <Input id="sheet-email" type="email" defaultValue="jane@example.com" />
+                <Input
+                  id="sheet-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
-            </div>
+            </SheetBody>
             <SheetFooter>
-              <Button>Save Changes</Button>
+              <SheetClose render={<Button variant="secondary">Cancel</Button>} />
+              <SheetClose render={<Button variant="primary">Save changes</Button>} />
             </SheetFooter>
           </SheetContent>
         </Sheet>
       </div>
 
-      {/* Directions */}
+      {/* Modal variant with backdrop */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Directions
-        </p>
-        <div className="flex flex-wrap gap-3">
-          {(["left", "right", "top", "bottom"] as const).map((side) => (
-            <Sheet key={side}>
-              <SheetTrigger render={<Button variant="secondary" />}>
-                {side.charAt(0).toUpperCase() + side.slice(1)}
-              </SheetTrigger>
-              <SheetContent side={side}>
-                <SheetHeader>
-                  <SheetTitle>Sheet - {side}</SheetTitle>
-                  <SheetDescription>
-                    This sheet slides in from the {side}.
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="p-6 text-sm text-gray-900">
-                  Sheet content goes here.
-                </div>
-              </SheetContent>
-            </Sheet>
-          ))}
-        </div>
-      </div>
-
-      {/* Without Close Button */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Without Close Button
-        </p>
+        <SectionLabel>Modal (with backdrop)</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
-            No Close Button
+            Open filters
           </SheetTrigger>
-          <SheetContent side="right" showCloseButton={false}>
+          <SheetContent modal>
             <SheetHeader>
-              <SheetTitle>Custom Sheet</SheetTitle>
+              <SheetTitle>Filters</SheetTitle>
               <SheetDescription>
-                This sheet has no built-in close button. Click the backdrop to dismiss.
+                Refine what's shown in the deployment list.
               </SheetDescription>
+              <SheetClose />
             </SheetHeader>
-            <div className="p-6 text-sm text-gray-900">
-              Use the backdrop or a custom close action to dismiss this sheet.
-            </div>
+            <SheetBody>
+              <p className="text-copy-14 text-gray-1000">
+                Modal sheets block the page and darken the backdrop, useful
+                when the sheet configures the exact view underneath.
+              </p>
+            </SheetBody>
+            <SheetFooter>
+              <SheetClose render={<Button variant="secondary">Cancel</Button>} />
+              <SheetClose render={<Button variant="primary">Apply</Button>} />
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Left side */}
+      <div>
+        <SectionLabel>Left side (navigation)</SectionLabel>
+        <Sheet>
+          <SheetTrigger render={<Button variant="secondary" />}>
+            Open menu
+          </SheetTrigger>
+          <SheetContent side="left">
+            <SheetHeader>
+              <SheetTitle>Menu</SheetTitle>
+              <SheetClose />
+            </SheetHeader>
+            <SheetBody>
+              {[
+                "Home",
+                "Deployments",
+                "Analytics",
+                "Domains",
+                "Settings",
+              ].map((item) => (
+                <a
+                  key={item}
+                  href="#"
+                  className="text-copy-14 text-gray-1000 hover:text-gray-900"
+                >
+                  {item}
+                </a>
+              ))}
+            </SheetBody>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Bottom side */}
+      <div>
+        <SectionLabel>Bottom side (mobile picker)</SectionLabel>
+        <Sheet>
+          <SheetTrigger render={<Button variant="secondary" />}>
+            Pick region
+          </SheetTrigger>
+          <SheetContent side="bottom" modal>
+            <SheetHeader>
+              <SheetTitle>Choose a region</SheetTitle>
+              <SheetClose />
+            </SheetHeader>
+            <SheetBody>
+              {["US East", "US West", "EU West", "Asia Pacific"].map((r) => (
+                <SheetClose
+                  key={r}
+                  render={
+                    <button className="w-full rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 px-3 py-3 text-copy-14 text-gray-1000 hover:bg-gray-alpha-100" />
+                  }
+                >
+                  {r}
+                </SheetClose>
+              ))}
+            </SheetBody>
           </SheetContent>
         </Sheet>
       </div>

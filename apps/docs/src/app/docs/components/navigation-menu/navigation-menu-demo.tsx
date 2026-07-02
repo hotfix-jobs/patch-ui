@@ -16,7 +16,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetPanel,
+  SheetBody,
 } from "@patchui/react";
 
 function LinkCard({
@@ -118,7 +118,7 @@ export function NavigationMenuDemo() {
           <SheetHeader>
             <SheetTitle>Patch</SheetTitle>
           </SheetHeader>
-          <SheetPanel>
+          <SheetBody>
             <nav className="flex flex-col gap-0.5">
               {MOBILE_LINKS.map((label) => (
                 <a
@@ -131,7 +131,7 @@ export function NavigationMenuDemo() {
                 </a>
               ))}
             </nav>
-          </SheetPanel>
+          </SheetBody>
         </SheetContent>
       </Sheet>
 

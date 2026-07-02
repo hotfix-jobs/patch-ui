@@ -12,7 +12,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetPanel,
+  SheetBody,
 } from "@patchui/react";
 
 const NAV = ["Dashboard", "Projects", "Settings"];
@@ -75,7 +75,7 @@ export function AppHeaderDemo() {
           <SheetHeader>
             <SheetTitle>Patch</SheetTitle>
           </SheetHeader>
-          <SheetPanel>
+          <SheetBody>
             <nav className="flex flex-col gap-0.5">
               {NAV.map((label) => (
                 <a
@@ -91,7 +91,7 @@ export function AppHeaderDemo() {
                 Get started
               </Button>
             </nav>
-          </SheetPanel>
+          </SheetBody>
         </SheetContent>
       </Sheet>
 

@@ -68,15 +68,16 @@ export {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-  SheetPanel,
+  SheetBody,
   SheetFooter,
-  SheetHandle,
 } from "./components/sheet";
 export type {
   SheetProps,
   SheetTriggerProps,
   SheetContentProps,
   SheetCloseProps,
+  SheetFooterProps,
+  SheetSide,
 } from "./components/sheet";
 export {
   Modal,
