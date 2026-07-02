@@ -6,13 +6,14 @@ import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
 /**
- * NavigationMenu - compound navigation built on Base UI NavigationMenu.
+ * NavigationMenu — horizontal menu bar with morphing dropdown panels.
  *
- * A horizontal menu bar (List + Items). An item is either a plain Link or a
- * Trigger + Content dropdown whose panels morph inside one shared popup. The
- * popup scaffold (Portal / Positioner / Popup / Viewport) is rendered for you,
- * so you only provide the List - it drops straight into a header (e.g. inside
- * AppHeader).
+ * A patch-ui extension (Vercel Geist doesn't ship a NavigationMenu — they
+ * expect consumers to compose their own top-nav from Menu / links). Built
+ * on Base UI's NavigationMenu primitive with our token surface: the
+ * List + Items live inline, and the dropdown panels morph inside one
+ * shared portalled popup so switching between triggers slides horizontally
+ * with size interpolation. Drop it straight into a header (AppHeader).
  *
  * Usage:
  *   <NavigationMenu>
@@ -53,7 +54,7 @@ export function NavigationMenu({
           <NavigationMenuPrimitive.Popup
             data-slot="navigation-menu-popup"
             className={cn(
-              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-[var(--radius-6)] bg-background-100 text-gray-1000 border border-[var(--gray-alpha-400)] shadow-menu",
+              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-[var(--radius-12)] bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-menu",
               "transition-[opacity,transform,width,height] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
               "data-[starting-style]:opacity-0 data-[starting-style]:scale-[0.97] data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.97]",
             )}
