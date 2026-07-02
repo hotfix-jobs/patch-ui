@@ -252,8 +252,12 @@ export function CommandGroupLabel({
   return (
     <AutocompletePrimitive.GroupLabel
       data-slot="command-group-label"
+      // Geist's smallest label token is 12px, but their actual Command
+      // section labels render visibly smaller (~11px). One-off arbitrary
+      // size here — if this pattern shows up elsewhere we should promote
+      // it to a --label-11 / caption token in the theme.
       className={cn(
-        "px-3 pb-1 pt-2 text-label-12 font-normal text-gray-700",
+        "px-3 pb-1 pt-2 text-[11px] leading-tight tracking-tight text-gray-700",
         className,
       )}
       {...props}
