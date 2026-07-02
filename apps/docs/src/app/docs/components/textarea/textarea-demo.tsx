@@ -3,39 +3,27 @@
 import { useState } from "react";
 import { Textarea } from "@patchui/react";
 
-/** Showcases Textarea variants, error state, custom rows, and disabled. */
 export function TextareaDemo() {
   const [invalidValue, setInvalidValue] = useState("too short");
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Variants */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Variants
-        </p>
-        <div className="flex flex-col gap-3 max-w-sm">
-          <Textarea variant="outlined" placeholder="Outlined (default)" />
-          <Textarea variant="ghost" placeholder="Ghost" />
-          <Textarea variant="underline" placeholder="Underline" />
+        <p className="mb-3 text-label-12 text-gray-800">Default</p>
+        <div className="max-w-sm">
+          <Textarea placeholder="Write something…" />
         </div>
       </div>
 
-      {/* Custom Rows */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Custom Rows
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Custom rows</p>
         <div className="max-w-sm">
           <Textarea placeholder="This textarea has 6 rows" rows={6} />
         </div>
       </div>
 
-      {/* Invalid */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Invalid state
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Invalid</p>
         <div className="max-w-sm">
           <Textarea
             invalid
@@ -45,11 +33,8 @@ export function TextareaDemo() {
         </div>
       </div>
 
-      {/* Disabled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Disabled
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Disabled</p>
         <div className="max-w-sm">
           <Textarea placeholder="Disabled textarea" disabled />
         </div>
