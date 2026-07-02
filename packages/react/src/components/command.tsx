@@ -122,10 +122,13 @@ export function CommandList({
 }
 
 /**
- * Base UI's Autocomplete.Empty only auto-hides when the list is driven via
- * the `items` prop. When rendering results from JSX (grouped sections, custom
- * filtering), Base UI can't count them — consumers should conditionally
- * render CommandEmpty themselves based on their result count.
+ * CommandEmpty renders text when the filtered list has no results.
+ *
+ * Base UI's Autocomplete.Empty root always stays mounted for aria-live
+ * announcements — it only null-toggles its CHILDREN based on filteredItems
+ * count. So the padding must live on an inner wrapper (which only renders
+ * as part of children), not on the Empty root itself; otherwise the padded
+ * root would take up vertical space even when items exist.
  */
 export function CommandEmpty({
   className,
@@ -133,15 +136,15 @@ export function CommandEmpty({
   ...props
 }: React.ComponentProps<typeof AutocompletePrimitive.Empty>): React.ReactElement {
   return (
-    <AutocompletePrimitive.Empty
-      data-slot="command-empty"
-      className={cn(
-        "px-3 py-6 text-center text-label-12 text-gray-800",
-        className,
-      )}
-      {...props}
-    >
-      {children}
+    <AutocompletePrimitive.Empty data-slot="command-empty" {...props}>
+      <div
+        className={cn(
+          "px-3 py-6 text-center text-label-12 text-gray-800",
+          className,
+        )}
+      >
+        {children}
+      </div>
     </AutocompletePrimitive.Empty>
   );
 }
