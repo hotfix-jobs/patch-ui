@@ -141,7 +141,7 @@ export function Modal({
                 <motion.div
                   aria-hidden="true"
                   data-slot="modal-backdrop"
-                  className="absolute inset-0 bg-black/5 backdrop-blur-xs"
+                  className="absolute inset-0 bg-black/40"
                   initial={reduceMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={reduceMotion ? undefined : { opacity: 0 }}
