@@ -40,6 +40,18 @@ import { Button } from "@patchui/react";
   Start Free Trial
 </Button>
 
+// Dismissible pill (repo chip pattern — click opens, × removes)
+<Button
+  size="sm"
+  shape="pill"
+  variant="secondary"
+  icon={<GitBranch />}
+  onClick={openRepo}
+  onRemove={removeRepo}
+>
+  hotfix-jobs/patch-ui
+</Button>
+
 // Loading state
 <Button loading>Saving…</Button>
 
@@ -74,6 +86,18 @@ import { Button } from "@patchui/react";
       type: "boolean",
       default: "false",
       description: "Adds a subtle elevation shadow. Typically paired with `shape=\"rounded\"` on marketing pages.",
+    },
+    {
+      name: "onRemove",
+      type: "() => void",
+      default: "-",
+      description: "When provided, renders a trailing × sub-button that calls this handler without triggering the parent Button's `onClick`. Use for dismissible pill chips (repo tags, applied filters).",
+    },
+    {
+      name: "removeLabel",
+      type: "string",
+      default: '"Remove"',
+      description: "Accessible label for the × sub-button.",
     },
     {
       name: "icon",

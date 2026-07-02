@@ -7,6 +7,7 @@ import { Spinner } from "./spinner";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, disabled, colorTransition } from "../recipes";
+import { XIcon } from "../internal-icons";
 
 export const buttonVariants = cva(
   [
@@ -63,6 +64,14 @@ export interface ButtonProps extends useRender.ComponentProps<"button"> {
   iconPosition?: "left" | "right";
   loading?: boolean;
   disabled?: boolean;
+  /**
+   * When provided, renders a trailing × sub-button that calls this handler
+   * without triggering the parent Button's onClick. Use for dismissible tag
+   * pills (repo chips, applied filters), typically with `shape="pill"`.
+   */
+  onRemove?: () => void;
+  /** Accessible label for the × sub-button. */
+  removeLabel?: string;
 }
 
 const iconOnlyWidth: Record<NonNullable<ButtonProps["size"]>, string> = {
@@ -82,6 +91,8 @@ export function Button({
   iconPosition = "left",
   loading,
   disabled: isDisabled,
+  onRemove,
+  removeLabel = "Remove",
   render,
   children,
   ...props
@@ -103,6 +114,33 @@ export function Button({
       {icon && iconPosition === "left" && icon}
       {children}
       {icon && iconPosition === "right" && icon}
+      {onRemove && (
+        <span
+          role="button"
+          tabIndex={0}
+          aria-label={removeLabel}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              e.stopPropagation();
+              onRemove();
+            }
+          }}
+          className={cn(
+            "-me-1 inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-70",
+            "hover:bg-gray-alpha-300 hover:opacity-100",
+            focusRing,
+            colorTransition,
+          )}
+          data-slot="button-remove"
+        >
+          <XIcon className="size-2.5" />
+        </span>
+      )}
     </>
   );
 

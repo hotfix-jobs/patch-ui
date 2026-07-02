@@ -32,3 +32,27 @@ export function CheckIcon({
     </svg>
   );
 }
+
+export function XIcon({
+  className,
+  strokeWidth = 2.5,
+}: {
+  className?: string;
+  strokeWidth?: number;
+}): React.ReactElement {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={strokeWidth}
+      viewBox="0 0 24 24"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  );
+}

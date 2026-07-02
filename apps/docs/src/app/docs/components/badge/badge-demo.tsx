@@ -1,17 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import { Badge } from "@patchui/react";
-
-const INITIAL_FILTERS = ["Design", "Remote", "Full-time"];
+import { Shield, Zap } from "lucide-react";
 
 export function BadgeDemo() {
-  const [filters, setFilters] = useState(INITIAL_FILTERS);
-
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Variants</p>
+        <p className="mb-3 text-label-12 text-gray-800">Variants (high contrast, default)</p>
         <div className="flex flex-wrap items-center gap-3">
           <Badge variant="default">Default</Badge>
           <Badge variant="success">Success</Badge>
@@ -21,12 +17,12 @@ export function BadgeDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Outline</p>
+        <p className="mb-3 text-label-12 text-gray-800">Variants (low contrast)</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Badge variant="default" outline>Default</Badge>
-          <Badge variant="success" outline>Success</Badge>
-          <Badge variant="warning" outline>Warning</Badge>
-          <Badge variant="error" outline>Error</Badge>
+          <Badge variant="default" contrast="low">Default</Badge>
+          <Badge variant="success" contrast="low">Success</Badge>
+          <Badge variant="warning" contrast="low">Warning</Badge>
+          <Badge variant="error" contrast="low">Error</Badge>
         </div>
       </div>
 
@@ -34,44 +30,29 @@ export function BadgeDemo() {
         <p className="mb-3 text-label-12 text-gray-800">Sizes</p>
         <div className="flex flex-wrap items-center gap-3">
           <Badge size="sm">Small</Badge>
+          <Badge size="md">Medium</Badge>
           <Badge size="lg">Large</Badge>
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-3 text-label-12 text-gray-800">With icon</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge icon={<Shield />} variant="default">Verified</Badge>
+          <Badge icon={<Shield />} variant="default" contrast="low">Verified</Badge>
+          <Badge icon={<Zap />} variant="warning">Beta</Badge>
+          <Badge icon={<Zap />} variant="warning" contrast="low">Beta</Badge>
         </div>
       </div>
 
       <div>
         <p className="mb-3 text-label-12 text-gray-800">Shape</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Badge shape="rounded">Rounded</Badge>
           <Badge shape="pill">Pill</Badge>
-          <Badge variant="success" shape="pill">Active</Badge>
-          <Badge variant="warning" shape="pill">Pending</Badge>
-          <Badge variant="error" shape="pill">Failed</Badge>
+          <Badge shape="rounded">Rounded</Badge>
         </div>
       </div>
 
-      <div>
-        <p className="mb-3 text-label-12 text-gray-800">Dismissible</p>
-        <div className="flex min-h-7 flex-wrap items-center gap-2">
-          {filters.length === 0 ? (
-            <button
-              type="button"
-              onClick={() => setFilters(INITIAL_FILTERS)}
-              className="text-label-12 text-gray-800 underline underline-offset-2"
-            >
-              Reset
-            </button>
-          ) : (
-            filters.map((f) => (
-              <Badge
-                key={f}
-                onRemove={() => setFilters((prev) => prev.filter((x) => x !== f))}
-              >
-                {f}
-              </Badge>
-            ))
-          )}
-        </div>
-      </div>
     </div>
   );
 }

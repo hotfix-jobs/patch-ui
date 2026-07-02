@@ -1,9 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@patchui/react";
-import { ArrowRight, ChevronDown, Download, Mail, Plus, Trash2 } from "lucide-react";
+import { ArrowRight, ChevronDown, Download, GitBranch, Mail, Plus, Trash2 } from "lucide-react";
+
+const INITIAL_TAGS = ["hotfix-jobs/patch-ui", "vercel/next.js", "shadcn/ui"];
 
 export function ButtonDemo() {
+  const [tags, setTags] = useState(INITIAL_TAGS);
   return (
     <div className="flex flex-col gap-8">
       <div>
@@ -70,6 +74,36 @@ export function ButtonDemo() {
           <Button shape="rounded" shadow variant="secondary">
             Learn More
           </Button>
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-3 text-label-12 text-gray-800">Dismissible pill (repo chip pattern)</p>
+        <div className="flex min-h-9 flex-wrap items-center gap-2">
+          {tags.length === 0 ? (
+            <Button
+              size="sm"
+              variant="tertiary"
+              onClick={() => setTags(INITIAL_TAGS)}
+            >
+              Reset
+            </Button>
+          ) : (
+            tags.map((t) => (
+              <Button
+                key={t}
+                size="sm"
+                shape="pill"
+                variant="secondary"
+                icon={<GitBranch className="h-4 w-4" />}
+                onClick={() => alert(`Open ${t}`)}
+                onRemove={() => setTags((prev) => prev.filter((x) => x !== t))}
+                removeLabel={`Remove ${t}`}
+              >
+                {t}
+              </Button>
+            ))
+          )}
         </div>
       </div>
 

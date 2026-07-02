@@ -256,7 +256,6 @@ export { Progress, type ProgressProps } from "./components/progress";
 export { Separator, type SeparatorProps } from "./components/separator";
 export { Kbd, type KbdProps } from "./components/kbd";
 export { Toggle, toggleVariants, type ToggleProps } from "./components/toggle";
-export { TagInput, type TagInputProps } from "./components/tag-input";
 export { Dropzone, type DropzoneProps } from "./components/dropzone";
 export {
   Calendar,

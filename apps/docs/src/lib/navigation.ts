@@ -32,7 +32,6 @@ export const navigation: NavGroup[] = [
       { title: "Radio", href: "/docs/components/radio" },
       { title: "SegmentedToggle", href: "/docs/components/segmented-toggle" },
       { title: "Slider", href: "/docs/components/slider" },
-      { title: "TagInput", href: "/docs/components/tag-input" },
       { title: "Dropzone", href: "/docs/components/dropzone" },
       { title: "Calendar", href: "/docs/components/calendar" },
       { title: "DatePicker", href: "/docs/components/date-picker" },

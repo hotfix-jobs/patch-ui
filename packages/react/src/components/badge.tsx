@@ -5,25 +5,25 @@ import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
 
 export const badgeVariants = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap",
-    "text-label-12 font-medium",
-    "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
+    "font-medium",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0",
   ].join(" "),
   {
     defaultVariants: {
-      size: "sm",
+      size: "md",
       variant: "default",
       shape: "pill",
-      outline: false,
+      contrast: "high",
     },
     variants: {
       size: {
-        sm: "px-2.5 py-1",
-        lg: "px-3 py-1.5",
+        sm: "px-2 py-[2px] text-label-12 [&_svg:not([class*='size-'])]:size-3",
+        md: "px-2.5 py-1 text-label-12 [&_svg:not([class*='size-'])]:size-3.5",
+        lg: "px-3 py-1.5 text-label-13 [&_svg:not([class*='size-'])]:size-4",
       },
       variant: {
         default: "",
@@ -35,22 +35,22 @@ export const badgeVariants = cva(
         rounded: "rounded-[var(--radius-6)]",
         pill: "rounded-full",
       },
-      outline: {
-        true: "bg-transparent border",
-        false: "",
+      contrast: {
+        high: "",
+        low: "",
       },
     },
     compoundVariants: [
-      // Solid (fill + text) — no hover state
-      { variant: "default", outline: false, class: "bg-gray-200 text-gray-1000" },
-      { variant: "success", outline: false, class: "bg-green-100 text-green-900" },
-      { variant: "warning", outline: false, class: "bg-amber-100 text-amber-900" },
-      { variant: "error",   outline: false, class: "bg-red-100 text-red-900" },
-      // Outline (border + text, transparent fill) — hover fills bg subtly
-      { variant: "default", outline: true, class: "border-gray-alpha-500 text-gray-1000 hover:bg-gray-alpha-100" },
-      { variant: "success", outline: true, class: "border-green-700 text-green-700 hover:bg-green-100" },
-      { variant: "warning", outline: true, class: "border-amber-700 text-amber-700 hover:bg-amber-100" },
-      { variant: "error",   outline: true, class: "border-red-700 text-red-700 hover:bg-red-100" },
+      // High contrast: solid saturated fill, light text
+      { variant: "default", contrast: "high", class: "bg-gray-1000 text-background-100" },
+      { variant: "success", contrast: "high", class: "bg-green-700 text-white" },
+      { variant: "warning", contrast: "high", class: "bg-amber-700 text-white" },
+      { variant: "error",   contrast: "high", class: "bg-red-700 text-white" },
+      // Low contrast: subtle tint, darker text
+      { variant: "default", contrast: "low", class: "bg-gray-200 text-gray-1000" },
+      { variant: "success", contrast: "low", class: "bg-green-100 text-green-900" },
+      { variant: "warning", contrast: "low", class: "bg-amber-100 text-amber-900" },
+      { variant: "error",   contrast: "low", class: "bg-red-100 text-red-900" },
     ],
   },
 );
@@ -59,12 +59,10 @@ export interface BadgeProps extends useRender.ComponentProps<"span"> {
   variant?: VariantProps<typeof badgeVariants>["variant"];
   size?: VariantProps<typeof badgeVariants>["size"];
   shape?: VariantProps<typeof badgeVariants>["shape"];
-  /** When true, renders a hairline outline + colored text on a transparent fill. */
-  outline?: boolean;
-  /** When provided, renders a trailing × button that calls this handler. */
-  onRemove?: () => void;
-  /** Accessible label for the × remove button. */
-  removeLabel?: string;
+  /** `high` = solid saturated fill (default). `low` = subtle tinted fill for dense surfaces. */
+  contrast?: VariantProps<typeof badgeVariants>["contrast"];
+  /** Optional inline icon rendered before the label. */
+  icon?: React.ReactNode;
 }
 
 export function Badge({
@@ -72,51 +70,19 @@ export function Badge({
   variant,
   size,
   shape,
-  outline,
-  onRemove,
-  removeLabel = "Remove",
+  contrast,
+  icon,
   render,
   children,
   ...props
 }: BadgeProps): React.ReactElement {
   const defaultProps = {
-    className: cn(
-      badgeVariants({ size, variant, shape, outline }),
-      onRemove && "group gap-2",
-      className,
-    ),
+    className: cn(badgeVariants({ size, variant, shape, contrast }), className),
     "data-slot": "badge",
     children: (
       <>
+        {icon}
         {children}
-        {onRemove && (
-          <button
-            type="button"
-            aria-label={removeLabel}
-            onClick={onRemove}
-            className={cn(
-              "inline-flex size-4 shrink-0 items-center justify-center rounded-full text-gray-800",
-              "hover:bg-gray-alpha-300 hover:text-gray-1000",
-              focusRing,
-              colorTransition,
-            )}
-          >
-            <svg
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="size-2.5"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-          </button>
-        )}
       </>
     ),
   };
