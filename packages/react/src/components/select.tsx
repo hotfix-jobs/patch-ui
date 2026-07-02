@@ -141,7 +141,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         heightBySize[size],
         prefix ? "ps-0" : leadingPad[size],
         chevronPadBySize[size],
-        !value && !defaultValue && placeholder && "text-gray-700",
+        // Dim only while the empty placeholder option is what's selected.
+        // Uses :has() so it works for both controlled and uncontrolled selects.
+        placeholder && "has-[option[value='']:checked]:text-gray-700",
       )}
       data-slot="select"
       disabled={disabled}
