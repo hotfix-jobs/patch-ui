@@ -60,6 +60,18 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
       description: "Distance in pixels between the tooltip and trigger.",
     },
     {
+      name: "delay",
+      type: "number",
+      default: "150",
+      description: "Milliseconds to wait before opening. Small default keeps a sweeping mouse from flickering tooltips open.",
+    },
+    {
+      name: "closeDelay",
+      type: "number",
+      default: "0",
+      description: "Milliseconds to wait before closing.",
+    },
+    {
       name: "className",
       type: "string",
       default: "-",
@@ -75,7 +87,7 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
     {
       name: "delay",
       type: "number",
-      default: "300",
+      default: "150",
       description: "Milliseconds to wait before opening a tooltip.",
     },
     {
@@ -87,7 +99,7 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
     {
       name: "timeout",
       type: "number",
-      default: "400",
+      default: "500",
       description: "If a tooltip was recently closed, the next one opens instantly within this timeout (ms).",
     },
   ]}

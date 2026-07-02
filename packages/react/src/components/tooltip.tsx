@@ -6,9 +6,9 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export function TooltipProvider({
-  delay = 100,
+  delay = 150,
   closeDelay = 0,
-  timeout = 400,
+  timeout = 500,
   children,
 }: {
   delay?: number;
@@ -35,6 +35,10 @@ export interface TooltipProps {
   align?: TooltipAlign;
   /** Pixel offset from the trigger. */
   sideOffset?: number;
+  /** Milliseconds to wait before opening. Small default so sweeping mouse motion doesn't flicker tooltips open. */
+  delay?: number;
+  /** Milliseconds to wait before closing. */
+  closeDelay?: number;
   className?: string;
 }
 
@@ -44,6 +48,8 @@ export function Tooltip({
   side = "top",
   align = "center",
   sideOffset = 4,
+  delay = 150,
+  closeDelay = 0,
   className,
 }: TooltipProps): React.ReactElement {
   const handle = useMemo(() => TooltipPrimitive.createHandle(), []);
@@ -51,7 +57,7 @@ export function Tooltip({
   return (
     <>
       <TooltipPrimitive.Trigger handle={handle} render={children} />
-      <TooltipPrimitive.Root handle={handle}>
+      <TooltipPrimitive.Root handle={handle} delay={delay} closeDelay={closeDelay}>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Positioner
             side={side}
