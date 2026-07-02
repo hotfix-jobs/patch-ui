@@ -69,7 +69,7 @@ export function ComboboxDemo() {
                   No matches.
                 </div>
               ) : (
-                <div className="py-1">
+                <div>
                   {matches.map((f) => (
                     <ComboboxItem
                       key={f}
