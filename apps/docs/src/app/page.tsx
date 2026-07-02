@@ -33,7 +33,7 @@ export default function Home() {
         </AppHeaderNav>
         <AppHeaderRight>
           <Button
-            variant="outline"
+            variant="secondary"
             size="sm"
             render={
               <a
@@ -74,7 +74,7 @@ export default function Home() {
             Get started
           </Button>
           <Button
-            variant="outline"
+            variant="secondary"
             render={<Link href="/docs/components/button" />}
           >
             Browse components
@@ -90,14 +90,14 @@ export default function Home() {
             <ShowcaseCell label="Buttons">
               <div className="flex flex-wrap items-center gap-2">
                 <Button size="sm">Primary</Button>
-                <Button size="sm" variant="outline">
-                  Outline
+                <Button size="sm" variant="secondary">
+                  Secondary
                 </Button>
-                <Button size="sm" variant="ghost">
-                  Ghost
+                <Button size="sm" variant="tertiary">
+                  Tertiary
                 </Button>
-                <Button size="sm" variant="danger">
-                  Danger
+                <Button size="sm" variant="error">
+                  Error
                 </Button>
               </div>
             </ShowcaseCell>
@@ -115,7 +115,7 @@ export default function Home() {
             {/* Input */}
             <ShowcaseCell label="Input">
               <Input
-                icon={<Search className="size-4" />}
+                prefix={<Search className="size-4" />}
                 placeholder="Search components..."
               />
             </ShowcaseCell>
@@ -157,12 +157,12 @@ export default function Home() {
             {/* Icon row */}
             <ShowcaseCell label="Composition">
               <div className="flex items-center gap-2">
-                <Button size="sm" variant="outline" icon={<Mail />}>
+                <Button size="sm" variant="secondary" icon={<Mail />}>
                   Email
                 </Button>
                 <Button
                   size="sm"
-                  variant="ghost"
+                  variant="tertiary"
                   icon={<Settings className="size-4" />}
                   aria-label="Settings"
                 />

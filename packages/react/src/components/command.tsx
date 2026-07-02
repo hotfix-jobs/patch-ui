@@ -157,7 +157,10 @@ export function CommandItem({
   suffix,
   children,
   ...props
-}: React.ComponentProps<typeof AutocompletePrimitive.Item> & {
+}: Omit<
+  React.ComponentProps<typeof AutocompletePrimitive.Item>,
+  "prefix" | "suffix"
+> & {
   /** Trailing check indicating "currently chosen". */
   selected?: boolean;
   /** Secondary line below the title for two-line items. */

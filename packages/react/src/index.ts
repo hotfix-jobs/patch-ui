@@ -40,6 +40,11 @@ export {
 } from "./components/section";
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
 export {
+  Breadcrumb,
+  type BreadcrumbProps,
+  type BreadcrumbItem,
+} from "./components/breadcrumb";
+export {
   Avatar,
   AvatarImage,
   AvatarFallback,

@@ -13,7 +13,7 @@ export function Header({ onMenuToggle }: { onMenuToggle?: () => void }) {
     >
       {/* Mobile menu toggle */}
       <Button
-        variant="ghost"
+        variant="tertiary"
         size="sm"
         icon={<Menu className="size-5" />}
         onClick={onMenuToggle}

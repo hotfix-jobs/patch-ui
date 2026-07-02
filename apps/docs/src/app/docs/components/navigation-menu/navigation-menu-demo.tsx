@@ -104,7 +104,7 @@ export function NavigationMenuDemo() {
             Get started
           </Button>
           <Button
-            variant="ghost"
+            variant="tertiary"
             size="sm"
             aria-label="Open menu"
             className="sm:hidden"
