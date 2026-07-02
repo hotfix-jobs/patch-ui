@@ -21,7 +21,7 @@ export interface SkeletonProps
 }
 
 /**
- * Skeleton — placeholder for async content in a known layout.
+ * Skeleton: placeholder for async content in a known layout.
  *
  * Match dimensions to the final content to prevent layout shift.
  * Use `shape="pill"` for avatars, `shape="rounded"` (default) for

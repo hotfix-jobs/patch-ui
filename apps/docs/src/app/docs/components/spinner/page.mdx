@@ -5,7 +5,7 @@ export const metadata = { title: "Spinner" };
 
 # Spinner
 
-A single loading indicator. 12 tick marks arranged radially, each fading in sequence — a restrained rotating "clock hand" feel. Uses `currentColor`.
+A single loading indicator. 12 tick marks arranged radially, each fading in sequence: a restrained rotating "clock hand" feel. Uses `currentColor`.
 
 <Install name="spinner" />
 
@@ -55,7 +55,7 @@ import { Spinner } from "@patchui/react";
       name: "label",
       type: "string",
       default: '"Loading"',
-      description: 'Accessible label announced by screen readers. Use to communicate context — "Saving", "Uploading 3 of 12", "Processing payment" — instead of the generic default.',
+      description: 'Accessible label announced by screen readers. Use to communicate context: "Saving", "Uploading 3 of 12", "Processing payment": instead of the generic default.',
     },
     {
       name: "className",
@@ -68,7 +68,7 @@ import { Spinner } from "@patchui/react";
 
 <Callout title="Notes">
 - One loading indicator across the system. Same silhouette everywhere so the loading language is consistent.
-- Use `<Button loading>` — don't drop a Spinner inside a button label yourself. The Button wires the sizing and busy state for you.
+- Use `<Button loading>`: don't drop a Spinner inside a button label yourself. The Button wires the sizing and busy state for you.
 - Use `variant="dots"` when the wait sits inline in copy ("Saving…"). Reach for `Skeleton` when async data will fill a known layout. Reach for `Progress` when total work is measurable.
 - Colors inherit from `currentColor`. Wrap in a colored container to tint.
 - Pure CSS animation, no JavaScript timer. Honors `prefers-reduced-motion` via the shared tokens.

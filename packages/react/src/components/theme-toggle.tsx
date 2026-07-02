@@ -139,7 +139,7 @@ export function ThemeToggle({
         // Default sync mode: AnimatePresence renders both icons during
         // transition (old still in DOM until its exit completes). Absolute
         // positioning stacks them in the same spot so the exit + enter
-        // animations crossfade — no blank frame between the two icons.
+        // animations crossfade: no blank frame between the two icons.
         <AnimatePresence initial={false}>
           {isDark ? (
             <motion.svg

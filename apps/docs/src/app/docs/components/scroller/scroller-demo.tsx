@@ -47,7 +47,7 @@ export function ScrollerDemo() {
         </Scroller>
       </div>
 
-      {/* Horizontal rail without buttons — touch / trackpad scroll only */}
+      {/* Horizontal rail without buttons: touch / trackpad scroll only */}
       <div className="space-y-3">
         <SectionLabel>Horizontal rail (no buttons)</SectionLabel>
         <Scroller

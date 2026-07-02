@@ -347,7 +347,7 @@ function ToastItem({
   }, [clear, t.id]);
 
   useEffect(() => {
-    // Only the frontmost toast counts down — toasts behind in the stack
+    // Only the frontmost toast counts down: toasts behind in the stack
     // are visually hidden anyway and would dismiss out of order.
     if (!isFront) return;
     if (!Number.isFinite(t.duration)) return;

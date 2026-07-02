@@ -8,7 +8,7 @@ import { cn } from "../utils";
 export interface SectionLabelProps extends useRender.ComponentProps<"p"> {}
 
 /**
- * SectionLabel — a small bold heading used to introduce a labeled section
+ * SectionLabel: a small bold heading used to introduce a labeled section
  * within a larger surface: sidebar nav groups, showcase-wall cells, demo
  * variant clusters, foundations-page charts.
  *

@@ -4,7 +4,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 /**
- * ListRow — two-column row layout for lists of heterogeneous items.
+ * ListRow: two-column row layout for lists of heterogeneous items.
  *
  * Use for stacked lists where each row shares a shape (title + optional
  * description on the left, controls on the right) but doesn't need
@@ -23,7 +23,7 @@ import { cn } from "../utils";
  *     </ListRow>
  *   </ListRowList>
  *
- * Compose freely — the `left`, body, and `right` slots each accept any
+ * Compose freely: the `left`, body, and `right` slots each accept any
  * ReactNode, so a row could be `<Avatar>` + `<ListRowContent>` +
  * `<Button>` for a member row, or `<Checkbox>` + custom JSX +
  * `<Menu>` for a settings row.
@@ -31,9 +31,9 @@ import { cn } from "../utils";
 
 export interface ListRowProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "title"> {
-  /** Left slot — typically Avatar, Checkbox, or icon. */
+  /** Left slot: typically Avatar, Checkbox, or icon. */
   left?: React.ReactNode;
-  /** Right slot — typically Button or a compact action cluster. */
+  /** Right slot: typically Button or a compact action cluster. */
   right?: React.ReactNode;
   /** Body content between the slots. Usually one or more <ListRowContent>. */
   children?: React.ReactNode;
@@ -101,9 +101,9 @@ export function ListRow({
 
 export interface ListRowContentProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  /** Primary line — the entity's name or title. */
+  /** Primary line: the entity's name or title. */
   title?: React.ReactNode;
-  /** Secondary line under the title — email, path, role, tagline. */
+  /** Secondary line under the title: email, path, role, tagline. */
   description?: React.ReactNode;
 }
 

@@ -56,7 +56,7 @@ const dotSizeBySize: Record<SpinnerSize, number> = {
 export interface SpinnerProps
   extends React.ComponentProps<"span">,
     VariantProps<typeof ringWrapper> {
-  /** Accessible label. Use for context — "Saving", "Uploading 3 of 12". */
+  /** Accessible label. Use for context: "Saving", "Uploading 3 of 12". */
   label?: string;
   /**
    * Visual style. `ring` is a spinning circle (icon-sized waits, buttons);

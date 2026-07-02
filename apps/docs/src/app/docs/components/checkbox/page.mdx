@@ -75,7 +75,7 @@ const [checked, setChecked] = useState(false);
       name: "indeterminate",
       type: "boolean",
       default: "false",
-      description: "Renders the dash instead of a check. Purely visual — the native input still reports unchecked.",
+      description: "Renders the dash instead of a check. Purely visual: the native input still reports unchecked.",
     },
     {
       name: "disabled",
@@ -124,7 +124,7 @@ const [checked, setChecked] = useState(false);
 
 <Callout title="Notes">
 - Reach for Checkbox when the user is picking zero or more from a list (opt-in preferences, table row select, filter multi-select) or affirming a specific statement (terms, exports). Reach for `Switch` when a single boolean setting saves immediately.
-- Indeterminate is only visual. Drive it from a parent that tracks partial selection — as soon as every child is either fully on or fully off, clear the indeterminate state.
+- Indeterminate is only visual. Drive it from a parent that tracks partial selection: as soon as every child is either fully on or fully off, clear the indeterminate state.
 - For row-select checkboxes with no visible label, pass `aria-label="Select {row name}"` so the row stays identifiable when the surrounding context is off-screen.
 - Group related checkboxes in a `<fieldset>` with a `<legend>` so screen readers announce the group name before each option.
 - The checkbox is a `<button role="checkbox">` on top of a hidden `<input type="checkbox">`, so it participates in native forms without losing keyboard behavior.

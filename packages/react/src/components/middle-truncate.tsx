@@ -22,7 +22,7 @@ export interface MiddleTruncateProps
 }
 
 /**
- * MiddleTruncate — truncates a string in the middle, preserving the
+ * MiddleTruncate: truncates a string in the middle, preserving the
  * start and end. Use for identifiers where BOTH the beginning and end
  * matter (file paths, commit hashes, deploy IDs, URLs, branch names).
  *
@@ -30,9 +30,9 @@ export interface MiddleTruncateProps
  * hidden canvas to measure text width in the current computed font.
  * A binary search finds the largest symmetric head/tail split that
  * fits. Result: clean, pixel-accurate truncation, one ellipsis, both
- * sides shrink together — matches Vercel Geist.
+ * sides shrink together: matches Vercel Geist.
  *
- * Not for prose / headings — middle-truncating a sentence destroys
+ * Not for prose / headings: middle-truncating a sentence destroys
  * meaning.
  */
 export function MiddleTruncate({
@@ -75,7 +75,7 @@ export function MiddleTruncate({
       }
 
       const ellipsisWidth = ctx.measureText(ellipsis).width;
-      // 2px safety margin — canvas measurement can differ from the
+      // 2px safety margin: canvas measurement can differ from the
       // browser's rendered width by a subpixel due to font hinting;
       // undercutting slightly guarantees the rendered string fits
       // rather than overflowing and getting clipped a second time.
@@ -127,7 +127,7 @@ export function MiddleTruncate({
       data-slot="middle-truncate"
       title={value}
       aria-label={value}
-      // No text-overflow: ellipsis on the wrapper — we already inserted
+      // No text-overflow: ellipsis on the wrapper: we already inserted
       // the ellipsis at the measured truncation point. `truncate` would
       // stack a browser end-ellipsis on top when subpixel differences
       // make the rendered string a fraction wider than the container.

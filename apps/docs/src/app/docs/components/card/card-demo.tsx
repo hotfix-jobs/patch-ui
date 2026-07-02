@@ -38,7 +38,7 @@ export function CardDemo() {
         <SectionLabel>Secondary surface</SectionLabel>
         <Card secondary className="p-4 max-w-sm">
           <p className="text-copy-14 text-gray-900">
-            Nested surface — gray-100 fill instead of background-100.
+            Nested surface: gray-100 fill instead of background-100.
           </p>
         </Card>
       </div>
@@ -64,7 +64,7 @@ export function CardDemo() {
       <div className="space-y-3">
         <SectionLabel>Selected (multi-pick highlight)</SectionLabel>
         <Card selected className="p-4 max-w-sm">
-          <p className="text-copy-14 text-gray-1000">Selected plan — border stands out.</p>
+          <p className="text-copy-14 text-gray-1000">Selected plan: border stands out.</p>
         </Card>
       </div>
     </div>

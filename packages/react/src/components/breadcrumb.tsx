@@ -20,7 +20,7 @@ export interface BreadcrumbProps
   items: BreadcrumbItem[];
   /**
    * When true, treat any `<a>` element from your router as a Link. The default
-   * uses `<a>` — pass a `linkAs` render prop if you need Next.js Link etc.
+   * uses `<a>`: pass a `linkAs` render prop if you need Next.js Link etc.
    */
   linkAs?: (props: {
     href: string;
@@ -41,7 +41,7 @@ function Separator() {
 }
 
 /**
- * Breadcrumb — horizontal trail of ancestor links leading to the current page.
+ * Breadcrumb: horizontal trail of ancestor links leading to the current page.
  *
  * - The Home crumb (href="/" + name="Home") renders as an icon-only link to
  *   keep the chain compact; screen readers still get "Home" via sr-only.

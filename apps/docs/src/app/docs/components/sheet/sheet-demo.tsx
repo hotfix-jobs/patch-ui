@@ -23,7 +23,7 @@ export function SheetDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Right side — editable profile */}
+      {/* Right side: editable profile */}
       <div className="space-y-3">
         <SectionLabel>Editable profile</SectionLabel>
         <Sheet>

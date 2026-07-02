@@ -31,7 +31,7 @@ type AvatarShape = NonNullable<VariantProps<typeof avatarVariants>["shape"]>;
 /** Size accepts either a preset (`"xs"–"xl"`) or a pixel number for exact control. */
 export type AvatarSize = AvatarSizeEnum | number;
 
-/** Map enum sizes to pixel diameter — the source of truth for AvatarGroup overlap math. */
+/** Map enum sizes to pixel diameter: the source of truth for AvatarGroup overlap math. */
 const sizePx: Record<AvatarSizeEnum, number> = {
   xs: 24,
   sm: 28,

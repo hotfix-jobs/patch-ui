@@ -36,7 +36,7 @@ export interface ScrollerProps
   fade?: boolean;
   /** Fade width in pixels. Default 32. */
   fadeWidth?: number;
-  /** Class on the inner content wrapper — apply gap here for rail spacing. */
+  /** Class on the inner content wrapper: apply gap here for rail spacing. */
   childrenContainerClassName?: string;
   /** aria-label on the scroll region (best when there's no visible heading). */
   ariaLabel?: string;
@@ -44,7 +44,7 @@ export interface ScrollerProps
 }
 
 /**
- * Scroller — a scroll container for overflowing lists (horizontal rails,
+ * Scroller: a scroll container for overflowing lists (horizontal rails,
  * long vertical feeds, or free bidirectional canvases). Optional Prev /
  * Next buttons page through the visible content.
  *

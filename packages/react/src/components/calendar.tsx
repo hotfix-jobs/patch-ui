@@ -123,8 +123,8 @@ function buildMonthGrid(month: Date, weekStartsOn: number): Date[][] {
 /* --------------------------- Calendar --------------------------- */
 
 /**
- * Calendar — month grid with single, range, or multiple date selection.
- * Pure UI primitive — keyboard navigable (arrow keys + Home/End +
+ * Calendar: month grid with single, range, or multiple date selection.
+ * Pure UI primitive: keyboard navigable (arrow keys + Home/End +
  * PageUp/PageDown). For an input-triggered popup, use `DatePicker`.
  */
 export function Calendar(props: CalendarProps): React.ReactElement {

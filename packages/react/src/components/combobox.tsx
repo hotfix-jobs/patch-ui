@@ -38,7 +38,7 @@ import { XIcon } from "../internal-icons";
  * highlighted via aria-activedescendant) and motion-driven open/close.
  *
  * Unlike `Command`, the popup is anchored to an input and opens on focus.
- * Unlike `Menu`, the trigger is an input — typing filters externally;
+ * Unlike `Menu`, the trigger is an input: typing filters externally;
  * Combobox doesn't manage filtering, it manages the popup + keyboard
  * navigation + ARIA wiring. You compose the items / content yourself.
  *
@@ -116,7 +116,7 @@ export function Combobox({
     placement: "bottom-start",
     transform: false,
     // Combobox semantics: always anchor below the input. `size` constrains
-    // maxHeight to whatever fits — popup scrolls internally rather than
+    // maxHeight to whatever fits: popup scrolls internally rather than
     // flipping above the input (Google-search style, not menu-style).
     middleware: [
       offset(8),
@@ -264,7 +264,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
     ) : undefined;
     // The Input component wraps the actual <input> in a <span> for icons /
     // suffix / clear button. The visible "field" box is the wrapper span,
-    // not the inner input — so anchor floating-ui to the parent element so
+    // not the inner input: so anchor floating-ui to the parent element so
     // the popup aligns with the full input chrome (icon included).
     const setReferenceToWrapper = useCallback(
       (node: HTMLInputElement | null) => {
@@ -350,7 +350,7 @@ export function ComboboxPopup({
             context={context}
             modal={false}
             initialFocus={-1}
-            // Don't programmatically refocus the input on close — the input
+            // Don't programmatically refocus the input on close: the input
             // never lost focus (virtual focus model), and refocusing would
             // fire a focus event that triggers openOnFocus, reopening the
             // popup right after dismiss closed it.

@@ -5,7 +5,7 @@ export const metadata = { title: "TimeAgo" };
 
 # TimeAgo
 
-Relative time display ("3m ago", "2d ago", "in 5h"). Renders an absolute date during SSR / initial hydration and swaps to the relative string after mount — no hydration mismatches. Supports past and future dates, ranges from seconds to years, and refreshes itself on a smart interval so "Just now" doesn't stick around for half an hour.
+Relative time display ("3m ago", "2d ago", "in 5h"). Renders an absolute date during SSR / initial hydration and swaps to the relative string after mount: no hydration mismatches. Supports past and future dates, ranges from seconds to years, and refreshes itself on a smart interval so "Just now" doesn't stick around for half an hour.
 
 Defaults to mono numerals since timestamps are numeric data and benefit from column alignment in lists.
 
@@ -77,14 +77,14 @@ import { TimeAgo } from "@patchui/react";
       name: "liveUpdate",
       type: "boolean",
       default: "true",
-      description: "Re-render on a smart interval so the label stays accurate without effort. Refresh frequency scales with age (10s under 1m, 30s under 1h, 60s under 1d, 1h under 1w). Above 1 week the label rolls over too slowly to bother — no further refresh scheduled.",
+      description: "Re-render on a smart interval so the label stays accurate without effort. Refresh frequency scales with age (10s under 1m, 30s under 1h, 60s under 1d, 1h under 1w). Above 1 week the label rolls over too slowly to bother: no further refresh scheduled.",
     },
   ]}
 />
 
 <Callout title="Notes">
 - Hydration-safe by construction: the server and first-client render emit a stable absolute UTC date. The relative label only takes over once `useSyncExternalStore` confirms hydration. No flash, no React warnings.
-- Live updates are scheduled from the current age. A fresh `0m ago` refreshes 10s later, then every 30s, then every minute, then every hour. Above one week the label rolls over too slowly to bother scheduling — the timer cancels itself.
+- Live updates are scheduled from the current age. A fresh `0m ago` refreshes 10s later, then every 30s, then every minute, then every hour. Above one week the label rolls over too slowly to bother scheduling: the timer cancels itself.
 - Future dates render as `in Xm`, `in Xh`. A time less than a minute out renders as `Soon`.
 - Months and years use Gregorian averages (30.44 days / 365.25 days) so the rollover thresholds don't drift.
 - For a hover hint with the full absolute date, wrap in `<Tooltip>`, one-line composition.

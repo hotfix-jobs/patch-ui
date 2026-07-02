@@ -11,7 +11,7 @@ import { SectionLabel } from "@patchui/react";
 export function AccordionDemo() {
   return (
     <div className="flex flex-col gap-10">
-      {/* Bordered — the common case */}
+      {/* Bordered: the common case */}
       <div className="w-full max-w-md space-y-3">
         <SectionLabel>Bordered (hairline row pattern)</SectionLabel>
         <Accordion bordered defaultValue={["item-0"]}>
@@ -56,7 +56,7 @@ export function AccordionDemo() {
         </Accordion>
       </div>
 
-      {/* Unstyled — consumer supplies chrome */}
+      {/* Unstyled: consumer supplies chrome */}
       <div className="w-full max-w-md space-y-3">
         <SectionLabel>Unstyled (compose your own chrome)</SectionLabel>
         <Accordion>

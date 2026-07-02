@@ -12,7 +12,7 @@ interface SidebarState {
 const SidebarStateContext = createContext<SidebarState | null>(null);
 
 /**
- * SidebarStateProvider — hoists sidebar open/closed state above SiteHeader
+ * SidebarStateProvider: hoists sidebar open/closed state above SiteHeader
  * and Sidebar so they can share it. Wrapped at the root layout so
  * SiteHeader (which knows nothing about docs) can render a mobile menu
  * button that opens the docs Sidebar (which is only mounted on /docs).

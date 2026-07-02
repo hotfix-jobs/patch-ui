@@ -55,11 +55,15 @@ There are no unit-test or lint frameworks. The verification gate is: build, `che
 ## Design Bar (every component conforms)
 
 - **Focus:** the `focusRing` recipe (1px solid outline via `--focus-ring-color` + `--focus-ring-offset`). No ring-2/ring-3.
-- **Type:** tokenized scale only via the compound utility classes (`text-heading-*`, `text-copy-*`, `text-label-*`, `text-button-*`). No raw `text-[Npx]` except intentional display sizes.
+- **Type family discipline:** compound `text-*` classes are complete recipes (size + line-height + tracking + font-weight bundled). Use them alone, never paired with a `font-*` utility. If you need a different weight at a given size, switch families: `text-heading-*` = 600, `text-button-*` = 500, `text-copy-*` and `text-label-*` = 400. Never mix `text-copy-14 font-medium`; use `text-button-14` instead. No raw `text-[Npx]` except intentional display sizes.
 - **Sizing:** `sm/md/lg` vocabulary via `controlSize`. No arbitrary `h-[Npx]`.
 - **Radius:** `--radius-6/12/16/full` only; controls use radius-6, surfaces use radius-12, marketing chrome uses radius-16, chips use radius-full.
 - **Motion:** duration/easing tokens only (`--duration-state`, `--duration-overlay`, `--ease-standard`); no hardcoded ms, no inline cubic-bezier, no `transition-all`.
 - **Elevation:** flat with 1px hairline borders (`border-gray-alpha-400`); shadows only on overlays (dialog/menu/select-popup/tooltip/toast).
+- **Status colors:** use the semantic role tokens (`bg-success` / `bg-warning` / `bg-error`) for status fills, never the `-700` accent step. The accent scale inverts in dark mode; the semantic roles are fixed hex that read identically in both themes. Applies to Badge, Progress, Switch, Button destructive variants.
+- **Variant vocabulary:** where multiple components accept variants for the same visual role, use the shared Button vocabulary (`primary` / `secondary` / `tertiary` / `warning` / `error`). Toggle follows this: `secondary` = bordered, `tertiary` = transparent. Do not invent per-component names like `outline` or `ghost`.
+- **No uppercase text.** Uppercase small-caps reads as a design cliche and is not part of the aesthetic.
+- **No decorative mono.** Reserve `font-mono` for genuine code contexts: `<code>`, `<pre>`, `<kbd>`, install snippets, hex values shown as code. Not for pill labels, table cells, or class-name reference chips.
 - **States:** hover, active, focus-visible, disabled defined on every interactive component.
 - Verify light + dark and run `check:contrast`.
 

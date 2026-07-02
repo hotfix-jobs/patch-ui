@@ -21,7 +21,7 @@ export function SpinnerDemo() {
 
       <div>
         <p className="mb-3 text-label-12 text-gray-800">
-          Dots variant — inline for copy waits
+          Dots variant: inline for copy waits
         </p>
         <div className="flex flex-col gap-3 text-copy-14 text-gray-1000">
           <p className="inline-flex items-center gap-1.5">

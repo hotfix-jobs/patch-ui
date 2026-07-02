@@ -156,7 +156,7 @@ export function TableDemo() {
 
       {/* Unknown values as em-dash */}
       <div className="space-y-3">
-        <SectionLabel>Unknown values render as em-dash (—)</SectionLabel>
+        <SectionLabel>Unknown values render as em-dash (:)</SectionLabel>
         <Table>
           <TableHeader>
             <TableRow>
@@ -174,10 +174,10 @@ export function TableDemo() {
             <TableRow>
               <TableCell>orphan-repo</TableCell>
               <TableCell>
-                <span className="text-gray-700">—</span>
+                <span className="text-gray-700">:</span>
               </TableCell>
               <TableCell align="right">
-                <span className="text-gray-700">—</span>
+                <span className="text-gray-700">:</span>
               </TableCell>
             </TableRow>
           </TableBody>

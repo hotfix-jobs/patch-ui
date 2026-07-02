@@ -62,7 +62,7 @@ import { Card } from "@patchui/react";
       name: "border",
       type: "boolean",
       default: "true",
-      description: "Show a visible border. On by default — pass `border={false}` for a bare surface.",
+      description: "Show a visible border. On by default: pass `border={false}` for a bare surface.",
     },
     {
       name: "hoverable",
@@ -119,7 +119,7 @@ import { Card } from "@patchui/react";
 - Card composes with booleans, not variants. Mix `border` + `hoverable` + `shadow` + `secondary` to build the exact surface you need.
 - The default Card (no props) is a rounded surface with `background-100` fill. Add `border` to give it an outline.
 - `hoverable` makes the card interactive (cursor, hover state, focus ring). Wrap in a `<Link>` or handle `onClick` for actual navigation.
-- `borderBetween` turns Card into a list container — dividers between direct children handle themselves. Combine with `direction="row"` for horizontal splits.
+- `borderBetween` turns Card into a list container: dividers between direct children handle themselves. Combine with `direction="row"` for horizontal splits.
 - Structure your content directly inside Card with divs and text tokens (`text-heading-20`, `text-copy-14`). For a fully structured settings-page pattern (title, subtitle, footer with status + actions), use `<Section>` instead.
 - **Migration from v1:**
   - `variant="default"` → no prop.

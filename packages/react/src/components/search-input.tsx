@@ -6,7 +6,7 @@ import { Input, type InputProps } from "./input";
 import { Kbd } from "./kbd";
 
 /**
- * SearchInput — a scoped search field aligned with Geist. Renders a
+ * SearchInput: a scoped search field aligned with Geist. Renders a
  * magnifying-glass prefix, a clickable Esc-hint Kbd (when the value is
  * non-empty), and clears the input on Escape or click.
  */

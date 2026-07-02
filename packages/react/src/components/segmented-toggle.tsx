@@ -120,7 +120,7 @@ export function SegmentedToggleItem({
   const reduceMotion = useReducedMotion();
   const isActive = activeValue === value;
 
-  // Arrow / Home / End navigation across siblings — uses DOM query
+  // Arrow / Home / End navigation across siblings: uses DOM query
   // rather than ref tracking so it works regardless of how items are
   // composed (Fragment / conditional render).
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {

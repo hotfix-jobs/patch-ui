@@ -65,14 +65,14 @@ import {
 
 ## Components
 
-- **`Section`** — the bordered wrapper. Renders as `<section>` by default.
-- **`SectionHeader`** — the top block: title + subtitle.
-- **`SectionTitle`** — heading (renders as `<h3>` for correct outline).
-- **`SectionSubtitle`** — descriptive text under the title (renders as `<p>`).
-- **`SectionContent`** — optional body between header and footer.
-- **`SectionFooter`** — bordered footer with a two-column layout. Accepts an optional `secondary` prop to use a darker `gray-100` bg.
-- **`SectionFooterStatus`** — left-aligned status text (help link, last-updated stamp, validation hint).
-- **`SectionFooterActions`** — right-aligned action row (buttons).
+- **`Section`**: the bordered wrapper. Renders as `<section>` by default.
+- **`SectionHeader`**: the top block: title + subtitle.
+- **`SectionTitle`**: heading (renders as `<h3>` for correct outline).
+- **`SectionSubtitle`**: descriptive text under the title (renders as `<p>`).
+- **`SectionContent`**: optional body between header and footer.
+- **`SectionFooter`**: bordered footer with a two-column layout. Accepts an optional `secondary` prop to use a darker `gray-100` bg.
+- **`SectionFooterStatus`**: left-aligned status text (help link, last-updated stamp, validation hint).
+- **`SectionFooterActions`**: right-aligned action row (buttons).
 
 ## Props
 
@@ -101,7 +101,7 @@ Each accepts `className` for overrides and `render` for polymorphic rendering (c
 
 <Callout title="Notes">
 - Section is opinionated on layout: `SectionFooter` uses `justify-between`, so status stretches left and actions stretch right. Skip either side and the other aligns naturally.
-- When only actions are present (no status text), the buttons will right-align — no need to add a spacer.
+- When only actions are present (no status text), the buttons will right-align: no need to add a spacer.
 - Section is a `<section>` element; `SectionTitle` renders as `<h3>` by default. If the parent already has an `<h2>`, that keeps the outline clean. Adjust with `render={<h2 />}` if the heading level needs to shift.
-- For general-purpose surfaces (nested cards, hoverable rows, dashed drop zones), reach for `<Card>` — it composes with `border` / `hoverable` / `shadow` / `secondary` / `borderBetween` boolean props.
+- For general-purpose surfaces (nested cards, hoverable rows, dashed drop zones), reach for `<Card>`: it composes with `border` / `hoverable` / `shadow` / `secondary` / `borderBetween` boolean props.
 </Callout>

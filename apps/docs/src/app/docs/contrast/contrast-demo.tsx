@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-/* WCAG 2.1 contrast math — mirrors packages/react/scripts/check-contrast.ts */
+/* WCAG 2.1 contrast math: mirrors packages/react/scripts/check-contrast.ts */
 
 type Rgb = { r: number; g: number; b: number };
 

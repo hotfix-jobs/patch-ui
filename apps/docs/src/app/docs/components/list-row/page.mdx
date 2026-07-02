@@ -5,7 +5,7 @@ export const metadata = { title: "ListRow" };
 
 # ListRow
 
-A two-column row for stacked lists of heterogeneous items — member rows, integration rows, notification rows, watchlist items. Each row has an optional `left` slot (avatar / checkbox / icon), a body region (title + description or arbitrary content), and an optional `right` slot (button / actions).
+A two-column row for stacked lists of heterogeneous items: member rows, integration rows, notification rows, watchlist items. Each row has an optional `left` slot (avatar / checkbox / icon), a body region (title + description or arbitrary content), and an optional `right` slot (button / actions).
 
 Reach for `ListRow` when the rows share a shape but don't have sortable columns. If your data IS tabular (compare across columns), use `Table` instead.
 
@@ -43,8 +43,8 @@ import {
 
 <PropsTable
   props={[
-    { name: "left", type: "ReactNode", default: "-", description: "Left slot — typically Avatar, Checkbox, or icon." },
-    { name: "right", type: "ReactNode", default: "-", description: "Right slot — typically Button or compact action cluster." },
+    { name: "left", type: "ReactNode", default: "-", description: "Left slot: typically Avatar, Checkbox, or icon." },
+    { name: "right", type: "ReactNode", default: "-", description: "Right slot: typically Button or compact action cluster." },
     { name: "as", type: '"div" | "li" | "button"', default: '"div"', description: "HTML element. Pass \"li\" when nested in a <ul>." },
     { name: "size", type: '"sm" | "md"', default: '"md"', description: "Vertical padding rhythm." },
   ]}
@@ -54,8 +54,8 @@ import {
 
 <PropsTable
   props={[
-    { name: "title", type: "ReactNode", default: "-", description: "Primary line — entity name / title." },
-    { name: "description", type: "ReactNode", default: "-", description: "Secondary line under the title — email, path, role, tagline." },
+    { name: "title", type: "ReactNode", default: "-", description: "Primary line: entity name / title." },
+    { name: "description", type: "ReactNode", default: "-", description: "Secondary line under the title: email, path, role, tagline." },
   ]}
 />
 
@@ -72,7 +72,7 @@ import {
 <Callout title="Notes">
 - **ListRow vs Table.** Reach for ListRow when rows share a shape but not a column model (member rows, integration rows, notification rows). Reach for Table when data is genuinely tabular (multiple sortable / comparable columns).
 - **Right-cluster restraint.** Vercel guidance: cap the right slot at one or two controls. When there's more, put secondary actions behind a Menu.
-- **Left slot leads with a scannable identifier.** Avatar or icon first, then title, then metadata — the eye lands on the identifier and moves rightward.
+- **Left slot leads with a scannable identifier.** Avatar or icon first, then title, then metadata: the eye lands on the identifier and moves rightward.
 - **Loading state.** Compose `<Skeleton>` inside the left / body / right slots to preserve layout while data loads. `<Skeleton show={loading}>...</Skeleton>` wraps the real content and flips once loaded.
 - **Interactive rows.** Set `interactive` on the list to add a subtle hover wash. Wrap the row in an `<a>` or `<button>` for keyboard focus + click semantics.
 </Callout>

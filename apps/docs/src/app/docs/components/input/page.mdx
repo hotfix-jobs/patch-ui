@@ -135,8 +135,8 @@ import { Search, Mail, ArrowUpCircle } from "lucide-react";
 <Callout title="Notes">
 - The `error` prop takes a boolean (just the visual state) or a string (renders the message inline with `role="alert"`). Prefer strings.
 - Whitespace-trim the value at submit time so a stray space doesn't slip past a required check.
-- Placeholders should look like a real value the user would type — `example.com`, `my-project`. Skip the "Enter your…" instructions; the label already does that job.
-- Styled prefixes and suffixes read as their own module — good for `https://` schemes, `.com` domains, currency units. Turn styling off (`prefixStyling={false}`) when the affix is really an icon that lives inside the field.
+- Placeholders should look like a real value the user would type: `example.com`, `my-project`. Skip the "Enter your…" instructions; the label already does that job.
+- Styled prefixes and suffixes read as their own module: good for `https://` schemes, `.com` domains, currency units. Turn styling off (`prefixStyling={false}`) when the affix is really an icon that lives inside the field.
 - For an action button that sits inside an input row, use `<Button shape="circle">` with `aria-label`, not a naked icon.
 - Use `<SearchInput>` for search boxes so keyboard Esc and the Esc chip both clear the value.
 </Callout>

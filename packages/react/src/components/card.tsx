@@ -27,11 +27,11 @@ export interface CardProps extends useRender.ComponentProps<"div"> {
 }
 
 /**
- * Card — a surface primitive. Bordered, rounded, tokenized. Compose with
+ * Card: a surface primitive. Bordered, rounded, tokenized. Compose with
  * boolean props (`border`, `hoverable`, `shadow`, `secondary`, `borderBetween`,
  * `direction`) to fit the surface you need.
  *
- * Card is intentionally content-agnostic — for structured header/content/
+ * Card is intentionally content-agnostic: for structured header/content/
  * footer layouts (settings pages, plan pickers), reach for `Section`.
  */
 export function Card({

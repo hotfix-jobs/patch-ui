@@ -24,7 +24,7 @@ export interface LoadMoreProps
 }
 
 /**
- * LoadMore — a full-width, secondary-style button used to append more
+ * LoadMore: a full-width, secondary-style button used to append more
  * items to a paginated feed (job listings, search results, activity log).
  * Manages the loading state so the trigger stays focusable and announces
  * busy state to assistive tech.

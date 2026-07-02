@@ -15,7 +15,7 @@ const TYPE_CONFIG = {
 } as const;
 
 /**
- * Callout — MDX shortcode for asides. Flat surface, hairline border, one
+ * Callout: MDX shortcode for asides. Flat surface, hairline border, one
  * color signal via the leading icon.
  *
  * The body applies aggressive `!`-prefixed overrides for <p> and <ul>

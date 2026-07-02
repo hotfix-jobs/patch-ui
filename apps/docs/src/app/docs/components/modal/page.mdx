@@ -134,10 +134,10 @@ const [open, setOpen] = useState(false);
 />
 
 <Callout title="Notes">
-- **Controlled only.** No trigger subcomponent — consumers wire `active` and `onClickOutside` themselves. This keeps state ownership obvious and avoids surprises with imperative refs.
+- **Controlled only.** No trigger subcomponent: consumers wire `active` and `onClickOutside` themselves. This keeps state ownership obvious and avoids surprises with imperative refs.
 - **Title vs subtitle voice.** Titles are Title Case statements, never questions. Subtitles are sentence case, 1–3 sentences. Primary action button follows a Verb + Noun pattern that mirrors the title ("Delete Project" → "Delete Project").
-- **Destructive flows.** For destructive actions with unsaved input, gate the destructive button behind a confirmation input (see the demo). Keep Cancel literal — screen reader users depend on it.
-- **Fixed header + actions.** The header stays anchored at the top and the actions row stays at the bottom by default; the body scrolls if its content exceeds available height. Order matters — put `ModalHeader`, `ModalBody`, and `ModalActions` as siblings inside `Modal`.
+- **Destructive flows.** For destructive actions with unsaved input, gate the destructive button behind a confirmation input (see the demo). Keep Cancel literal: screen reader users depend on it.
+- **Fixed header + actions.** The header stays anchored at the top and the actions row stays at the bottom by default; the body scrolls if its content exceeds available height. Order matters: put `ModalHeader`, `ModalBody`, and `ModalActions` as siblings inside `Modal`.
 - **Mobile bottom sheet.** Below the `sm` breakpoint (640px), the modal anchors to the bottom of the viewport, spans full width, is rounded on top corners only, and slides up on open. No consumer wiring required.
 - **Focus return.** After the modal closes, focus returns to whatever was focused when it opened (usually the trigger). No need to wire this manually.
 </Callout>

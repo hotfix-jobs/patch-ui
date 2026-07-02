@@ -60,7 +60,7 @@ export {
   type AvatarProps,
   type AvatarGroupProps,
 } from "./components/avatar";
-// AppHeader lives as a block under packages/react/src/blocks/app-header — consumers
+// AppHeader lives as a block under packages/react/src/blocks/app-header: consumers
 // pull it via `npx shadcn add @patchui/app-header` and own the copy for
 // per-app customization (brand, feature flags, auth wiring, etc.). Not
 // exported from the package index.
@@ -240,7 +240,7 @@ export {
 export { Kbd, type KbdProps } from "./components/kbd";
 export { Toggle, toggleVariants, type ToggleProps } from "./components/toggle";
 // Dropzone lives as a block under packages/react/src/blocks/dropzone.
-// It composes Progress + Card + preview cards + delete X — apps
+// It composes Progress + Card + preview cards + delete X: apps
 // customize the preview and validation, so it ships as copy-in via
 // `npx shadcn add @patchui/dropzone`.
 export {

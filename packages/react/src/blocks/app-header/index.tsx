@@ -6,7 +6,7 @@ import type * as React from "react";
 import { cn } from "../../utils";
 
 /**
- * AppHeader — patch-ui extension for consistent top-of-page chrome.
+ * AppHeader: patch-ui extension for consistent top-of-page chrome.
  *
  * Compound: AppHeader / AppHeaderBrand / AppHeaderNav / AppHeaderNavItem
  * / AppHeaderRight. Matches Vercel Geist header dimensions and typography
@@ -114,7 +114,7 @@ export function AppHeaderNavItem({
   const defaultProps = {
     className: cn(
       "text-copy-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-      // Active state is just color contrast — inactive items sit at
+      // Active state is just color contrast: inactive items sit at
       // gray-800, active items lift to gray-1000. Matches Vercel across
       // marketing + dashboard headers. Consumers who want an underline
       // can add `after:` styling via className.

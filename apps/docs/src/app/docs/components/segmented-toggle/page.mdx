@@ -78,7 +78,7 @@ import { LayoutGrid, Rows3 } from "lucide-react";
       name: "aria-label",
       type: "string",
       default: "-",
-      description: "Required for accessibility — describes what this group controls.",
+      description: "Required for accessibility: describes what this group controls.",
     },
   ]}
 />
@@ -109,9 +109,9 @@ import { LayoutGrid, Rows3 } from "lucide-react";
 />
 
 <Callout title="Notes">
-- Reach for SegmentedToggle when 2–3 options are mutually exclusive and different views of the same surface — `Grid` / `List`, `Source` / `Output`, alignment picker. Past 3 options, use `Tabs` or a `Select`.
+- Reach for SegmentedToggle when 2–3 options are mutually exclusive and different views of the same surface: `Grid` / `List`, `Source` / `Output`, alignment picker. Past 3 options, use `Tabs` or a `Select`.
 - The active pill is a shared `motion.div` with a `layoutId` per group, so switching selections physically slides the pill between items. Reduced motion swaps the pill instantly.
-- Icon-only items need their own `aria-label` — the icon alone doesn't announce the choice.
+- Icon-only items need their own `aria-label`: the icon alone doesn't announce the choice.
 - Container is `role="radiogroup"` with `aria-label`; items are `role="radio"` with `aria-checked`. Only the selected item is in the Tab order. Arrows / Home / End move within the group.
 - Multiple SegmentedToggles on the same page each get a unique `layoutId` namespace via `useId`, so pills don't cross-animate.
 </Callout>

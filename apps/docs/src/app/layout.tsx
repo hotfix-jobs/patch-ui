@@ -16,6 +16,28 @@ const themeScript = `
 })();
 `;
 
+// JSON-LD structured data: describes Patch UI as SoftwareApplication so
+// search engines pick up the library metadata (name, description, category)
+// alongside the standard OpenGraph card.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Patch UI",
+  description:
+    "A React component library built on Base UI and Tailwind CSS v4. Copy-in via the shadcn CLI.",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Any",
+  url: "https://ui.hotfix.jobs",
+  license: "https://opensource.org/licenses/MIT",
+  softwareRequirements: "React 19, Tailwind CSS v4",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  publisher: {
+    "@type": "Organization",
+    name: "Hotfix",
+    url: "https://hotfix.jobs",
+  },
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://ui.hotfix.jobs"),
   title: {
@@ -65,6 +87,10 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-screen antialiased flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <SidebarStateProvider>
           <SiteHeader />
           <div className="flex-1">{children}</div>

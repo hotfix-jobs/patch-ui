@@ -65,12 +65,12 @@ function formatBytes(bytes: number): string {
 }
 
 /**
- * Dropzone — drag-and-drop file upload with file list. Accepts files via
+ * Dropzone: drag-and-drop file upload with file list. Accepts files via
  * drop or via a click-to-browse fallback. Renders a preview row per file
  * with a remove × button.
  *
  * Use for any file-upload UX: avatars, attachments, document uploads,
- * resume parsers. Pure UI primitive — consumers wire `onValueChange` to
+ * resume parsers. Pure UI primitive: consumers wire `onValueChange` to
  * their upload pipeline.
  */
 export function Dropzone({

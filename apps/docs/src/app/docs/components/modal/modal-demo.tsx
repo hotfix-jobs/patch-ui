@@ -24,7 +24,7 @@ export function ModalDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Basic — short confirmation, no header */}
+      {/* Basic: short confirmation, no header */}
       <div className="space-y-3">
         <SectionLabel>Basic</SectionLabel>
         <Button onClick={() => setBasic(true)}>Update project</Button>
@@ -124,7 +124,7 @@ export function ModalDemo() {
         </Modal>
       </div>
 
-      {/* Long content — header stays fixed while body scrolls */}
+      {/* Long content: header stays fixed while body scrolls */}
       <div className="space-y-3">
         <SectionLabel>Long content with fixed header</SectionLabel>
         <Button onClick={() => setLongContent(true)}>Open change log</Button>

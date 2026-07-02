@@ -67,7 +67,7 @@ export function TabsDemo() {
             </Body>
           </TabsPanel>
           <TabsPanel value="notifications">
-            <Body>No new notifications — badge is hidden at 0.</Body>
+            <Body>No new notifications: badge is hidden at 0.</Body>
           </TabsPanel>
           <TabsPanel value="settings">
             <Body>Adjust feed preferences here.</Body>
@@ -101,7 +101,7 @@ export function TabsDemo() {
 
       {/* Pill variant */}
       <div className="space-y-3">
-        <SectionLabel>Pill — orientation flips by breakpoint</SectionLabel>
+        <SectionLabel>Pill: orientation flips by breakpoint</SectionLabel>
         <div className="flex flex-col gap-8 sm:flex-row sm:gap-12">
           <div>
             <p className="mb-2 text-label-12 text-gray-700">

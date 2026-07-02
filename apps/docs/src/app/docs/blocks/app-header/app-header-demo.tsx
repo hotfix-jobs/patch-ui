@@ -56,7 +56,7 @@ export function AppHeaderDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Dashboard pattern — active nav item as primary color */}
+      {/* Dashboard pattern: active nav item as primary color */}
       <div className="space-y-3">
         <SectionLabel>Dashboard</SectionLabel>
         <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100">
@@ -107,7 +107,7 @@ export function AppHeaderDemo() {
         </div>
       </div>
 
-      {/* Marketing pattern — chevron dropdowns, secondary CTAs on the right */}
+      {/* Marketing pattern: chevron dropdowns, secondary CTAs on the right */}
       <div className="space-y-3">
         <SectionLabel>Marketing</SectionLabel>
         <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100">

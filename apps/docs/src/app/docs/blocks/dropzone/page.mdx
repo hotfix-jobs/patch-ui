@@ -5,7 +5,7 @@ export const metadata = { title: "Dropzone" };
 
 # Dropzone
 
-Drag-and-drop file upload with a click-to-browse fallback. Renders a preview row per file with a remove × button. Pure UI primitive — consumers wire `onValueChange` to their upload pipeline.
+Drag-and-drop file upload with a click-to-browse fallback. Renders a preview row per file with a remove × button. Pure UI primitive: consumers wire `onValueChange` to their upload pipeline.
 
 Use for any file-upload UX: avatars, attachments, document uploads, resume parsers, batch image imports.
 
@@ -141,9 +141,9 @@ const [files, setFiles] = useState<File[]>([]);
 />
 
 <Callout title="Notes">
-- The drop area is a `<button>` — Enter / Space open the native file picker. The underlying `<input type="file">` is `sr-only`.
+- The drop area is a `<button>`: Enter / Space open the native file picker. The underlying `<input type="file">` is `sr-only`.
 - While files are being dragged over, `data-drag-over` is set on the button. Default styling darkens the border to `gray-1000` and fills the bg with `gray-100` so the surface reads as "yes, drop here."
-- Dropzone is UI-only. It collects files into `value` (controlled) or internal state (uncontrolled). Upload logic lives in your `onValueChange` handler — call `fetch`, your storage SDK, whatever your pipeline is.
+- Dropzone is UI-only. It collects files into `value` (controlled) or internal state (uncontrolled). Upload logic lives in your `onValueChange` handler: call `fetch`, your storage SDK, whatever your pipeline is.
 - Set `progress` (`number | null`) to shift the whole component into an uploading state: the file rows swap their size text for a `<Progress>` bar, and interaction is disabled until you clear it.
 - Pass a `renderFile` if you need a fully custom row (preview thumbnail, per-file cancel, retry button). Default row shows a file icon, name, size, and an × to remove.
 </Callout>

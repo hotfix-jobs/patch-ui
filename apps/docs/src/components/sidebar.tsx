@@ -9,7 +9,7 @@ import { cn, SectionLabel } from "@patchui/react";
 import { useSidebarState } from "./sidebar-state";
 
 /**
- * Sidebar — the docs navigation column.
+ * Sidebar: the docs navigation column.
  *
  * Desktop (lg+): a normal-flow sticky column on the left. Sits below the
  * sticky header, stays visible while the main content scrolls, and lets

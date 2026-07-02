@@ -58,7 +58,7 @@ toast.dismiss(id);
 
 PatchUI's `Toaster` is a pre-configured Sonner wrapper. Compared to Sonner defaults:
 
-- **radius-12** rounded corners, **1px** hairline border in `gray-alpha-400`, `shadow-modal` drop shadow — matches Modal / Sheet / Menu chrome
+- **radius-12** rounded corners, **1px** hairline border in `gray-alpha-400`, `shadow-modal` drop shadow: matches Modal / Sheet / Menu chrome
 - **Semantic icon color** signals the variant: `--success` (green) for success, `--error` (red) for error, `--warning` (amber) for warning. No background flood on the toast itself.
 - **Compact padding** matching Menu density
 - **Typography**: title is `text-heading-14` (14px, 600), description is `text-label-12 text-gray-800`
@@ -102,7 +102,7 @@ PatchUI's `Toaster` is a pre-configured Sonner wrapper. Compared to Sonner defau
 
 <Callout title="Notes">
 - **Mount Toaster once** at the root of your app or layout. Multiple Toasters render their own queues.
-- **Imperative API:** `toast()` and its variants (`toast.success`, `toast.error`, etc.) work from anywhere — no provider context needed (Sonner uses an internal queue).
+- **Imperative API:** `toast()` and its variants (`toast.success`, `toast.error`, etc.) work from anywhere: no provider context needed (Sonner uses an internal queue).
 - **Stack behavior:** Multiple toasts stack with a peek animation. Hover over the stack to expand.
 - **Swipe to dismiss:** Touch and mouse drag dismissals are built in.
 - **Returns an id:** Every `toast()` call returns an id you can pass to `toast.dismiss(id)` for programmatic dismissal.

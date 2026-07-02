@@ -149,7 +149,7 @@
   --pink-900: #6d0031;
   --pink-1000: #40001d;
 
-  /* Semantic role aliases — fixed hex so status colors read the same
+  /* Semantic role aliases: fixed hex so status colors read the same
      in both themes. Status intent (destructive, warning, success)
      doesn't shift meaning between light and dark, so the fill shouldn't
      either. Values pulled from Vercel Geist red/amber/blue-800. */
@@ -190,7 +190,7 @@
   --focus-ring-color: var(--gray-alpha-600);
   --focus-ring-offset: 1px;
 
-  /* Typography — heading family (weight 600) */
+  /* Typography: heading family (weight 600) */
   --heading-72-size: 72px; --heading-72-leading: 1.05; --heading-72-tracking: -0.045em; --heading-72-weight: 600;
   --heading-64-size: 64px; --heading-64-leading: 1.05; --heading-64-tracking: -0.04em;  --heading-64-weight: 600;
   --heading-56-size: 56px; --heading-56-leading: 1.08; --heading-56-tracking: -0.04em;  --heading-56-weight: 600;
@@ -202,21 +202,21 @@
   --heading-16-size: 16px; --heading-16-leading: 1.4;  --heading-16-tracking: -0.015em; --heading-16-weight: 600;
   --heading-14-size: 14px; --heading-14-leading: 1.4;  --heading-14-tracking: -0.01em;  --heading-14-weight: 600;
 
-  /* Typography — label family (weight 400) */
+  /* Typography: label family (weight 400) */
   --label-20-size: 20px; --label-20-leading: 1.4; --label-20-tracking: -0.015em; --label-20-weight: 400;
   --label-18-size: 18px; --label-18-leading: 1.4; --label-18-tracking: -0.015em; --label-18-weight: 400;
   --label-16-size: 16px; --label-16-leading: 1.4; --label-16-tracking: -0.011em; --label-16-weight: 400;
   --label-14-size: 14px; --label-14-leading: 1.4; --label-14-tracking: -0.006em; --label-14-weight: 400;
   --label-13-size: 13px; --label-13-leading: 1.4; --label-13-tracking: -0.005em; --label-13-weight: 400;
   --label-12-size: 12px; --label-12-leading: 1.35; --label-12-tracking: 0;       --label-12-weight: 400;
-  /* Caption tier — below Geist's public scale, used for section headers
+  /* Caption tier: below Geist's public scale, used for section headers
      inside dense surfaces (Command sections, Table column headers, Card
      meta lines). Tracking opens slightly at these small sizes to keep
      the letters legible. */
   --label-11-size: 11px; --label-11-leading: 1.35; --label-11-tracking: 0.005em; --label-11-weight: 400;
   --label-10-size: 10px; --label-10-leading: 1.35; --label-10-tracking: 0.01em;  --label-10-weight: 400;
 
-  /* Typography — copy family (weight 400) */
+  /* Typography: copy family (weight 400) */
   --copy-24-size: 24px; --copy-24-leading: 1.5; --copy-24-tracking: -0.02em;  --copy-24-weight: 400;
   --copy-20-size: 20px; --copy-20-leading: 1.5; --copy-20-tracking: -0.015em; --copy-20-weight: 400;
   --copy-18-size: 18px; --copy-18-leading: 1.55; --copy-18-tracking: -0.013em; --copy-18-weight: 400;
@@ -224,7 +224,7 @@
   --copy-14-size: 14px; --copy-14-leading: 1.55; --copy-14-tracking: -0.006em; --copy-14-weight: 400;
   --copy-13-size: 13px; --copy-13-leading: 1.5; --copy-13-tracking: -0.005em; --copy-13-weight: 400;
 
-  /* Typography — button family (weight 500) */
+  /* Typography: button family (weight 500) */
   --button-16-size: 16px; --button-16-leading: 1; --button-16-tracking: -0.011em; --button-16-weight: 500;
   --button-14-size: 14px; --button-14-leading: 1; --button-14-tracking: -0.006em; --button-14-weight: 500;
   --button-12-size: 12px; --button-12-leading: 1; --button-12-tracking: 0;        --button-12-weight: 500;

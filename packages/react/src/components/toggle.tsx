@@ -49,7 +49,7 @@ export interface ToggleProps
 }
 
 /**
- * Toggle — press-to-toggle button with persistent on/off state.
+ * Toggle: press-to-toggle button with persistent on/off state.
  *
  * Use for actions with binary state: `Bold`/`Italic` in a rich text
  * toolbar, `Star`/`Unstar`, `Mute`/`Unmute`, `Pin`/`Unpin`. Renders with
@@ -57,7 +57,7 @@ export interface ToggleProps
  *
  * NOTE: This is a different pattern than Vercel Geist's `Toggle`. What
  * Geist calls `Toggle` is what we call `Switch` (the slider). Our Toggle
- * has no direct Geist equivalent — it's a toolbar-style button.
+ * has no direct Geist equivalent: it's a toolbar-style button.
  */
 export function Toggle({
   pressed: controlledPressed,

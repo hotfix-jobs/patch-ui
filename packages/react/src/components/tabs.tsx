@@ -141,7 +141,7 @@ export interface TabsTriggerProps
   icon?: React.ReactNode;
   /**
    * Trailing badge (count, dot). Hidden at 0 automatically when passed a
-   * number — Vercel spec says "drop the badge at zero".
+   * number: Vercel spec says "drop the badge at zero".
    */
   badge?: React.ReactNode | number;
   /**

@@ -10,10 +10,10 @@ A compound component for form fields that integrate with `<Form>` validation. Wr
 **When to use Field vs `<Input label="…" error="…" />`**
 
 - **Reach for `Input.label` / `Input.error`** when it's a single input, standalone or inside a hand-rolled form. It's one prop instead of five elements.
-- **Reach for Field** when the form uses `<Form>` for native validation on submit — Field automatically wires validity state, and `FieldError` shows / hides based on that state without you managing `useState` per input.
-- **Also Field** when a single label covers a group of controls (a RadioGroup, a Checkbox multi-select) — the label describes the group, not any single control.
+- **Reach for Field** when the form uses `<Form>` for native validation on submit: Field automatically wires validity state, and `FieldError` shows / hides based on that state without you managing `useState` per input.
+- **Also Field** when a single label covers a group of controls (a RadioGroup, a Checkbox multi-select): the label describes the group, not any single control.
 
-For structured settings-page cards (title + subtitle + footer with status and actions), reach for `Section` instead — it's a different primitive for that specific layout.
+For structured settings-page cards (title + subtitle + footer with status and actions), reach for `Section` instead: it's a different primitive for that specific layout.
 
 <Install name="field" />
 
@@ -126,7 +126,7 @@ import {
       name: "required",
       type: "boolean",
       default: "false",
-      description: "Renders a small red * after the label (aria-hidden — the input still needs its own required attribute for HTML validation).",
+      description: "Renders a small red * after the label (aria-hidden: the input still needs its own required attribute for HTML validation).",
     },
     {
       name: "optional",
@@ -240,7 +240,7 @@ import {
 
 
 <Callout title="Notes">
-- `FieldLabel` and `FieldDescription` wire `aria-labelledby` and `aria-describedby` on the control automatically — no manual `htmlFor` / `id` matching needed.
+- `FieldLabel` and `FieldDescription` wire `aria-labelledby` and `aria-describedby` on the control automatically: no manual `htmlFor` / `id` matching needed.
 - `FieldControl` can be `<Input>`, `<Checkbox>`, `<Select>`, or any Base UI control. Field integrates with all of them via the shared primitive.
 - `FieldError` prints a browser default validation message when it has no children. Pass children to override with your own copy.
 - `FieldValidity` is a render prop for accessing the whole validity state (custom UI, conditional descriptions, etc.).

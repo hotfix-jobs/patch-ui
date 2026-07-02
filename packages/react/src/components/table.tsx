@@ -4,16 +4,16 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 /**
- * Table — semantic HTML table with consistent chrome. Thin wrappers around
+ * Table: semantic HTML table with consistent chrome. Thin wrappers around
  * the native `<table>` elements. Use for genuinely tabular data (multiple
  * rows sharing shape, at least one comparable column); for simpler
  * key/value layouts reach for Card / description-list patterns instead.
  *
  * TableBody accepts opt-in booleans that shape the whole body via CSS
- * descendant selectors — no per-row prop drilling required:
- *   - `striped` — alternating row backgrounds
- *   - `bordered` — vertical cell borders
- *   - `interactive` — row hover effect
+ * descendant selectors: no per-row prop drilling required:
+ *   - `striped`: alternating row backgrounds
+ *   - `bordered`: vertical cell borders
+ *   - `interactive`: row hover effect
  *
  * Usage:
  *   <Table>
@@ -42,9 +42,9 @@ export interface TableProps
   scrollable?: boolean;
   /**
    * Visual treatment.
-   * - `default`: rounded outer, hairline border, elevated surface bg —
+   * - `default`: rounded outer, hairline border, elevated surface bg:
    *   dashboard / data-card feel.
-   * - `flat`: no radius, no outer bg, no border — reference / documentation
+   * - `flat`: no radius, no outer bg, no border: reference / documentation
    *   data-table feel.
    */
   variant?: "default" | "flat";
@@ -155,7 +155,7 @@ export function TableBody({
         // Row hover applies bg to individual cells (border-collapse: separate
         // means tr bg doesn't render as a single pill). Rounded corners on
         // first and last cell of the hovered / striped row give the
-        // inset-pill look. Both modes DROP the cell border-b — the fill
+        // inset-pill look. Both modes DROP the cell border-b: the fill
         // IS the row indicator, and letting the border-b fight the pill
         // corners reads as a bug.
         interactive && [

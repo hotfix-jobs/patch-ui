@@ -5,7 +5,7 @@ export const metadata = { title: "Scroller" };
 
 # Scroller
 
-A scroll container for overflowing lists — horizontal rails, long vertical feeds, or free bidirectional canvases. Optional Prev / Next buttons page through the visible content and fade out when there's nothing more to scroll to.
+A scroll container for overflowing lists: horizontal rails, long vertical feeds, or free bidirectional canvases. Optional Prev / Next buttons page through the visible content and fade out when there's nothing more to scroll to.
 
 Use for card rails (job listings, categories, cover art), long vertical feeds (activity logs, notifications), and free-scroll canvases (image comparisons, wide diagrams).
 
@@ -67,7 +67,7 @@ import { Scroller } from "@patchui/react";
       name: "childrenContainerClassName",
       type: "string",
       default: "-",
-      description: "Class on the inner content wrapper — apply gap / padding here for rail spacing.",
+      description: "Class on the inner content wrapper: apply gap / padding here for rail spacing.",
     },
     {
       name: "ariaLabel",
@@ -80,8 +80,8 @@ import { Scroller } from "@patchui/react";
 
 <Callout title="Notes">
 - **Consistent item widths.** In horizontal rails, give children a fixed width and `shrink-0` so the rail snaps cleanly and the Next button pages the same amount every time.
-- **Button visibility.** Buttons only appear when there's actually scroll room in that direction — they fade out at the start / end so consumers get the affordance only when it's useful.
-- **Keyboard.** The scroll region itself is focusable (`tabIndex={0}`) so keyboard users can arrow through the content. Children keep their DOM tab order — Tab moves through items regardless of visual scroll direction.
+- **Button visibility.** Buttons only appear when there's actually scroll room in that direction: they fade out at the start / end so consumers get the affordance only when it's useful.
+- **Keyboard.** The scroll region itself is focusable (`tabIndex={0}`) so keyboard users can arrow through the content. Children keep their DOM tab order: Tab moves through items regardless of visual scroll direction.
 - **Trackpad + touch.** Native momentum scrolling works alongside the buttons. `[-webkit-overflow-scrolling:touch]` is set so iOS scrolls smoothly.
 - **Not for pagination.** Reach for `Pagination` when there are discrete pages of the same dataset, `LoadMore` for appending more items to a feed, and `ShowMore` for progressive disclosure of a single list. Scroller is only for content that overflows one screen.
 </Callout>

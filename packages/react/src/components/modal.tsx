@@ -24,7 +24,7 @@ import { cn } from "../utils";
 import { Button, type ButtonProps } from "./button";
 
 /**
- * Modal — floating dialog surface for content that requires user attention.
+ * Modal: floating dialog surface for content that requires user attention.
  * Controlled externally via `active`. On mobile viewports the modal anchors
  * to the bottom of the screen and slides up as a sheet; on tablet+ it centers
  * and scales in.
@@ -265,7 +265,7 @@ export function ModalBody({
 /* -------------------------------- Inset ------------------------------ */
 
 /**
- * ModalInset — a visually distinct block inside the body. Use for previews,
+ * ModalInset: a visually distinct block inside the body. Use for previews,
  * code, or "here's what will change" summaries.
  */
 export function ModalInset({
@@ -317,7 +317,7 @@ export interface ModalActionProps extends Omit<ButtonProps, "variant"> {
 }
 
 /**
- * ModalAction — a Button inside <ModalActions>. Thin passthrough so consumers
+ * ModalAction: a Button inside <ModalActions>. Thin passthrough so consumers
  * get consistent sizing and a familiar API surface for common cases.
  */
 export function ModalAction({

@@ -6,7 +6,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 /**
- * Section — an opinionated settings-page primitive. A bordered card with
+ * Section: an opinionated settings-page primitive. A bordered card with
  * a structured header (title + subtitle), content area, and a two-column
  * footer (status on the left, actions on the right).
  *
@@ -87,7 +87,7 @@ export function SectionSubtitle({
 }
 
 /**
- * SectionContent — main body of a Section. Renders below the header,
+ * SectionContent: main body of a Section. Renders below the header,
  * above the footer, with matching padding.
  */
 export function SectionContent({
@@ -114,7 +114,7 @@ export interface SectionFooterProps
 }
 
 /**
- * SectionFooter — bordered footer with a two-column layout. Place a
+ * SectionFooter: bordered footer with a two-column layout. Place a
  * `SectionFooterStatus` on the left and `SectionFooterActions` on the
  * right. When only one child is present it aligns naturally.
  */

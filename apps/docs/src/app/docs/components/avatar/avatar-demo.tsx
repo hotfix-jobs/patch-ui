@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarGroup, AvatarImage , SectionLabel } from "@patchui/react";
 import { ArrowDownCircle, CheckCircle, Clock } from "lucide-react";
 
-// GitHub avatars — public, always available.
+// GitHub avatars: public, always available.
 const gh = (u: string) => `https://github.com/${u}.png?size=200`;
 
 const CORE = [

@@ -81,7 +81,7 @@ export function ListRowDemo() {
         </ListRowList>
       </div>
 
-      {/* Interactive (hover fill) — actionable rows */}
+      {/* Interactive (hover fill): actionable rows */}
       <div className="space-y-3">
         <SectionLabel>Interactive rows (hover fill)</SectionLabel>
         <ListRowList interactive>
@@ -115,7 +115,7 @@ export function ListRowDemo() {
         </ListRowList>
       </div>
 
-      {/* Unbordered — sits inside another surface */}
+      {/* Unbordered: sits inside another surface */}
       <div className="space-y-3">
         <SectionLabel>Unbordered (nested inside another surface)</SectionLabel>
         <div className="rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100 p-4">

@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 /**
- * SiteFooter — the single footer used across every page. Kept intentionally
+ * SiteFooter: the single footer used across every page. Kept intentionally
  * plain: MIT / Copyright line + a small link row. Sits at the very bottom
  * of the root layout so /docs pages have an ending, not a page cutoff.
  */

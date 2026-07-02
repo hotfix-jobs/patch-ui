@@ -50,7 +50,7 @@ const trailingPad: Record<InputSize, string> = {
   lg: "pe-4",
 };
 
-/** Styled affix wrapper — own bg + border on the input-facing side, stretched to input height. */
+/** Styled affix wrapper: own bg + border on the input-facing side, stretched to input height. */
 function StyledAffix({
   side,
   children,
@@ -77,7 +77,7 @@ function StyledAffix({
   );
 }
 
-/** Unstyled affix — floats inside the input area with just padding. */
+/** Unstyled affix: floats inside the input area with just padding. */
 function UnstyledAffix({
   side,
   children,

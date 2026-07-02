@@ -76,12 +76,12 @@ export interface MenuProps {
   defaultOpen?: boolean;
   /**
    * Placement of the popup relative to the trigger. Auto-adapts based
-   * on window bounds — if there isn't room in the requested direction
+   * on window bounds: if there isn't room in the requested direction
    * the popup flips to the opposite side. Default `bottom-start`
    * (`right-start` for sub-menus).
    */
   position?: Placement;
-  /** Internal — set on sub-menus to enable hover-open. */
+  /** Internal: set on sub-menus to enable hover-open. */
   modal?: boolean;
   children: React.ReactNode;
 }
@@ -217,7 +217,7 @@ function MenuInner({
 export function Menu(props: MenuProps): React.ReactElement {
   const parentId = useFloatingParentNodeId();
   if (parentId == null) {
-    // Top-level menu — wrap in FloatingTree so nested sub-menus can register.
+    // Top-level menu: wrap in FloatingTree so nested sub-menus can register.
     return (
       <FloatingTree>
         <MenuInner {...props} />

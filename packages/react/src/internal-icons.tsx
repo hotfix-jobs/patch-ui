@@ -2,7 +2,7 @@
  * Internal icon helpers shared by multiple components (MenuItem.selected,
  * MenuCheckboxItem, MenuRadioItem, CommandItem.selected, etc.).
  *
- * These are NOT exported from the package index — they are an implementation
+ * These are NOT exported from the package index: they are an implementation
  * detail. Consumers wanting icons should use lucide-react or their own.
  */
 

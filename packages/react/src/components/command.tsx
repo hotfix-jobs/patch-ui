@@ -125,7 +125,7 @@ export function CommandList({
  * CommandEmpty renders text when the filtered list has no results.
  *
  * Base UI's Autocomplete.Empty root always stays mounted for aria-live
- * announcements — it only null-toggles its CHILDREN based on filteredItems
+ * announcements: it only null-toggles its CHILDREN based on filteredItems
  * count. So the padding must live on an inner wrapper (which only renders
  * as part of children), not on the Empty root itself; otherwise the padded
  * root would take up vertical space even when items exist.
@@ -172,7 +172,7 @@ export function CommandItem({
 }): React.ReactElement {
   const density = useContext(CommandDensityContext);
 
-  // Selected check REPLACES the suffix — they share the trailing slot.
+  // Selected check REPLACES the suffix: they share the trailing slot.
   // `selected` is for persistent choices (Theme = "Dark"); ephemeral
   // one-shot commands should leave it undefined.
   const trailing = selected ? (

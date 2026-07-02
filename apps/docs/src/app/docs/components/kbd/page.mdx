@@ -87,9 +87,9 @@ import { Kbd } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- Reach for modifier props (`meta`, `ctrl`, `alt`, `shift`) instead of hard-coding `<Kbd>Cmd+K</Kbd>` — the auto-swap ships the correct glyph on every platform. Mac clients see `⌘`, Windows/Linux clients see `Ctrl`.
+- Reach for modifier props (`meta`, `ctrl`, `alt`, `shift`) instead of hard-coding `<Kbd>Cmd+K</Kbd>`: the auto-swap ships the correct glyph on every platform. Mac clients see `⌘`, Windows/Linux clients see `Ctrl`.
 - `meta` is the "command" key on Mac and the "Ctrl" key elsewhere. If you specifically want the Ctrl key on Mac (rare), use `ctrl` instead.
-- `children` should be a single key label — one character (`K`), one digit, or one named key (`Esc`, `Enter`). Don't stuff a full shortcut into it.
+- `children` should be a single key label: one character (`K`), one digit, or one named key (`Esc`, `Enter`). Don't stuff a full shortcut into it.
 - Interactive Kbd renders as a `<button>` with `role`, focus ring, and hover state. Static Kbd stays a semantic `<kbd>`. Screen readers announce both correctly.
-- The default value assumes Mac at SSR time — Windows/Linux glyphs swap in on hydration. There may be a brief flicker on non-Mac; visually negligible for shortcut hints.
+- The default value assumes Mac at SSR time: Windows/Linux glyphs swap in on hydration. There may be a brief flicker on non-Mac; visually negligible for shortcut hints.
 </Callout>

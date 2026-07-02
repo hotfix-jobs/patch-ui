@@ -6,9 +6,9 @@ import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
 /**
- * NavigationMenu — horizontal menu bar with morphing dropdown panels.
+ * NavigationMenu: horizontal menu bar with morphing dropdown panels.
  *
- * A patch-ui extension (Vercel Geist doesn't ship a NavigationMenu — they
+ * A patch-ui extension (Vercel Geist doesn't ship a NavigationMenu: they
  * expect consumers to compose their own top-nav from Menu / links). Built
  * on Base UI's NavigationMenu primitive with our token surface: the
  * List + Items live inline, and the dropdown panels morph inside one

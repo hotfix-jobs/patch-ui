@@ -6,13 +6,13 @@ import { cn } from "../utils";
 
 export interface EmptyStateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  /** Title — a short sentence describing the empty condition. */
+  /** Title: a short sentence describing the empty condition. */
   title: React.ReactNode;
   /** Helper text expanding on the title. Two lines max reads best. */
   description?: React.ReactNode;
   /** Optional icon, rendered in a rounded-square container above the title. */
   icon?: React.ReactNode;
-  /** Primary CTA — typically a `<Button>`. */
+  /** Primary CTA: typically a `<Button>`. */
   action?: React.ReactNode;
   /**
    * Additional slots rendered below the primary action. Use for a
@@ -22,7 +22,7 @@ export interface EmptyStateProps
 }
 
 /**
- * EmptyState — "no results" / "no data yet" placeholder.
+ * EmptyState: "no results" / "no data yet" placeholder.
  *
  * Structure: icon → title → description → primary action → optional
  * secondary children. Everything horizontally centered with generous

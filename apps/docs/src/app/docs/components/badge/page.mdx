@@ -96,11 +96,11 @@ import { Badge } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- Badge is display-only. If the value is clickable — remove it, open a menu, follow a link — reach for `<Button>` (with `shape="pill"` for the same silhouette).
+- Badge is display-only. If the value is clickable: remove it, open a menu, follow a link: reach for `<Button>` (with `shape="pill"` for the same silhouette).
 - Keep the text tight: one word if you can, two at most (`Active`, `Pending`, `Pro`, `Enterprise Trial`). Use the same wording as the value in your API and logs so labels and data stay in sync.
-- Colors carry the signal — don't double up. A `success` badge doesn't also need a check icon; an `error` badge doesn't need an ×. The color IS the meaning.
+- Colors carry the signal: don't double up. A `success` badge doesn't also need a check icon; an `error` badge doesn't need an ×. The color IS the meaning.
 - If a row has two badges, chances are the row wanted a second column.
 - `contrast="high"` is the loud version; `contrast="low"` is the quiet one for dense surfaces (tables, cards packed with metadata).
-- The variant color communicates state, but color alone isn't enough — the text has to make sense on its own. For icon-only or terse badges, set `title` so screen readers can announce it.
+- The variant color communicates state, but color alone isn't enough: the text has to make sense on its own. For icon-only or terse badges, set `title` so screen readers can announce it.
 - Don't nest a Badge inside a Badge, and don't stack two icons.
 </Callout>

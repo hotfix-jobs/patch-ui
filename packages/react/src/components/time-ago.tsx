@@ -42,7 +42,7 @@ function formatTimeAgo(dateStr: string): string {
  * Pick a refresh interval that matches the precision of the current
  * label. Goal: never lag more than one "tick" of the current unit. For
  * months and years, the label changes so slowly that scheduling a
- * refresh would just churn — return null to stop.
+ * refresh would just churn: return null to stop.
  */
 function nextRefreshDelay(dateStr: string): number | null {
   const seconds = Math.abs((Date.now() - new Date(dateStr).getTime()) / 1000);
@@ -72,7 +72,7 @@ export interface TimeAgoProps
    * from column alignment in lists. "sans" inherits the parent's typography
    * with no overrides. The variant name is retained for backwards compat
    * across consumers; the rendering uses the body sans (Geist Sans) in
-   * both modes — only `font-variant-numeric` differs.
+   * both modes: only `font-variant-numeric` differs.
    */
   variant?: "mono" | "sans";
   /**

@@ -7,7 +7,7 @@ import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
 /**
- * Accordion — compound built on Base UI Accordion.
+ * Accordion: compound built on Base UI Accordion.
  *
  * Titles are visually-primary heading-14, content sits in copy-14 body
  * type. Set `bordered` on the root to auto-apply the hairline row

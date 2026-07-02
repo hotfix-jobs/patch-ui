@@ -26,11 +26,11 @@ import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
 
 /**
- * Sheet — an edge-anchored panel that slides in from the top/right/bottom/left
+ * Sheet: an edge-anchored panel that slides in from the top/right/bottom/left
  * of the viewport. Non-modal by default (page underneath stays interactive);
  * pass `modal` to darken the backdrop and block the page.
  *
- * Structure mirrors Modal — SheetHeader / SheetBody / SheetFooter as top-level
+ * Structure mirrors Modal: SheetHeader / SheetBody / SheetFooter as top-level
  * children of SheetContent, separated by hairlines.
  */
 
@@ -283,7 +283,7 @@ export interface SheetCloseProps {
 }
 
 /**
- * SheetClose — wraps a consumer-provided element to close the sheet on click.
+ * SheetClose: wraps a consumer-provided element to close the sheet on click.
  * Use with `render={<Button />}` inside SheetFooter, or as children of any
  * element that should dismiss the sheet.
  */

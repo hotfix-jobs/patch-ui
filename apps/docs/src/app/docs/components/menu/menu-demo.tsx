@@ -39,7 +39,7 @@ export function MenuDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Basic — plain items, no icons */}
+      {/* Basic: plain items, no icons */}
       <div>
         <p className="mb-3 text-xs font-medium text-gray-800">
           Basic

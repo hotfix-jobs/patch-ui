@@ -90,7 +90,7 @@ function ChevronIndicator({ size }: { size: SelectSize }) {
 }
 
 /**
- * Select — a native `<select>` wrapped in styled chrome.
+ * Select: a native `<select>` wrapped in styled chrome.
  *
  * Uses the OS-native dropdown UI, which behaves correctly on every
  * platform (especially mobile where the native picker is far better

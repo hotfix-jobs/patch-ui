@@ -46,7 +46,7 @@ export function ComboboxDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div className="space-y-3">
-        <SectionLabel>Basic — with search icon, chevron, and clearable</SectionLabel>
+        <SectionLabel>Basic: with search icon, chevron, and clearable</SectionLabel>
         <div className="max-w-sm">
           <Combobox>
             <ComboboxInput
@@ -103,7 +103,7 @@ export function ComboboxDemo() {
               onClear={() => setQuery2("")}
             />
             <ComboboxPopup>
-              {/* Banner spans edge-to-edge — no padding needed on the popup body */}
+              {/* Banner spans edge-to-edge: no padding needed on the popup body */}
               <div className="flex items-center gap-1.5 border-b border-gray-alpha-400 px-3 py-2 text-label-12 text-gray-800">
                 <Info className="h-3.5 w-3.5 shrink-0" aria-hidden />
                 <span>Recents shown first</span>

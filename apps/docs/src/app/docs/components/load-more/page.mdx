@@ -5,7 +5,7 @@ export const metadata = { title: "LoadMore" };
 
 # LoadMore
 
-A full-width, secondary-style button that appends more items to a paginated feed — job listings, search results, activity logs, anywhere the user wants to reveal more of the same data set without changing pages.
+A full-width, secondary-style button that appends more items to a paginated feed: job listings, search results, activity logs, anywhere the user wants to reveal more of the same data set without changing pages.
 
 For sequential navigation between distinct pages, use `Pagination`.
 
@@ -64,13 +64,13 @@ import { LoadMore } from "@patchui/react";
       name: "children",
       type: "ReactNode",
       default: '"Load More"',
-      description: "Button label. Keep it a single Title Case phrase — `Load More`, `Show more results`, `View more jobs`.",
+      description: "Button label. Keep it a single Title Case phrase: `Load More`, `Show more results`, `View more jobs`.",
     },
     {
       name: "disabled",
       type: "boolean",
       default: "false",
-      description: "Disables the button. Use when there are no more items to load — a disabled `No more results` reads clearer than hiding the button.",
+      description: "Disables the button. Use when there are no more items to load: a disabled `No more results` reads clearer than hiding the button.",
     },
     {
       name: "className",
@@ -82,8 +82,8 @@ import { LoadMore } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- LoadMore is a `<button>` — style is a full-width secondary Button (`background-100` fill, `gray-alpha-400` border). It stays focusable during the loading state so keyboard users don't lose their place.
-- Combine `noGap` + `noBorderRadius` to attach LoadMore to the bottom edge of a Card that uses `borderBetween` — the top border seams with the last row and the bottom stays flush with the card's rounded corner.
+- LoadMore is a `<button>`: style is a full-width secondary Button (`background-100` fill, `gray-alpha-400` border). It stays focusable during the loading state so keyboard users don't lose their place.
+- Combine `noGap` + `noBorderRadius` to attach LoadMore to the bottom edge of a Card that uses `borderBetween`: the top border seams with the last row and the bottom stays flush with the card's rounded corner.
 - Prefer `<LoadMore disabled>No more results</LoadMore>` over hiding the button once the list is exhausted. The disabled state confirms "you're at the end" instead of leaving the user wondering if more will arrive.
 - For sequential navigation between separate pages (docs articles, wizard steps), use `Pagination` instead. LoadMore is for revealing more rows of the same data.
 </Callout>

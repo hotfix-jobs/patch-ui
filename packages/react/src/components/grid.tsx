@@ -91,7 +91,7 @@ export interface GridProps extends useRender.ComponentProps<"div"> {
 }
 
 /**
- * Grid — a decorative layout primitive with visible hairline guides between
+ * Grid: a decorative layout primitive with visible hairline guides between
  * cells. Use it when the grid structure itself is part of the design:
  * marketing pages, documentation landings, feature grids, showcase walls.
  *
@@ -220,7 +220,7 @@ function useCellPositions(
 }
 
 /**
- * GridCell — a child of Grid. Positioning via `column` and `row` (number for
+ * GridCell: a child of Grid. Positioning via `column` and `row` (number for
  * start column, `"1 / 3"` string for span), opaque background by default so
  * grid guides render as gutters.
  */

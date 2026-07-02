@@ -13,7 +13,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { DocsSearch } from "./docs-search";
 import { useSidebarState } from "./sidebar-state";
 
-// Inline GitHub mark — lucide-react dropped brand icons in v0.400+.
+// Inline GitHub mark: lucide-react dropped brand icons in v0.400+.
 function GithubIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -29,7 +29,7 @@ function GithubIcon({ className }: { className?: string }) {
 }
 
 /**
- * SiteHeader — the single header used across every page. Uses AppHeader
+ * SiteHeader: the single header used across every page. Uses AppHeader
  * from patch-ui so the site dogfoods its own primitive. On /docs routes,
  * a mobile menu button appears on the left (below lg) to toggle the
  * docs sidebar drawer; state is shared with the Sidebar via
