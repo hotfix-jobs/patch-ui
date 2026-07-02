@@ -411,7 +411,7 @@ export function MenuItem({
     "data-disabled": disabled ? "" : undefined,
     "aria-disabled": disabled || undefined,
     className: cn(
-      "cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 outline-none data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       density === "compact"
         ? "min-h-7 px-2 py-1.5 text-label-13"
         : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
@@ -697,9 +697,6 @@ export function MenuDivider({
     />
   );
 }
-
-/** @deprecated Use `MenuDivider`. */
-export const MenuSeparator = MenuDivider;
 
 export function MenuShortcut({
   className,

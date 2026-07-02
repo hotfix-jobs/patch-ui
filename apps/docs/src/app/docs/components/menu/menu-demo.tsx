@@ -8,39 +8,27 @@ import {
   MenuPopup,
   MenuItem,
   MenuGroup,
-  MenuGroupLabel,
   MenuSection,
   MenuCheckboxItem,
   MenuRadioGroup,
   MenuRadioItem,
-  MenuSeparator,
+  MenuDivider,
   MenuShortcut,
   MenuSub,
   MenuSubTrigger,
   MenuSubPopup,
 } from "@patchui/react";
 import {
-  Archive,
   ArrowDownAZ,
   ArrowUpAZ,
   Calendar,
   Clock,
-  Cloud,
-  Command,
   CreditCard,
-  FileText,
   LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  Search,
   Settings,
   User,
-  UserPlus,
-  Users,
 } from "lucide-react";
 
-/** Showcases Menu with items, groups, checkboxes, radios, shortcuts, and sub-menus. */
 export function MenuDemo() {
   const [showStatusBar, setShowStatusBar] = useState(true);
   const [showPanel, setShowPanel] = useState(false);
@@ -51,89 +39,61 @@ export function MenuDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Basic Menu */}
+      {/* Basic — plain items, no icons */}
       <div>
         <p className="mb-3 text-xs font-medium text-gray-800">
           Basic
         </p>
         <Menu>
+          <MenuTrigger render={<Button variant="primary" />}>Actions</MenuTrigger>
+          <MenuPopup>
+            <MenuItem>One</MenuItem>
+            <MenuItem>Two</MenuItem>
+            <MenuItem>Three</MenuItem>
+            <MenuItem href="/test">Test for Link</MenuItem>
+            <MenuItem type="error">Delete</MenuItem>
+          </MenuPopup>
+        </Menu>
+      </div>
+
+      {/* With prefix icons and shortcuts */}
+      <div>
+        <p className="mb-3 text-xs font-medium text-gray-800">
+          Prefix icons + shortcuts
+        </p>
+        <Menu>
           <MenuTrigger render={<Button variant="secondary" />}>
-            Open Menu
+            My Account
           </MenuTrigger>
           <MenuPopup>
-            <MenuGroup>
-              <MenuGroupLabel>My Account</MenuGroupLabel>
-              <MenuItem>
-                <User className="size-4" />
-                Profile
-                <MenuShortcut>⇧⌘P</MenuShortcut>
-              </MenuItem>
-              <MenuItem>
-                <CreditCard className="size-4" />
-                Billing
-                <MenuShortcut>⌘B</MenuShortcut>
-              </MenuItem>
-              <MenuItem>
-                <Settings className="size-4" />
-                Settings
-                <MenuShortcut>⌘S</MenuShortcut>
-              </MenuItem>
-            </MenuGroup>
-            <MenuSeparator />
-            <MenuGroup>
-              <MenuItem>
-                <Users className="size-4" />
-                Team
-              </MenuItem>
-              <MenuSub>
-                <MenuSubTrigger>
-                  <UserPlus className="size-4" />
-                  Invite Users
-                </MenuSubTrigger>
-                <MenuSubPopup>
-                  <MenuItem>
-                    <Mail className="size-4" />
-                    Email
-                  </MenuItem>
-                  <MenuItem>
-                    <MessageSquare className="size-4" />
-                    Message
-                  </MenuItem>
-                  <MenuSeparator />
-                  <MenuItem>
-                    <Plus className="size-4" />
-                    More...
-                  </MenuItem>
-                </MenuSubPopup>
-              </MenuSub>
-            </MenuGroup>
-            <MenuSeparator />
-            <MenuItem>
-              <Cloud className="size-4" />
-              API
+            <MenuItem prefix={<User />} suffix={<MenuShortcut>⇧⌘P</MenuShortcut>}>
+              Profile
             </MenuItem>
-            <MenuSeparator />
-            <MenuItem variant="destructive">
-              <LogOut className="size-4" />
+            <MenuItem prefix={<CreditCard />} suffix={<MenuShortcut>⌘B</MenuShortcut>}>
+              Billing
+            </MenuItem>
+            <MenuItem prefix={<Settings />} suffix={<MenuShortcut>⌘S</MenuShortcut>}>
+              Settings
+            </MenuItem>
+            <MenuDivider />
+            <MenuItem prefix={<LogOut />} type="error">
               Log out
-              <MenuShortcut>⇧⌘Q</MenuShortcut>
             </MenuItem>
           </MenuPopup>
         </Menu>
       </div>
 
-      {/* Checkbox Items */}
+      {/* Sections with titles */}
       <div>
         <p className="mb-3 text-xs font-medium text-gray-800">
-          Checkbox Items
+          Sections
         </p>
         <Menu>
           <MenuTrigger render={<Button variant="secondary" />}>
             View Options
           </MenuTrigger>
           <MenuPopup>
-            <MenuGroup>
-              <MenuGroupLabel>Appearance</MenuGroupLabel>
+            <MenuSection title="Appearance">
               <MenuCheckboxItem
                 checked={showStatusBar}
                 onCheckedChange={setShowStatusBar}
@@ -146,33 +106,18 @@ export function MenuDemo() {
               >
                 Activity Panel
               </MenuCheckboxItem>
-              <MenuSeparator />
               <MenuCheckboxItem checked disabled>
                 Full Width Layout
               </MenuCheckboxItem>
-            </MenuGroup>
-          </MenuPopup>
-        </Menu>
-      </div>
-
-      {/* Radio Items */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Radio Items
-        </p>
-        <Menu>
-          <MenuTrigger render={<Button variant="secondary" />}>
-            Theme: {theme}
-          </MenuTrigger>
-          <MenuPopup>
-            <MenuGroup>
-              <MenuGroupLabel>Theme</MenuGroupLabel>
+            </MenuSection>
+            <MenuDivider />
+            <MenuSection title="Theme">
               <MenuRadioGroup value={theme} onValueChange={setTheme}>
                 <MenuRadioItem value="light">Light</MenuRadioItem>
                 <MenuRadioItem value="dark">Dark</MenuRadioItem>
                 <MenuRadioItem value="system">System</MenuRadioItem>
               </MenuRadioGroup>
-            </MenuGroup>
+            </MenuSection>
           </MenuPopup>
         </Menu>
       </div>
@@ -183,158 +128,66 @@ export function MenuDemo() {
           Selected indicator
         </p>
         <Menu>
-          <MenuTrigger render={<Button variant="outline" />}>
+          <MenuTrigger render={<Button variant="secondary" />}>
             Sort by
           </MenuTrigger>
           <MenuPopup>
             <MenuItem
+              prefix={<Clock />}
               selected={sortBy === "newest"}
               onClick={() => setSortBy("newest")}
             >
-              <Clock className="size-4" />
               Newest first
             </MenuItem>
             <MenuItem
+              prefix={<Calendar />}
               selected={sortBy === "oldest"}
               onClick={() => setSortBy("oldest")}
             >
-              <Calendar className="size-4" />
               Oldest first
             </MenuItem>
             <MenuItem
+              prefix={<ArrowDownAZ />}
               selected={sortBy === "az"}
               onClick={() => setSortBy("az")}
             >
-              <ArrowDownAZ className="size-4" />
               A to Z
             </MenuItem>
             <MenuItem
+              prefix={<ArrowUpAZ />}
               selected={sortBy === "za"}
               onClick={() => setSortBy("za")}
             >
-              <ArrowUpAZ className="size-4" />
               Z to A
             </MenuItem>
           </MenuPopup>
         </Menu>
       </div>
 
-      {/* Two-line items with description */}
+      {/* Nested sub-menu */}
       <div>
         <p className="mb-3 text-xs font-medium text-gray-800">
-          Two-line items
+          Sub-menu
         </p>
         <Menu>
-          <MenuTrigger render={<Button variant="outline" />}>
-            Quick actions
-          </MenuTrigger>
-          <MenuPopup className="min-w-72">
-            <MenuItem description="Open a file from disk">
-              <FileText className="size-4" />
-              New file
-            </MenuItem>
-            <MenuItem description="Search across the workspace">
-              <Search className="size-4" />
-              Search
-              <MenuShortcut>⌘K</MenuShortcut>
-            </MenuItem>
-            <MenuItem description="Run a command from the palette">
-              <Command className="size-4" />
-              Command palette
-              <MenuShortcut>⇧⌘P</MenuShortcut>
-            </MenuItem>
-            <MenuSeparator />
-            <MenuItem
-              variant="destructive"
-              description="Move this conversation to archive"
-            >
-              <Archive className="size-4" />
-              Archive
-            </MenuItem>
-          </MenuPopup>
-        </Menu>
-      </div>
-
-      {/* Sections (sugar for MenuGroup + MenuGroupLabel) */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Sections
-        </p>
-        <Menu>
-          <MenuTrigger render={<Button variant="outline" />}>
-            Workspace
+          <MenuTrigger render={<Button variant="secondary" />}>
+            More
           </MenuTrigger>
           <MenuPopup>
-            <MenuSection label="Account">
-              <MenuItem>
-                <User className="size-4" />
-                Profile
-              </MenuItem>
-              <MenuItem>
-                <Settings className="size-4" />
-                Settings
-              </MenuItem>
-            </MenuSection>
-            <MenuSeparator />
-            <MenuSection label="Team">
-              <MenuItem>
-                <Users className="size-4" />
-                Members
-              </MenuItem>
-              <MenuItem>
-                <UserPlus className="size-4" />
-                Invite
-              </MenuItem>
-            </MenuSection>
+            <MenuItem>Duplicate</MenuItem>
+            <MenuItem>Rename</MenuItem>
+            <MenuSub>
+              <MenuSubTrigger>Move to</MenuSubTrigger>
+              <MenuSubPopup>
+                <MenuItem>Inbox</MenuItem>
+                <MenuItem>Archive</MenuItem>
+                <MenuItem>Trash</MenuItem>
+              </MenuSubPopup>
+            </MenuSub>
+            <MenuDivider />
+            <MenuItem type="error">Delete</MenuItem>
           </MenuPopup>
         </Menu>
-      </div>
-
-      {/* Density */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Density
-        </p>
-        <div className="flex gap-3">
-          <Menu>
-            <MenuTrigger render={<Button variant="outline" />}>
-              Compact
-            </MenuTrigger>
-            <MenuPopup density="compact">
-              <MenuItem>
-                <User className="size-4" />
-                Profile
-              </MenuItem>
-              <MenuItem>
-                <CreditCard className="size-4" />
-                Billing
-              </MenuItem>
-              <MenuItem>
-                <Settings className="size-4" />
-                Settings
-              </MenuItem>
-            </MenuPopup>
-          </Menu>
-          <Menu>
-            <MenuTrigger render={<Button variant="outline" />}>
-              Comfortable
-            </MenuTrigger>
-            <MenuPopup density="comfortable">
-              <MenuItem>
-                <User className="size-4" />
-                Profile
-              </MenuItem>
-              <MenuItem>
-                <CreditCard className="size-4" />
-                Billing
-              </MenuItem>
-              <MenuItem>
-                <Settings className="size-4" />
-                Settings
-              </MenuItem>
-            </MenuPopup>
-          </Menu>
-        </div>
       </div>
     </div>
   );

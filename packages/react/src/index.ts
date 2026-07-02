@@ -128,7 +128,6 @@ export {
   MenuRadioItem,
   MenuGroupLabel,
   MenuDivider,
-  MenuSeparator,
   MenuShortcut,
   MenuSub,
   MenuSubTrigger,
