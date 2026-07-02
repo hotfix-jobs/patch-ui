@@ -171,7 +171,7 @@ export function TableDemo() {
           <TableBody>
             <TableRow>
               <TableCell>acme-web</TableCell>
-              <TableCell>Casey</TableCell>
+              <TableCell>Ada</TableCell>
               <TableCell align="right">2m ago</TableCell>
             </TableRow>
             <TableRow>

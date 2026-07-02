@@ -21,8 +21,8 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function SheetDemo() {
-  const [name, setName] = useState("Casey Ferrara");
-  const [email, setEmail] = useState("casey@example.com");
+  const [name, setName] = useState("Ada Lovelace");
+  const [email, setEmail] = useState("ada@example.com");
 
   return (
     <div className="flex flex-col gap-8">
