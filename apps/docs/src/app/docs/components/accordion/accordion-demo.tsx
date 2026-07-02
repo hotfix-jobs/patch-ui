@@ -12,7 +12,7 @@ export function AccordionDemo() {
   return (
     <div className="flex flex-col gap-10">
       {/* Bordered — the common case */}
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md space-y-3">
         <SectionLabel>Bordered (hairline row pattern)</SectionLabel>
         <Accordion bordered defaultValue={["item-0"]}>
           <AccordionItem value="item-0">
@@ -40,7 +40,7 @@ export function AccordionDemo() {
       </div>
 
       {/* Multiple open */}
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md space-y-3">
         <SectionLabel>Multiple panels open at once</SectionLabel>
         <Accordion bordered multiple defaultValue={["a", "b"]}>
           <AccordionItem value="a">
@@ -57,7 +57,7 @@ export function AccordionDemo() {
       </div>
 
       {/* Unstyled — consumer supplies chrome */}
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md space-y-3">
         <SectionLabel>Unstyled (compose your own chrome)</SectionLabel>
         <Accordion>
           <AccordionItem

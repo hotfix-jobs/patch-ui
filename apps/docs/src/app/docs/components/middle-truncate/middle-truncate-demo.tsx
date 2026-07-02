@@ -34,7 +34,7 @@ export function MiddleTruncateDemo() {
           >
             <MiddleTruncate
               value="apps/docs/src/app/docs/blocks/app-header/index.tsx"
-              className="text-copy-14 font-mono text-gray-1000"
+              className="text-copy-14 text-gray-1000"
             />
           </div>
         </div>
@@ -48,28 +48,28 @@ export function MiddleTruncateDemo() {
             <MiddleTruncate
               value="dpl_2XfHqvW9NbGkLm3pTZ7Yz4vJc8Bh1Rd6P9Ab"
              
-              className="font-mono text-copy-14 text-gray-1000"
+              className="text-copy-14 text-gray-1000"
             />
           </Row>
           <Row label="Commit hash">
             <MiddleTruncate
               value="9a3b7cf2e8d4051f6c72a018de4b93bd0e9c17d9"
              
-              className="font-mono text-copy-14 text-gray-1000"
+              className="text-copy-14 text-gray-1000"
             />
           </Row>
           <Row label="File path">
             <MiddleTruncate
               value="apps/docs/src/app/docs/components/middle-truncate/page.mdx"
              
-              className="font-mono text-copy-14 text-gray-1000"
+              className="text-copy-14 text-gray-1000"
             />
           </Row>
           <Row label="Branch">
             <MiddleTruncate
               value="feature/2026-q1/auth-refresh-token-rotation-hardening"
              
-              className="font-mono text-copy-14 text-gray-1000"
+              className="text-copy-14 text-gray-1000"
             />
           </Row>
           <Row label="URL">

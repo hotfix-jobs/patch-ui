@@ -208,14 +208,14 @@ function TierHeader({
 }) {
   return (
     <div className="mb-2 flex flex-wrap items-baseline gap-2">
-      <span className="font-mono text-button-14 text-gray-1000">
+      <span className="text-button-14 text-gray-1000">
         {label}
       </span>
       <span className="text-label-12 text-gray-800">
         {tierLabel}, min {min}:1
       </span>
       {hex && (
-        <span className="ml-auto rounded-full border border-gray-alpha-400 px-2 py-0.5 font-mono text-label-11 text-gray-900">
+        <span className="ml-auto rounded-full border border-gray-alpha-400 px-2 py-0.5 text-label-11 text-gray-900">
           {hex}
         </span>
       )}
@@ -248,14 +248,14 @@ function SwatchCard({
       <div className={compact ? "" : "space-y-1"}>{children}</div>
       <div className="mt-3 flex items-center justify-between gap-1">
         <span
-          className="font-mono text-label-11"
+          className="text-label-11"
           style={{ color: fg || undefined, opacity: 0.7 }}
         >
           {label}
         </span>
         <span
           className={
-            "rounded-full px-1.5 py-0.5 font-mono text-button-12 " +
+            "rounded-full px-1.5 py-0.5 text-button-12 " +
             (ratio === null
               ? "bg-gray-100 text-gray-800"
               : passes

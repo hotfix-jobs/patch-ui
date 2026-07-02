@@ -157,7 +157,7 @@ function Sample({
   return (
     <div className="flex flex-wrap items-baseline gap-4">
       <span className={`${cls} text-gray-1000`}>{text}</span>
-      <span className="font-mono text-label-11 text-gray-700">.{name}</span>
+      <span className="text-label-11 text-gray-700">.{name}</span>
     </div>
   );
 }
@@ -179,7 +179,7 @@ function RadiusCell({ label, cls }: { label: string; cls: string }) {
       <div
         className={`h-16 w-full border-[0.5px] border-gray-alpha-400 bg-gray-alpha-100 ${cls}`}
       />
-      <div className="font-mono text-label-11 text-gray-700">{label}</div>
+      <div className="text-label-11 text-gray-700">{label}</div>
     </div>
   );
 }

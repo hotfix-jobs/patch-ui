@@ -34,11 +34,11 @@ export function CompoundComponents({ components }: CompoundComponentsProps) {
         <tbody>
           {components.map((comp) => (
             <tr key={comp.name} className="border-t border-gray-alpha-400">
-              <td className="px-4 py-3 font-mono text-xs font-medium text-gray-1000 align-top">
+              <td className="px-4 py-3 text-label-13 text-gray-1000 align-top">
                 {comp.name}
               </td>
               {hasElement && (
-                <td className="px-4 py-3 font-mono text-xs text-gray-900 align-top">
+                <td className="px-4 py-3 text-label-13 text-gray-900 align-top">
                   {comp.element ?? "-"}
                 </td>
               )}
