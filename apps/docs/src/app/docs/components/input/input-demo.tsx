@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Input, SearchInput } from "@patchui/react";
+import { Input, SearchInput , SectionLabel } from "@patchui/react";
 import { ArrowUpCircle, Mail, Search } from "lucide-react";
 
-function Label({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
-}
 
 export function InputDemo() {
   const [searchValue, setSearchValue] = useState("");
@@ -15,8 +12,8 @@ export function InputDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <Label>Sizes</Label>
+      <div className="space-y-3">
+        <SectionLabel>Sizes</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
           <Input size="sm" placeholder="Small" />
           <Input size="md" placeholder="Default" />
@@ -24,8 +21,8 @@ export function InputDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Prefix and suffix (styled, default)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Prefix and suffix (styled, default)</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
           <Input prefix={<ArrowUpCircle />} placeholder="Default" />
           <Input suffix={<ArrowUpCircle />} placeholder="Default" />
@@ -33,8 +30,8 @@ export function InputDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Prefix and suffix (unstyled, floating)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Prefix and suffix (unstyled, floating)</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
           <Input
             prefix={<ArrowUpCircle />}
@@ -51,8 +48,8 @@ export function InputDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Label + error message</Label>
+      <div className="space-y-3">
+        <SectionLabel>Label + error message</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
           <Input id="demo-label" label="Domain" placeholder="example.com" />
           <Input
@@ -66,8 +63,8 @@ export function InputDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Rounded (pill-shaped)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Rounded (pill-shaped)</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
           <Input
             rounded
@@ -78,8 +75,8 @@ export function InputDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>SearchInput (clears on Escape or Esc chip click)</Label>
+      <div className="space-y-3">
+        <SectionLabel>SearchInput (clears on Escape or Esc chip click)</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
           <SearchInput
             placeholder="Search projects"
@@ -89,8 +86,8 @@ export function InputDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Loading</Label>
+      <div className="space-y-3">
+        <SectionLabel>Loading</SectionLabel>
         <div className="max-w-xs">
           <Input
             loading
@@ -100,8 +97,8 @@ export function InputDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Disabled</Label>
+      <div className="space-y-3">
+        <SectionLabel>Disabled</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
           <Input placeholder="Disabled" disabled />
           <Input prefix="https://" suffix=".com" placeholder="Disabled" disabled />

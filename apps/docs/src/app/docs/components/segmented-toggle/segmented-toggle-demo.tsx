@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { SegmentedToggle, SegmentedToggleItem } from "@patchui/react";
+import { SegmentedToggle, SegmentedToggleItem , SectionLabel } from "@patchui/react";
 import {
   AlignLeft,
   AlignCenter,
@@ -10,9 +10,6 @@ import {
   Rows3,
 } from "lucide-react";
 
-function Label({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
-}
 
 export function SegmentedToggleDemo() {
   const [view, setView] = useState<string>("grid");
@@ -23,8 +20,8 @@ export function SegmentedToggleDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <Label>Icon-only view toggle</Label>
+      <div className="space-y-3">
+        <SectionLabel>Icon-only view toggle</SectionLabel>
         <SegmentedToggle value={view} onValueChange={setView} aria-label="View">
           <SegmentedToggleItem value="grid" aria-label="Grid view">
             <LayoutGrid />
@@ -35,8 +32,8 @@ export function SegmentedToggleDemo() {
         </SegmentedToggle>
       </div>
 
-      <div>
-        <Label>Three options (alignment)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Three options (alignment)</SectionLabel>
         <SegmentedToggle value={align} onValueChange={setAlign} aria-label="Alignment">
           <SegmentedToggleItem value="left" aria-label="Align left">
             <AlignLeft />
@@ -50,16 +47,16 @@ export function SegmentedToggleDemo() {
         </SegmentedToggle>
       </div>
 
-      <div>
-        <Label>Text labels (sort)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Text labels (sort)</SectionLabel>
         <SegmentedToggle value={sort} onValueChange={setSort} aria-label="Sort">
           <SegmentedToggleItem value="newest">Newest</SegmentedToggleItem>
           <SegmentedToggleItem value="oldest">Oldest</SegmentedToggleItem>
         </SegmentedToggle>
       </div>
 
-      <div>
-        <Label>Sizes</Label>
+      <div className="space-y-3">
+        <SectionLabel>Sizes</SectionLabel>
         <div className="flex flex-col gap-3">
           <SegmentedToggle value={smView} onValueChange={setSmView} size="sm" aria-label="View">
             <SegmentedToggleItem value="grid" aria-label="Grid view">

@@ -11,17 +11,15 @@ import {
   SectionHeader,
   SectionSubtitle,
   SectionTitle,
+  SectionLabel,
 } from "@patchui/react";
 
-function Label({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
-}
 
 export function SectionDemo() {
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <Label>Default</Label>
+      <div className="space-y-3">
+        <SectionLabel>Default</SectionLabel>
         <Section>
           <SectionHeader>
             <SectionTitle>Account Settings</SectionTitle>
@@ -38,8 +36,8 @@ export function SectionDemo() {
         </Section>
       </div>
 
-      <div>
-        <Label>With content</Label>
+      <div className="space-y-3">
+        <SectionLabel>With content</SectionLabel>
         <Section>
           <SectionHeader>
             <SectionTitle>Project Name</SectionTitle>
@@ -60,8 +58,8 @@ export function SectionDemo() {
         </Section>
       </div>
 
-      <div>
-        <Label>Two actions in the footer</Label>
+      <div className="space-y-3">
+        <SectionLabel>Two actions in the footer</SectionLabel>
         <Section>
           <SectionHeader>
             <SectionTitle>Privacy Policy</SectionTitle>
@@ -79,8 +77,8 @@ export function SectionDemo() {
         </Section>
       </div>
 
-      <div>
-        <Label>Action only (no status text)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Action only (no status text)</SectionLabel>
         <Section>
           <SectionHeader>
             <SectionTitle>Transfer Project</SectionTitle>

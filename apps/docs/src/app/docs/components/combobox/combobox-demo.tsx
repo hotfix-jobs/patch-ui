@@ -6,6 +6,7 @@ import {
   ComboboxInput,
   ComboboxPopup,
   ComboboxItem,
+  SectionLabel,
 } from "@patchui/react";
 import { Info, Search } from "lucide-react";
 
@@ -24,9 +25,6 @@ const FRAMEWORKS = [
 
 const RECENT = ["React", "Vue"];
 
-function Label({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
-}
 
 export function ComboboxDemo() {
   const [query, setQuery] = useState("");
@@ -47,8 +45,8 @@ export function ComboboxDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <Label>Basic — with search icon, chevron, and clearable</Label>
+      <div className="space-y-3">
+        <SectionLabel>Basic — with search icon, chevron, and clearable</SectionLabel>
         <div className="max-w-sm">
           <Combobox>
             <ComboboxInput
@@ -91,8 +89,8 @@ export function ComboboxDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Custom content (recents section, banner)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Custom content (recents section, banner)</SectionLabel>
         <div className="max-w-sm">
           <Combobox>
             <ComboboxInput

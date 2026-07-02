@@ -6,17 +6,15 @@ import {
   FieldDescription,
   FieldError,
   Input,
+  SectionLabel,
 } from "@patchui/react";
 
-function Label({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
-}
 
 export function FieldDemo() {
   return (
     <div className="flex w-full flex-col gap-8">
-      <div>
-        <Label>Basic Field</Label>
+      <div className="space-y-3">
+        <SectionLabel>Basic Field</SectionLabel>
         <Field className="max-w-sm">
           <FieldLabel>Username</FieldLabel>
           <FieldDescription>Choose a unique username for your account.</FieldDescription>
@@ -24,8 +22,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      <div>
-        <Label>Required label</Label>
+      <div className="space-y-3">
+        <SectionLabel>Required label</SectionLabel>
         <Field className="max-w-sm">
           <FieldLabel required>Email</FieldLabel>
           <FieldDescription>We&apos;ll use this to send notifications.</FieldDescription>
@@ -34,8 +32,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      <div>
-        <Label>Optional label</Label>
+      <div className="space-y-3">
+        <SectionLabel>Optional label</SectionLabel>
         <Field className="max-w-sm">
           <FieldLabel optional>Phone</FieldLabel>
           <FieldDescription>Used for SMS notifications only.</FieldDescription>
@@ -43,8 +41,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      <div>
-        <Label>Error state</Label>
+      <div className="space-y-3">
+        <SectionLabel>Error state</SectionLabel>
         <Field invalid className="max-w-sm">
           <FieldLabel required>Password</FieldLabel>
           <FieldDescription>Must be at least 8 characters.</FieldDescription>
@@ -53,8 +51,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      <div>
-        <Label>Disabled</Label>
+      <div className="space-y-3">
+        <SectionLabel>Disabled</SectionLabel>
         <Field disabled className="max-w-sm">
           <FieldLabel>Organization</FieldLabel>
           <FieldDescription>This field cannot be changed.</FieldDescription>

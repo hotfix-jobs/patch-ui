@@ -1,26 +1,23 @@
 "use client";
 
-import { Slider, SliderValue } from "@patchui/react";
+import { Slider, SliderValue , SectionLabel } from "@patchui/react";
 import { useState } from "react";
 
-function Label({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
-}
 
 export function SliderDemo() {
   const [range, setRange] = useState<number[]>([50, 75]);
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <Label>Single value</Label>
+      <div className="space-y-3">
+        <SectionLabel>Single value</SectionLabel>
         <div className="max-w-md">
           <Slider defaultValue={40} />
         </div>
       </div>
 
-      <div>
-        <Label>With value display</Label>
+      <div className="space-y-3">
+        <SectionLabel>With value display</SectionLabel>
         <div className="max-w-md">
           <Slider defaultValue={60}>
             <SliderValue />
@@ -28,8 +25,8 @@ export function SliderDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Range (two thumbs)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Range (two thumbs)</SectionLabel>
         <div className="max-w-md">
           <Slider defaultValue={[20, 80]}>
             <SliderValue />
@@ -37,8 +34,8 @@ export function SliderDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Range with numeric inputs</Label>
+      <div className="space-y-3">
+        <SectionLabel>Range with numeric inputs</SectionLabel>
         <div className="max-w-md">
           <Slider
             value={range}
@@ -49,8 +46,8 @@ export function SliderDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Custom step</Label>
+      <div className="space-y-3">
+        <SectionLabel>Custom step</SectionLabel>
         <div className="max-w-md">
           <Slider defaultValue={50} step={10} min={0} max={100}>
             <SliderValue />
@@ -58,8 +55,8 @@ export function SliderDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Disabled</Label>
+      <div className="space-y-3">
+        <SectionLabel>Disabled</SectionLabel>
         <div className="max-w-md">
           <Slider defaultValue={30} disabled />
         </div>

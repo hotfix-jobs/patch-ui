@@ -1,11 +1,8 @@
 "use client";
 
-import { Checkbox } from "@patchui/react";
+import { Checkbox , SectionLabel } from "@patchui/react";
 import { useState } from "react";
 
-function Label({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
-}
 
 export function CheckboxDemo() {
   const [checked, setChecked] = useState(false);
@@ -13,8 +10,8 @@ export function CheckboxDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div>
-        <Label>Controlled with children label</Label>
+      <div className="space-y-3">
+        <SectionLabel>Controlled with children label</SectionLabel>
         <Checkbox
           checked={checked}
           onCheckedChange={(c) => setChecked(c)}
@@ -23,8 +20,8 @@ export function CheckboxDemo() {
         </Checkbox>
       </div>
 
-      <div>
-        <Label>Multi-select group</Label>
+      <div className="space-y-3">
+        <SectionLabel>Multi-select group</SectionLabel>
         <div className="flex flex-col gap-2">
           <Checkbox defaultChecked>Send weekly digest</Checkbox>
           <Checkbox>Notify on new comments</Checkbox>
@@ -32,13 +29,13 @@ export function CheckboxDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Acknowledgment</Label>
+      <div className="space-y-3">
+        <SectionLabel>Acknowledgment</SectionLabel>
         <Checkbox>I agree to the Terms of Service.</Checkbox>
       </div>
 
-      <div>
-        <Label>Indeterminate</Label>
+      <div className="space-y-3">
+        <SectionLabel>Indeterminate</SectionLabel>
         <Checkbox
           checked={indeterminate ? false : true}
           indeterminate={indeterminate}
@@ -48,8 +45,8 @@ export function CheckboxDemo() {
         </Checkbox>
       </div>
 
-      <div>
-        <Label>Disabled</Label>
+      <div className="space-y-3">
+        <SectionLabel>Disabled</SectionLabel>
         <div className="flex flex-col gap-2">
           <Checkbox disabled>Disabled unchecked</Checkbox>
           <Checkbox disabled defaultChecked>Disabled checked</Checkbox>
@@ -57,8 +54,8 @@ export function CheckboxDemo() {
         </div>
       </div>
 
-      <div>
-        <Label>Bare (no label)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Bare (no label)</SectionLabel>
         <Checkbox aria-label="Select row" />
       </div>
     </div>
