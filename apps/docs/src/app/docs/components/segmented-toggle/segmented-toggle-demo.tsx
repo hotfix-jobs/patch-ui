@@ -1,10 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  SegmentedToggle,
-  SegmentedToggleItem,
-} from "@patchui/react";
+import { SegmentedToggle, SegmentedToggleItem } from "@patchui/react";
 import {
   AlignLeft,
   AlignCenter,
@@ -13,25 +10,22 @@ import {
   Rows3,
 } from "lucide-react";
 
-/** Showcases SegmentedToggle: icon-only, text, sizes. */
+function Label({ children }: { children: React.ReactNode }) {
+  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
+}
+
 export function SegmentedToggleDemo() {
-  const [view, setView] = useState<"grid" | "list">("grid");
+  const [view, setView] = useState<string>("grid");
   const [align, setAlign] = useState("center");
-  const [sort, setSort] = useState<"newest" | "oldest">("newest");
-  const [smallView, setSmallView] = useState("grid");
+  const [sort, setSort] = useState<string>("newest");
+  const [smView, setSmView] = useState("grid");
+  const [lgView, setLgView] = useState("grid");
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Icon-only view toggle */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Icon-only (view toggle)
-        </p>
-        <SegmentedToggle
-          value={view}
-          onValueChange={(v) => setView(v as "grid" | "list")}
-          aria-label="View"
-        >
+        <Label>Icon-only view toggle</Label>
+        <SegmentedToggle value={view} onValueChange={setView} aria-label="View">
           <SegmentedToggleItem value="grid" aria-label="Grid view">
             <LayoutGrid />
           </SegmentedToggleItem>
@@ -41,16 +35,9 @@ export function SegmentedToggleDemo() {
         </SegmentedToggle>
       </div>
 
-      {/* Three options */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Three options (alignment)
-        </p>
-        <SegmentedToggle
-          value={align}
-          onValueChange={setAlign}
-          aria-label="Alignment"
-        >
+        <Label>Three options (alignment)</Label>
+        <SegmentedToggle value={align} onValueChange={setAlign} aria-label="Alignment">
           <SegmentedToggleItem value="left" aria-label="Align left">
             <AlignLeft />
           </SegmentedToggleItem>
@@ -63,39 +50,38 @@ export function SegmentedToggleDemo() {
         </SegmentedToggle>
       </div>
 
-      {/* Text labels */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Text labels (sort)
-        </p>
-        <SegmentedToggle
-          value={sort}
-          onValueChange={(v) => setSort(v as "newest" | "oldest")}
-          aria-label="Sort"
-        >
+        <Label>Text labels (sort)</Label>
+        <SegmentedToggle value={sort} onValueChange={setSort} aria-label="Sort">
           <SegmentedToggleItem value="newest">Newest</SegmentedToggleItem>
           <SegmentedToggleItem value="oldest">Oldest</SegmentedToggleItem>
         </SegmentedToggle>
       </div>
 
-      {/* Small size */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Small size
-        </p>
-        <SegmentedToggle
-          value={smallView}
-          onValueChange={setSmallView}
-          size="sm"
-          aria-label="View"
-        >
-          <SegmentedToggleItem value="grid" aria-label="Grid view">
-            <LayoutGrid />
-          </SegmentedToggleItem>
-          <SegmentedToggleItem value="list" aria-label="List view">
-            <Rows3 />
-          </SegmentedToggleItem>
-        </SegmentedToggle>
+        <Label>Sizes</Label>
+        <div className="flex flex-col gap-3">
+          <SegmentedToggle value={smView} onValueChange={setSmView} size="sm" aria-label="View">
+            <SegmentedToggleItem value="grid" aria-label="Grid view">
+              <LayoutGrid />
+            </SegmentedToggleItem>
+            <SegmentedToggleItem value="list" aria-label="List view">
+              <Rows3 />
+            </SegmentedToggleItem>
+          </SegmentedToggle>
+          <SegmentedToggle value={view} onValueChange={setView} aria-label="View">
+            <SegmentedToggleItem value="grid" aria-label="Grid view">
+              <LayoutGrid />
+            </SegmentedToggleItem>
+            <SegmentedToggleItem value="list" aria-label="List view">
+              <Rows3 />
+            </SegmentedToggleItem>
+          </SegmentedToggle>
+          <SegmentedToggle value={lgView} onValueChange={setLgView} size="lg" aria-label="View">
+            <SegmentedToggleItem value="grid">Grid</SegmentedToggleItem>
+            <SegmentedToggleItem value="list">List</SegmentedToggleItem>
+          </SegmentedToggle>
+        </div>
       </div>
     </div>
   );
