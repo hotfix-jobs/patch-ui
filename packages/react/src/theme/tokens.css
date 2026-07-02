@@ -215,11 +215,12 @@
 
 /* Dark-mode override. Same intent contract, inverted values. */
 .dark {
-  /* Canvas is #000; background-100 is the elevated surface that inputs,
-     cards, and dialogs use — always a tick above the canvas so it reads
-     as raised without needing a shadow. */
-  --background-100: #111111;
-  --background-200: #1a1a1a;
+  /* Vercel Geist approach: dark surfaces share the canvas color (#000).
+     Distinction between page / card / modal comes from the border +
+     shadow, not brightness. background-200 is the lightly-elevated
+     variant used for footer bars, subtle callouts, and code blocks. */
+  --background-100: #000000;
+  --background-200: #0a0a0a;
 
   --gray-100: #1f1f1f;
   --gray-200: #2a2a2a;
