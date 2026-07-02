@@ -34,14 +34,9 @@ export const metadata: Metadata = {
     "accessible",
   ],
   alternates: { canonical: "/" },
-  icons: {
-    icon: [
-      { url: "/hotfix-icon.svg", type: "image/svg+xml" },
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-  },
+  // Favicons use Next.js App Router's file-based convention:
+  // src/app/favicon.ico + src/app/icon.svg + src/app/apple-icon.png
+  // are auto-detected. No `icons` metadata needed.
   openGraph: {
     type: "website",
     title: "Patch UI: accessible React components, copy-in",

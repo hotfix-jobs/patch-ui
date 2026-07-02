@@ -2,6 +2,7 @@ import { ContrastDemo } from "./contrast-demo";
 
 
 export const metadata = { title: "Contrast" };
+
 # Contrast Contract
 
 Every text and accent token has a declared WCAG target against the surfaces it sits on. The same checks run in CI via `npm run check:contrast -w packages/react`, so a token change that breaks a target fails the build. This page is the visual counterpart: ratios recompute the moment you toggle light or dark mode.

@@ -39,7 +39,6 @@ export function SiteHeader() {
       <AppHeaderBrand render={<Link href="/" />}>Patch UI</AppHeaderBrand>
       <AppHeaderRight>
         <DocsSearch />
-        <ThemeToggle />
         <Button
           variant="secondary"
           size="sm"
@@ -54,6 +53,7 @@ export function SiteHeader() {
             />
           }
         />
+        <ThemeToggle />
       </AppHeaderRight>
     </AppHeader>
   );
