@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Palette, Package, ShieldCheck } from "lucide-react";
 import { Grid } from "@patchui/react";
+
+export const metadata: Metadata = { title: "Introduction" };
 
 export default function DocsPage() {
   return (

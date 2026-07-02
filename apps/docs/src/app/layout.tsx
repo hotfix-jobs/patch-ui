@@ -18,11 +18,11 @@ const themeScript = `
 export const metadata: Metadata = {
   metadataBase: new URL("https://ui.hotfix.jobs"),
   title: {
-    default: "Patch UI - accessible React components, copy-in",
-    template: "%s - Patch UI",
+    default: "Patch UI: accessible React components, copy-in",
+    template: "%s · Patch UI",
   },
   description:
-    "A React component library built on Base UI and Tailwind CSS v4. Copy components into your repo with the shadcn CLI - crisp, accessible, token-driven, light/dark.",
+    "A React component library built on Base UI and Tailwind CSS v4. Copy components into your repo with the shadcn CLI: crisp, accessible, token-driven, light and dark.",
   keywords: [
     "react",
     "components",
@@ -34,11 +34,19 @@ export const metadata: Metadata = {
     "accessible",
   ],
   alternates: { canonical: "/" },
+  icons: {
+    icon: [
+      { url: "/hotfix-icon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+  },
   openGraph: {
     type: "website",
-    title: "Patch UI - accessible React components, copy-in",
+    title: "Patch UI: accessible React components, copy-in",
     description:
-      "Copy accessible, token-driven React components into your repo. Built on Base UI + Tailwind CSS v4.",
+      "Copy accessible, token-driven React components into your repo. Built on Base UI and Tailwind CSS v4.",
     url: "https://ui.hotfix.jobs",
     siteName: "Patch UI",
   },
@@ -46,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Patch UI",
     description:
-      "Accessible, token-driven React components - copy-in via the shadcn CLI.",
+      "Accessible, token-driven React components. Copy-in via the shadcn CLI.",
   },
 };
 
