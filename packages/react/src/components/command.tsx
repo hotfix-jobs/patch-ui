@@ -166,19 +166,17 @@ export function CommandItem({
 }): React.ReactElement {
   const density = useContext(CommandDensityContext);
 
-  const trailingCheck = selected && (
+  // Selected check REPLACES the suffix — they share the trailing slot.
+  // `selected` is for persistent choices (Theme = "Dark"); ephemeral
+  // one-shot commands should leave it undefined.
+  const trailing = selected ? (
     <CheckIcon
       className="ms-auto size-3.5 shrink-0 text-gray-800"
       strokeWidth={2.25}
     />
-  );
-
-  const trailing = (
-    <>
-      {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
-      {trailingCheck}
-    </>
-  );
+  ) : suffix ? (
+    <span className="ms-auto flex items-center">{suffix}</span>
+  ) : null;
 
   return (
     <AutocompletePrimitive.Item
