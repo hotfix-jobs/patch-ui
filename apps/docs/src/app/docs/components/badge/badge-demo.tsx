@@ -21,6 +21,16 @@ export function BadgeDemo() {
       </div>
 
       <div>
+        <p className="mb-3 text-label-12 text-gray-800">Outline</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge variant="default" outline>Default</Badge>
+          <Badge variant="success" outline>Success</Badge>
+          <Badge variant="warning" outline>Warning</Badge>
+          <Badge variant="error" outline>Error</Badge>
+        </div>
+      </div>
+
+      <div>
         <p className="mb-3 text-label-12 text-gray-800">Sizes</p>
         <div className="flex flex-wrap items-center gap-3">
           <Badge size="sm">Small</Badge>

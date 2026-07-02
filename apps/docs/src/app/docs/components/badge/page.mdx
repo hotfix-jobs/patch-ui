@@ -18,10 +18,16 @@ import { Badge } from "@patchui/react";
 // Basic
 <Badge>Default</Badge>
 
-// Semantic
+// Semantic (solid)
 <Badge variant="success">Active</Badge>
 <Badge variant="warning">Pending</Badge>
 <Badge variant="error">Failed</Badge>
+
+// Outline (transparent + colored border)
+<Badge variant="default" outline>Default</Badge>
+<Badge variant="success" outline>Active</Badge>
+<Badge variant="warning" outline>Pending</Badge>
+<Badge variant="error" outline>Failed</Badge>
 
 // Sizes
 <Badge size="sm">Small</Badge>
@@ -59,6 +65,12 @@ import { Badge } from "@patchui/react";
       type: '"rounded" | "pill"',
       default: '"pill"',
       description: "`pill` = fully rounded (default), `rounded` = 6px radius.",
+    },
+    {
+      name: "outline",
+      type: "boolean",
+      default: "false",
+      description: "When true, renders a hairline border in the variant's color on a transparent fill. Composes with any variant.",
     },
     {
       name: "onRemove",
