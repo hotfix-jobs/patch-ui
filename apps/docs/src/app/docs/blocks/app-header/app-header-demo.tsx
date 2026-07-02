@@ -10,7 +10,7 @@ import {
   SheetTitle,
   SheetBody,
 } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 import {
   AppHeader,
   AppHeaderBrand,
@@ -57,7 +57,7 @@ export function AppHeaderDemo() {
   return (
     <div className="flex flex-col gap-8">
       {/* Dashboard pattern — active nav item as primary color */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Dashboard</SectionLabel>
         <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100">
           <AppHeader bordered={false}>
@@ -108,7 +108,7 @@ export function AppHeaderDemo() {
       </div>
 
       {/* Marketing pattern — chevron dropdowns, secondary CTAs on the right */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Marketing</SectionLabel>
         <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100">
           <AppHeader bordered={false}>

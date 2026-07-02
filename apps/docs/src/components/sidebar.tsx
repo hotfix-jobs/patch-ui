@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigation } from "@/lib/navigation";
-import { cn } from "@patchui/react";
+import { cn, SectionLabel } from "@patchui/react";
 
 export function Sidebar({
   open,
@@ -52,9 +52,9 @@ export function Sidebar({
                 gi > 0 && "mt-6 pt-6 border-t border-gray-alpha-400",
               )}
             >
-              <div className="px-2 pb-1 text-label-12 font-medium text-gray-800">
+              <SectionLabel className="mb-1 px-2">
                 {group.title}
-              </div>
+              </SectionLabel>
               {group.items.map((item) => {
                 const isActive = pathname === item.href;
                 return (

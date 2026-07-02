@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MiddleTruncate, Slider } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 
 export function MiddleTruncateDemo() {
   const [width, setWidth] = useState(360);
@@ -10,7 +10,7 @@ export function MiddleTruncateDemo() {
   return (
     <div className="flex flex-col gap-8">
       {/* Resizable preview */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Interactive width</SectionLabel>
         <div className="flex flex-col gap-3">
           <div className="max-w-sm">
@@ -41,7 +41,7 @@ export function MiddleTruncateDemo() {
       </div>
 
       {/* Common patterns */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Common patterns</SectionLabel>
         <div className="flex max-w-md flex-col gap-3">
           <Row label="Deploy ID">
@@ -83,7 +83,7 @@ export function MiddleTruncateDemo() {
       </div>
 
       {/* Short values pass through unchanged */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Short values render unchanged</SectionLabel>
         <div className="flex flex-col gap-1 text-copy-14 text-gray-1000">
           <MiddleTruncate value="short" />

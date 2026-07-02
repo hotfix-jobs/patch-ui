@@ -11,6 +11,7 @@ import {
   Grid,
   GridCell,
   Input,
+  SectionLabel,
   Switch,
 } from "@patchui/react";
 import {
@@ -229,9 +230,7 @@ function ShowcaseCell({
 }) {
   return (
     <div className="flex flex-col gap-4 bg-background-100 px-6 py-8 md:px-8 md:py-10">
-      <div className="text-label-12 font-medium text-gray-800">
-        {label}
-      </div>
+      <SectionLabel>{label}</SectionLabel>
       <div className="flex min-h-[64px] items-center">{children}</div>
     </div>
   );

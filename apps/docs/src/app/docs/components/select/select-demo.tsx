@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Select } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 import { Globe } from "lucide-react";
 
 export function SelectDemo() {
@@ -12,7 +12,7 @@ export function SelectDemo() {
   return (
     <div className="flex flex-col gap-8">
       {/* Basic */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Basic</SectionLabel>
         <div className="max-w-sm">
           <Select
@@ -31,7 +31,7 @@ export function SelectDemo() {
       </div>
 
       {/* With region */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Region</SectionLabel>
         <div className="max-w-sm">
           <Select
@@ -49,7 +49,7 @@ export function SelectDemo() {
       </div>
 
       {/* Sizes */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Sizes</SectionLabel>
         <div className="flex flex-col gap-3 max-w-sm">
           <Select id="size-sm" label="Small" size="sm" defaultValue="a">
@@ -68,7 +68,7 @@ export function SelectDemo() {
       </div>
 
       {/* With prefix */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>With prefix icon</SectionLabel>
         <div className="max-w-sm">
           <Select id="locale" label="Locale" prefix={<Globe />} defaultValue="en">
@@ -81,7 +81,7 @@ export function SelectDemo() {
       </div>
 
       {/* Grouped options */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Grouped options</SectionLabel>
         <div className="max-w-sm">
           <Select id="assignee" label="Assignee" defaultValue="ana">
@@ -99,7 +99,7 @@ export function SelectDemo() {
       </div>
 
       {/* Disabled */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Disabled</SectionLabel>
         <div className="max-w-sm">
           <Select id="disabled" label="Plan" disabled defaultValue="hobby">
@@ -110,7 +110,7 @@ export function SelectDemo() {
       </div>
 
       {/* Error state */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Error state</SectionLabel>
         <div className="max-w-sm">
           <Select

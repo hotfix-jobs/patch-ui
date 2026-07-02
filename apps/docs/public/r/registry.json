@@ -578,6 +578,25 @@
       ]
     },
     {
+      "name": "section-label",
+      "type": "registry:ui",
+      "title": "Section Label",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/section-label.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/section-label.tsx"
+        }
+      ]
+    },
+    {
       "name": "section",
       "type": "registry:ui",
       "title": "Section",

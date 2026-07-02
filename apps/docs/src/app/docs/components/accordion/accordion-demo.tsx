@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
   AccordionPanel,
 } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 
 export function AccordionDemo() {
   return (

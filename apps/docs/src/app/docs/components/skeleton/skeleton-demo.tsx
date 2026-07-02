@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button, Skeleton } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 
 export function SkeletonDemo() {
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ export function SkeletonDemo() {
   return (
     <div className="flex flex-col gap-8">
       {/* Text lines */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Text lines</SectionLabel>
         <div className="flex flex-col gap-2">
           <Skeleton height={16} width="100%" />
@@ -25,7 +25,7 @@ export function SkeletonDemo() {
       </div>
 
       {/* Shapes */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Shapes</SectionLabel>
         <div className="flex items-center gap-4">
           <Skeleton shape="pill" width={40} height={40} />
@@ -35,7 +35,7 @@ export function SkeletonDemo() {
       </div>
 
       {/* Card layout */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Card layout</SectionLabel>
         <div className="flex items-start gap-4">
           <Skeleton shape="pill" width={40} height={40} />
@@ -48,7 +48,7 @@ export function SkeletonDemo() {
       </div>
 
       {/* Show / reveal pattern */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Load / reveal (show prop)</SectionLabel>
         <div className="flex items-start gap-4">
           <Skeleton show={loading} shape="pill" width={48} height={48}>
@@ -76,7 +76,7 @@ export function SkeletonDemo() {
       </div>
 
       {/* Static (no animation) */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Static (animated=false)</SectionLabel>
         <div className="flex flex-col gap-2">
           <Skeleton animated={false} height={16} width="100%" />

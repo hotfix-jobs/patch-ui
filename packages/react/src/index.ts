@@ -233,6 +233,10 @@ export {
 } from "./components/combobox";
 export { Progress, type ProgressProps } from "./components/progress";
 export { Separator, type SeparatorProps } from "./components/separator";
+export {
+  SectionLabel,
+  type SectionLabelProps,
+} from "./components/section-label";
 export { Kbd, type KbdProps } from "./components/kbd";
 export { Toggle, toggleVariants, type ToggleProps } from "./components/toggle";
 // Dropzone lives as a block under packages/react/src/blocks/dropzone.

@@ -1,7 +1,7 @@
 "use client";
 
 import { Scroller } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 
 const CARDS = [
   { title: "Frontend Engineer", meta: "Remote · Full-time" },
@@ -25,7 +25,7 @@ export function ScrollerDemo() {
   return (
     <div className="flex flex-col gap-8">
       {/* Horizontal rail with buttons */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Horizontal rail (with buttons)</SectionLabel>
         <Scroller
           overflow="x"
@@ -48,7 +48,7 @@ export function ScrollerDemo() {
       </div>
 
       {/* Horizontal rail without buttons — touch / trackpad scroll only */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Horizontal rail (no buttons)</SectionLabel>
         <Scroller
           overflow="x"
@@ -70,7 +70,7 @@ export function ScrollerDemo() {
       </div>
 
       {/* Vertical feed */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Vertical feed</SectionLabel>
         <Scroller
           overflow="y"

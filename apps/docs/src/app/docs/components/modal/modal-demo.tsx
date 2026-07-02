@@ -12,7 +12,7 @@ import {
   ModalActions,
   ModalAction,
 } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 
 const REPO_NAME = "billing-service";
 
@@ -25,7 +25,7 @@ export function ModalDemo() {
   return (
     <div className="flex flex-col gap-8">
       {/* Basic — short confirmation, no header */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Basic</SectionLabel>
         <Button onClick={() => setBasic(true)}>Update project</Button>
         <Modal active={basic} onClickOutside={() => setBasic(false)}>
@@ -50,7 +50,7 @@ export function ModalDemo() {
       </div>
 
       {/* Destructive with typed confirmation gate */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Destructive with typed confirmation</SectionLabel>
         <Button variant="error" onClick={() => setDestructive(true)}>
           Delete repository
@@ -125,7 +125,7 @@ export function ModalDemo() {
       </div>
 
       {/* Long content — header stays fixed while body scrolls */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Long content with fixed header</SectionLabel>
         <Button onClick={() => setLongContent(true)}>Open change log</Button>
         <Modal

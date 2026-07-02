@@ -9,7 +9,7 @@ import {
   ListRowContent,
   ListRowList,
 } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 import { GitBranch, MessageSquare, Send } from "lucide-react";
 
 const MEMBERS = [
@@ -28,7 +28,7 @@ export function ListRowDemo() {
   return (
     <div className="flex flex-col gap-8">
       {/* Members list */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Members</SectionLabel>
         <ListRowList as="ul">
           {MEMBERS.map((m) => (
@@ -52,7 +52,7 @@ export function ListRowDemo() {
       </div>
 
       {/* Integrations with checkbox + primary action on right */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Integrations</SectionLabel>
         <ListRowList>
           {INTEGRATIONS.map((i) => (
@@ -82,7 +82,7 @@ export function ListRowDemo() {
       </div>
 
       {/* Interactive (hover fill) — actionable rows */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Interactive rows (hover fill)</SectionLabel>
         <ListRowList interactive>
           <ListRow
@@ -116,7 +116,7 @@ export function ListRowDemo() {
       </div>
 
       {/* Unbordered — sits inside another surface */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Unbordered (nested inside another surface)</SectionLabel>
         <div className="rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100 p-4">
           <p className="mb-2 text-label-13 font-medium text-gray-1000">Team roster</p>

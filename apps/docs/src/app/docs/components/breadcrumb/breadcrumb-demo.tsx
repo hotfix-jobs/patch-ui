@@ -1,12 +1,12 @@
 "use client";
 
 import { Breadcrumb } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 
 export function BreadcrumbDemo() {
   return (
     <div className="flex flex-col gap-8">
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Basic</SectionLabel>
         <Breadcrumb
           items={[
@@ -17,7 +17,7 @@ export function BreadcrumbDemo() {
         />
       </div>
 
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Long chain (collapses middle on mobile)</SectionLabel>
         <p className="mb-2 text-copy-13 text-gray-800">
           Resize the viewport below the sm breakpoint to see the middle
@@ -34,7 +34,7 @@ export function BreadcrumbDemo() {
         />
       </div>
 
-      <div>
+      <div className="space-y-3">
         <SectionLabel>No home crumb</SectionLabel>
         <Breadcrumb
           items={[
@@ -45,7 +45,7 @@ export function BreadcrumbDemo() {
         />
       </div>
 
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Long current-page label truncates</SectionLabel>
         <div className="max-w-[420px]">
           <Breadcrumb

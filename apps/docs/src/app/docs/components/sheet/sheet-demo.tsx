@@ -15,7 +15,7 @@ import {
   Label,
   Input,
 } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 
 export function SheetDemo() {
   const [name, setName] = useState("Ada Lovelace");
@@ -24,7 +24,7 @@ export function SheetDemo() {
   return (
     <div className="flex flex-col gap-8">
       {/* Right side — editable profile */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Editable profile</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
@@ -65,7 +65,7 @@ export function SheetDemo() {
       </div>
 
       {/* Non-modal inspector */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Non-modal inspector</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
@@ -90,7 +90,7 @@ export function SheetDemo() {
       </div>
 
       {/* Left side */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Left side (navigation)</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
@@ -122,7 +122,7 @@ export function SheetDemo() {
       </div>
 
       {/* Bottom side */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Bottom side (mobile picker)</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>

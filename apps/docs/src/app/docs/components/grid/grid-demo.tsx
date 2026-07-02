@@ -1,12 +1,12 @@
 "use client";
 
 import { Grid, GridCell } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 
 export function GridDemo() {
   return (
     <div className="flex flex-col gap-8">
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Basic 3-column grid</SectionLabel>
         <Grid columns={3}>
           <Cell>Auto</Cell>
@@ -18,7 +18,7 @@ export function GridDemo() {
         </Grid>
       </div>
 
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Responsive columns (resize the viewport)</SectionLabel>
         <p className="mb-3 text-copy-13 text-gray-800">
           1 column below sm, 2 columns at md, 3 columns at lg.
@@ -33,7 +33,7 @@ export function GridDemo() {
         </Grid>
       </div>
 
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Cell spanning two columns</SectionLabel>
         <Grid columns={3}>
           <GridCell column="1 / 3" className="p-6">
@@ -47,7 +47,7 @@ export function GridDemo() {
         </Grid>
       </div>
 
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Guides off</SectionLabel>
         <p className="mb-3 text-copy-13 text-gray-800">
           Plain grid without hairlines. Useful when you just want the responsive columns.

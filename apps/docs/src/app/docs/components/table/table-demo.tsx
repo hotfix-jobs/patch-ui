@@ -8,7 +8,7 @@ import {
   TableHead,
   TableCell,
 } from "@patchui/react";
-import { SectionLabel } from "@/components/demo/section-label";
+import { SectionLabel } from "@patchui/react";
 
 const DEPLOYMENTS = [
   { name: "acme-web", branch: "main", status: "Ready", lastUsed: "2m ago" },
@@ -32,7 +32,7 @@ export function TableDemo() {
   return (
     <div className="flex flex-col gap-10">
       {/* Default */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Default</SectionLabel>
         <Table>
           <TableHeader>
@@ -59,7 +59,7 @@ export function TableDemo() {
       </div>
 
       {/* Interactive */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Interactive rows (opt-in hover)</SectionLabel>
         <Table>
           <TableHeader>
@@ -86,7 +86,7 @@ export function TableDemo() {
       </div>
 
       {/* Striped */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Striped rows</SectionLabel>
         <Table>
           <TableHeader>
@@ -109,7 +109,7 @@ export function TableDemo() {
       </div>
 
       {/* Bordered */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Bordered cells</SectionLabel>
         <Table>
           <TableHeader>
@@ -132,7 +132,7 @@ export function TableDemo() {
       </div>
 
       {/* Flat variant */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Flat variant (no outer chrome)</SectionLabel>
         <Table variant="flat">
           <TableHeader>
@@ -155,7 +155,7 @@ export function TableDemo() {
       </div>
 
       {/* Unknown values as em-dash */}
-      <div>
+      <div className="space-y-3">
         <SectionLabel>Unknown values render as em-dash (—)</SectionLabel>
         <Table>
           <TableHeader>
