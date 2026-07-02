@@ -7,6 +7,7 @@ import {
   AppHeaderNav,
   AppHeaderNavItem,
   AppHeaderRight,
+  Avatar,
   Button,
   Sheet,
   SheetContent,
@@ -15,7 +16,7 @@ import {
   SheetBody,
 } from "@patchui/react";
 
-const NAV = ["Dashboard", "Projects", "Settings"];
+const NAV = ["Overview", "Deployments", "Analytics", "Settings"];
 
 function MenuIcon() {
   return (
@@ -36,30 +37,51 @@ function MenuIcon() {
   );
 }
 
+function LogoMark() {
+  return (
+    <span className="flex size-6 items-center justify-center rounded-[var(--radius-6)] bg-gray-1000 text-background-100 text-label-13 font-semibold">
+      P
+    </span>
+  );
+}
+
 export function AppHeaderDemo() {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("Overview");
 
   return (
-    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400">
+    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400">
       <AppHeader>
-        <AppHeaderBrand>Patch</AppHeaderBrand>
+        <AppHeaderBrand>
+          <LogoMark />
+          <span>Patch</span>
+        </AppHeaderBrand>
 
         {/* Desktop nav */}
         <AppHeaderNav className="hidden sm:flex">
-          <AppHeaderNavItem href="#" active>
-            Dashboard
-          </AppHeaderNavItem>
-          <AppHeaderNavItem href="#">Projects</AppHeaderNavItem>
-          <AppHeaderNavItem href="#">Settings</AppHeaderNavItem>
+          {NAV.map((item) => (
+            <AppHeaderNavItem
+              key={item}
+              href="#"
+              active={active === item}
+              onClick={(e) => {
+                e.preventDefault();
+                setActive(item);
+              }}
+            >
+              {item}
+            </AppHeaderNavItem>
+          ))}
         </AppHeaderNav>
 
         <AppHeaderRight>
-          <Button size="sm" className="hidden sm:inline-flex">
-            Get started
+          <Button variant="tertiary" size="sm" className="hidden sm:inline-flex">
+            Feedback
           </Button>
+          <Avatar size="sm" letter="A" className="hidden sm:inline-flex" />
           {/* Mobile menu trigger */}
           <Button
-            variant="ghost"
+            variant="tertiary"
             size="sm"
             aria-label="Open menu"
             className="sm:hidden"
@@ -71,7 +93,7 @@ export function AppHeaderDemo() {
 
       {/* Mobile drawer */}
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="left" className="w-64">
+        <SheetContent side="left">
           <SheetHeader>
             <SheetTitle>Patch</SheetTitle>
           </SheetHeader>
@@ -81,23 +103,30 @@ export function AppHeaderDemo() {
                 <a
                   key={label}
                   href="#"
-                  onClick={() => setOpen(false)}
-                  className="rounded-[var(--radius-6)] px-2 py-2 text-label-13 text-gray-900 transition-colors hover:bg-gray-200 hover:text-gray-1000"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setActive(label);
+                    setOpen(false);
+                  }}
+                  aria-current={active === label ? "page" : undefined}
+                  className={`rounded-[var(--radius-6)] px-2 py-2 text-copy-14 transition-colors ${
+                    active === label
+                      ? "bg-gray-alpha-100 text-gray-1000 font-medium"
+                      : "text-gray-800 hover:bg-gray-alpha-100 hover:text-gray-1000"
+                  }`}
                 >
                   {label}
                 </a>
               ))}
-              <Button size="sm" className="mt-3 w-full">
-                Get started
-              </Button>
             </nav>
           </SheetBody>
         </SheetContent>
       </Sheet>
 
-      <div className="p-6 text-label-13 text-gray-900">
+      <div className="border-t border-gray-alpha-400 bg-background-200 p-6 text-copy-14 text-gray-800">
         Resize the preview: under the <code>sm</code> breakpoint the nav collapses
-        to a menu button that opens a Sheet drawer.
+        to a menu button that opens a Sheet drawer. Click a nav item to toggle
+        the underline active state.
       </div>
     </div>
   );

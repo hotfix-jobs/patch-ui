@@ -5,16 +5,20 @@ import { useRender } from "@base-ui/react/use-render";
 import type * as React from "react";
 import { cn } from "../utils";
 
+/**
+ * AppHeader — patch-ui extension for consistent top-of-page chrome.
+ *
+ * Compound: AppHeader / AppHeaderBrand / AppHeaderNav / AppHeaderNavItem
+ * / AppHeaderRight. Matches Vercel Geist header dimensions and typography
+ * so headers across dashboards feel consistent (hairline bottom border,
+ * compact vertical rhythm, muted-to-primary text on hover, and an
+ * underline indicator for the active nav item).
+ */
+
 export interface AppHeaderProps extends useRender.ComponentProps<"header"> {
-  /**
-   * When true (default), renders a hairline bottom border. Set false for
-   * borderless headers (e.g. headers laid over a hero image).
-   */
+  /** Hairline bottom border. Default true. */
   bordered?: boolean;
-  /**
-   * When true, pins the header to the top of its scroll container via
-   * `sticky top-0 z-50`. Default false (relative flow).
-   */
+  /** Pin the header to the top of its scroll container. Default false. */
   sticky?: boolean;
 }
 
@@ -29,13 +33,16 @@ export function AppHeader({
   const defaultProps = {
     className: cn(
       "bg-background-100",
-      bordered && "border-b border-[var(--gray-alpha-400)]",
+      bordered && "border-b border-gray-alpha-400",
       sticky ? "sticky top-0 z-50" : "relative",
       className,
     ),
     "data-slot": "app-header",
     children: (
-      <div className="flex w-full items-center gap-4 px-6 py-3.5 md:gap-10 md:px-12 lg:px-16">
+      // Compact Vercel-style rhythm: 56px total (py-3 = 12px each side + 32px content).
+      // Horizontal padding scales with breakpoint; nav gap is tight so items sit
+      // close together like a real product header.
+      <div className="flex w-full items-center gap-6 px-4 py-3 md:px-6 md:gap-8">
         {children}
       </div>
     ),
@@ -48,6 +55,8 @@ export function AppHeader({
   });
 }
 
+/* ------------------------------ Brand -------------------------------- */
+
 export type AppHeaderBrandProps = useRender.ComponentProps<"div">;
 
 export function AppHeaderBrand({
@@ -57,7 +66,7 @@ export function AppHeaderBrand({
 }: AppHeaderBrandProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex-shrink-0 font-semibold text-copy-18 tracking-[-0.025em] text-gray-1000",
+      "flex shrink-0 items-center gap-2 text-heading-16 text-gray-1000",
       className,
     ),
     "data-slot": "app-header-brand",
@@ -70,6 +79,8 @@ export function AppHeaderBrand({
   });
 }
 
+/* ------------------------------- Nav --------------------------------- */
+
 export type AppHeaderNavProps = useRender.ComponentProps<"nav">;
 
 export function AppHeaderNav({
@@ -78,7 +89,7 @@ export function AppHeaderNav({
   ...props
 }: AppHeaderNavProps): React.ReactElement {
   const defaultProps = {
-    className: cn("flex items-center gap-7", className),
+    className: cn("flex items-center gap-6", className),
     "data-slot": "app-header-nav",
   };
 
@@ -90,6 +101,7 @@ export function AppHeaderNav({
 }
 
 export interface AppHeaderNavItemProps extends useRender.ComponentProps<"a"> {
+  /** Marks this item as the current page — draws a 2px gray-1000 underline. */
   active?: boolean;
 }
 
@@ -101,14 +113,18 @@ export function AppHeaderNavItem({
 }: AppHeaderNavItemProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "text-label-13 font-medium tracking-[-0.005em] transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+      // Underline active-state indicator sits at -bottom-3 to hit the
+      // container's bottom border. Reserves the space via padding so
+      // inactive items don't jump when the underline appears on hover.
+      "relative py-4 -my-4 text-copy-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
       active
-        ? "text-gray-1000"
-        : "text-gray-900 hover:text-gray-1000",
+        ? "text-gray-1000 after:absolute after:-bottom-px after:left-0 after:right-0 after:h-[2px] after:bg-gray-1000"
+        : "text-gray-800 hover:text-gray-1000",
       className,
     ),
     "data-slot": "app-header-nav-item",
     "data-active": active ? "" : undefined,
+    "aria-current": active ? ("page" as const) : undefined,
   };
 
   return useRender({
@@ -118,6 +134,8 @@ export function AppHeaderNavItem({
   });
 }
 
+/* ------------------------------- Right ------------------------------- */
+
 export type AppHeaderRightProps = useRender.ComponentProps<"div">;
 
 export function AppHeaderRight({
@@ -126,7 +144,7 @@ export function AppHeaderRight({
   ...props
 }: AppHeaderRightProps): React.ReactElement {
   const defaultProps = {
-    className: cn("ml-auto flex items-center gap-3", className),
+    className: cn("ms-auto flex items-center gap-2", className),
     "data-slot": "app-header-right",
   };
 
