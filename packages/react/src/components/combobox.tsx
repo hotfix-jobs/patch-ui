@@ -188,7 +188,7 @@ function ChevronIndicator({ open }: { open: boolean }): React.ReactElement {
       strokeLinecap="round"
       strokeLinejoin="round"
       className={cn(
-        "size-4 text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "size-4 shrink-0 text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         open ? "rotate-180" : "rotate-0",
       )}
     >
@@ -238,10 +238,13 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
     // Build the combobox suffix: user-provided suffix + optional clear × + chevron.
     // Wrapped as a single node passed to Input's `suffix` slot with styling disabled
     // so it floats inline with the input area.
+    // Vercel-style suffix: the clear × REPLACES the chevron when there is a value
+    // to clear. Otherwise the chevron indicates open/close state. This keeps the
+    // affordance space to a single glyph.
     const suffix = (userSuffix || showClear || !hideChevron) ? (
       <span className="inline-flex items-center gap-1.5">
         {userSuffix}
-        {showClear && (
+        {showClear ? (
           <button
             type="button"
             tabIndex={-1}
@@ -254,8 +257,9 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
           >
             <XIcon className="size-3" />
           </button>
+        ) : (
+          !hideChevron && <ChevronIndicator open={open} />
         )}
-        {!hideChevron && <ChevronIndicator open={open} />}
       </span>
     ) : undefined;
     // The Input component wraps the actual <input> in a <span> for icons /
