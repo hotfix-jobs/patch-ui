@@ -240,6 +240,7 @@ export {
   TableCaption,
   type TableProps,
   type TableSectionProps,
+  type TableBodyProps,
   type TableRowProps,
   type TableHeadProps,
   type TableCellProps,

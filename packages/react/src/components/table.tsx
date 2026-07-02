@@ -4,30 +4,29 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 /**
- * Table - Patch UI primitive table set.
+ * Table — semantic HTML table with consistent chrome. Thin wrappers around
+ * the native `<table>` elements. Use for genuinely tabular data (multiple
+ * rows sharing shape, at least one comparable column); for simpler
+ * key/value layouts reach for Card / description-list patterns instead.
  *
- * Thin wrappers around the native <table> elements with consistent
- * Patch UI styling: hairline dividers, surface backgrounds, restrained
- * typography hierarchy. Mirrors the shadcn Base Table API
- * (Table / TableHeader / TableBody / TableFooter / TableHead /
- * TableRow / TableCell / TableCaption) so the components compose the
- * way developers expect.
- *
- * Used for any tabular data: leaderboards, comparison rows, pricing
- * matrices, or simple key/value pairs — any row/column display.
+ * TableBody accepts opt-in booleans that shape the whole body via CSS
+ * descendant selectors — no per-row prop drilling required:
+ *   - `striped` — alternating row backgrounds
+ *   - `bordered` — vertical cell borders
+ *   - `interactive` — row hover effect
  *
  * Usage:
  *   <Table>
  *     <TableHeader>
  *       <TableRow>
- *         <TableHead>Field</TableHead>
- *         <TableHead align="right">Median</TableHead>
+ *         <TableHead>Name</TableHead>
+ *         <TableHead align="right">Last used</TableHead>
  *       </TableRow>
  *     </TableHeader>
- *     <TableBody>
+ *     <TableBody interactive>
  *       <TableRow>
- *         <TableCell>Backend Engineering</TableCell>
- *         <TableCell align="right">$215k</TableCell>
+ *         <TableCell>acme-web</TableCell>
+ *         <TableCell align="right">2m ago</TableCell>
  *       </TableRow>
  *     </TableBody>
  *   </Table>
@@ -35,15 +34,18 @@ import { cn } from "../utils";
 
 export interface TableProps
   extends React.TableHTMLAttributes<HTMLTableElement> {
-  /** Wrap in a horizontally-scrollable container. Default true so
-   *  long-content tables stay usable on narrow viewports without
-   *  manual overflow handling at the call site. */
+  /**
+   * Wrap in a horizontally-scrollable container. Default true so
+   * long-content tables stay usable on narrow viewports without manual
+   * overflow handling at the call site.
+   */
   scrollable?: boolean;
   /**
    * Visual treatment.
-   * - `default`: rounded 12px outer, hairline border, surface bg — dashboard / data-card feel.
-   * - `flat`: no radius, no outer bg, no border — NYT / Bloomberg data-table feel.
-   *    Row + header backgrounds and hairlines still render.
+   * - `default`: rounded outer, hairline border, elevated surface bg —
+   *   dashboard / data-card feel.
+   * - `flat`: no radius, no outer bg, no border — reference / documentation
+   *   data-table feel.
    */
   variant?: "default" | "flat";
 }
@@ -59,10 +61,9 @@ export function Table({
       data-slot="table"
       data-variant={variant}
       className={cn(
-        "w-full caption-bottom border-collapse",
-        "text-label-13 text-gray-1000",
+        "w-full caption-bottom border-collapse text-copy-14 text-gray-1000",
         variant === "default" &&
-          "rounded-[var(--radius-12)] overflow-hidden bg-background-100 border border-[var(--gray-alpha-400)]",
+          "overflow-hidden rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400",
         className,
       )}
       {...props}
@@ -79,6 +80,8 @@ export function Table({
   );
 }
 
+/* ------------------------------ Sections ----------------------------- */
+
 export type TableSectionProps = React.HTMLAttributes<HTMLTableSectionElement>;
 
 export function TableHeader({
@@ -89,7 +92,7 @@ export function TableHeader({
     <thead
       data-slot="table-header"
       className={cn(
-        "bg-gray-100 border-b border-[var(--gray-alpha-400)]",
+        "bg-background-200 border-b border-gray-alpha-400",
         className,
       )}
       {...props}
@@ -97,11 +100,38 @@ export function TableHeader({
   );
 }
 
+export interface TableBodyProps
+  extends React.HTMLAttributes<HTMLTableSectionElement> {
+  /** Alternating row background colors. */
+  striped?: boolean;
+  /** Vertical cell borders. */
+  bordered?: boolean;
+  /** Row hover effect (opt-in for actionable rows, off by default). */
+  interactive?: boolean;
+}
+
 export function TableBody({
   className,
+  striped,
+  bordered,
+  interactive,
   ...props
-}: TableSectionProps): React.ReactElement {
-  return <tbody data-slot="table-body" className={className} {...props} />;
+}: TableBodyProps): React.ReactElement {
+  return (
+    <tbody
+      data-slot="table-body"
+      data-striped={striped ? "" : undefined}
+      data-bordered={bordered ? "" : undefined}
+      data-interactive={interactive ? "" : undefined}
+      className={cn(
+        striped && "[&_tr:nth-child(even)]:bg-background-200",
+        bordered && "[&_td+td]:border-l [&_th+th]:border-l [&_td]:border-gray-alpha-400 [&_th]:border-gray-alpha-400",
+        interactive && "[&_tr:hover]:bg-gray-alpha-100 [&_tr]:cursor-pointer",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 export function TableFooter({
@@ -112,13 +142,15 @@ export function TableFooter({
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "bg-gray-100 border-t border-[var(--gray-alpha-400)] font-medium",
+        "bg-background-200 border-t border-gray-alpha-400 font-medium",
         className,
       )}
       {...props}
     />
   );
 }
+
+/* -------------------------------- Rows ------------------------------- */
 
 export type TableRowProps = React.HTMLAttributes<HTMLTableRowElement>;
 
@@ -130,8 +162,7 @@ export function TableRow({
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b border-[var(--gray-alpha-400)] last:shadow-none",
-        "transition-colors hover:bg-[var(--menu-item-hover)]",
+        "border-b border-gray-alpha-400 last:border-b-0",
         className,
       )}
       {...props}
@@ -139,11 +170,11 @@ export function TableRow({
   );
 }
 
+/* -------------------------------- Cells ------------------------------ */
+
 export interface TableHeadProps
   extends React.ThHTMLAttributes<HTMLTableCellElement> {
-  /** Text alignment for the header cell content. Maps to text-{align}
-   *  rather than the legacy `align` attribute so it composes with the
-   *  rest of the Tailwind class chain. */
+  /** Text alignment for the header cell content. */
   align?: "left" | "center" | "right";
 }
 
@@ -156,8 +187,7 @@ export function TableHead({
     <th
       data-slot="table-head"
       className={cn(
-        "h-9 px-3 py-2 text-label-12 font-semibold uppercase tracking-tight text-gray-800",
-        "whitespace-nowrap",
+        "h-9 px-3 py-2 text-label-11 font-normal text-gray-800 whitespace-nowrap",
         align === "right" && "text-right",
         align === "center" && "text-center",
         align === "left" && "text-left",
@@ -182,8 +212,7 @@ export function TableCell({
     <td
       data-slot="table-cell"
       className={cn(
-        "px-3 py-3 align-middle",
-        "tracking-[-0.005em]",
+        "px-3 py-2.5 align-middle",
         align === "right" && "text-right tabular-nums",
         align === "center" && "text-center",
         align === "left" && "text-left",
@@ -194,6 +223,8 @@ export function TableCell({
   );
 }
 
+/* ------------------------------ Caption ------------------------------ */
+
 export type TableCaptionProps = React.HTMLAttributes<HTMLTableCaptionElement>;
 
 export function TableCaption({
@@ -203,10 +234,7 @@ export function TableCaption({
   return (
     <caption
       data-slot="table-caption"
-      className={cn(
-        "mt-3 text-label-12 text-gray-800 text-left",
-        className,
-      )}
+      className={cn("mt-3 text-label-12 text-gray-800 text-left", className)}
       {...props}
     />
   );
