@@ -107,7 +107,7 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
       invalid,
       className,
       inputClassName,
-      tagVariant = "secondary",
+      tagVariant = "default",
       placeholder,
       onKeyDown,
       ...inputProps
