@@ -134,7 +134,7 @@ export function ModalDemo() {
               />
             </div>
           </ModalBody>
-          <ModalActions className="sm:justify-between">
+          <ModalActions>
             <ModalAction onClick={() => setDestructive(false)}>
               Cancel
             </ModalAction>

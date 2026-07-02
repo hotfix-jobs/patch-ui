@@ -303,7 +303,7 @@ export function ModalActions({
         "flex gap-2 border-t border-gray-alpha-400 px-5 py-3",
         stacked
           ? "flex-col"
-          : "flex-col-reverse sm:flex-row sm:justify-end",
+          : "flex-col-reverse sm:flex-row sm:justify-between",
         className,
       )}
       {...props}
