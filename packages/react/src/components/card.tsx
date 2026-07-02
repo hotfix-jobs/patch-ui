@@ -26,6 +26,14 @@ export interface CardProps extends useRender.ComponentProps<"div"> {
   selected?: boolean;
 }
 
+/**
+ * Card — a surface primitive. Bordered, rounded, tokenized. Compose with
+ * boolean props (`border`, `hoverable`, `shadow`, `secondary`, `borderBetween`,
+ * `direction`) to fit the surface you need.
+ *
+ * Card is intentionally content-agnostic — for structured header/content/
+ * footer layouts (settings pages, plan pickers), reach for `Section`.
+ */
 export function Card({
   className,
   border,
@@ -62,163 +70,6 @@ export function Card({
     "data-slot": "card",
     "data-selected": selected || undefined,
     "aria-selected": selected || undefined,
-  };
-
-  return useRender({
-    defaultTagName: "div",
-    props: mergeProps<"div">(defaultProps, props),
-    render,
-  });
-}
-
-export function CardHeader({
-  className,
-  render,
-  ...props
-}: useRender.ComponentProps<"div">): React.ReactElement {
-  const defaultProps = {
-    className: cn(
-      "grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-5 py-4 has-data-[slot=card-action]:grid-cols-[1fr_auto]",
-      className,
-    ),
-    "data-slot": "card-header",
-  };
-
-  return useRender({
-    defaultTagName: "div",
-    props: mergeProps<"div">(defaultProps, props),
-    render,
-  });
-}
-
-export function CardTitle({
-  className,
-  render,
-  ...props
-}: useRender.ComponentProps<"div">): React.ReactElement {
-  const defaultProps = {
-    className: cn("text-copy-18 font-medium leading-tight tracking-tight text-gray-1000", className),
-    "data-slot": "card-title",
-  };
-
-  return useRender({
-    defaultTagName: "div",
-    props: mergeProps<"div">(defaultProps, props),
-    render,
-  });
-}
-
-export function CardDescription({
-  className,
-  render,
-  ...props
-}: useRender.ComponentProps<"div">): React.ReactElement {
-  const defaultProps = {
-    className: cn("text-copy-14 text-gray-900", className),
-    "data-slot": "card-description",
-  };
-
-  return useRender({
-    defaultTagName: "div",
-    props: mergeProps<"div">(defaultProps, props),
-    render,
-  });
-}
-
-export function CardAction({
-  className,
-  render,
-  ...props
-}: useRender.ComponentProps<"div">): React.ReactElement {
-  const defaultProps = {
-    className: cn(
-      "col-start-2 row-span-2 row-start-1 inline-flex self-start justify-self-end",
-      className,
-    ),
-    "data-slot": "card-action",
-  };
-
-  return useRender({
-    defaultTagName: "div",
-    props: mergeProps<"div">(defaultProps, props),
-    render,
-  });
-}
-
-export function CardContent({
-  className,
-  render,
-  ...props
-}: useRender.ComponentProps<"div">): React.ReactElement {
-  const defaultProps = {
-    className: cn("flex-1 px-5 pb-5", className),
-    "data-slot": "card-content",
-  };
-
-  return useRender({
-    defaultTagName: "div",
-    props: mergeProps<"div">(defaultProps, props),
-    render,
-  });
-}
-
-export function CardFooter({
-  className,
-  render,
-  ...props
-}: useRender.ComponentProps<"div">): React.ReactElement {
-  const defaultProps = {
-    className: cn("flex items-center px-5 py-4 border-t border-gray-alpha-400", className),
-    "data-slot": "card-footer",
-  };
-
-  return useRender({
-    defaultTagName: "div",
-    props: mergeProps<"div">(defaultProps, props),
-    render,
-  });
-}
-
-export interface CardMetaProps extends useRender.ComponentProps<"div"> {
-  icon: React.ReactNode;
-  primary: React.ReactNode;
-  secondary?: React.ReactNode;
-  action?: React.ReactNode;
-}
-
-export function CardMeta({
-  className,
-  icon,
-  primary,
-  secondary,
-  action,
-  render,
-  ...props
-}: CardMetaProps): React.ReactElement {
-  const defaultProps = {
-    className: cn(
-      "flex items-center justify-between gap-3 border-t border-gray-alpha-400 px-5 py-4",
-      className,
-    ),
-    "data-slot": "card-meta",
-    children: (
-      <>
-        <div className="flex min-w-0 items-center gap-3">
-          <div className="shrink-0">{icon}</div>
-          <div className="flex min-w-0 flex-col">
-            <span className="truncate text-label-13 font-medium text-gray-1000 leading-tight">
-              {primary}
-            </span>
-            {secondary && (
-              <span className="truncate text-label-12 text-gray-800 leading-tight">
-                {secondary}
-              </span>
-            )}
-          </div>
-        </div>
-        {action && <div className="shrink-0">{action}</div>}
-      </>
-    ),
   };
 
   return useRender({

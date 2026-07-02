@@ -2,7 +2,9 @@ import { CardDemo } from "./card-demo";
 
 # Card
 
-A container for grouping related content and actions. Boolean composition (`border` / `hoverable` / `shadow` / `secondary` / `borderBetween` / `direction`) — mix and match to fit the surface. Compound sub-components (`CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`, `CardMeta`) available for structured layouts.
+A surface primitive. Bordered, rounded, tokenized. Compose with boolean props (`border`, `hoverable`, `shadow`, `secondary`, `borderBetween`, `direction`) to fit the surface you need.
+
+Card is intentionally content-agnostic. For structured header/content/footer patterns (settings pages, plan pickers), reach for `Section`.
 
 <Install name="card" />
 
@@ -13,42 +15,24 @@ A container for grouping related content and actions. Boolean composition (`bord
 ## Usage
 
 ```tsx
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-  Button,
-} from "@patchui/react";
+import { Card } from "@patchui/react";
 
-// Basic card — just a subtle bg
-<Card className="p-4">
-  <p>A simple card</p>
-</Card>
+// Bare card — subtle bg, rounded corners
+<Card className="p-4">A simple card</Card>
 
 // With border
-<Card border className="p-4">
-  <p>Bordered card</p>
-</Card>
+<Card border className="p-4">Bordered card</Card>
 
-// Hoverable (bg + border shift on hover)
-<Card border hoverable className="p-4">
-  <p>Hover me</p>
-</Card>
+// Hoverable (bg + border shift on hover, focus ring)
+<Card border hoverable className="p-4">Hover me</Card>
 
-// Secondary surface (gray-100 fill)
-<Card secondary className="p-4">
-  <p>Nested surface</p>
-</Card>
+// Elevated (shadow-card)
+<Card border shadow className="p-4">Elevated</Card>
 
-// With shadow
-<Card border shadow className="p-4">
-  <p>Elevated</p>
-</Card>
+// Secondary surface (gray-100 fill) — for nested cards
+<Card secondary className="p-4">Nested surface</Card>
 
-// List container with dividers between children
+// List container with dividers between direct children
 <Card border borderBetween>
   <div className="p-4">Option 1</div>
   <div className="p-4">Option 2</div>
@@ -61,27 +45,13 @@ import {
   <div className="p-4 flex-1">Right</div>
 </Card>
 
-// Structured layout with sub-components
-<Card border>
-  <CardHeader>
-    <CardTitle>Project Settings</CardTitle>
-    <CardDescription>Manage your project configuration.</CardDescription>
-  </CardHeader>
-  <CardContent>
-    <p>...</p>
-  </CardContent>
-  <CardFooter>
-    <Button size="sm">Save</Button>
-  </CardFooter>
-</Card>
-
 // Selected state (multi-pick galleries, plan comparison)
-<Card border selected>...</Card>
+<Card border selected className="p-4">
+  Selected plan
+</Card>
 ```
 
 ## Props
-
-### Card
 
 <PropsTable
   props={[
@@ -95,7 +65,7 @@ import {
       name: "hoverable",
       type: "boolean",
       default: "false",
-      description: "Adds a subtle hover state (bg shift and border darken).",
+      description: "Adds a subtle hover state (bg shift and border darken) plus a focus ring. Wrap in a `<Link>` or handle `onClick` for actual navigation.",
     },
     {
       name: "shadow",
@@ -142,19 +112,16 @@ import {
   ]}
 />
 
-### CardHeader / CardTitle / CardDescription / CardAction / CardContent / CardFooter
-
-Structured layout helpers. Use when the card has distinct sections (title area, body, footer with actions). Skip them entirely for simple cards — just pass `className="p-4"` and put content inline.
-
-### CardMeta
-
-Attribution row for the bottom of a card: `icon`, `primary`, `secondary`, and optional `action`. Handy for author lines ("Jane Doe · Product Designer") and provenance stamps.
-
 <Callout title="Notes">
 - Card composes with booleans, not variants. Mix `border` + `hoverable` + `shadow` + `secondary` to build the exact surface you need.
 - The default Card (no props) is a rounded surface with `background-100` fill. Add `border` to give it an outline.
 - `hoverable` makes the card interactive (cursor, hover state, focus ring). Wrap in a `<Link>` or handle `onClick` for actual navigation.
-- `borderBetween` turns the card into a list container — dividers between direct children handle themselves. Combine with `direction="row"` for horizontal splits.
-- Sub-components are opt-in. For a simple `<Card className="p-4">Hello</Card>` you don't need `CardHeader` at all.
-- **Migration from v1:** `variant="default"` → no prop. `variant="elevated"` → `secondary`. `variant="interactive"` → `hoverable border`. `variant="ghost"` → drop, use `className` for the specific styling you need.
+- `borderBetween` turns Card into a list container — dividers between direct children handle themselves. Combine with `direction="row"` for horizontal splits.
+- Structure your content directly inside Card with divs and text tokens (`text-heading-20`, `text-copy-14`). For a fully structured settings-page pattern (title, subtitle, footer with status + actions), use `<Section>` instead.
+- **Migration from v1:**
+  - `variant="default"` → no prop.
+  - `variant="elevated"` → `secondary`.
+  - `variant="interactive"` → `hoverable border`.
+  - `variant="ghost"` → drop; use `className` for the specific styling you need.
+  - `CardHeader` / `CardTitle` / `CardDescription` / `CardContent` / `CardFooter` / `CardAction` / `CardMeta` sub-components removed. Migrate to `<Section>` for structured settings-page cards, or hand-roll headers with divs + text tokens for one-off patterns.
 </Callout>

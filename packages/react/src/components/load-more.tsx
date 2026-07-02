@@ -46,7 +46,7 @@ export function LoadMore({
       aria-busy={loading || undefined}
       disabled={isDisabled}
       className={cn(
-        "relative inline-flex w-full items-center justify-center gap-2",
+        "relative inline-flex w-full items-center justify-center gap-2 cursor-pointer",
         "h-10 px-4 text-button-14 text-gray-1000",
         "bg-background-100 border border-gray-alpha-400",
         "hover:bg-gray-alpha-100 hover:border-gray-alpha-500",

@@ -45,18 +45,7 @@ export {
   RadioGroupPrimitive,
 } from "./components/radio";
 export { Slider, SliderValue, SliderPrimitive } from "./components/slider";
-export {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardAction,
-  CardContent,
-  CardFooter,
-  CardMeta,
-  type CardProps,
-  type CardMetaProps,
-} from "./components/card";
+export { Card, type CardProps } from "./components/card";
 export {
   Section,
   SectionHeader,
