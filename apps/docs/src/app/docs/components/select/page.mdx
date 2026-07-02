@@ -16,8 +16,8 @@ A native `<select>` wrapped in styled chrome. Uses the OS-native dropdown, which
 import { Select } from "@patchui/react";
 
 <Select
+  id="framework"
   label="Framework"
-  placeholder="Select a framework…"
   value={framework}
   onChange={(e) => setFramework(e.target.value)}
 >
@@ -26,8 +26,8 @@ import { Select } from "@patchui/react";
   <option value="svelte">Svelte</option>
 </Select>
 
-// With grouped options
-<Select label="Team member" placeholder="Assign to…">
+// Grouped options
+<Select id="assignee" label="Assignee" defaultValue="ana">
   <optgroup label="Design">
     <option value="ana">Ana</option>
     <option value="ben">Ben</option>
@@ -36,6 +36,19 @@ import { Select } from "@patchui/react";
     <option value="chris">Chris</option>
     <option value="dana">Dana</option>
   </optgroup>
+</Select>
+
+// Placeholder + validation
+<Select
+  id="plan"
+  label="Plan"
+  required
+  error="Please select a plan."
+  defaultValue=""
+  placeholder="Select a plan…"
+>
+  <option value="hobby">Hobby</option>
+  <option value="pro">Pro</option>
 </Select>
 ```
 
