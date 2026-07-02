@@ -80,9 +80,9 @@ import { TimeAgo } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- **Hydration-safe:** Server and initial-render output a stable absolute date (UTC); the relative label only appears after `useSyncExternalStore` confirms the client has hydrated. No flash, no warnings.
-- **Live updates:** When mounted, an internal tick state schedules the next refresh based on the *current* age — so a fresh `0m ago` ticks to `1m ago` 10s later, then to `2m ago` 30s after that, etc. Cancels itself once labels start changing by hour or longer.
-- **Future dates:** Pass an ISO string in the future and TimeAgo renders `in Xm`, `in Xh`, etc. — no math on your end. Edge case: a date less than 60s in the future renders as `Soon`.
-- **Months & years:** Uses ~30.44-day months and 365.25-day years (Gregorian average) so the label rolls over at sensible thresholds without timezone drift.
-- **Combined with Tooltip:** Wrap in a `Tooltip` to expose the precise absolute date on hover. One-line composition; no built-in tooltip prop.
+- Hydration-safe by construction: the server and first-client render emit a stable absolute UTC date. The relative label only takes over once `useSyncExternalStore` confirms hydration. No flash, no React warnings.
+- Live updates are scheduled from the current age. A fresh `0m ago` refreshes 10s later, then every 30s, then every minute, then every hour. Above one week the label rolls over too slowly to bother scheduling — the timer cancels itself.
+- Future dates render as `in Xm`, `in Xh`. A time less than a minute out renders as `Soon`.
+- Months and years use Gregorian averages (30.44 days / 365.25 days) so the rollover thresholds don't drift.
+- For a hover popover with the full absolute date, wrap in `<Tooltip>` — one-line composition. Vercel Geist ships `RelativeTimeCard` for that pattern; ours stays a pure text primitive so consumers pick their popover strategy.
 </Callout>
