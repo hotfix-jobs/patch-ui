@@ -416,7 +416,7 @@ export function MenuItem({
         ? "min-h-7 px-2 py-1.5 text-label-13"
         : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
       isError &&
-        "text-red-800 data-[active]:bg-red-300 data-[active]:text-red-800",
+        "text-red-800 data-[active]:bg-red-200 data-[active]:text-red-800",
       inset && "ps-8",
       className,
     ),
