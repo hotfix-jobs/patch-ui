@@ -141,7 +141,7 @@ export function Modal({
                 <motion.div
                   aria-hidden="true"
                   data-slot="modal-backdrop"
-                  className="absolute inset-0 bg-black/40"
+                  className="absolute inset-0 bg-white/60 dark:bg-black/60"
                   initial={reduceMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={reduceMotion ? undefined : { opacity: 0 }}
@@ -163,7 +163,7 @@ export function Modal({
                       data-slot="modal-popup"
                       {...getFloatingProps()}
                       className={cn(
-                        "relative flex max-h-[calc(100vh-2rem)] min-h-0 w-full min-w-0 origin-center flex-col rounded-[var(--radius-12)] bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-modal",
+                        "relative flex max-h-[calc(100vh-2rem)] min-h-0 w-full min-w-0 origin-center flex-col overflow-hidden rounded-[var(--radius-12)] bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-modal",
                         SIZE_CLASSES[size],
                         className,
                       )}
