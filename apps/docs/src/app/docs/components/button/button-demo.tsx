@@ -1,9 +1,8 @@
 "use client";
 
 import { Button } from "@patchui/react";
-import { ArrowRight, Download, Mail, Trash2 } from "lucide-react";
+import { ArrowRight, ChevronDown, Download, Mail, Plus, Trash2 } from "lucide-react";
 
-/** Showcases Button variants, sizes, icon usage, and loading state. */
 export function ButtonDemo() {
   return (
     <div className="flex flex-col gap-8">
@@ -13,6 +12,7 @@ export function ButtonDemo() {
           <Button variant="primary">Primary</Button>
           <Button variant="secondary">Secondary</Button>
           <Button variant="tertiary">Tertiary</Button>
+          <Button variant="warning">Warning</Button>
           <Button variant="error">Error</Button>
         </div>
       </div>
@@ -27,28 +27,47 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">With Icons</p>
+        <p className="mb-3 text-label-12 text-gray-800">Icon Only + Shapes</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
-          <Button icon={<ArrowRight className="h-4 w-4" />} iconPosition="right">
-            Next
-          </Button>
-          <Button variant="error" icon={<Trash2 className="h-4 w-4" />}>
-            Delete
-          </Button>
-          <Button variant="secondary" icon={<Download className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="square" size="tiny" icon={<Plus className="h-3 w-3" />} />
+          <Button aria-label="Add" shape="square" size="sm" icon={<Plus className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="square" icon={<Plus className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="square" size="lg" icon={<Plus className="h-5 w-5" />} />
+          <Button aria-label="Add" shape="circle" size="sm" icon={<Plus className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="circle" icon={<Plus className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="circle" size="lg" icon={<Plus className="h-5 w-5" />} />
         </div>
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Apply with arrow</p>
+        <p className="mb-3 text-label-12 text-gray-800">With Icons</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
+          <Button icon={<ChevronDown className="h-4 w-4" />} iconPosition="right">
+            Menu
+          </Button>
+          <Button variant="error" icon={<Trash2 className="h-4 w-4" />}>
+            Delete
+          </Button>
+          <Button variant="secondary" icon={<Download className="h-4 w-4" />}>
+            Download
+          </Button>
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-3 text-label-12 text-gray-800">Rounded marketing shape</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button
+            shape="rounded"
             variant="primary"
             icon={<ArrowRight className="h-4 w-4" />}
             iconPosition="right"
           >
-            Apply Now
+            Start Free Trial
+          </Button>
+          <Button shape="rounded" variant="secondary">
+            Learn More
           </Button>
         </div>
       </div>

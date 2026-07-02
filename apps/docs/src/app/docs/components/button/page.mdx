@@ -2,7 +2,7 @@ import { ButtonDemo } from "./button-demo";
 
 # Button
 
-A polymorphic button component with four variants, three sizes, icon support, and a loading state.
+A polymorphic button component with five variants, four sizes, icon support, three corner shapes, and a loading state. Aligned to Vercel Geist's Button spec.
 
 <Install name="button" />
 
@@ -18,19 +18,26 @@ import { Button } from "@patchui/react";
 // Basic
 <Button variant="primary">Deploy Project</Button>
 
-// With icon
-<Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
+// Variants
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="tertiary">Tertiary</Button>
+<Button variant="warning">Warning</Button>
+<Button variant="error">Error</Button>
 
-// Icon only
-<Button variant="secondary" icon={<Download className="h-4 w-4" />} />
+// Sizes: tiny is for icon-only rails
+<Button size="tiny" aria-label="Add" icon={<Plus />} />
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
 
-// Trailing arrow
-<Button
-  variant="primary"
-  icon={<ArrowRight className="h-4 w-4" />}
-  iconPosition="right"
->
-  Apply Now
+// Icon-only + shape (aria-label required)
+<Button shape="square" aria-label="Add" icon={<Plus />} />
+<Button shape="circle" aria-label="Add" icon={<Plus />} />
+
+// Rounded marketing shape
+<Button shape="rounded" variant="primary" icon={<ArrowRight />} iconPosition="right">
+  Start Free Trial
 </Button>
 
 // Loading state
@@ -46,21 +53,27 @@ import { Button } from "@patchui/react";
   props={[
     {
       name: "variant",
-      type: '"primary" | "secondary" | "tertiary" | "error"',
+      type: '"primary" | "secondary" | "tertiary" | "warning" | "error"',
       default: '"primary"',
-      description: "The visual style of the button. Reserve `primary` for the single most important action on a view; use `error` only for destructive actions.",
+      description: "The visual style. Reserve `primary` for the single most important action on a view; use `error` only for destructive actions.",
     },
     {
       name: "size",
-      type: '"sm" | "md" | "lg"',
+      type: '"tiny" | "sm" | "md" | "lg"',
       default: '"md"',
-      description: "The size of the button. Heights are 32 / 40 / 48px.",
+      description: "Height: 24 / 32 / 40 / 48px. `tiny` is intended for icon-only buttons in tight rails/menus.",
+    },
+    {
+      name: "shape",
+      type: '"square" | "circle" | "rounded"',
+      default: '"square"',
+      description: "Corner shape. `square` = 6px radius (default). `circle` = full radius (icon-only). `rounded` = 12px radius (marketing).",
     },
     {
       name: "icon",
       type: "ReactNode",
       default: "-",
-      description: "An icon element to render alongside the button text. When passed without children, renders as an icon-only button.",
+      description: "An icon element rendered alongside the button text. When passed without children, renders as an icon-only button.",
     },
     {
       name: "iconPosition",
@@ -90,7 +103,7 @@ import { Button } from "@patchui/react";
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes to apply.",
+      description: "Additional CSS classes.",
     },
     {
       name: "children",
@@ -102,12 +115,15 @@ import { Button } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- **Primary** fills with `gray-1000` for the single most important action on a view.
-- **Secondary** is `background-100` with a translucent border for equally common actions.
-- **Tertiary** is transparent with a subtle hover tint — use for low-emphasis actions.
+- **Primary** fills with `gray-1000`. Reserve for the single hero action on a view.
+- **Secondary** is `background-100` with a translucent border — the workhorse alternative.
+- **Tertiary** is transparent with a subtle hover tint — low-emphasis actions.
+- **Warning** is solid `amber-700` — reserve for actions with caution or reversible risk.
 - **Error** is solid `red-700` — reserve for destructive actions.
-- **Icon-only buttons:** pass an `icon` without `children`. The width becomes square to match the size (32 / 40 / 48).
-- **Polymorphic rendering:** pass `render={<a href="…" />}` to render as an anchor while keeping button styles.
+- **Icon-only:** pass `icon` without `children`. The width becomes square (or circular / rounded) to match the size. **`aria-label` is required** — a dev warning fires without it.
+- **`shape="rounded"` + marketing:** the 12px radius shape pairs with hero CTAs on marketing pages.
+- **Polymorphic:** pass `render={<a href="…" />}` to render as an anchor while keeping button styles.
 - **Loading state:** the button content is replaced with a spinner and the button is disabled to prevent double-submission.
-- **Touch targets:** all sizes include a minimum 44×44px touch target via a pseudo-element for accessibility on touch devices.
+- **Touch targets:** all sizes include a minimum 44×44px touch target via a pseudo-element.
+- **Content:** Title Case, verb + noun (`Deploy Project`, `Delete Member`). Avoid bare `Submit` or `OK`.
 </Callout>
