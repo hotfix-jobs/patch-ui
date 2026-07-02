@@ -76,9 +76,9 @@ export function Table({
   );
 
   // Default variant: outer chrome (border, radius, bg) lives on the
-  // container div so we can pad the table inside — cells stay inset
-  // from the outer border and the interactive hover pill has room to
-  // breathe without touching the edges.
+  // container div. Only pad the table inside when the body opts into
+  // interactive / striped, so the rounded row pill has breathing room
+  // from the outer border. Plain tables sit flush.
   if (variant === "default") {
     return (
       <div
@@ -88,7 +88,9 @@ export function Table({
           scrollable && "overflow-x-auto",
         )}
       >
-        <div className="p-1">{tableEl}</div>
+        <div className="has-[tbody[data-interactive]]:p-1 has-[tbody[data-striped]]:p-1">
+          {tableEl}
+        </div>
       </div>
     );
   }
