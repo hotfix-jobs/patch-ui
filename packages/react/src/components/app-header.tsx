@@ -101,7 +101,7 @@ export function AppHeaderNav({
 }
 
 export interface AppHeaderNavItemProps extends useRender.ComponentProps<"a"> {
-  /** Marks this item as the current page — draws a 2px gray-1000 underline. */
+  /** Marks this item as the current page. Renders as primary-color text (vs muted). */
   active?: boolean;
 }
 
@@ -113,14 +113,13 @@ export function AppHeaderNavItem({
 }: AppHeaderNavItemProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      // Nav item fills the header's vertical rhythm: py-3 (12px)
-      // matches AppHeader's py-3, -my-3 pulls the box up so the item
-      // extends edge-to-edge of the header. Underline pseudo lives at
-      // the very bottom, overlapping the header's border-b hairline
-      // so it reads as a proper "current tab" indicator.
-      "relative py-3 -my-3 text-copy-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+      "text-copy-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+      // Active state is just color contrast — inactive items sit at
+      // gray-800, active items lift to gray-1000. Matches Vercel across
+      // marketing + dashboard headers. Consumers who want an underline
+      // can add `after:` styling via className.
       active
-        ? "text-gray-1000 after:absolute after:-bottom-px after:left-0 after:right-0 after:h-[2px] after:bg-gray-1000"
+        ? "text-gray-1000 font-medium"
         : "text-gray-800 hover:text-gray-1000",
       className,
     ),
