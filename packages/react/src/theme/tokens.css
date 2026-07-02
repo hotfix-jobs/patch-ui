@@ -127,10 +127,19 @@
   --pink-900: #6d0031;
   --pink-1000: #40001d;
 
-  /* Semantic role aliases */
-  --error: var(--red-700);
-  --success: var(--green-700);
-  --warning: var(--amber-700);
+  /* Semantic role aliases — fixed hex so status colors read the same
+     in both themes. Status intent (destructive, warning, success)
+     doesn't shift meaning between light and dark, so the fill shouldn't
+     either. Values pulled from Vercel Geist red/amber/blue-800. */
+  --error: #ea001d;
+  --error-hover: #c00019;
+  --error-active: #9c0015;
+  --warning: #f5a623;
+  --warning-hover: #d68910;
+  --warning-active: #a97007;
+  --success: #0070f3;
+  --success-hover: #0060d0;
+  --success-active: #004fa8;
 
   /* Radius */
   --radius-6: 6px;
@@ -382,8 +391,14 @@
   --color-pink-1000: var(--pink-1000);
 
   --color-error: var(--error);
-  --color-success: var(--success);
+  --color-error-hover: var(--error-hover);
+  --color-error-active: var(--error-active);
   --color-warning: var(--warning);
+  --color-warning-hover: var(--warning-hover);
+  --color-warning-active: var(--warning-active);
+  --color-success: var(--success);
+  --color-success-hover: var(--success-hover);
+  --color-success-active: var(--success-active);
 
   --radius-6: var(--radius-6);
   --radius-12: var(--radius-12);
