@@ -144,6 +144,11 @@ export {
   type MiddleTruncateProps,
 } from "./components/middle-truncate";
 export {
+  Scroller,
+  type ScrollerProps,
+  type ScrollerOverflow,
+} from "./components/scroller";
+export {
   Tabs,
   TabsList,
   TabsTrigger,

@@ -547,6 +547,23 @@
       ]
     },
     {
+      "name": "scroller",
+      "type": "registry:ui",
+      "title": "Scroller",
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/scroller.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/scroller.tsx"
+        }
+      ]
+    },
+    {
       "name": "search-input",
       "type": "registry:ui",
       "title": "Search Input",

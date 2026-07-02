@@ -46,6 +46,7 @@ export const navigation: NavGroup[] = [
       { title: "Pagination", href: "/docs/components/pagination" },
       { title: "Progress", href: "/docs/components/progress" },
       { title: "Radio", href: "/docs/components/radio" },
+      { title: "Scroller", href: "/docs/components/scroller" },
       { title: "Section", href: "/docs/components/section" },
       { title: "SegmentedToggle", href: "/docs/components/segmented-toggle" },
       { title: "Select", href: "/docs/components/select" },
