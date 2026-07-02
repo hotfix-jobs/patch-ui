@@ -95,11 +95,6 @@ export const navigation: NavGroup[] = [
     ],
   },
   {
-    title: "Typography",
-    items: [
-    ],
-  },
-  {
     title: "Utilities",
     items: [
       { title: "Kbd", href: "/docs/components/kbd" },
