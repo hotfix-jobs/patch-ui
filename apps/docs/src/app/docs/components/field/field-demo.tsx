@@ -8,15 +8,15 @@ import {
   Input,
 } from "@patchui/react";
 
-/** Showcases Field compound: required, optional, error, disabled. */
+function Label({ children }: { children: React.ReactNode }) {
+  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
+}
+
 export function FieldDemo() {
   return (
     <div className="flex w-full flex-col gap-8">
-      {/* Basic Field */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Basic Field
-        </p>
+        <Label>Basic Field</Label>
         <Field className="max-w-sm">
           <FieldLabel>Username</FieldLabel>
           <FieldDescription>Choose a unique username for your account.</FieldDescription>
@@ -24,11 +24,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      {/* Required */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Required label
-        </p>
+        <Label>Required label</Label>
         <Field className="max-w-sm">
           <FieldLabel required>Email</FieldLabel>
           <FieldDescription>We&apos;ll use this to send notifications.</FieldDescription>
@@ -37,11 +34,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      {/* Optional */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Optional label
-        </p>
+        <Label>Optional label</Label>
         <Field className="max-w-sm">
           <FieldLabel optional>Phone</FieldLabel>
           <FieldDescription>Used for SMS notifications only.</FieldDescription>
@@ -49,11 +43,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      {/* Invalid / Error State */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Error State
-        </p>
+        <Label>Error state</Label>
         <Field invalid className="max-w-sm">
           <FieldLabel required>Password</FieldLabel>
           <FieldDescription>Must be at least 8 characters.</FieldDescription>
@@ -62,11 +53,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      {/* Disabled Field */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Disabled
-        </p>
+        <Label>Disabled</Label>
         <Field disabled className="max-w-sm">
           <FieldLabel>Organization</FieldLabel>
           <FieldDescription>This field cannot be changed.</FieldDescription>

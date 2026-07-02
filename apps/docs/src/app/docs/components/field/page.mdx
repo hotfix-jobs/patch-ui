@@ -2,7 +2,15 @@ import { FieldDemo } from "./field-demo";
 
 # Field
 
-A compound component for building accessible form fields with labels, descriptions, validation errors, and control binding. Wraps Base UI's Field primitive with Patch UI styling.
+A compound component for form fields that integrate with `<Form>` validation. Wraps Base UI's Field primitive with our styling.
+
+**When to use Field vs `<Input label="…" error="…" />`**
+
+- **Reach for `Input.label` / `Input.error`** when it's a single input, standalone or inside a hand-rolled form. It's one prop instead of five elements.
+- **Reach for Field** when the form uses `<Form>` for native validation on submit — Field automatically wires validity state, and `FieldError` shows / hides based on that state without you managing `useState` per input.
+- **Also Field** when a single label covers a group of controls (a RadioGroup, a Checkbox multi-select) — the label describes the group, not any single control.
+
+**Naming note:** Vercel Geist has a `Fieldset` component that's a completely different pattern — a section card with a title, subtitle, content, and footer with actions (settings-page section). If you need that, compose it with `<Card>` + heading + footer for now.
 
 <Install name="field" />
 
@@ -229,12 +237,12 @@ import {
 
 
 <Callout title="Notes">
-- **Automatic labeling:** `FieldLabel` and `FieldDescription` are automatically connected to the field control via `aria-labelledby` and `aria-describedby`.
-- **FieldControl vs Input:** You can use either the native `FieldControl` (renders an `<input>`) or any Base UI input component (Input, Checkbox, Select, etc.) as the field's control - they integrate with Field automatically.
-- **FieldValidity:** Use as a render prop to access the field's full validity state for custom validation UI.
-- **FieldItem:** Used inside Field to group checkbox or radio items when building multi-option field groups.
-- **Validation modes:** Set `validationMode` on Field to control when validation fires. `"onSubmit"` (default) validates on form submit, `"onBlur"` on focus loss, and `"onChange"` on every keystroke.
-- **Required / Optional indicators:** `<FieldLabel required>` and `<FieldLabel optional>` are visual hints only — they're `aria-hidden`. The underlying `<input required>` (or `validate` prop on Field) is what makes a field actually required.
-- **FieldError motion:** When the error message appears, it fades in with a subtle 2px slide via `motion`. Exit is instant (Base UI manages unmount). Respects `prefers-reduced-motion`.
-- **Form spacing:** `Form` renders with `gap-4` (16px) between fields for clearer separation.
+- `FieldLabel` and `FieldDescription` wire `aria-labelledby` and `aria-describedby` on the control automatically — no manual `htmlFor` / `id` matching needed.
+- `FieldControl` can be `<Input>`, `<Checkbox>`, `<Select>`, or any Base UI control. Field integrates with all of them via the shared primitive.
+- `FieldError` prints a browser default validation message when it has no children. Pass children to override with your own copy.
+- `FieldValidity` is a render prop for accessing the whole validity state (custom UI, conditional descriptions, etc.).
+- `FieldItem` groups checkbox / radio rows inside a Field so the group label ties to every child.
+- `validationMode` on Field wins over `<Form>`'s mode: `"onSubmit"` (default), `"onBlur"`, or `"onChange"`. Use `validationDebounceTime` to throttle onChange validation.
+- The required `*` and optional `(optional)` label markers are `aria-hidden`. The `required` attribute on the underlying input is what actually enforces the constraint.
+- Error message animates in with a small fade + 2px slide; unmount is instant so users see errors dismiss the moment they fix the field. Reduced-motion respected.
 </Callout>
