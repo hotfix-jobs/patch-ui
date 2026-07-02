@@ -84,5 +84,5 @@ import { TimeAgo } from "@patchui/react";
 - Live updates are scheduled from the current age. A fresh `0m ago` refreshes 10s later, then every 30s, then every minute, then every hour. Above one week the label rolls over too slowly to bother scheduling — the timer cancels itself.
 - Future dates render as `in Xm`, `in Xh`. A time less than a minute out renders as `Soon`.
 - Months and years use Gregorian averages (30.44 days / 365.25 days) so the rollover thresholds don't drift.
-- For a hover popover with the full absolute date, wrap in `<Tooltip>` — one-line composition. Vercel Geist ships `RelativeTimeCard` for that pattern; ours stays a pure text primitive so consumers pick their popover strategy.
+- For a hover popover with the full absolute date, wrap in `<Tooltip>` — one-line composition.
 </Callout>

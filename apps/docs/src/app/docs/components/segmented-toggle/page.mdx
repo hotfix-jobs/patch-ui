@@ -111,5 +111,4 @@ import { LayoutGrid, Rows3 } from "lucide-react";
 - Icon-only items need their own `aria-label` — the icon alone doesn't announce the choice.
 - Container is `role="radiogroup"` with `aria-label`; items are `role="radio"` with `aria-checked`. Only the selected item is in the Tab order. Arrows / Home / End move within the group.
 - Multiple SegmentedToggles on the same page each get a unique `layoutId` namespace via `useId`, so pills don't cross-animate.
-- Naming note: what Vercel Geist calls `Switch` is this pattern (mutually-exclusive segmented selector). Their naming clashes with the slider `Switch` — we keep SegmentedToggle for clarity.
 </Callout>

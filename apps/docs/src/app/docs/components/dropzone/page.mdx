@@ -143,5 +143,4 @@ const [files, setFiles] = useState<File[]>([]);
 - Dropzone is UI-only. It collects files into `value` (controlled) or internal state (uncontrolled). Upload logic lives in your `onValueChange` handler — call `fetch`, your storage SDK, whatever your pipeline is.
 - Set `progress` (`number | null`) to shift the whole component into an uploading state: the file rows swap their size text for a `<Progress>` bar, and interaction is disabled until you clear it.
 - Pass a `renderFile` if you need a fully custom row (preview thumbnail, per-file cancel, retry button). Default row shows a file icon, name, size, and an × to remove.
-- Not in Vercel Geist — this is a Patch extension because file upload is a common product need.
 </Callout>

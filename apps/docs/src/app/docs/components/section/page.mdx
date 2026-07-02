@@ -4,8 +4,6 @@ import { SectionDemo } from "./section-demo";
 
 An opinionated settings-page primitive: bordered card with a structured header (title + subtitle), optional content body, and a two-column footer (status text on the left, action buttons on the right).
 
-Aligned to Vercel Geist's Fieldset pattern — we renamed it to `Section` because "Fieldset" collides with the HTML `<fieldset>` element (which means form-field grouping, not this).
-
 Different from `Card`, which is a general-purpose surface primitive (mix-and-match booleans). Reach for Section when the page reads as "here's a setting, here's how to save it."
 
 <Install name="section" />
@@ -102,6 +100,5 @@ Each accepts `className` for overrides and `render` for polymorphic rendering (c
 - Section is opinionated on layout: `SectionFooter` uses `justify-between`, so status stretches left and actions stretch right. Skip either side and the other aligns naturally.
 - When only actions are present (no status text), the buttons will right-align — no need to add a spacer.
 - Section is a `<section>` element; `SectionTitle` renders as `<h3>` by default. If the parent already has an `<h2>`, that keeps the outline clean. Adjust with `render={<h2 />}` if the heading level needs to shift.
-- Naming note: Vercel Geist calls this `Fieldset`. We renamed it to `Section` because "Fieldset" is an HTML element with a different job (form-field grouping).
 - For general-purpose surfaces (nested cards, hoverable rows, dashed drop zones), reach for `<Card>` — it composes with `border` / `hoverable` / `shadow` / `secondary` / `borderBetween` boolean props.
 </Callout>

@@ -134,5 +134,4 @@ const [plan, setPlan] = useState("standard");
 - `required` and `disabled` live on the `RadioGroup`, not individual radios. Required-on-a-single-radio is meaningless.
 - Arrow keys move selection within the group. Tab moves to the next field, not the next radio.
 - Bare radios (no children) work for custom layouts. Always pass `aria-label` — a nameless radio is broken for screen readers.
-- Naming note: what Geist calls `RadioGroupItem` we call `Radio` with children. The bare `Radio` (no children) matches Geist's standalone `Radio`.
 </Callout>

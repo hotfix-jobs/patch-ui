@@ -10,7 +10,7 @@ A compound component for form fields that integrate with `<Form>` validation. Wr
 - **Reach for Field** when the form uses `<Form>` for native validation on submit — Field automatically wires validity state, and `FieldError` shows / hides based on that state without you managing `useState` per input.
 - **Also Field** when a single label covers a group of controls (a RadioGroup, a Checkbox multi-select) — the label describes the group, not any single control.
 
-**Naming note:** Vercel Geist has a `Fieldset` component that's a completely different pattern — a section card with a title, subtitle, content, and footer with actions (settings-page section). If you need that, compose it with `<Card>` + heading + footer for now.
+For structured settings-page cards (title + subtitle + footer with status and actions), reach for `Section` instead — it's a different primitive for that specific layout.
 
 <Install name="field" />
 
