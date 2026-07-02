@@ -72,27 +72,6 @@
       ]
     },
     {
-      "name": "alert",
-      "type": "registry:ui",
-      "title": "Alert",
-      "dependencies": [
-        "class-variance-authority",
-        "lucide-react",
-        "motion"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/alert.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/alert.tsx"
-        }
-      ]
-    },
-    {
       "name": "app-header",
       "type": "registry:ui",
       "title": "App Header",
@@ -693,7 +672,6 @@
         "react-remove-scroll"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],

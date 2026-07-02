@@ -86,7 +86,6 @@ export const navigation: NavGroup[] = [
   {
     title: "Feedback",
     items: [
-      { title: "Alert", href: "/docs/components/alert" },
       { title: "Progress", href: "/docs/components/progress" },
       { title: "Toast", href: "/docs/components/toast" },
       { title: "Spinner", href: "/docs/components/spinner" },
