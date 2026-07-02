@@ -316,6 +316,12 @@
   100% { transform: translateX(400%); }
 }
 
+/* Skeleton placeholder: gentle opacity pulse */
+@keyframes patch-skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   :root {
