@@ -149,6 +149,9 @@ export function TableBody({
       data-bordered={bordered ? "" : undefined}
       data-interactive={interactive ? "" : undefined}
       className={cn(
+        // Last row drops its bottom border so it doesn't double up with
+        // the outer container's border.
+        "[&_tr:last-child>td]:border-b-0",
         // Row hover applies bg to individual cells (border-collapse: separate
         // means tr bg doesn't render as a single pill). Rounded corners on
         // first and last cell of the hovered / striped row give the
