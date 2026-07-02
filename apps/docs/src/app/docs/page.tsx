@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Palette, Package, ShieldCheck } from "lucide-react";
+import { Grid } from "@patchui/react";
 
 export default function DocsPage() {
   return (
@@ -15,7 +16,7 @@ export default function DocsPage() {
         registry.
       </p>
 
-      <div className="mt-10 grid gap-px overflow-hidden rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-gray-alpha-400 sm:grid-cols-2">
+      <Grid columns={{ sm: 1, md: 2 }} className="mt-10">
         <IntroCard
           icon={<Package className="size-4" />}
           title="Getting Started"
@@ -40,7 +41,7 @@ export default function DocsPage() {
           body="Buttons, inputs, overlays, tables, calendars, and blocks. All copy-in, all tokenized."
           href="/docs/components/button"
         />
-      </div>
+      </Grid>
 
       <div className="mt-12 rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-background-200 p-6">
         <h2 className="text-copy-16 font-semibold text-gray-1000">

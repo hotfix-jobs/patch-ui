@@ -1,0 +1,108 @@
+import { GridDemo } from "./grid-demo";
+
+# Grid
+
+A decorative layout primitive with visible hairline guides between cells. Reach for it when the grid structure itself is part of the design: marketing pages, documentation landings, feature grids, showcase walls.
+
+The hairlines are drawn with the `gap-px + colored parent background` trick. A single 1px `gray-alpha-400` gutter shows through between cells, and each `GridCell` covers the parent background with an opaque fill except in the gutters. Inspired by Vercel Geist's Grid.
+
+<Install name="grid" />
+
+<ComponentPreview label="Grid">
+  <GridDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Grid, GridCell } from "@patchui/react";
+
+// Basic
+<Grid columns={3}>
+  <GridCell>Auto</GridCell>
+  <GridCell>Auto</GridCell>
+  <GridCell>Auto</GridCell>
+</Grid>
+
+// Responsive
+<Grid columns={{ sm: 1, md: 2, lg: 3 }}>
+  {items.map((i) => <GridCell key={i.id}>{i.label}</GridCell>)}
+</Grid>
+
+// Cell spanning two columns
+<Grid columns={3}>
+  <GridCell column="1 / 3">Wide</GridCell>
+  <GridCell>Third</GridCell>
+</Grid>
+
+// Guides off (plain responsive columns)
+<Grid columns={3} guides={false} className="gap-3">
+  <GridCell>…</GridCell>
+</Grid>
+```
+
+## Grid props
+
+<PropsTable
+  props={[
+    {
+      name: "columns",
+      type: "number | { sm?: number; md?: number; lg?: number }",
+      default: "-",
+      description: "Column count. Number for a fixed grid, or a responsive object for breakpoint-specific reflow at sm/md/lg (40rem / 48rem / 64rem).",
+    },
+    {
+      name: "rows",
+      type: "number | { sm?: number; md?: number; lg?: number }",
+      default: "-",
+      description: "Row count. Usually left undefined so rows flow from content. Set for explicit aspect-ratio grids.",
+    },
+    {
+      name: "guides",
+      type: "boolean",
+      default: "true",
+      description: "Show hairline dividers between cells. Set false for a plain CSS grid without dividers.",
+    },
+    {
+      name: "render",
+      type: "ReactElement",
+      default: "<div />",
+      description: "Base UI render prop. Swap the root element (e.g. <section />) without wrapping.",
+    },
+  ]}
+/>
+
+## GridCell props
+
+<PropsTable
+  props={[
+    {
+      name: "column",
+      type: 'string | number | { sm?, md?, lg? }',
+      default: "-",
+      description: 'Column start / span. Number = start column (e.g. 2). String = span using CSS grid line syntax (e.g. "1 / 3" spans columns 1 through 2). Responsive object for breakpoint-specific values.',
+    },
+    {
+      name: "row",
+      type: 'string | number | { sm?, md?, lg? }',
+      default: "-",
+      description: "Row start / span. Same shape as column.",
+    },
+    {
+      name: "solid",
+      type: "boolean",
+      default: "true",
+      description: "Ensure this cell's opaque background covers the grid guides underneath. Set false for transparent cells where guides should show through.",
+    },
+    {
+      name: "render",
+      type: "ReactElement",
+      default: "<div />",
+      description: "Base UI render prop.",
+    },
+  ]}
+/>
+
+<Callout title="When not to use Grid">
+For plain responsive content that doesn't need visible guides, reach for Tailwind's `grid grid-cols-*` utilities directly. Grid is only worth its weight when the hairline dividers are part of the visual design.
+</Callout>

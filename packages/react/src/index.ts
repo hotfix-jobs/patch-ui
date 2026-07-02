@@ -28,6 +28,12 @@ export {
 export { Slider, SliderValue, SliderPrimitive } from "./components/slider";
 export { Card, type CardProps } from "./components/card";
 export {
+  Grid,
+  GridCell,
+  type GridProps,
+  type GridCellProps,
+} from "./components/grid";
+export {
   Section,
   SectionHeader,
   SectionTitle,

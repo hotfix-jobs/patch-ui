@@ -8,7 +8,7 @@ import {
 
 A single stylesheet (`tokens.css`) defines every color, size, and motion value in Patch UI. Components read from it through Tailwind utilities. Light and dark switch from one `.dark` class on `<html>`. No JavaScript required.
 
-The token scale structure (100→1000 with a consistent intent per step), the four-family typography scale, the two-tone background approach, and the specific palette hues are adapted from [Vercel Geist](https://vercel.com/geist). The implementation, the compound utility classes, and the `check:contrast` gate are ours. See [Credits](/docs/credits) for the full attribution.
+The system is inspired by [Vercel Geist](https://vercel.com/geist): the 100→1000 scale structure with a consistent intent per step, the four-family typography approach, and the two-tone background convention all come from there. The specific values vary: some (like the semantic status colors) track Geist directly, others (like the accent hues, radius steps, and motion timings) are adaptations or independent choices. The Tailwind v4 three-layer implementation, the compound utility classes, and the `check:contrast` gate are ours. See [Credits](/docs/credits) for the full attribution.
 
 ## Colors
 

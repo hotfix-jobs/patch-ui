@@ -38,11 +38,15 @@ const iconSizeBySize: Record<SwitchSize, string> = {
   lg: "[&_svg]:size-3.5",
 };
 
+// Status variants use the semantic role tokens (--success / --warning /
+// --error) instead of the -700 accent step. The accent scale inverts in
+// dark mode, so bg-green-700 becomes a light green which flips the
+// perceived status weight of the switch. Semantic tokens are theme-invariant.
 const onFillByVariant: Record<SwitchVariant, string> = {
   default: "data-checked:bg-gray-1000",
-  success: "data-checked:bg-green-700",
-  warning: "data-checked:bg-amber-700",
-  error: "data-checked:bg-red-700",
+  success: "data-checked:bg-success",
+  warning: "data-checked:bg-warning",
+  error: "data-checked:bg-error",
 };
 
 export function Switch({

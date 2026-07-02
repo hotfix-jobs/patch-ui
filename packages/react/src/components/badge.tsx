@@ -41,12 +41,19 @@ export const badgeVariants = cva(
       },
     },
     compoundVariants: [
-      // High contrast: solid saturated fill, light text
+      // High contrast: solid saturated fill, light text.
+      // Status variants use the semantic role tokens (--error / --warning /
+      // --success), not the -700 accent step. The accent scale inverts in
+      // dark mode (green-700 becomes a light green), which would leave
+      // white-on-light-green with no contrast. The semantic roles are
+      // fixed hex values that read identically in both themes.
       { variant: "default", contrast: "high", class: "bg-gray-1000 text-background-100" },
-      { variant: "success", contrast: "high", class: "bg-green-700 text-white" },
-      { variant: "warning", contrast: "high", class: "bg-amber-700 text-white" },
-      { variant: "error",   contrast: "high", class: "bg-red-700 text-white" },
-      // Low contrast: subtle tint, darker text
+      { variant: "success", contrast: "high", class: "bg-success text-white" },
+      { variant: "warning", contrast: "high", class: "bg-warning text-white" },
+      { variant: "error",   contrast: "high", class: "bg-error text-white" },
+      // Low contrast: subtle tint, darker text. The 100/900 pair inverts
+      // in dark mode (100 becomes very dark, 900 becomes very light), so
+      // dark-on-light in light mode becomes light-on-dark in dark mode.
       { variant: "default", contrast: "low", class: "bg-gray-200 text-gray-1000" },
       { variant: "success", contrast: "low", class: "bg-green-100 text-green-900" },
       { variant: "warning", contrast: "low", class: "bg-amber-100 text-amber-900" },

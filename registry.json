@@ -300,6 +300,25 @@
       ]
     },
     {
+      "name": "grid",
+      "type": "registry:ui",
+      "title": "Grid",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/grid.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/grid.tsx"
+        }
+      ]
+    },
+    {
       "name": "input",
       "type": "registry:ui",
       "title": "Input",

@@ -6,14 +6,15 @@ Patch UI didn't materialize in a vacuum. It builds on years of open-source work 
 
 ### Vercel Geist
 
-The visual language and design system come from [Vercel's Geist](https://vercel.com/geist). Specifically:
+The visual language and system design are inspired by [Vercel's Geist](https://vercel.com/geist). Specifically:
 
-- The color palette (gray + blue, red, amber, green, teal, purple, pink) and its `100`→`1000` scale structure with the intent contract at each step.
-- The four-family typography scale (heading, copy, label, button) and its size ladder.
-- The two-tone background approach (`background-100` / `background-200`) and the "dark surfaces share the canvas color" convention.
-- Several component API surfaces (Calendar, Scroller, ListRow, MiddleTruncate, Breadcrumb) modeled on Geist's equivalents.
+- The `100`→`1000` scale structure with the intent contract at each step (`100`–`300` fills, `400`–`600` borders, `700`–`800` solids, `900`–`1000` text) is Geist's model.
+- The palette selection (gray plus blue, red, amber, green, teal, purple, pink) and the four-family typography scale (heading, copy, label, button) follow Geist's structure.
+- The two-tone background approach (`background-100` / `background-200`) and the "dark surfaces share the canvas color" convention are directly Geist.
+- The semantic status colors (`--error`, `--warning`, `--success`) track Geist's red / amber / blue-800 values directly, per comments in `tokens.css`.
+- Several component API surfaces (Calendar, Scroller, ListRow, MiddleTruncate, Breadcrumb) are modeled on Geist's equivalents.
 
-Patch UI is not a fork or a port, and no React code was copied verbatim. But the tokens, palette values, and design decisions carry Geist's fingerprints intentionally. If the library feels familiar, that is why.
+The specific values vary in how close they are to Geist: some (semantic roles above) are direct, others (the accent hue values, the choice of ten scale steps per hue, the palette shortlist) are adaptations, and some (the radius set, the motion timings, the focus ring approach) are independent choices. Patch UI is not a fork or a port, and no React code was copied verbatim. But the system's DNA is Geist's, intentionally. If the library feels familiar, that is why.
 
 ### shadcn/ui
 

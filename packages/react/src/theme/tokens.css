@@ -1,4 +1,26 @@
 /* ---------------------------------------------------------------
+ * Patch UI design tokens.
+ *
+ * The system design is inspired by Vercel Geist (https://vercel.com/geist):
+ * the 100 -> 1000 scale structure with a consistent intent per step,
+ * the palette selection (gray + 7 accents), the four-family typography
+ * scale (heading / copy / label / button), and the two-tone background
+ * convention.
+ *
+ * The specific values vary in how close they are to Geist. Some
+ * (e.g. --error / --warning / --success below) track Geist directly,
+ * per inline comments. Others (the accent hue values, ten scale steps
+ * per hue) are adaptations. The radius set, motion timings, and focus
+ * ring approach are independent choices.
+ *
+ * What is ours: the Tailwind v4 three-layer implementation below
+ * (raw vars -> @theme inline bridge -> compound utility classes),
+ * the check:contrast gate, and every downstream component built on
+ * top.
+ *
+ * See apps/docs/src/app/docs/credits/page.mdx for the full attribution.
+ *
+ * ---------------------------------------------------------------
  * Layer 1: Runtime theme values
  *
  * Every token is defined here as a raw CSS custom property.

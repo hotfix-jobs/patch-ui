@@ -35,6 +35,7 @@ export const navigation: NavGroup[] = [
       { title: "EmptyState", href: "/docs/components/empty-state" },
       { title: "Field", href: "/docs/components/field" },
       { title: "Form", href: "/docs/components/form" },
+      { title: "Grid", href: "/docs/components/grid" },
       { title: "Input", href: "/docs/components/input" },
       { title: "Kbd", href: "/docs/components/kbd" },
       { title: "Label", href: "/docs/components/label" },

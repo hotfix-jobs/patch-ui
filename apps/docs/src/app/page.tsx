@@ -8,6 +8,8 @@ import {
   Breadcrumb,
   Button,
   Checkbox,
+  Grid,
+  GridCell,
   Input,
   Switch,
 } from "@patchui/react";
@@ -88,7 +90,7 @@ export default function Home() {
       {/* Showcase wall */}
       <section className="px-6 pb-24 md:px-12 lg:px-16">
         <div className="mx-auto w-full max-w-[1200px]">
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-gray-alpha-400 md:grid-cols-2 lg:grid-cols-3">
+          <Grid columns={{ sm: 1, md: 2, lg: 3 }}>
             <ShowcaseCell label="Buttons">
               <div className="flex flex-wrap items-center gap-2">
                 <Button size="sm">Primary</Button>
@@ -161,8 +163,7 @@ export default function Home() {
                 ]}
               />
             </ShowcaseCell>
-
-          </div>
+          </Grid>
         </div>
       </section>
 

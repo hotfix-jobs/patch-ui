@@ -23,11 +23,16 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   label?: string;
 }
 
+// Status variants use the semantic role tokens (--success / --warning /
+// --error) instead of the -700 accent step. The accent scale inverts in
+// dark mode (e.g. green-700 becomes a light green), which would flip the
+// "danger vs. thriving" reading of a progress bar. The semantic roles are
+// fixed hex values that read identically in both themes.
 const fillByVariant: Record<ProgressVariant, string> = {
   default: "bg-gray-1000",
-  success: "bg-green-700",
-  warning: "bg-amber-700",
-  error: "bg-red-700",
+  success: "bg-success",
+  warning: "bg-warning",
+  error: "bg-error",
 };
 
 const heightBySize: Record<ProgressSize, string> = {
