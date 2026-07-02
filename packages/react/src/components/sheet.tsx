@@ -226,8 +226,12 @@ export function SheetContent({
           // Floating rounded card, small inset from the viewport edges so
           // the backdrop peeks around it and all four corners can be seen.
           "fixed z-70 flex flex-col overflow-hidden bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-modal rounded-[var(--radius-12)]",
-          side === "right" && "top-4 bottom-4 right-4 w-full max-w-md",
-          side === "left" && "top-4 bottom-4 left-4 w-full max-w-md",
+          // Mobile: span across with left-4 + right-4 (fills width minus 16px per side).
+          // sm+: release the opposite-side anchor and cap width via max-w-md.
+          side === "right" &&
+            "top-4 bottom-4 right-4 left-4 sm:left-auto sm:w-full sm:max-w-md",
+          side === "left" &&
+            "top-4 bottom-4 left-4 right-4 sm:right-auto sm:w-full sm:max-w-md",
           side === "top" && "top-4 left-4 right-4",
           side === "bottom" && "bottom-4 left-4 right-4",
           className,
