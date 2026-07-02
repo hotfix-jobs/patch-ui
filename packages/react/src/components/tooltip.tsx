@@ -55,9 +55,9 @@ export function Tooltip({
   const handle = useMemo(() => TooltipPrimitive.createHandle(), []);
 
   return (
-    <>
+    <TooltipPrimitive.Provider delay={delay} closeDelay={closeDelay}>
       <TooltipPrimitive.Trigger handle={handle} render={children} />
-      <TooltipPrimitive.Root handle={handle} delay={delay} closeDelay={closeDelay}>
+      <TooltipPrimitive.Root handle={handle}>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Positioner
             side={side}
@@ -77,7 +77,7 @@ export function Tooltip({
           </TooltipPrimitive.Positioner>
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>
-    </>
+    </TooltipPrimitive.Provider>
   );
 }
 
