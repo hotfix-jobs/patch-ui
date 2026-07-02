@@ -382,15 +382,9 @@
   --shadow-modal: var(--shadow-modal);
   --shadow-tooltip: var(--shadow-tooltip);
 
-  --spacing-4: var(--space-4);
-  --spacing-8: var(--space-8);
-  --spacing-12: var(--space-12);
-  --spacing-16: var(--space-16);
-  --spacing-24: var(--space-24);
-  --spacing-32: var(--space-32);
-  --spacing-40: var(--space-40);
-  --spacing-64: var(--space-64);
-  --spacing-96: var(--space-96);
+  /* Spacing scale lives at :root as --space-* so h-N/p-N/gap-N keep using
+     Tailwind's default multiplier (--spacing = 0.25rem). Exposing named
+     --spacing-N here would collide with h-8/h-12/etc and break sizing. */
 
   --ease-standard: var(--ease-standard);
 
