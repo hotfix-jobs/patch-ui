@@ -3,7 +3,7 @@
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import type * as React from "react";
-import { cn } from "../utils";
+import { cn } from "../../utils";
 
 /**
  * AppHeader — patch-ui extension for consistent top-of-page chrome.

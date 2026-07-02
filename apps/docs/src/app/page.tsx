@@ -1,11 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Mail, Search, Settings } from "lucide-react";
 import {
-  AppHeader,
-  AppHeaderBrand,
-  AppHeaderNav,
-  AppHeaderNavItem,
-  AppHeaderRight,
   Avatar,
   AvatarFallback,
   AvatarGroup,
@@ -15,6 +10,13 @@ import {
   Input,
   Switch,
 } from "@patchui/react";
+import {
+  AppHeader,
+  AppHeaderBrand,
+  AppHeaderNav,
+  AppHeaderNavItem,
+  AppHeaderRight,
+} from "@patchui/react/blocks/app-header";
 
 export default function Home() {
   return (

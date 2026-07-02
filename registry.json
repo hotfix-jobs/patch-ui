@@ -72,25 +72,6 @@
       ]
     },
     {
-      "name": "app-header",
-      "type": "registry:ui",
-      "title": "App Header",
-      "dependencies": [
-        "@base-ui/react"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/app-header.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/app-header.tsx"
-        }
-      ]
-    },
-    {
       "name": "avatar",
       "type": "registry:ui",
       "title": "Avatar",
@@ -923,6 +904,24 @@
           "path": "registry/components/ui/tooltip.tsx",
           "type": "registry:ui",
           "target": "components/ui/tooltip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-header",
+      "type": "registry:block",
+      "title": "App Header",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "registry/blocks/app-header/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/app-header/index.tsx"
         }
       ]
     }

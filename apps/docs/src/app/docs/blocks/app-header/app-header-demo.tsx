@@ -2,11 +2,6 @@
 
 import { useState } from "react";
 import {
-  AppHeader,
-  AppHeaderBrand,
-  AppHeaderNav,
-  AppHeaderNavItem,
-  AppHeaderRight,
   Avatar,
   Button,
   Sheet,
@@ -15,6 +10,13 @@ import {
   SheetTitle,
   SheetBody,
 } from "@patchui/react";
+import {
+  AppHeader,
+  AppHeaderBrand,
+  AppHeaderNav,
+  AppHeaderNavItem,
+  AppHeaderRight,
+} from "@patchui/react/blocks/app-header";
 import { ChevronDown } from "lucide-react";
 
 const DASHBOARD_NAV = ["Home", "Jobs", "Insights", "Team"];

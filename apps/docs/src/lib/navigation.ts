@@ -22,7 +22,6 @@ export const navigation: NavGroup[] = [
     title: "Components",
     items: [
       { title: "Accordion", href: "/docs/components/accordion" },
-      { title: "AppHeader", href: "/docs/components/app-header" },
       { title: "Avatar", href: "/docs/components/avatar" },
       { title: "Badge", href: "/docs/components/badge" },
       { title: "Button", href: "/docs/components/button" },
@@ -65,6 +64,12 @@ export const navigation: NavGroup[] = [
       { title: "Toast", href: "/docs/components/toast" },
       { title: "Toggle", href: "/docs/components/toggle" },
       { title: "Tooltip", href: "/docs/components/tooltip" },
+    ],
+  },
+  {
+    title: "Blocks",
+    items: [
+      { title: "AppHeader", href: "/docs/blocks/app-header" },
     ],
   },
 ];

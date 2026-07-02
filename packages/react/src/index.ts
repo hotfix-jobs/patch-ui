@@ -49,18 +49,10 @@ export {
   type AvatarProps,
   type AvatarGroupProps,
 } from "./components/avatar";
-export {
-  AppHeader,
-  AppHeaderBrand,
-  AppHeaderNav,
-  AppHeaderNavItem,
-  AppHeaderRight,
-  type AppHeaderProps,
-  type AppHeaderBrandProps,
-  type AppHeaderNavProps,
-  type AppHeaderNavItemProps,
-  type AppHeaderRightProps,
-} from "./components/app-header";
+// AppHeader lives as a block under packages/react/src/blocks/app-header — consumers
+// pull it via `npx shadcn add @patchui/app-header` and own the copy for
+// per-app customization (brand, feature flags, auth wiring, etc.). Not
+// exported from the package index.
 export {
   Sheet,
   SheetTrigger,

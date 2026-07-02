@@ -8,9 +8,6 @@ import {
   NavigationMenuTrigger,
   NavigationMenuContent,
   NavigationMenuLink,
-  AppHeader,
-  AppHeaderBrand,
-  AppHeaderRight,
   Button,
   Sheet,
   SheetContent,
@@ -18,6 +15,11 @@ import {
   SheetTitle,
   SheetBody,
 } from "@patchui/react";
+import {
+  AppHeader,
+  AppHeaderBrand,
+  AppHeaderRight,
+} from "@patchui/react/blocks/app-header";
 
 function LinkCard({
   title,
