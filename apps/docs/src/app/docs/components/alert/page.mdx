@@ -85,6 +85,6 @@ import { Alert } from "@patchui/react";
 
 <Callout title="Notes">
 - **Motion:** Fades in with a subtle slide on mount, exits smoothly when dismissed via `AnimatePresence`. Respects `prefers-reduced-motion`.
-- **Tinted background:** Uses `color-mix(in oklab, var(--badge-*-text) 8%, var(--patch-surface))` so the variant color subtly tints the surface without overwhelming the content. Border is the same color at 30% opacity.
+- **Tinted background:** Uses `color-mix(in oklab, var(--badge-*-text) 8%, var(--background-100))` so the variant color subtly tints the surface without overwhelming the content. Border is the same color at 30% opacity.
 - **Icon color:** The default icon inherits the variant's color token (`--badge-success-text`, etc.). The body text stays neutral so the message reads cleanly.
 </Callout>

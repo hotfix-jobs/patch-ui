@@ -309,7 +309,7 @@ export function MenuPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border border-[var(--patch-border)] shadow-patch-popup outline-none focus:outline-none",
+                "z-[80] flex flex-col rounded-[var(--radius-6)] bg-background-100 border border-[var(--gray-alpha-400)] shadow-menu outline-none focus:outline-none",
                 density === "compact"
                   ? "not-[class*='w-']:min-w-32"
                   : "not-[class*='w-']:min-w-56",
@@ -366,7 +366,7 @@ export function MenuItem({
 
   const trailingCheck = selected && (
     <CheckIcon
-      className="ms-auto size-3.5 shrink-0 text-patch-text-tertiary"
+      className="ms-auto size-3.5 shrink-0 text-gray-800"
       strokeWidth={2.25}
     />
   );
@@ -390,12 +390,12 @@ export function MenuItem({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "cursor-default select-none rounded-[var(--radius-patch-xs)] text-patch-text outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         density === "compact"
-          ? "min-h-7 px-2 py-1.5 text-[length:var(--text-patch-control)]"
-          : "min-h-11 px-3 py-2.5 text-[length:var(--text-patch-body)] [&_svg:not([class*='size-'])]:size-[18px]",
+          ? "min-h-7 px-2 py-1.5 text-label-13"
+          : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
         variant === "destructive" &&
-          "text-patch-error data-[active]:text-patch-error",
+          "text-error data-[active]:text-error",
         inset && "ps-8",
         className,
       )}
@@ -409,7 +409,7 @@ export function MenuItem({
             {children}
             {trailingCheck}
           </span>
-          <span className="mt-0.5 truncate text-[length:var(--text-patch-mini)] font-normal text-patch-text-tertiary">
+          <span className="mt-0.5 truncate text-label-12 font-normal text-gray-800">
             {description}
           </span>
         </span>
@@ -461,10 +461,10 @@ export function MenuCheckboxItem({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-patch-xs)] text-patch-text outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         density === "compact"
-          ? "min-h-7 py-1.5 ps-2 pe-4 text-[length:var(--text-patch-control)]"
-          : "min-h-11 py-2.5 ps-3 pe-5 text-[length:var(--text-patch-body)]",
+          ? "min-h-7 py-1.5 ps-2 pe-4 text-label-13"
+          : "min-h-11 py-2.5 ps-3 pe-5 text-copy-14",
         className,
       )}
       {...getItemProps({
@@ -557,10 +557,10 @@ export function MenuRadioItem({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-patch-xs)] text-patch-text outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         density === "compact"
-          ? "min-h-7 py-1.5 ps-2 pe-4 text-[length:var(--text-patch-control)]"
-          : "min-h-11 py-2.5 ps-3 pe-5 text-[length:var(--text-patch-body)]",
+          ? "min-h-7 py-1.5 ps-2 pe-4 text-label-13"
+          : "min-h-11 py-2.5 ps-3 pe-5 text-copy-14",
         className,
       )}
       {...getItemProps({
@@ -631,7 +631,7 @@ export function MenuGroupLabel({
     <div
       data-slot="menu-label"
       className={cn(
-        "px-2 py-1.5 font-medium uppercase text-[length:var(--text-patch-micro)] tracking-[var(--tracking-patch-label)] text-patch-text-tertiary",
+        "px-2 py-1.5 font-medium uppercase text-label-12 tracking-tight text-gray-800",
         inset && "ps-8",
         className,
       )}
@@ -661,7 +661,7 @@ export function MenuShortcut({
   return (
     <kbd
       className={cn(
-        "ms-auto font-medium font-sans text-patch-text-tertiary text-xs tracking-widest",
+        "ms-auto font-medium font-sans text-gray-800 text-xs tracking-widest",
         className,
       )}
       data-slot="menu-shortcut"
@@ -716,10 +716,10 @@ export function MenuSubTrigger({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "flex cursor-default select-none items-center gap-2 rounded-[var(--radius-patch-xs)] text-patch-text outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[popup-open]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none",
+        "flex cursor-default select-none items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-[var(--menu-item-hover)] data-[popup-open]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none",
         density === "compact"
-          ? "min-h-7 px-2 py-1.5 text-[length:var(--text-patch-control)] [&_svg:not([class*='size-'])]:size-4"
-          : "min-h-11 px-3 py-2.5 text-[length:var(--text-patch-body)] [&_svg:not([class*='size-'])]:size-[18px]",
+          ? "min-h-7 px-2 py-1.5 text-label-13 [&_svg:not([class*='size-'])]:size-4"
+          : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
         inset && "ps-8",
         className,
       )}

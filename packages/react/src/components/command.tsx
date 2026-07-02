@@ -44,7 +44,7 @@ function SearchIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-4 shrink-0 text-patch-text-tertiary"
+      className="size-4 shrink-0 text-gray-800"
     >
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.3-4.3" />
@@ -67,17 +67,17 @@ export function CommandInput({
         "rounded-none bg-transparent",
         "border-b border-[var(--input-border)]",
         "has-focus-visible:border-b border-[var(--input-border-focus)]",
-        "transition-[color,box-shadow] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+        "transition-[color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
       )}
       data-slot="command-input-wrapper"
     >
-      <span className="flex shrink-0 items-center ps-3 pe-2 text-patch-text-tertiary">
+      <span className="flex shrink-0 items-center ps-3 pe-2 text-gray-800">
         <SearchIcon />
       </span>
       <AutocompletePrimitive.Input
         data-slot="command-input"
         className={cn(
-          "h-11 w-full flex-1 border-none bg-transparent pe-3 text-[length:var(--text-patch-control)] tracking-[-0.005em] text-patch-text placeholder:text-[var(--input-placeholder)] outline-none ring-0 focus:outline-none focus:ring-0",
+          "h-11 w-full flex-1 border-none bg-transparent pe-3 text-label-13 tracking-[-0.005em] text-gray-1000 placeholder:text-[var(--input-placeholder)] outline-none ring-0 focus:outline-none focus:ring-0",
           className,
         )}
         {...props}
@@ -123,7 +123,7 @@ export function CommandEmpty({
     <AutocompletePrimitive.Empty data-slot="command-empty" {...props}>
       <div
         className={cn(
-          "px-3 py-6 text-center text-[length:var(--text-patch-control)] text-patch-text-tertiary",
+          "px-3 py-6 text-center text-label-13 text-gray-800",
           className,
         )}
       >
@@ -149,7 +149,7 @@ export function CommandItem({
 
   const trailingCheck = selected && (
     <CheckIcon
-      className="ms-auto size-3.5 shrink-0 text-patch-text-tertiary"
+      className="ms-auto size-3.5 shrink-0 text-gray-800"
       strokeWidth={2.25}
     />
   );
@@ -158,10 +158,10 @@ export function CommandItem({
     <AutocompletePrimitive.Item
       data-slot="command-item"
       className={cn(
-        "cursor-default select-none rounded-[var(--radius-patch-xs)] text-patch-text-secondary outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-highlighted:bg-[var(--menu-item-hover)] data-highlighted:text-patch-text [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "cursor-default select-none rounded-[var(--radius-6)] text-gray-900 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-highlighted:bg-[var(--menu-item-hover)] data-highlighted:text-gray-1000 [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         density === "compact"
-          ? "min-h-7 px-2 py-1.5 text-[length:var(--text-patch-control)]"
-          : "min-h-11 px-3 py-2.5 text-[length:var(--text-patch-body)] [&_svg:not([class*='size-'])]:size-[18px]",
+          ? "min-h-7 px-2 py-1.5 text-label-13"
+          : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
         className,
       )}
       {...props}
@@ -172,7 +172,7 @@ export function CommandItem({
             {children}
             {trailingCheck}
           </span>
-          <span className="mt-0.5 truncate text-[length:var(--text-patch-mini)] font-normal text-patch-text-tertiary">
+          <span className="mt-0.5 truncate text-label-12 font-normal text-gray-800">
             {description}
           </span>
         </span>
@@ -225,7 +225,7 @@ export function CommandGroupLabel({
     <AutocompletePrimitive.GroupLabel
       data-slot="command-group-label"
       className={cn(
-        "px-2 pb-1 pt-2 text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary",
+        "px-2 pb-1 pt-2 text-label-12 font-semibold uppercase tracking-tight text-gray-800",
         className,
       )}
       {...props}
@@ -246,7 +246,7 @@ export function CommandSeparator({
   return (
     <AutocompletePrimitive.Separator
       data-slot="command-separator"
-      className={cn("my-1 h-px bg-patch-border", className)}
+      className={cn("my-1 h-px bg-gray-alpha-400", className)}
       {...props}
     />
   );

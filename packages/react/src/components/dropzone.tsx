@@ -178,10 +178,10 @@ export function Dropzone({
           }
         }}
         className={cn(
-          "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-patch-sm)] border border-dashed border-patch-border px-6 py-10",
-          "text-center transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-          "hover:border-[var(--patch-border-hover)] hover:bg-patch-surface-hover",
-          "data-[drag-over]:border-patch-text data-[drag-over]:bg-patch-accent",
+          "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-6)] border border-dashed border-gray-alpha-400 px-6 py-10",
+          "text-center transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "hover:border-[var(--gray-alpha-500)] hover:bg-gray-200",
+          "data-[drag-over]:border-patch-text data-[drag-over]:bg-gray-100",
           disabled && "pointer-events-none opacity-50",
           isUploading && "pointer-events-none",
           focusRing,
@@ -189,16 +189,16 @@ export function Dropzone({
       >
         <div
           aria-hidden
-          className="flex size-10 items-center justify-center rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)] bg-patch-surface text-patch-text-secondary"
+          className="flex size-10 items-center justify-center rounded-[var(--radius-6)] border border-[var(--gray-alpha-400)] bg-background-100 text-gray-900"
         >
           <Upload className="size-5" />
         </div>
         <div className="flex flex-col gap-1">
-          <p className="text-[length:var(--text-patch-control)] font-medium text-patch-text">
+          <p className="text-label-13 font-medium text-gray-1000">
             {title}
           </p>
           {description && (
-            <p className="text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
+            <p className="text-label-12 text-gray-800">
               {description}
             </p>
           )}
@@ -231,11 +231,11 @@ export function Dropzone({
                 key={`${f.name}-${i}`}
                 data-slot="dropzone-file"
                 data-state={isUploading ? "uploading" : undefined}
-                className="flex items-center gap-3 rounded-[var(--radius-patch-xs)] border border-[var(--patch-border)] bg-patch-surface px-3 py-2"
+                className="flex items-center gap-3 rounded-[var(--radius-6)] border border-[var(--gray-alpha-400)] bg-background-100 px-3 py-2"
               >
-                <File className="size-4 shrink-0 text-patch-text-tertiary" />
+                <File className="size-4 shrink-0 text-gray-800" />
                 <div className="flex min-w-0 flex-1 flex-col gap-1">
-                  <span className="truncate text-[length:var(--text-patch-control)] text-patch-text">
+                  <span className="truncate text-label-13 text-gray-1000">
                     {f.name}
                   </span>
                   {isUploading ? (
@@ -245,7 +245,7 @@ export function Dropzone({
                       label={`Uploading ${f.name}`}
                     />
                   ) : (
-                    <span className="text-[length:var(--text-patch-micro)] text-patch-text-tertiary">
+                    <span className="text-label-12 text-gray-800">
                       {formatBytes(f.size)}
                     </span>
                   )}
@@ -255,7 +255,7 @@ export function Dropzone({
                     type="button"
                     onClick={() => removeAt(i)}
                     aria-label={`Remove ${f.name}`}
-                    className="inline-flex size-6 shrink-0 items-center justify-center rounded-[var(--radius-patch-xs)] text-patch-text-tertiary transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] hover:bg-patch-surface-hover hover:text-patch-text active:scale-90"
+                    className="inline-flex size-6 shrink-0 items-center justify-center rounded-[var(--radius-6)] text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-200 hover:text-gray-1000 active:scale-90"
                   >
                     <X className="size-3.5" />
                   </button>

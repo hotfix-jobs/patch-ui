@@ -63,7 +63,7 @@ export function Pagination({
       )}
     >
       <Button
-        variant="ghost"
+        variant="tertiary"
         size="sm"
         className="h-8 w-8"
         icon={<ChevronLeft className="h-3.5 w-3.5" />}
@@ -74,7 +74,7 @@ export function Pagination({
       {pages.map((p) => (
         <Button
           key={p}
-          variant={p === page ? "secondary" : "ghost"}
+          variant={p === page ? "secondary" : "tertiary"}
           size="sm"
           className="h-8 min-w-8 px-2 tabular-nums tracking-[-0.01em]"
           onClick={() => go(p)}
@@ -86,7 +86,7 @@ export function Pagination({
         </Button>
       ))}
       <Button
-        variant="ghost"
+        variant="tertiary"
         size="sm"
         className="h-8 w-8"
         icon={<ChevronRight className="h-3.5 w-3.5" />}

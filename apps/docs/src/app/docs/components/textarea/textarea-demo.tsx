@@ -11,7 +11,7 @@ export function TextareaDemo() {
     <div className="flex flex-col gap-8">
       {/* Variants */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Variants
         </p>
         <div className="flex flex-col gap-3 max-w-sm">
@@ -23,7 +23,7 @@ export function TextareaDemo() {
 
       {/* Custom Rows */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Custom Rows
         </p>
         <div className="max-w-sm">
@@ -33,7 +33,7 @@ export function TextareaDemo() {
 
       {/* Invalid */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Invalid state
         </p>
         <div className="max-w-sm">
@@ -47,7 +47,7 @@ export function TextareaDemo() {
 
       {/* Disabled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Disabled
         </p>
         <div className="max-w-sm">

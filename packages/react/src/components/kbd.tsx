@@ -26,13 +26,13 @@ export function Kbd({
       data-slot="kbd"
       data-size={size}
       className={cn(
-        "inline-flex items-center justify-center font-sans font-medium tabular-nums text-patch-text-secondary",
-        "rounded-[var(--radius-patch-xs)] bg-patch-surface",
-        "border border-patch-border shadow-[inset_0_-1px_0_0_var(--patch-border)]",
+        "inline-flex items-center justify-center font-sans font-medium tabular-nums text-gray-900",
+        "rounded-[var(--radius-6)] bg-background-100",
+        "border border-gray-alpha-400 shadow-[inset_0_-1px_0_0_var(--gray-alpha-400)]",
         size === "sm" &&
-          "h-[18px] min-w-[18px] px-1 text-[length:var(--text-patch-micro)]",
+          "h-[18px] min-w-[18px] px-1 text-label-12",
         size === "md" &&
-          "h-5 min-w-[20px] px-1.5 text-[length:var(--text-patch-mini)]",
+          "h-5 min-w-[20px] px-1.5 text-label-12",
         className,
       )}
       {...props}

@@ -12,7 +12,7 @@ export function CheckboxDemo() {
     <div className="flex flex-col gap-8">
       {/* Controlled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Controlled
         </p>
         <label className="flex cursor-pointer items-center gap-3">
@@ -20,7 +20,7 @@ export function CheckboxDemo() {
             checked={checked}
             onCheckedChange={(c) => setChecked(c)}
           />
-          <span className="text-sm text-patch-text">
+          <span className="text-sm text-gray-1000">
             {checked ? "Checked" : "Unchecked"}
           </span>
         </label>
@@ -28,18 +28,18 @@ export function CheckboxDemo() {
 
       {/* Default Checked */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Default Checked
         </p>
         <label className="flex cursor-pointer items-center gap-3">
           <Checkbox defaultChecked />
-          <span className="text-sm text-patch-text">Starts checked</span>
+          <span className="text-sm text-gray-1000">Starts checked</span>
         </label>
       </div>
 
       {/* Indeterminate */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Indeterminate
         </p>
         <label className="flex cursor-pointer items-center gap-3">
@@ -48,7 +48,7 @@ export function CheckboxDemo() {
             indeterminate={indeterminate}
             onCheckedChange={() => setIndeterminate(false)}
           />
-          <span className="text-sm text-patch-text">
+          <span className="text-sm text-gray-1000">
             {indeterminate ? "Mixed selection" : "Resolved"}
           </span>
         </label>
@@ -56,17 +56,17 @@ export function CheckboxDemo() {
 
       {/* Disabled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Disabled
         </p>
         <div className="flex flex-col gap-3">
           <label className="flex items-center gap-3">
             <Checkbox disabled />
-            <span className="text-sm text-patch-text">Disabled unchecked</span>
+            <span className="text-sm text-gray-1000">Disabled unchecked</span>
           </label>
           <label className="flex items-center gap-3">
             <Checkbox disabled defaultChecked />
-            <span className="text-sm text-patch-text">Disabled checked</span>
+            <span className="text-sm text-gray-1000">Disabled checked</span>
           </label>
         </div>
       </div>

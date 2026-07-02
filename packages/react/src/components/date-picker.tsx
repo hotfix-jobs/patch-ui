@@ -91,13 +91,13 @@ export function DatePicker({
       <PopoverTrigger
         render={
           <Button
-            variant="outline"
+            variant="secondary"
             size={size}
             disabled={disabled}
             icon={<CalendarIcon />}
             className={cn(
               "justify-start font-normal",
-              !value && "text-patch-text-tertiary",
+              !value && "text-gray-800",
               className,
             )}
           />
@@ -175,13 +175,13 @@ export function DateRangePicker({
       <PopoverTrigger
         render={
           <Button
-            variant="outline"
+            variant="secondary"
             size={size}
             disabled={disabled}
             icon={<CalendarIcon />}
             className={cn(
               "justify-start font-normal",
-              !label && "text-patch-text-tertiary",
+              !label && "text-gray-800",
               className,
             )}
           />

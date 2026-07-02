@@ -214,7 +214,7 @@ export function DialogContent({
                     data-slot="dialog-popup"
                     {...getFloatingProps()}
                     className={cn(
-                      "relative flex max-h-[calc(100vh-2rem)] min-h-0 w-full min-w-0 origin-center flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface text-patch-text border border-[var(--patch-border)] shadow-patch-overlay",
+                      "relative flex max-h-[calc(100vh-2rem)] min-h-0 w-full min-w-0 origin-center flex-col rounded-[var(--radius-6)] bg-background-100 text-gray-1000 border border-[var(--gray-alpha-400)] shadow-modal",
                       SIZE_CLASSES[size],
                       className,
                     )}
@@ -293,7 +293,7 @@ export function DialogClose({
       onClick={onClick}
       data-slot="dialog-close"
       className={cn(
-        "absolute end-3 top-3 flex h-7 w-7 items-center justify-center rounded-[var(--radius-patch-sm)] text-patch-text-tertiary transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] hover:bg-patch-surface-hover hover:text-patch-text",
+        "absolute end-3 top-3 flex h-7 w-7 items-center justify-center rounded-[var(--radius-6)] text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-200 hover:text-gray-1000",
         focusRing,
       )}
       {...rest}
@@ -356,7 +356,7 @@ export function DialogTitle({
     <h2
       id={titleId}
       className={cn(
-        "font-semibold text-[length:var(--text-patch-body)] leading-none text-patch-text",
+        "font-semibold text-copy-14 leading-none text-gray-1000",
         className,
       )}
       data-slot="dialog-title"
@@ -374,7 +374,7 @@ export function DialogDescription({
     <p
       id={descriptionId}
       className={cn(
-        "text-patch-text-tertiary text-[length:var(--text-patch-mini)]",
+        "text-gray-800 text-label-12",
         className,
       )}
       data-slot="dialog-description"

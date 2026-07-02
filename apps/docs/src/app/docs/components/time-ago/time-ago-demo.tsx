@@ -39,16 +39,16 @@ export function TimeAgoDemo() {
     };
   }, [now]);
 
-  const placeholder = <span className="text-patch-text-quaternary">…</span>;
+  const placeholder = <span className="text-gray-700">…</span>;
 
   return (
-    <div className="space-y-2 text-[length:var(--text-patch-control)]">
+    <div className="space-y-2 text-label-13">
       <div>Just now: {dates ? <TimeAgo dateStr={dates.now} /> : placeholder}</div>
       <div>5 min ago: {dates ? <TimeAgo dateStr={dates.fiveMinAgo} /> : placeholder}</div>
       <div>3 hours ago: {dates ? <TimeAgo dateStr={dates.threeHoursAgo} /> : placeholder}</div>
       <div>2 days ago: {dates ? <TimeAgo dateStr={dates.twoDaysAgo} /> : placeholder}</div>
       <div>Last week: {dates ? <TimeAgo dateStr={dates.lastWeek} /> : placeholder}</div>
-      <div className="pt-3 border-t border-patch-border-subtle">
+      <div className="pt-3 border-t border-gray-alpha-300">
         Sans variant: {dates ? <TimeAgo dateStr={dates.twoDaysAgo} variant="sans" /> : placeholder}
       </div>
     </div>

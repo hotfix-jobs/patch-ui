@@ -11,7 +11,7 @@ export function SwitchDemo() {
     <div className="flex flex-col gap-8">
       {/* Controlled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Controlled
         </p>
         <div className="flex items-center gap-3">
@@ -19,7 +19,7 @@ export function SwitchDemo() {
             checked={checked}
             onCheckedChange={(c) => setChecked(c)}
           />
-          <span className="text-sm text-patch-text">
+          <span className="text-sm text-gray-1000">
             {checked ? "On" : "Off"}
           </span>
         </div>
@@ -27,28 +27,28 @@ export function SwitchDemo() {
 
       {/* Default Checked */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Default Checked
         </p>
         <div className="flex items-center gap-3">
           <Switch defaultChecked />
-          <span className="text-sm text-patch-text">Starts on</span>
+          <span className="text-sm text-gray-1000">Starts on</span>
         </div>
       </div>
 
       {/* Disabled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Disabled
         </p>
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <Switch disabled />
-            <span className="text-sm text-patch-text">Disabled off</span>
+            <span className="text-sm text-gray-1000">Disabled off</span>
           </div>
           <div className="flex items-center gap-3">
             <Switch disabled defaultChecked />
-            <span className="text-sm text-patch-text">Disabled on</span>
+            <span className="text-sm text-gray-1000">Disabled on</span>
           </div>
         </div>
       </div>

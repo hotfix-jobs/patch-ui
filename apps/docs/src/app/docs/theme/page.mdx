@@ -35,9 +35,9 @@ The tokens file includes an `@theme inline` block that registers each `--patch-*
 
 ```css
 @theme inline {
-  --color-patch-bg: var(--patch-bg);
-  --color-patch-surface: var(--patch-surface);
-  --color-patch-text: var(--patch-text);
+  --color-patch-bg: var(--background-100);
+  --color-patch-surface: var(--background-100);
+  --color-patch-text: var(--gray-1000);
   /* ... all 14 colors */
 }
 ```
@@ -45,7 +45,7 @@ The tokens file includes an `@theme inline` block that registers each `--patch-*
 With this bridge in place, you can use Tailwind utilities like:
 
 ```html
-<div class="bg-patch-surface text-patch-text border-patch-border">
+<div class="bg-background-100 text-gray-1000 border-gray-alpha-400">
   Token-driven styling via Tailwind utilities
 </div>
 ```
@@ -66,12 +66,12 @@ Used via Tailwind utilities: `rounded-patch-sm`, `rounded-patch-lg`.
 
 | Token | Value |
 |-------|-------|
-| `--shadow-patch-sm` | `0 1px 2px rgba(0,0,0,0.3)` |
-| `--shadow-patch-md` | `0 4px 12px -2px rgba(0,0,0,0.4)` |
-| `--shadow-patch-lg` | `0 8px 24px -4px rgba(0,0,0,0.5)` |
-| `--shadow-patch-overlay` | `0 16px 48px -12px rgba(0,0,0,0.6)` |
+| `--shadow-card` | `0 1px 2px rgba(0,0,0,0.3)` |
+| `--shadow-menu` | `0 4px 12px -2px rgba(0,0,0,0.4)` |
+| `--shadow-menu` | `0 8px 24px -4px rgba(0,0,0,0.5)` |
+| `--shadow-modal` | `0 16px 48px -12px rgba(0,0,0,0.6)` |
 
-Used via Tailwind utilities: `shadow-patch-sm`, `shadow-patch-md`, `shadow-patch-lg`, `shadow-patch-overlay`.
+Used via Tailwind utilities: `shadow-card`, `shadow-menu`, `shadow-menu`, `shadow-modal`.
 
 ## Easing Tokens
 

@@ -280,7 +280,7 @@ export function PopoverContent({
                     }
               }
               className={cn(
-                "z-[80] rounded-[var(--radius-patch-sm)] bg-patch-surface border border-[var(--patch-border)] shadow-patch-popup outline-none",
+                "z-[80] rounded-[var(--radius-6)] bg-background-100 border border-[var(--gray-alpha-400)] shadow-menu outline-none",
                 className,
               )}
             >
@@ -291,8 +291,8 @@ export function PopoverContent({
                   context={context}
                   width={12}
                   height={6}
-                  fill="var(--patch-surface)"
-                  stroke="var(--patch-border)"
+                  fill="var(--background-100)"
+                  stroke="var(--gray-alpha-400)"
                   strokeWidth={0.5}
                 />
               )}

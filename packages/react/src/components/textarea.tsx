@@ -17,25 +17,25 @@ export type TextareaProps = React.ComponentProps<"textarea"> & {
 
 const WRAPPER_VARIANT: Record<TextareaVariant, string> = {
   outlined:
-    "rounded-[var(--radius-patch-sm)] border border-[var(--input-border)] bg-[var(--input-bg)] " +
-    "hover:border border-[var(--patch-border-hover)] " +
-    "has-focus-visible:border border-[var(--patch-border-active)] " +
-    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
+    "rounded-[var(--radius-6)] border border-[var(--input-border)] bg-[var(--input-bg)] " +
+    "hover:border border-[var(--gray-alpha-500)] " +
+    "has-focus-visible:border border-[var(--gray-alpha-600)] " +
+    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
   ghost:
-    "rounded-[var(--radius-patch-sm)] bg-transparent border-none " +
-    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
+    "rounded-[var(--radius-6)] bg-transparent border-none " +
+    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
   underline:
     "rounded-none bg-transparent border-b border-[var(--input-border)] " +
-    "hover:border-b border-[var(--patch-border-hover)] " +
-    "has-focus-visible:border-b border-[var(--patch-border-active)]",
+    "hover:border-b border-[var(--gray-alpha-500)] " +
+    "has-focus-visible:border-b border-[var(--gray-alpha-600)]",
 };
 
 const INVALID_BY_VARIANT: Record<TextareaVariant, string> = {
   outlined:
-    "!border-[var(--patch-error)] has-focus-visible:!border-[var(--patch-error)] has-focus-visible:!outline-[var(--patch-error)]",
-  ghost: "has-focus-visible:!outline-[var(--patch-error)]",
+    "!border-[var(--error)] has-focus-visible:!border-[var(--error)] has-focus-visible:!outline-[var(--error)]",
+  ghost: "has-focus-visible:!outline-[var(--error)]",
   underline:
-    "!border-b border-[var(--patch-error)] has-focus-visible:!border-b border-[var(--patch-error)]",
+    "!border-b border-[var(--error)] has-focus-visible:!border-b border-[var(--error)]",
 };
 
 export function Textarea({
@@ -51,7 +51,7 @@ export function Textarea({
       className={
         cn(
           !unstyled && [
-            "relative inline-flex w-full text-[length:var(--text-patch-control)] text-patch-text",
+            "relative inline-flex w-full text-label-13 text-gray-1000",
             "has-disabled:opacity-50",
             WRAPPER_VARIANT[variant],
             invalid && INVALID_BY_VARIANT[variant],
@@ -67,7 +67,7 @@ export function Textarea({
       <FieldPrimitive.Control
         render={(defaultProps: React.ComponentProps<"textarea">) => (
           <textarea
-            className="field-sizing-content min-h-[5rem] w-full rounded-[inherit] bg-transparent px-3 py-2 text-[length:var(--text-patch-control)] outline-none placeholder:text-patch-text-tertiary"
+            className="field-sizing-content min-h-[5rem] w-full rounded-[inherit] bg-transparent px-3 py-2 text-label-13 outline-none placeholder:text-gray-800"
             data-slot="textarea"
             rows={rows}
             aria-invalid={invalid || undefined}

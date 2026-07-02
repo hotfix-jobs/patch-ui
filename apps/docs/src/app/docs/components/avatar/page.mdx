@@ -119,7 +119,7 @@ import {
 
 <Callout title="Notes">
 - **Graceful fallback:** `AvatarFallback` renders until the image successfully loads, so there's no broken-image flash. Use 1-2 character initials, an icon, or any node.
-- **AvatarGroup composition:** Children are expected to be `<Avatar>` elements. AvatarGroup propagates size/shape, adds a `ring-patch-bg` hairline between avatars so they visually separate despite overlapping, and tightens negative margins based on size.
+- **AvatarGroup composition:** Children are expected to be `<Avatar>` elements. AvatarGroup propagates size/shape, adds a `ring-background-100` hairline between avatars so they visually separate despite overlapping, and tightens negative margins based on size.
 - **Overflow chip:** When more children are passed than `max`, the remaining count is rendered as a `+N` chip with a `--patch-surface-2` fill — distinct from the dark Avatar fill so it reads as a counter rather than another person.
 - **xl + heroes:** Use `xl` (56px) for profile headers, agent / persona cards, and big-display moments. For inline mentions, `xs` is right.
 </Callout>

@@ -10,7 +10,7 @@ export function TooltipDemo() {
       <div className="flex flex-col gap-8">
         {/* Basic */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          <p className="mb-3 text-xs font-medium text-gray-800">
             Basic
           </p>
           <Tooltip content="This is a tooltip">
@@ -20,7 +20,7 @@ export function TooltipDemo() {
 
         {/* Sides */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          <p className="mb-3 text-xs font-medium text-gray-800">
             Sides
           </p>
           <div className="flex flex-wrap items-center gap-3">
@@ -36,7 +36,7 @@ export function TooltipDemo() {
 
         {/* With Arrow */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          <p className="mb-3 text-xs font-medium text-gray-800">
             With Arrow
           </p>
           <div className="flex flex-wrap items-center gap-3">

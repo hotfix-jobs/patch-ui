@@ -32,26 +32,26 @@ export type InputProps = Omit<
 
 const WRAPPER_VARIANT: Record<InputVariant, string> = {
   outlined:
-    "rounded-[var(--radius-patch-sm)] border border-[var(--input-border)] bg-patch-surface " +
-    "hover:border border-[var(--patch-border-hover)] " +
-    "has-focus-visible:border border-[var(--patch-border-active)] " +
-    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
+    "rounded-[var(--radius-6)] border border-[var(--input-border)] bg-background-100 " +
+    "hover:border border-[var(--gray-alpha-500)] " +
+    "has-focus-visible:border border-[var(--gray-alpha-600)] " +
+    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
   ghost:
-    "rounded-[var(--radius-patch-sm)] bg-transparent border-none " +
-    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
+    "rounded-[var(--radius-6)] bg-transparent border-none " +
+    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
   underline:
     "rounded-none bg-transparent border-b border-[var(--input-border)] " +
-    "hover:border-b border-[var(--patch-border-hover)] " +
-    "has-focus-visible:border-b border-[var(--patch-border-active)]",
+    "hover:border-b border-[var(--gray-alpha-500)] " +
+    "has-focus-visible:border-b border-[var(--gray-alpha-600)]",
 };
 
 const INVALID_BY_VARIANT: Record<InputVariant, string> = {
   outlined:
-    "!border-[var(--patch-error)] has-focus-visible:!border-[var(--patch-error)] has-focus-visible:!outline-[var(--patch-error)]",
+    "!border-[var(--error)] has-focus-visible:!border-[var(--error)] has-focus-visible:!outline-[var(--error)]",
   ghost:
-    "has-focus-visible:!outline-[var(--patch-error)]",
+    "has-focus-visible:!outline-[var(--error)]",
   underline:
-    "!border-b border-[var(--patch-error)] has-focus-visible:!border-b border-[var(--patch-error)]",
+    "!border-b border-[var(--error)] has-focus-visible:!border-b border-[var(--error)]",
 };
 
 export function Input({
@@ -77,11 +77,11 @@ export function Input({
   const trailingSpinner = loading ? <Spinner size="sm" /> : null;
 
   const inputClassName = cn(
-    "h-10 w-full min-w-0 rounded-[inherit] border-none bg-transparent px-3.5 text-[length:var(--text-patch-control)] tracking-[-0.005em] shadow-none outline-none ring-0 placeholder:text-[var(--input-placeholder)] focus:outline-none focus:ring-0",
+    "h-10 w-full min-w-0 rounded-[inherit] border-none bg-transparent px-3.5 text-label-13 tracking-[-0.005em] shadow-none outline-none ring-0 placeholder:text-[var(--input-placeholder)] focus:outline-none focus:ring-0",
     icon && "ps-0",
     prefix && "ps-0",
     (suffix || showClear || trailingSpinner) && "pe-0",
-    size === "sm" && "h-8 text-[length:var(--text-patch-mini)]",
+    size === "sm" && "h-8 text-label-12",
     size === "lg" && "h-11",
     props.type === "search" &&
       "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none",
@@ -115,8 +115,8 @@ export function Input({
         cn(
           !unstyled && [
             "relative inline-flex w-full items-center",
-            "text-[length:var(--text-patch-control)] text-patch-text",
-            "transition-[color,background-color,box-shadow,outline-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+            "text-label-13 text-gray-1000",
+            "transition-[color,background-color,box-shadow,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
             "has-disabled:opacity-50",
             WRAPPER_VARIANT[variant],
             invalid && INVALID_BY_VARIANT[variant],
@@ -131,12 +131,12 @@ export function Input({
       data-slot="input-control"
     >
       {icon && (
-        <span className="flex shrink-0 items-center ps-3 pe-1.5 text-patch-text-tertiary [&_svg]:size-4">
+        <span className="flex shrink-0 items-center ps-3 pe-1.5 text-gray-800 [&_svg]:size-4">
           {icon}
         </span>
       )}
       {prefix && (
-        <span className="flex shrink-0 items-center ps-3 text-patch-text-tertiary text-sm">
+        <span className="flex shrink-0 items-center ps-3 text-gray-800 text-sm">
           {prefix}
         </span>
       )}
@@ -149,10 +149,10 @@ export function Input({
           onClick={onClear}
           className={cn(
             "flex shrink-0 items-center justify-center",
-            "size-6 me-1.5 rounded-[var(--radius-patch-xs)]",
-            "text-patch-text-tertiary",
-            "transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-            "hover:bg-patch-surface-hover hover:text-patch-text",
+            "size-6 me-1.5 rounded-[var(--radius-6)]",
+            "text-gray-800",
+            "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+            "hover:bg-gray-200 hover:text-gray-1000",
           )}
           data-slot="input-clear"
         >
@@ -174,14 +174,14 @@ export function Input({
       )}
       {trailingSpinner && (
         <span
-          className="flex shrink-0 items-center pe-3 text-patch-text-tertiary"
+          className="flex shrink-0 items-center pe-3 text-gray-800"
           data-slot="input-loading"
         >
           {trailingSpinner}
         </span>
       )}
       {suffix && !trailingSpinner && (
-        <span className="flex shrink-0 items-center pe-3 ps-2 ml-2 my-2 text-patch-text-tertiary text-[length:var(--text-patch-micro)] tracking-[-0.01em] border-l border-[var(--input-border)]">
+        <span className="flex shrink-0 items-center pe-3 ps-2 ml-2 my-2 text-gray-800 text-label-12 tracking-[-0.01em] border-l border-[var(--input-border)]">
           {suffix}
         </span>
       )}

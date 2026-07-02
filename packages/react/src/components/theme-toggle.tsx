@@ -118,7 +118,7 @@ export function ThemeToggle({
       type="button"
       onClick={toggle}
       className={cn(
-        "relative inline-flex items-center justify-center overflow-hidden rounded-[var(--radius-patch-sm)] text-patch-text-secondary hover:bg-patch-surface-hover hover:text-patch-text transition-transform duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-95",
+        "relative inline-flex items-center justify-center overflow-hidden rounded-[var(--radius-6)] text-gray-900 hover:bg-gray-200 hover:text-gray-1000 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] active:scale-95",
         colorTransition,
         focusRing,
         sizeClasses[size],

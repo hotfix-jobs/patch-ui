@@ -40,7 +40,7 @@ export function AppHeaderDemo() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full overflow-hidden rounded-[var(--radius-patch-lg)] border-[0.5px] border-patch-border">
+    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400">
       <AppHeader>
         <AppHeaderBrand>Patch</AppHeaderBrand>
 
@@ -82,7 +82,7 @@ export function AppHeaderDemo() {
                   key={label}
                   href="#"
                   onClick={() => setOpen(false)}
-                  className="rounded-[var(--radius-patch-sm)] px-2 py-2 text-[length:var(--text-patch-control)] text-patch-text-secondary transition-colors hover:bg-patch-surface-hover hover:text-patch-text"
+                  className="rounded-[var(--radius-6)] px-2 py-2 text-label-13 text-gray-900 transition-colors hover:bg-gray-200 hover:text-gray-1000"
                 >
                   {label}
                 </a>
@@ -95,7 +95,7 @@ export function AppHeaderDemo() {
         </SheetContent>
       </Sheet>
 
-      <div className="p-6 text-[length:var(--text-patch-control)] text-patch-text-secondary">
+      <div className="p-6 text-label-13 text-gray-900">
         Resize the preview: under the <code>sm</code> breakpoint the nav collapses
         to a menu button that opens a Sheet drawer.
       </div>

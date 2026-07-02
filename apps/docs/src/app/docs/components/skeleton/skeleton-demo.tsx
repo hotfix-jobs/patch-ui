@@ -8,7 +8,7 @@ export function SkeletonDemo() {
     <div className="flex flex-col gap-8">
       {/* Text Lines */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Text Lines
         </p>
         <div className="flex flex-col gap-2">
@@ -20,7 +20,7 @@ export function SkeletonDemo() {
 
       {/* Circle */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Circle
         </p>
         <Skeleton className="h-12 w-12 rounded-full" />
@@ -28,7 +28,7 @@ export function SkeletonDemo() {
 
       {/* Card */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Card Layout
         </p>
         <div className="flex items-start gap-4">

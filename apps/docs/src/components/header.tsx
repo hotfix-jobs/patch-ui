@@ -9,7 +9,7 @@ import { DocsSearch } from "./docs-search";
 export function Header({ onMenuToggle }: { onMenuToggle?: () => void }) {
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center gap-4 border-b-[0.5px] border-patch-border bg-patch-bg/80 px-4 backdrop-blur-md"
+      className="fixed top-0 left-0 right-0 z-50 flex h-14 items-center gap-4 border-b-[0.5px] border-gray-alpha-400 bg-background-100/80 px-4 backdrop-blur-md"
     >
       {/* Mobile menu toggle */}
       <Button
@@ -23,7 +23,7 @@ export function Header({ onMenuToggle }: { onMenuToggle?: () => void }) {
 
       <Link
         href="/docs"
-        className="flex items-center font-semibold text-patch-text"
+        className="flex items-center font-semibold text-gray-1000"
       >
         <span className="text-lg">Patch UI</span>
       </Link>

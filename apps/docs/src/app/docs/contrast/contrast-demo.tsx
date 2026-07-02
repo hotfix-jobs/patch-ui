@@ -97,17 +97,17 @@ export function ContrastDemo() {
         return (
           <div key={tier.key}>
             <div className="mb-3 flex items-baseline gap-2">
-              <span className="text-sm font-medium text-patch-text">
+              <span className="text-sm font-medium text-gray-1000">
                 {tier.label}
               </span>
-              <span className="text-xs text-patch-text-tertiary">
+              <span className="text-xs text-gray-800">
                 {tier.decorative
                   ? `${tier.tierLabel} - no ratio guarantee`
                   : `${tier.tierLabel}, min ${tier.min}:1`}
               </span>
               {fg && (
                 <span
-                  className="ml-auto rounded-full border border-patch-border px-2 py-0.5 font-mono text-xs text-patch-text-secondary"
+                  className="ml-auto rounded-full border border-gray-alpha-400 px-2 py-0.5 font-mono text-xs text-gray-900"
                 >
                   {fg}
                 </span>
@@ -129,7 +129,7 @@ export function ContrastDemo() {
                     key={surface.key}
                     style={{
                       backgroundColor: bg || undefined,
-                      border: "1px solid var(--patch-border)",
+                      border: "1px solid var(--gray-alpha-400)",
                       borderRadius: 8,
                       padding: "12px 14px",
                     }}
@@ -144,7 +144,7 @@ export function ContrastDemo() {
                       16px sample text
                     </div>
                     <div className="mt-3 flex items-center justify-between gap-1">
-                      <span className="font-mono text-[10px] text-patch-text-tertiary">
+                      <span className="font-mono text-[10px] text-gray-800">
                         {surface.label}
                       </span>
                       <span
@@ -154,7 +154,7 @@ export function ContrastDemo() {
                             ? passes
                               ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
                               : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                            : "bg-patch-surface-hover text-patch-text-tertiary",
+                            : "bg-gray-200 text-gray-800",
                         ].join(" ")}
                       >
                         {ratio !== null ? `${ratioDisplay}:1` : "n/a"}

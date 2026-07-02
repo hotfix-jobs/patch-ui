@@ -33,43 +33,43 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     // Typography
     h1: (props: React.ComponentProps<"h1">) => (
       <h1
-        className="text-3xl font-bold tracking-tight text-patch-text"
+        className="text-3xl font-bold tracking-tight text-gray-1000"
         {...props}
       />
     ),
     h2: (props: React.ComponentProps<"h2">) => (
       <h2
-        className="mt-10 mb-4 border-b border-patch-border pb-2 text-xl font-semibold tracking-tight text-patch-text first:mt-0"
+        className="mt-10 mb-4 border-b border-gray-alpha-400 pb-2 text-xl font-semibold tracking-tight text-gray-1000 first:mt-0"
         {...props}
       />
     ),
     h3: (props: React.ComponentProps<"h3">) => (
       <h3
-        className="mt-8 mb-3 text-lg font-semibold tracking-tight text-patch-text"
+        className="mt-8 mb-3 text-lg font-semibold tracking-tight text-gray-1000"
         {...props}
       />
     ),
     h4: (props: React.ComponentProps<"h4">) => (
       <h4
-        className="mt-6 mb-2 text-base font-semibold text-patch-text"
+        className="mt-6 mb-2 text-base font-semibold text-gray-1000"
         {...props}
       />
     ),
     p: (props: React.ComponentProps<"p">) => (
       <p
-        className="mb-4 leading-7 text-patch-text-secondary [&:first-child]:mt-0"
+        className="mb-4 leading-7 text-gray-900 [&:first-child]:mt-0"
         {...props}
       />
     ),
     ul: (props: React.ComponentProps<"ul">) => (
       <ul
-        className="mb-4 ml-6 list-disc text-patch-text-secondary [&>li]:mt-1.5 [&>li]:leading-7"
+        className="mb-4 ml-6 list-disc text-gray-900 [&>li]:mt-1.5 [&>li]:leading-7"
         {...props}
       />
     ),
     ol: (props: React.ComponentProps<"ol">) => (
       <ol
-        className="mb-4 ml-6 list-decimal text-patch-text-secondary [&>li]:mt-1.5 [&>li]:leading-7"
+        className="mb-4 ml-6 list-decimal text-gray-900 [&>li]:mt-1.5 [&>li]:leading-7"
         {...props}
       />
     ),
@@ -78,21 +78,21 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     blockquote: (props: React.ComponentProps<"blockquote">) => (
       <blockquote
-        className="mb-4 border-l-2 border-patch-border-active pl-4 text-patch-text-secondary italic"
+        className="mb-4 border-l-2 border-gray-alpha-600 pl-4 text-gray-900 italic"
         {...props}
       />
     ),
     hr: (props: React.ComponentProps<"hr">) => (
-      <hr className="my-8 border-patch-border" {...props} />
+      <hr className="my-8 border-gray-alpha-400" {...props} />
     ),
     a: (props: React.ComponentProps<"a">) => (
       <a
-        className="font-medium text-patch-text underline underline-offset-4 decoration-patch-border-hover hover:decoration-patch-text transition-colors"
+        className="font-medium text-gray-1000 underline underline-offset-4 decoration-gray-alpha-500 hover:decoration-gray-1000 transition-colors"
         {...props}
       />
     ),
     strong: (props: React.ComponentProps<"strong">) => (
-      <strong className="font-semibold text-patch-text" {...props} />
+      <strong className="font-semibold text-gray-1000" {...props} />
     ),
     // Markdown tables render with the Patch UI Table primitives (dogfood).
     table: (props: React.ComponentProps<"table">) => (

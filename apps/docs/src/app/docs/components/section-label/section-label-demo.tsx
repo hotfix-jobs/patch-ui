@@ -7,7 +7,7 @@ export function SectionLabelDemo() {
     <div className="flex w-full max-w-md flex-col gap-8">
       <div>
         <SectionLabel>Overview</SectionLabel>
-        <p className="text-[length:var(--text-patch-control)] text-patch-text-secondary">
+        <p className="text-label-13 text-gray-900">
           A small uppercase label for grouping content under a heading.
         </p>
       </div>
@@ -15,7 +15,7 @@ export function SectionLabelDemo() {
         <SectionLabel variant="divided" action="View all">
           Recent activity
         </SectionLabel>
-        <p className="text-[length:var(--text-patch-control)] text-patch-text-secondary">
+        <p className="text-label-13 text-gray-900">
           The divided variant adds a hairline rule and an optional trailing action.
         </p>
       </div>

@@ -62,7 +62,7 @@ export function ToggleDemo() {
 function Stack({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="mb-3 text-xs font-medium text-patch-text-tertiary">{label}</p>
+      <p className="mb-3 text-xs font-medium text-gray-800">{label}</p>
       <div className="flex flex-wrap items-center gap-2">{children}</div>
     </div>
   );

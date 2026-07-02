@@ -9,7 +9,7 @@ export function EmptyStateDemo() {
         description="Try removing a filter, or reset to see everything."
         icon={<span className="text-base">∅</span>}
       />
-      <div className="border-t border-patch-border-subtle pt-4">
+      <div className="border-t border-gray-alpha-300 pt-4">
         <EmptyState
           title="Your list is empty"
           description="Save items here to keep track of the things you care about."

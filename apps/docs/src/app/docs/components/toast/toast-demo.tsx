@@ -10,7 +10,7 @@ export function ToastDemo() {
       <div className="flex flex-col gap-8">
         {/* Types */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          <p className="mb-3 text-xs font-medium text-gray-800">
             Types
           </p>
           <div className="flex flex-wrap gap-3">
@@ -49,7 +49,7 @@ export function ToastDemo() {
 
         {/* Default (No Type) */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          <p className="mb-3 text-xs font-medium text-gray-800">
             Default
           </p>
           <Button
@@ -62,7 +62,7 @@ export function ToastDemo() {
 
         {/* With Description */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          <p className="mb-3 text-xs font-medium text-gray-800">
             With Description
           </p>
           <Button
@@ -79,7 +79,7 @@ export function ToastDemo() {
 
         {/* With Action */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          <p className="mb-3 text-xs font-medium text-gray-800">
             With Action
           </p>
           <Button

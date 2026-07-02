@@ -7,7 +7,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export const sectionLabelVariants = cva(
-  "flex items-baseline justify-between text-[length:var(--text-patch-micro)] uppercase tracking-[0.08em] text-patch-text-secondary font-medium",
+  "flex items-baseline justify-between text-label-12 uppercase tracking-[0.08em] text-gray-900 font-medium",
   {
     defaultVariants: {
       variant: "bare",
@@ -15,7 +15,7 @@ export const sectionLabelVariants = cva(
     variants: {
       variant: {
         bare: "mb-3",
-        divided: "mb-5 pb-3 border-b border-[var(--patch-border)]",
+        divided: "mb-5 pb-3 border-b border-[var(--gray-alpha-400)]",
       },
     },
   },
@@ -42,7 +42,7 @@ export function SectionLabel({
       <>
         <span>{children}</span>
         {action && (
-          <span className="normal-case tracking-[var(--tracking-patch-small)] text-[length:var(--text-patch-mini)] font-medium text-patch-text">
+          <span className="normal-case tracking-tight text-label-12 font-medium text-gray-1000">
             {action}
           </span>
         )}

@@ -42,14 +42,14 @@ export function Separator({
         data-slot="separator"
         data-orientation={orientation}
         className={cn(
-          "flex w-full items-center gap-3 text-[length:var(--text-patch-micro)] font-medium uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary",
+          "flex w-full items-center gap-3 text-label-12 font-medium uppercase tracking-tight text-gray-800",
           className,
         )}
         {...props}
       >
-        <span className="h-px flex-1 bg-patch-border" aria-hidden />
+        <span className="h-px flex-1 bg-gray-alpha-400" aria-hidden />
         <span>{label}</span>
-        <span className="h-px flex-1 bg-patch-border" aria-hidden />
+        <span className="h-px flex-1 bg-gray-alpha-400" aria-hidden />
       </div>
     );
   }
@@ -61,7 +61,7 @@ export function Separator({
       data-slot="separator"
       data-orientation={orientation}
       className={cn(
-        "bg-patch-border shrink-0",
+        "bg-gray-alpha-400 shrink-0",
         orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
         className,
       )}

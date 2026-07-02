@@ -10,7 +10,7 @@ export function Skeleton({
       className={cn(
         // Calm, restrained placeholder: a solid subtle surface block with a
         // gentle opacity pulse (no border, no sweeping gradient).
-        "rounded-[var(--radius-patch-sm)] bg-patch-surface-2 animate-[patch-skeleton-pulse_1.6s_ease-in-out_infinite] motion-reduce:animate-none",
+        "rounded-[var(--radius-6)] bg-gray-100 animate-[patch-skeleton-pulse_1.6s_ease-in-out_infinite] motion-reduce:animate-none",
         className,
       )}
       data-slot="skeleton"

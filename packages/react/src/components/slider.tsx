@@ -39,16 +39,16 @@ export function Slider({
         data-slot="slider-control"
       >
         <SliderPrimitive.Track
-          className="relative grow select-none rounded-[var(--radius-patch-sm)] bg-patch-border data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full"
+          className="relative grow select-none rounded-[var(--radius-6)] bg-gray-alpha-400 data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full"
           data-slot="slider-track"
         >
           <SliderPrimitive.Indicator
-            className="select-none rounded-[var(--radius-patch-sm)] bg-patch-text"
+            className="select-none rounded-[var(--radius-6)] bg-patch-text"
             data-slot="slider-indicator"
           />
           {Array.from({ length: _values.length }, (_, index) => (
             <SliderPrimitive.Thumb
-              className="block size-4 shrink-0 select-none rounded-full border-2 border-patch-text bg-patch-bg outline-none transition-[scale] duration-[var(--duration-patch-fast)] has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-2 data-dragging:scale-110"
+              className="block size-4 shrink-0 select-none rounded-full border-2 border-patch-text bg-background-100 outline-none transition-[scale] duration-[var(--duration-state)] has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-2 data-dragging:scale-110"
               data-slot="slider-thumb"
               index={index}
               key={String(index)}
@@ -66,7 +66,7 @@ export function SliderValue({
 }: SliderPrimitive.Value.Props): React.ReactElement {
   return (
     <SliderPrimitive.Value
-      className={cn("flex justify-end text-[length:var(--text-patch-control)]", className)}
+      className={cn("flex justify-end text-label-13", className)}
       data-slot="slider-value"
       {...props}
     />

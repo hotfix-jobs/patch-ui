@@ -56,16 +56,16 @@ export function EmptyState({
       {icon && (
         <div
           aria-hidden
-          className="mb-4 flex w-9 h-9 items-center justify-center rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)] text-patch-text-tertiary"
+          className="mb-4 flex w-9 h-9 items-center justify-center rounded-[var(--radius-6)] border border-[var(--gray-alpha-400)] text-gray-800"
         >
           {icon}
         </div>
       )}
-      <h3 className="text-[length:var(--text-patch-body)] font-medium tracking-[-0.015em] text-patch-text">
+      <h3 className="text-copy-14 font-medium tracking-[-0.015em] text-gray-1000">
         {title}
       </h3>
       {description && (
-        <p className="mt-1.5 max-w-xs text-[length:var(--text-patch-mini)] leading-relaxed text-patch-text-secondary">
+        <p className="mt-1.5 max-w-xs text-label-12 leading-relaxed text-gray-900">
           {description}
         </p>
       )}

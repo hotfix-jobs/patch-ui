@@ -4,7 +4,7 @@ import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
 
 function Body({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-[length:var(--text-patch-control)] leading-relaxed text-patch-text-secondary">
+    <div className="text-label-13 leading-relaxed text-gray-900">
       {children}
     </div>
   );
@@ -12,7 +12,7 @@ function Body({ children }: { children: React.ReactNode }) {
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-3 text-[length:var(--text-patch-mini)] font-medium text-patch-text-tertiary">
+    <p className="mb-3 text-label-12 font-medium text-gray-800">
       {children}
     </p>
   );
@@ -47,7 +47,7 @@ export function TabsDemo() {
         <Label>Pill - same look, orientation flips by breakpoint</Label>
         <div className="flex flex-col gap-8 sm:flex-row sm:gap-12">
           <div>
-            <p className="mb-2 text-[length:var(--text-patch-micro)] uppercase tracking-[0.06em] text-patch-text-quaternary">
+            <p className="mb-2 text-label-12 uppercase tracking-[0.06em] text-gray-700">
               Desktop (vertical)
             </p>
             <Tabs variant="pill" orientation="vertical" defaultValue="profile">
@@ -59,7 +59,7 @@ export function TabsDemo() {
             </Tabs>
           </div>
           <div>
-            <p className="mb-2 text-[length:var(--text-patch-micro)] uppercase tracking-[0.06em] text-patch-text-quaternary">
+            <p className="mb-2 text-label-12 uppercase tracking-[0.06em] text-gray-700">
               Mobile (horizontal)
             </p>
             <Tabs variant="pill" defaultValue="profile">

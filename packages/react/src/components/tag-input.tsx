@@ -56,25 +56,25 @@ export interface TagInputProps
 
 const WRAPPER_VARIANT = {
   outlined:
-    "rounded-[var(--radius-patch-sm)] border border-[var(--input-border)] bg-patch-surface " +
-    "hover:border border-[var(--patch-border-hover)] " +
-    "focus-within:border border-[var(--patch-border-active)] " +
-    "focus-within:outline focus-within:outline-1 focus-within:outline-[var(--patch-focus-ring)] focus-within:outline-offset-[var(--patch-focus-ring-offset)]",
+    "rounded-[var(--radius-6)] border border-[var(--input-border)] bg-background-100 " +
+    "hover:border border-[var(--gray-alpha-500)] " +
+    "focus-within:border border-[var(--gray-alpha-600)] " +
+    "focus-within:outline focus-within:outline-1 focus-within:outline-[var(--focus-ring-color)] focus-within:outline-offset-[var(--focus-ring-offset)]",
   ghost:
-    "rounded-[var(--radius-patch-sm)] bg-transparent border-none " +
-    "focus-within:outline focus-within:outline-1 focus-within:outline-[var(--patch-focus-ring)] focus-within:outline-offset-[var(--patch-focus-ring-offset)]",
+    "rounded-[var(--radius-6)] bg-transparent border-none " +
+    "focus-within:outline focus-within:outline-1 focus-within:outline-[var(--focus-ring-color)] focus-within:outline-offset-[var(--focus-ring-offset)]",
   underline:
     "rounded-none bg-transparent border-b border-[var(--input-border)] " +
-    "hover:border-b border-[var(--patch-border-hover)] " +
-    "focus-within:border-b border-[var(--patch-border-active)]",
+    "hover:border-b border-[var(--gray-alpha-500)] " +
+    "focus-within:border-b border-[var(--gray-alpha-600)]",
 } as const;
 
 const INVALID_BY_VARIANT = {
   outlined:
-    "!border-[var(--patch-error)] focus-within:!border-[var(--patch-error)] focus-within:!outline-[var(--patch-error)]",
-  ghost: "focus-within:!outline-[var(--patch-error)]",
+    "!border-[var(--error)] focus-within:!border-[var(--error)] focus-within:!outline-[var(--error)]",
+  ghost: "focus-within:!outline-[var(--error)]",
   underline:
-    "!border-b border-[var(--patch-error)] focus-within:!border-b border-[var(--patch-error)]",
+    "!border-b border-[var(--error)] focus-within:!border-b border-[var(--error)]",
 } as const;
 
 const DEFAULT_TRANSFORM = (raw: string) => raw.trim();
@@ -191,8 +191,8 @@ export const TagInput = forwardRef<HTMLInputElement, TagInputProps>(
         data-invalid={invalid || undefined}
         onClick={() => innerRef.current?.focus()}
         className={cn(
-          "relative flex w-full flex-wrap items-center gap-1.5 px-2.5 py-1.5 text-[length:var(--text-patch-control)] text-patch-text",
-          "transition-[color,background-color,box-shadow,outline-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+          "relative flex w-full flex-wrap items-center gap-1.5 px-2.5 py-1.5 text-label-13 text-gray-1000",
+          "transition-[color,background-color,box-shadow,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "has-disabled:opacity-50 cursor-text",
           WRAPPER_VARIANT[variant],
           invalid && INVALID_BY_VARIANT[variant],

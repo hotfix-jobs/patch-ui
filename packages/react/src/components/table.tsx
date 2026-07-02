@@ -60,9 +60,9 @@ export function Table({
       data-variant={variant}
       className={cn(
         "w-full caption-bottom border-collapse",
-        "text-[length:var(--text-patch-control)] text-patch-text",
+        "text-label-13 text-gray-1000",
         variant === "default" &&
-          "rounded-[var(--radius-patch-lg)] overflow-hidden bg-patch-surface border border-[var(--patch-border)]",
+          "rounded-[var(--radius-12)] overflow-hidden bg-background-100 border border-[var(--gray-alpha-400)]",
         className,
       )}
       {...props}
@@ -89,7 +89,7 @@ export function TableHeader({
     <thead
       data-slot="table-header"
       className={cn(
-        "bg-patch-surface-2 border-b border-[var(--patch-border)]",
+        "bg-gray-100 border-b border-[var(--gray-alpha-400)]",
         className,
       )}
       {...props}
@@ -112,7 +112,7 @@ export function TableFooter({
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "bg-patch-surface-2 border-t border-[var(--patch-border)] font-medium",
+        "bg-gray-100 border-t border-[var(--gray-alpha-400)] font-medium",
         className,
       )}
       {...props}
@@ -130,7 +130,7 @@ export function TableRow({
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b border-[var(--patch-border)] last:shadow-none",
+        "border-b border-[var(--gray-alpha-400)] last:shadow-none",
         "transition-colors hover:bg-[var(--menu-item-hover)]",
         className,
       )}
@@ -156,7 +156,7 @@ export function TableHead({
     <th
       data-slot="table-head"
       className={cn(
-        "h-9 px-3 py-2 text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary",
+        "h-9 px-3 py-2 text-label-12 font-semibold uppercase tracking-tight text-gray-800",
         "whitespace-nowrap",
         align === "right" && "text-right",
         align === "center" && "text-center",
@@ -204,7 +204,7 @@ export function TableCaption({
     <caption
       data-slot="table-caption"
       className={cn(
-        "mt-3 text-[length:var(--text-patch-mini)] text-patch-text-tertiary text-left",
+        "mt-3 text-label-12 text-gray-800 text-left",
         className,
       )}
       {...props}

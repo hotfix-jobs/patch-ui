@@ -15,15 +15,15 @@ export const avatarVariants = cva(
     },
     variants: {
       size: {
-        xs: "size-6 text-[length:var(--text-patch-micro)]",
-        sm: "size-7 text-[length:var(--text-patch-mini)]",
-        md: "size-9 text-[length:var(--text-patch-control)]",
-        lg: "size-11 text-[length:var(--text-patch-body)]",
-        xl: "size-14 text-[length:var(--text-patch-lead)]",
+        xs: "size-6 text-label-12",
+        sm: "size-7 text-label-12",
+        md: "size-9 text-label-13",
+        lg: "size-11 text-copy-14",
+        xl: "size-14 text-copy-18",
       },
       shape: {
         circle: "rounded-full",
-        square: "rounded-[var(--radius-patch-sm)]",
+        square: "rounded-[var(--radius-6)]",
       },
     },
   },
@@ -157,7 +157,7 @@ export function AvatarGroup({
       shape: childProps.shape ?? shape,
       className: cn(
         ring,
-        "ring-patch-bg",
+        "ring-background-100",
         i > 0 && offset,
         childProps.className,
       ),
@@ -177,10 +177,10 @@ export function AvatarGroup({
           className={cn(
             avatarVariants({ size, shape }),
             ring,
-            "ring-patch-bg",
+            "ring-background-100",
             offset,
             // Distinct fill so the chip reads as a counter, not an avatar.
-            "!bg-patch-surface-2 !text-patch-text-secondary",
+            "!bg-gray-100 !text-gray-900",
           )}
         >
           +{overflow}

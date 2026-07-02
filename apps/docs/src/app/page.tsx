@@ -18,7 +18,7 @@ import {
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-patch-bg text-patch-text">
+    <main className="flex min-h-screen flex-col bg-background-100 text-gray-1000">
       <AppHeader sticky>
         <AppHeaderBrand render={<Link href="/" />}>Patch UI</AppHeaderBrand>
         <AppHeaderNav className="hidden sm:flex">
@@ -48,18 +48,18 @@ export default function Home() {
 
       {/* Hero — viewport-height, centered */}
       <section className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center px-6 py-12 text-center">
-        <h1 className="max-w-3xl text-balance text-[40px] font-semibold leading-[1.05] tracking-[-0.025em] text-patch-text sm:text-[56px] md:text-[68px]">
+        <h1 className="max-w-3xl text-balance text-[40px] font-semibold leading-[1.05] tracking-[-0.025em] text-gray-1000 sm:text-[56px] md:text-[68px]">
           Components for the modern web.
         </h1>
 
-        <p className="mt-6 max-w-xl text-balance text-[length:var(--text-patch-body)] leading-relaxed text-patch-text-secondary md:text-[18px]">
+        <p className="mt-6 max-w-xl text-balance text-copy-14 leading-relaxed text-gray-900 md:text-[18px]">
           Accessible, token-driven React components built on Base UI and
           Floating UI. Copy & paste into your app. Edit freely.
         </p>
 
         {/* Install command */}
-        <div className="mt-10 inline-flex items-center gap-2 rounded-[var(--radius-patch-sm)] border-[0.5px] border-patch-border bg-patch-surface px-4 py-2 font-mono text-[length:var(--text-patch-control)]">
-          <span className="text-patch-text-tertiary">$</span>
+        <div className="mt-10 inline-flex items-center gap-2 rounded-[var(--radius-6)] border-[0.5px] border-gray-alpha-400 bg-background-100 px-4 py-2 font-mono text-label-13">
+          <span className="text-gray-800">$</span>
           <span>npx shadcn add @patchui/button</span>
         </div>
 
@@ -83,7 +83,7 @@ export default function Home() {
       {/* Showcase wall — live component previews in a hairline grid */}
       <section className="px-6 pb-24 md:px-12 lg:px-16">
         <div className="mx-auto w-full max-w-[1200px]">
-          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[var(--radius-patch-lg)] border-[0.5px] border-patch-border bg-patch-border md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-gray-alpha-400 md:grid-cols-2 lg:grid-cols-3">
             {/* Buttons */}
             <ShowcaseCell label="Buttons">
               <div className="flex flex-wrap items-center gap-2">
@@ -171,7 +171,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="border-t-[0.5px] border-patch-border bg-patch-surface px-6 py-20 md:px-12 lg:px-16">
+      <section className="border-t-[0.5px] border-gray-alpha-400 bg-background-100 px-6 py-20 md:px-12 lg:px-16">
         <div className="mx-auto grid w-full max-w-[1200px] gap-12 md:grid-cols-3">
           <Feature
             title="Open source"
@@ -189,18 +189,18 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t-[0.5px] border-patch-border px-6 py-8 md:px-12 lg:px-16">
-        <div className="mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-4 text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
+      <footer className="border-t-[0.5px] border-gray-alpha-400 px-6 py-8 md:px-12 lg:px-16">
+        <div className="mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-4 text-label-12 text-gray-800">
           <span>
             Built on Base UI, Floating UI, and motion. MIT licensed.
           </span>
           <div className="flex items-center gap-5">
-            <Link href="/docs" className="font-medium hover:text-patch-text">
+            <Link href="/docs" className="font-medium hover:text-gray-1000">
               Docs
             </Link>
             <Link
               href="/docs/components/button"
-              className="font-medium hover:text-patch-text"
+              className="font-medium hover:text-gray-1000"
             >
               Components
             </Link>
@@ -208,7 +208,7 @@ export default function Home() {
               href="https://github.com/hotfix-jobs/patch-ui"
               target="_blank"
               rel="noreferrer"
-              className="font-medium hover:text-patch-text"
+              className="font-medium hover:text-gray-1000"
             >
               GitHub
             </a>
@@ -227,8 +227,8 @@ function ShowcaseCell({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-4 bg-patch-bg px-6 py-8 md:px-8 md:py-10">
-      <div className="text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
+    <div className="flex flex-col gap-4 bg-background-100 px-6 py-8 md:px-8 md:py-10">
+      <div className="text-label-12 font-semibold uppercase tracking-tight text-gray-800">
         {label}
       </div>
       <div className="flex min-h-[64px] items-center">{children}</div>
@@ -239,10 +239,10 @@ function ShowcaseCell({
 function Feature({ title, body }: { title: string; body: string }) {
   return (
     <div>
-      <h3 className="text-[length:var(--text-patch-lead)] font-semibold tracking-tight text-patch-text">
+      <h3 className="text-copy-18 font-semibold tracking-tight text-gray-1000">
         {title}
       </h3>
-      <p className="mt-2 text-[length:var(--text-patch-control)] leading-relaxed text-patch-text-secondary">
+      <p className="mt-2 text-label-13 leading-relaxed text-gray-900">
         {body}
       </p>
     </div>

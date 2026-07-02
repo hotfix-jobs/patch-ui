@@ -251,15 +251,15 @@ export function SheetContent({
                         }
                   }
                   className={cn(
-                    "absolute z-70 flex flex-col bg-patch-surface text-patch-text border border-[var(--dialog-border)] shadow-patch-overlay",
+                    "absolute z-70 flex flex-col bg-background-100 text-gray-1000 border border-[var(--dialog-border)] shadow-modal",
                     side === "right" &&
-                      "inset-y-0 right-0 h-full w-full max-w-md rounded-l-[var(--radius-patch-sm)]",
+                      "inset-y-0 right-0 h-full w-full max-w-md rounded-l-[var(--radius-6)]",
                     side === "left" &&
-                      "inset-y-0 left-0 h-full w-full max-w-md rounded-r-[var(--radius-patch-sm)]",
+                      "inset-y-0 left-0 h-full w-full max-w-md rounded-r-[var(--radius-6)]",
                     side === "top" &&
-                      "inset-x-0 top-0 w-full rounded-b-[var(--radius-patch-sm)]",
+                      "inset-x-0 top-0 w-full rounded-b-[var(--radius-6)]",
                     side === "bottom" &&
-                      "inset-x-0 bottom-0 w-full rounded-t-[var(--radius-patch-sm)]",
+                      "inset-x-0 bottom-0 w-full rounded-t-[var(--radius-6)]",
                     className,
                   )}
                 >
@@ -316,7 +316,7 @@ export function SheetClose({
       onClick={onClick}
       data-slot="sheet-close"
       className={cn(
-        "absolute end-3 top-5 flex h-7 w-7 items-center justify-center rounded-[var(--radius-patch-sm)] text-patch-text-tertiary transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] hover:bg-patch-surface-hover hover:text-patch-text",
+        "absolute end-3 top-5 flex h-7 w-7 items-center justify-center rounded-[var(--radius-6)] text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-200 hover:text-gray-1000",
         focusRing,
       )}
       {...rest}
@@ -363,7 +363,7 @@ export function SheetTitle({
     <h2
       id={titleId}
       className={cn(
-        "font-semibold text-lg leading-none text-patch-text",
+        "font-semibold text-lg leading-none text-gray-1000",
         className,
       )}
       data-slot="sheet-title"
@@ -380,7 +380,7 @@ export function SheetDescription({
   return (
     <p
       id={descriptionId}
-      className={cn("text-patch-text-secondary text-sm", className)}
+      className={cn("text-gray-900 text-sm", className)}
       data-slot="sheet-description"
       {...props}
     />
@@ -407,7 +407,7 @@ export function SheetFooter({
   return (
     <div
       className={cn(
-        "flex flex-col-reverse gap-2 border-t border-[var(--patch-border)] px-6 py-4 sm:flex-row sm:justify-end",
+        "flex flex-col-reverse gap-2 border-t border-[var(--gray-alpha-400)] px-6 py-4 sm:flex-row sm:justify-end",
         className,
       )}
       data-slot="sheet-footer"

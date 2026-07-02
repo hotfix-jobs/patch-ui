@@ -192,9 +192,9 @@ const TYPE_ICON: Record<ToastType, React.ReactNode | null> = {
   warning: (
     <TriangleAlert className="size-4 text-[var(--badge-warning-text)]" />
   ),
-  info: <Info className="size-4 text-patch-text-secondary" />,
+  info: <Info className="size-4 text-gray-900" />,
   loading: (
-    <Loader className="size-4 animate-spin text-patch-text-secondary" />
+    <Loader className="size-4 animate-spin text-gray-900" />
   ),
 };
 
@@ -400,12 +400,12 @@ function ToastItem({
       data-type={t.type}
       className={cn(
         "pointer-events-auto relative w-full select-none",
-        "rounded-[var(--radius-patch-sm)]",
-        "bg-patch-surface text-patch-text",
-        "border border-[var(--patch-border)] shadow-patch-popup",
+        "rounded-[var(--radius-6)]",
+        "bg-background-100 text-gray-1000",
+        "border border-[var(--gray-alpha-400)] shadow-menu",
         "px-3 py-3 pe-10",
         "flex items-start gap-2.5",
-        "tracking-[var(--tracking-patch-small)]",
+        "tracking-tight",
       )}
       style={{ originX: 0.5, originY: topPos ? 0 : 1 }}
     >
@@ -416,14 +416,14 @@ function ToastItem({
       )}
       <div className="min-w-0 flex-1">
         <div
-          className="text-[length:var(--text-patch-control)] font-semibold leading-tight text-patch-text"
+          className="text-label-13 font-semibold leading-tight text-gray-1000"
           data-slot="toast-title"
         >
           {t.title}
         </div>
         {t.description != null && (
           <div
-            className="mt-0.5 text-[length:var(--text-patch-mini)] leading-snug text-patch-text-secondary"
+            className="mt-0.5 text-label-12 leading-snug text-gray-900"
             data-slot="toast-description"
           >
             {t.description}
@@ -438,11 +438,11 @@ function ToastItem({
             }}
             className={cn(
               "mt-2 inline-flex items-center justify-center",
-              "rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)]",
+              "rounded-[var(--radius-6)] border border-[var(--gray-alpha-400)]",
               "bg-transparent px-2.5 py-1",
-              "text-[length:var(--text-patch-control)] font-medium text-patch-text",
-              "transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-              "hover:bg-patch-accent",
+              "text-label-13 font-medium text-gray-1000",
+              "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+              "hover:bg-gray-100",
               focusRing,
             )}
             data-slot="toast-action"
@@ -459,9 +459,9 @@ function ToastItem({
         className={cn(
           "absolute top-1/2 -translate-y-1/2 end-2",
           "flex h-7 w-7 items-center justify-center",
-          "rounded-[var(--radius-patch-sm)] text-patch-text-tertiary",
-          "transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-          "hover:bg-patch-surface-hover hover:text-patch-text",
+          "rounded-[var(--radius-6)] text-gray-800",
+          "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "hover:bg-gray-200 hover:text-gray-1000",
           focusRing,
         )}
       >

@@ -13,7 +13,7 @@ export function BadgeDemo() {
     <div className="flex flex-col gap-8">
       {/* Variants */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Variants
         </p>
         <div className="flex flex-wrap items-center gap-3">
@@ -29,7 +29,7 @@ export function BadgeDemo() {
 
       {/* Outline variants */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Outline variants
         </p>
         <div className="flex flex-wrap items-center gap-3">
@@ -41,7 +41,7 @@ export function BadgeDemo() {
 
       {/* Sizes */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Sizes
         </p>
         <div className="flex flex-wrap items-center gap-3">
@@ -53,7 +53,7 @@ export function BadgeDemo() {
 
       {/* Shape */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Shape
         </p>
         <div className="flex flex-wrap items-center gap-3">
@@ -67,7 +67,7 @@ export function BadgeDemo() {
 
       {/* Dismissible - pass onRemove to get a trailing × (e.g. applied filters) */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Dismissible (onRemove)
         </p>
         <div className="flex min-h-7 flex-wrap items-center gap-2">
@@ -75,7 +75,7 @@ export function BadgeDemo() {
             <button
               type="button"
               onClick={() => setFilters(INITIAL_FILTERS)}
-              className="text-xs text-patch-text-tertiary underline underline-offset-2"
+              className="text-xs text-gray-800 underline underline-offset-2"
             >
               Reset
             </button>

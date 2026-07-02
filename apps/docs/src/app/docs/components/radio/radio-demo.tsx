@@ -11,7 +11,7 @@ export function RadioDemo() {
     <div className="flex flex-col gap-8">
       {/* Controlled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Controlled
         </p>
         <RadioGroup
@@ -25,7 +25,7 @@ export function RadioDemo() {
           ].map((opt) => (
             <label
               key={opt.value}
-              className="flex cursor-pointer items-center gap-2 text-sm text-patch-text"
+              className="flex cursor-pointer items-center gap-2 text-sm text-gray-1000"
             >
               <Radio value={opt.value} />
               {opt.label}
@@ -36,7 +36,7 @@ export function RadioDemo() {
 
       {/* Default Value */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Default Value
         </p>
         <RadioGroup defaultValue="weekly">
@@ -47,7 +47,7 @@ export function RadioDemo() {
           ].map((opt) => (
             <label
               key={opt.value}
-              className="flex cursor-pointer items-center gap-2 text-sm text-patch-text"
+              className="flex cursor-pointer items-center gap-2 text-sm text-gray-1000"
             >
               <Radio value={opt.value} />
               {opt.label}
@@ -58,7 +58,7 @@ export function RadioDemo() {
 
       {/* Disabled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Disabled
         </p>
         <RadioGroup defaultValue="yes" disabled>
@@ -68,7 +68,7 @@ export function RadioDemo() {
           ].map((opt) => (
             <label
               key={opt.value}
-              className="flex items-center gap-2 text-sm text-patch-text"
+              className="flex items-center gap-2 text-sm text-gray-1000"
             >
               <Radio value={opt.value} />
               {opt.label}

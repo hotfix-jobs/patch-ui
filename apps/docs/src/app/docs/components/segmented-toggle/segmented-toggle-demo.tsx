@@ -24,7 +24,7 @@ export function SegmentedToggleDemo() {
     <div className="flex flex-col gap-8">
       {/* Icon-only view toggle */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Icon-only (view toggle)
         </p>
         <SegmentedToggle
@@ -43,7 +43,7 @@ export function SegmentedToggleDemo() {
 
       {/* Three options */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Three options (alignment)
         </p>
         <SegmentedToggle
@@ -65,7 +65,7 @@ export function SegmentedToggleDemo() {
 
       {/* Text labels */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Text labels (sort)
         </p>
         <SegmentedToggle
@@ -80,7 +80,7 @@ export function SegmentedToggleDemo() {
 
       {/* Small size */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Small size
         </p>
         <SegmentedToggle

@@ -28,8 +28,8 @@ function LinkCard({
 }) {
   return (
     <NavigationMenuLink href="#">
-      <span className="block font-medium text-patch-text">{title}</span>
-      <span className="mt-0.5 block text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
+      <span className="block font-medium text-gray-1000">{title}</span>
+      <span className="mt-0.5 block text-label-12 text-gray-800">
         {description}
       </span>
     </NavigationMenuLink>
@@ -61,7 +61,7 @@ export function NavigationMenuDemo() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="w-full overflow-hidden rounded-[var(--radius-patch-lg)] border-[0.5px] border-patch-border">
+    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400">
       <AppHeader>
         <AppHeaderBrand>Patch</AppHeaderBrand>
 
@@ -125,7 +125,7 @@ export function NavigationMenuDemo() {
                   key={label}
                   href="#"
                   onClick={() => setOpen(false)}
-                  className="rounded-[var(--radius-patch-sm)] px-2 py-2 text-[length:var(--text-patch-control)] text-patch-text-secondary transition-colors hover:bg-patch-surface-hover hover:text-patch-text"
+                  className="rounded-[var(--radius-6)] px-2 py-2 text-label-13 text-gray-900 transition-colors hover:bg-gray-200 hover:text-gray-1000"
                 >
                   {label}
                 </a>
@@ -135,7 +135,7 @@ export function NavigationMenuDemo() {
         </SheetContent>
       </Sheet>
 
-      <div className="p-6 text-[length:var(--text-patch-control)] text-patch-text-secondary">
+      <div className="p-6 text-label-13 text-gray-900">
         Hover or focus the menu items to open the morphing dropdown. Under the
         <code> sm</code> breakpoint it collapses to a Sheet drawer.
       </div>

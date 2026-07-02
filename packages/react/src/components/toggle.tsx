@@ -7,7 +7,7 @@ import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
 export const toggleVariants = cva(
-  `relative inline-flex shrink-0 cursor-pointer items-center justify-center whitespace-nowrap font-medium tracking-[-0.005em] rounded-[var(--radius-patch-sm)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 transition-[colors,transform] duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-95 ${focusRing}`,
+  `relative inline-flex shrink-0 cursor-pointer items-center justify-center whitespace-nowrap font-medium tracking-[-0.005em] rounded-[var(--radius-6)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 transition-[colors,transform] duration-[var(--duration-state)] ease-[var(--ease-standard)] active:scale-95 ${focusRing}`,
   {
     defaultVariants: {
       size: "md",
@@ -15,15 +15,15 @@ export const toggleVariants = cva(
     },
     variants: {
       size: {
-        sm: "h-7 min-w-7 px-2 text-[length:var(--text-patch-mini)] [&_svg:not([class*='size-'])]:size-3.5",
-        md: "h-9 min-w-9 px-3 text-[length:var(--text-patch-control)] [&_svg:not([class*='size-'])]:size-4",
-        lg: "h-11 min-w-11 px-4 text-[length:var(--text-patch-body)] [&_svg:not([class*='size-'])]:size-5",
+        sm: "h-7 min-w-7 px-2 text-label-12 [&_svg:not([class*='size-'])]:size-3.5",
+        md: "h-9 min-w-9 px-3 text-label-13 [&_svg:not([class*='size-'])]:size-4",
+        lg: "h-11 min-w-11 px-4 text-copy-14 [&_svg:not([class*='size-'])]:size-5",
       },
       variant: {
         ghost:
-          "bg-transparent text-patch-text-secondary hover:bg-patch-accent hover:text-patch-text data-[state=on]:bg-patch-text data-[state=on]:text-patch-bg",
+          "bg-transparent text-gray-900 hover:bg-gray-100 hover:text-gray-1000 data-[state=on]:bg-patch-text data-[state=on]:text-patch-bg",
         outline:
-          "bg-transparent text-patch-text-secondary border border-[var(--patch-border)] hover:bg-patch-accent hover:text-patch-text data-[state=on]:bg-patch-text data-[state=on]:text-patch-bg data-[state=on]:border border-[var(--patch-text)]",
+          "bg-transparent text-gray-900 border border-[var(--gray-alpha-400)] hover:bg-gray-100 hover:text-gray-1000 data-[state=on]:bg-patch-text data-[state=on]:text-patch-bg data-[state=on]:border border-[var(--gray-1000)]",
       },
     },
   },

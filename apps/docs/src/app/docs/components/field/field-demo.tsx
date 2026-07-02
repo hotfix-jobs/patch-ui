@@ -14,7 +14,7 @@ export function FieldDemo() {
     <div className="flex w-full flex-col gap-8">
       {/* Basic Field */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Basic Field
         </p>
         <Field className="max-w-sm">
@@ -26,7 +26,7 @@ export function FieldDemo() {
 
       {/* Required */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Required label
         </p>
         <Field className="max-w-sm">
@@ -39,7 +39,7 @@ export function FieldDemo() {
 
       {/* Optional */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Optional label
         </p>
         <Field className="max-w-sm">
@@ -51,7 +51,7 @@ export function FieldDemo() {
 
       {/* Invalid / Error State */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Error State
         </p>
         <Field invalid className="max-w-sm">
@@ -64,7 +64,7 @@ export function FieldDemo() {
 
       {/* Disabled Field */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Disabled
         </p>
         <Field disabled className="max-w-sm">

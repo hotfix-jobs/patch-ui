@@ -17,7 +17,7 @@ export function SelectDemo() {
     <div className="flex flex-col gap-8">
       {/* Basic Select */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Basic
         </p>
         <Select defaultValue="Apple">
@@ -35,7 +35,7 @@ export function SelectDemo() {
 
       {/* Grouped Select */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Grouped
         </p>
         <Select defaultValue="React">
@@ -62,7 +62,7 @@ export function SelectDemo() {
 
       {/* Sizes */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Sizes
         </p>
         <div className="flex flex-wrap items-start gap-3">
@@ -98,7 +98,7 @@ export function SelectDemo() {
 
       {/* Disabled Item */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Disabled Item
         </p>
         <Select defaultValue="Available">

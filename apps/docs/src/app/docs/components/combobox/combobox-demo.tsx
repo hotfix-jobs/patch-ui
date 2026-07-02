@@ -38,7 +38,7 @@ export function ComboboxDemo() {
     <div className="flex flex-col gap-8">
       {/* Basic — filterable list */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Basic
         </p>
         <div className="max-w-sm">
@@ -51,7 +51,7 @@ export function ComboboxDemo() {
             />
             <ComboboxPopup>
               {matches.length === 0 ? (
-                <div className="px-3 py-6 text-center text-[length:var(--text-patch-control)] text-patch-text-tertiary">
+                <div className="px-3 py-6 text-center text-label-13 text-gray-800">
                   No matches.
                 </div>
               ) : (
@@ -72,7 +72,7 @@ export function ComboboxDemo() {
             </ComboboxPopup>
           </Combobox>
           {picked && (
-            <p className="mt-2 text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
+            <p className="mt-2 text-label-12 text-gray-800">
               Selected: {picked}
             </p>
           )}
@@ -81,7 +81,7 @@ export function ComboboxDemo() {
 
       {/* Custom content — recents + suggestions + info banner */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Custom content (recents, banner)
         </p>
         <div className="max-w-sm">
@@ -94,15 +94,15 @@ export function ComboboxDemo() {
             />
             <ComboboxPopup>
               {/* Info banner — arbitrary JSX, not a ComboboxItem */}
-              <div className="flex items-center gap-1.5 border-b-[0.5px] border-patch-border px-3 py-2 text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
+              <div className="flex items-center gap-1.5 border-b-[0.5px] border-gray-alpha-400 px-3 py-2 text-label-12 text-gray-800">
                 <Info className="h-3.5 w-3.5 shrink-0" aria-hidden />
                 <span>Recents shown first</span>
               </div>
 
               {/* Recents section */}
               {needle === "" && RECENT.length > 0 && (
-                <div className="border-b-[0.5px] border-patch-border p-1">
-                  <div className="px-2 pb-1 pt-1 text-[length:var(--text-patch-micro)] font-medium uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
+                <div className="border-b-[0.5px] border-gray-alpha-400 p-1">
+                  <div className="px-2 pb-1 pt-1 text-label-12 font-medium uppercase tracking-tight text-gray-800">
                     Recent
                   </div>
                   {RECENT.map((r) => (
@@ -122,7 +122,7 @@ export function ComboboxDemo() {
               {/* Suggestions */}
               <div className="p-1">
                 {matches.length === 0 ? (
-                  <div className="px-3 py-4 text-center text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
+                  <div className="px-3 py-4 text-center text-label-12 text-gray-800">
                     No matches.
                   </div>
                 ) : (

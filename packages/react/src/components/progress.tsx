@@ -63,7 +63,7 @@ export function Progress({
       data-variant={variant}
       data-state={indeterminate ? "indeterminate" : "determinate"}
       className={cn(
-        "relative w-full overflow-hidden rounded-full bg-patch-border",
+        "relative w-full overflow-hidden rounded-full bg-gray-alpha-400",
         HEIGHT_BY_SIZE[size],
         className,
       )}

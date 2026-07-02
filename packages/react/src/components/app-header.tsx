@@ -28,8 +28,8 @@ export function AppHeader({
 }: AppHeaderProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "bg-patch-surface",
-      bordered && "border-b border-[var(--patch-border)]",
+      "bg-background-100",
+      bordered && "border-b border-[var(--gray-alpha-400)]",
       sticky ? "sticky top-0 z-50" : "relative",
       className,
     ),
@@ -57,7 +57,7 @@ export function AppHeaderBrand({
 }: AppHeaderBrandProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex-shrink-0 font-semibold text-[length:var(--text-patch-lead)] tracking-[-0.025em] text-patch-text",
+      "flex-shrink-0 font-semibold text-copy-18 tracking-[-0.025em] text-gray-1000",
       className,
     ),
     "data-slot": "app-header-brand",
@@ -101,10 +101,10 @@ export function AppHeaderNavItem({
 }: AppHeaderNavItemProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "text-[length:var(--text-patch-control)] font-medium tracking-[-0.005em] transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
+      "text-label-13 font-medium tracking-[-0.005em] transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
       active
-        ? "text-patch-text"
-        : "text-patch-text-secondary hover:text-patch-text",
+        ? "text-gray-1000"
+        : "text-gray-900 hover:text-gray-1000",
       className,
     ),
     "data-slot": "app-header-nav-item",

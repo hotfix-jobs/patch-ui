@@ -8,7 +8,7 @@ import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
 export const cardVariants = cva(
-  `relative flex flex-col text-patch-text ${colorTransition}`,
+  `relative flex flex-col text-gray-1000 ${colorTransition}`,
   {
     defaultVariants: {
       variant: "default",
@@ -16,16 +16,16 @@ export const cardVariants = cva(
     variants: {
       variant: {
         default:
-          "rounded-[var(--radius-patch-lg)] bg-patch-surface border border-[var(--patch-border)]",
+          "rounded-[var(--radius-12)] bg-background-100 border border-[var(--gray-alpha-400)]",
         // Tonal elevation (nested surface tone), not a shadow — surfaces stay flat.
         elevated:
-          "rounded-[var(--radius-patch-lg)] bg-patch-surface-2 border border-[var(--patch-border)]",
+          "rounded-[var(--radius-12)] bg-gray-100 border border-[var(--gray-alpha-400)]",
         interactive: cn(
-          "rounded-[var(--radius-patch-lg)] bg-transparent border border-[var(--patch-border)] hover:bg-patch-surface hover:border-[var(--patch-border)] cursor-pointer transition-[transform,background-color,border-color] duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-[0.99]",
+          "rounded-[var(--radius-12)] bg-transparent border border-[var(--gray-alpha-400)] hover:bg-background-100 hover:border-[var(--gray-alpha-400)] cursor-pointer transition-[transform,background-color,border-color] duration-[var(--duration-state)] ease-[var(--ease-standard)] active:scale-[0.99]",
           focusRing,
         ),
         ghost:
-          "rounded-[var(--radius-patch-lg)] bg-transparent border-b border-[var(--separator-color)]",
+          "rounded-[var(--radius-12)] bg-transparent border-b border-[var(--separator-color)]",
       },
     },
   },
@@ -51,7 +51,7 @@ export function Card({
   const defaultProps = {
     className: cn(
       cardVariants({ className, variant }),
-      selected && "!border-[var(--patch-text)]",
+      selected && "!border-[var(--gray-1000)]",
     ),
     "data-slot": "card",
     "data-selected": selected || undefined,
@@ -91,7 +91,7 @@ export function CardTitle({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("font-medium text-[length:var(--text-patch-lead)] leading-tight tracking-[var(--tracking-patch-title)] text-patch-text", className),
+    className: cn("font-medium text-copy-18 leading-tight tracking-tight text-gray-1000", className),
     "data-slot": "card-title",
   };
 
@@ -108,7 +108,7 @@ export function CardDescription({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("text-patch-text-secondary text-sm", className),
+    className: cn("text-gray-900 text-sm", className),
     "data-slot": "card-description",
   };
 
@@ -162,7 +162,7 @@ export function CardFooter({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("flex items-center px-5 py-4 border-t border-[var(--patch-border)]", className),
+    className: cn("flex items-center px-5 py-4 border-t border-[var(--gray-alpha-400)]", className),
     "data-slot": "card-footer",
   };
 
@@ -191,7 +191,7 @@ export function CardMeta({
 }: CardMetaProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex items-center justify-between gap-3 border-t border-[var(--patch-border)] px-5 py-4",
+      "flex items-center justify-between gap-3 border-t border-[var(--gray-alpha-400)] px-5 py-4",
       className,
     ),
     "data-slot": "card-meta",
@@ -200,11 +200,11 @@ export function CardMeta({
         <div className="flex min-w-0 items-center gap-3">
           <div className="shrink-0">{icon}</div>
           <div className="flex min-w-0 flex-col">
-            <span className="truncate text-[length:var(--text-patch-control)] font-medium text-patch-text leading-tight">
+            <span className="truncate text-label-13 font-medium text-gray-1000 leading-tight">
               {primary}
             </span>
             {secondary && (
-              <span className="truncate text-[length:var(--text-patch-mini)] text-patch-text-tertiary leading-tight">
+              <span className="truncate text-label-12 text-gray-800 leading-tight">
                 {secondary}
               </span>
             )}

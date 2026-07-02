@@ -10,7 +10,7 @@ import { focusRing } from "../recipes";
  *
  * Unstyled item wrapper plus a chevron that rotates 180deg on open.
  * Consumers supply their own row/card chrome (e.g. add
- * `border-t border-patch-border last:border-b` to AccordionItem for the
+ * `border-t border-gray-alpha-400 last:border-b` to AccordionItem for the
  * hairline row pattern, or wrap each item in a Card). Panels animate
  * their height open/close via Base UI's `--accordion-panel-height` CSS
  * variable and render `keepMounted` so collapsed content stays in the
@@ -20,7 +20,7 @@ import { focusRing } from "../recipes";
  *   <Accordion defaultValue={["item-0"]}>
  *     <AccordionItem
  *       value="item-0"
- *       className="border-t border-patch-border last:border-b"
+ *       className="border-t border-gray-alpha-400 last:border-b"
  *     >
  *       <AccordionTrigger>Question?</AccordionTrigger>
  *       <AccordionPanel>Answer.</AccordionPanel>
@@ -60,7 +60,7 @@ export function AccordionTrigger({
         data-slot="accordion-trigger"
         className={cn(
           "group flex w-full items-start justify-between gap-3 py-3.5 text-left",
-          "text-[length:var(--text-patch-body)] font-medium text-patch-text",
+          "text-copy-14 font-medium text-gray-1000",
           focusRing,
           className,
         )}
@@ -77,7 +77,7 @@ export function AccordionTrigger({
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="mt-0.5 h-4 w-4 shrink-0 text-patch-text-tertiary transition-transform duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)] group-data-[panel-open]:rotate-180"
+          className="mt-0.5 h-4 w-4 shrink-0 text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[panel-open]:rotate-180"
         >
           <path d="m6 9 6 6 6-6" />
         </svg>
@@ -100,13 +100,13 @@ export function AccordionPanel({
       keepMounted
       className={cn(
         "h-[var(--accordion-panel-height)] overflow-hidden",
-        "transition-[height] duration-[var(--duration-patch-spring)] ease-[var(--ease-patch-out)]",
+        "transition-[height] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
         "data-[starting-style]:h-0 data-[ending-style]:h-0",
         className,
       )}
       {...props}
     >
-      <div className="pb-3.5 text-[length:var(--text-patch-body)] leading-relaxed text-patch-text-secondary">
+      <div className="pb-3.5 text-copy-14 leading-relaxed text-gray-900">
         {children}
       </div>
     </AccordionPrimitive.Panel>

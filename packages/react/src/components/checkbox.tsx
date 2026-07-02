@@ -13,7 +13,7 @@ export function Checkbox({
   return (
     <CheckboxPrimitive.Root
       className={cn(
-        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[var(--radius-patch-xs)] bg-transparent border border-patch-border-hover data-checked:border-patch-text data-checked:bg-patch-text data-indeterminate:border-patch-text data-indeterminate:bg-patch-text data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[var(--radius-6)] bg-transparent border border-gray-alpha-500 data-checked:border-patch-text data-checked:bg-gray-1000 data-indeterminate:border-patch-text data-indeterminate:bg-patch-text data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
         focusRing,
         className,

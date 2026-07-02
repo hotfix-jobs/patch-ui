@@ -8,7 +8,7 @@ export function TagInputDemo() {
   return (
     <div className="flex flex-col gap-8 max-w-md">
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Basic
         </p>
         <TagInput
@@ -19,7 +19,7 @@ export function TagInputDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Underline variant + max 5 tags
         </p>
         <TagInput
@@ -31,7 +31,7 @@ export function TagInputDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Invalid state
         </p>
         <TagInput

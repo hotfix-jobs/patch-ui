@@ -20,7 +20,7 @@ export function FormDemo() {
     <div className="flex w-full flex-col gap-8">
       {/* Basic Form */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Contact Form
         </p>
         <Form
@@ -56,7 +56,7 @@ export function FormDemo() {
 
       {/* Form with Custom Validation */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           With Custom Validation
         </p>
         <Form className="max-w-sm">
@@ -84,7 +84,7 @@ export function FormDemo() {
             <FieldValidity>
               {(state) =>
                 state.validity.valueMissing ? (
-                  <p className="text-xs text-patch-text-tertiary">
+                  <p className="text-xs text-gray-800">
                     Password is required.
                   </p>
                 ) : null

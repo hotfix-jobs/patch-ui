@@ -184,21 +184,21 @@ export function Select({
 /* --------------------------- Trigger --------------------------- */
 
 export const selectTriggerVariants = cva(
-  `relative inline-flex h-10 w-full min-w-36 select-none items-center justify-between gap-2 rounded-[var(--radius-patch-sm)] bg-patch-surface px-3.5 text-left text-[length:var(--text-patch-control)] tracking-[-0.005em] text-patch-text border border-[var(--input-border)] hover:border border-[var(--patch-border-hover)] focus-visible:border border-[var(--patch-border-active)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer ${colorTransition} ${focusRing}`,
+  `relative inline-flex h-10 w-full min-w-36 select-none items-center justify-between gap-2 rounded-[var(--radius-6)] bg-background-100 px-3.5 text-left text-label-13 tracking-[-0.005em] text-gray-1000 border border-[var(--input-border)] hover:border border-[var(--gray-alpha-500)] focus-visible:border border-[var(--gray-alpha-600)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 cursor-pointer ${colorTransition} ${focusRing}`,
   {
     defaultVariants: { size: "md" },
     variants: {
       size: {
         md: "",
         lg: "h-11",
-        sm: "h-8 gap-1.5 px-3 text-[length:var(--text-patch-mini)]",
+        sm: "h-8 gap-1.5 px-3 text-label-12",
       },
     },
   },
 );
 
 const selectTriggerIconClassName =
-  "-me-1 size-4 text-patch-text-tertiary shrink-0";
+  "-me-1 size-4 text-gray-800 shrink-0";
 
 export interface SelectTriggerProps
   extends VariantProps<typeof selectTriggerVariants> {
@@ -276,7 +276,7 @@ export function SelectValue({
       data-placeholder={!hasValue ? "" : undefined}
       className={cn(
         "flex-1 truncate text-start",
-        !hasValue && "text-patch-text-tertiary",
+        !hasValue && "text-gray-800",
         className,
       )}
     >
@@ -331,7 +331,7 @@ export function SelectPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border border-[var(--patch-border)] shadow-patch-popup outline-none focus:outline-none overflow-hidden",
+                "z-[80] flex flex-col rounded-[var(--radius-6)] bg-background-100 border border-[var(--gray-alpha-400)] shadow-menu outline-none focus:outline-none overflow-hidden",
                 className,
               )}
             >
@@ -417,7 +417,7 @@ export function SelectItem({
       aria-selected={isSelected}
       aria-disabled={disabled || undefined}
       className={cn(
-        "grid min-h-7 cursor-default grid-cols-[1rem_1fr] items-center gap-2 rounded-[var(--radius-patch-xs)] px-2 py-1.5 text-[length:var(--text-patch-control)] outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+        "grid min-h-7 cursor-default grid-cols-[1rem_1fr] items-center gap-2 rounded-[var(--radius-6)] px-2 py-1.5 text-label-13 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
         className,
       )}
       {...getItemProps({
@@ -473,7 +473,7 @@ export function SelectLabel({
     <label
       data-slot="select-label"
       className={cn(
-        "not-in-data-[slot=field]:mb-2 inline-flex cursor-default items-center gap-2 text-xs font-medium text-patch-text-tertiary",
+        "not-in-data-[slot=field]:mb-2 inline-flex cursor-default items-center gap-2 text-xs font-medium text-gray-800",
         className,
       )}
       {...(props as React.LabelHTMLAttributes<HTMLLabelElement>)}
@@ -489,7 +489,7 @@ export function SelectGroupLabel({
     <div
       data-slot="select-group-label"
       className={cn(
-        "px-2 py-1.5 font-medium uppercase text-[length:var(--text-patch-micro)] tracking-[var(--tracking-patch-label)] text-patch-text-tertiary",
+        "px-2 py-1.5 font-medium uppercase text-label-12 tracking-tight text-gray-800",
         className,
       )}
       {...props}

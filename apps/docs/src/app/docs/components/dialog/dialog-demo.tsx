@@ -23,7 +23,7 @@ export function DialogDemo() {
     <div className="flex flex-col gap-8">
       {/* Basic Dialog */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Basic
         </p>
         <Dialog>
@@ -59,7 +59,7 @@ export function DialogDemo() {
 
       {/* Without Close Button */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Without Close Button
         </p>
         <Dialog>
@@ -73,7 +73,7 @@ export function DialogDemo() {
                 Please review and accept the terms before continuing.
               </DialogDescription>
             </DialogHeader>
-            <div className="p-6 text-sm text-patch-text-secondary">
+            <div className="p-6 text-sm text-gray-900">
               By using this service you agree to our terms and conditions. This is a simplified example for demonstration purposes.
             </div>
             <DialogFooter>
@@ -88,7 +88,7 @@ export function DialogDemo() {
 
       {/* Controlled Dialog */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Controlled (Destructive)
         </p>
         <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>

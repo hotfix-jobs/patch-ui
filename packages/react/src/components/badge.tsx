@@ -8,7 +8,7 @@ import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
 export const badgeVariants = cva(
-  "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap font-medium text-[length:var(--text-patch-micro)] tracking-[var(--tracking-patch-small)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3",
+  "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap font-medium text-label-12 tracking-tight [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3",
   {
     defaultVariants: {
       size: "sm",
@@ -19,12 +19,12 @@ export const badgeVariants = cva(
       size: {
         xs: "h-auto min-w-0 gap-0.5 px-2 py-[2px] [&_svg:not([class*='size-'])]:size-2.5",
         sm: "h-auto min-w-0 px-2 py-[3px]",
-        lg: "h-auto min-w-0 px-2.5 py-[4px] text-[length:var(--text-patch-mini)]",
+        lg: "h-auto min-w-0 px-2.5 py-[4px] text-label-12",
       },
       variant: {
         default: "bg-[var(--badge-default-bg)] text-[var(--badge-default-text)] border-0",
         primary: "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] border-0",
-        ghost: "bg-transparent text-[var(--patch-text)] border border-[var(--patch-border)]",
+        ghost: "bg-transparent text-[var(--gray-1000)] border border-[var(--gray-alpha-400)]",
         secondary: "bg-[var(--badge-secondary-bg)] text-[var(--badge-secondary-text)] border-0",
         success: "bg-[var(--badge-success-bg)] text-[var(--badge-success-text)] border-0",
         warning: "bg-[var(--badge-warning-bg)] text-[var(--badge-warning-text)] border-0",
@@ -34,7 +34,7 @@ export const badgeVariants = cva(
         dangerOutline: "bg-transparent text-[var(--badge-danger-text)] border border-[var(--badge-danger-text)]",
       },
       shape: {
-        rounded: "rounded-[var(--radius-patch-xs)]",
+        rounded: "rounded-[var(--radius-6)]",
         pill: "rounded-full",
       },
     },
@@ -84,7 +84,7 @@ export function Badge({
             aria-label={removeLabel}
             onClick={onRemove}
             className={cn(
-              "-me-0.5 inline-flex size-3.5 shrink-0 items-center justify-center rounded-[var(--radius-patch-xs)] opacity-50 transition-[opacity,transform] duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] group-hover:opacity-80 hover:!opacity-100 active:scale-90",
+              "-me-0.5 inline-flex size-3.5 shrink-0 items-center justify-center rounded-[var(--radius-6)] opacity-50 transition-[opacity,transform] duration-[var(--duration-state)] ease-[var(--ease-standard)] group-hover:opacity-80 hover:!opacity-100 active:scale-90",
               focusRing,
             )}
           >

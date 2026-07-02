@@ -87,7 +87,7 @@ export function SegmentedToggle({
           // w-fit + self-start: keep the control content-sized when the
           //   parent is a flex column with the default align-items:
           //   stretch (would otherwise pull the inline-flex full-width).
-          "isolate inline-flex w-fit self-start items-center rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)] p-0.5",
+          "isolate inline-flex w-fit self-start items-center rounded-[var(--radius-6)] border border-[var(--gray-alpha-400)] p-0.5",
           className,
         )}
         {...props}
@@ -165,13 +165,13 @@ export function SegmentedToggleItem({
       onClick={() => setValue(value)}
       onKeyDown={handleKeyDown}
       className={cn(
-        "relative inline-flex items-center justify-center font-medium tracking-[-0.005em] text-[length:var(--text-patch-control)] transition-colors disabled:pointer-events-none disabled:opacity-50",
+        "relative inline-flex items-center justify-center font-medium tracking-[-0.005em] text-label-13 transition-colors disabled:pointer-events-none disabled:opacity-50",
         // Inactive: muted text, hover brightens. Active: inverted text;
         // background comes from the sliding indicator behind.
-        "text-patch-text-secondary hover:text-patch-text data-[active]:text-patch-bg",
+        "text-gray-900 hover:text-gray-1000 data-[active]:text-patch-bg",
         // Size scales padding for both icon-only and text items.
-        size === "sm" && "h-6 min-w-6 rounded-[var(--radius-patch-xs)] px-1.5 gap-1.5 [&_svg]:size-3.5",
-        size === "md" && "h-7 min-w-7 rounded-[var(--radius-patch-xs)] px-2 gap-2 [&_svg]:size-4",
+        size === "sm" && "h-6 min-w-6 rounded-[var(--radius-6)] px-1.5 gap-1.5 [&_svg]:size-3.5",
+        size === "md" && "h-7 min-w-7 rounded-[var(--radius-6)] px-2 gap-2 [&_svg]:size-4",
         focusRing,
         className,
       )}
@@ -181,7 +181,7 @@ export function SegmentedToggleItem({
         <motion.div
           layoutId={`segmented-active-${baseId}`}
           data-slot="segmented-toggle-indicator"
-          className="absolute inset-0 -z-10 rounded-[var(--radius-patch-xs)] bg-patch-text"
+          className="absolute inset-0 -z-10 rounded-[var(--radius-6)] bg-patch-text"
           transition={
             reduceMotion
               ? { duration: 0 }

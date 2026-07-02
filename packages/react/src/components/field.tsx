@@ -36,7 +36,7 @@ export function FieldLabel({
   return (
     <FieldPrimitive.Label
       className={cn(
-        "inline-flex items-center gap-1.5 text-[length:var(--text-patch-control)] font-medium text-patch-text-secondary",
+        "inline-flex items-center gap-1.5 text-label-13 font-medium text-gray-900",
         className,
       )}
       data-slot="field-label"
@@ -46,7 +46,7 @@ export function FieldLabel({
       {required && (
         <span
           aria-hidden="true"
-          className="text-[var(--patch-error)] text-[length:var(--text-patch-mini)] leading-none"
+          className="text-[var(--error)] text-label-12 leading-none"
           data-slot="field-required"
         >
           *
@@ -55,7 +55,7 @@ export function FieldLabel({
       {optional && !required && (
         <span
           aria-hidden="true"
-          className="text-patch-text-tertiary text-[length:var(--text-patch-mini)] font-normal"
+          className="text-gray-800 text-label-12 font-normal"
           data-slot="field-optional"
         >
           (optional)
@@ -85,7 +85,7 @@ export function FieldDescription({
   return (
     <FieldPrimitive.Description
       className={cn(
-        "text-patch-text-secondary text-[length:var(--text-patch-mini)] leading-[1.5] tracking-[-0.005em]",
+        "text-gray-900 text-label-12 leading-[1.5] tracking-[-0.005em]",
         className,
       )}
       data-slot="field-description"
@@ -107,7 +107,7 @@ export function FieldError({
   return (
     <FieldPrimitive.Error
       className={cn(
-        "inline-flex items-center gap-1.5 text-[length:var(--text-patch-mini)] leading-[1.5] tracking-[-0.005em] text-[var(--patch-error)] before:content-[''] before:size-[5px] before:rounded-full before:bg-[var(--patch-error)]",
+        "inline-flex items-center gap-1.5 text-label-12 leading-[1.5] tracking-[-0.005em] text-[var(--error)] before:content-[''] before:size-[5px] before:rounded-full before:bg-[var(--error)]",
         className,
       )}
       data-slot="field-error"

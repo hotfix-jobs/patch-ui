@@ -8,7 +8,7 @@ export function SliderDemo() {
     <div className="flex flex-col gap-8">
       {/* Single Value */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Single Value
         </p>
         <div className="max-w-xs">
@@ -18,7 +18,7 @@ export function SliderDemo() {
 
       {/* With Value Display */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           With Value Display
         </p>
         <div className="max-w-xs">
@@ -30,7 +30,7 @@ export function SliderDemo() {
 
       {/* Range (Two Thumbs) */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Range
         </p>
         <div className="max-w-xs">
@@ -42,7 +42,7 @@ export function SliderDemo() {
 
       {/* Custom Step */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Custom Step
         </p>
         <div className="max-w-xs">
@@ -54,7 +54,7 @@ export function SliderDemo() {
 
       {/* Disabled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Disabled
         </p>
         <div className="max-w-xs">

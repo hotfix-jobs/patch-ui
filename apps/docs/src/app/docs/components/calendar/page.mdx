@@ -109,7 +109,7 @@ const [dates, setDates] = useState<Date[]>([]);
 <Callout title="Notes">
 - **Range mode flow:** First click sets `from` and clears `to`. Second click (after `from`) sets `to`. Clicking before `from` swaps them. Clicking the same day twice clears the selection.
 - **Range visual:** Days between `from` and `to` get a `--patch-accent` background; the endpoints get the full `--patch-text` solid fill. Lets users see the range at a glance.
-- **Today indicator:** Today's date renders with a hairline ring (`ring-1 ring-inset ring-patch-border`) when not selected.
+- **Today indicator:** Today's date renders with a hairline ring (`ring-1 ring-inset ring-gray-alpha-400`) when not selected.
 - **Outside-month days:** Days that spill into the previous / next month are dimmed (opacity 60%) but remain clickable — clicking jumps the view to that month.
 - **Tabular nums:** All numerals use `tabular-nums` so column alignment is perfect regardless of width.
 </Callout>

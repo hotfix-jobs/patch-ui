@@ -67,12 +67,12 @@ export function CommandDemo() {
     <div className="flex flex-col items-center gap-3">
       <Button variant="secondary" onClick={() => setOpen(true)}>
         Open command menu
-        <kbd className="ml-1 rounded border border-patch-border bg-patch-bg px-1.5 font-mono text-[length:var(--text-patch-micro)] text-patch-text-quaternary">
+        <kbd className="ml-1 rounded border border-gray-alpha-400 bg-background-100 px-1.5 font-mono text-label-12 text-gray-700">
           ⌘K
         </kbd>
       </Button>
       {ran && (
-        <p className="text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
+        <p className="text-label-12 text-gray-800">
           Ran: {ran}
         </p>
       )}

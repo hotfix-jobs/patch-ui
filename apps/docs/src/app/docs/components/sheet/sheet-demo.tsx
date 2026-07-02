@@ -19,7 +19,7 @@ export function SheetDemo() {
     <div className="flex flex-col gap-8">
       {/* Default (Right) */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Right (Default)
         </p>
         <Sheet>
@@ -52,7 +52,7 @@ export function SheetDemo() {
 
       {/* Directions */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Directions
         </p>
         <div className="flex flex-wrap gap-3">
@@ -68,7 +68,7 @@ export function SheetDemo() {
                     This sheet slides in from the {side}.
                   </SheetDescription>
                 </SheetHeader>
-                <div className="p-6 text-sm text-patch-text-secondary">
+                <div className="p-6 text-sm text-gray-900">
                   Sheet content goes here.
                 </div>
               </SheetContent>
@@ -79,7 +79,7 @@ export function SheetDemo() {
 
       {/* Without Close Button */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Without Close Button
         </p>
         <Sheet>
@@ -93,7 +93,7 @@ export function SheetDemo() {
                 This sheet has no built-in close button. Click the backdrop to dismiss.
               </SheetDescription>
             </SheetHeader>
-            <div className="p-6 text-sm text-patch-text-secondary">
+            <div className="p-6 text-sm text-gray-900">
               Use the backdrop or a custom close action to dismiss this sheet.
             </div>
           </SheetContent>

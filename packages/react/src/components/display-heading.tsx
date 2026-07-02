@@ -7,7 +7,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export const displayHeadingVariants = cva(
-  "font-medium leading-[0.92] text-patch-text",
+  "font-medium leading-[0.92] text-gray-1000",
   {
     defaultVariants: {
       size: "lg",
@@ -16,9 +16,9 @@ export const displayHeadingVariants = cva(
       // Responsive: smaller on mobile, scales up at md/lg breakpoints to the
       // token value. Mobile sizes prevent overflow on 360-400px viewports.
       size: {
-        md: "text-[36px] tracking-[-0.03em] md:text-[44px] md:tracking-[-0.035em] lg:text-[length:var(--text-patch-hero-md)] lg:tracking-[var(--tracking-patch-hero-md)]",
-        lg: "text-[44px] tracking-[-0.035em] md:text-[64px] md:tracking-[-0.04em] lg:text-[length:var(--text-patch-hero-lg)] lg:tracking-[var(--tracking-patch-hero-lg)]",
-        xl: "text-[52px] tracking-[-0.04em] md:text-[88px] md:tracking-[-0.045em] lg:text-[length:var(--text-patch-hero-xl)] lg:tracking-[var(--tracking-patch-hero-xl)]",
+        md: "text-[36px] tracking-[-0.03em] md:text-[44px] md:tracking-[-0.035em] lg:text-[length:var(--text-patch-hero-md)] lg:tracking-tight",
+        lg: "text-[44px] tracking-[-0.035em] md:text-[64px] md:tracking-[-0.04em] lg:text-[length:var(--text-patch-hero-lg)] lg:tracking-tight",
+        xl: "text-[52px] tracking-[-0.04em] md:text-[88px] md:tracking-[-0.045em] lg:text-[length:var(--text-patch-hero-xl)] lg:tracking-tight",
       },
     },
   },
@@ -59,7 +59,7 @@ export function DisplayHeading({
       <>
         {eyebrow != null && (
           <span
-            className="mb-3 block text-[length:var(--text-patch-micro)] font-medium uppercase tracking-[var(--tracking-patch-label)] text-patch-text-secondary"
+            className="mb-3 block text-label-12 font-medium uppercase tracking-tight text-gray-900"
             data-slot="display-heading-eyebrow"
           >
             {eyebrow}

@@ -14,7 +14,7 @@ export function InputDemo() {
     <div className="flex flex-col gap-8">
       {/* Variants */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Variants
         </p>
         <div className="flex flex-col gap-3 max-w-xs">
@@ -26,7 +26,7 @@ export function InputDemo() {
 
       {/* Sizes */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Sizes
         </p>
         <div className="flex flex-col gap-3 max-w-xs">
@@ -38,7 +38,7 @@ export function InputDemo() {
 
       {/* With Icon */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           With Icon
         </p>
         <div className="flex flex-col gap-3 max-w-xs">
@@ -49,7 +49,7 @@ export function InputDemo() {
 
       {/* Prefix & Suffix */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Prefix & Suffix
         </p>
         <div className="flex flex-col gap-3 max-w-xs">
@@ -60,7 +60,7 @@ export function InputDemo() {
 
       {/* Clear button */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Clear button
         </p>
         <div className="max-w-xs">
@@ -76,7 +76,7 @@ export function InputDemo() {
 
       {/* Invalid */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Invalid state
         </p>
         <div className="flex flex-col gap-3 max-w-xs">
@@ -93,7 +93,7 @@ export function InputDemo() {
 
       {/* Loading */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Loading state
         </p>
         <div className="max-w-xs">
@@ -107,7 +107,7 @@ export function InputDemo() {
 
       {/* Disabled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Disabled
         </p>
         <div className="max-w-xs">

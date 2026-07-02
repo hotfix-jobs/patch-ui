@@ -53,7 +53,7 @@ export function MenuDemo() {
     <div className="flex flex-col gap-8">
       {/* Basic Menu */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Basic
         </p>
         <Menu>
@@ -124,7 +124,7 @@ export function MenuDemo() {
 
       {/* Checkbox Items */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Checkbox Items
         </p>
         <Menu>
@@ -157,7 +157,7 @@ export function MenuDemo() {
 
       {/* Radio Items */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Radio Items
         </p>
         <Menu>
@@ -179,7 +179,7 @@ export function MenuDemo() {
 
       {/* Selected indicator (single-select via regular MenuItem) */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Selected indicator
         </p>
         <Menu>
@@ -221,7 +221,7 @@ export function MenuDemo() {
 
       {/* Two-line items with description */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Two-line items
         </p>
         <Menu>
@@ -257,7 +257,7 @@ export function MenuDemo() {
 
       {/* Sections (sugar for MenuGroup + MenuGroupLabel) */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Sections
         </p>
         <Menu>
@@ -292,7 +292,7 @@ export function MenuDemo() {
 
       {/* Density */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Density
         </p>
         <div className="flex gap-3">

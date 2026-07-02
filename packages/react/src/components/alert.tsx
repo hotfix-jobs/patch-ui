@@ -14,20 +14,20 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export const alertVariants = cva(
-  "relative grid grid-cols-[auto_1fr_auto] items-start gap-3 rounded-[var(--radius-patch-sm)] px-4 py-3 text-patch-text",
+  "relative grid grid-cols-[auto_1fr_auto] items-start gap-3 rounded-[var(--radius-6)] px-4 py-3 text-gray-1000",
   {
     defaultVariants: {
       variant: "info",
     },
     variants: {
       variant: {
-        info: "bg-patch-surface border border-[var(--patch-border)] [&_[data-slot=alert-icon]]:text-patch-text-secondary",
+        info: "bg-background-100 border border-[var(--gray-alpha-400)] [&_[data-slot=alert-icon]]:text-gray-900",
         success:
-          "bg-[color-mix(in_oklab,var(--badge-success-text)_8%,var(--patch-surface))] border border-[var(--badge-success-text)]/30 [&_[data-slot=alert-icon]]:text-[var(--badge-success-text)]",
+          "bg-[color-mix(in_oklab,var(--badge-success-text)_8%,var(--background-100))] border border-[var(--badge-success-text)]/30 [&_[data-slot=alert-icon]]:text-[var(--badge-success-text)]",
         warning:
-          "bg-[color-mix(in_oklab,var(--badge-warning-text)_8%,var(--patch-surface))] border border-[var(--badge-warning-text)]/30 [&_[data-slot=alert-icon]]:text-[var(--badge-warning-text)]",
+          "bg-[color-mix(in_oklab,var(--badge-warning-text)_8%,var(--background-100))] border border-[var(--badge-warning-text)]/30 [&_[data-slot=alert-icon]]:text-[var(--badge-warning-text)]",
         danger:
-          "bg-[color-mix(in_oklab,var(--badge-danger-text)_8%,var(--patch-surface))] border border-[var(--badge-danger-text)]/30 [&_[data-slot=alert-icon]]:text-[var(--badge-danger-text)]",
+          "bg-[color-mix(in_oklab,var(--badge-danger-text)_8%,var(--background-100))] border border-[var(--badge-danger-text)]/30 [&_[data-slot=alert-icon]]:text-[var(--badge-danger-text)]",
       },
     },
   },
@@ -125,7 +125,7 @@ export function Alert({
             {title && (
               <div
                 data-slot="alert-title"
-                className="text-[length:var(--text-patch-control)] font-semibold leading-tight text-patch-text"
+                className="text-label-13 font-semibold leading-tight text-gray-1000"
               >
                 {title}
               </div>
@@ -134,7 +134,7 @@ export function Alert({
               <div
                 data-slot="alert-description"
                 className={cn(
-                  "text-[length:var(--text-patch-mini)] leading-relaxed text-patch-text-secondary",
+                  "text-label-12 leading-relaxed text-gray-900",
                   title && "mt-1",
                 )}
               >
@@ -148,7 +148,7 @@ export function Alert({
               onClick={() => setOpen(false)}
               aria-label="Dismiss"
               data-slot="alert-close"
-              className="-me-1 inline-flex size-6 shrink-0 items-center justify-center rounded-[var(--radius-patch-xs)] text-patch-text-tertiary transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] hover:bg-patch-surface-hover hover:text-patch-text active:scale-90"
+              className="-me-1 inline-flex size-6 shrink-0 items-center justify-center rounded-[var(--radius-6)] text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-200 hover:text-gray-1000 active:scale-90"
             >
               <X className="size-3.5" />
             </button>
