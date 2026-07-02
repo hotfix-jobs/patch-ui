@@ -2,7 +2,7 @@ import { AvatarDemo } from "./avatar-demo";
 
 # Avatar
 
-A user avatar built on Base UI's Avatar. Shows an image and gracefully falls back to a monogram while the image loads or if it fails. Five sizes from `xs` to `xl`, `circle` or `square`. Compose overlapping rows with `AvatarGroup`.
+A user or team avatar. Built on Base UI's Avatar; falls back gracefully from image → monogram. Sizes accept enum (`xs`–`xl`) or an exact pixel number. `AvatarGroup` takes either a `members` array or nested `<Avatar>` children.
 
 <Install name="avatar" />
 
@@ -20,34 +20,48 @@ import {
   AvatarGroup,
 } from "@patchui/react";
 
+// Single avatar
 <Avatar>
   <AvatarImage src="/people/jane.jpg" alt="Jane Doe" />
   <AvatarFallback>JD</AvatarFallback>
 </Avatar>
 
-// Sizes
-<Avatar size="xs" />  // 24px — inline
+// Sizes: enum
+<Avatar size="xs" />  // 24px
 <Avatar size="sm" />  // 28px
 <Avatar size="md" />  // 36px (default)
 <Avatar size="lg" />  // 44px
-<Avatar size="xl" />  // 56px — profile hero
+<Avatar size="xl" />  // 56px
+
+// Sizes: numeric (any pixel)
+<Avatar size={32} />
+<Avatar size={64} />
 
 // Square
-<Avatar shape="square">
+<Avatar shape="square" size={40}>
   <AvatarImage src="/logo.png" alt="Acme" />
   <AvatarFallback>A</AvatarFallback>
 </Avatar>
 
-// Overlapping group with a +N chip
-<AvatarGroup size="md" max={4}>
-  <Avatar><AvatarFallback>JD</AvatarFallback></Avatar>
-  <Avatar><AvatarFallback>AS</AvatarFallback></Avatar>
-  <Avatar><AvatarFallback>MK</AvatarFallback></Avatar>
-  <Avatar><AvatarFallback>LF</AvatarFallback></Avatar>
-  <Avatar><AvatarFallback>BV</AvatarFallback></Avatar>
-  <Avatar><AvatarFallback>RT</AvatarFallback></Avatar>
-  {/* 6 children, max=4 → 4 avatars + "+2" chip */}
-</AvatarGroup>
+// Group with a members array
+<AvatarGroup
+  size={32}
+  members={[
+    { image: "/people/a.jpg", letter: "AB" },
+    { image: "/people/b.jpg", letter: "CD" },
+    { image: "/people/c.jpg", letter: "EF" },
+  ]}
+/>
+
+// Overflow chip
+<AvatarGroup size={32} limit={4} members={sixMembers} />
+
+// Overlap: auto scales with size; number = exact pixel overlap
+<AvatarGroup size={24} overlap="auto" members={m} />
+<AvatarGroup size={24} overlap={0} members={m} />
+
+// Reverse stacking (last member on top)
+<AvatarGroup size={32} reverse members={m} />
 ```
 
 ## Props
@@ -58,9 +72,9 @@ import {
   props={[
     {
       name: "size",
-      type: '"xs" | "sm" | "md" | "lg" | "xl"',
+      type: '"xs" | "sm" | "md" | "lg" | "xl" | number',
       default: '"md"',
-      description: "Avatar diameter: 24 / 28 / 36 / 44 / 56px.",
+      description: "Avatar diameter. Enums: 24 / 28 / 36 / 44 / 56px. A number sets exact pixels.",
     },
     {
       name: "shape",
@@ -82,22 +96,40 @@ import {
 <PropsTable
   props={[
     {
-      name: "max",
+      name: "members",
+      type: "Array<{ image?: string; letter?: string; alt?: string; id?: string | number }>",
+      default: "-",
+      description: "Data-driven mode. Alternative to nested `<Avatar>` children.",
+    },
+    {
+      name: "limit",
       type: "number",
       default: "5",
       description: "Maximum avatars before collapsing to a `+N` chip. Set 0 to disable the cap.",
     },
     {
       name: "size",
-      type: '"xs" | "sm" | "md" | "lg" | "xl"',
+      type: '"xs" | "sm" | "md" | "lg" | "xl" | number',
       default: '"md"',
-      description: "Size applied to every child and the overflow chip. Individual children can override.",
+      description: "Size applied to every child and the overflow chip. Individual `<Avatar>` children can override.",
     },
     {
       name: "shape",
       type: '"circle" | "square"',
       default: '"circle"',
       description: "Shape applied to every child and the overflow chip.",
+    },
+    {
+      name: "overlap",
+      type: '"auto" | number',
+      default: '"auto"',
+      description: "How much adjacent avatars overlap. `auto` scales to ~30% of the size; a number sets exact pixel overlap.",
+    },
+    {
+      name: "reverse",
+      type: "boolean",
+      default: "false",
+      description: "Flip the z-stacking so the last member sits on top. Visual left-to-right order is unchanged.",
     },
     {
       name: "className",
@@ -110,13 +142,15 @@ import {
 
 ## Components
 
-- `Avatar` — the container with size and shape variants
+- `Avatar` — the container
 - `AvatarImage` — the image; covers the container and hides itself on error
 - `AvatarFallback` — shown while the image loads or on error; typically initials
-- `AvatarGroup` — overlapping row with auto size/shape propagation, hairline ring, and `+N` overflow chip
+- `AvatarGroup` — overlapping row with data-driven or children API, auto-scaling overlap, and `+N` overflow chip
 
 <Callout title="Notes">
-- **Graceful fallback:** `AvatarFallback` renders until the image successfully loads, so there's no broken-image flash.
-- **Group ring:** `AvatarGroup` adds a `ring-background-100` between avatars so they visually separate despite overlapping.
+- **Numeric sizes** are the primary path for pixel-precise use in dense UI. Enums are ergonomic defaults.
+- **Group ring:** `AvatarGroup` adds a `ring-background-100` between avatars so they visually separate despite overlap.
 - **Overflow chip:** the `+N` chip uses `bg-gray-100` + `text-gray-900` so it reads as a counter, not another person.
+- **`members` vs children:** use `members` for data-driven lists (fetched from API). Use children when you need per-avatar customization (custom fallback, click handler, wrapping tooltip).
+- **`reverse`** matters for author attribution: default puts the first credited author on top; `reverse` puts the most recent contributor on top.
 </Callout>
