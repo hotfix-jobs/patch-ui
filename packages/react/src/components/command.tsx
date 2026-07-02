@@ -182,6 +182,8 @@ export function CommandItem({
     <AutocompletePrimitive.Item
       data-slot="command-item"
       className={cn(
+        // Inset rounded highlight (matches Menu). Popup owns 4px padding via
+        // CommandList's p-1; items rounded with radius-6.
         "cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 outline-none data-highlighted:bg-gray-alpha-100 [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         density === "compact"
           ? "min-h-7 px-2 py-1.5 text-label-13"
@@ -251,7 +253,7 @@ export function CommandGroupLabel({
     <AutocompletePrimitive.GroupLabel
       data-slot="command-group-label"
       className={cn(
-        "px-3 pb-1 pt-2 text-label-12 font-medium text-gray-800",
+        "px-3 pb-1 pt-3 text-copy-14 font-normal text-gray-800",
         className,
       )}
       {...props}
