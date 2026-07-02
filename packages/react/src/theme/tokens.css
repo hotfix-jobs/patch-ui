@@ -132,6 +132,11 @@
   --success: var(--green-700);
   --warning: var(--amber-700);
 
+  /* Tooltip stays visually consistent across themes — always dark chrome so
+     it reads as "additional info" regardless of the theme. */
+  --tooltip-bg: #171717;
+  --tooltip-text: #ffffff;
+
   /* Radius */
   --radius-6: 6px;
   --radius-12: 12px;

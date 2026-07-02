@@ -37,7 +37,7 @@ export function Tooltip({
   content,
   side = "top",
   sideOffset = 4,
-  arrow,
+  arrow = true,
   className,
 }: TooltipProps): React.ReactElement {
   const handle = useMemo(() => TooltipPrimitive.createHandle(), []);
@@ -54,14 +54,14 @@ export function Tooltip({
           >
             <TooltipPrimitive.Popup
               className={cn(
-                "rounded-[var(--radius-6)] bg-gray-1000 px-2.5 py-1.5 text-label-12 text-background-100 shadow-menu transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+                "rounded-[var(--radius-6)] bg-[var(--tooltip-bg)] px-2.5 py-1.5 text-label-12 text-[var(--tooltip-text)] shadow-menu transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
                 className,
               )}
               data-slot="tooltip-content"
             >
               {content}
               {arrow && (
-                <TooltipPrimitive.Arrow className="text-gray-1000 data-[side=top]:-bottom-[5px] data-[side=bottom]:-top-[5px] data-[side=bottom]:rotate-180 data-[side=left]:-right-[5px] data-[side=left]:rotate-90 data-[side=right]:-left-[5px] data-[side=right]:-rotate-90">
+                <TooltipPrimitive.Arrow className="text-[var(--tooltip-bg)] data-[side=top]:-bottom-[5px] data-[side=bottom]:-top-[5px] data-[side=bottom]:rotate-180 data-[side=left]:-right-[5px] data-[side=left]:rotate-90 data-[side=right]:-left-[5px] data-[side=right]:-rotate-90">
                   <svg width="10" height="5" viewBox="0 0 10 5" fill="currentColor">
                     <path d="M0 0L5 5L10 0Z" />
                   </svg>
