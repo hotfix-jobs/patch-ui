@@ -32,6 +32,12 @@ const thumbBySize: Record<SwitchSize, string> = {
   lg: "size-5 data-checked:translate-x-5",
 };
 
+const iconSizeBySize: Record<SwitchSize, string> = {
+  sm: "[&_svg]:size-2",
+  md: "[&_svg]:size-3",
+  lg: "[&_svg]:size-3.5",
+};
+
 const onFillByVariant: Record<SwitchVariant, string> = {
   default: "data-checked:bg-gray-1000",
   success: "data-checked:bg-green-700",
@@ -62,19 +68,24 @@ export function Switch({
     >
       <SwitchPrimitive.Thumb
         className={cn(
-          "pointer-events-none flex items-center justify-center rounded-full bg-background-100 shadow-[var(--shadow-card)]",
+          "relative pointer-events-none rounded-full bg-background-100 shadow-[var(--shadow-card)]",
           "transition-[translate] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "data-unchecked:translate-x-0",
-          "[&_svg]:size-[60%] [&_svg]:text-gray-900",
+          "[&_svg]:text-gray-900",
+          iconSizeBySize[size],
           thumbBySize[size],
         )}
         data-slot="switch-thumb"
       >
         {icon?.unchecked && (
-          <span className="flex group-data-checked:hidden">{icon.unchecked}</span>
+          <span className="absolute inset-0 flex items-center justify-center group-data-checked:hidden">
+            {icon.unchecked}
+          </span>
         )}
         {icon?.checked && (
-          <span className="hidden group-data-checked:flex">{icon.checked}</span>
+          <span className="absolute inset-0 hidden items-center justify-center group-data-checked:flex">
+            {icon.checked}
+          </span>
         )}
       </SwitchPrimitive.Thumb>
     </SwitchPrimitive.Root>
