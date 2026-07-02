@@ -57,7 +57,11 @@ export function Slider({
 
   const slider = (
     <SliderPrimitive.Root
-      className={cn("data-[orientation=horizontal]:w-full flex-1", className)}
+      className={cn(
+        "flex flex-col gap-2 data-[orientation=horizontal]:w-full flex-1",
+        "data-[orientation=vertical]:flex-row data-[orientation=vertical]:gap-3",
+        className,
+      )}
       defaultValue={defaultValue}
       max={max}
       min={min}
@@ -153,7 +157,10 @@ export function SliderValue({
 }: SliderPrimitive.Value.Props): React.ReactElement {
   return (
     <SliderPrimitive.Value
-      className={cn("flex justify-end text-label-13 tabular-nums", className)}
+      className={cn(
+        "block text-end text-label-13 tabular-nums text-gray-900 self-end",
+        className,
+      )}
       data-slot="slider-value"
       {...props}
     />
