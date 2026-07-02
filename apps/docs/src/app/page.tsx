@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, Mail, Search, Settings } from "lucide-react";
+import { ArrowRight, Search } from "lucide-react";
 import {
   Avatar,
   AvatarFallback,
   AvatarGroup,
   Badge,
+  Breadcrumb,
   Button,
   Checkbox,
   Input,
@@ -48,15 +49,17 @@ export default function Home() {
         </AppHeaderRight>
       </AppHeader>
 
-      {/* Hero — viewport-height, centered */}
+      {/* Hero */}
       <section className="flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center px-6 py-12 text-center">
         <h1 className="max-w-3xl text-balance text-[40px] font-semibold leading-[1.05] tracking-[-0.025em] text-gray-1000 sm:text-[56px] md:text-[68px]">
-          Components for the modern web.
+          Components you own,
+          <br className="hidden sm:inline" /> not import.
         </h1>
 
         <p className="mt-6 max-w-xl text-balance text-copy-14 leading-relaxed text-gray-900 md:text-[18px]">
-          Accessible, token-driven React components built on Base UI and
-          Floating UI. Copy & paste into your app. Edit freely.
+          A copy-in React component library with taste. Accessible primitives
+          from Base UI, a tokenized crisp-minimal look, and source that lives
+          in your repo the moment you install it.
         </p>
 
         {/* Install command */}
@@ -67,7 +70,7 @@ export default function Home() {
 
         <div className="mt-8 flex gap-3">
           <Button
-            icon={<ArrowRight />}
+            icon={<ArrowRight className="size-4" />}
             iconPosition="right"
             render={<Link href="/docs/getting-started" />}
           >
@@ -82,11 +85,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Showcase wall — live component previews in a hairline grid */}
+      {/* Showcase wall */}
       <section className="px-6 pb-24 md:px-12 lg:px-16">
         <div className="mx-auto w-full max-w-[1200px]">
           <div className="grid grid-cols-1 gap-px overflow-hidden rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-gray-alpha-400 md:grid-cols-2 lg:grid-cols-3">
-            {/* Buttons */}
             <ShowcaseCell label="Buttons">
               <div className="flex flex-wrap items-center gap-2">
                 <Button size="sm">Primary</Button>
@@ -102,7 +104,6 @@ export default function Home() {
               </div>
             </ShowcaseCell>
 
-            {/* Badges */}
             <ShowcaseCell label="Badges">
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="default">Default</Badge>
@@ -112,31 +113,29 @@ export default function Home() {
               </div>
             </ShowcaseCell>
 
-            {/* Input */}
             <ShowcaseCell label="Input">
               <Input
                 prefix={<Search className="size-4" />}
-                placeholder="Search components..."
+                placeholder="Search components…"
               />
             </ShowcaseCell>
 
-            {/* Avatar group */}
             <ShowcaseCell label="Avatar group">
               <AvatarGroup size="md" max={4}>
                 <Avatar>
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarFallback>AL</AvatarFallback>
                 </Avatar>
                 <Avatar>
-                  <AvatarFallback>SR</AvatarFallback>
+                  <AvatarFallback>AT</AvatarFallback>
                 </Avatar>
                 <Avatar>
-                  <AvatarFallback>MK</AvatarFallback>
+                  <AvatarFallback>GH</AvatarFallback>
                 </Avatar>
                 <Avatar>
-                  <AvatarFallback>LF</AvatarFallback>
+                  <AvatarFallback>MC</AvatarFallback>
                 </Avatar>
                 <Avatar>
-                  <AvatarFallback>BV</AvatarFallback>
+                  <AvatarFallback>DK</AvatarFallback>
                 </Avatar>
                 <Avatar>
                   <AvatarFallback>RA</AvatarFallback>
@@ -144,7 +143,6 @@ export default function Home() {
               </AvatarGroup>
             </ShowcaseCell>
 
-            {/* Toggles */}
             <ShowcaseCell label="Switch & Checkbox">
               <div className="flex items-center gap-4">
                 <Switch defaultChecked />
@@ -154,20 +152,16 @@ export default function Home() {
               </div>
             </ShowcaseCell>
 
-            {/* Icon row */}
-            <ShowcaseCell label="Composition">
-              <div className="flex items-center gap-2">
-                <Button size="sm" variant="secondary" icon={<Mail />}>
-                  Email
-                </Button>
-                <Button
-                  size="sm"
-                  variant="tertiary"
-                  icon={<Settings className="size-4" />}
-                  aria-label="Settings"
-                />
-              </div>
+            <ShowcaseCell label="Breadcrumb">
+              <Breadcrumb
+                items={[
+                  { name: "Home", href: "/" },
+                  { name: "Docs", href: "/docs" },
+                  { name: "Overview" },
+                ]}
+              />
             </ShowcaseCell>
+
           </div>
         </div>
       </section>
@@ -176,16 +170,16 @@ export default function Home() {
       <section className="border-t-[0.5px] border-gray-alpha-400 bg-background-100 px-6 py-20 md:px-12 lg:px-16">
         <div className="mx-auto grid w-full max-w-[1200px] gap-12 md:grid-cols-3">
           <Feature
-            title="Open source"
-            body="MIT licensed. Source-of-truth lives on GitHub. File issues, send PRs, fork freely."
+            title="Copy-in, not npm"
+            body="Components ship through the shadcn registry. Run add, get the source, and own the file from that moment forward. No package to bump, no breaking changes to chase."
           />
           <Feature
-            title="Accessible"
-            body="WAI-ARIA patterns and keyboard navigation by default via Base UI and floating-ui primitives."
+            title="Accessible by default"
+            body="Built on Base UI. Keyboard navigation, focus management, ARIA relationships, and portal rendering are handled correctly before we style anything."
           />
           <Feature
-            title="Motion-driven"
-            body="Custom overlays on @floating-ui/react with motion-driven spring physics for both open and close."
+            title="Tokenized end-to-end"
+            body="A single stylesheet drives colors, radii, motion, and typography. Light and dark switch from one class. No hardcoded values, no magic numbers."
           />
         </div>
       </section>
@@ -193,9 +187,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t-[0.5px] border-gray-alpha-400 px-6 py-8 md:px-12 lg:px-16">
         <div className="mx-auto flex w-full max-w-[1200px] flex-wrap items-center justify-between gap-4 text-label-12 text-gray-800">
-          <span>
-            Built on Base UI, Floating UI, and motion. MIT licensed.
-          </span>
+          <span>MIT licensed. Copyright © Hotfix.</span>
           <div className="flex items-center gap-5">
             <Link href="/docs" className="font-medium hover:text-gray-1000">
               Docs
@@ -205,6 +197,12 @@ export default function Home() {
               className="font-medium hover:text-gray-1000"
             >
               Components
+            </Link>
+            <Link
+              href="/docs/credits"
+              className="font-medium hover:text-gray-1000"
+            >
+              Credits
             </Link>
             <a
               href="https://github.com/hotfix-jobs/patch-ui"
@@ -230,7 +228,7 @@ function ShowcaseCell({
 }) {
   return (
     <div className="flex flex-col gap-4 bg-background-100 px-6 py-8 md:px-8 md:py-10">
-      <div className="text-label-12 font-semibold uppercase tracking-tight text-gray-800">
+      <div className="text-label-12 font-medium text-gray-800">
         {label}
       </div>
       <div className="flex min-h-[64px] items-center">{children}</div>
@@ -241,10 +239,10 @@ function ShowcaseCell({
 function Feature({ title, body }: { title: string; body: string }) {
   return (
     <div>
-      <h3 className="text-copy-18 font-semibold tracking-tight text-gray-1000">
+      <h3 className="text-copy-16 font-semibold tracking-[-0.01em] text-gray-1000">
         {title}
       </h3>
-      <p className="mt-2 text-label-13 leading-relaxed text-gray-900">
+      <p className="mt-2 text-copy-14 leading-relaxed text-gray-900">
         {body}
       </p>
     </div>

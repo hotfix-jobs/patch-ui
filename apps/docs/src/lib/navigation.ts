@@ -16,6 +16,7 @@ export const navigation: NavGroup[] = [
       { title: "Installation", href: "/docs/getting-started" },
       { title: "Theme", href: "/docs/theme" },
       { title: "Contrast", href: "/docs/contrast" },
+      { title: "Credits", href: "/docs/credits" },
     ],
   },
   {

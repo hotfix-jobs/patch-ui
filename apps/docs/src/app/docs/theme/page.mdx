@@ -1,133 +1,172 @@
+import {
+  ColorScales,
+  TypographySamples,
+  RadiusSamples,
+} from "./theme-demo";
+
 # Theme & Design Tokens
 
-Patch UI uses a CSS custom property system with the `--patch-*` namespace for all visual styling. Tokens define colors, radii, shadows, and easings - and they switch automatically between light and dark mode.
+Patch UI is Tailwind CSS v4 native. The token system is a single stylesheet (`tokens.css`) that does three jobs at once: defines raw CSS custom properties, bridges them into Tailwind through an `@theme inline` block, and provides text-style utility classes for compound typography. Light and dark switch from a single `.dark` class.
 
-## Overview
+## How the layers fit together
 
-Every component in Patch UI reads its colors, spacing, and motion values from CSS custom properties defined on `:root`. This means you can customize the entire look of the library by overriding a handful of variables in your own CSS.
+```
+tokens.css
+├── Layer 1: raw CSS custom properties on :root
+│   └── .dark { …overrides }
+├── Layer 2: @theme inline block
+│   └── makes each token available as bg-*, text-*, rounded-*, shadow-*
+└── Layer 3: @layer utilities
+    └── .text-heading-40, .text-copy-14, .text-button-14, etc.
+```
 
-The tokens are defined in `@patchui/react/theme/tokens.css` and imported through your Tailwind CSS file during [setup](/docs/getting-started).
+You can write against any layer:
 
-## Color Tokens
+```tsx
+// Layer 1: direct CSS variable
+<div style={{ background: "var(--gray-1000)" }} />
 
-All 14 color tokens with their light and dark mode values:
+// Layer 2: Tailwind utility
+<div className="bg-gray-1000" />
+
+// Layer 3: compound typography utility (size + line-height + tracking + weight)
+<p className="text-copy-14">Body text.</p>
+```
+
+Components read from layers 2 and 3 exclusively. Layer 1 is for you, if you need it.
+
+## Color scales
+
+Every scale runs `100` (lightest fill) to `1000` (heaviest text) and inverts in dark mode. The intent is consistent across scales:
+
+| Step | Role |
+|------|------|
+| `100` | subtle fill (hover-adjacent, callout background) |
+| `200` | hover fill |
+| `300` | active fill |
+| `400` | border |
+| `500` | hover border |
+| `600` | active border |
+| `700` | solid (button background, saturated fill) |
+| `800` | solid hover |
+| `900` | secondary text |
+| `1000` | primary text |
+
+<ColorScales />
+
+### Gray alpha
+
+Gray alpha tokens are the same scale but expressed as translucent black (light mode) or white (dark mode). Use them when a fill needs to sit on any background color, such as a hover state that must work over both surface tones. Range: `--gray-alpha-100` through `--gray-alpha-1000`.
+
+### Backgrounds
+
+Two-tone canvas scale for surface elevation:
 
 | Token | Light | Dark |
 |-------|-------|------|
-| `--patch-bg` | `#fafafa` | `#09090b` |
-| `--patch-surface` | `#ffffff` | `#111113` |
-| `--patch-surface-hover` | `#f5f5f5` | `#191919` |
-| `--patch-surface-active` | `#ebebeb` | `#222222` |
-| `--patch-text` | `#171717` | `#ededed` |
-| `--patch-text-secondary` | `#525252` | `#a1a1a1` |
-| `--patch-text-tertiary` | `#737373` | `#858585` |
-| `--patch-text-quaternary` | `#b5b5b5` | `#5a5a5a` |
-| `--patch-border` | `#e5e5e5` | `rgba(255,255,255,0.06)` |
-| `--patch-border-hover` | `#d4d4d4` | `rgba(255,255,255,0.10)` |
-| `--patch-border-active` | `#a3a3a3` | `rgba(255,255,255,0.15)` |
-| `--patch-error` | `#dc2626` | `#f87171` |
-| `--patch-success` | `#16a34a` | `#4ade80` |
-| `--patch-warning` | `#d97706` | `#fbbf24` |
+| `--background-100` | `#ffffff` | `#000000` |
+| `--background-200` | `#fafafa` | `#0a0a0a` |
 
-## Tailwind Bridge
+In dark mode both are near-black; the Vercel Geist approach is to use border + shadow (not brightness) for surface differentiation.
 
-The tokens file includes an `@theme inline` block that registers each `--patch-*` token as a Tailwind CSS v4 color. This creates `--color-patch-*` aliases that enable utility classes:
+### Semantic roles
 
-```css
-@theme inline {
-  --color-patch-bg: var(--background-100);
-  --color-patch-surface: var(--background-100);
-  --color-patch-text: var(--gray-1000);
-  /* ... all 14 colors */
-}
-```
+Fixed hex values that read identically in both themes, because status intent shouldn't shift meaning:
 
-With this bridge in place, you can use Tailwind utilities like:
-
-```html
-<div class="bg-background-100 text-gray-1000 border-gray-alpha-400">
-  Token-driven styling via Tailwind utilities
-</div>
-```
-
-This works because Tailwind v4 treats `--color-*` custom properties as first-class color values.
-
-## Radius Tokens
-
-| Token | Value | Used by |
+| Token | Value | Purpose |
 |-------|-------|---------|
-| `--radius-patch-xs` | `4px` | Badges, pills, count chips |
-| `--radius-patch-sm` | `8px` | Buttons, inputs, selects, menu items, small chrome |
-| `--radius-patch-lg` | `12px` | Cards, sheets, dialogs, menus, toasts, larger surfaces |
+| `--error` | `#ea001d` | destructive Button, Toast, Field.error |
+| `--warning` | `#f5a623` | caution Button, Toast |
+| `--success` | `#15963f` | positive Toast, confirmed status |
 
-Used via Tailwind utilities: `rounded-patch-sm`, `rounded-patch-lg`.
+Each has `-hover` and `-active` companions.
 
-## Shadow Tokens
+## Typography
+
+Four families, all size-numbered so the class name doubles as documentation:
+
+- `text-heading-*` — semibold display type (weight 600), for section headers
+- `text-copy-*` — body text (weight 400), for paragraphs and prose
+- `text-label-*` — dense/UI text (weight 400), tighter line-heights, for form labels and metadata
+- `text-button-*` — control text (weight 500), single-line, for interactive labels
+
+Each class applies size, line-height, tracking, and weight in one shot.
+
+<TypographySamples />
+
+## Radius
+
+Four values only. Controls use `radius-6`, surfaces use `radius-12`, marketing chrome uses `radius-16`, chips use `radius-full`.
+
+<RadiusSamples />
+
+## Shadows
+
+Elevation is otherwise flat with 1px hairline borders. Shadows appear only on overlays.
+
+| Token | Purpose |
+|-------|---------|
+| `--shadow-card` | marketing cards, promoted surfaces |
+| `--shadow-menu` | popovers, menus, selects, tooltips |
+| `--shadow-modal` | dialogs, sheets |
+| `--shadow-tooltip` | alias for `--shadow-menu` |
+
+Dark-mode shadows are deeper (heavier alpha) so overlays still separate from a near-black canvas.
+
+## Motion
+
+One easing and two durations cover the whole library:
+
+| Token | Value | Purpose |
+|-------|-------|---------|
+| `--ease-standard` | `cubic-bezier(0.175, 0.885, 0.32, 1.1)` | slight overshoot; feels alive |
+| `--duration-state` | `75ms` | hover / active color transitions |
+| `--duration-overlay` | `150ms` | popover, menu, modal enter/exit |
+
+Under `prefers-reduced-motion: reduce`, both durations collapse to `0ms` and easing becomes `ease` automatically. Components inherit this without special-casing.
+
+## Focus
 
 | Token | Value |
 |-------|-------|
-| `--shadow-card` | `0 1px 2px rgba(0,0,0,0.3)` |
-| `--shadow-menu` | `0 4px 12px -2px rgba(0,0,0,0.4)` |
-| `--shadow-menu` | `0 8px 24px -4px rgba(0,0,0,0.5)` |
-| `--shadow-modal` | `0 16px 48px -12px rgba(0,0,0,0.6)` |
+| `--focus-ring-color` | `var(--gray-alpha-600)` |
+| `--focus-ring-offset` | `1px` |
 
-Used via Tailwind utilities: `shadow-card`, `shadow-menu`, `shadow-menu`, `shadow-modal`.
+Consumed through the shared `focusRing` recipe. A 1px neutral outline reads as intentional across both themes. No `ring-2` or `ring-3` anywhere.
 
-## Easing Tokens
+## Spacing
 
-| Token | Value |
-|-------|-------|
-| `--ease-patch` | `cubic-bezier(0.25, 0.1, 0.25, 1)` |
-| `--ease-patch-out` | `cubic-bezier(0.16, 1, 0.3, 1)` |
-| `--ease-patch-in` | `cubic-bezier(0.7, 0, 0.84, 0)` |
+The v4 approach: the token file exposes `--space-4`, `--space-8`, `--space-12`, `--space-16`, `--space-24`, `--space-32`, `--space-40`, `--space-64`, `--space-96` as raw variables. Tailwind's default `p-*`, `m-*`, `gap-*`, `h-*` utilities are unchanged and use the standard `0.25rem` multiplier (so `p-4` = `1rem`). Reach for the raw `var(--space-N)` variables only when you need exact pixel alignment inside a token-critical layout (e.g. matching a design that specifies `24px` explicitly).
 
-## Light & Dark Mode
+## Light and dark
 
-The token system supports light and dark mode automatically. Tokens are defined on `:root` for light mode and overridden inside a `.dark` selector for dark mode:
-
-```css
-:root {
-  --patch-bg: #fafafa;
-  --patch-text: #171717;
-  /* light values ... */
-}
-
-.dark {
-  --patch-bg: #09090b;
-  --patch-text: #ededed;
-  /* dark values ... */
-}
-```
-
-To switch to dark mode, add the `dark` class to your `<html>` element:
+Tokens are defined on `:root` (light) and overridden inside `.dark` (dark). Toggle by adding the class to `<html>`:
 
 ```html
 <html class="dark">
 ```
 
-All components and token-based utilities update instantly - no JavaScript required.
+No JavaScript required. The `theme-toggle` component (`npx shadcn add @patchui/theme-toggle`) handles system-preference detection and persistence if you want a UI switch.
 
-## Customization
+## Customizing
 
-Override any token in your own CSS to customize the theme. Place your overrides after the Patch UI import:
+Every token is a plain CSS variable. Override in your own CSS after importing the tokens:
 
 ```css
+/* app/globals.css */
 @import "tailwindcss";
-@import "@patchui/react/theme/tokens.css";
-@source "../node_modules/@patchui/react/src";
+@import "./styles/patch-ui-tokens.css";
 
-/* Custom brand colors */
 :root {
-  --patch-bg: #fefce8;
-  --patch-surface: #fffef5;
-  --patch-text: #1a1a1a;
+  /* Rebrand the primary text color across every component */
+  --gray-1000: #0a0a0a;
 }
 
 .dark {
-  --patch-bg: #0a0a0f;
-  --patch-surface: #12121a;
-  --patch-text: #f0f0f0;
+  --gray-1000: #f5f5f5;
 }
 ```
 
-Because components read from `--patch-*` properties at runtime, your overrides take effect everywhere - no rebuild needed.
+Because components read from these variables at runtime, your overrides take effect everywhere. No rebuild required.
+
+If you edit a color that affects readable text (`gray-800`, `gray-900`, `gray-1000` against the backgrounds), run `npm run check:contrast -w packages/react` to verify you haven't broken the [contrast contract](/docs/contrast).

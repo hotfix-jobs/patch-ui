@@ -1,40 +1,107 @@
 import Link from "next/link";
+import { ArrowUpRight, Palette, Package, ShieldCheck } from "lucide-react";
 
 export default function DocsPage() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold tracking-tight text-[var(--gray-1000)]">
+    <div className="max-w-3xl">
+      <h1 className="text-copy-32 font-semibold tracking-[-0.02em] text-gray-1000">
         Patch UI
       </h1>
-      <p className="mt-3 text-lg text-[var(--gray-900)]">
-        A modern React component library built for speed and accessibility.
+      <p className="mt-3 text-copy-16 leading-relaxed text-gray-900">
+        A copy-in React component library with taste. Crisp visual language,
+        Base UI accessibility primitives, and a Tailwind v4 token system that
+        drives light and dark from a single stylesheet. No npm package to
+        install, no CLI to learn: it ships through the standard shadcn
+        registry.
       </p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
-        <Link
+      <div className="mt-10 grid gap-px overflow-hidden rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-gray-alpha-400 sm:grid-cols-2">
+        <IntroCard
+          icon={<Package className="size-4" />}
+          title="Getting Started"
+          body="Register the namespace, add your first component, wire up the tokens."
           href="/docs/getting-started"
-          className="group rounded-lg border border-[var(--gray-alpha-400)] p-5 transition-colors hover:border-[var(--gray-alpha-600)] hover:bg-[var(--gray-100)]"
-        >
-          <h2 className="text-lg font-semibold text-[var(--gray-1000)] group-hover:text-[var(--blue-700)]">
-            Getting Started →
-          </h2>
-          <p className="mt-1 text-sm text-[var(--gray-900)]">
-            Install Patch UI and start building.
-          </p>
-        </Link>
-
-        <Link
+        />
+        <IntroCard
+          icon={<Palette className="size-4" />}
+          title="Theme & Tokens"
+          body="How the token system is organized: colors, radii, motion, typography."
+          href="/docs/theme"
+        />
+        <IntroCard
+          icon={<ShieldCheck className="size-4" />}
+          title="Contrast Contract"
+          body="The check:contrast script enforces WCAG minimums in CI. Understand what's guaranteed and what isn't."
+          href="/docs/contrast"
+        />
+        <IntroCard
+          icon={<ArrowUpRight className="size-4" />}
+          title="Browse Components"
+          body="Buttons, inputs, overlays, tables, calendars, and blocks. All copy-in, all tokenized."
           href="/docs/components/button"
-          className="group rounded-lg border border-[var(--gray-alpha-400)] p-5 transition-colors hover:border-[var(--gray-alpha-600)] hover:bg-[var(--gray-100)]"
-        >
-          <h2 className="text-lg font-semibold text-[var(--gray-1000)] group-hover:text-[var(--blue-700)]">
-            Components →
-          </h2>
-          <p className="mt-1 text-sm text-[var(--gray-900)]">
-            Explore the component library.
-          </p>
-        </Link>
+        />
       </div>
+
+      <div className="mt-12 rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-background-200 p-6">
+        <h2 className="text-copy-16 font-semibold text-gray-1000">
+          What Patch UI is not
+        </h2>
+        <ul className="mt-3 space-y-2 text-copy-14 leading-relaxed text-gray-900">
+          <li>
+            <strong className="font-medium text-gray-1000">Not a package.</strong>{" "}
+            There is no `npm install @patchui/react`. Components are copied
+            into your repo through the shadcn registry.
+          </li>
+          <li>
+            <strong className="font-medium text-gray-1000">Not a framework.</strong>{" "}
+            No providers to wrap, no context to configure. Import a component
+            and use it.
+          </li>
+          <li>
+            <strong className="font-medium text-gray-1000">Not opinionated about your app.</strong>{" "}
+            Once copied, the source is yours. Rename props, delete variants,
+            restyle. It is your code.
+          </li>
+        </ul>
+      </div>
+
+      <p className="mt-10 text-copy-13 text-gray-800">
+        Curious about influences? See the{" "}
+        <Link
+          href="/docs/credits"
+          className="font-medium text-gray-1000 underline decoration-gray-alpha-400 underline-offset-2 hover:decoration-gray-1000"
+        >
+          Credits
+        </Link>{" "}
+        page.
+      </p>
     </div>
+  );
+}
+
+function IntroCard({
+  icon,
+  title,
+  body,
+  href,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  body: string;
+  href: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group flex flex-col gap-2 bg-background-100 p-5 transition-colors hover:bg-gray-alpha-100"
+    >
+      <div className="flex items-center gap-2 text-gray-800 group-hover:text-gray-1000">
+        <span className="inline-flex items-center justify-center">{icon}</span>
+        <span className="text-copy-14 font-medium text-gray-1000">
+          {title}
+        </span>
+      </div>
+      <p className="text-copy-13 leading-relaxed text-gray-800">{body}</p>
+    </Link>
   );
 }
