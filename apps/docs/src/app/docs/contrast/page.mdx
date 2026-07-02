@@ -1,23 +1,30 @@
 import { ContrastDemo } from "./contrast-demo";
 
-# Contrast Audit
+# Contrast Contract
 
-Visual verification that every `--patch-text-*` token meets its declared WCAG contrast target against every surface token. The required thresholds are:
+Every text and accent token has a declared WCAG target against the surfaces it sits on. The same checks run in CI via `npm run check:contrast -w packages/react`, so a token change that breaks a target fails the build. This page is the visual counterpart: ratios recompute the moment you toggle light or dark mode.
 
-- `patch-text` - AAA body text (≥ 7:1)
-- `patch-text-secondary` - AA body copy (≥ 4.5:1)
-- `patch-text-tertiary` - AA metadata/labels (≥ 4.5:1)
-- `patch-text-quaternary` - no guarantee; decorative use only
+- `gray-1000` on backgrounds: AAA body (7:1)
+- `gray-900` on backgrounds: AA body (4.5:1)
+- `gray-800` on backgrounds: AA metadata / labels (4.5:1)
+- `gray-700` on backgrounds: AA-large / disabled hint (3:1)
+- Accent `-700` solids on `background-100`: AA (4.5:1)
+- `background-100` on `gray-1000` (primary Button label): AAA (7:1)
 
-Ratios re-compute when you toggle light/dark mode. Green pills = passing, red = failing. The same verification runs in CI via `npm run check:contrast -w packages/react`.
+Green pill = passing, red = failing.
 
 <ComponentPreview label="Contrast matrix">
   <ContrastDemo />
 </ComponentPreview>
 
-## When to use each tier
+## When to use each text tier
 
-- **`patch-text`** - primary body, headings, anything the user needs to read precisely.
-- **`patch-text-secondary`** - supporting body copy, descriptions, long-form prose.
-- **`patch-text-tertiary`** - labels, timestamps, metadata, section overlines. **Not for body paragraphs.**
-- **`patch-text-quaternary`** - decorative-only; placeholder hints, disabled states, accent detail.
+- **`gray-1000`** — primary body, headings, anything the user must read precisely.
+- **`gray-900`** — supporting body copy, descriptions, long-form prose.
+- **`gray-800`** — labels, timestamps, metadata, section overlines. Not for body paragraphs.
+- **`gray-700`** — disabled controls, placeholder hints, decorative accent. AA-large only; do not use for content the user actually needs to read.
+
+## Notes
+
+- Accent tokens outside the `-700` step are not audited. Lighter steps (`-100` to `-400`) are fill colors, not text; heavier steps (`-800` to `-1000`) are text but only used on tinted surfaces where the ratio is guaranteed by construction.
+- If you override `--gray-*` or `--background-*` in your own CSS, re-run `check:contrast` before merging. The script is fast and takes no arguments.

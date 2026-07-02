@@ -6,7 +6,14 @@ Patch UI didn't materialize in a vacuum. It builds on years of open-source work 
 
 ### Vercel Geist
 
-The visual language, taste, and several component API surfaces (Calendar, Scroller, ListRow, MiddleTruncate, Breadcrumb) draw directly from [Vercel's Geist design system](https://vercel.com/geist). Patch UI is not a fork or a port: nothing was copied verbatim, and the implementation, tokens, and component code are ours. But if the components here feel familiar, that is why. Credit where credit is due.
+The visual language and design system come from [Vercel's Geist](https://vercel.com/geist). Specifically:
+
+- The color palette (gray + blue, red, amber, green, teal, purple, pink) and its `100`→`1000` scale structure with the intent contract at each step.
+- The four-family typography scale (heading, copy, label, button) and its size ladder.
+- The two-tone background approach (`background-100` / `background-200`) and the "dark surfaces share the canvas color" convention.
+- Several component API surfaces (Calendar, Scroller, ListRow, MiddleTruncate, Breadcrumb) modeled on Geist's equivalents.
+
+Patch UI is not a fork or a port, and no React code was copied verbatim. But the tokens, palette values, and design decisions carry Geist's fingerprints intentionally. If the library feels familiar, that is why.
 
 ### shadcn/ui
 
@@ -47,7 +54,8 @@ Component demos, docs illustrations, and default icon slots use [Lucide](https:/
 ## Original work
 
 What is ours:
-- The token system, its naming (`--gray-*`, `--background-*`, `--text-copy-*`, `--radius-*`, and so on), and the light/dark contrast contract enforced by `check:contrast`.
+- The Tailwind v4 three-layer implementation: raw CSS custom properties on `:root`, an `@theme inline` bridge that generates the utility classes, and the compound `.text-heading-*` / `.text-copy-*` / `.text-label-*` / `.text-button-*` classes that apply size + line-height + tracking + weight in one shot.
+- The `check:contrast` gate that enforces WCAG minimums in CI so a token change that breaks readability fails the build.
 - The recipe layer (`focusRing`, `controlSize`, `colorTransition`) that gives every component the same interaction feel without per-component reinvention.
 - The component implementations themselves. All source code is MIT-licensed and lives at [github.com/hotfix-jobs/patch-ui](https://github.com/hotfix-jobs/patch-ui).
 - The blocks (AppHeader, Dropzone) as composed patterns you can drop in and modify.
