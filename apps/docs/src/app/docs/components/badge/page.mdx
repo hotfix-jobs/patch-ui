@@ -35,9 +35,7 @@ import { Badge } from "@patchui/react";
 <Badge render={<a href="/status" />}>Linked</Badge>
 
 // Dismissible — trailing × for filter chips, tokens, facets
-<Badge variant="secondary" onRemove={() => removeFilter("Design")}>
-  Design
-</Badge>
+<Badge onRemove={() => removeFilter("Design")}>Design</Badge>
 ```
 
 ## Props
@@ -46,7 +44,7 @@ import { Badge } from "@patchui/react";
   props={[
     {
       name: "variant",
-      type: '"default" | "secondary" | "success" | "warning" | "error"',
+      type: '"default" | "success" | "warning" | "error"',
       default: '"default"',
       description: "The visual style. Each variant uses a `-100` fill with a `-900` text token from the matching hue scale.",
     },

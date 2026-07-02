@@ -21,8 +21,7 @@ export const badgeVariants = cva(
         lg: "px-2.5 py-1",
       },
       variant: {
-        default: "bg-gray-alpha-100 text-gray-900",
-        secondary: "bg-gray-alpha-200 text-gray-900",
+        default: "bg-gray-200 text-gray-900",
         success: "bg-green-100 text-green-900",
         warning: "bg-amber-100 text-amber-900",
         error: "bg-red-100 text-red-900",

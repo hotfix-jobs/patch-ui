@@ -14,7 +14,6 @@ export function BadgeDemo() {
         <p className="mb-3 text-label-12 text-gray-800">Variants</p>
         <div className="flex flex-wrap items-center gap-3">
           <Badge variant="default">Default</Badge>
-          <Badge variant="secondary">Secondary</Badge>
           <Badge variant="success">Success</Badge>
           <Badge variant="warning">Warning</Badge>
           <Badge variant="error">Error</Badge>
@@ -55,7 +54,6 @@ export function BadgeDemo() {
             filters.map((f) => (
               <Badge
                 key={f}
-                variant="secondary"
                 onRemove={() => setFilters((prev) => prev.filter((x) => x !== f))}
               >
                 {f}
