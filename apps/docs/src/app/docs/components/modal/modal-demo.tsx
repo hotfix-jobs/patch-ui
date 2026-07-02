@@ -20,7 +20,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export function ModalDemo() {
   const [basic, setBasic] = useState(false);
   const [destructive, setDestructive] = useState(false);
-  const [sticky, setSticky] = useState(false);
+  const [longContent, setLongContent] = useState(false);
   const [projectName, setProjectName] = useState("");
 
   return (
@@ -30,14 +30,17 @@ export function ModalDemo() {
         <SectionLabel>Basic</SectionLabel>
         <Button onClick={() => setBasic(true)}>Update project</Button>
         <Modal active={basic} onClickOutside={() => setBasic(false)}>
+          <ModalHeader>
+            <ModalTitle>Update Project</ModalTitle>
+            <ModalSubtitle>
+              Bumping the framework to the latest major. Your build settings
+              will migrate automatically.
+            </ModalSubtitle>
+          </ModalHeader>
           <ModalBody>
-            <ModalHeader>
-              <ModalTitle>Update Project</ModalTitle>
-              <ModalSubtitle>
-                Bumping the framework to the latest major. Your build settings
-                will migrate automatically.
-              </ModalSubtitle>
-            </ModalHeader>
+            <p className="text-copy-14 text-gray-1000">
+              Continue to apply the update.
+            </p>
           </ModalBody>
           <ModalActions>
             <ModalAction onClick={() => setBasic(false)}>Cancel</ModalAction>
@@ -61,14 +64,14 @@ export function ModalDemo() {
           active={destructive}
           onClickOutside={() => setDestructive(false)}
         >
+          <ModalHeader>
+            <ModalTitle>Delete Project</ModalTitle>
+            <ModalSubtitle>
+              Type the project name below to confirm. This action can't be
+              undone.
+            </ModalSubtitle>
+          </ModalHeader>
           <ModalBody>
-            <ModalHeader>
-              <ModalTitle>Delete Project</ModalTitle>
-              <ModalSubtitle>
-                Type the project name below to confirm. This action can't be
-                undone.
-              </ModalSubtitle>
-            </ModalHeader>
             <ModalInset>
               <p className="text-label-13 text-gray-800">Project</p>
               <p className="text-copy-14 text-gray-1000">acme-web</p>
@@ -99,23 +102,22 @@ export function ModalDemo() {
         </Modal>
       </div>
 
-      {/* Sticky */}
+      {/* Long content — body scrolls, header + actions stay put */}
       <div>
-        <SectionLabel>Sticky header/footer, scrollable body</SectionLabel>
-        <Button onClick={() => setSticky(true)}>Open long content</Button>
+        <SectionLabel>Long content (body scrolls)</SectionLabel>
+        <Button onClick={() => setLongContent(true)}>Open release notes</Button>
         <Modal
-          active={sticky}
-          onClickOutside={() => setSticky(false)}
-          sticky
+          active={longContent}
+          onClickOutside={() => setLongContent(false)}
           size="lg"
         >
+          <ModalHeader>
+            <ModalTitle>Release Notes — v4.0.0</ModalTitle>
+            <ModalSubtitle>
+              Highlights, breaking changes, and everything else worth knowing.
+            </ModalSubtitle>
+          </ModalHeader>
           <ModalBody>
-            <ModalHeader>
-              <ModalTitle>Release Notes — v4.0.0</ModalTitle>
-              <ModalSubtitle>
-                Highlights, breaking changes, and everything else worth knowing.
-              </ModalSubtitle>
-            </ModalHeader>
             {Array.from({ length: 12 }).map((_, i) => (
               <p key={i} className="text-copy-14 text-gray-1000">
                 Section {i + 1}. Lorem ipsum dolor sit amet, consectetur
@@ -125,8 +127,13 @@ export function ModalDemo() {
             ))}
           </ModalBody>
           <ModalActions>
-            <ModalAction onClick={() => setSticky(false)}>Close</ModalAction>
-            <ModalAction variant="primary" onClick={() => setSticky(false)}>
+            <ModalAction onClick={() => setLongContent(false)}>
+              Close
+            </ModalAction>
+            <ModalAction
+              variant="primary"
+              onClick={() => setLongContent(false)}
+            >
               Acknowledge
             </ModalAction>
           </ModalActions>
