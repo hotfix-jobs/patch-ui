@@ -53,3 +53,9 @@ import { Separator } from "@patchui/react";
     },
   ]}
 />
+
+<Callout title="Notes">
+- Vertical separators inherit their height from the parent — put them inside a `flex` (or `grid`) with a defined height, or they'll collapse.
+- The label variant is horizontal only. It renders the hairline split around your text — good for "or" / "and" between two options.
+- `decorative` is about semantics, not visuals. Turn it on when the divider is just a visual beat between blocks; leave it off when the divider marks a real section break the screen reader should announce.
+</Callout>
