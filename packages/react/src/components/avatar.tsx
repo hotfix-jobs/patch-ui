@@ -66,6 +66,10 @@ export interface AvatarProps
    * fill instead of the default dark fill.
    */
   placeholder?: boolean;
+  /** Render an icon inside the avatar (status/action pattern). Overrides image/letter. */
+  icon?: React.ReactNode;
+  /** When `icon` is set, use the subtle neutral fill. Defaults to true. */
+  iconBackground?: boolean;
 }
 
 export function Avatar({
@@ -74,6 +78,8 @@ export function Avatar({
   shape,
   letter,
   placeholder,
+  icon,
+  iconBackground = true,
   style,
   children,
   ...props
@@ -82,10 +88,13 @@ export function Avatar({
   const numericSize = typeof size === "number";
   const inlineSize = numericSize ? { width: size, height: size } : undefined;
 
-  // Placeholder mode swaps the fill from gray-1000 (default) to a subtle gray-100 surface.
-  const fillClass = placeholder
+  // Icon mode + placeholder mode both use the subtle neutral fill.
+  const usesNeutralFill = placeholder || (icon && iconBackground);
+  const fillClass = usesNeutralFill
     ? "bg-gray-100 text-gray-800"
-    : "bg-gray-1000 text-background-100";
+    : icon && !iconBackground
+      ? "bg-transparent text-gray-800"
+      : "bg-gray-1000 text-background-100";
 
   const baseClass = numericSize
     ? cn(
@@ -96,18 +105,21 @@ export function Avatar({
       )
     : cn(
         avatarVariants({ size, shape }),
-        // Override the default gray-1000 fill when placeholder is on.
-        placeholder && "!bg-gray-100 !text-gray-800",
+        usesNeutralFill && "!bg-gray-100 !text-gray-800",
+        icon && !iconBackground && "!bg-transparent !text-gray-800",
       );
 
-  // Shorthand: `letter` becomes an AvatarFallback. If no children AND no letter AND
-  // placeholder is true, render a generic person icon.
-  const resolvedChildren = children ?? (
-    letter ? (
-      <AvatarFallback>{letter}</AvatarFallback>
-    ) : placeholder ? (
-      <PlaceholderIcon />
-    ) : null
+  // Priority: icon > children > letter > placeholder icon.
+  const resolvedChildren = icon ? (
+    <span className="flex size-full items-center justify-center">{icon}</span>
+  ) : (
+    children ?? (
+      letter ? (
+        <AvatarFallback>{letter}</AvatarFallback>
+      ) : placeholder ? (
+        <PlaceholderIcon />
+      ) : null
+    )
   );
 
   return (

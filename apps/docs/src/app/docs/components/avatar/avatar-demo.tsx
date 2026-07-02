@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from "@patchui/react";
+import { ArrowDownCircle, CheckCircle, Clock } from "lucide-react";
 
 // GitHub avatars — public, always available.
 const gh = (u: string) => `https://github.com/${u}.png?size=200`;
@@ -86,6 +87,15 @@ export function AvatarDemo() {
         <div className="flex items-center gap-6">
           <AvatarGroup members={CORE} size={32} />
           <AvatarGroup members={CORE} reverse size={32} />
+        </div>
+      </div>
+
+      <div>
+        <Label>With custom icon</Label>
+        <div className="flex items-center gap-3">
+          <Avatar icon={<ArrowDownCircle className="size-3.5" />} size={32} />
+          <Avatar icon={<CheckCircle className="size-3.5" />} size={32} />
+          <Avatar icon={<Clock className="size-3.5" />} size={32} />
         </div>
       </div>
 
