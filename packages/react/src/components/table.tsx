@@ -145,9 +145,9 @@ export function TableBody({
       className={cn(
         // Row hover applies bg to individual cells (border-collapse: separate
         // means tr bg doesn't render as a single pill). Rounded corners on
-        // first and last cell of the hovered row give the inset-pill look.
-        // Row dividers are DROPPED in interactive mode — the hover pill IS
-        // the row indicator, and letting the border-b fight with the pill
+        // first and last cell of the hovered / striped row give the
+        // inset-pill look. Both modes DROP the cell border-b — the fill
+        // IS the row indicator, and letting the border-b fight the pill
         // corners reads as a bug.
         interactive && [
           "[&_td]:!border-b-0",
@@ -156,7 +156,12 @@ export function TableBody({
           "[&_tr:hover>td:first-child]:rounded-l-[var(--radius-6)]",
           "[&_tr:hover>td:last-child]:rounded-r-[var(--radius-6)]",
         ],
-        striped && "[&_tr:nth-child(even)>td]:bg-background-200",
+        striped && [
+          "[&_td]:!border-b-0",
+          "[&_tr:nth-child(even)>td]:bg-background-200",
+          "[&_tr:nth-child(even)>td:first-child]:rounded-l-[var(--radius-6)]",
+          "[&_tr:nth-child(even)>td:last-child]:rounded-r-[var(--radius-6)]",
+        ],
         bordered && "[&_td+td]:border-l [&_th+th]:border-l",
         className,
       )}
