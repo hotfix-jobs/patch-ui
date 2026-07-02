@@ -1,10 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
+import { Bell, Settings, User } from "lucide-react";
 
 function Body({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-label-13 leading-relaxed text-gray-900">
+    <div className="text-copy-14 leading-relaxed text-gray-1000">
       {children}
     </div>
   );
@@ -19,12 +21,14 @@ function Label({ children }: { children: React.ReactNode }) {
 }
 
 export function TabsDemo() {
+  const [watchingCount, setWatchingCount] = useState(4);
+
   return (
     <div className="flex w-full flex-col gap-10">
-      {/* Underline variant (default) - content tabs */}
+      {/* Underline (default) */}
       <div>
         <Label>Underline (default)</Label>
-        <Tabs defaultValue="overview">
+        <Tabs defaultValue="overview" aria-label="Project sections">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
@@ -42,9 +46,70 @@ export function TabsDemo() {
         </Tabs>
       </div>
 
-      {/* Pill variant - same look across orientations */}
+      {/* With icons + badge */}
       <div>
-        <Label>Pill - same look, orientation flips by breakpoint</Label>
+        <Label>With icons and count badges</Label>
+        <Tabs defaultValue="watching" aria-label="Feed">
+          <TabsList>
+            <TabsTrigger value="watching" icon={<User />} badge={watchingCount}>
+              Watching
+            </TabsTrigger>
+            <TabsTrigger value="notifications" icon={<Bell />} badge={0}>
+              Notifications
+            </TabsTrigger>
+            <TabsTrigger value="settings" icon={<Settings />}>
+              Settings
+            </TabsTrigger>
+          </TabsList>
+          <TabsPanel value="watching">
+            <Body>
+              You're watching {watchingCount} items.{" "}
+              <button
+                type="button"
+                onClick={() => setWatchingCount((n) => n + 1)}
+                className="underline decoration-gray-alpha-400 underline-offset-4 hover:decoration-gray-alpha-600"
+              >
+                Watch one more
+              </button>
+              .
+            </Body>
+          </TabsPanel>
+          <TabsPanel value="notifications">
+            <Body>No new notifications — badge is hidden at 0.</Body>
+          </TabsPanel>
+          <TabsPanel value="settings">
+            <Body>Adjust feed preferences here.</Body>
+          </TabsPanel>
+        </Tabs>
+      </div>
+
+      {/* Disabled with tooltip */}
+      <div>
+        <Label>Disabled tab with tooltip explaining why</Label>
+        <Tabs defaultValue="overview" aria-label="Project sections">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="activity">Activity</TabsTrigger>
+            <TabsTrigger
+              value="admin"
+              disabled
+              tooltip="Only visible to project owners."
+            >
+              Admin
+            </TabsTrigger>
+          </TabsList>
+          <TabsPanel value="overview">
+            <Body>High-level summary.</Body>
+          </TabsPanel>
+          <TabsPanel value="activity">
+            <Body>Recent activity.</Body>
+          </TabsPanel>
+        </Tabs>
+      </div>
+
+      {/* Pill variant */}
+      <div>
+        <Label>Pill — orientation flips by breakpoint</Label>
         <div className="flex flex-col gap-8 sm:flex-row sm:gap-12">
           <div>
             <p className="mb-2 text-label-12 uppercase tracking-[0.06em] text-gray-700">

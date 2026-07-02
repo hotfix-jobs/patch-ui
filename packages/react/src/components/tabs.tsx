@@ -11,6 +11,7 @@ import {
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
+import { Tooltip } from "./tooltip";
 
 /**
  * Tabs - custom-built compound component.
@@ -136,6 +137,19 @@ export function TabsList({
 export interface TabsTriggerProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
   value: string;
+  /** Leading node (icon). */
+  icon?: React.ReactNode;
+  /**
+   * Trailing badge (count, dot). Hidden at 0 automatically when passed a
+   * number — Vercel spec says "drop the badge at zero".
+   */
+  badge?: React.ReactNode | number;
+  /**
+   * Sentence-case explanation for a disabled tab. Wraps the trigger in a
+   * Tooltip when set. Vercel spec: "pair the disabled tab with a tooltip
+   * that names the constraint."
+   */
+  tooltip?: React.ReactNode;
 }
 
 export function TabsTrigger({
@@ -143,6 +157,9 @@ export function TabsTrigger({
   className,
   children,
   disabled,
+  icon,
+  badge,
+  tooltip,
   onKeyDown,
   ...props
 }: TabsTriggerProps): React.ReactElement {
@@ -201,7 +218,10 @@ export function TabsTrigger({
         mass: 0.6,
       };
 
-  return (
+  // Hide numeric badges at 0; keep node badges as-is (consumer chose to render).
+  const showBadge = badge != null && (typeof badge !== "number" || badge > 0);
+
+  const trigger = (
     <button
       type="button"
       role="tab"
@@ -215,7 +235,7 @@ export function TabsTrigger({
       onClick={() => setValue(value)}
       onKeyDown={handleKeyDown}
       className={cn(
-        "relative text-copy-14 transition-colors disabled:pointer-events-none disabled:opacity-50",
+        "relative inline-flex items-center gap-2 text-copy-14 transition-colors disabled:pointer-events-none disabled:opacity-50",
         focusRing,
         variant === "underline" &&
           "py-2.5 text-gray-800 hover:text-gray-1000 data-[active]:text-gray-1000",
@@ -250,9 +270,27 @@ export function TabsTrigger({
           transition={indicatorTransition}
         />
       )}
+      {icon && (
+        <span className="shrink-0 [&_svg]:size-4" data-slot="tabs-trigger-icon">
+          {icon}
+        </span>
+      )}
       {children}
+      {showBadge && (
+        <span
+          data-slot="tabs-trigger-badge"
+          className="text-label-12 tabular-nums text-gray-800"
+        >
+          {badge}
+        </span>
+      )}
     </button>
   );
+
+  if (tooltip) {
+    return <Tooltip content={tooltip}>{trigger}</Tooltip>;
+  }
+  return trigger;
 }
 
 /* --------------------------- TabsPanel --------------------------- */
