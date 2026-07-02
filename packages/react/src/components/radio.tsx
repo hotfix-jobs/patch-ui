@@ -2,7 +2,7 @@
 
 import { Radio as RadioPrimitive } from "@base-ui/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
-import type React from "react";
+import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
@@ -19,14 +19,28 @@ export function RadioGroup({
   );
 }
 
+export interface RadioProps extends RadioPrimitive.Root.Props {
+  /** Optional label. When present, the radio is wrapped in a `<label>` so clicking the label selects it. */
+  children?: React.ReactNode;
+  /** Additional classes for the outer `<label>` (only applies when `children` is provided). */
+  wrapperClassName?: string;
+}
+
 export function Radio({
   className,
+  wrapperClassName,
+  children,
+  disabled,
   ...props
-}: RadioPrimitive.Root.Props): React.ReactElement {
-  return (
+}: RadioProps): React.ReactElement {
+  const dot = (
     <RadioPrimitive.Root
+      disabled={disabled}
       className={cn(
-        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full bg-transparent border border-gray-alpha-500 data-checked:border-patch-text data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full",
+        "bg-transparent border border-gray-alpha-500",
+        "data-checked:border-gray-1000",
+        "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
         focusRing,
         className,
@@ -38,12 +52,26 @@ export function Radio({
         className="flex items-center justify-center"
         data-slot="radio-indicator"
       >
-        <span
-          aria-hidden="true"
-          className="size-1.5 rounded-full bg-patch-text"
-        />
+        <span aria-hidden="true" className="size-1.5 rounded-full bg-gray-1000" />
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>
+  );
+
+  if (children == null) return dot;
+
+  return (
+    <label
+      className={cn(
+        "inline-flex items-center gap-2 text-copy-14 text-gray-1000",
+        !disabled && "cursor-pointer",
+        disabled && "cursor-not-allowed opacity-50",
+        wrapperClassName,
+      )}
+      data-slot="radio-label"
+    >
+      {dot}
+      <span>{children}</span>
+    </label>
   );
 }
 
