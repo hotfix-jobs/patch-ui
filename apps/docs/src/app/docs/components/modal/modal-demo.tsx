@@ -19,15 +19,16 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 export function ModalDemo() {
   const [basic, setBasic] = useState(false);
+  const [simple, setSimple] = useState(false);
   const [destructive, setDestructive] = useState(false);
   const [longContent, setLongContent] = useState(false);
   const [projectName, setProjectName] = useState("");
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Basic */}
+      {/* Basic — the only one using ModalHeader */}
       <div>
-        <SectionLabel>Basic</SectionLabel>
+        <SectionLabel>With header</SectionLabel>
         <Button onClick={() => setBasic(true)}>Update project</Button>
         <Modal active={basic} onClickOutside={() => setBasic(false)}>
           <ModalHeader>
@@ -54,9 +55,33 @@ export function ModalDemo() {
         </Modal>
       </div>
 
-      {/* Destructive */}
+      {/* Simple — no header, just a short message + actions */}
       <div>
-        <SectionLabel>Destructive with inset preview</SectionLabel>
+        <SectionLabel>No header</SectionLabel>
+        <Button variant="secondary" onClick={() => setSimple(true)}>
+          Discard changes?
+        </Button>
+        <Modal active={simple} onClickOutside={() => setSimple(false)}>
+          <ModalBody>
+            <p className="text-copy-14 text-gray-1000">
+              You have unsaved changes on this branch. Discard them and reload?
+            </p>
+          </ModalBody>
+          <ModalActions>
+            <ModalAction onClick={() => setSimple(false)}>Keep editing</ModalAction>
+            <ModalAction
+              variant="error"
+              onClick={() => setSimple(false)}
+            >
+              Discard changes
+            </ModalAction>
+          </ModalActions>
+        </Modal>
+      </div>
+
+      {/* Destructive with type-to-confirm gate */}
+      <div>
+        <SectionLabel>Destructive with typed confirmation</SectionLabel>
         <Button variant="error" onClick={() => setDestructive(true)}>
           Delete project
         </Button>
@@ -64,14 +89,12 @@ export function ModalDemo() {
           active={destructive}
           onClickOutside={() => setDestructive(false)}
         >
-          <ModalHeader>
-            <ModalTitle>Delete Project</ModalTitle>
-            <ModalSubtitle>
-              Type the project name below to confirm. This action can't be
-              undone.
-            </ModalSubtitle>
-          </ModalHeader>
           <ModalBody>
+            <h2 className="text-heading-16 text-gray-1000">Delete Project</h2>
+            <p className="text-copy-14 text-gray-800">
+              Type the project name below to confirm. This action cannot be
+              undone.
+            </p>
             <ModalInset>
               <p className="text-label-13 text-gray-800">Project</p>
               <p className="text-copy-14 text-gray-1000">acme-web</p>
@@ -102,7 +125,7 @@ export function ModalDemo() {
         </Modal>
       </div>
 
-      {/* Long content — body scrolls, header + actions stay put */}
+      {/* Long content — body scrolls between fixed regions */}
       <div>
         <SectionLabel>Long content (body scrolls)</SectionLabel>
         <Button onClick={() => setLongContent(true)}>Open release notes</Button>
@@ -111,13 +134,10 @@ export function ModalDemo() {
           onClickOutside={() => setLongContent(false)}
           size="lg"
         >
-          <ModalHeader>
-            <ModalTitle>Release Notes — v4.0.0</ModalTitle>
-            <ModalSubtitle>
-              Highlights, breaking changes, and everything else worth knowing.
-            </ModalSubtitle>
-          </ModalHeader>
           <ModalBody>
+            <h2 className="text-heading-16 text-gray-1000">
+              Release Notes — v4.0.0
+            </h2>
             {Array.from({ length: 12 }).map((_, i) => (
               <p key={i} className="text-copy-14 text-gray-1000">
                 Section {i + 1}. Lorem ipsum dolor sit amet, consectetur

@@ -174,7 +174,8 @@ export function Modal({
                       {...getFloatingProps()}
                       className={cn(
                         // Base container: full-width bottom sheet on mobile, centered popup on desktop.
-                        "relative flex w-full min-w-0 min-h-0 flex-col overflow-hidden bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-modal",
+                        // Dark mode is pure black to match canvas — the border + shadow do the distinguishing.
+                        "relative flex w-full min-w-0 min-h-0 flex-col overflow-hidden bg-background-100 dark:bg-black text-gray-1000 border border-gray-alpha-400 shadow-modal",
                         // Rounded only at top on mobile (sheet), fully rounded on desktop.
                         "rounded-t-[var(--radius-12)] sm:rounded-[var(--radius-12)]",
                         // Height: cap at 85vh on mobile, calc(100vh-2rem) on desktop.
