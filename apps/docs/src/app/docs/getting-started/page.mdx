@@ -36,6 +36,24 @@ Running `add` for the first time does four things:
 3. Installs the required npm packages (`@base-ui/react`, `class-variance-authority`, `clsx`, `tailwind-merge`, and `motion` for components with animations).
 4. Copies the design tokens to `styles/patch-ui-tokens.css`.
 
+### Add several at once
+
+Pass multiple names to install a handful in one call:
+
+```bash
+npx shadcn@latest add @patchui/button @patchui/input @patchui/card
+```
+
+### Install everything
+
+If you want the whole library up front, use the meta item:
+
+```bash
+npx shadcn@latest add @patchui/all
+```
+
+This chains through every component and block in the registry. Consumers who plan to use most of the library find it easier than picking one at a time. Nothing prevents you from deleting what you do not use afterward, since the components are just files in your repo.
+
 ## 3. Wire up the tokens
 
 Import the copied tokens through your Tailwind CSS entry file (not a JS import, the `@theme` block needs Tailwind's pipeline):

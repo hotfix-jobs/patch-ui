@@ -230,6 +230,25 @@ if (existsSync(BLOCKS)) {
   }
 }
 
+// ---- meta "all" item ----
+// Installs every UI component and block in one command:
+//   npx shadcn add @patchui/all
+// The CLI walks registryDependencies transitively, so consumers get every
+// component plus utils, recipes, internal-icons, and tokens automatically.
+const allRegDeps = items
+  .filter((i) => i.type === "registry:ui" || i.type === "registry:block")
+  .map((i) => i.name)
+  .sort();
+items.push({
+  name: "all",
+  type: "registry:lib",
+  title: "All Patch UI components",
+  description:
+    "Meta item that installs every Patch UI component and block. Chains through registryDependencies.",
+  registryDependencies: allRegDeps.map(toUrl),
+  files: [],
+});
+
 const registry = {
   $schema: "https://ui.shadcn.com/schema/registry.json",
   name: "patchui",
