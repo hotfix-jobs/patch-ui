@@ -10,9 +10,9 @@ import {
   CircleAlert,
   CircleCheck,
   Info,
-  Loader,
   TriangleAlert,
 } from "lucide-react";
+import { Spinner } from "./spinner";
 import {
   useCallback,
   useEffect,
@@ -191,7 +191,7 @@ const TYPE_ICON: Record<ToastType, React.ReactNode | null> = {
   error: <CircleAlert className="size-4 text-[var(--error)]" />,
   warning: <TriangleAlert className="size-4 text-[var(--warning)]" />,
   info: <Info className="size-4 text-gray-800" />,
-  loading: <Loader className="size-4 animate-spin text-gray-800" />,
+  loading: <Spinner size="sm" className="text-gray-800" />,
 };
 
 const TYPE_ARIA_LIVE: Record<ToastType, "polite" | "assertive"> = {
