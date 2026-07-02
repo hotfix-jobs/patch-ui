@@ -153,7 +153,6 @@
   /* Motion (twist: 50% of reference timings) */
   --ease-standard: cubic-bezier(0.175, 0.885, 0.32, 1.1);
   --duration-state: 75ms;
-  --duration-popover: 100ms;
   --duration-overlay: 150ms;
 
   /* Focus (twist: 1px neutral outline) */
@@ -305,7 +304,6 @@
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-state: 0ms;
-    --duration-popover: 0ms;
     --duration-overlay: 0ms;
     --ease-standard: ease;
   }

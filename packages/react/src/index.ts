@@ -233,16 +233,8 @@ export {
   type ComboboxPopupProps,
   type ComboboxItemProps,
 } from "./components/combobox";
-export {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverClose,
-  type PopoverProps,
-  type PopoverTriggerProps,
-  type PopoverContentProps,
-  type PopoverCloseProps,
-} from "./components/popover";
+// Popover is intentionally not exported. Kept as an internal primitive
+// used by DatePicker; consumers should use Menu, Select, or Modal.
 export { Alert, alertVariants, type AlertProps } from "./components/alert";
 export { Progress, type ProgressProps } from "./components/progress";
 export { Separator, type SeparatorProps } from "./components/separator";

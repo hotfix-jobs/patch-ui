@@ -2,7 +2,7 @@ import { DatePickerDemo } from "./date-picker-demo";
 
 # DatePicker
 
-`Button` + `Popover` + `Calendar`. Single or range date selection from a button trigger that opens a popup calendar. The trigger label shows the formatted selected date(s); placeholder when empty.
+Single or range date selection from a button trigger that opens a floating calendar. The trigger label shows the formatted selected date(s); placeholder when empty.
 
 <Install name="date-picker" />
 
@@ -67,7 +67,7 @@ const [range, setRange] = useState<DateRange>({});
       name: "onValueChange",
       type: "(value: Date | null) => void",
       default: "-",
-      description: "Called when the selection changes. Auto-closes the popover.",
+      description: "Called when the selection changes. Auto-closes the calendar.",
     },
     {
       name: "format",
@@ -115,7 +115,7 @@ const [range, setRange] = useState<DateRange>({});
       name: "weekStartsOn",
       type: "0 | 1 | 2 | 3 | 4 | 5 | 6",
       default: "0",
-      description: "First day of the week shown in the popover calendar.",
+      description: "First day of the week shown in the calendar.",
     },
   ]}
 />
@@ -129,7 +129,7 @@ Same props as DatePicker, except:
 - Label format: `"Jan 1, 2026 – Feb 5, 2026"` (or just the start date if only `from` is set)
 
 <Callout title="Notes">
-- **Composition over abstraction:** DatePicker is a thin shell around `Popover` + `Calendar`. If you need additional UI inside the popup (preset shortcuts like "Last 7 days", a time picker, footer actions), drop the wrapper and compose directly.
+- **Composition over abstraction:** DatePicker is a thin shell around a button trigger and `Calendar`. If you need additional UI inside the popup (preset shortcuts like "Last 7 days", a time picker, footer actions), drop the wrapper and compose a `Menu` or `Dialog` around `Calendar` directly.
 - **Auto-close:** DatePicker closes when a date is selected. DateRangePicker stays open after the first click so the user can pick the end date, then closes once both are set.
-- **Calendar feature parity:** All `Calendar` props (`fromDate`, `toDate`, `disabledDates`, `weekStartsOn`, `defaultMonth`) pass through to the popover calendar.
+- **Calendar feature parity:** All `Calendar` props (`fromDate`, `toDate`, `disabledDates`, `weekStartsOn`, `defaultMonth`) pass through to the inner calendar.
 </Callout>

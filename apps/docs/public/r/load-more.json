@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "load-more",
+  "title": "Load More",
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/recipes.json",
+    "https://ui.hotfix.jobs/r/spinner.json",
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/load-more.tsx",
+      "content": "\"use client\";\n\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { focusRing, disabled as disabledRecipe, colorTransition } from \"@/lib/recipes\";\nimport { Spinner } from \"@/components/ui/spinner\";\n\nexport interface LoadMoreProps\n  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, \"children\"> {\n  /** Label content. */\n  children?: React.ReactNode;\n  /** Shows a spinner and disables the button while a fetch is in flight. */\n  loading?: boolean;\n  /**\n   * Drops the button's own top margin. Use when the LoadMore sits right\n   * against a data list with its own bottom margin already.\n   */\n  noGap?: boolean;\n  /**\n   * Removes rounded corners. Use when the LoadMore is attached to the\n   * bottom of a Card or list container so the edges meet flush.\n   */\n  noBorderRadius?: boolean;\n}\n\n/**\n * LoadMore — a full-width, secondary-style button used to append more\n * items to a paginated feed (job listings, search results, activity log).\n * Manages the loading state so the trigger stays focusable and announces\n * busy state to assistive tech.\n */\nexport function LoadMore({\n  className,\n  children = \"Load More\",\n  loading,\n  noGap,\n  noBorderRadius,\n  disabled,\n  ...props\n}: LoadMoreProps): React.ReactElement {\n  const isDisabled = disabled || loading;\n  return (\n    <button\n      type=\"button\"\n      data-slot=\"load-more\"\n      aria-busy={loading || undefined}\n      disabled={isDisabled}\n      className={cn(\n        \"relative inline-flex w-full items-center justify-center gap-2 cursor-pointer\",\n        \"h-10 px-4 text-button-14 text-gray-1000\",\n        \"bg-background-100 border border-gray-alpha-400\",\n        \"hover:bg-gray-alpha-100 hover:border-gray-alpha-500\",\n        \"active:bg-gray-alpha-200\",\n        noBorderRadius ? \"rounded-none\" : \"rounded-[var(--radius-6)]\",\n        !noGap && \"mt-3\",\n        focusRing,\n        colorTransition,\n        disabledRecipe,\n        className,\n      )}\n      {...props}\n    >\n      {loading && <Spinner size=\"sm\" />}\n      {children}\n    </button>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/load-more.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

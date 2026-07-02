@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "search-input",
+  "title": "Search Input",
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/input.json",
+    "https://ui.hotfix.jobs/r/kbd.json",
+    "https://ui.hotfix.jobs/r/tokens.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/search-input.tsx",
+      "content": "\"use client\";\n\nimport type * as React from \"react\";\nimport { useCallback } from \"react\";\nimport { Input, type InputProps } from \"@/components/ui/input\";\nimport { Kbd } from \"@/components/ui/kbd\";\n\n/**\n * SearchInput — a scoped search field aligned with Geist. Renders a\n * magnifying-glass prefix, a clickable Esc-hint Kbd (when the value is\n * non-empty), and clears the input on Escape or click.\n */\nexport type SearchInputProps = Omit<\n  InputProps,\n  \"prefix\" | \"prefixStyling\" | \"suffix\" | \"suffixStyling\" | \"type\"\n> & {\n  /** Hide the Esc hint chip even when a value is present. */\n  hideEscHint?: boolean;\n};\n\nfunction SearchIcon({ className }: { className?: string }): React.ReactElement {\n  return (\n    <svg\n      aria-hidden=\"true\"\n      className={className}\n      viewBox=\"0 0 24 24\"\n      fill=\"none\"\n      stroke=\"currentColor\"\n      strokeWidth={2}\n      strokeLinecap=\"round\"\n      strokeLinejoin=\"round\"\n    >\n      <circle cx=\"11\" cy=\"11\" r=\"7\" />\n      <path d=\"m21 21-4.35-4.35\" />\n    </svg>\n  );\n}\n\nexport function SearchInput({\n  hideEscHint,\n  onKeyDown,\n  onChange,\n  value,\n  placeholder = \"Search\",\n  ...props\n}: SearchInputProps): React.ReactElement {\n  const hasValue =\n    value != null && value !== \"\" && (typeof value !== \"number\" || !Number.isNaN(value));\n\n  const handleClear = useCallback(() => {\n    if (onChange) {\n      // Synthesize an empty change event so both controlled and uncontrolled work.\n      const evt = {\n        target: { value: \"\" },\n        currentTarget: { value: \"\" },\n      } as unknown as Parameters<NonNullable<typeof onChange>>[0];\n      onChange(evt);\n    }\n  }, [onChange]);\n\n  const handleKeyDown = useCallback(\n    (e: Parameters<NonNullable<typeof onKeyDown>>[0]) => {\n      if (e.key === \"Escape\") {\n        e.preventDefault();\n        handleClear();\n      }\n      onKeyDown?.(e);\n    },\n    [handleClear, onKeyDown],\n  );\n\n  const showEscHint = hasValue && !hideEscHint;\n\n  return (\n    <Input\n      type=\"search\"\n      value={value}\n      onChange={onChange}\n      onKeyDown={handleKeyDown}\n      placeholder={placeholder}\n      prefix={<SearchIcon />}\n      prefixStyling={false}\n      suffix={showEscHint ? <Kbd size=\"sm\" onClick={handleClear} aria-label=\"Clear search\">Esc</Kbd> : undefined}\n      suffixStyling={false}\n      {...props}\n    />\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/search-input.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

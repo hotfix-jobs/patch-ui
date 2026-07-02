@@ -140,7 +140,6 @@
         "class-variance-authority"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -161,6 +160,7 @@
         "class-variance-authority"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/spinner.json",
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -200,8 +200,7 @@
       "type": "registry:ui",
       "title": "Card",
       "dependencies": [
-        "@base-ui/react",
-        "class-variance-authority"
+        "@base-ui/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -247,6 +246,7 @@
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/input.json",
+        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -324,26 +324,6 @@
       ]
     },
     {
-      "name": "display-heading",
-      "type": "registry:ui",
-      "title": "Display Heading",
-      "dependencies": [
-        "@base-ui/react",
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/display-heading.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/display-heading.tsx"
-        }
-      ]
-    },
-    {
       "name": "dropzone",
       "type": "registry:ui",
       "title": "Dropzone",
@@ -351,6 +331,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/card.json",
+        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/progress.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -428,6 +410,7 @@
       "type": "registry:ui",
       "title": "Kbd",
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -455,6 +438,43 @@
           "path": "registry/components/ui/label.tsx",
           "type": "registry:ui",
           "target": "components/ui/label.tsx"
+        }
+      ]
+    },
+    {
+      "name": "load-more",
+      "type": "registry:ui",
+      "title": "Load More",
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/spinner.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/load-more.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/load-more.tsx"
+        }
+      ]
+    },
+    {
+      "name": "loading-dots",
+      "type": "registry:ui",
+      "title": "Loading Dots",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/loading-dots.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/loading-dots.tsx"
         }
       ]
     },
@@ -543,9 +563,6 @@
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",
-      "dependencies": [
-        "motion"
-      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -579,12 +596,28 @@
       ]
     },
     {
-      "name": "section-label",
+      "name": "search-input",
       "type": "registry:ui",
-      "title": "Section Label",
+      "title": "Search Input",
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/input.json",
+        "https://ui.hotfix.jobs/r/kbd.json",
+        "https://ui.hotfix.jobs/r/tokens.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/search-input.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/search-input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "section",
+      "type": "registry:ui",
+      "title": "Section",
       "dependencies": [
-        "@base-ui/react",
-        "class-variance-authority"
+        "@base-ui/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -592,9 +625,9 @@
       ],
       "files": [
         {
-          "path": "registry/components/ui/section-label.tsx",
+          "path": "registry/components/ui/section.tsx",
           "type": "registry:ui",
-          "target": "components/ui/section-label.tsx"
+          "target": "components/ui/section.tsx"
         }
       ]
     },
@@ -704,6 +737,7 @@
         "@base-ui/react"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/input.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -791,24 +825,6 @@
       ]
     },
     {
-      "name": "tag-input",
-      "type": "registry:ui",
-      "title": "Tag Input",
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/badge.json",
-        "https://ui.hotfix.jobs/r/recipes.json",
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/tag-input.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/tag-input.tsx"
-        }
-      ]
-    },
-    {
       "name": "textarea",
       "type": "registry:ui",
       "title": "Textarea",
@@ -816,7 +832,6 @@
         "@base-ui/react"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
