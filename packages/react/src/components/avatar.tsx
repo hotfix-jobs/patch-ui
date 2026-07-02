@@ -7,12 +7,9 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export const avatarVariants = cva(
-  "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-patch-text font-medium text-patch-bg",
+  "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-gray-1000 font-medium text-background-100",
   {
-    defaultVariants: {
-      size: "md",
-      shape: "circle",
-    },
+    defaultVariants: { size: "md", shape: "circle" },
     variants: {
       size: {
         xs: "size-6 text-label-12",
@@ -47,8 +44,6 @@ export function Avatar({
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
-      data-size={size}
-      data-shape={shape}
       className={cn(avatarVariants({ size, shape }), className)}
       {...props}
     />
@@ -83,7 +78,7 @@ export function AvatarFallback({
 
 /* --------------------------- AvatarGroup --------------------------- */
 
-const RING_BY_SIZE: Record<AvatarSize, string> = {
+const ringBySize: Record<AvatarSize, string> = {
   xs: "ring-[1.5px]",
   sm: "ring-2",
   md: "ring-2",
@@ -91,7 +86,7 @@ const RING_BY_SIZE: Record<AvatarSize, string> = {
   xl: "ring-[2.5px]",
 };
 
-const OFFSET_BY_SIZE: Record<AvatarSize, string> = {
+const offsetBySize: Record<AvatarSize, string> = {
   xs: "-ms-2",
   sm: "-ms-2.5",
   md: "-ms-3",
@@ -100,38 +95,14 @@ const OFFSET_BY_SIZE: Record<AvatarSize, string> = {
 };
 
 export interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
-  /**
-   * Maximum number of avatars to show before collapsing to a "+N" chip.
-   * Defaults to 5. Set 0 to disable the cap.
-   */
+  /** Maximum avatars before collapsing to a "+N" chip. 0 disables the cap. */
   max?: number;
-  /**
-   * Size applied to every child Avatar and the overflow chip. Override on
-   * individual children if needed.
-   */
+  /** Size applied to every child and the overflow chip. */
   size?: AvatarSize;
-  /**
-   * Shape applied to every child Avatar and the overflow chip.
-   */
+  /** Shape applied to every child and the overflow chip. */
   shape?: AvatarShape;
 }
 
-/**
- * AvatarGroup — overlapping row of avatars with an optional "+N" overflow
- * chip. Use for team rosters, collaborators, attendees, "people involved"
- * patterns.
- *
- * Children are expected to be `<Avatar>` elements; AvatarGroup applies the
- * size/shape and a hairline ring against the background to keep them
- * visually separated despite overlap.
- *
- * Usage:
- *   <AvatarGroup size="sm" max={4}>
- *     <Avatar><AvatarImage src="..." /></Avatar>
- *     <Avatar><AvatarFallback>JD</AvatarFallback></Avatar>
- *     ...
- *   </AvatarGroup>
- */
 export function AvatarGroup({
   className,
   max = 5,
@@ -145,11 +116,9 @@ export function AvatarGroup({
   const shown = showChip ? all.slice(0, max) : all;
   const overflow = showChip ? all.length - max : 0;
 
-  const ring = RING_BY_SIZE[size];
-  const offset = OFFSET_BY_SIZE[size];
+  const ring = ringBySize[size];
+  const offset = offsetBySize[size];
 
-  // Apply size/shape + first-child resets to each Avatar so consumers
-  // don't have to repeat them on every child.
   const decorated = shown.map((child, i) => {
     const childProps = (child as React.ReactElement<AvatarProps>).props;
     return cloneElement(child as React.ReactElement<AvatarProps>, {
@@ -179,7 +148,7 @@ export function AvatarGroup({
             ring,
             "ring-background-100",
             offset,
-            // Distinct fill so the chip reads as a counter, not an avatar.
+            // Chip reads as a counter, not another person.
             "!bg-gray-100 !text-gray-900",
           )}
         >

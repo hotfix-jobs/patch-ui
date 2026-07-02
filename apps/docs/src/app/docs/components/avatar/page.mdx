@@ -2,9 +2,7 @@ import { AvatarDemo } from "./avatar-demo";
 
 # Avatar
 
-A user avatar built on Base UI's Avatar. Shows an image, and gracefully falls back to a solid monogram (initials, or any node) while the image loads or if it fails. Five sizes from `xs` to `xl`, `circle` or `square` shape. The fallback is a high-contrast monogram (dark fill + light initials) that inverts automatically in dark mode.
-
-Compose multiple avatars into an overlapping row with `AvatarGroup` — handles the size/shape propagation, hairline ring against the background, and overflow chip (`+N`) automatically.
+A user avatar built on Base UI's Avatar. Shows an image and gracefully falls back to a monogram while the image loads or if it fails. Five sizes from `xs` to `xl`, `circle` or `square`. Compose overlapping rows with `AvatarGroup`.
 
 <Install name="avatar" />
 
@@ -28,11 +26,11 @@ import {
 </Avatar>
 
 // Sizes
-<Avatar size="xs" />  // 24px — tight inline contexts
+<Avatar size="xs" />  // 24px — inline
 <Avatar size="sm" />  // 28px
 <Avatar size="md" />  // 36px (default)
 <Avatar size="lg" />  // 44px
-<Avatar size="xl" />  // 56px — profile heroes
+<Avatar size="xl" />  // 56px — profile hero
 
 // Square
 <Avatar shape="square">
@@ -40,15 +38,15 @@ import {
   <AvatarFallback>A</AvatarFallback>
 </Avatar>
 
-// Overlapping stack with overflow chip
-<AvatarGroup size="sm" max={4}>
-  <Avatar><AvatarImage src="/a.png" /></Avatar>
+// Overlapping group with a +N chip
+<AvatarGroup size="md" max={4}>
   <Avatar><AvatarFallback>JD</AvatarFallback></Avatar>
-  <Avatar><AvatarFallback>SR</AvatarFallback></Avatar>
+  <Avatar><AvatarFallback>AS</AvatarFallback></Avatar>
   <Avatar><AvatarFallback>MK</AvatarFallback></Avatar>
   <Avatar><AvatarFallback>LF</AvatarFallback></Avatar>
   <Avatar><AvatarFallback>BV</AvatarFallback></Avatar>
-  {/* 6 children, max=4 → renders 4 avatars + "+2" chip */}
+  <Avatar><AvatarFallback>RT</AvatarFallback></Avatar>
+  {/* 6 children, max=4 → 4 avatars + "+2" chip */}
 </AvatarGroup>
 ```
 
@@ -62,19 +60,19 @@ import {
       name: "size",
       type: '"xs" | "sm" | "md" | "lg" | "xl"',
       default: '"md"',
-      description: "Avatar diameter — xs (24px) / sm (28px) / md (36px) / lg (44px) / xl (56px).",
+      description: "Avatar diameter: 24 / 28 / 36 / 44 / 56px.",
     },
     {
       name: "shape",
       type: '"circle" | "square"',
       default: '"circle"',
-      description: "Circle (rounded-full) or square (6px radius).",
+      description: "`circle` (rounded-full) or `square` (6px radius).",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes (e.g. ring utilities for stacking).",
+      description: "Additional CSS classes.",
     },
   ]}
 />
@@ -87,39 +85,38 @@ import {
       name: "max",
       type: "number",
       default: "5",
-      description: "Maximum number of avatars to show before collapsing to a +N chip. Set 0 to disable the cap and show every child.",
+      description: "Maximum avatars before collapsing to a `+N` chip. Set 0 to disable the cap.",
     },
     {
       name: "size",
       type: '"xs" | "sm" | "md" | "lg" | "xl"',
       default: '"md"',
-      description: "Size applied to every child Avatar and the overflow chip. Individual children can override.",
+      description: "Size applied to every child and the overflow chip. Individual children can override.",
     },
     {
       name: "shape",
       type: '"circle" | "square"',
       default: '"circle"',
-      description: "Shape applied to every child Avatar and the overflow chip.",
+      description: "Shape applied to every child and the overflow chip.",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the group container.",
+      description: "Additional CSS classes for the group container.",
     },
   ]}
 />
 
 ## Components
 
-- `Avatar` — root container with size/shape variants and a hairline ring
-- `AvatarImage` — the image; covers the container and hides itself if it fails to load
+- `Avatar` — the container with size and shape variants
+- `AvatarImage` — the image; covers the container and hides itself on error
 - `AvatarFallback` — shown while the image loads or on error; typically initials
-- `AvatarGroup` — overlapping row of avatars with auto-applied size/shape + ring + `+N` overflow chip
+- `AvatarGroup` — overlapping row with auto size/shape propagation, hairline ring, and `+N` overflow chip
 
 <Callout title="Notes">
-- **Graceful fallback:** `AvatarFallback` renders until the image successfully loads, so there's no broken-image flash. Use 1-2 character initials, an icon, or any node.
-- **AvatarGroup composition:** Children are expected to be `<Avatar>` elements. AvatarGroup propagates size/shape, adds a `ring-background-100` hairline between avatars so they visually separate despite overlapping, and tightens negative margins based on size.
-- **Overflow chip:** When more children are passed than `max`, the remaining count is rendered as a `+N` chip with a `--patch-surface-2` fill — distinct from the dark Avatar fill so it reads as a counter rather than another person.
-- **xl + heroes:** Use `xl` (56px) for profile headers, agent / persona cards, and big-display moments. For inline mentions, `xs` is right.
+- **Graceful fallback:** `AvatarFallback` renders until the image successfully loads, so there's no broken-image flash.
+- **Group ring:** `AvatarGroup` adds a `ring-background-100` between avatars so they visually separate despite overlapping.
+- **Overflow chip:** the `+N` chip uses `bg-gray-100` + `text-gray-900` so it reads as a counter, not another person.
 </Callout>

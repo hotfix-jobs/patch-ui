@@ -1,13 +1,9 @@
 "use client";
 
-import { Avatar, AvatarFallback } from "@patchui/react";
+import { Avatar, AvatarFallback, AvatarGroup } from "@patchui/react";
 
 function Label({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-3 text-label-12 font-medium text-gray-800">
-      {children}
-    </p>
-  );
+  return <p className="mb-3 text-label-12 text-gray-800">{children}</p>;
 }
 
 export function AvatarDemo() {
@@ -16,42 +12,32 @@ export function AvatarDemo() {
       <div>
         <Label>Sizes</Label>
         <div className="flex items-center gap-3">
-          <Avatar size="sm">
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
-          <Avatar size="md">
-            <AvatarFallback>AS</AvatarFallback>
-          </Avatar>
-          <Avatar size="lg">
-            <AvatarFallback>MK</AvatarFallback>
-          </Avatar>
+          <Avatar size="xs"><AvatarFallback>JD</AvatarFallback></Avatar>
+          <Avatar size="sm"><AvatarFallback>AS</AvatarFallback></Avatar>
+          <Avatar size="md"><AvatarFallback>MK</AvatarFallback></Avatar>
+          <Avatar size="lg"><AvatarFallback>LF</AvatarFallback></Avatar>
+          <Avatar size="xl"><AvatarFallback>BV</AvatarFallback></Avatar>
         </div>
       </div>
 
       <div>
         <Label>Shapes</Label>
         <div className="flex items-center gap-3">
-          <Avatar shape="circle">
-            <AvatarFallback>CI</AvatarFallback>
-          </Avatar>
-          <Avatar shape="square">
-            <AvatarFallback>SQ</AvatarFallback>
-          </Avatar>
+          <Avatar shape="circle"><AvatarFallback>CI</AvatarFallback></Avatar>
+          <Avatar shape="square"><AvatarFallback>SQ</AvatarFallback></Avatar>
         </div>
       </div>
 
       <div>
-        <Label>Stacked group</Label>
-        <div className="flex -space-x-2">
-          {["JD", "AS", "MK"].map((initials) => (
-            <Avatar key={initials} className="ring-2 ring-background-100">
-              <AvatarFallback>{initials}</AvatarFallback>
-            </Avatar>
-          ))}
-          <Avatar className="border-[0.5px] border-gray-alpha-400 bg-gray-100 text-gray-900 ring-2 ring-background-100">
-            <AvatarFallback>+5</AvatarFallback>
-          </Avatar>
-        </div>
+        <Label>Group</Label>
+        <AvatarGroup size="md" max={4}>
+          <Avatar><AvatarFallback>JD</AvatarFallback></Avatar>
+          <Avatar><AvatarFallback>AS</AvatarFallback></Avatar>
+          <Avatar><AvatarFallback>MK</AvatarFallback></Avatar>
+          <Avatar><AvatarFallback>LF</AvatarFallback></Avatar>
+          <Avatar><AvatarFallback>BV</AvatarFallback></Avatar>
+          <Avatar><AvatarFallback>RT</AvatarFallback></Avatar>
+        </AvatarGroup>
       </div>
     </div>
   );
