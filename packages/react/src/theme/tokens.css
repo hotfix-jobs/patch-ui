@@ -286,6 +286,12 @@
   }
 }
 
+/* Loading spinner: 12 tick marks fade in sequence */
+@keyframes patch-spinner-fade {
+  from { opacity: 1; }
+  to { opacity: 0.15; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   :root {

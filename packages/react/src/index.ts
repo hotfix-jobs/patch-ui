@@ -163,7 +163,7 @@ export {
   type ToastOptions,
   type ToastAction,
 } from "./components/toast";
-export { Spinner, spinnerVariants, type SpinnerProps } from "./components/spinner";
+export { Spinner, type SpinnerProps } from "./components/spinner";
 export { Skeleton } from "./components/skeleton";
 export {
   DisplayHeading,
