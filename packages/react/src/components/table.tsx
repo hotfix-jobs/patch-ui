@@ -62,11 +62,9 @@ export function Table({
       data-variant={variant}
       className={cn(
         // border-separate so cells accept border-radius (needed for
-        // interactive hover pill). Tiny vertical border-spacing gives
-        // the hover pill breathing room above/below without changing
-        // perceived row density. Row-dividers live on cells via
+        // interactive hover pill). Row-dividers live on cells via
         // border-b instead of on tr.
-        "w-full caption-bottom border-separate [border-spacing:0_2px] text-copy-14 text-gray-1000",
+        "w-full caption-bottom border-separate border-spacing-0 text-copy-14 text-gray-1000",
         className,
       )}
       {...props}
@@ -148,7 +146,11 @@ export function TableBody({
         // Row hover applies bg to individual cells (border-collapse: separate
         // means tr bg doesn't render as a single pill). Rounded corners on
         // first and last cell of the hovered row give the inset-pill look.
+        // Row dividers are DROPPED in interactive mode — the hover pill IS
+        // the row indicator, and letting the border-b fight with the pill
+        // corners reads as a bug.
         interactive && [
+          "[&_td]:!border-b-0",
           "[&_tr]:cursor-pointer",
           "[&_tr:hover>td]:bg-gray-alpha-100",
           "[&_tr:hover>td:first-child]:rounded-l-[var(--radius-6)]",
