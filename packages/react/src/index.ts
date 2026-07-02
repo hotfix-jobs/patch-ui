@@ -148,6 +148,10 @@ export {
   type ListRowListProps,
 } from "./components/list-row";
 export {
+  MiddleTruncate,
+  type MiddleTruncateProps,
+} from "./components/middle-truncate";
+export {
   Tabs,
   TabsList,
   TabsTrigger,

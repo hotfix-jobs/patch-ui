@@ -42,6 +42,7 @@ export const navigation: NavGroup[] = [
       { title: "ListRow", href: "/docs/components/list-row" },
       { title: "LoadMore", href: "/docs/components/load-more" },
       { title: "Menu", href: "/docs/components/menu" },
+      { title: "MiddleTruncate", href: "/docs/components/middle-truncate" },
       { title: "Modal", href: "/docs/components/modal" },
       { title: "NavigationMenu", href: "/docs/components/navigation-menu" },
       { title: "Pagination", href: "/docs/components/pagination" },

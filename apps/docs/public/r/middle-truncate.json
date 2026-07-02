@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "middle-truncate",
+  "title": "Middle Truncate",
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/middle-truncate.tsx",
+      "content": "\"use client\";\n\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface MiddleTruncateProps\n  extends Omit<React.HTMLAttributes<HTMLSpanElement>, \"children\"> {\n  /** The full string to render. Shown verbatim on hover via `title`. */\n  value: string;\n  /**\n   * Number of characters from the end that stay visible. Increase for\n   * identifiers where the tail is disambiguating (commit hashes / IDs\n   * typically want 6–8; branch names often 8–12).\n   */\n  tail?: number;\n}\n\n/**\n * MiddleTruncate — truncates a string in the middle, preserving the start\n * and the last `tail` characters. Use for identifiers where BOTH the\n * beginning and end matter (file paths, commit hashes, deploy IDs, URLs).\n *\n * When the container is wide enough, the full value renders. When it's\n * not, the head span truncates with a single `…` glyph and the tail\n * stays flush.\n *\n * Not for prose / headings — middle-truncating a sentence destroys\n * meaning.\n */\nexport function MiddleTruncate({\n  value,\n  tail = 6,\n  className,\n  ...props\n}: MiddleTruncateProps): React.ReactElement {\n  // Guard against a tail longer than the value — just render the whole\n  // string with no truncation logic.\n  if (value.length <= tail) {\n    return (\n      <span\n        data-slot=\"middle-truncate\"\n        title={value}\n        className={cn(\"inline-block\", className)}\n        {...props}\n      >\n        {value}\n      </span>\n    );\n  }\n\n  const head = value.slice(0, -tail);\n  const rest = value.slice(-tail);\n\n  return (\n    <span\n      data-slot=\"middle-truncate\"\n      title={value}\n      aria-label={value}\n      className={cn(\"inline-flex min-w-0 max-w-full items-baseline\", className)}\n      {...props}\n    >\n      <span data-slot=\"middle-truncate-head\" className=\"min-w-0 truncate\">\n        {head}\n      </span>\n      <span data-slot=\"middle-truncate-tail\" className=\"shrink-0\">\n        {rest}\n      </span>\n    </span>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/middle-truncate.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

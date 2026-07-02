@@ -1,0 +1,58 @@
+import { MiddleTruncateDemo } from "./middle-truncate-demo";
+
+# MiddleTruncate
+
+Truncates a string in the middle, preserving the start and the last few characters. Use for identifiers where BOTH the beginning and end matter — file paths, commit hashes, deploy IDs, branch names, URLs.
+
+Never use for prose, headings, or descriptions. Middle-truncating a sentence destroys meaning; end-truncation (Tailwind's `truncate`) is the right fit there.
+
+<Install name="middle-truncate" />
+
+<ComponentPreview label="MiddleTruncate Examples">
+  <MiddleTruncateDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { MiddleTruncate } from "@patchui/react";
+
+<MiddleTruncate
+  value="dpl_2XfHqvW9NbGkLm3pTZ7Yz4vJc8Bh1Rd6P9Ab"
+  tail={8}
+  className="font-mono text-copy-14"
+/>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Full string to render. Shown verbatim on hover via title attribute.",
+    },
+    {
+      name: "tail",
+      type: "number",
+      default: "6",
+      description: "Number of characters from the end that stay visible. Identifiers usually want 6–8; branch names / paths 10–16.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional classes on the wrapper span.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Two spans under the hood.** The component renders a head span with Tailwind's `truncate` and a fixed tail span; the head shrinks and shows a single `…` when the container is too narrow. When the container is wide enough, the full value renders.
+- **Aria.** The full value is passed to both `title` (hover tooltip) and `aria-label` so screen readers announce the complete string rather than the truncated visible form.
+- **Copy behavior.** Since head and tail are separate text nodes, copying the visible text yields `head + tail` (without the ellipsis) — accurate to what's on screen but not the full string. For copyable identifiers, pair with a copy button that copies `value` directly.
+- **Container needs a width bound.** Use inside a flex/grid cell or an element with a fixed / percentage width. Without a width constraint the head has nothing to truncate against.
+- **Reach for it when both ends matter.** Regular end-truncation is fine for titles (only the start disambiguates). Middle-truncate for hashes, paths, URLs where the tail carries identity.
+</Callout>

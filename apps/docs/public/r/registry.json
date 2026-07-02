@@ -455,6 +455,22 @@
       ]
     },
     {
+      "name": "middle-truncate",
+      "type": "registry:ui",
+      "title": "Middle Truncate",
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/middle-truncate.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/middle-truncate.tsx"
+        }
+      ]
+    },
+    {
       "name": "modal",
       "type": "registry:ui",
       "title": "Modal",
