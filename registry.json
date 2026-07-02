@@ -47,7 +47,7 @@
         {
           "path": "registry/tokens.css",
           "type": "registry:file",
-          "target": "styles/patch-tokens.css"
+          "target": "styles/patch-ui-tokens.css"
         }
       ]
     },

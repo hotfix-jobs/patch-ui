@@ -142,7 +142,7 @@ items.push({
   name: "tokens",
   type: "registry:file",
   files: [
-    { path: "registry/tokens.css", type: "registry:file", target: "styles/patch-tokens.css" },
+    { path: "registry/tokens.css", type: "registry:file", target: "styles/patch-ui-tokens.css" },
   ],
 });
 
