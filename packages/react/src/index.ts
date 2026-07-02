@@ -167,11 +167,6 @@ export { Spinner, type SpinnerProps } from "./components/spinner";
 export { LoadingDots, type LoadingDotsProps } from "./components/loading-dots";
 export { Skeleton } from "./components/skeleton";
 export {
-  DisplayHeading,
-  displayHeadingVariants,
-  type DisplayHeadingProps,
-} from "./components/display-heading";
-export {
   Tabs,
   TabsList,
   TabsTrigger,
