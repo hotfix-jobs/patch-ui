@@ -2,7 +2,7 @@ import { CardDemo } from "./card-demo";
 
 # Card
 
-A compound container component with multiple visual variants for grouping related content.
+A container for grouping related content and actions. Boolean composition (`border` / `hoverable` / `shadow` / `secondary` / `borderBetween` / `direction`) — mix and match to fit the surface. Compound sub-components (`CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`, `CardMeta`) available for structured layouts.
 
 <Install name="card" />
 
@@ -18,109 +18,143 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardAction,
   CardContent,
   CardFooter,
-  CardMeta,
   Button,
 } from "@patchui/react";
 
-// Basic card with header, content, and footer
-<Card>
+// Basic card — just a subtle bg
+<Card className="p-4">
+  <p>A simple card</p>
+</Card>
+
+// With border
+<Card border className="p-4">
+  <p>Bordered card</p>
+</Card>
+
+// Hoverable (bg + border shift on hover)
+<Card border hoverable className="p-4">
+  <p>Hover me</p>
+</Card>
+
+// Secondary surface (gray-100 fill)
+<Card secondary className="p-4">
+  <p>Nested surface</p>
+</Card>
+
+// With shadow
+<Card border shadow className="p-4">
+  <p>Elevated</p>
+</Card>
+
+// List container with dividers between children
+<Card border borderBetween>
+  <div className="p-4">Option 1</div>
+  <div className="p-4">Option 2</div>
+  <div className="p-4">Option 3</div>
+</Card>
+
+// Row direction with vertical dividers
+<Card border borderBetween direction="row">
+  <div className="p-4 flex-1">Left</div>
+  <div className="p-4 flex-1">Right</div>
+</Card>
+
+// Structured layout with sub-components
+<Card border>
   <CardHeader>
     <CardTitle>Project Settings</CardTitle>
-    <CardDescription>Manage your configuration.</CardDescription>
+    <CardDescription>Manage your project configuration.</CardDescription>
   </CardHeader>
   <CardContent>
-    <p>Your content here.</p>
+    <p>...</p>
   </CardContent>
   <CardFooter>
     <Button size="sm">Save</Button>
   </CardFooter>
 </Card>
 
-// With a header action
-<Card>
-  <CardHeader>
-    <CardTitle>Notifications</CardTitle>
-    <CardDescription>3 unread messages.</CardDescription>
-    <CardAction>
-      <Button variant="secondary" size="sm">Mark all read</Button>
-    </CardAction>
-  </CardHeader>
-</Card>
-
-// Interactive variant (hover + press feedback)
-<Card variant="interactive">
-  <CardContent>Hover me</CardContent>
-</Card>
-
-// Selected — stronger border for selectable card grids
-<Card variant="interactive" selected={isSelected}>
-  ...
-</Card>
-
-// With meta footer (person attribution)
-<Card>
-  <CardHeader>
-    <CardTitle>Senior Engineer</CardTitle>
-    <CardDescription>Platform team · Remote</CardDescription>
-  </CardHeader>
-  <CardContent>
-    <p>Referred by a team member.</p>
-  </CardContent>
-  <CardMeta
-    icon={<span className="inline-flex size-7 items-center justify-center rounded-[var(--radius-6)] bg-gray-200 text-[11px] font-semibold text-gray-900">JD</span>}
-    primary="Jane Doe"
-    secondary="Staff Engineer"
-    action={<Button size="sm">Apply</Button>}
-  />
-</Card>
+// Selected state (multi-pick galleries, plan comparison)
+<Card border selected>...</Card>
 ```
 
 ## Props
 
+### Card
+
 <PropsTable
   props={[
     {
-      name: "variant",
-      type: '"default" | "elevated" | "interactive" | "ghost"',
-      default: '"default"',
-      description: "The visual style. All variants are 12px-rounded surfaces with hairline borders; ghost drops the box in favor of a single hairline bottom rule.",
+      name: "border",
+      type: "boolean",
+      default: "false",
+      description: "Show a visible border.",
+    },
+    {
+      name: "hoverable",
+      type: "boolean",
+      default: "false",
+      description: "Adds a subtle hover state (bg shift and border darken).",
+    },
+    {
+      name: "shadow",
+      type: "boolean",
+      default: "false",
+      description: "Adds a subtle elevation shadow.",
+    },
+    {
+      name: "secondary",
+      type: "boolean",
+      default: "false",
+      description: "Use the tonal secondary surface (`gray-100`) instead of `background-100`. Good for nested cards.",
+    },
+    {
+      name: "borderBetween",
+      type: "boolean",
+      default: "false",
+      description: "Render dividers between direct children (top border in column mode, left border in row mode). Turns the card into a list container.",
+    },
+    {
+      name: "direction",
+      type: '"column" | "row"',
+      default: '"column"',
+      description: "Layout direction of the flex container.",
     },
     {
       name: "selected",
       type: "boolean",
       default: "false",
-      description: "Switches the border to --patch-text for a stronger highlight. Use in selectable card grids (multi-pick galleries, job picker, plan comparison). Composes with any variant.",
+      description: "Switches the border to `gray-1000` for a stronger highlight. Sets `aria-selected` and `data-selected`. Useful for multi-pick galleries or plan comparison grids.",
     },
     {
       name: "render",
       type: "RenderProp<'div'>",
       default: "-",
-      description: "Polymorphic render prop - pass a different element to change the rendered tag.",
+      description: "Polymorphic render prop. Pass a different element to change the rendered tag.",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes to apply.",
-    },
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "The card content - typically composed of CardHeader, CardContent, and CardFooter.",
+      description: "Additional CSS classes.",
     },
   ]}
 />
 
+### CardHeader / CardTitle / CardDescription / CardAction / CardContent / CardFooter
+
+Structured layout helpers. Use when the card has distinct sections (title area, body, footer with actions). Skip them entirely for simple cards — just pass `className="p-4"` and put content inline.
+
+### CardMeta
+
+Attribution row for the bottom of a card: `icon`, `primary`, `secondary`, and optional `action`. Handy for author lines ("Jane Doe · Product Designer") and provenance stamps.
 
 <Callout title="Notes">
-- **Compound component:** Card is built from composable sub-components: `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, and `CardFooter`. Use them in any combination.
-- **CardAction:** Place `CardAction` inside `CardHeader` to render an action button in the top-right corner. The header uses CSS grid to position it automatically.
-- **Polymorphic:** Card and all sub-components accept a `render` prop (via Base UI's `useRender`) to change the rendered element. For example, `render={<a href="/detail" />}` renders the card as a link.
-- **Interactive variant:** Use `variant="interactive"` for clickable cards. Hover changes bg + border tone; an `active:scale-[0.99]` press provides tactile feedback.
-- **Selected state:** `selected={true}` switches the border to `--patch-text` and sets `data-selected` + `aria-selected` for both styling and a11y. Combine with any variant.
-- **CardMeta:** A layout primitive for a footer attribution row — icon, primary + optional secondary text, optional trailing action. Renders a hairline border-top automatically. Works for person attribution, system attribution, or any similar pattern. `primary` and `secondary` accept any `ReactNode`.
+- Card composes with booleans, not variants. Mix `border` + `hoverable` + `shadow` + `secondary` to build the exact surface you need.
+- The default Card (no props) is a rounded surface with `background-100` fill. Add `border` to give it an outline.
+- `hoverable` makes the card interactive (cursor, hover state, focus ring). Wrap in a `<Link>` or handle `onClick` for actual navigation.
+- `borderBetween` turns the card into a list container — dividers between direct children handle themselves. Combine with `direction="row"` for horizontal splits.
+- Sub-components are opt-in. For a simple `<Card className="p-4">Hello</Card>` you don't need `CardHeader` at all.
+- **Migration from v1:** `variant="default"` → no prop. `variant="elevated"` → `secondary`. `variant="interactive"` → `hoverable border`. `variant="ghost"` → drop, use `className` for the specific styling you need.
 </Callout>

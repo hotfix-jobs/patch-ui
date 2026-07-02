@@ -54,7 +54,6 @@ export {
   CardContent,
   CardFooter,
   CardMeta,
-  cardVariants,
   type CardProps,
   type CardMetaProps,
 } from "./components/card";

@@ -2,56 +2,62 @@
 
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
-import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
-export const cardVariants = cva(
-  `relative flex flex-col text-gray-1000 ${colorTransition}`,
-  {
-    defaultVariants: {
-      variant: "default",
-    },
-    variants: {
-      variant: {
-        default:
-          "rounded-[var(--radius-12)] bg-background-100 border border-[var(--gray-alpha-400)]",
-        // Tonal elevation (nested surface tone), not a shadow — surfaces stay flat.
-        elevated:
-          "rounded-[var(--radius-12)] bg-gray-100 border border-[var(--gray-alpha-400)]",
-        interactive: cn(
-          "rounded-[var(--radius-12)] bg-transparent border border-[var(--gray-alpha-400)] hover:bg-background-100 hover:border-[var(--gray-alpha-400)] cursor-pointer transition-[transform,background-color,border-color] duration-[var(--duration-state)] ease-[var(--ease-standard)] active:scale-[0.99]",
-          focusRing,
-        ),
-        ghost:
-          "rounded-[var(--radius-12)] bg-transparent border-b border-[var(--separator-color)]",
-      },
-    },
-  },
-);
-
 export interface CardProps extends useRender.ComponentProps<"div"> {
-  variant?: VariantProps<typeof cardVariants>["variant"];
+  /** Show a visible border. */
+  border?: boolean;
+  /** Add a subtle hover state (bg shift + optional border darken). */
+  hoverable?: boolean;
+  /** Add an elevation shadow. */
+  shadow?: boolean;
+  /** Use the tonal secondary surface (gray-100) instead of background-100. */
+  secondary?: boolean;
+  /** Render dividers between direct children. */
+  borderBetween?: boolean;
+  /** Layout direction. */
+  direction?: "column" | "row";
   /**
-   * When true, switches the border to `--patch-text` for a stronger
-   * highlight. Useful for selectable card grids (multi-pick galleries,
-   * job picker, plan comparison).
+   * When true, switches the border to `gray-1000` for a stronger highlight
+   * (multi-pick galleries, plan comparison). Also sets `aria-selected`.
    */
   selected?: boolean;
 }
 
 export function Card({
   className,
-  variant,
+  border,
+  hoverable,
+  shadow,
+  secondary,
+  borderBetween,
+  direction = "column",
   selected,
   render,
   ...props
 }: CardProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      cardVariants({ className, variant }),
-      selected && "!border-[var(--gray-1000)]",
+      "relative flex rounded-[var(--radius-12)] text-gray-1000",
+      direction === "column" ? "flex-col" : "flex-row",
+      secondary ? "bg-gray-100" : "bg-background-100",
+      border && "border border-gray-alpha-400",
+      shadow && "shadow-card",
+      hoverable && [
+        "cursor-pointer",
+        secondary ? "hover:bg-gray-200" : "hover:bg-gray-100",
+        border && "hover:border-gray-alpha-500",
+        focusRing,
+      ],
+      borderBetween &&
+        (direction === "column"
+          ? "[&>*+*]:border-t [&>*+*]:border-gray-alpha-400"
+          : "[&>*+*]:border-l [&>*+*]:border-gray-alpha-400"),
+      selected && "!border-gray-1000",
+      colorTransition,
+      className,
     ),
     "data-slot": "card",
     "data-selected": selected || undefined,
@@ -91,7 +97,7 @@ export function CardTitle({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("font-medium text-copy-18 leading-tight tracking-tight text-gray-1000", className),
+    className: cn("text-copy-18 font-medium leading-tight tracking-tight text-gray-1000", className),
     "data-slot": "card-title",
   };
 
@@ -108,7 +114,7 @@ export function CardDescription({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("text-gray-900 text-sm", className),
+    className: cn("text-copy-14 text-gray-900", className),
     "data-slot": "card-description",
   };
 
@@ -162,7 +168,7 @@ export function CardFooter({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("flex items-center px-5 py-4 border-t border-[var(--gray-alpha-400)]", className),
+    className: cn("flex items-center px-5 py-4 border-t border-gray-alpha-400", className),
     "data-slot": "card-footer",
   };
 
@@ -191,7 +197,7 @@ export function CardMeta({
 }: CardMetaProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex items-center justify-between gap-3 border-t border-[var(--gray-alpha-400)] px-5 py-4",
+      "flex items-center justify-between gap-3 border-t border-gray-alpha-400 px-5 py-4",
       className,
     ),
     "data-slot": "card-meta",

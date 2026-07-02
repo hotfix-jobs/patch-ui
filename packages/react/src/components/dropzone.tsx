@@ -6,6 +6,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
 import { Progress } from "./progress";
+import { Card } from "./card";
 import { XIcon } from "../internal-icons";
 
 export interface DropzoneProps
