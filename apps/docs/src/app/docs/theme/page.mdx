@@ -6,151 +6,53 @@ import {
 
 # Theme & Design Tokens
 
-Patch UI is Tailwind CSS v4 native. The token system is a single stylesheet (`tokens.css`) that does three jobs at once: defines raw CSS custom properties, bridges them into Tailwind through an `@theme inline` block, and provides text-style utility classes for compound typography. Light and dark switch from a single `.dark` class.
+A single stylesheet (`tokens.css`) defines every color, size, and motion value in Patch UI. Components read from it through Tailwind utilities. Light and dark switch from one `.dark` class on `<html>`. No JavaScript required.
 
-## How the layers fit together
+The token scale structure (100→1000 with a consistent intent per step), the four-family typography scale, the two-tone background approach, and the specific palette hues are adapted from [Vercel Geist](https://vercel.com/geist). The implementation, the compound utility classes, and the `check:contrast` gate are ours. See [Credits](/docs/credits) for the full attribution.
 
-```
-tokens.css
-├── Layer 1: raw CSS custom properties on :root
-│   └── .dark { …overrides }
-├── Layer 2: @theme inline block
-│   └── makes each token available as bg-*, text-*, rounded-*, shadow-*
-└── Layer 3: @layer utilities
-    └── .text-heading-40, .text-copy-14, .text-button-14, etc.
-```
+## Colors
 
-You can write against any layer:
-
-```tsx
-// Layer 1: direct CSS variable
-<div style={{ background: "var(--gray-1000)" }} />
-
-// Layer 2: Tailwind utility
-<div className="bg-gray-1000" />
-
-// Layer 3: compound typography utility (size + line-height + tracking + weight)
-<p className="text-copy-14">Body text.</p>
-```
-
-Components read from layers 2 and 3 exclusively. Layer 1 is for you, if you need it.
-
-## Color scales
-
-Every scale runs `100` (lightest fill) to `1000` (heaviest text) and inverts in dark mode. The intent is consistent across scales:
+Every color scale runs `100` (lightest fill) to `1000` (heaviest text) with the same intent at each step:
 
 | Step | Role |
 |------|------|
-| `100` | subtle fill (hover-adjacent, callout background) |
-| `200` | hover fill |
-| `300` | active fill |
-| `400` | border |
-| `500` | hover border |
-| `600` | active border |
-| `700` | solid (button background, saturated fill) |
-| `800` | solid hover |
-| `900` | secondary text |
-| `1000` | primary text |
+| `100` – `300` | fills (background, hover, active) |
+| `400` – `600` | borders (rest, hover, active) |
+| `700` – `800` | solid (button background, saturated fill + its hover) |
+| `900` – `1000` | text (secondary, primary) |
 
 <ColorScales />
 
-### Gray alpha
-
-Gray alpha tokens are the same scale but expressed as translucent black (light mode) or white (dark mode). Use them when a fill needs to sit on any background color, such as a hover state that must work over both surface tones. Range: `--gray-alpha-100` through `--gray-alpha-1000`.
-
-### Backgrounds
-
-Two-tone canvas scale for surface elevation:
-
-| Token | Light | Dark |
-|-------|-------|------|
-| `--background-100` | `#ffffff` | `#000000` |
-| `--background-200` | `#fafafa` | `#0a0a0a` |
-
-In dark mode both are near-black; the Vercel Geist approach is to use border + shadow (not brightness) for surface differentiation.
-
-### Semantic roles
-
-Fixed hex values that read identically in both themes, because status intent shouldn't shift meaning:
-
-| Token | Value | Purpose |
-|-------|-------|---------|
-| `--error` | `#ea001d` | destructive Button, Toast, Field.error |
-| `--warning` | `#f5a623` | caution Button, Toast |
-| `--success` | `#15963f` | positive Toast, confirmed status |
-
-Each has `-hover` and `-active` companions.
+**Also available:**
+- `--gray-alpha-100` through `--gray-alpha-1000` for hover states that need to sit on any background color.
+- `--background-100` (canvas) and `--background-200` (lightly elevated). In dark mode both are near-black; elevation comes from border and shadow, not brightness.
+- `--error`, `--warning`, `--success` (plus `-hover` and `-active` variants) as fixed hex values that read identically in both themes.
 
 ## Typography
 
-Four families, all size-numbered so the class name doubles as documentation:
-
-- `text-heading-*` — semibold display type (weight 600), for section headers
-- `text-copy-*` — body text (weight 400), for paragraphs and prose
-- `text-label-*` — dense/UI text (weight 400), tighter line-heights, for form labels and metadata
-- `text-button-*` — control text (weight 500), single-line, for interactive labels
-
-Each class applies size, line-height, tracking, and weight in one shot.
+Four families cover every use. Each class applies size, line-height, tracking, and weight in one shot.
 
 <TypographySamples />
 
-## Radius
+## Sizing and motion
 
-Four values only. Controls use `radius-6`, surfaces use `radius-12`, marketing chrome uses `radius-16`, chips use `radius-full`.
+**Radius.** Four values only.
 
 <RadiusSamples />
 
-## Shadows
+Controls use `radius-6`, surfaces use `radius-12`, marketing chrome uses `radius-16`, chips use `radius-full`.
 
-Elevation is otherwise flat with 1px hairline borders. Shadows appear only on overlays.
+**Shadows.** Elevation is flat with 1px hairline borders. Shadows appear only on overlays: `--shadow-card` (marketing cards), `--shadow-menu` (popovers, menus, tooltips), `--shadow-modal` (dialogs, sheets).
 
-| Token | Purpose |
-|-------|---------|
-| `--shadow-card` | marketing cards, promoted surfaces |
-| `--shadow-menu` | popovers, menus, selects, tooltips |
-| `--shadow-modal` | dialogs, sheets |
-| `--shadow-tooltip` | alias for `--shadow-menu` |
+**Motion.** One easing (`--ease-standard`), two durations: `--duration-state` (75ms, for hover/active transitions) and `--duration-overlay` (150ms, for open/close). Under `prefers-reduced-motion: reduce`, both collapse to `0ms` automatically.
 
-Dark-mode shadows are deeper (heavier alpha) so overlays still separate from a near-black canvas.
+**Focus.** A 1px neutral outline via `--focus-ring-color` and `--focus-ring-offset`. Consumed through the shared `focusRing` recipe so every component matches.
 
-## Motion
-
-One easing and two durations cover the whole library:
-
-| Token | Value | Purpose |
-|-------|-------|---------|
-| `--ease-standard` | `cubic-bezier(0.175, 0.885, 0.32, 1.1)` | slight overshoot; feels alive |
-| `--duration-state` | `75ms` | hover / active color transitions |
-| `--duration-overlay` | `150ms` | popover, menu, modal enter/exit |
-
-Under `prefers-reduced-motion: reduce`, both durations collapse to `0ms` and easing becomes `ease` automatically. Components inherit this without special-casing.
-
-## Focus
-
-| Token | Value |
-|-------|-------|
-| `--focus-ring-color` | `var(--gray-alpha-600)` |
-| `--focus-ring-offset` | `1px` |
-
-Consumed through the shared `focusRing` recipe. A 1px neutral outline reads as intentional across both themes. No `ring-2` or `ring-3` anywhere.
-
-## Spacing
-
-The v4 approach: the token file exposes `--space-4`, `--space-8`, `--space-12`, `--space-16`, `--space-24`, `--space-32`, `--space-40`, `--space-64`, `--space-96` as raw variables. Tailwind's default `p-*`, `m-*`, `gap-*`, `h-*` utilities are unchanged and use the standard `0.25rem` multiplier (so `p-4` = `1rem`). Reach for the raw `var(--space-N)` variables only when you need exact pixel alignment inside a token-critical layout (e.g. matching a design that specifies `24px` explicitly).
-
-## Light and dark
-
-Tokens are defined on `:root` (light) and overridden inside `.dark` (dark). Toggle by adding the class to `<html>`:
-
-```html
-<html class="dark">
-```
-
-No JavaScript required. The `theme-toggle` component (`npx shadcn add @patchui/theme-toggle`) handles system-preference detection and persistence if you want a UI switch.
+**Spacing.** Tailwind's default `p-*`, `m-*`, `gap-*`, `h-*` utilities are unchanged (`0.25rem` multiplier). Named `--space-4` through `--space-96` variables are exposed at `:root` if you need exact pixel alignment in a token-critical layout.
 
 ## Customizing
 
-Every token is a plain CSS variable. Override in your own CSS after importing the tokens:
+Every token is a plain CSS variable. Override in your own CSS after importing the tokens and every component picks up the change at runtime, no rebuild required:
 
 ```css
 /* app/globals.css */
@@ -158,7 +60,6 @@ Every token is a plain CSS variable. Override in your own CSS after importing th
 @import "./styles/patch-ui-tokens.css";
 
 :root {
-  /* Rebrand the primary text color across every component */
   --gray-1000: #0a0a0a;
 }
 
@@ -167,6 +68,4 @@ Every token is a plain CSS variable. Override in your own CSS after importing th
 }
 ```
 
-Because components read from these variables at runtime, your overrides take effect everywhere. No rebuild required.
-
-If you edit a color that affects readable text (`gray-800`, `gray-900`, `gray-1000` against the backgrounds), run `npm run check:contrast -w packages/react` to verify you haven't broken the [contrast contract](/docs/contrast).
+If you edit a color that affects readable text, run `npm run check:contrast -w packages/react` to verify the [contrast contract](/docs/contrast) still holds.
