@@ -689,6 +689,27 @@
       ]
     },
     {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "dependencies": [
+        "@base-ui/react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/sidebar.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/sidebar.tsx"
+        }
+      ]
+    },
+    {
       "name": "skeleton",
       "type": "registry:ui",
       "title": "Skeleton",
@@ -1000,6 +1021,7 @@
         "https://ui.hotfix.jobs/r/select.json",
         "https://ui.hotfix.jobs/r/separator.json",
         "https://ui.hotfix.jobs/r/sheet.json",
+        "https://ui.hotfix.jobs/r/sidebar.json",
         "https://ui.hotfix.jobs/r/skeleton.json",
         "https://ui.hotfix.jobs/r/slider.json",
         "https://ui.hotfix.jobs/r/spinner.json",

@@ -55,6 +55,7 @@ export const navigation: NavGroup[] = [
       { title: "Select", href: "/docs/components/select" },
       { title: "Separator", href: "/docs/components/separator" },
       { title: "Sheet", href: "/docs/components/sheet" },
+      { title: "Sidebar", href: "/docs/components/sidebar" },
       { title: "Skeleton", href: "/docs/components/skeleton" },
       { title: "Slider", href: "/docs/components/slider" },
       { title: "Spinner", href: "/docs/components/spinner" },

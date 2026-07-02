@@ -237,6 +237,33 @@ export {
   SectionLabel,
   type SectionLabelProps,
 } from "./components/section-label";
+export {
+  SidebarProvider,
+  Sidebar,
+  SidebarInset,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarTrigger,
+  useSidebar,
+  type SidebarProviderProps,
+  type SidebarProps,
+  type SidebarInsetProps,
+  type SidebarHeaderProps,
+  type SidebarContentProps,
+  type SidebarFooterProps,
+  type SidebarGroupProps,
+  type SidebarGroupLabelProps,
+  type SidebarMenuProps,
+  type SidebarMenuItemProps,
+  type SidebarMenuButtonProps,
+  type SidebarTriggerProps,
+} from "./components/sidebar";
 export { Kbd, type KbdProps } from "./components/kbd";
 export { Toggle, toggleVariants, type ToggleProps } from "./components/toggle";
 // Dropzone lives as a block under packages/react/src/blocks/dropzone.

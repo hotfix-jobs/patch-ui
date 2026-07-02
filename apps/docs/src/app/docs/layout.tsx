@@ -1,4 +1,7 @@
+import { SidebarInset } from "@patchui/react";
 import { Sidebar } from "@/components/sidebar";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 export default function DocsLayout({
   children,
@@ -8,11 +11,13 @@ export default function DocsLayout({
   return (
     <>
       <Sidebar />
-      {/* Sidebar is position: fixed on desktop, so main needs lg:pl-64 to
-          reserve the left column. See sidebar.tsx for why fixed vs sticky. */}
-      <main className="lg:pl-64">
-        <div className="mx-auto max-w-3xl px-6 py-10">{children}</div>
-      </main>
+      <SidebarInset className="flex flex-col">
+        <SiteHeader />
+        <div className="flex-1">
+          <div className="mx-auto max-w-3xl px-6 py-10">{children}</div>
+        </div>
+        <SiteFooter />
+      </SidebarInset>
     </>
   );
 }

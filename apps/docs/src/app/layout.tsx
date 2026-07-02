@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { SidebarStateProvider } from "@/components/sidebar-state";
+import { SiteChrome } from "@/components/site-chrome";
 import "./globals.css";
 
 const themeScript = `
@@ -91,11 +89,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <SidebarStateProvider>
-          <SiteHeader />
-          <div className="flex-1">{children}</div>
-          <SiteFooter />
-        </SidebarStateProvider>
+        <SiteChrome>{children}</SiteChrome>
         <Analytics />
       </body>
     </html>

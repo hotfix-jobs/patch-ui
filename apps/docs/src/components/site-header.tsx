@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
-import { Button } from "@patchui/react";
+import { Button, SidebarTrigger } from "@patchui/react";
 import {
   AppHeader,
   AppHeaderBrand,
@@ -11,7 +11,6 @@ import {
 } from "@patchui/react/blocks/app-header";
 import { ThemeToggle } from "./theme-toggle";
 import { DocsSearch } from "./docs-search";
-import { useSidebarState } from "./sidebar-state";
 
 // Inline GitHub mark: lucide-react dropped brand icons in v0.400+.
 function GithubIcon({ className }: { className?: string }) {
@@ -38,20 +37,13 @@ function GithubIcon({ className }: { className?: string }) {
 export function SiteHeader() {
   const pathname = usePathname();
   const isDocs = pathname.startsWith("/docs");
-  const { setOpen } = useSidebarState();
 
   return (
     <AppHeader sticky>
       {isDocs && (
-        <Button
-          variant="tertiary"
-          size="sm"
-          shape="circle"
-          icon={<Menu className="size-4" />}
-          aria-label="Open documentation menu"
-          onClick={() => setOpen(true)}
-          className="lg:hidden"
-        />
+        <SidebarTrigger className="lg:hidden">
+          <Menu className="size-4" aria-hidden />
+        </SidebarTrigger>
       )}
       <AppHeaderBrand render={<Link href="/" />}>Patch UI</AppHeaderBrand>
       <AppHeaderRight>
