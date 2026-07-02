@@ -36,7 +36,7 @@ export interface CardProps extends useRender.ComponentProps<"div"> {
  */
 export function Card({
   className,
-  border,
+  border = true,
   hoverable,
   shadow,
   secondary,

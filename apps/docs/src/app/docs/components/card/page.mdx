@@ -17,36 +17,36 @@ Card is intentionally content-agnostic. For structured header/content/footer pat
 ```tsx
 import { Card } from "@patchui/react";
 
-// Bare card — subtle bg, rounded corners
-<Card className="p-4">A simple card</Card>
+// Default — bordered
+<Card className="p-4">A simple bordered card</Card>
 
-// With border
-<Card border className="p-4">Bordered card</Card>
+// Bare (opt out of the border)
+<Card border={false} className="p-4">Just a subtle bg</Card>
 
 // Hoverable (bg + border shift on hover, focus ring)
-<Card border hoverable className="p-4">Hover me</Card>
+<Card hoverable className="p-4">Hover me</Card>
 
 // Elevated (shadow-card)
-<Card border shadow className="p-4">Elevated</Card>
+<Card shadow className="p-4">Elevated</Card>
 
 // Secondary surface (gray-100 fill) — for nested cards
 <Card secondary className="p-4">Nested surface</Card>
 
 // List container with dividers between direct children
-<Card border borderBetween>
+<Card borderBetween>
   <div className="p-4">Option 1</div>
   <div className="p-4">Option 2</div>
   <div className="p-4">Option 3</div>
 </Card>
 
 // Row direction with vertical dividers
-<Card border borderBetween direction="row">
+<Card borderBetween direction="row">
   <div className="p-4 flex-1">Left</div>
   <div className="p-4 flex-1">Right</div>
 </Card>
 
 // Selected state (multi-pick galleries, plan comparison)
-<Card border selected className="p-4">
+<Card selected className="p-4">
   Selected plan
 </Card>
 ```
@@ -58,8 +58,8 @@ import { Card } from "@patchui/react";
     {
       name: "border",
       type: "boolean",
-      default: "false",
-      description: "Show a visible border.",
+      default: "true",
+      description: "Show a visible border. On by default — pass `border={false}` for a bare surface.",
     },
     {
       name: "hoverable",

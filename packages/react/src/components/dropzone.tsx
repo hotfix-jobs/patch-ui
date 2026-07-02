@@ -235,7 +235,6 @@ export function Dropzone({
                 data-state={isUploading ? "uploading" : undefined}
               >
                 <Card
-                  border
                   direction="row"
                   className="items-center gap-3 px-3 py-2 !rounded-[var(--radius-6)]"
                 >
