@@ -411,12 +411,12 @@ export function MenuItem({
     "data-disabled": disabled ? "" : undefined,
     "aria-disabled": disabled || undefined,
     className: cn(
-      "cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 outline-none data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      "flex cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 no-underline outline-none data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
       density === "compact"
         ? "min-h-7 px-2 py-1.5 text-label-13"
         : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
       isError &&
-        "text-red-800 data-[active]:bg-red-100 data-[active]:text-red-800",
+        "text-red-800 data-[active]:bg-red-300 data-[active]:text-red-800",
       inset && "ps-8",
       className,
     ),
@@ -675,7 +675,7 @@ export function MenuGroupLabel({
     <div
       data-slot="menu-label"
       className={cn(
-        "px-2 py-1.5 font-medium uppercase text-label-12 tracking-tight text-gray-800",
+        "px-3 py-1.5 text-label-14 text-gray-800",
         inset && "ps-8",
         className,
       )}
