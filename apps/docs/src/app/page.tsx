@@ -31,9 +31,17 @@ export default function Home() {
         </p>
 
         {/* Install command */}
-        <div className="mt-10 inline-flex items-center gap-2 rounded-[var(--radius-6)] border-[0.5px] border-gray-alpha-400 bg-background-100 px-4 py-2 font-mono text-label-13">
-          <span className="text-gray-800">$</span>
-          <span>npx shadcn add @patchui/button</span>
+        <div className="mt-10 flex flex-col items-center gap-2">
+          <div className="inline-flex items-center gap-2 rounded-[var(--radius-6)] border-[0.5px] border-gray-alpha-400 bg-background-100 px-4 py-2 font-mono text-label-13">
+            <span className="text-gray-800">$</span>
+            <span>npx shadcn add @patchui/all</span>
+          </div>
+          <p className="text-label-12 text-gray-800">
+            or add just one:{" "}
+            <code className="font-mono text-gray-1000">
+              npx shadcn add @patchui/button
+            </code>
+          </p>
         </div>
 
         <div className="mt-8 flex gap-3">
