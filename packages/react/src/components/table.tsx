@@ -62,9 +62,13 @@ export function Table({
       data-variant={variant}
       className={cn(
         // border-separate so cells accept border-radius (needed for
-        // interactive hover pill). Row-dividers live on cells via
-        // border-b instead of on tr.
+        // interactive / striped rounded-row look). When a body has
+        // interactive or striped enabled, add 2px vertical border-spacing
+        // via :has() so the pill has natural gap from adjacent rows.
+        // Plain tables keep border-spacing-0 so border-b dividers on
+        // cells render as one continuous hairline.
         "w-full caption-bottom border-separate border-spacing-0 text-copy-14 text-gray-1000",
+        "has-[tbody[data-interactive]]:[border-spacing:0_2px] has-[tbody[data-striped]]:[border-spacing:0_2px]",
         className,
       )}
       {...props}
