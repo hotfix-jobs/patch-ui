@@ -95,7 +95,7 @@ export function Badge({
             aria-label={removeLabel}
             onClick={onRemove}
             className={cn(
-              "inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-50 group-hover:opacity-80 hover:!opacity-100",
+              "inline-flex size-3 shrink-0 items-center justify-center rounded-full opacity-60 group-hover:opacity-90 hover:!opacity-100",
               focusRing,
               colorTransition,
             )}
@@ -106,10 +106,10 @@ export function Badge({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.5"
+              strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="size-2.5"
+              className="size-full"
             >
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
