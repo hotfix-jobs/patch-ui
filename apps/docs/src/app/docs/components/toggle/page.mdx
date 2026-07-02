@@ -28,8 +28,8 @@ const [starred, setStarred] = useState(false);
 // With text
 <Toggle>Public</Toggle>
 
-// Outline variant
-<Toggle variant="outline" icon={<Bold />} aria-label="Bold" />
+// Secondary variant (bordered resting state)
+<Toggle variant="secondary" icon={<Bold />} aria-label="Bold" />
 
 // Sizes
 <Toggle size="sm" />
@@ -61,9 +61,9 @@ const [starred, setStarred] = useState(false);
     },
     {
       name: "variant",
-      type: '"ghost" | "outline"',
-      default: '"ghost"',
-      description: "ghost = transparent at rest, accent fill on hover; outline = hairline border.",
+      type: '"tertiary" | "secondary"',
+      default: '"tertiary"',
+      description: "tertiary = transparent at rest, accent fill on hover; secondary = hairline border. Vocabulary matches Button.",
     },
     {
       name: "size",

@@ -16,7 +16,7 @@ export const toggleVariants = cva(
     colorTransition,
   ].join(" "),
   {
-    defaultVariants: { size: "md", variant: "ghost" },
+    defaultVariants: { size: "md", variant: "tertiary" },
     variants: {
       size: {
         sm: "h-7 min-w-7 px-2 text-label-12 [&_svg:not([class*='size-'])]:size-3.5",
@@ -24,9 +24,13 @@ export const toggleVariants = cva(
         lg: "h-11 min-w-11 px-4 text-copy-14 [&_svg:not([class*='size-'])]:size-5",
       },
       variant: {
-        ghost:
+        // Vocabulary aligned with Button: `tertiary` = transparent resting,
+        // `secondary` = bordered resting. Same chrome distinction, same
+        // words as Button so consumers don't have to memorize per-component
+        // variant names.
+        tertiary:
           "bg-transparent text-gray-900 hover:bg-gray-alpha-100 hover:text-gray-1000 data-[state=on]:bg-gray-1000 data-[state=on]:text-background-100",
-        outline:
+        secondary:
           "bg-transparent text-gray-900 border border-gray-alpha-400 hover:bg-gray-alpha-100 hover:text-gray-1000 data-[state=on]:bg-gray-1000 data-[state=on]:text-background-100 data-[state=on]:border-gray-1000",
       },
     },

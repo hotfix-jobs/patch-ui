@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Toggle } from "@patchui/react";
+import { SectionLabel, Toggle } from "@patchui/react";
 import { Bold, Italic, Pin, Star, Underline } from "lucide-react";
 
 export function ToggleDemo() {
@@ -26,14 +26,14 @@ export function ToggleDemo() {
         </Toggle>
       </Stack>
 
-      <Stack label="Outline variant">
-        <Toggle variant="outline" defaultPressed aria-label="Bold">
+      <Stack label="Secondary variant (bordered)">
+        <Toggle variant="secondary" defaultPressed aria-label="Bold">
           <Bold />
         </Toggle>
-        <Toggle variant="outline" aria-label="Italic">
+        <Toggle variant="secondary" aria-label="Italic">
           <Italic />
         </Toggle>
-        <Toggle variant="outline" aria-label="Underline">
+        <Toggle variant="secondary" aria-label="Underline">
           <Underline />
         </Toggle>
       </Stack>
@@ -41,7 +41,7 @@ export function ToggleDemo() {
       <Stack label="With text">
         <Toggle defaultPressed>Public</Toggle>
         <Toggle>Private</Toggle>
-        <Toggle variant="outline">Beta</Toggle>
+        <Toggle variant="secondary">Beta</Toggle>
       </Stack>
 
       <Stack label="Sizes">
@@ -61,8 +61,8 @@ export function ToggleDemo() {
 
 function Stack({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div>
-      <p className="mb-3 text-xs font-medium text-gray-800">{label}</p>
+    <div className="space-y-3">
+      <SectionLabel>{label}</SectionLabel>
       <div className="flex flex-wrap items-center gap-2">{children}</div>
     </div>
   );
