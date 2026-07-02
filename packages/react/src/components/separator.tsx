@@ -6,23 +6,12 @@ import { cn } from "../utils";
 export interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Horizontal (default) or vertical. */
   orientation?: "horizontal" | "vertical";
-  /**
-   * Optional label rendered inline. Adds the "OR" / "AND" separator pattern
-   * with the hairline split around it. Horizontal only.
-   */
+  /** Optional inline label (horizontal only) for "OR"/"AND" split patterns. */
   label?: React.ReactNode;
-  /**
-   * When true, the separator is purely decorative — the role is removed
-   * so screen readers don't announce it. Default false.
-   */
+  /** Decorative separators are hidden from screen readers. */
   decorative?: boolean;
 }
 
-/**
- * Separator — a hairline divider. Horizontal or vertical, with optional
- * inline label for "OR" / "AND" patterns. Uses `--patch-border` for the
- * hairline and `--separator-color` semantically when appropriate.
- */
 export function Separator({
   orientation = "horizontal",
   label,
@@ -31,8 +20,7 @@ export function Separator({
   ...props
 }: SeparatorProps): React.ReactElement {
   const role = decorative ? "none" : "separator";
-  const ariaOrientation =
-    orientation === "vertical" ? "vertical" : "horizontal";
+  const ariaOrientation = orientation === "vertical" ? "vertical" : "horizontal";
 
   if (label && orientation === "horizontal") {
     return (
@@ -42,7 +30,7 @@ export function Separator({
         data-slot="separator"
         data-orientation={orientation}
         className={cn(
-          "flex w-full items-center gap-3 text-label-12 font-medium uppercase tracking-tight text-gray-800",
+          "flex w-full items-center gap-3 text-label-12 uppercase text-gray-800",
           className,
         )}
         {...props}
@@ -61,7 +49,7 @@ export function Separator({
       data-slot="separator"
       data-orientation={orientation}
       className={cn(
-        "bg-gray-alpha-400 shrink-0",
+        "shrink-0 bg-gray-alpha-400",
         orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
         className,
       )}
