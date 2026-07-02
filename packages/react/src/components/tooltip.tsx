@@ -54,7 +54,7 @@ export function Tooltip({
           >
             <TooltipPrimitive.Popup
               className={cn(
-                "rounded-[var(--radius-6)] bg-patch-text px-2.5 py-1.5 text-label-12 text-patch-bg shadow-menu transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+                "rounded-[var(--radius-6)] bg-gray-1000 px-2.5 py-1.5 text-label-12 text-background-100 shadow-menu transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
                 className,
               )}
               data-slot="tooltip-content"
