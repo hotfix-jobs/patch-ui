@@ -90,7 +90,7 @@ export function Avatar({
   const inlineSize = numericSize ? { width: size, height: size } : undefined;
 
   const fillClass = placeholder
-    ? "bg-gray-100 text-gray-800"
+    ? "bg-background-200 text-gray-800"
     : "bg-gray-1000 text-background-100";
 
   const baseClass = numericSize
@@ -102,7 +102,7 @@ export function Avatar({
       )
     : cn(
         avatarVariants({ size, shape }),
-        placeholder && "!bg-gray-100 !text-gray-800",
+        placeholder && "!bg-background-200 !text-gray-800",
       );
 
   // Main avatar body: children > letter > placeholder icon.
@@ -294,7 +294,7 @@ export function AvatarGroup({
               baseChipClass(size, shape),
               ring,
               "ring-background-100",
-              "!bg-gray-100 !text-gray-900",
+              "!bg-background-200 !text-gray-1000",
             )}
             style={{
               marginInlineStart: marginStart,
@@ -344,7 +344,7 @@ export function AvatarGroup({
             baseChipClass(size, shape),
             ring,
             "ring-background-100",
-            "!bg-gray-100 !text-gray-900",
+            "!bg-background-200 !text-gray-1000",
           )}
           style={{
             marginInlineStart: marginStart,
