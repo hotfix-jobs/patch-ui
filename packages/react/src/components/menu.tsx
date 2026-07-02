@@ -24,6 +24,7 @@ import {
   useMergeRefs,
   useRole,
   useTypeahead,
+  type Placement,
 } from "@floating-ui/react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
@@ -73,6 +74,13 @@ export interface MenuProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   defaultOpen?: boolean;
+  /**
+   * Placement of the popup relative to the trigger. Auto-adapts based
+   * on window bounds — if there isn't room in the requested direction
+   * the popup flips to the opposite side. Default `bottom-start`
+   * (`right-start` for sub-menus).
+   */
+  position?: Placement;
   /** Internal — set on sub-menus to enable hover-open. */
   modal?: boolean;
   children: React.ReactNode;
@@ -82,6 +90,7 @@ function MenuInner({
   open: controlledOpen,
   onOpenChange,
   defaultOpen = false,
+  position,
   children,
 }: MenuProps): React.ReactElement {
   const parent = useContext(MenuContext);
@@ -109,7 +118,7 @@ function MenuInner({
     nodeId,
     open,
     onOpenChange: setOpen,
-    placement: isNested ? "right-start" : "bottom-start",
+    placement: position ?? (isNested ? "right-start" : "bottom-start"),
     // Disable floating-ui's transform-based positioning so motion's
     // animate transform (scale, etc.) doesn't fight the position transform.
     transform: false,
@@ -256,9 +265,6 @@ export function MenuTrigger({
 export interface MenuPopupProps {
   className?: string;
   density?: Density;
-  side?: "top" | "right" | "bottom" | "left";
-  sideOffset?: number;
-  align?: "start" | "center" | "end";
   children: React.ReactNode;
 }
 
