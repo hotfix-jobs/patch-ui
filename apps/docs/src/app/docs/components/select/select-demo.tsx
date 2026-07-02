@@ -9,7 +9,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function SelectDemo() {
-  const [framework, setFramework] = useState("");
+  const [framework, setFramework] = useState("react");
   const [region, setRegion] = useState("us-east");
 
   return (
@@ -19,8 +19,8 @@ export function SelectDemo() {
         <SectionLabel>Basic</SectionLabel>
         <div className="max-w-sm">
           <Select
-            aria-label="Framework"
-            placeholder="Select a framework…"
+            id="framework"
+            label="Framework"
             value={framework}
             onChange={(e) => setFramework(e.target.value)}
           >
@@ -33,9 +33,9 @@ export function SelectDemo() {
         </div>
       </div>
 
-      {/* With label */}
+      {/* With region */}
       <div>
-        <SectionLabel>With label</SectionLabel>
+        <SectionLabel>Region</SectionLabel>
         <div className="max-w-sm">
           <Select
             id="region"
@@ -55,15 +55,15 @@ export function SelectDemo() {
       <div>
         <SectionLabel>Sizes</SectionLabel>
         <div className="flex flex-col gap-3 max-w-sm">
-          <Select size="sm" aria-label="Small" placeholder="Small">
+          <Select id="size-sm" label="Small" size="sm" defaultValue="a">
             <option value="a">One</option>
             <option value="b">Two</option>
           </Select>
-          <Select size="md" aria-label="Medium" placeholder="Medium">
+          <Select id="size-md" label="Medium" size="md" defaultValue="a">
             <option value="a">One</option>
             <option value="b">Two</option>
           </Select>
-          <Select size="lg" aria-label="Large" placeholder="Large">
+          <Select id="size-lg" label="Large" size="lg" defaultValue="a">
             <option value="a">One</option>
             <option value="b">Two</option>
           </Select>
@@ -74,7 +74,7 @@ export function SelectDemo() {
       <div>
         <SectionLabel>With prefix icon</SectionLabel>
         <div className="max-w-sm">
-          <Select aria-label="Locale" prefix={<Globe />} defaultValue="en">
+          <Select id="locale" label="Locale" prefix={<Globe />} defaultValue="en">
             <option value="en">English</option>
             <option value="es">Español</option>
             <option value="fr">Français</option>
@@ -87,7 +87,7 @@ export function SelectDemo() {
       <div>
         <SectionLabel>Grouped options</SectionLabel>
         <div className="max-w-sm">
-          <Select aria-label="Team member" placeholder="Assign to…">
+          <Select id="assignee" label="Assignee" defaultValue="ana">
             <optgroup label="Design">
               <option value="ana">Ana</option>
               <option value="ben">Ben</option>
@@ -105,8 +105,9 @@ export function SelectDemo() {
       <div>
         <SectionLabel>Disabled</SectionLabel>
         <div className="max-w-sm">
-          <Select disabled aria-label="Disabled" placeholder="Cannot select">
-            <option value="a">One</option>
+          <Select id="disabled" label="Plan" disabled defaultValue="hobby">
+            <option value="hobby">Hobby</option>
+            <option value="pro">Pro</option>
           </Select>
         </div>
       </div>
