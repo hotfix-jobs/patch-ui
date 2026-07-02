@@ -66,7 +66,7 @@ import { Spinner } from "@patchui/react";
 <Callout title="Notes">
 - One loading indicator across the system. Same silhouette everywhere so the loading language is consistent.
 - Use `<Button loading>` — don't drop a Spinner inside a button label yourself. The Button wires the sizing and busy state for you.
-- Reach for `LoadingDots` when the wait sits inline in copy (`Saving`). Reach for `Skeleton` when async data will fill a known layout. Reach for `Progress` when total work is measurable.
+- Use `variant="dots"` when the wait sits inline in copy ("Saving…"). Reach for `Skeleton` when async data will fill a known layout. Reach for `Progress` when total work is measurable.
 - Colors inherit from `currentColor`. Wrap in a colored container to tint.
 - Pure CSS animation, no JavaScript timer. Honors `prefers-reduced-motion` via the shared tokens.
 - Set `label` to name the work in flight (`Verifying`, `Uploading 3 of 12`) so screen readers announce more than "Loading".

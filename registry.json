@@ -246,6 +246,7 @@
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/internal-icons.json",
+        "https://ui.hotfix.jobs/r/kbd.json",
         "https://ui.hotfix.jobs/r/modal.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -413,25 +414,6 @@
           "path": "registry/components/ui/load-more.tsx",
           "type": "registry:ui",
           "target": "components/ui/load-more.tsx"
-        }
-      ]
-    },
-    {
-      "name": "loading-dots",
-      "type": "registry:ui",
-      "title": "Loading Dots",
-      "dependencies": [
-        "class-variance-authority"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/loading-dots.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/loading-dots.tsx"
         }
       ]
     },
@@ -784,6 +766,7 @@
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/tooltip.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
       "files": [
@@ -858,7 +841,9 @@
         "motion"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/spinner.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],

@@ -39,7 +39,6 @@ export const navigation: NavGroup[] = [
       { title: "Input", href: "/docs/components/input" },
       { title: "Kbd", href: "/docs/components/kbd" },
       { title: "Label", href: "/docs/components/label" },
-      { title: "LoadingDots", href: "/docs/components/loading-dots" },
       { title: "LoadMore", href: "/docs/components/load-more" },
       { title: "Menu", href: "/docs/components/menu" },
       { title: "Modal", href: "/docs/components/modal" },
