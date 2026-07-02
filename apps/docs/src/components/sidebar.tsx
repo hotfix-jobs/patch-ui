@@ -34,7 +34,7 @@ export function Sidebar({
       <div
         className={cn(
           "fixed top-14 bottom-0 left-0 z-50 w-64 overflow-y-auto",
-          "border-r-[0.5px] border-gray-alpha-400 bg-background-100",
+          "border-r border-gray-alpha-400 bg-background-100",
           "transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "lg:translate-x-0 lg:z-0",
           open ? "translate-x-0" : "-translate-x-full",
@@ -49,11 +49,10 @@ export function Sidebar({
               key={group.title}
               className={cn(
                 "flex flex-col gap-0.5",
-                gi > 0 &&
-                  "mt-6 pt-6 border-t-[0.5px] border-gray-alpha-400",
+                gi > 0 && "mt-6 pt-6 border-t border-gray-alpha-400",
               )}
             >
-              <div className="px-2 pb-1 text-label-12 font-semibold uppercase tracking-tight text-gray-800">
+              <div className="px-2 pb-1 text-label-12 font-medium text-gray-800">
                 {group.title}
               </div>
               {group.items.map((item) => {
@@ -71,8 +70,8 @@ export function Sidebar({
                       "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
                       "outline-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-[var(--focus-ring-color)] focus-visible:outline-offset-[var(--focus-ring-offset)]",
                       isActive
-                        ? "bg-[var(--menu-item-hover)] font-medium text-gray-1000"
-                        : "text-gray-900 hover:bg-[var(--menu-item-hover)] hover:text-gray-1000",
+                        ? "bg-gray-alpha-100 font-medium text-gray-1000"
+                        : "text-gray-800 hover:bg-gray-alpha-100 hover:text-gray-1000",
                     )}
                   >
                     {item.title}
