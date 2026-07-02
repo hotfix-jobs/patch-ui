@@ -66,7 +66,7 @@ export function Pagination({
         variant="tertiary"
         size="sm"
         className="h-8 w-8"
-        icon={<ChevronLeft className="h-3.5 w-3.5" />}
+        icon={<ChevronLeft className="size-3.5" />}
         onClick={() => go(page - 1)}
         disabled={atFirst || loading}
         aria-label="Previous page"
@@ -89,7 +89,7 @@ export function Pagination({
         variant="tertiary"
         size="sm"
         className="h-8 w-8"
-        icon={<ChevronRight className="h-3.5 w-3.5" />}
+        icon={<ChevronRight className="size-3.5" />}
         onClick={() => go(page + 1)}
         disabled={atLast || loading}
         aria-label="Next page"
