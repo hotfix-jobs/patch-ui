@@ -36,9 +36,9 @@ export const buttonVariants = cva(
         tertiary:
           "bg-transparent text-gray-1000 hover:bg-gray-alpha-100 active:bg-gray-alpha-200",
         warning:
-          "bg-amber-600 text-white hover:bg-amber-700 active:bg-amber-800",
+          "bg-amber-700 text-white hover:bg-amber-600 active:bg-amber-800 dark:bg-amber-500 dark:hover:bg-amber-600 dark:active:bg-amber-400",
         error:
-          "bg-red-600 text-white hover:bg-red-700 active:bg-red-800",
+          "bg-red-700 text-white hover:bg-red-600 active:bg-red-800 dark:bg-red-500 dark:hover:bg-red-600 dark:active:bg-red-400",
       },
       shape: {
         square: "rounded-[var(--radius-6)]",
