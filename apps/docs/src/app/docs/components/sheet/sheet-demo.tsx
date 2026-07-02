@@ -15,10 +15,7 @@ import {
   Label,
   Input,
 } from "@patchui/react";
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-xs font-medium text-gray-800">{children}</p>;
-}
+import { SectionLabel } from "@/components/demo/section-label";
 
 export function SheetDemo() {
   const [name, setName] = useState("Ada Lovelace");

@@ -9,11 +9,8 @@ import {
   ListRowContent,
   ListRowList,
 } from "@patchui/react";
+import { SectionLabel } from "@/components/demo/section-label";
 import { GitBranch, MessageSquare, Send } from "lucide-react";
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 font-medium text-gray-800">{children}</p>;
-}
 
 const MEMBERS = [
   { letter: "A", name: "Ada Lovelace", email: "ada@example.com", role: "Owner" },

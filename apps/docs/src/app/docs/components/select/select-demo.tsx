@@ -2,11 +2,8 @@
 
 import { useState } from "react";
 import { Select } from "@patchui/react";
+import { SectionLabel } from "@/components/demo/section-label";
 import { Globe } from "lucide-react";
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-xs font-medium text-gray-800">{children}</p>;
-}
 
 export function SelectDemo() {
   const [framework, setFramework] = useState("react");

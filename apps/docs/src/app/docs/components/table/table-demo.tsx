@@ -8,6 +8,7 @@ import {
   TableHead,
   TableCell,
 } from "@patchui/react";
+import { SectionLabel } from "@/components/demo/section-label";
 
 const DEPLOYMENTS = [
   { name: "acme-web", branch: "main", status: "Ready", lastUsed: "2m ago" },
@@ -16,10 +17,6 @@ const DEPLOYMENTS = [
   { name: "acme-marketing", branch: "main", status: "Failed", lastUsed: "3h ago" },
   { name: "acme-cli", branch: "main", status: "Ready", lastUsed: "1d ago" },
 ];
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 font-medium text-gray-800">{children}</p>;
-}
 
 function StatusBadge({ status }: { status: string }) {
   const color =

@@ -28,6 +28,14 @@ export interface ScrollerProps
   withButtons?: boolean;
   /** How far each button click scrolls, in pixels. Default 240. */
   scrollStep?: number;
+  /**
+   * Fade the edge of the scroll region when there's more content in that
+   * direction (via `mask-image`). Default `true`. Only meaningful for
+   * `overflow="x"` and `overflow="y"`.
+   */
+  fade?: boolean;
+  /** Fade width in pixels. Default 32. */
+  fadeWidth?: number;
   /** Class on the inner content wrapper — apply gap here for rail spacing. */
   childrenContainerClassName?: string;
   /** aria-label on the scroll region (best when there's no visible heading). */
@@ -53,6 +61,8 @@ export function Scroller({
   width,
   withButtons = false,
   scrollStep = 240,
+  fade = true,
+  fadeWidth = 32,
   childrenContainerClassName,
   ariaLabel,
   className,
@@ -114,6 +124,48 @@ export function Scroller({
     ...style,
   };
 
+  // Fade mask: gradient that fades to transparent at whichever edge has
+  // more content past it. Only applies to overflow="x" / "y" (a 2-axis
+  // canvas would need a corner mask which is out of scope). Consumers
+  // can opt out via `fade={false}`.
+  const maskStyle: React.CSSProperties = {};
+  if (fade && overflow !== "both") {
+    const stops: string[] = [];
+    if (overflow === "x") {
+      if (canScrollBack && canScrollForward) {
+        stops.push(
+          `linear-gradient(to right, transparent 0, black ${fadeWidth}px, black calc(100% - ${fadeWidth}px), transparent 100%)`,
+        );
+      } else if (canScrollBack) {
+        stops.push(
+          `linear-gradient(to right, transparent 0, black ${fadeWidth}px)`,
+        );
+      } else if (canScrollForward) {
+        stops.push(
+          `linear-gradient(to right, black calc(100% - ${fadeWidth}px), transparent 100%)`,
+        );
+      }
+    } else if (overflow === "y") {
+      if (canScrollBack && canScrollForward) {
+        stops.push(
+          `linear-gradient(to bottom, transparent 0, black ${fadeWidth}px, black calc(100% - ${fadeWidth}px), transparent 100%)`,
+        );
+      } else if (canScrollBack) {
+        stops.push(
+          `linear-gradient(to bottom, transparent 0, black ${fadeWidth}px)`,
+        );
+      } else if (canScrollForward) {
+        stops.push(
+          `linear-gradient(to bottom, black calc(100% - ${fadeWidth}px), transparent 100%)`,
+        );
+      }
+    }
+    if (stops.length > 0) {
+      maskStyle.maskImage = stops[0];
+      (maskStyle as unknown as { WebkitMaskImage: string }).WebkitMaskImage = stops[0];
+    }
+  }
+
   const scrollAxisClass =
     overflow === "x"
       ? "overflow-x-auto overflow-y-hidden"
@@ -140,7 +192,7 @@ export function Scroller({
         focusRing,
         className,
       )}
-      style={dimStyle}
+      style={{ ...dimStyle, ...maskStyle }}
       {...props}
     >
       <div

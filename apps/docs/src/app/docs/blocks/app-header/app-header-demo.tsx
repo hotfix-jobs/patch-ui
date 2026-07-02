@@ -10,6 +10,7 @@ import {
   SheetTitle,
   SheetBody,
 } from "@patchui/react";
+import { SectionLabel } from "@/components/demo/section-label";
 import {
   AppHeader,
   AppHeaderBrand,
@@ -46,12 +47,6 @@ function LogoMark() {
     <span className="flex size-6 items-center justify-center rounded-[var(--radius-6)] bg-gray-1000 text-background-100 text-label-13 font-semibold">
       P
     </span>
-  );
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-3 text-label-12 font-medium text-gray-800">{children}</p>
   );
 }
 

@@ -1,10 +1,7 @@
 "use client";
 
 import { Scroller } from "@patchui/react";
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 font-medium text-gray-800">{children}</p>;
-}
+import { SectionLabel } from "@/components/demo/section-label";
 
 const CARDS = [
   { title: "Frontend Engineer", meta: "Remote · Full-time" },

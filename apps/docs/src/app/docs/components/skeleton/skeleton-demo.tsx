@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Button, Skeleton } from "@patchui/react";
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3 text-label-12 font-medium text-gray-800">{children}</p>;
-}
+import { SectionLabel } from "@/components/demo/section-label";
 
 export function SkeletonDemo() {
   const [loading, setLoading] = useState(true);
