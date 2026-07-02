@@ -37,6 +37,12 @@ import {
 <Avatar size={32} />
 <Avatar size={64} />
 
+// Letter shorthand + placeholder fill
+<Avatar letter="SL" placeholder size={32} />
+
+// Placeholder person icon (no image, no letter)
+<Avatar placeholder size={90} />
+
 // Square
 <Avatar shape="square" size={40}>
   <AvatarImage src="/logo.png" alt="Acme" />
@@ -81,6 +87,18 @@ import {
       type: '"circle" | "square"',
       default: '"circle"',
       description: "`circle` (rounded-full) or `square` (6px radius).",
+    },
+    {
+      name: "letter",
+      type: "string",
+      default: "-",
+      description: "Shorthand for a monogram fallback. Equivalent to `<AvatarFallback>letter</AvatarFallback>`.",
+    },
+    {
+      name: "placeholder",
+      type: "boolean",
+      default: "false",
+      description: "Uses a subtle neutral fill instead of the default dark. If no image or letter is provided, renders a generic person icon.",
     },
     {
       name: "className",

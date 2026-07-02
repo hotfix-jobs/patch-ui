@@ -90,18 +90,20 @@ export function AvatarDemo() {
       </div>
 
       <div>
-        <Label>Fallback letters (broken image URL)</Label>
+        <Label>Letter</Label>
         <div className="flex items-center gap-3">
-          <Avatar size={32}>
-            <AvatarImage src="https://not-a-real-image.jpg" alt="Broken" />
-            <AvatarFallback>SL</AvatarFallback>
-          </Avatar>
-          <Avatar size={32}>
-            <AvatarFallback>EK</AvatarFallback>
-          </Avatar>
-          <Avatar size={32}>
-            <AvatarFallback>CK</AvatarFallback>
-          </Avatar>
+          <Avatar letter="SL" placeholder size={32} />
+          <Avatar letter="EK" placeholder size={32} />
+          <Avatar letter="CK" placeholder size={32} />
+        </div>
+      </div>
+
+      <div>
+        <Label>Placeholder</Label>
+        <div className="flex items-center gap-3">
+          <Avatar placeholder size={32} />
+          <Avatar placeholder size={48} />
+          <Avatar placeholder size={90} />
         </div>
       </div>
     </div>

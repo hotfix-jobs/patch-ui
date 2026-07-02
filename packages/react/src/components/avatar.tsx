@@ -58,31 +58,83 @@ export interface AvatarProps
   extends Omit<React.ComponentProps<typeof AvatarPrimitive.Root>, "size"> {
   size?: AvatarSize;
   shape?: AvatarShape;
+  /** Shorthand for monogram fallback. Equivalent to `<AvatarFallback>letter</AvatarFallback>`. */
+  letter?: string;
+  /**
+   * When true and no image or letter is provided, renders a generic person icon
+   * on a subtle neutral fill. When combined with `letter`, uses the placeholder
+   * fill instead of the default dark fill.
+   */
+  placeholder?: boolean;
 }
 
 export function Avatar({
   className,
   size = "md",
   shape,
+  letter,
+  placeholder,
   style,
+  children,
   ...props
 }: AvatarProps): React.ReactElement {
   // Numeric size: apply width/height inline; enum size: use the size variant class.
   const numericSize = typeof size === "number";
   const inlineSize = numericSize ? { width: size, height: size } : undefined;
-  const enumClass = numericSize
-    ? cn("relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-gray-1000 font-medium text-background-100",
+
+  // Placeholder mode swaps the fill from gray-1000 (default) to a subtle gray-100 surface.
+  const fillClass = placeholder
+    ? "bg-gray-100 text-gray-800"
+    : "bg-gray-1000 text-background-100";
+
+  const baseClass = numericSize
+    ? cn(
+        "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden font-medium",
+        fillClass,
         shape === "square" ? "rounded-[var(--radius-6)]" : "rounded-full",
-        textClassForPx(size))
-    : avatarVariants({ size, shape });
+        textClassForPx(size),
+      )
+    : cn(
+        avatarVariants({ size, shape }),
+        // Override the default gray-1000 fill when placeholder is on.
+        placeholder && "!bg-gray-100 !text-gray-800",
+      );
+
+  // Shorthand: `letter` becomes an AvatarFallback. If no children AND no letter AND
+  // placeholder is true, render a generic person icon.
+  const resolvedChildren = children ?? (
+    letter ? (
+      <AvatarFallback>{letter}</AvatarFallback>
+    ) : placeholder ? (
+      <PlaceholderIcon />
+    ) : null
+  );
 
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
-      className={cn(enumClass, className)}
+      className={cn(baseClass, className)}
       style={{ ...inlineSize, ...style }}
       {...props}
-    />
+    >
+      {resolvedChildren}
+    </AvatarPrimitive.Root>
+  );
+}
+
+function PlaceholderIcon(): React.ReactElement {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      className="size-[60%]"
+    >
+      <path
+        d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 1 1 14 0v.5H5V20Z"
+        fill="currentColor"
+      />
+    </svg>
   );
 }
 
