@@ -69,7 +69,7 @@ export function ComboboxDemo() {
                   No matches.
                 </div>
               ) : (
-                <div>
+                <div className="py-1">
                   {matches.map((f) => (
                     <ComboboxItem
                       key={f}
@@ -105,6 +105,7 @@ export function ComboboxDemo() {
               onClear={() => setQuery2("")}
             />
             <ComboboxPopup>
+              {/* Banner spans edge-to-edge — no padding needed on the popup body */}
               <div className="flex items-center gap-1.5 border-b border-gray-alpha-400 px-3 py-2 text-label-12 text-gray-800">
                 <Info className="h-3.5 w-3.5 shrink-0" aria-hidden />
                 <span>Recents shown first</span>
@@ -126,7 +127,7 @@ export function ComboboxDemo() {
                 </div>
               )}
 
-              <div className="p-1">
+              <div className="py-1">
                 {matches2.length === 0 ? (
                   <div className="px-3 py-4 text-center text-label-12 text-gray-800">
                     No matches.
