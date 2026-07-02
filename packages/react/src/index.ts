@@ -138,7 +138,7 @@ export {
   type ToastAction,
 } from "./components/toast";
 export { Spinner, type SpinnerProps } from "./components/spinner";
-export { Skeleton } from "./components/skeleton";
+export { Skeleton, type SkeletonProps } from "./components/skeleton";
 export {
   Tabs,
   TabsList,
