@@ -10,24 +10,38 @@ import {
   CommandSection,
   CommandSeparator,
   Button,
+  Kbd,
 } from "@patchui/react";
+import {
+  Bell,
+  FilePlus,
+  FolderOpen,
+  LayoutDashboard,
+  Save,
+  Settings,
+  SunMoon,
+  UserPlus,
+} from "lucide-react";
 
 type CommandEntry = {
   id: string;
   label: string;
   group: "Navigate" | "Actions" | "Settings";
   description?: string;
+  icon: React.ReactNode;
+  shortcut?: React.ReactNode;
 };
 
 const COMMANDS: CommandEntry[] = [
-  { id: "go-dashboard", label: "Go to dashboard", group: "Navigate" },
-  { id: "go-projects", label: "Go to projects", group: "Navigate" },
-  { id: "go-settings", label: "Go to settings", group: "Navigate" },
-  { id: "new-file", label: "New file", group: "Actions", description: "Create an empty file in this workspace" },
-  { id: "open-file", label: "Open file", group: "Actions", description: "Browse and open a file from disk" },
-  { id: "save", label: "Save", group: "Actions", description: "Save the active file" },
-  { id: "toggle-theme", label: "Toggle theme", group: "Settings", description: "Switch between light and dark" },
-  { id: "invite-teammate", label: "Invite a teammate", group: "Settings" },
+  { id: "go-dashboard", label: "Go to dashboard", group: "Navigate", icon: <LayoutDashboard /> },
+  { id: "go-projects", label: "Go to projects", group: "Navigate", icon: <FolderOpen /> },
+  { id: "go-notifications", label: "Go to notifications", group: "Navigate", icon: <Bell /> },
+  { id: "new-file", label: "New file", group: "Actions", icon: <FilePlus />, shortcut: <Kbd meta>N</Kbd>, description: "Create an empty file in this workspace" },
+  { id: "open-file", label: "Open file", group: "Actions", icon: <FolderOpen />, shortcut: <Kbd meta>O</Kbd>, description: "Browse and open a file from disk" },
+  { id: "save", label: "Save", group: "Actions", icon: <Save />, shortcut: <Kbd meta>S</Kbd>, description: "Save the active file" },
+  { id: "toggle-theme", label: "Toggle theme", group: "Settings", icon: <SunMoon />, description: "Switch between light and dark" },
+  { id: "invite-teammate", label: "Invite a teammate", group: "Settings", icon: <UserPlus /> },
+  { id: "open-settings", label: "Open settings", group: "Settings", icon: <Settings /> },
 ];
 
 export function CommandDemo() {
@@ -67,9 +81,7 @@ export function CommandDemo() {
     <div className="flex flex-col items-center gap-3">
       <Button variant="secondary" onClick={() => setOpen(true)}>
         Open command menu
-        <kbd className="ml-1 rounded border border-gray-alpha-400 bg-background-100 px-1.5 font-mono text-label-12 text-gray-700">
-          ⌘K
-        </kbd>
+        <Kbd meta>K</Kbd>
       </Button>
       {ran && (
         <p className="text-label-12 text-gray-800">
@@ -86,15 +98,19 @@ export function CommandDemo() {
         value={query}
         onValueChange={setQuery}
       >
-        <CommandInput placeholder="Type a command or search..." />
+        <CommandInput placeholder="Type a command or search…" />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
+          {results.length === 0 && (
+            <CommandEmpty>No results found.</CommandEmpty>
+          )}
           {grouped.Navigate.length > 0 && (
             <CommandSection label="Navigate">
               {grouped.Navigate.map((entry) => (
                 <CommandItem
                   key={entry.id}
                   value={entry.label}
+                  prefix={entry.icon}
+                  suffix={entry.shortcut}
                   selected={ran === entry.label}
                   onClick={() => runCommand(entry)}
                 >
@@ -111,6 +127,8 @@ export function CommandDemo() {
                   <CommandItem
                     key={entry.id}
                     value={entry.label}
+                    prefix={entry.icon}
+                    suffix={entry.shortcut}
                     description={entry.description}
                     selected={ran === entry.label}
                     onClick={() => runCommand(entry)}
@@ -131,6 +149,7 @@ export function CommandDemo() {
                   <CommandItem
                     key={entry.id}
                     value={entry.label}
+                    prefix={entry.icon}
                     description={entry.description}
                     selected={ran === entry.label}
                     onClick={() => runCommand(entry)}

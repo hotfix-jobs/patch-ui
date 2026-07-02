@@ -5,11 +5,15 @@ import { createContext, useContext } from "react";
 import type * as React from "react";
 import { CheckIcon } from "../internal-icons";
 import { cn } from "../utils";
+import { Kbd } from "./kbd";
 import { Modal } from "./modal";
 
 type Density = "compact" | "comfortable";
 
 const CommandDensityContext = createContext<Density>("comfortable");
+
+/** Provides the close handler so CommandInput can render a clickable Esc chip. */
+const CommandCloseContext = createContext<(() => void) | null>(null);
 
 /**
  * Command - a command palette / searchable list built on Base UI Autocomplete
@@ -54,12 +58,14 @@ function SearchIcon() {
 
 export function CommandInput({
   className,
+  showEscape = true,
   ...props
-}: React.ComponentProps<typeof AutocompletePrimitive.Input>): React.ReactElement {
-  // Visually mirrors Input's `underline` variant + `lg` size: bottom border
-  // hairline, no other chrome, search icon left. Hand-built so the inner
-  // element can be Base UI's AutocompletePrimitive.Input (Command needs
-  // it for type-ahead + keyboard navigation).
+}: React.ComponentProps<typeof AutocompletePrimitive.Input> & {
+  /** Show the Esc chip on the right when a close handler is available. Default true. */
+  showEscape?: boolean;
+}): React.ReactElement {
+  const close = useContext(CommandCloseContext);
+  const showKbd = showEscape && close != null;
   return (
     <span
       className={cn(
@@ -73,11 +79,19 @@ export function CommandInput({
       <AutocompletePrimitive.Input
         data-slot="command-input"
         className={cn(
-          "h-12 w-full flex-1 border-none bg-transparent pe-3 text-copy-14 text-gray-1000 placeholder:text-gray-700 outline-none ring-0 focus:outline-none focus:ring-0",
+          "h-12 w-full flex-1 border-none bg-transparent text-copy-14 text-gray-1000 placeholder:text-gray-700 outline-none ring-0 focus:outline-none focus:ring-0",
+          showKbd ? "pe-2" : "pe-3",
           className,
         )}
         {...props}
       />
+      {showKbd && (
+        <span className="flex shrink-0 items-center pe-3">
+          <Kbd onClick={close} aria-label="Close">
+            Esc
+          </Kbd>
+        </span>
+      )}
     </span>
   );
 }
@@ -107,24 +121,27 @@ export function CommandList({
   );
 }
 
+/**
+ * Base UI's Autocomplete.Empty only auto-hides when the list is driven via
+ * the `items` prop. When rendering results from JSX (grouped sections, custom
+ * filtering), Base UI can't count them — consumers should conditionally
+ * render CommandEmpty themselves based on their result count.
+ */
 export function CommandEmpty({
   className,
   children,
   ...props
 }: React.ComponentProps<typeof AutocompletePrimitive.Empty>): React.ReactElement {
-  // Base UI keeps the Empty root mounted always (it's an aria-live region), so
-  // padding must live on an inner wrapper that only renders when the list is
-  // actually empty - otherwise it leaves a persistent empty box under the list.
   return (
-    <AutocompletePrimitive.Empty data-slot="command-empty" {...props}>
-      <div
-        className={cn(
-          "px-3 py-6 text-center text-label-13 text-gray-800",
-          className,
-        )}
-      >
-        {children}
-      </div>
+    <AutocompletePrimitive.Empty
+      data-slot="command-empty"
+      className={cn(
+        "block px-3 py-6 text-center text-label-13 text-gray-800",
+        className,
+      )}
+      {...props}
+    >
+      {children}
     </AutocompletePrimitive.Empty>
   );
 }
@@ -133,13 +150,19 @@ export function CommandItem({
   className,
   selected,
   description,
+  prefix,
+  suffix,
   children,
   ...props
 }: React.ComponentProps<typeof AutocompletePrimitive.Item> & {
-  /** When true, renders a trailing check to indicate "currently chosen". */
+  /** Trailing check indicating "currently chosen". */
   selected?: boolean;
   /** Secondary line below the title for two-line items. */
   description?: React.ReactNode;
+  /** Leading node (icon). */
+  prefix?: React.ReactNode;
+  /** Trailing node (kbd shortcut, badge, count). */
+  suffix?: React.ReactNode;
 }): React.ReactElement {
   const density = useContext(CommandDensityContext);
 
@@ -148,6 +171,13 @@ export function CommandItem({
       className="ms-auto size-3.5 shrink-0 text-gray-800"
       strokeWidth={2.25}
     />
+  );
+
+  const trailing = (
+    <>
+      {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
+      {trailingCheck}
+    </>
   );
 
   return (
@@ -165,8 +195,9 @@ export function CommandItem({
       {description != null ? (
         <span className="flex w-full flex-col">
           <span className="flex items-center gap-2">
+            {prefix}
             {children}
-            {trailingCheck}
+            {trailing}
           </span>
           <span className="mt-0.5 truncate text-label-12 font-normal text-gray-800">
             {description}
@@ -174,8 +205,9 @@ export function CommandItem({
         </span>
       ) : (
         <span className="flex items-center gap-2">
+          {prefix}
           {children}
-          {trailingCheck}
+          {trailing}
         </span>
       )}
     </AutocompletePrimitive.Item>
@@ -221,7 +253,7 @@ export function CommandGroupLabel({
     <AutocompletePrimitive.GroupLabel
       data-slot="command-group-label"
       className={cn(
-        "px-3 py-1.5 text-label-14 text-gray-800",
+        "px-3 pb-1 pt-2 text-label-12 font-medium text-gray-800",
         className,
       )}
       {...props}
@@ -260,14 +292,17 @@ export function CommandDialog({
   children,
   ...commandProps
 }: CommandDialogProps): React.ReactElement {
+  const close = () => onOpenChange?.(false);
   return (
     <Modal
       active={open ?? false}
-      onClickOutside={() => onOpenChange?.(false)}
+      onClickOutside={close}
       size="xl"
       className="gap-0 overflow-hidden p-0"
     >
-      <Command {...commandProps}>{children}</Command>
+      <CommandCloseContext.Provider value={close}>
+        <Command {...commandProps}>{children}</Command>
+      </CommandCloseContext.Provider>
     </Modal>
   );
 }
