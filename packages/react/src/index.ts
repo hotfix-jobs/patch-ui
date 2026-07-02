@@ -221,7 +221,10 @@ export { Progress, type ProgressProps } from "./components/progress";
 export { Separator, type SeparatorProps } from "./components/separator";
 export { Kbd, type KbdProps } from "./components/kbd";
 export { Toggle, toggleVariants, type ToggleProps } from "./components/toggle";
-export { Dropzone, type DropzoneProps } from "./components/dropzone";
+// Dropzone lives as a block under packages/react/src/blocks/dropzone.
+// It composes Progress + Card + preview cards + delete X — apps
+// customize the preview and validation, so it ships as copy-in via
+// `npx shadcn add @patchui/dropzone`.
 export {
   Calendar,
   type CalendarProps,

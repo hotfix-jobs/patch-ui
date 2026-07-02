@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Dropzone } from "@patchui/react";
+import { Dropzone } from "@patchui/react/blocks/dropzone";
 
 export function DropzoneDemo() {
   const [files, setFiles] = useState<File[]>([]);

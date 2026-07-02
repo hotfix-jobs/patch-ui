@@ -263,29 +263,6 @@
       ]
     },
     {
-      "name": "dropzone",
-      "type": "registry:ui",
-      "title": "Dropzone",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/card.json",
-        "https://ui.hotfix.jobs/r/internal-icons.json",
-        "https://ui.hotfix.jobs/r/progress.json",
-        "https://ui.hotfix.jobs/r/recipes.json",
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/dropzone.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/dropzone.tsx"
-        }
-      ]
-    },
-    {
       "name": "empty-state",
       "type": "registry:ui",
       "title": "Empty State",
@@ -915,13 +892,37 @@
         "@base-ui/react"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/tokens.json"
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
       ],
       "files": [
         {
           "path": "registry/blocks/app-header/index.tsx",
           "type": "registry:component",
           "target": "components/blocks/app-header/index.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dropzone",
+      "type": "registry:block",
+      "title": "Dropzone",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/card.json",
+        "https://ui.hotfix.jobs/r/internal-icons.json",
+        "https://ui.hotfix.jobs/r/progress.json",
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/blocks/dropzone/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/dropzone/index.tsx"
         }
       ]
     }

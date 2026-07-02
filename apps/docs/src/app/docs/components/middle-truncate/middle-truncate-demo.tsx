@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MiddleTruncate } from "@patchui/react";
+import { MiddleTruncate, Slider } from "@patchui/react";
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return <p className="mb-3 text-label-12 font-medium text-gray-800">{children}</p>;
@@ -16,15 +16,18 @@ export function MiddleTruncateDemo() {
       <div>
         <SectionLabel>Interactive width</SectionLabel>
         <div className="flex flex-col gap-3">
-          <input
-            type="range"
-            min={120}
-            max={640}
-            value={width}
-            onChange={(e) => setWidth(Number(e.target.value))}
-            className="w-full max-w-sm accent-gray-1000"
-            aria-label="Container width"
-          />
+          <div className="max-w-sm">
+            <Slider
+              value={width}
+              onValueChange={(v) =>
+                setWidth(Array.isArray(v) ? v[0] : (v as number))
+              }
+              min={120}
+              max={640}
+              step={1}
+              aria-label="Container width"
+            />
+          </div>
           <span className="text-label-13 text-gray-800 tabular-nums">
             {width}px
           </span>

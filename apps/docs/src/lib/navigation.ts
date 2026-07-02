@@ -31,7 +31,6 @@ export const navigation: NavGroup[] = [
       { title: "Combobox", href: "/docs/components/combobox" },
       { title: "Command", href: "/docs/components/command" },
       { title: "DatePicker", href: "/docs/components/date-picker" },
-      { title: "Dropzone", href: "/docs/components/dropzone" },
       { title: "EmptyState", href: "/docs/components/empty-state" },
       { title: "Field", href: "/docs/components/field" },
       { title: "Form", href: "/docs/components/form" },
@@ -70,6 +69,7 @@ export const navigation: NavGroup[] = [
     title: "Blocks",
     items: [
       { title: "AppHeader", href: "/docs/blocks/app-header" },
+      { title: "Dropzone", href: "/docs/blocks/dropzone" },
     ],
   },
 ];

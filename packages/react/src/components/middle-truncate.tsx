@@ -56,10 +56,16 @@ export function MiddleTruncate({
       data-slot="middle-truncate"
       title={value}
       aria-label={value}
-      className={cn("inline-flex min-w-0 max-w-full items-baseline", className)}
+      // Block-level flex + w-full so the container fills whatever width
+      // the parent grants (flex cell, table cell, list item). Without
+      // w-full, inline-flex sizes to content and truncation never fires.
+      className={cn("flex w-full min-w-0 items-baseline", className)}
       {...props}
     >
-      <span data-slot="middle-truncate-head" className="min-w-0 truncate">
+      <span
+        data-slot="middle-truncate-head"
+        className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
+      >
         {head}
       </span>
       <span data-slot="middle-truncate-tail" className="shrink-0">
