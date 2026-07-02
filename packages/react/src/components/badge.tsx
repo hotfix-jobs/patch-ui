@@ -5,33 +5,27 @@ import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { focusRing, colorTransition } from "../recipes";
 
 export const badgeVariants = cva(
-  "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap font-medium text-label-12 tracking-tight [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3",
+  [
+    "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap",
+    "text-label-12 font-medium",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3",
+  ].join(" "),
   {
-    defaultVariants: {
-      size: "sm",
-      variant: "default",
-      shape: "rounded",
-    },
+    defaultVariants: { size: "sm", variant: "default", shape: "rounded" },
     variants: {
       size: {
-        xs: "h-auto min-w-0 gap-0.5 px-2 py-[2px] [&_svg:not([class*='size-'])]:size-2.5",
-        sm: "h-auto min-w-0 px-2 py-[3px]",
-        lg: "h-auto min-w-0 px-2.5 py-[4px] text-label-12",
+        sm: "px-2 py-[3px]",
+        lg: "px-2.5 py-1",
       },
       variant: {
-        default: "bg-[var(--badge-default-bg)] text-[var(--badge-default-text)] border-0",
-        primary: "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] border-0",
-        ghost: "bg-transparent text-[var(--gray-1000)] border border-[var(--gray-alpha-400)]",
-        secondary: "bg-[var(--badge-secondary-bg)] text-[var(--badge-secondary-text)] border-0",
-        success: "bg-[var(--badge-success-bg)] text-[var(--badge-success-text)] border-0",
-        warning: "bg-[var(--badge-warning-bg)] text-[var(--badge-warning-text)] border-0",
-        danger: "bg-[var(--badge-danger-bg)] text-[var(--badge-danger-text)] border-0",
-        successOutline: "bg-transparent text-[var(--badge-success-text)] border border-[var(--badge-success-text)]",
-        warningOutline: "bg-transparent text-[var(--badge-warning-text)] border border-[var(--badge-warning-text)]",
-        dangerOutline: "bg-transparent text-[var(--badge-danger-text)] border border-[var(--badge-danger-text)]",
+        default: "bg-gray-alpha-100 text-gray-900",
+        secondary: "bg-gray-alpha-200 text-gray-900",
+        success: "bg-green-100 text-green-900",
+        warning: "bg-amber-100 text-amber-900",
+        error: "bg-red-100 text-red-900",
       },
       shape: {
         rounded: "rounded-[var(--radius-6)]",
@@ -45,13 +39,9 @@ export interface BadgeProps extends useRender.ComponentProps<"span"> {
   variant?: VariantProps<typeof badgeVariants>["variant"];
   size?: VariantProps<typeof badgeVariants>["size"];
   shape?: VariantProps<typeof badgeVariants>["shape"];
-  /**
-   * When provided, the badge becomes dismissible: a trailing × button is
-   * rendered that calls this handler. Use for removable filter tags, applied
-   * facets, token inputs, etc.
-   */
+  /** When provided, renders a trailing × button that calls this handler. */
   onRemove?: () => void;
-  /** Accessible label for the remove button. Default "Remove". */
+  /** Accessible label for the × remove button. */
   removeLabel?: string;
 }
 
@@ -68,11 +58,9 @@ export function Badge({
 }: BadgeProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      badgeVariants({ className, size, variant, shape }),
-      // tighten trailing padding so the × sits closer to the edge;
-      // `group` lets the × respond to badge-level hover, signaling
-      // "this whole chip is dismissible."
+      badgeVariants({ size, variant, shape }),
       onRemove && "group pe-1",
+      className,
     ),
     "data-slot": "badge",
     children: (
@@ -84,8 +72,9 @@ export function Badge({
             aria-label={removeLabel}
             onClick={onRemove}
             className={cn(
-              "-me-0.5 inline-flex size-3.5 shrink-0 items-center justify-center rounded-[var(--radius-6)] opacity-50 transition-[opacity,transform] duration-[var(--duration-state)] ease-[var(--ease-standard)] group-hover:opacity-80 hover:!opacity-100 active:scale-90",
+              "-me-0.5 inline-flex size-3.5 shrink-0 items-center justify-center rounded-[var(--radius-6)] opacity-50 group-hover:opacity-80 hover:!opacity-100",
               focusRing,
+              colorTransition,
             )}
           >
             <svg

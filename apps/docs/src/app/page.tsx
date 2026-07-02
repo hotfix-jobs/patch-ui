@@ -105,8 +105,8 @@ export default function Home() {
               <div className="flex flex-wrap items-center gap-2">
                 <Badge variant="default">Default</Badge>
                 <Badge variant="success">Success</Badge>
-                <Badge variant="warningOutline">Warning</Badge>
-                <Badge variant="dangerOutline">Danger</Badge>
+                <Badge variant="warning">Warning</Badge>
+                <Badge variant="error">Error</Badge>
               </div>
             </ShowcaseCell>
 
