@@ -138,8 +138,10 @@ const [files, setFiles] = useState<File[]>([]);
 />
 
 <Callout title="Notes">
-- **Native file input:** The drop area is a `<button>` (keyboard accessible — Enter / Space open the file picker). The underlying `<input type="file">` is `sr-only` and triggered via click.
-- **Drag-over feedback:** `data-drag-over` is set on the drop area while files hover. Default styling: border darkens to `--patch-text` and bg shifts to `--patch-accent`.
-- **Upload progress per file:** Wire `Progress` into your `renderFile` to show per-file upload status while your pipeline runs.
-- **No built-in upload:** Dropzone collects files; you call `fetch` / mutate / your storage SDK from `onValueChange`. Keeps the primitive framework-agnostic.
+- The drop area is a `<button>` — Enter / Space open the native file picker. The underlying `<input type="file">` is `sr-only`.
+- While files are being dragged over, `data-drag-over` is set on the button. Default styling darkens the border to `gray-1000` and fills the bg with `gray-100` so the surface reads as "yes, drop here."
+- Dropzone is UI-only. It collects files into `value` (controlled) or internal state (uncontrolled). Upload logic lives in your `onValueChange` handler — call `fetch`, your storage SDK, whatever your pipeline is.
+- Set `progress` (`number | null`) to shift the whole component into an uploading state: the file rows swap their size text for a `<Progress>` bar, and interaction is disabled until you clear it.
+- Pass a `renderFile` if you need a fully custom row (preview thumbnail, per-file cancel, retry button). Default row shows a file icon, name, size, and an × to remove.
+- Not in Vercel Geist — this is a Patch extension because file upload is a common product need.
 </Callout>

@@ -1,11 +1,12 @@
 "use client";
 
-import { File, Upload, X } from "lucide-react";
+import { File, Upload } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
 import { Progress } from "./progress";
+import { XIcon } from "../internal-icons";
 
 export interface DropzoneProps
   extends Omit<
@@ -180,8 +181,8 @@ export function Dropzone({
         className={cn(
           "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-6)] border border-dashed border-gray-alpha-400 px-6 py-10",
           "text-center transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          "hover:border-[var(--gray-alpha-500)] hover:bg-gray-200",
-          "data-[drag-over]:border-patch-text data-[drag-over]:bg-gray-100",
+          "hover:border-gray-alpha-500 hover:bg-gray-100",
+          "data-[drag-over]:border-gray-1000 data-[drag-over]:bg-gray-100",
           disabled && "pointer-events-none opacity-50",
           isUploading && "pointer-events-none",
           focusRing,
@@ -189,7 +190,7 @@ export function Dropzone({
       >
         <div
           aria-hidden
-          className="flex size-10 items-center justify-center rounded-[var(--radius-6)] border border-[var(--gray-alpha-400)] bg-background-100 text-gray-900"
+          className="flex size-10 items-center justify-center rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 text-gray-900"
         >
           <Upload className="size-5" />
         </div>
@@ -231,7 +232,7 @@ export function Dropzone({
                 key={`${f.name}-${i}`}
                 data-slot="dropzone-file"
                 data-state={isUploading ? "uploading" : undefined}
-                className="flex items-center gap-3 rounded-[var(--radius-6)] border border-[var(--gray-alpha-400)] bg-background-100 px-3 py-2"
+                className="flex items-center gap-3 rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 px-3 py-2"
               >
                 <File className="size-4 shrink-0 text-gray-800" />
                 <div className="flex min-w-0 flex-1 flex-col gap-1">
@@ -255,9 +256,9 @@ export function Dropzone({
                     type="button"
                     onClick={() => removeAt(i)}
                     aria-label={`Remove ${f.name}`}
-                    className="inline-flex size-6 shrink-0 items-center justify-center rounded-[var(--radius-6)] text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-200 hover:text-gray-1000 active:scale-90"
+                    className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 hover:text-gray-1000"
                   >
-                    <X className="size-3.5" />
+                    <XIcon className="size-3.5" />
                   </button>
                 )}
               </li>
