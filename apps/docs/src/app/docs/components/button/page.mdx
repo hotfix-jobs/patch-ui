@@ -2,7 +2,7 @@ import { ButtonDemo } from "./button-demo";
 
 # Button
 
-A polymorphic button component with multiple variants, sizes, icon support, and loading state.
+A polymorphic button component with four variants, three sizes, icon support, and a loading state.
 
 <Install name="button" />
 
@@ -16,7 +16,7 @@ A polymorphic button component with multiple variants, sizes, icon support, and 
 import { Button } from "@patchui/react";
 
 // Basic
-<Button variant="primary">Click me</Button>
+<Button variant="primary">Deploy Project</Button>
 
 // With icon
 <Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
@@ -24,17 +24,17 @@ import { Button } from "@patchui/react";
 // Icon only
 <Button variant="secondary" icon={<Download className="h-4 w-4" />} />
 
-// Trailing arrow (apply pattern)
+// Trailing arrow
 <Button
   variant="primary"
   icon={<ArrowRight className="h-4 w-4" />}
   iconPosition="right"
 >
-  Apply now
+  Apply Now
 </Button>
 
 // Loading state
-<Button loading>Saving...</Button>
+<Button loading>Saving…</Button>
 
 // As a link (polymorphic render prop)
 <Button render={<a href="/dashboard" />}>Go to Dashboard</Button>
@@ -46,15 +46,15 @@ import { Button } from "@patchui/react";
   props={[
     {
       name: "variant",
-      type: '"primary" | "secondary" | "outline" | "ghost" | "danger" | "link" | "uppercase"',
+      type: '"primary" | "secondary" | "tertiary" | "error"',
       default: '"primary"',
-      description: "The visual style of the button.",
+      description: "The visual style of the button. Reserve `primary` for the single most important action on a view; use `error` only for destructive actions.",
     },
     {
       name: "size",
       type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "The size of the button.",
+      description: "The size of the button. Heights are 32 / 40 / 48px.",
     },
     {
       name: "icon",
@@ -84,7 +84,7 @@ import { Button } from "@patchui/react";
       name: "render",
       type: "RenderProp<'button'>",
       default: "-",
-      description: "Polymorphic render prop - pass a different element (e.g. <a>) to change the rendered tag while keeping button styles.",
+      description: "Polymorphic render prop. Pass a different element (e.g. `<a>`) to change the rendered tag while keeping button styles.",
     },
     {
       name: "className",
@@ -102,10 +102,12 @@ import { Button } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- **Polymorphic rendering:** Use the `render` prop to render the button as any HTML element. For example, `render={<a href="/page" />}` renders an anchor tag with button styling.
-- **Icon-only buttons:** Pass an `icon` without `children` to create a square icon button. The size adjusts automatically.
-- **Loading state:** When `loading` is true, the button content is replaced with a spinner and the button is disabled to prevent double-submission.
-- **Press feedback:** Every variant gets a subtle `active:scale-[0.97]` press animation — tactile click feedback without motion overhead.
-- **Outline variant:** Hairline-bordered button with `--patch-border` and a subtle `--patch-accent` hover fill (restrained). Distinct from `secondary` (no border, subtle fill).
-- **Touch targets:** All sizes include a minimum 44×44px touch target via a pseudo-element for accessibility on touch devices.
+- **Primary** fills with `gray-1000` for the single most important action on a view.
+- **Secondary** is `background-100` with a translucent border for equally common actions.
+- **Tertiary** is transparent with a subtle hover tint — use for low-emphasis actions.
+- **Error** is solid `red-700` — reserve for destructive actions.
+- **Icon-only buttons:** pass an `icon` without `children`. The width becomes square to match the size (32 / 40 / 48).
+- **Polymorphic rendering:** pass `render={<a href="…" />}` to render as an anchor while keeping button styles.
+- **Loading state:** the button content is replaced with a spinner and the button is disabled to prevent double-submission.
+- **Touch targets:** all sizes include a minimum 44×44px touch target via a pseudo-element for accessibility on touch devices.
 </Callout>
