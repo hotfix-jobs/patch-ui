@@ -4,13 +4,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../utils";
 
-// ─── Variants ───────────────────────────────────────────────────────────
-
 export const spinnerVariants = cva("inline-flex items-center justify-center", {
-  defaultVariants: {
-    size: "md",
-    variant: "ring",
-  },
+  defaultVariants: { size: "md", variant: "ring" },
   variants: {
     size: {
       xs: "size-3",
@@ -32,15 +27,9 @@ export const spinnerVariants = cva("inline-flex items-center justify-center", {
 export interface SpinnerProps
   extends React.ComponentProps<"span">,
     VariantProps<typeof spinnerVariants> {
-  /**
-   * Accessible label announced to assistive tech. Use to communicate
-   * loading context — "Saving", "Uploading 3 of 12", "Processing
-   * payment" — instead of the generic default.
-   */
+  /** Accessible label. Use for context — "Saving", "Uploading 3 of 12". */
   label?: string;
 }
-
-// ─── Spinner ────────────────────────────────────────────────────────────
 
 export function Spinner({
   className,
@@ -55,7 +44,6 @@ export function Spinner({
       aria-label={label}
       className={cn(spinnerVariants({ size, variant, className }))}
       data-slot="spinner"
-      data-variant={variant}
       {...props}
     >
       {variant === "ring" && <RingSpinner />}
@@ -68,9 +56,6 @@ export function Spinner({
   );
 }
 
-// ─── Ring (default) ─────────────────────────────────────────────────────
-// Single SVG circle with arc gap, rotating continuously.
-
 function RingSpinner() {
   return (
     <svg
@@ -79,30 +64,11 @@ function RingSpinner() {
       className="size-full animate-spin"
       style={{ animationDuration: "900ms" }}
     >
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        opacity="0.15"
-      />
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeDasharray="32 63"
-      />
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity="0.15" />
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeDasharray="32 63" />
     </svg>
   );
 }
-
-// ─── Spinner (iOS-style 8 bars) ─────────────────────────────────────────
-// 8 bars arranged radially, fading in staggered sequence.
 
 function BarSpinner() {
   return (
@@ -119,17 +85,12 @@ function BarSpinner() {
             animationDelay: `${-((8 - i) / 8) * 800}ms`,
           }}
         >
-          <span
-            className="block h-[30%] w-full rounded-full bg-current"
-          />
+          <span className="block h-[30%] w-full rounded-full bg-current" />
         </span>
       ))}
     </span>
   );
 }
-
-// ─── Dots (3-dot pulse) ─────────────────────────────────────────────────
-// Three dots scaling up and down in sequence.
 
 function DotsSpinner() {
   return (
@@ -147,9 +108,6 @@ function DotsSpinner() {
     </span>
   );
 }
-
-// ─── Bars (vertical equalizer) ──────────────────────────────────────────
-// Three vertical bars scaling in height.
 
 function BarsSpinner() {
   return (
@@ -169,9 +127,6 @@ function BarsSpinner() {
   );
 }
 
-// ─── Ring Fill (stroke-draw) ────────────────────────────────────────────
-// SVG circle with stroke-dashoffset animation that "draws" the ring.
-
 function RingFillSpinner() {
   // Circumference = 2πr = 2 × π × 10 ≈ 62.83
   const C = 62.83;
@@ -182,14 +137,7 @@ function RingFillSpinner() {
       className="size-full"
       style={{ animation: "patch-ring-fill-rotate 1.4s linear infinite" }}
     >
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="3"
-        opacity="0.15"
-      />
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" opacity="0.15" />
       <circle
         cx="12"
         cy="12"
