@@ -61,7 +61,11 @@ export function Table({
       data-slot="table"
       data-variant={variant}
       className={cn(
-        "w-full caption-bottom border-collapse text-copy-14 text-gray-1000",
+        // border-separate so cells accept border-radius (needed for
+        // interactive hover pill). border-spacing:0 keeps the visual
+        // identical to a collapsed table; row-dividers live on cells
+        // via border-b instead of on tr.
+        "w-full caption-bottom border-separate border-spacing-0 text-copy-14 text-gray-1000",
         variant === "default" &&
           "overflow-hidden rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400",
         className,
@@ -91,10 +95,9 @@ export function TableHeader({
   return (
     <thead
       data-slot="table-header"
-      className={cn(
-        "bg-background-200 border-b border-gray-alpha-400",
-        className,
-      )}
+      // border-b lives on th (see TableHead) since border-separate
+      // stops thead-level borders from rendering across cell gaps.
+      className={cn("bg-background-200", className)}
       {...props}
     />
   );
@@ -124,9 +127,17 @@ export function TableBody({
       data-bordered={bordered ? "" : undefined}
       data-interactive={interactive ? "" : undefined}
       className={cn(
-        striped && "[&_tr:nth-child(even)]:bg-background-200",
-        bordered && "[&_td+td]:border-l [&_th+th]:border-l [&_td]:border-gray-alpha-400 [&_th]:border-gray-alpha-400",
-        interactive && "[&_tr:hover]:bg-gray-alpha-100 [&_tr]:cursor-pointer",
+        // Row hover applies bg to individual cells (border-collapse: separate
+        // means tr bg doesn't render as a single pill). Rounded corners on
+        // first and last cell of the hovered row give the inset-pill look.
+        interactive && [
+          "[&_tr]:cursor-pointer",
+          "[&_tr:hover>td]:bg-gray-alpha-100",
+          "[&_tr:hover>td:first-child]:rounded-l-[var(--radius-6)]",
+          "[&_tr:hover>td:last-child]:rounded-r-[var(--radius-6)]",
+        ],
+        striped && "[&_tr:nth-child(even)>td]:bg-background-200",
+        bordered && "[&_td+td]:border-l [&_th+th]:border-l",
         className,
       )}
       {...props}
@@ -159,14 +170,7 @@ export function TableRow({
   ...props
 }: TableRowProps): React.ReactElement {
   return (
-    <tr
-      data-slot="table-row"
-      className={cn(
-        "border-b border-gray-alpha-400 last:border-b-0",
-        className,
-      )}
-      {...props}
-    />
+    <tr data-slot="table-row" className={cn(className)} {...props} />
   );
 }
 
@@ -188,6 +192,7 @@ export function TableHead({
       data-slot="table-head"
       className={cn(
         "h-9 px-3 py-2 text-label-11 font-normal text-gray-800 whitespace-nowrap",
+        "border-b border-gray-alpha-400",
         align === "right" && "text-right",
         align === "center" && "text-center",
         align === "left" && "text-left",
@@ -212,7 +217,7 @@ export function TableCell({
     <td
       data-slot="table-cell"
       className={cn(
-        "px-3 py-2.5 align-middle",
+        "px-3 py-2.5 align-middle border-b border-gray-alpha-400",
         align === "right" && "text-right tabular-nums",
         align === "center" && "text-center",
         align === "left" && "text-left",
