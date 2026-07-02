@@ -15,27 +15,7 @@ export { Input, InputPrimitive, type InputProps } from "./components/input";
 export { SearchInput, type SearchInputProps } from "./components/search-input";
 export { Textarea, type TextareaProps } from "./components/textarea";
 export { Label } from "./components/label";
-export {
-  Select,
-  SelectButton,
-  SelectTrigger,
-  SelectValue,
-  SelectPopup,
-  SelectContent,
-  SelectItem,
-  SelectSeparator,
-  SelectGroup,
-  SelectLabel,
-  SelectGroupLabel,
-  selectTriggerVariants,
-} from "./components/select";
-export type {
-  SelectProps,
-  SelectTriggerProps,
-  SelectValueProps,
-  SelectPopupProps,
-  SelectItemProps,
-} from "./components/select";
+export { Select, type SelectProps, type SelectSize } from "./components/select";
 export { Switch, SwitchPrimitive } from "./components/switch";
 export { Checkbox, CheckboxPrimitive } from "./components/checkbox";
 export {

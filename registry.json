@@ -655,15 +655,7 @@
       "name": "select",
       "type": "registry:ui",
       "title": "Select",
-      "dependencies": [
-        "@floating-ui/react",
-        "class-variance-authority",
-        "lucide-react",
-        "motion"
-      ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/internal-icons.json",
-        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
