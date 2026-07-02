@@ -50,8 +50,8 @@ export function AppHeaderDemo() {
   const [active, setActive] = useState("Overview");
 
   return (
-    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400">
-      <AppHeader>
+    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100">
+      <AppHeader bordered={false}>
         <AppHeaderBrand>
           <LogoMark />
           <span>Patch</span>
@@ -79,7 +79,6 @@ export function AppHeaderDemo() {
             Feedback
           </Button>
           <Avatar size="sm" letter="A" className="hidden sm:inline-flex" />
-          {/* Mobile menu trigger */}
           <Button
             variant="tertiary"
             size="sm"
@@ -90,6 +89,16 @@ export function AppHeaderDemo() {
           />
         </AppHeaderRight>
       </AppHeader>
+
+      {/* Content preview underneath */}
+      <div className="border-t border-gray-alpha-400 bg-background-200 px-6 py-8">
+        <p className="text-copy-14 text-gray-1000">
+          {active}
+        </p>
+        <p className="mt-1 text-copy-14 text-gray-800">
+          Content for the selected tab renders here.
+        </p>
+      </div>
 
       {/* Mobile drawer */}
       <Sheet open={open} onOpenChange={setOpen}>
@@ -122,12 +131,6 @@ export function AppHeaderDemo() {
           </SheetBody>
         </SheetContent>
       </Sheet>
-
-      <div className="border-t border-gray-alpha-400 bg-background-200 p-6 text-copy-14 text-gray-800">
-        Resize the preview: under the <code>sm</code> breakpoint the nav collapses
-        to a menu button that opens a Sheet drawer. Click a nav item to toggle
-        the underline active state.
-      </div>
     </div>
   );
 }
