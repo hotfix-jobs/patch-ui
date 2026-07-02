@@ -21,7 +21,6 @@ const REPO_NAME = "billing-service";
 
 export function ModalDemo() {
   const [basic, setBasic] = useState(false);
-  const [simple, setSimple] = useState(false);
   const [destructive, setDestructive] = useState(false);
   const [longContent, setLongContent] = useState(false);
   const [typed, setTyped] = useState("");
@@ -48,30 +47,6 @@ export function ModalDemo() {
               onClick={() => setBasic(false)}
             >
               Update project
-            </ModalAction>
-          </ModalActions>
-        </Modal>
-      </div>
-
-      {/* No header — short message */}
-      <div>
-        <SectionLabel>No header</SectionLabel>
-        <Button variant="secondary" onClick={() => setSimple(true)}>
-          Discard changes?
-        </Button>
-        <Modal active={simple} onClickOutside={() => setSimple(false)}>
-          <ModalBody>
-            <p className="text-copy-14 text-gray-1000">
-              You have unsaved edits on this draft. Discard and reload?
-            </p>
-          </ModalBody>
-          <ModalActions>
-            <ModalAction onClick={() => setSimple(false)}>Keep editing</ModalAction>
-            <ModalAction
-              variant="error"
-              onClick={() => setSimple(false)}
-            >
-              Discard changes
             </ModalAction>
           </ModalActions>
         </Modal>
