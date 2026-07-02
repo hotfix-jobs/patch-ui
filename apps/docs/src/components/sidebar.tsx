@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { X } from "lucide-react";
 import { navigation } from "@/lib/navigation";
 import { cn, SectionLabel } from "@patchui/react";
+import { useSidebarState } from "./sidebar-state";
 
 /**
  * Sidebar — the docs navigation column.
@@ -20,7 +21,7 @@ import { cn, SectionLabel } from "@patchui/react";
 export function Sidebar() {
   const pathname = usePathname();
   const activeRef = useRef<HTMLAnchorElement>(null);
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useSidebarState();
   const close = () => setOpen(false);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ export function Sidebar() {
 
   useEffect(() => {
     setOpen(false);
-  }, [pathname]);
+  }, [pathname, setOpen]);
 
   const navContent = (
     <nav
@@ -86,20 +87,6 @@ export function Sidebar() {
       >
         {navContent}
       </aside>
-
-      {/* Mobile floating open button */}
-      <button
-        type="button"
-        aria-label="Open documentation menu"
-        onClick={() => setOpen(true)}
-        className={cn(
-          "fixed left-4 top-[calc(3.5rem+0.5rem)] z-40 flex size-9 items-center justify-center rounded-[var(--radius-6)] border-[0.5px] border-gray-alpha-400 bg-background-100 text-gray-1000 shadow-menu lg:hidden",
-          "outline-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-[var(--focus-ring-color)] focus-visible:outline-offset-[var(--focus-ring-offset)]",
-          open && "hidden",
-        )}
-      >
-        <Menu className="size-4" aria-hidden />
-      </button>
 
       {/* Mobile backdrop */}
       {open && (

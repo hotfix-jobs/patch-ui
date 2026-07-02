@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { SidebarStateProvider } from "@/components/sidebar-state";
 import "./globals.css";
 
 const themeScript = `
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://ui.hotfix.jobs"),
   title: {
     default: "Patch UI: accessible React components, copy-in",
-    template: "%s · Patch UI",
+    template: "%s - Patch UI",
   },
   description:
     "A React component library built on Base UI and Tailwind CSS v4. Copy components into your repo with the shadcn CLI: crisp, accessible, token-driven, light and dark.",
@@ -64,9 +65,11 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-screen antialiased flex flex-col">
-        <SiteHeader />
-        <div className="flex-1">{children}</div>
-        <SiteFooter />
+        <SidebarStateProvider>
+          <SiteHeader />
+          <div className="flex-1">{children}</div>
+          <SiteFooter />
+        </SidebarStateProvider>
         <Analytics />
       </body>
     </html>

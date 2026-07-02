@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Palette, Package, ShieldCheck } from "lucide-react";
-import { Grid } from "@patchui/react";
+import { Card } from "@patchui/react";
 
 export const metadata: Metadata = { title: "Introduction" };
 
@@ -19,7 +19,7 @@ export default function DocsPage() {
         registry.
       </p>
 
-      <Grid columns={{ sm: 1, md: 2 }} className="mt-10">
+      <div className="mt-10 grid gap-3 sm:grid-cols-2">
         <IntroCard
           icon={<Package className="size-4" />}
           title="Getting Started"
@@ -44,9 +44,9 @@ export default function DocsPage() {
           body="Buttons, inputs, overlays, tables, calendars, and blocks. All copy-in, all tokenized."
           href="/docs/components/button"
         />
-      </Grid>
+      </div>
 
-      <div className="mt-12 rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-background-200 p-6">
+      <Card secondary border={false} className="mt-12 p-6">
         <h2 className="text-heading-16 text-gray-1000">
           What Patch UI is not
         </h2>
@@ -67,7 +67,7 @@ export default function DocsPage() {
             restyle. It is your code.
           </li>
         </ul>
-      </div>
+      </Card>
 
       <p className="mt-10 text-copy-13 text-gray-800">
         Curious about influences? See the{" "}
@@ -95,17 +95,12 @@ function IntroCard({
   href: string;
 }) {
   return (
-    <Link
-      href={href}
-      className="group flex flex-col gap-2 bg-background-100 p-5 transition-colors hover:bg-gray-alpha-100"
-    >
-      <div className="flex items-center gap-2 text-gray-800 group-hover:text-gray-1000">
+    <Card hoverable className="p-5" render={<Link href={href} />}>
+      <div className="flex items-center gap-2 text-gray-800">
         <span className="inline-flex items-center justify-center">{icon}</span>
-        <span className="text-button-14 text-gray-1000">
-          {title}
-        </span>
+        <span className="text-button-14 text-gray-1000">{title}</span>
       </div>
-      <p className="text-copy-13 leading-relaxed text-gray-800">{body}</p>
-    </Link>
+      <p className="mt-2 text-copy-13 leading-relaxed text-gray-800">{body}</p>
+    </Card>
   );
 }

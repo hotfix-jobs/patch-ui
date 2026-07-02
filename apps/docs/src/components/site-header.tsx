@@ -1,7 +1,17 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Menu } from "lucide-react";
 import { Button } from "@patchui/react";
+import {
+  AppHeader,
+  AppHeaderBrand,
+  AppHeaderRight,
+} from "@patchui/react/blocks/app-header";
+import { ThemeToggle } from "./theme-toggle";
+import { DocsSearch } from "./docs-search";
+import { useSidebarState } from "./sidebar-state";
 
 // Inline GitHub mark — lucide-react dropped brand icons in v0.400+.
 function GithubIcon({ className }: { className?: string }) {
@@ -17,25 +27,32 @@ function GithubIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-import {
-  AppHeader,
-  AppHeaderBrand,
-  AppHeaderRight,
-} from "@patchui/react/blocks/app-header";
-import { ThemeToggle } from "./theme-toggle";
-import { DocsSearch } from "./docs-search";
 
 /**
- * SiteHeader — the single header used across every page (homepage, docs,
- * blocks). Uses the AppHeader block from patch-ui so the site dogfoods its
- * own primitive.
- *
- * No Docs / Components nav links here — the sidebar handles that on docs
- * pages, and marketing pages don't need duplicate navigation.
+ * SiteHeader — the single header used across every page. Uses AppHeader
+ * from patch-ui so the site dogfoods its own primitive. On /docs routes,
+ * a mobile menu button appears on the left (below lg) to toggle the
+ * docs sidebar drawer; state is shared with the Sidebar via
+ * SidebarStateContext.
  */
 export function SiteHeader() {
+  const pathname = usePathname();
+  const isDocs = pathname.startsWith("/docs");
+  const { setOpen } = useSidebarState();
+
   return (
     <AppHeader sticky>
+      {isDocs && (
+        <Button
+          variant="tertiary"
+          size="sm"
+          shape="circle"
+          icon={<Menu className="size-4" />}
+          aria-label="Open documentation menu"
+          onClick={() => setOpen(true)}
+          className="lg:hidden"
+        />
+      )}
       <AppHeaderBrand render={<Link href="/" />}>Patch UI</AppHeaderBrand>
       <AppHeaderRight>
         <DocsSearch />
