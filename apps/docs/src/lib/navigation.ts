@@ -99,7 +99,6 @@ export const navigation: NavGroup[] = [
   {
     title: "Typography",
     items: [
-      { title: "SectionLabel", href: "/docs/components/section-label" },
     ],
   },
   {

@@ -69,11 +69,6 @@ export {
   type AvatarGroupProps,
 } from "./components/avatar";
 export {
-  SectionLabel,
-  sectionLabelVariants,
-  type SectionLabelProps,
-} from "./components/section-label";
-export {
   AppHeader,
   AppHeaderBrand,
   AppHeaderNav,
