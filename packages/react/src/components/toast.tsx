@@ -187,15 +187,11 @@ export const toast: ToastApi = Object.assign(createToastFn("default"), {
 
 const TYPE_ICON: Record<ToastType, React.ReactNode | null> = {
   default: null,
-  success: <CircleCheck className="size-4 text-[var(--badge-success-text)]" />,
-  error: <CircleAlert className="size-4 text-[var(--badge-danger-text)]" />,
-  warning: (
-    <TriangleAlert className="size-4 text-[var(--badge-warning-text)]" />
-  ),
-  info: <Info className="size-4 text-gray-900" />,
-  loading: (
-    <Loader className="size-4 animate-spin text-gray-900" />
-  ),
+  success: <CircleCheck className="size-4 text-[var(--success)]" />,
+  error: <CircleAlert className="size-4 text-[var(--error)]" />,
+  warning: <TriangleAlert className="size-4 text-[var(--warning)]" />,
+  info: <Info className="size-4 text-gray-800" />,
+  loading: <Loader className="size-4 animate-spin text-gray-800" />,
 };
 
 const TYPE_ARIA_LIVE: Record<ToastType, "polite" | "assertive"> = {
@@ -400,12 +396,11 @@ function ToastItem({
       data-type={t.type}
       className={cn(
         "pointer-events-auto relative w-full select-none",
-        "rounded-[var(--radius-6)]",
+        "rounded-[var(--radius-12)]",
         "bg-background-100 text-gray-1000",
-        "border border-[var(--gray-alpha-400)] shadow-menu",
+        "border border-gray-alpha-400 shadow-modal",
         "px-3 py-3 pe-10",
         "flex items-start gap-2.5",
-        "tracking-tight",
       )}
       style={{ originX: 0.5, originY: topPos ? 0 : 1 }}
     >
@@ -423,7 +418,7 @@ function ToastItem({
         </div>
         {t.description != null && (
           <div
-            className="mt-0.5 text-label-12 leading-snug text-gray-900"
+            className="mt-0.5 text-label-12 leading-snug text-gray-800"
             data-slot="toast-description"
           >
             {t.description}
@@ -438,11 +433,11 @@ function ToastItem({
             }}
             className={cn(
               "mt-2 inline-flex items-center justify-center",
-              "rounded-[var(--radius-6)] border border-[var(--gray-alpha-400)]",
+              "rounded-[var(--radius-6)] border border-gray-alpha-400",
               "bg-transparent px-2.5 py-1",
               "text-label-13 font-medium text-gray-1000",
               "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-              "hover:bg-gray-100",
+              "hover:bg-gray-alpha-100",
               focusRing,
             )}
             data-slot="toast-action"
@@ -461,7 +456,7 @@ function ToastItem({
           "flex h-7 w-7 items-center justify-center",
           "rounded-[var(--radius-6)] text-gray-800",
           "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          "hover:bg-gray-200 hover:text-gray-1000",
+          "hover:bg-gray-alpha-200 hover:text-gray-1000",
           focusRing,
         )}
       >
