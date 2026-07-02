@@ -18,7 +18,7 @@ import { Tooltip } from "./tooltip";
  *
  * Two visual variants:
  *  - `underline` (default): a 1.5px bar tracks the active tab.
- *  - `pill`: a rounded `--menu-item-hover` background fills the active tab.
+ *  - `pill`: a rounded gray-alpha-100 background fills the active tab.
  *
  * The indicator (underline OR pill) uses motion's `layoutId` so it physically
  * slides between active tabs with spring physics, not CSS transitions. Each

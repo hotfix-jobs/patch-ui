@@ -369,13 +369,13 @@ export function Calendar(props: CalendarProps): React.ReactElement {
                 !outside && !selected && "text-gray-1000",
                 !selected &&
                   !disabledDay &&
-                  "hover:bg-[var(--menu-item-hover)]",
+                  "hover:bg-gray-alpha-100",
                 isToday &&
                   !selected &&
                   "font-semibold ring-1 ring-inset ring-gray-alpha-400",
                 selected &&
-                  "bg-patch-text text-patch-bg font-semibold hover:bg-patch-text",
-                inSelectedRange && !selected && "bg-gray-100",
+                  "bg-gray-1000 text-background-100 font-semibold hover:bg-gray-1000",
+                inSelectedRange && !selected && "bg-gray-alpha-100",
                 disabledDay && "pointer-events-none opacity-30",
                 focusRing,
               )}

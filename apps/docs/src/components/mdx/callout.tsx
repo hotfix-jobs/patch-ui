@@ -41,7 +41,7 @@ const iconColor = {
 export function Callout({ children, type = "note", title }: CalloutProps) {
   return (
     <div
-      className="my-6 flex gap-2.5 rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-gray-100 p-4 text-label-13 leading-relaxed text-gray-900 [&_strong]:font-medium [&_strong]:text-gray-1000 [&_code]:text-gray-1000 [&_a]:text-gray-1000 [&_a]:underline [&_a]:underline-offset-2"
+      className="my-6 flex gap-2.5 rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-200 p-4 text-copy-14 text-gray-1000 [&_strong]:font-medium [&_strong]:text-gray-1000 [&_code]:text-gray-1000 [&_a]:text-gray-1000 [&_a]:underline [&_a]:underline-offset-2"
       data-slot="callout"
       data-type={type}
     >
