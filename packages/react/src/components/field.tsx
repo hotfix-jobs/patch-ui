@@ -36,7 +36,7 @@ export function FieldLabel({
   return (
     <FieldPrimitive.Label
       className={cn(
-        "inline-flex items-center gap-1.5 text-label-13 font-medium text-gray-900",
+        "inline-flex items-center gap-1.5 text-button-14 text-gray-900",
         className,
       )}
       data-slot="field-label"
@@ -55,7 +55,7 @@ export function FieldLabel({
       {optional && !required && (
         <span
           aria-hidden="true"
-          className="text-gray-800 text-label-12 font-normal"
+          className="text-gray-800 text-label-12"
           data-slot="field-optional"
         >
           (optional)

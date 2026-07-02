@@ -412,7 +412,7 @@ function ToastItem({
       )}
       <div className="min-w-0 flex-1">
         <div
-          className="text-label-13 font-semibold leading-tight text-gray-1000"
+          className="text-heading-14 leading-tight text-gray-1000"
           data-slot="toast-title"
         >
           {t.title}
@@ -436,7 +436,7 @@ function ToastItem({
               "mt-2 inline-flex items-center justify-center",
               "rounded-[var(--radius-6)] border border-gray-alpha-400",
               "bg-transparent px-2.5 py-1",
-              "text-label-13 font-medium text-gray-1000",
+              "text-button-14 text-gray-1000",
               "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
               "hover:bg-gray-alpha-100",
               focusRing,

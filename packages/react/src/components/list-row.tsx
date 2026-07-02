@@ -123,7 +123,7 @@ export function ListRowContent({
       {title != null && (
         <div
           data-slot="list-row-title"
-          className="truncate text-copy-14 font-medium text-gray-1000"
+          className="truncate text-button-14 text-gray-1000"
         >
           {title}
         </div>

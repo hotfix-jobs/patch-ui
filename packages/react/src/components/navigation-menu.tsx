@@ -110,7 +110,7 @@ export function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "group inline-flex items-center gap-1 rounded-[var(--radius-6)] px-3 py-1.5 text-label-13 font-medium text-gray-1000 hover:bg-gray-alpha-100 hover:text-gray-1000 data-[popup-open]:bg-gray-alpha-100 data-[popup-open]:text-gray-1000",
+        "group inline-flex items-center gap-1 rounded-[var(--radius-6)] px-3 py-1.5 text-button-14 text-gray-1000 hover:bg-gray-alpha-100 hover:text-gray-1000 data-[popup-open]:bg-gray-alpha-100 data-[popup-open]:text-gray-1000",
         colorTransition,
         focusRing,
         className,

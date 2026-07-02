@@ -225,7 +225,7 @@ export function TableHead({
     <th
       data-slot="table-head"
       className={cn(
-        "h-9 px-3 py-2 text-label-11 font-normal text-gray-800 whitespace-nowrap",
+        "h-9 px-3 py-2 text-label-11 text-gray-800 whitespace-nowrap",
         "border-b border-gray-alpha-400",
         align === "right" && "text-right",
         align === "center" && "text-center",

@@ -196,7 +196,7 @@ export function Dropzone({
           <Upload className="size-5" />
         </div>
         <div className="flex flex-col gap-1">
-          <p className="text-label-13 font-medium text-gray-1000">
+          <p className="text-button-14 text-gray-1000">
             {title}
           </p>
           {description && (

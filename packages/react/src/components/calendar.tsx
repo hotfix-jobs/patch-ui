@@ -317,7 +317,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
           onClick={() => setViewMonth((m) => addMonths(m, -1))}
           aria-label="Previous month"
         />
-        <div className="text-copy-14 font-medium tabular-nums text-gray-1000">
+        <div className="text-button-14 tabular-nums text-gray-1000">
           {monthLabel}
         </div>
         <Button

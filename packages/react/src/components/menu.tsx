@@ -440,7 +440,7 @@ export function MenuItem({
           {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
           {trailingCheck}
         </span>
-        <span className="mt-0.5 truncate text-label-12 font-normal text-gray-800">
+        <span className="mt-0.5 truncate text-label-12 text-gray-800">
           {description}
         </span>
       </span>
