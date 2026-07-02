@@ -46,22 +46,32 @@ const css = readFileSync(resolve(__dirname, "../src/theme/tokens.css"), "utf8");
 const light = parseBlock(css, ":root");
 const dark = parseBlock(css, ".dark");
 
-const TOKEN_FLOOR = 10;
-if (Object.keys(light).length < TOKEN_FLOOR || Object.keys(dark).length < TOKEN_FLOOR) {
-  throw new Error(`parseBlock returned fewer than ${TOKEN_FLOOR} tokens — selector may not have matched`);
+if (Object.keys(light).length < 40 || Object.keys(dark).length < 40) {
+  throw new Error("parseBlock returned too few tokens — selector may not have matched");
 }
 
 type Target = { fg: string; bgs: string[]; min: number; label: string };
 
-const checks = (vars: Record<string, string>, theme: string): Target[] => [
-  { fg: "patch-text", bgs: ["patch-bg", "patch-surface"], min: 7, label: `${theme}: patch-text AAA` },
-  { fg: "patch-text-secondary", bgs: ["patch-bg", "patch-surface"], min: 4.5, label: `${theme}: patch-text-secondary AA` },
-  { fg: "patch-text-tertiary", bgs: ["patch-bg", "patch-surface"], min: 4.5, label: `${theme}: patch-text-tertiary AA` },
+const checks = (theme: string): Target[] => [
+  { fg: "gray-1000", bgs: ["background-100", "background-200"], min: 7.0, label: `${theme}: gray-1000 (primary text) AAA` },
+  { fg: "gray-900",  bgs: ["background-100", "background-200"], min: 4.5, label: `${theme}: gray-900 (secondary text) AA` },
+  { fg: "gray-800",  bgs: ["background-100", "background-200"], min: 4.5, label: `${theme}: gray-800 (tertiary text) AA` },
+  { fg: "gray-700",  bgs: ["background-100", "background-200"], min: 3.0, label: `${theme}: gray-700 (disabled/hint text) AA-large` },
+
+  { fg: "blue-700",   bgs: ["background-100"], min: 4.5, label: `${theme}: blue-700 solid on bg AA` },
+  { fg: "red-700",    bgs: ["background-100"], min: 4.5, label: `${theme}: red-700 solid on bg AA` },
+  { fg: "amber-700",  bgs: ["background-100"], min: 4.5, label: `${theme}: amber-700 solid on bg AA` },
+  { fg: "green-700",  bgs: ["background-100"], min: 4.5, label: `${theme}: green-700 solid on bg AA` },
+  { fg: "teal-700",   bgs: ["background-100"], min: 4.5, label: `${theme}: teal-700 solid on bg AA` },
+  { fg: "purple-700", bgs: ["background-100"], min: 4.5, label: `${theme}: purple-700 solid on bg AA` },
+  { fg: "pink-700",   bgs: ["background-100"], min: 4.5, label: `${theme}: pink-700 solid on bg AA` },
+
+  { fg: "background-100", bgs: ["gray-1000"], min: 7.0, label: `${theme}: background-100 on gray-1000 (primary button) AAA` },
 ];
 
 const fails: string[] = [];
 for (const [theme, vars] of [["light", light], ["dark", dark]] as const) {
-  for (const c of checks(vars, theme)) {
+  for (const c of checks(theme)) {
     const fg = vars[c.fg];
     for (const bgKey of c.bgs) {
       const bg = vars[bgKey];
