@@ -41,16 +41,16 @@ export const badgeVariants = cva(
       },
     },
     compoundVariants: [
-      // Solid (fill + text)
+      // Solid (fill + text) — no hover state
       { variant: "default", outline: false, class: "bg-gray-200 text-gray-1000" },
       { variant: "success", outline: false, class: "bg-green-100 text-green-900" },
       { variant: "warning", outline: false, class: "bg-amber-100 text-amber-900" },
       { variant: "error",   outline: false, class: "bg-red-100 text-red-900" },
-      // Outline (border + text, transparent fill)
-      { variant: "default", outline: true, class: "border-gray-alpha-500 text-gray-1000" },
-      { variant: "success", outline: true, class: "border-green-700 text-green-700" },
-      { variant: "warning", outline: true, class: "border-amber-700 text-amber-700" },
-      { variant: "error",   outline: true, class: "border-red-700 text-red-700" },
+      // Outline (border + text, transparent fill) — hover fills bg subtly
+      { variant: "default", outline: true, class: "border-gray-alpha-500 text-gray-1000 hover:bg-gray-alpha-100" },
+      { variant: "success", outline: true, class: "border-green-700 text-green-700 hover:bg-green-100" },
+      { variant: "warning", outline: true, class: "border-amber-700 text-amber-700 hover:bg-amber-100" },
+      { variant: "error",   outline: true, class: "border-red-700 text-red-700 hover:bg-red-100" },
     ],
   },
 );
@@ -95,7 +95,8 @@ export function Badge({
             aria-label={removeLabel}
             onClick={onRemove}
             className={cn(
-              "inline-flex size-3 shrink-0 items-center justify-center rounded-full opacity-60 group-hover:opacity-90 hover:!opacity-100",
+              "inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-70",
+              "hover:opacity-100 hover:bg-gray-alpha-200",
               focusRing,
               colorTransition,
             )}
@@ -106,10 +107,10 @@ export function Badge({
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="3"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="size-full"
+              className="size-2.5"
             >
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
