@@ -99,7 +99,7 @@ export function ModalDemo() {
               permanently deleted.
             </p>
             {/* Irreversibility band */}
-            <div className="flex items-center gap-2 rounded-[var(--radius-6)] border border-red-300 bg-red-100 px-3 py-2 text-red-800 dark:bg-red-200">
+            <div className="flex items-center gap-2 rounded-[var(--radius-6)] border border-red-300 bg-red-200 px-3 py-2 text-red-800">
               <svg
                 aria-hidden="true"
                 width="18"
