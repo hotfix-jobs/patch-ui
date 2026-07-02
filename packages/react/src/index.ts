@@ -1,5 +1,5 @@
 export { cn } from "./utils";
-export { focusRing, controlSize, colorTransition } from "./recipes";
+export { focusRing, controlSize, stateStepping, disabled, colorTransition } from "./recipes";
 export {
   Accordion,
   AccordionItem,
