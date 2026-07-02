@@ -73,6 +73,7 @@ export const navigation: NavGroup[] = [
       { title: "Tabs", href: "/docs/components/tabs" },
       { title: "Accordion", href: "/docs/components/accordion" },
       { title: "Pagination", href: "/docs/components/pagination" },
+      { title: "LoadMore", href: "/docs/components/load-more" },
     ],
   },
   {

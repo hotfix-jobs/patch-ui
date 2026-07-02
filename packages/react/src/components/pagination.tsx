@@ -76,7 +76,7 @@ export function Pagination({
           key={p}
           variant={p === page ? "secondary" : "tertiary"}
           size="sm"
-          className="h-8 min-w-8 px-2 tabular-nums tracking-[-0.01em]"
+          className="h-8 min-w-8 px-2 tabular-nums"
           onClick={() => go(p)}
           disabled={loading}
           aria-label={`Page ${p}`}

@@ -237,6 +237,7 @@ export {
   type ResolvedTheme,
 } from "./components/theme-toggle";
 export { Pagination, type PaginationProps } from "./components/pagination";
+export { LoadMore, type LoadMoreProps } from "./components/load-more";
 export {
   SegmentedToggle,
   SegmentedToggleItem,
