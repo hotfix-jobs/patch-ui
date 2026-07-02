@@ -30,7 +30,7 @@ export function Separator({
         data-slot="separator"
         data-orientation={orientation}
         className={cn(
-          "flex w-full items-center gap-3 text-label-12 uppercase text-gray-800",
+          "flex w-full items-center gap-3 text-label-12 text-gray-800",
           className,
         )}
         {...props}

@@ -119,7 +119,7 @@ export function ListRowDemo() {
       <div className="space-y-3">
         <SectionLabel>Unbordered (nested inside another surface)</SectionLabel>
         <div className="rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100 p-4">
-          <p className="mb-2 text-label-13 font-medium text-gray-1000">Team roster</p>
+          <p className="mb-2 text-button-14 text-gray-1000">Team roster</p>
           <ListRowList bordered={false}>
             <ListRow
               size="sm"

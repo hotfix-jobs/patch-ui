@@ -30,7 +30,7 @@ export function ModalDemo() {
         <Button onClick={() => setBasic(true)}>Update project</Button>
         <Modal active={basic} onClickOutside={() => setBasic(false)}>
           <ModalBody>
-            <h2 className="text-heading-20 font-semibold text-gray-1000">
+            <h2 className="text-heading-20 text-gray-1000">
               Update project
             </h2>
             <p className="text-copy-14 text-gray-800">
@@ -60,7 +60,7 @@ export function ModalDemo() {
           onClickOutside={() => setDestructive(false)}
         >
           <ModalBody>
-            <h2 className="text-heading-20 font-semibold text-gray-1000">
+            <h2 className="text-heading-20 text-gray-1000">
               Delete repository
             </h2>
             <p className="text-copy-14 text-gray-1000">

@@ -12,13 +12,18 @@ export interface SectionLabelProps extends useRender.ComponentProps<"p"> {}
  * within a larger surface: sidebar nav groups, showcase-wall cells, demo
  * variant clusters, foundations-page charts.
  *
- * Typography only. Uses the `text-label-12` recipe (12px, weight 400)
- * following our type system's family discipline: compound text-* classes
- * are complete recipes and are used alone, never paired with a `font-*`
- * override. A 400-weight label at 12px reads as a calm hierarchical
- * divider, which is what section labels are meant to be. Layout is the
- * parent's job: reach for `space-y-*`, `gap-*`, or explicit margin on
- * the wrapper.
+ * Typography only. Uses the `text-button-12` recipe (12px, weight 500).
+ *
+ * Named "button" in our type system for its most common use, but the
+ * family represents the "medium weight at this size" recipe. Section
+ * labels are a legitimate non-button consumer: they want a heavier
+ * anchor than the 400-weight label family provides so they read as
+ * intentional headings rather than muted metadata. Per our type
+ * discipline (compound classes used alone, no `font-*` override), this
+ * is how you get medium at 12px.
+ *
+ * Layout is the parent's job: reach for `space-y-*`, `gap-*`, or
+ * explicit margin on the wrapper.
  *
  *   <div className="space-y-3">
  *     <SectionLabel>Bordered variants</SectionLabel>
@@ -33,7 +38,7 @@ export function SectionLabel({
   const defaultProps = {
     "data-slot": "section-label",
     className: cn(
-      "text-label-12 text-gray-800",
+      "text-button-12 text-gray-800",
       className,
     ),
   };

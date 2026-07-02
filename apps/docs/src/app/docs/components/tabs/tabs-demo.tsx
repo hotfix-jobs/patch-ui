@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
+import { Tabs, TabsList, TabsTrigger, TabsPanel, SectionLabel } from "@patchui/react";
 import { Bell, Settings, User } from "lucide-react";
 
 function Body({ children }: { children: React.ReactNode }) {
@@ -12,22 +12,14 @@ function Body({ children }: { children: React.ReactNode }) {
   );
 }
 
-function Label({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-3 text-label-12 font-medium text-gray-800">
-      {children}
-    </p>
-  );
-}
-
 export function TabsDemo() {
   const [watchingCount, setWatchingCount] = useState(4);
 
   return (
     <div className="flex w-full flex-col gap-10">
       {/* Underline (default) */}
-      <div>
-        <Label>Underline (default)</Label>
+      <div className="space-y-3">
+        <SectionLabel>Underline (default)</SectionLabel>
         <Tabs defaultValue="overview" aria-label="Project sections">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -47,8 +39,8 @@ export function TabsDemo() {
       </div>
 
       {/* With icons + badge */}
-      <div>
-        <Label>With icons and count badges</Label>
+      <div className="space-y-3">
+        <SectionLabel>With icons and count badges</SectionLabel>
         <Tabs defaultValue="watching" aria-label="Feed">
           <TabsList>
             <TabsTrigger value="watching" icon={<User />} badge={watchingCount}>
@@ -84,8 +76,8 @@ export function TabsDemo() {
       </div>
 
       {/* Disabled with tooltip */}
-      <div>
-        <Label>Disabled tab with tooltip explaining why</Label>
+      <div className="space-y-3">
+        <SectionLabel>Disabled tab with tooltip explaining why</SectionLabel>
         <Tabs defaultValue="overview" aria-label="Project sections">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -108,11 +100,11 @@ export function TabsDemo() {
       </div>
 
       {/* Pill variant */}
-      <div>
-        <Label>Pill — orientation flips by breakpoint</Label>
+      <div className="space-y-3">
+        <SectionLabel>Pill — orientation flips by breakpoint</SectionLabel>
         <div className="flex flex-col gap-8 sm:flex-row sm:gap-12">
           <div>
-            <p className="mb-2 text-label-12 uppercase tracking-[0.06em] text-gray-700">
+            <p className="mb-2 text-label-12 text-gray-700">
               Desktop (vertical)
             </p>
             <Tabs variant="pill" orientation="vertical" defaultValue="profile">
@@ -124,7 +116,7 @@ export function TabsDemo() {
             </Tabs>
           </div>
           <div>
-            <p className="mb-2 text-label-12 uppercase tracking-[0.06em] text-gray-700">
+            <p className="mb-2 text-label-12 text-gray-700">
               Mobile (horizontal)
             </p>
             <Tabs variant="pill" defaultValue="profile">

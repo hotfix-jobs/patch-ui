@@ -38,7 +38,7 @@ export function ScrollerDemo() {
               key={c.title}
               className="w-52 shrink-0 rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100 p-4"
             >
-              <p className="text-copy-14 font-medium text-gray-1000">
+              <p className="text-button-14 text-gray-1000">
                 {c.title}
               </p>
               <p className="mt-1 text-label-13 text-gray-800">{c.meta}</p>
@@ -85,7 +85,7 @@ export function ScrollerDemo() {
               key={item.id}
               className="border-b border-gray-alpha-400 py-2 last:border-b-0"
             >
-              <p className="text-copy-14 font-medium text-gray-1000">
+              <p className="text-button-14 text-gray-1000">
                 {item.title}
               </p>
               <p className="mt-0.5 text-label-13 text-gray-800">{item.body}</p>

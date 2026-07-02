@@ -5,7 +5,7 @@ import { Grid } from "@patchui/react";
 export default function DocsPage() {
   return (
     <div className="max-w-3xl">
-      <h1 className="text-copy-32 font-semibold tracking-[-0.02em] text-gray-1000">
+      <h1 className="text-heading-32 text-gray-1000">
         Patch UI
       </h1>
       <p className="mt-3 text-copy-16 leading-relaxed text-gray-900">
@@ -44,7 +44,7 @@ export default function DocsPage() {
       </Grid>
 
       <div className="mt-12 rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-background-200 p-6">
-        <h2 className="text-copy-16 font-semibold text-gray-1000">
+        <h2 className="text-heading-16 text-gray-1000">
           What Patch UI is not
         </h2>
         <ul className="mt-3 space-y-2 text-copy-14 leading-relaxed text-gray-900">
@@ -98,7 +98,7 @@ function IntroCard({
     >
       <div className="flex items-center gap-2 text-gray-800 group-hover:text-gray-1000">
         <span className="inline-flex items-center justify-center">{icon}</span>
-        <span className="text-copy-14 font-medium text-gray-1000">
+        <span className="text-button-14 text-gray-1000">
           {title}
         </span>
       </div>

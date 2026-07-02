@@ -113,7 +113,7 @@ export function ComboboxDemo() {
 
               {needle2 === "" && RECENT.length > 0 && (
                 <div className="border-b border-gray-alpha-400 py-1">
-                  <div className="px-3 pb-1 pt-1 text-label-12 font-medium uppercase tracking-tight text-gray-800">
+                  <div className="px-3 pb-1 pt-1 text-button-12 text-gray-800">
                     Recent
                   </div>
                   {RECENT.map((r) => (

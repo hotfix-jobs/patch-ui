@@ -37,7 +37,7 @@ export function GridDemo() {
         <SectionLabel>Cell spanning two columns</SectionLabel>
         <Grid columns={3}>
           <GridCell column="1 / 3" className="p-6">
-            <div className="text-copy-14 font-medium text-gray-1000">Wide cell</div>
+            <div className="text-button-14 text-gray-1000">Wide cell</div>
             <div className="text-copy-13 text-gray-800">columns 1 through 2 via <code>column=&quot;1 / 3&quot;</code></div>
           </GridCell>
           <Cell>Third</Cell>

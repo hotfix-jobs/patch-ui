@@ -142,7 +142,7 @@ export function ContrastDemo() {
                 compact
               >
                 <div
-                  className="text-copy-14 font-medium"
+                  className="text-button-14"
                   style={{ color: fg || undefined }}
                 >
                   Solid on canvas
@@ -175,7 +175,7 @@ export function ContrastDemo() {
                 passes={passes}
               >
                 <div
-                  className="text-copy-14 font-medium"
+                  className="text-button-14"
                   style={{ color: fg || undefined }}
                 >
                   Save changes
@@ -191,7 +191,7 @@ export function ContrastDemo() {
 
 function SectionHeading({ title }: { title: string }) {
   return (
-    <h3 className="mb-3 text-copy-14 font-medium text-gray-1000">{title}</h3>
+    <h3 className="mb-3 text-button-14 text-gray-1000">{title}</h3>
   );
 }
 
@@ -208,7 +208,7 @@ function TierHeader({
 }) {
   return (
     <div className="mb-2 flex flex-wrap items-baseline gap-2">
-      <span className="font-mono text-label-13 font-medium text-gray-1000">
+      <span className="font-mono text-button-14 text-gray-1000">
         {label}
       </span>
       <span className="text-label-12 text-gray-800">
@@ -255,7 +255,7 @@ function SwatchCard({
         </span>
         <span
           className={
-            "rounded-full px-1.5 py-0.5 font-mono text-label-11 font-medium " +
+            "rounded-full px-1.5 py-0.5 font-mono text-button-12 " +
             (ratio === null
               ? "bg-gray-100 text-gray-800"
               : passes

@@ -239,7 +239,7 @@ function ShowcaseCell({
 function Feature({ title, body }: { title: string; body: string }) {
   return (
     <div>
-      <h3 className="text-copy-16 font-semibold tracking-[-0.01em] text-gray-1000">
+      <h3 className="text-heading-16 text-gray-1000">
         {title}
       </h3>
       <p className="mt-2 text-copy-14 leading-relaxed text-gray-900">

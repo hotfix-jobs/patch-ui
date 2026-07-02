@@ -18,15 +18,15 @@ export function CompoundComponents({ components }: CompoundComponentsProps) {
       <table className="w-full text-sm">
         <thead className="bg-gray-200">
           <tr>
-            <th className="px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-tight text-gray-800">
+            <th className="px-4 py-2.5 text-left text-label-11 text-gray-800">
               Component
             </th>
             {hasElement && (
-              <th className="px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-tight text-gray-800">
+              <th className="px-4 py-2.5 text-left text-label-11 text-gray-800">
                 Element
               </th>
             )}
-            <th className="px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-tight text-gray-800">
+            <th className="px-4 py-2.5 text-left text-label-11 text-gray-800">
               Description
             </th>
           </tr>
