@@ -300,7 +300,7 @@ export function ModalActions({
     <div
       data-slot="modal-actions"
       className={cn(
-        "flex gap-2 border-t border-gray-alpha-400 px-5 py-3",
+        "flex gap-2 border-t border-gray-alpha-400 bg-background-200 px-5 py-3",
         stacked ? "flex-col" : "flex-row justify-between",
         className,
       )}
