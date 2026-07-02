@@ -233,35 +233,40 @@ export function Dropzone({
                 key={`${f.name}-${i}`}
                 data-slot="dropzone-file"
                 data-state={isUploading ? "uploading" : undefined}
-                className="flex items-center gap-3 rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 px-3 py-2"
               >
-                <File className="size-4 shrink-0 text-gray-800" />
-                <div className="flex min-w-0 flex-1 flex-col gap-1">
-                  <span className="truncate text-label-13 text-gray-1000">
-                    {f.name}
-                  </span>
-                  {isUploading ? (
-                    <Progress
-                      value={progress}
-                      size="sm"
-                      label={`Uploading ${f.name}`}
-                    />
-                  ) : (
-                    <span className="text-label-12 text-gray-800">
-                      {formatBytes(f.size)}
+                <Card
+                  border
+                  direction="row"
+                  className="items-center gap-3 px-3 py-2 !rounded-[var(--radius-6)]"
+                >
+                  <File className="size-4 shrink-0 text-gray-800" />
+                  <div className="flex min-w-0 flex-1 flex-col gap-1">
+                    <span className="truncate text-label-13 text-gray-1000">
+                      {f.name}
                     </span>
+                    {isUploading ? (
+                      <Progress
+                        value={progress}
+                        size="sm"
+                        label={`Uploading ${f.name}`}
+                      />
+                    ) : (
+                      <span className="text-label-12 text-gray-800">
+                        {formatBytes(f.size)}
+                      </span>
+                    )}
+                  </div>
+                  {!isUploading && (
+                    <button
+                      type="button"
+                      onClick={() => removeAt(i)}
+                      aria-label={`Remove ${f.name}`}
+                      className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 hover:text-gray-1000"
+                    >
+                      <XIcon className="size-3.5" />
+                    </button>
                   )}
-                </div>
-                {!isUploading && (
-                  <button
-                    type="button"
-                    onClick={() => removeAt(i)}
-                    aria-label={`Remove ${f.name}`}
-                    className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 hover:text-gray-1000"
-                  >
-                    <XIcon className="size-3.5" />
-                  </button>
-                )}
+                </Card>
               </li>
             ),
           )}
