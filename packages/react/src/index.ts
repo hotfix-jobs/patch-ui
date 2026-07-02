@@ -220,8 +220,6 @@ export {
   type ComboboxPopupProps,
   type ComboboxItemProps,
 } from "./components/combobox";
-// Popover is intentionally not exported. Kept as an internal primitive
-// used by DatePicker; consumers should use Menu, Select, or Modal.
 export { Progress, type ProgressProps } from "./components/progress";
 export { Separator, type SeparatorProps } from "./components/separator";
 export { Kbd, type KbdProps } from "./components/kbd";
@@ -235,12 +233,6 @@ export {
   type CalendarProps,
   type DateRange,
 } from "./components/calendar";
-export {
-  DatePicker,
-  DateRangePicker,
-  type DatePickerProps,
-  type DateRangePickerProps,
-} from "./components/date-picker";
 export {
   Table,
   TableHeader,

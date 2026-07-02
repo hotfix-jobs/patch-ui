@@ -30,7 +30,6 @@ export const navigation: NavGroup[] = [
       { title: "Checkbox", href: "/docs/components/checkbox" },
       { title: "Combobox", href: "/docs/components/combobox" },
       { title: "Command", href: "/docs/components/command" },
-      { title: "DatePicker", href: "/docs/components/date-picker" },
       { title: "EmptyState", href: "/docs/components/empty-state" },
       { title: "Field", href: "/docs/components/field" },
       { title: "Form", href: "/docs/components/form" },

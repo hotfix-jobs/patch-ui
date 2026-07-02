@@ -241,28 +241,6 @@
       ]
     },
     {
-      "name": "date-picker",
-      "type": "registry:ui",
-      "title": "Date Picker",
-      "dependencies": [
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/button.json",
-        "https://ui.hotfix.jobs/r/calendar.json",
-        "https://ui.hotfix.jobs/r/popover.json",
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/date-picker.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/date-picker.tsx"
-        }
-      ]
-    },
-    {
       "name": "empty-state",
       "type": "registry:ui",
       "title": "Empty State",
@@ -487,26 +465,6 @@
           "path": "registry/components/ui/pagination.tsx",
           "type": "registry:ui",
           "target": "components/ui/pagination.tsx"
-        }
-      ]
-    },
-    {
-      "name": "popover",
-      "type": "registry:ui",
-      "title": "Popover",
-      "dependencies": [
-        "@floating-ui/react",
-        "motion"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/popover.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/popover.tsx"
         }
       ]
     },
