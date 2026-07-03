@@ -179,6 +179,8 @@ const [value, setValue] = useState("system");
 - **Keyboard navigation:** Supports arrow keys, type-ahead, Home/End, Enter/Space, and Escape.
 - **Sub-menus:** Nest `MenuSub` > `MenuSubTrigger` + `MenuSubPopup` for cascading menus. Sub-menus open on hover. The sub-popup inherits the parent `MenuPopup`'s density unless overridden.
 - **Portal rendering:** The popup renders outside the DOM tree via a portal, so it appears above all other content.
+- **Mobile panel:** Below the `md` breakpoint (max-width 767px), a top-level `MenuPopup` renders as a bottom-anchored fixed panel (`fixed bottom-2 left-2 right-2`) with y-8 enter/exit motion. Sub-menus stay as anchored popovers so they hang off their parent row.
+- **`MenuRadioItem` matches `selected`:** Radio rows render with a trailing check when they're the group's current value (same layout as `MenuItem selected`) and close the menu on click. Consistent affordance across every single-select menu.
 - **Inset alignment:** Use the `inset` prop on `MenuItem`, `MenuGroupLabel`, and `MenuSubTrigger` to align text with items that have icons or check indicators.
 - **Motion:** Open AND close are spring-animated via `motion` + `AnimatePresence` (true bidirectional, not CSS-driven). Stiffness 400, damping 30, mass 0.6. Respects `prefers-reduced-motion`.
 - **Foundation:** Built on `@floating-ui/react`: `useFloating` for positioning, `useListNavigation` for arrow keys, `useTypeahead` for type-to-jump, `FloatingTree` so nested sub-menus coordinate dismissal cleanly.
