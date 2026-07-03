@@ -164,9 +164,9 @@
      Warning is theme-invariant (bright amber + dark text works in both).
      Error and Success shift a step brighter in dark mode; label text
      flips accordingly via the -fg pair. */
-  --error: #c62128;
-  --error-hover: #a01820;
-  --error-active: #801218;
+  --error: #dc2626;
+  --error-hover: #b91c1c;
+  --error-active: #991b1b;
   --error-fg: #ffffff;
   --warning: #fdb203;
   --warning-hover: #d69800;
