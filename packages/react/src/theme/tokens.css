@@ -573,25 +573,31 @@
  * Thin, unobtrusive scrollbars applied globally. Applies to every
  * scrollable surface (menus, popups, sheets, page content). Non-
  * scrollable elements are unaffected. Uses --gray-alpha-* so the
- * thumb inverts with the alpha scale in dark mode. Consumers can
- * override per-element by resetting scrollbar-width / scrollbar-color
- * or by opting out entirely with .scrollbar-hide.
+ * thumb inverts with the alpha scale in dark mode.
+ *
+ * Wrapped in @layer base so per-element consumer utilities (e.g.
+ * [&::-webkit-scrollbar]:w-1) and unlayered overrides win the cascade
+ * without needing !important. scrollbar-width and scrollbar-color are
+ * inherited, so :root is enough; the ::-webkit-* pseudo-elements
+ * still need the wildcard since pseudo-elements don't inherit.
  * --------------------------------------------------------------- */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--gray-alpha-400) transparent;
-}
-*::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-*::-webkit-scrollbar-thumb {
-  background: var(--gray-alpha-400);
-  border-radius: 999px;
-}
-*::-webkit-scrollbar-thumb:hover {
-  background: var(--gray-alpha-500);
+@layer base {
+  :root {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-alpha-400) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--gray-alpha-400);
+    border-radius: 999px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-alpha-500);
+  }
 }
