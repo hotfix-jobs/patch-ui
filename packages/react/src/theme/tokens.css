@@ -156,9 +156,10 @@
   /* Semantic status solids for Badge/Button/etc. Theme-aware: light mode
      uses the darker end of each hue with light (white) text; dark mode
      uses the lighter end with dark text. Matches Vercel Geist's rendered
-     Badge palette across both modes. The -fg tokens carry the label
-     color so consumers can `bg-<role> text-[var(--<role>-fg)]` in one
-     class pair without theme branching. */
+     Badge palette across both modes. Each role has a paired *-fg token
+     that carries the label color, so the fill and text invert together
+     per theme without a callsite dark: variant. See Badge/Button for
+     usage. */
   --error: #c31313;
   --error-hover: #9c0f0f;
   --error-active: #720a0a;
