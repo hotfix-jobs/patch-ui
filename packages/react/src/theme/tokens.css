@@ -160,19 +160,19 @@
      that carries the label color, so the fill and text invert together
      per theme without a callsite dark: variant. See Badge/Button for
      usage. */
-  /* Values sampled directly from Vercel Geist's rendered Badge screenshots.
+  /* Values pixel-sampled from Vercel Geist's rendered Badge screenshots.
      Warning is theme-invariant (bright amber + dark text works in both).
      Error and Success shift a step brighter in dark mode; label text
      flips accordingly via the -fg pair. */
-  --error: #c02028;
+  --error: #c62128;
   --error-hover: #a01820;
   --error-active: #801218;
   --error-fg: #ffffff;
-  --warning: #f8b000;
+  --warning: #fdb203;
   --warning-hover: #d69800;
   --warning-active: #a97007;
   --warning-fg: #171717;
-  --success: #387838;
+  --success: #397c3b;
   --success-hover: #2d602d;
   --success-active: #234a23;
   --success-fg: #ffffff;
@@ -307,15 +307,15 @@
   --pink-100: #40001d; --pink-200: #6d0031; --pink-300: #970044; --pink-400: #c50057; --pink-500: #eb1a70;
   --pink-600: #ff408e; --pink-700: #ff70ac; --pink-800: #ffa2ca; --pink-900: #ffd1e5; --pink-1000: #ffedf5;
 
-  /* Dark-mode semantic status. Values sampled from Vercel Geist:
-     warning is the same amber (theme-invariant), error and success
+  /* Dark-mode semantic status. Values pixel-sampled from Vercel Geist:
+     warning stays the same amber (theme-invariant), error and success
      shift a step brighter. Success is nudged slightly darker than
-     Vercel's actual #389038 so white text still clears AA. */
-  --error: #c83030;
+     Vercel's actual #3e933d so white text still clears AA. */
+  --error: #cf3334;
   --error-hover: #b02020;
   --error-active: #971818;
   --error-fg: #ffffff;
-  --warning: #f8b000;
+  --warning: #fdb203;
   --warning-hover: #d69800;
   --warning-active: #a97007;
   --warning-fg: #171717;
