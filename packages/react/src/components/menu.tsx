@@ -440,7 +440,7 @@ export function MenuItem({
   const content =
     description != null ? (
       <span className="flex w-full flex-col">
-        <span className="flex items-center gap-2">
+        <span className="flex w-full items-center gap-2">
           {prefix}
           {children}
           {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
@@ -451,7 +451,7 @@ export function MenuItem({
         </span>
       </span>
     ) : (
-      <span className="flex items-center gap-2">
+      <span className="flex w-full items-center gap-2">
         {prefix}
         {children}
         {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
