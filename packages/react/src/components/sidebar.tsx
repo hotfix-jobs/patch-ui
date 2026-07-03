@@ -215,22 +215,26 @@ export function Sidebar({
         </aside>
       </div>
 
-      {/* Mobile backdrop */}
+      {/* Mobile backdrop — z-[55] to sit above any sticky header (z-50)
+          so the header is dimmed when the drawer is open. */}
       {openMobile && (
         <div
-          className="fixed inset-0 z-40 bg-black/10 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-[55] bg-black/40 backdrop-blur-sm lg:hidden"
           onClick={() => setOpenMobile(false)}
           aria-hidden
         />
       )}
-      {/* Mobile drawer */}
+      {/* Mobile drawer — z-[60] so it renders above the backdrop and any
+          sticky header. Without this, headers rendered later in the DOM
+          (e.g. inside SidebarInset) at the same z-index would cover the
+          drawer's top. */}
       <aside
         data-slot="sidebar-mobile"
         data-side={side}
         data-state={openMobile ? "open" : "closed"}
         style={dimensionVars}
         className={cn(
-          "fixed inset-y-0 z-50 flex w-[var(--sidebar-width)] flex-col overflow-y-auto bg-background-100 lg:hidden",
+          "fixed inset-y-0 z-[60] flex w-[var(--sidebar-width)] flex-col overflow-y-auto bg-background-100 lg:hidden",
           side === "left" ? "left-0 border-r" : "right-0 border-l",
           "border-gray-alpha-400",
           "transition-transform duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
