@@ -175,6 +175,7 @@ const [value, setValue] = useState("system");
 
 
 <Callout title="Notes">
+- **Trigger open state:** `MenuTrigger` sets `data-popup-open` and `aria-expanded` on its element while the menu is open. Style with `data-[popup-open]:*` to tint the trigger while its menu is up.
 - **Keyboard navigation:** Supports arrow keys, type-ahead, Home/End, Enter/Space, and Escape.
 - **Sub-menus:** Nest `MenuSub` > `MenuSubTrigger` + `MenuSubPopup` for cascading menus. Sub-menus open on hover. The sub-popup inherits the parent `MenuPopup`'s density unless overridden.
 - **Portal rendering:** The popup renders outside the DOM tree via a portal, so it appears above all other content.
