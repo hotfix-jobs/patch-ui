@@ -239,22 +239,27 @@ export function MenuTrigger({
   children,
   ...rest
 }: MenuTriggerProps & React.ButtonHTMLAttributes<HTMLButtonElement>): React.ReactElement {
-  const { refs, getReferenceProps } = useMenuContext();
+  const { refs, getReferenceProps, open } = useMenuContext();
   const triggerProps = getReferenceProps({
     ref: refs.setReference,
     ...rest,
   });
+  const stateAttrs = {
+    "data-slot": "menu-trigger",
+    "data-popup-open": open ? "" : undefined,
+    "aria-expanded": open,
+  };
 
   if (render && isValidElement(render)) {
     return cloneElement(render, {
       ...triggerProps,
-      "data-slot": "menu-trigger",
+      ...stateAttrs,
       children:
         (render.props as { children?: React.ReactNode }).children ?? children,
     } as React.HTMLAttributes<HTMLElement>);
   }
   return (
-    <button type="button" data-slot="menu-trigger" {...triggerProps}>
+    <button type="button" {...stateAttrs} {...triggerProps}>
       {children}
     </button>
   );
