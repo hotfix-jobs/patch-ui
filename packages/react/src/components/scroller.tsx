@@ -194,12 +194,13 @@ export function Scroller({
       className={cn(
         "relative w-full",
         scrollAxisClass,
-        // Momentum scrolling + hide the browser scrollbar (mac trackpad
-        // overlay bars, Windows/Linux gutters, IE10+). Keyboard + wheel
-        // + touch scroll still work. `scrollbar-hide` utility beats the
-        // global thin-scrollbar defaults declared in @layer base.
+        // Momentum scrolling. Horizontal-only rails hide the scrollbar
+        // (edge fade masks are the affordance); vertical + both-axis
+        // rails keep the global thin scrollbar as the "more content
+        // below" affordance. `scrollbar-hide` utility beats the global
+        // thin-scrollbar defaults declared in @layer base.
         "[-webkit-overflow-scrolling:touch]",
-        "scrollbar-hide",
+        overflow === "x" && "scrollbar-hide",
         focusRing,
         className,
       )}
