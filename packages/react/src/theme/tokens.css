@@ -13,10 +13,10 @@
  * per hue) are adaptations. The radius set, motion timings, and focus
  * ring approach are independent choices.
  *
- * What is ours: the Tailwind v4 three-layer implementation below
- * (raw vars -> @theme inline bridge -> compound utility classes),
- * the check:contrast gate, and every downstream component built on
- * top.
+ * What is ours: the Tailwind v4 four-layer implementation below
+ * (raw vars -> @theme inline bridge -> compound utility classes ->
+ * base element styles), the check:contrast gate, and every
+ * downstream component built on top.
  *
  * See apps/docs/src/app/docs/credits/page.mdx for the full attribution.
  *
@@ -553,4 +553,38 @@
   .text-button-16 { font-size: var(--button-16-size); line-height: var(--button-16-leading); letter-spacing: var(--button-16-tracking); font-weight: var(--button-16-weight); }
   .text-button-14 { font-size: var(--button-14-size); line-height: var(--button-14-leading); letter-spacing: var(--button-14-tracking); font-weight: var(--button-14-weight); }
   .text-button-12 { font-size: var(--button-12-size); line-height: var(--button-12-leading); letter-spacing: var(--button-12-tracking); font-weight: var(--button-12-weight); }
+
+  /* Opt an individual scrollable surface out of any scrollbar. Companion
+   * to the global thin-scrollbar defaults below. */
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+}
+
+/* ---------------------------------------------------------------
+ * Layer 4: base element styles
+ *
+ * Thin, unobtrusive scrollbars applied globally. Applies to every
+ * scrollable surface (menus, popups, sheets, page content). Non-
+ * scrollable elements are unaffected. Uses --gray-alpha-* so the
+ * thumb inverts with the alpha scale in dark mode. Consumers can
+ * override per-element by resetting scrollbar-width / scrollbar-color
+ * or by opting out entirely with .scrollbar-hide.
+ * --------------------------------------------------------------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-alpha-400) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--gray-alpha-400);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-alpha-500);
 }
