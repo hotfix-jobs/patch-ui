@@ -1,12 +1,15 @@
 import { SpinnerDemo } from "./spinner-demo";
 
+
+export const metadata = { title: "Spinner" };
+
 # Spinner
 
-A loading indicator with 5 visual variants. Uses `currentColor` so it adapts to any text color. Pure CSS animations - no JavaScript animation loops.
+A single loading indicator. 12 tick marks arranged radially, each fading in sequence: a restrained rotating "clock hand" feel. Uses `currentColor`.
 
 <Install name="spinner" />
 
-<ComponentPreview label="Spinner Examples">
+<ComponentPreview label="Spinner">
   <SpinnerDemo />
 </ComponentPreview>
 
@@ -15,20 +18,8 @@ A loading indicator with 5 visual variants. Uses `currentColor` so it adapts to 
 ```tsx
 import { Spinner } from "@patchui/react";
 
-// Default ring spinner
+// Default (md)
 <Spinner />
-
-// iOS-style segmented bars
-<Spinner variant="spinner" />
-
-// Three pulsing dots
-<Spinner variant="dots" />
-
-// Vertical equalizer bars
-<Spinner variant="bars" />
-
-// Stroke-drawing ring
-<Spinner variant="ring-fill" />
 
 // Sizes
 <Spinner size="xs" />
@@ -36,9 +27,12 @@ import { Spinner } from "@patchui/react";
 <Spinner size="md" />
 <Spinner size="lg" />
 <Spinner size="xl" />
+<Spinner size="2xl" />
+<Spinner size="3xl" />
+<Spinner size="4xl" />
 
 // Inherits text color
-<div className="text-red-500">
+<div className="text-error">
   <Spinner />
 </div>
 
@@ -52,22 +46,16 @@ import { Spinner } from "@patchui/react";
 <PropsTable
   props={[
     {
-      name: "variant",
-      type: '"ring" | "spinner" | "dots" | "bars" | "ring-fill"',
-      default: '"ring"',
-      description: "The visual style of the spinner.",
-    },
-    {
       name: "size",
-      type: '"xs" | "sm" | "md" | "lg" | "xl"',
+      type: '"xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl"',
       default: '"md"',
-      description: "The size of the spinner.",
+      description: "The size of the spinner. Larger sizes (2xl-4xl) are for empty-state and full-page loading indicators.",
     },
     {
       name: "label",
       type: "string",
       default: '"Loading"',
-      description: "Accessible label announced by screen readers. Use to communicate context — \"Saving\", \"Uploading 3 of 12\", \"Processing payment\" — instead of the generic default.",
+      description: 'Accessible label announced by screen readers. Use to communicate context: "Saving", "Uploading 3 of 12", "Processing payment": instead of the generic default.',
     },
     {
       name: "className",
@@ -78,20 +66,11 @@ import { Spinner } from "@patchui/react";
   ]}
 />
 
-## Variants
-
-| Variant | Description |
-|---------|-------------|
-| `ring` | Rotating arc - single SVG circle with a gap. Lightest weight, universal default. |
-| `spinner` | iOS-style 8 bars fading in sequence. Premium feel, works at all sizes. |
-| `dots` | Three dots pulsing in sequence. Good for inline/chat typing indicators. |
-| `bars` | Three vertical bars scaling in height. Visually distinct equalizer pattern. |
-| `ring-fill` | SVG stroke that "draws" around a circle. Material Design feel. |
-
 <Callout title="Notes">
-- **Color inheritance:** All variants use `currentColor`, so they adapt to the parent's text color automatically. Wrap in a colored container to change the spinner color.
-- **Button loading:** Use `<Spinner size="sm" />` inside a Button's loading state. The `ring` and `spinner` variants work best at small sizes.
-- **No JS animation:** All animations are pure CSS (`transform` + `opacity` on the compositor thread). No `requestAnimationFrame` or JavaScript timers.
-- **Ring duration:** The default `ring` variant spins on a 900ms cycle — calmer than typical 600-750ms spinners, intentional for a quieter feel.
-- **Accessibility:** Renders with `role="status"` plus your `label` (default `"Loading"`) on `aria-label` and an sr-only span. Override `label` to surface specific async context to assistive tech.
+- One loading indicator across the system. Same silhouette everywhere so the loading language is consistent.
+- Use `<Button loading>`: don't drop a Spinner inside a button label yourself. The Button wires the sizing and busy state for you.
+- Use `variant="dots"` when the wait sits inline in copy ("Saving…"). Reach for `Skeleton` when async data will fill a known layout. Reach for `Progress` when total work is measurable.
+- Colors inherit from `currentColor`. Wrap in a colored container to tint.
+- Pure CSS animation, no JavaScript timer. Honors `prefers-reduced-motion` via the shared tokens.
+- Set `label` to name the work in flight (`Verifying`, `Uploading 3 of 12`) so screen readers announce more than "Loading".
 </Callout>

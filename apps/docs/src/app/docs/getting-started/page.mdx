@@ -1,15 +1,18 @@
+
+export const metadata = { title: "Installation" };
+
 # Getting Started
 
-Patch UI is distributed as **copy-in components** - you add a component and its source lands in your own repo, fully yours to edit. There's no Patch UI package to install and no purge configuration to maintain.
+Patch UI is distributed as **copy-in components**. You add a component and its source lands in your own repo, fully yours to edit. There is no Patch UI npm package to install, no version to bump, and no CSS purge config to maintain.
 
 ## Prerequisites
 
-- A React 19 project with **Tailwind CSS v4** (e.g. Next.js or Vite).
-- The `shadcn` CLI (run via `npx`, no install needed) - it's a generic registry client; it copies **Patch UI's** code, not shadcn's.
+- A React 19 project with **Tailwind CSS v4** (Next.js, Vite, Remix: any modern React setup).
+- The `shadcn` CLI (run via `npx`, no install needed). It is a generic registry client that will copy Patch UI's source into your repo.
 
 ## 1. Register the Patch UI namespace
 
-If you don't have a `components.json` yet, run `npx shadcn@latest init` once to create one. Then add the Patch UI registry under `registries`:
+If you do not have a `components.json` yet, run `npx shadcn@latest init` once to create one. Then add the Patch UI registry under `registries`:
 
 ```json
 // components.json
@@ -26,27 +29,52 @@ If you don't have a `components.json` yet, run `npx shadcn@latest init` once to 
 npx shadcn@latest add @patchui/button
 ```
 
-This copies the component source into your components directory (e.g. `components/ui/button.tsx`), pulls in anything it depends on (the `cn` helper, shared recipes, the design tokens), and installs the required npm packages (`@base-ui/react`, `class-variance-authority`, `clsx`, `tailwind-merge`).
+Running `add` for the first time does four things:
+
+1. Copies the component source into your components directory (e.g. `components/ui/button.tsx`).
+2. Pulls in anything the component depends on: the `cn()` helper, the shared recipes (`focusRing`, `controlSize`, `colorTransition`), and the design tokens.
+3. Installs the required npm packages (`@base-ui/react`, `class-variance-authority`, `clsx`, `tailwind-merge`, and `motion` for components with animations).
+4. Copies the design tokens to `styles/patch-ui-tokens.css`.
+
+### Add several at once
+
+Pass multiple names to install a handful in one call:
+
+```bash
+npx shadcn@latest add @patchui/button @patchui/input @patchui/card
+```
+
+### Install everything
+
+If you want the whole library up front, use the meta item:
+
+```bash
+npx shadcn@latest add @patchui/all
+```
+
+This chains through every component and block in the registry. Consumers who plan to use most of the library find it easier than picking one at a time. Nothing prevents you from deleting what you do not use afterward, since the components are just files in your repo.
 
 ## 3. Wire up the tokens
 
-The first `add` also copies the `--patch-*` design tokens to `styles/patch-tokens.css`. Import them through your **Tailwind CSS** entry file (not a JS import - the `@theme` block needs Tailwind's pipeline):
+Import the copied tokens through your Tailwind CSS entry file (not a JS import, the `@theme` block needs Tailwind's pipeline):
 
 ```css
 /* app/globals.css */
 @import "tailwindcss";
-@import "./styles/patch-tokens.css";
+@import "./styles/patch-ui-tokens.css";
 ```
 
-This registers the tokens as utilities (`bg-patch-surface`, `text-patch-text`, …) and powers light/dark.
+This registers the tokens as utilities (`bg-background-100`, `text-gray-1000`, `text-copy-14`, `rounded-[var(--radius-6)]`, etc.) and drives light and dark mode simultaneously.
 
-### Light / Dark mode
+### Light and dark mode
 
-Tokens cover both modes. Add the `dark` class to `<html>` to switch - no JS theme engine required:
+Tokens cover both modes. Add the `dark` class to `<html>` to switch. No JavaScript theme engine required:
 
 ```html
 <html class="dark">
 ```
+
+For a UI toggle, install the `theme-toggle` component (`npx shadcn add @patchui/theme-toggle`). It handles system preference detection and persistence for you.
 
 ## 4. Use it
 
@@ -58,20 +86,23 @@ export default function App() {
     <div className="flex gap-3">
       <Button variant="primary">Save</Button>
       <Button variant="secondary">Cancel</Button>
-      <Button variant="danger">Delete</Button>
+      <Button variant="error">Delete</Button>
     </div>
   );
 }
 ```
 
-Button supports variants (`primary`, `secondary`, `outline`, `ghost`, `danger`, `link`, `uppercase`), three sizes (`sm`, `md`, `lg`), icons, and a loading state. See the [Button docs](/docs/components/button) for the full API.
+Button ships five variants (`primary`, `secondary`, `tertiary`, `warning`, `error`), three sizes (`sm`, `md`, `lg`), four shapes (`square`, `pill`, `circle`, `rounded`), icon slots on either side, and a loading state. See the [Button docs](/docs/components/button) for the full API.
 
-## Notes
+## What you own
 
-- **You own the code.** Copied components live in your repo - edit them freely. To pull updates, re-run `add` (review the diff).
-- **Base UI** is the one substantial dependency the components are built on; the rest are tiny utilities, all installed automatically.
+- **The source code.** Copied components live in your repo and are yours to edit. Rename props, change variants, delete what you do not use. Nothing is off-limits.
+- **The tokens.** `styles/patch-ui-tokens.css` is copied once. Change a color there, and every component picks it up.
+- **The updates.** To pull upstream changes, re-run `npx shadcn add @patchui/<name>`. Review the diff before accepting. If you have customized a component, decide what to keep.
 
 ## Next steps
 
-- Browse the [Theme & Design Tokens](/docs/theme) reference
-- Explore the components, starting with [Button](/docs/components/button)
+- Read the [Theme & Design Tokens](/docs/theme) reference to understand the token system.
+- Skim the [Contrast contract](/docs/contrast) if you care about accessibility (you should).
+- Browse the components, starting with [Button](/docs/components/button).
+- See what Patch UI is built on and inspired by in [Credits](/docs/credits).

@@ -25,7 +25,7 @@ import { focusRing } from "../recipes";
  *   </SegmentedToggle>
  */
 
-type SegmentedSize = "sm" | "md";
+type SegmentedSize = "sm" | "md" | "lg";
 
 type SegmentedContextValue = {
   value: string;
@@ -87,7 +87,7 @@ export function SegmentedToggle({
           // w-fit + self-start: keep the control content-sized when the
           //   parent is a flex column with the default align-items:
           //   stretch (would otherwise pull the inline-flex full-width).
-          "isolate inline-flex w-fit self-start items-center rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)] p-0.5",
+          "isolate inline-flex w-fit self-start items-center rounded-[var(--radius-6)] border border-gray-alpha-400 p-0.5",
           className,
         )}
         {...props}
@@ -120,7 +120,7 @@ export function SegmentedToggleItem({
   const reduceMotion = useReducedMotion();
   const isActive = activeValue === value;
 
-  // Arrow / Home / End navigation across siblings — uses DOM query
+  // Arrow / Home / End navigation across siblings: uses DOM query
   // rather than ref tracking so it works regardless of how items are
   // composed (Fragment / conditional render).
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -165,13 +165,13 @@ export function SegmentedToggleItem({
       onClick={() => setValue(value)}
       onKeyDown={handleKeyDown}
       className={cn(
-        "relative inline-flex items-center justify-center font-medium tracking-[-0.005em] text-[length:var(--text-patch-control)] transition-colors disabled:pointer-events-none disabled:opacity-50",
-        // Inactive: muted text, hover brightens. Active: inverted text;
-        // background comes from the sliding indicator behind.
-        "text-patch-text-secondary hover:text-patch-text data-[active]:text-patch-bg",
-        // Size scales padding for both icon-only and text items.
-        size === "sm" && "h-6 min-w-6 rounded-[var(--radius-patch-xs)] px-1.5 gap-1.5 [&_svg]:size-3.5",
-        size === "md" && "h-7 min-w-7 rounded-[var(--radius-patch-xs)] px-2 gap-2 [&_svg]:size-4",
+        "relative inline-flex items-center justify-center rounded-[var(--radius-6)] transition-colors disabled:pointer-events-none disabled:opacity-50",
+        // Inactive: muted text, hover brightens. Active: inverted text; background comes from the sliding indicator behind.
+        "text-gray-900 hover:text-gray-1000 data-[active]:text-background-100",
+        // Size scales padding + text for both icon-only and text items.
+        size === "sm" && "h-6 min-w-6 px-1.5 gap-1.5 text-label-12 [&_svg]:size-3.5",
+        size === "md" && "h-7 min-w-7 px-2 gap-2 text-label-13 [&_svg]:size-4",
+        size === "lg" && "h-9 min-w-9 px-3 gap-2 text-label-14 [&_svg]:size-4",
         focusRing,
         className,
       )}
@@ -181,7 +181,7 @@ export function SegmentedToggleItem({
         <motion.div
           layoutId={`segmented-active-${baseId}`}
           data-slot="segmented-toggle-indicator"
-          className="absolute inset-0 -z-10 rounded-[var(--radius-patch-xs)] bg-patch-text"
+          className="absolute inset-0 -z-10 rounded-[var(--radius-6)] bg-gray-1000"
           transition={
             reduceMotion
               ? { duration: 0 }

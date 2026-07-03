@@ -3,14 +3,13 @@
 import { Button, Tooltip, TooltipProvider } from "@patchui/react";
 import { Plus, Save, Trash2 } from "lucide-react";
 
-/** Showcases Tooltip with different sides and arrow. */
 export function TooltipDemo() {
   return (
     <TooltipProvider>
       <div className="flex flex-col gap-8">
         {/* Basic */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          <p className="mb-3 text-xs font-medium text-gray-800">
             Basic
           </p>
           <Tooltip content="This is a tooltip">
@@ -20,7 +19,7 @@ export function TooltipDemo() {
 
         {/* Sides */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+          <p className="mb-3 text-xs font-medium text-gray-800">
             Sides
           </p>
           <div className="flex flex-wrap items-center gap-3">
@@ -34,20 +33,20 @@ export function TooltipDemo() {
           </div>
         </div>
 
-        {/* With Arrow */}
+        {/* Icon buttons */}
         <div>
-          <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-            With Arrow
+          <p className="mb-3 text-xs font-medium text-gray-800">
+            Icon-only buttons
           </p>
           <div className="flex flex-wrap items-center gap-3">
-            <Tooltip content="Save changes" arrow>
+            <Tooltip content="Save changes">
               <Button variant="secondary" icon={<Save className="size-4" />} />
             </Tooltip>
-            <Tooltip content="Add new item" arrow>
+            <Tooltip content="Add new item">
               <Button variant="secondary" icon={<Plus className="size-4" />} />
             </Tooltip>
-            <Tooltip content="Delete item" arrow side="bottom">
-              <Button variant="danger" icon={<Trash2 className="size-4" />} />
+            <Tooltip content="Delete item" side="bottom">
+              <Button variant="error" icon={<Trash2 className="size-4" />} />
             </Tooltip>
           </div>
         </div>

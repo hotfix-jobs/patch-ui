@@ -1,8 +1,11 @@
 import { InputDemo } from "./input-demo";
 
+
+export const metadata = { title: "Input" };
+
 # Input
 
-A styled text input with three visual variants (outlined, ghost, underline), sizes, icons, prefix/suffix slots, error and loading states, a clear button, and an unstyled escape hatch.
+A text input with three sizes, styled/unstyled `prefix` + `suffix` slots, built-in `label` and `error` message, and a `rounded` (pill) variant. Uses `background-100` fill and translucent borders that step through hover/focus.
 
 <Install name="input" />
 
@@ -14,42 +17,40 @@ A styled text input with three visual variants (outlined, ghost, underline), siz
 
 ```tsx
 import { Input } from "@patchui/react";
-import { Search } from "lucide-react";
+import { Search, Mail, ArrowUpCircle } from "lucide-react";
 
-// Basic (outlined is the default)
-<Input placeholder="Enter text..." />
-
-// Variants
-<Input variant="outlined" placeholder="Outlined" />
-<Input variant="ghost" placeholder="Ghost" />          // no border / bg, embedded
-<Input variant="underline" placeholder="Underline" />  // bottom border only
-
-// With icon
-<Input icon={<Search className="h-4 w-4" />} placeholder="Search..." />
-
-// With prefix and suffix
-<Input prefix="$" placeholder="0.00" />
-<Input suffix=".com" placeholder="username" />
+// Basic
+<Input placeholder="Enter text" />
 
 // Sizes
-<Input size="sm" placeholder="Small" />
-<Input size="lg" placeholder="Large" />
+<Input size="sm" placeholder="Small" />   // 32px
+<Input size="md" placeholder="Medium" />  // 40px (default)
+<Input size="lg" placeholder="Large" />   // 48px
 
-// Error state
-<Input invalid value={email} onChange={...} />
+// Prefix and suffix (styled by default — own container + separator)
+<Input prefix={<ArrowUpCircle />} placeholder="Default" />
+<Input suffix={<ArrowUpCircle />} placeholder="Default" />
+<Input prefix="https://" suffix=".com" placeholder="Default" />
 
-// Loading state — disables input, shows spinner
+// Unstyled prefix/suffix (icons float inside the input area)
+<Input prefix={<Search />} prefixStyling={false} placeholder="Search" />
+
+// Inline label and error message
+<Input id="domain" label="Domain" placeholder="example.com" />
+<Input id="email" label="Email" error="Enter a valid email address." />
+
+// Rounded (pill-shaped)
+<Input rounded prefix={<Search />} prefixStyling={false} placeholder="Search" />
+
+// Loading — disables input, shows spinner
 <Input loading value={value} />
 
-// Clear button — appears on the right when value is non-empty
-<Input
+// For clearable search, use SearchInput (clears on Esc key or Esc chip click)
+<SearchInput
   value={query}
   onChange={(e) => setQuery(e.target.value)}
-  onClear={() => setQuery("")}
+  placeholder="Search projects"
 />
-
-// Unstyled (bring your own styles)
-<Input unstyled className="my-custom-input" />
 ```
 
 ## Props
@@ -57,64 +58,64 @@ import { Search } from "lucide-react";
 <PropsTable
   props={[
     {
-      name: "variant",
-      type: '"outlined" | "ghost" | "underline"',
-      default: '"outlined"',
-      description: "Visual style. outlined is the default boxed input. ghost has no border or background — useful when embedding in another container. underline shows only a bottom border, Material-style.",
-    },
-    {
       name: "size",
-      type: '"sm" | "md" | "lg" | number',
+      type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "Control height. Pass a number to set the native HTML size attribute instead.",
-    },
-    {
-      name: "icon",
-      type: "ReactNode",
-      default: "-",
-      description: "An icon element rendered at the start of the input.",
+      description: "Control height. 32 / 40 / 48px.",
     },
     {
       name: "prefix",
       type: "ReactNode",
       default: "-",
-      description: "Content rendered before the input field (e.g. a currency symbol).",
+      description: "Content rendered at the start (icon, unit symbol, or text like `https://`).",
     },
     {
       name: "suffix",
       type: "ReactNode",
       default: "-",
-      description: "Content rendered after the input field (e.g. a unit label or visibility toggle). Hidden while loading.",
+      description: "Content rendered at the end (icon, unit label, or text like `.com`). Hidden while loading.",
     },
     {
-      name: "invalid",
+      name: "prefixStyling",
+      type: "boolean",
+      default: "true",
+      description: "Wraps prefix in a styled container (subtle bg + separator). Set false to float the prefix inside the input area.",
+    },
+    {
+      name: "suffixStyling",
+      type: "boolean",
+      default: "true",
+      description: "Wraps suffix in a styled container (subtle bg + separator). Set false to float the suffix inside the input area.",
+    },
+    {
+      name: "label",
+      type: "string",
+      default: "-",
+      description: "Renders a `<label>` above the input. When set, requires `id`.",
+    },
+    {
+      name: "id",
+      type: "string",
+      default: "-",
+      description: "Required when `label` is a string. Wires up `htmlFor` and `aria-describedby`.",
+    },
+    {
+      name: "error",
+      type: "boolean | string",
+      default: "false",
+      description: "Visual error state. Pass a string to render an inline error message below the input.",
+    },
+    {
+      name: "rounded",
       type: "boolean",
       default: "false",
-      description: "Visual error state. Sets aria-invalid, switches border and focus ring to the error color.",
+      description: "Renders a full-radius (pill-shaped) input.",
     },
     {
       name: "loading",
       type: "boolean",
       default: "false",
       description: "Disables the input and renders a small spinner in the trailing slot.",
-    },
-    {
-      name: "onClear",
-      type: "() => void",
-      default: "-",
-      description: "When provided and the input has a non-empty value, renders a small × clear button on the right that calls this handler.",
-    },
-    {
-      name: "unstyled",
-      type: "boolean",
-      default: "false",
-      description: "Removes all default chrome so you can apply your own.",
-    },
-    {
-      name: "nativeInput",
-      type: "boolean",
-      default: "false",
-      description: "Renders a native <input> instead of the Base UI Input primitive — useful for forms that rely on native browser validation.",
     },
     {
       name: "disabled",
@@ -126,17 +127,16 @@ import { Search } from "lucide-react";
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the outer wrapper.",
+      description: "Additional CSS classes applied to the outer wrapper (or the fieldset when `label`/`error` is set).",
     },
   ]}
 />
 
-
 <Callout title="Notes">
-- **Variant + size compose:** every variant accepts `sm` / `md` / `lg` — for example `<Input variant="underline" size="lg" />` is the search input used inside `CommandDialog`.
-- **`icon` vs `prefix`:** both render at the start of the input. Use `icon` for SVG icons and `prefix` for text-based prefixes like `$` or `@`.
-- **`onClear` ergonomics:** the × button auto-hides while the input is empty, disabled, or loading. It also sets `tabIndex={-1}` so Tab doesn't stop on it.
-- **Loading overrides suffix:** while `loading` is true, the spinner replaces any user-provided `suffix` to avoid layout collisions.
-- **Unstyled mode:** still renders the wrapper `<span>` and slot structure so you can layer your own classes on top.
-- **Validation messaging:** for description and error text *below* the input, use the `Field` component which wires `aria-describedby` to your message.
+- The `error` prop takes a boolean (just the visual state) or a string (renders the message inline with `role="alert"`). Prefer strings.
+- Whitespace-trim the value at submit time so a stray space doesn't slip past a required check.
+- Placeholders should look like a real value the user would type: `example.com`, `my-project`. Skip the "Enter your…" instructions; the label already does that job.
+- Styled prefixes and suffixes read as their own module: good for `https://` schemes, `.com` domains, currency units. Turn styling off (`prefixStyling={false}`) when the affix is really an icon that lives inside the field.
+- For an action button that sits inside an input row, use `<Button shape="circle">` with `aria-label`, not a naked icon.
+- Use `<SearchInput>` for search boxes so keyboard Esc and the Esc chip both clear the value.
 </Callout>

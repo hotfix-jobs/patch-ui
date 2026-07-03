@@ -1,8 +1,11 @@
 import { TooltipDemo } from "./tooltip-demo";
 
+
+export const metadata = { title: "Tooltip" };
+
 # Tooltip
 
-A popup that displays additional information when hovering over an element. Supports configurable placement, offset, and an optional arrow indicator.
+A popup that displays additional information when hovering over an element. Supports configurable placement and offset.
 
 <Install name="tooltip" />
 
@@ -22,8 +25,8 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
     <Button>Hover me</Button>
   </Tooltip>
 
-  {/* With arrow and custom side */}
-  <Tooltip content="Save your changes" side="bottom" arrow>
+  {/* Custom side */}
+  <Tooltip content="Save your changes" side="bottom">
     <Button>Save</Button>
   </Tooltip>
 </TooltipProvider>
@@ -60,10 +63,16 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
       description: "Distance in pixels between the tooltip and trigger.",
     },
     {
-      name: "arrow",
-      type: "boolean",
-      default: "false",
-      description: "Whether to render a directional arrow pointing at the trigger.",
+      name: "delay",
+      type: "number",
+      default: "150",
+      description: "Milliseconds to wait before opening. Small default keeps a sweeping mouse from flickering tooltips open.",
+    },
+    {
+      name: "closeDelay",
+      type: "number",
+      default: "0",
+      description: "Milliseconds to wait before closing.",
     },
     {
       name: "className",
@@ -81,7 +90,7 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
     {
       name: "delay",
       type: "number",
-      default: "300",
+      default: "150",
       description: "Milliseconds to wait before opening a tooltip.",
     },
     {
@@ -93,7 +102,7 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
     {
       name: "timeout",
       type: "number",
-      default: "400",
+      default: "500",
       description: "If a tooltip was recently closed, the next one opens instantly within this timeout (ms).",
     },
   ]}
@@ -101,8 +110,8 @@ import { Button, Tooltip, TooltipProvider } from "@patchui/react";
 
 
 <Callout title="Notes">
-- **TooltipProvider:** Wrap multiple tooltips in a `TooltipProvider` for shared delay behavior - hovering between adjacent tooltips opens them instantly.
-- **Hover activation:** Tooltips appear on mouse hover and keyboard focus, after the configured delay.
-- **Portal rendering:** The tooltip renders outside the DOM tree via a portal, avoiding overflow clipping.
-- **Arrow indicator:** Set `arrow` to render a small triangle pointing from the tooltip to the trigger element.
+- Wrap a rail of tooltips in `<TooltipProvider>` so moving between adjacent triggers opens each one without the delay firing again. Tune the group delay on the provider.
+- Tooltips open on hover *and* keyboard focus so keyboard users don't miss the hint. Any focusable trigger (Button, link, icon-only button) works.
+- The popup renders through a portal so it's not clipped by nearby `overflow-hidden` containers.
+- Keep the content short, a sentence at most. If the tip needs a paragraph, promote it to a `Modal` or `Sheet`.
 </Callout>

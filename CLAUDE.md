@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Patch UI is a React component library built on Base UI primitives with Tailwind CSS v4 and a `--patch-*` design-token system. It is an NPM workspaces monorepo with a docs site.
+Patch UI is a React component library built on Base UI primitives with Tailwind CSS v4 and a flat design-token system (`--gray-*`, `--background-*`, `--radius-*`, `--text-*`, etc., no prefix). It is an NPM workspaces monorepo with a docs site.
 
 It is distributed **copy-in** (the shadcn model): there is **no published npm package**. Consumers run `npx shadcn add @patchui/<component>` and the source is copied into their repo. The component library is the source of truth that the registry is generated from.
 
@@ -54,20 +54,24 @@ There are no unit-test or lint frameworks. The verification gate is: build, `che
 
 ## Design Bar (every component conforms)
 
-- **Focus:** the `focusRing` recipe (1px solid outline via `--patch-focus-ring`). No ring-2/ring-3.
-- **Type:** tokenized scale only (`--text-patch-micro/mini/control/body/lead` = 11/12/13/15/18). No raw `text-[Npx]` except intentional display sizes.
+- **Focus:** the `focusRing` recipe (1px solid outline via `--focus-ring-color` + `--focus-ring-offset`). No ring-2/ring-3.
+- **Type family discipline:** compound `text-*` classes are complete recipes (size + line-height + tracking + font-weight bundled). Use them alone, never paired with a `font-*` utility. If you need a different weight at a given size, switch families: `text-heading-*` = 600, `text-button-*` = 500, `text-copy-*` and `text-label-*` = 400. Never mix `text-copy-14 font-medium`; use `text-button-14` instead. No raw `text-[Npx]` except intentional display sizes.
 - **Sizing:** `sm/md/lg` vocabulary via `controlSize`. No arbitrary `h-[Npx]`.
-- **Radius:** `--radius-patch-xs/sm/lg` (2/4/8) only; controls use sm, surfaces use lg, chips use xs.
-- **Motion:** duration/easing tokens only (`--duration-patch-*`, `--ease-patch-*`); no hardcoded ms, no inline cubic-bezier, no `transition-all`.
-- **Elevation:** flat with 0.5px hairline borders; shadows only on overlays (dialog/menu/select-popup/tooltip/toast).
+- **Radius:** `--radius-6/12/16/full` only; controls use radius-6, surfaces use radius-12, marketing chrome uses radius-16, chips use radius-full.
+- **Motion:** duration/easing tokens only (`--duration-state`, `--duration-overlay`, `--ease-standard`); no hardcoded ms, no inline cubic-bezier, no `transition-all`.
+- **Elevation:** flat with 1px hairline borders (`border-gray-alpha-400`); shadows only on overlays (dialog/menu/select-popup/tooltip/toast).
+- **Status colors:** use the semantic role tokens (`bg-success` / `bg-warning` / `bg-error`) for status fills, never the `-700` accent step. The accent scale inverts in dark mode; the semantic roles are fixed hex that read identically in both themes. Applies to Badge, Progress, Switch, Button destructive variants.
+- **Variant vocabulary:** where multiple components accept variants for the same visual role, use the shared Button vocabulary (`primary` / `secondary` / `tertiary` / `warning` / `error`). Toggle follows this: `secondary` = bordered, `tertiary` = transparent. Do not invent per-component names like `outline` or `ghost`.
+- **No uppercase text.** Uppercase small-caps reads as a design cliche and is not part of the aesthetic.
+- **No decorative mono.** Reserve `font-mono` for genuine code contexts: `<code>`, `<pre>`, `<kbd>`, install snippets, hex values shown as code. Not for pill labels, table cells, or class-name reference chips.
 - **States:** hover, active, focus-visible, disabled defined on every interactive component.
 - Verify light + dark and run `check:contrast`.
 
 ## Styling Conventions
 
-- All colors reference CSS custom properties (e.g. `bg-[var(--btn-primary-bg)]`), never hardcoded values.
-- Design tokens live in `packages/react/src/theme/tokens.css` (`--patch-*`). Light/dark via `:root` and `.dark`.
-- Tailwind v4 with `@import` syntax. Consumers import the copied `styles/patch-tokens.css` through their Tailwind entry file.
+- All colors reference tokens through Tailwind utilities (`bg-gray-1000`, `text-gray-800`, `border-gray-alpha-400`) or CSS variables (`var(--gray-1000)`), never hardcoded hex.
+- Design tokens live in `packages/react/src/theme/tokens.css`. Layer 1: raw `--gray-*`, `--background-*`, `--radius-*`, `--text-*` etc. on `:root` / `.dark`. Layer 2: `@theme inline` block bridges them into Tailwind. Layer 3: `@layer utilities` compound text classes (`.text-heading-40`, `.text-copy-14`, etc.).
+- Tailwind v4 with `@import` syntax. Consumers import the copied `styles/patch-ui-tokens.css` through their Tailwind entry file.
 - The docs CSS uses `@source` to scan the workspace library source so demo classes are not purged (docs only; copy-in consumers do not need `@source`).
 
 ## Build Configuration

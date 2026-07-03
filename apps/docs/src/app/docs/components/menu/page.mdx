@@ -1,5 +1,8 @@
 import { MenuDemo } from "./menu-demo";
 
+
+export const metadata = { title: "Menu" };
+
 # Menu
 
 A dropdown menu with support for items, groups, checkbox items, radio items, sub-menus, keyboard shortcuts, and separators. Custom-built on `@floating-ui/react` with `motion`-driven spring open/close, `FloatingTree` for sub-menu coordination, list navigation, and type-ahead.
@@ -157,7 +160,7 @@ const [value, setValue] = useState("system");
     { name: "MenuPopup", description: "Portal-rendered popup with positioner." },
     { name: "MenuItem", description: "A single menu action. Supports variant, selected, description, and inset." },
     { name: "MenuGroup", description: "Groups related items together." },
-    { name: "MenuGroupLabel", description: "Label for a group, rendered in micro-uppercase with letter-spacing. Supports inset." },
+    { name: "MenuGroupLabel", description: "Label for a group. Supports inset." },
     { name: "MenuSection", description: "Compound section: a labeled group with consistent vertical spacing. Sugar for MenuGroup + MenuGroupLabel." },
     { name: "MenuCheckboxItem", description: "A togglable item with a check indicator." },
     { name: "MenuRadioGroup", description: "Container for mutually exclusive radio items." },
@@ -177,6 +180,6 @@ const [value, setValue] = useState("system");
 - **Portal rendering:** The popup renders outside the DOM tree via a portal, so it appears above all other content.
 - **Inset alignment:** Use the `inset` prop on `MenuItem`, `MenuGroupLabel`, and `MenuSubTrigger` to align text with items that have icons or check indicators.
 - **Motion:** Open AND close are spring-animated via `motion` + `AnimatePresence` (true bidirectional, not CSS-driven). Stiffness 400, damping 30, mass 0.6. Respects `prefers-reduced-motion`.
-- **Foundation:** Built on `@floating-ui/react` — `useFloating` for positioning, `useListNavigation` for arrow keys, `useTypeahead` for type-to-jump, `FloatingTree` so nested sub-menus coordinate dismissal cleanly.
+- **Foundation:** Built on `@floating-ui/react`: `useFloating` for positioning, `useListNavigation` for arrow keys, `useTypeahead` for type-to-jump, `FloatingTree` so nested sub-menus coordinate dismissal cleanly.
 - **`selected` vs `MenuCheckboxItem`:** Use `selected` for single-select "currently chosen" UI with a trailing check. Use `MenuCheckboxItem` for multi-select toggles with a leading indicator.
 </Callout>

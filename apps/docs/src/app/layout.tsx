@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
+import { SiteChrome } from "@/components/site-chrome";
 import "./globals.css";
 
 const themeScript = `
@@ -13,14 +14,36 @@ const themeScript = `
 })();
 `;
 
+// JSON-LD structured data: describes Patch UI as SoftwareApplication so
+// search engines pick up the library metadata (name, description, category)
+// alongside the standard OpenGraph card.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Patch UI",
+  description:
+    "A React component library built on Base UI and Tailwind CSS v4. Copy-in via the shadcn CLI.",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Any",
+  url: "https://ui.hotfix.jobs",
+  license: "https://opensource.org/licenses/MIT",
+  softwareRequirements: "React 19, Tailwind CSS v4",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  publisher: {
+    "@type": "Organization",
+    name: "Hotfix",
+    url: "https://hotfix.jobs",
+  },
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://ui.hotfix.jobs"),
   title: {
-    default: "Patch UI - accessible React components, copy-in",
+    default: "Patch UI: accessible React components, copy-in",
     template: "%s - Patch UI",
   },
   description:
-    "A React component library built on Base UI and Tailwind CSS v4. Copy components into your repo with the shadcn CLI - crisp, accessible, token-driven, light/dark.",
+    "A React component library built on Base UI and Tailwind CSS v4. Copy components into your repo with the shadcn CLI: crisp, accessible, token-driven, light and dark.",
   keywords: [
     "react",
     "components",
@@ -32,11 +55,14 @@ export const metadata: Metadata = {
     "accessible",
   ],
   alternates: { canonical: "/" },
+  // Favicons use Next.js App Router's file-based convention:
+  // src/app/favicon.ico + src/app/icon.svg + src/app/apple-icon.png
+  // are auto-detected. No `icons` metadata needed.
   openGraph: {
     type: "website",
-    title: "Patch UI - accessible React components, copy-in",
+    title: "Patch UI: accessible React components, copy-in",
     description:
-      "Copy accessible, token-driven React components into your repo. Built on Base UI + Tailwind CSS v4.",
+      "Copy accessible, token-driven React components into your repo. Built on Base UI and Tailwind CSS v4.",
     url: "https://ui.hotfix.jobs",
     siteName: "Patch UI",
   },
@@ -44,7 +70,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Patch UI",
     description:
-      "Accessible, token-driven React components - copy-in via the shadcn CLI.",
+      "Accessible, token-driven React components. Copy-in via the shadcn CLI.",
   },
 };
 
@@ -58,8 +84,12 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="min-h-screen antialiased">
-        {children}
+      <body className="min-h-screen antialiased flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <SiteChrome>{children}</SiteChrome>
         <Analytics />
       </body>
     </html>

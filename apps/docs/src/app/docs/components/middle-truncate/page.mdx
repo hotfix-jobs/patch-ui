@@ -1,0 +1,54 @@
+import { MiddleTruncateDemo } from "./middle-truncate-demo";
+
+
+export const metadata = { title: "MiddleTruncate" };
+
+# MiddleTruncate
+
+Truncates a string in the middle, preserving the start and the last few characters. Use for identifiers where BOTH the beginning and end matter: file paths, commit hashes, invoice IDs, branch names, URLs.
+
+Never use for prose, headings, or descriptions. Middle-truncating a sentence destroys meaning; end-truncation (Tailwind's `truncate`) is the right fit there.
+
+<Install name="middle-truncate" />
+
+<ComponentPreview label="MiddleTruncate Examples">
+  <MiddleTruncateDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { MiddleTruncate } from "@patchui/react";
+
+<MiddleTruncate
+  value="dpl_2XfHqvW9NbGkLm3pTZ7Yz4vJc8Bh1Rd6P9Ab"
+  className="text-copy-14"
+/>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Full string to render. Shown verbatim on hover via title attribute.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional classes on the wrapper span.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Three spans under the hood.** Head (LTR, clips right) + fixed `…` glyph + tail (RTL, clips left) so the ellipsis stays visually centered as the container narrows. This matches Vercel Geist's algorithm: one ellipsis, both sides shrink together.
+- **Value is split roughly in half.** No `tail` prop to configure: the algorithm always splits at the midpoint. Left gets the larger half on odd-length values so path-like strings keep more context on the leading side.
+- **Aria.** The full value is passed to both `title` (hover tooltip) and `aria-label` so screen readers announce the complete string rather than the truncated visible form.
+- **Container needs a width bound.** Use inside a flex/grid cell or an element with a fixed / percentage width. Without a width constraint there's nothing for the head + tail to shrink against.
+- **Reach for it when both ends matter.** Regular end-truncation is fine for titles (only the start disambiguates). Middle-truncate for hashes, paths, URLs where the tail carries identity.
+</Callout>

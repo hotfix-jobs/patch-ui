@@ -6,6 +6,7 @@ import {
   ComboboxInput,
   ComboboxPopup,
   ComboboxItem,
+  SectionLabel,
 } from "@patchui/react";
 import { Info, Search } from "lucide-react";
 
@@ -24,9 +25,11 @@ const FRAMEWORKS = [
 
 const RECENT = ["React", "Vue"];
 
+
 export function ComboboxDemo() {
   const [query, setQuery] = useState("");
   const [picked, setPicked] = useState<string | null>(null);
+  const [query2, setQuery2] = useState("");
 
   const needle = query.trim().toLowerCase();
   const matches = useMemo(
@@ -34,28 +37,37 @@ export function ComboboxDemo() {
     [needle],
   );
 
+  const needle2 = query2.trim().toLowerCase();
+  const matches2 = useMemo(
+    () => FRAMEWORKS.filter((f) => f.toLowerCase().includes(needle2)),
+    [needle2],
+  );
+
   return (
     <div className="flex flex-col gap-8">
-      {/* Basic — filterable list */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Basic
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Basic: with search icon, chevron, and clearable</SectionLabel>
         <div className="max-w-sm">
           <Combobox>
             <ComboboxInput
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              icon={<Search />}
-              placeholder="Pick a framework..."
+              prefix={<Search />}
+              prefixStyling={false}
+              placeholder="Search…"
+              clearable
+              onClear={() => {
+                setQuery("");
+                setPicked(null);
+              }}
             />
             <ComboboxPopup>
               {matches.length === 0 ? (
-                <div className="px-3 py-6 text-center text-[length:var(--text-patch-control)] text-patch-text-tertiary">
+                <div className="px-3 py-6 text-center text-label-13 text-gray-800">
                   No matches.
                 </div>
               ) : (
-                <div className="p-1">
+                <div className="py-1">
                   {matches.map((f) => (
                     <ComboboxItem
                       key={f}
@@ -72,46 +84,40 @@ export function ComboboxDemo() {
             </ComboboxPopup>
           </Combobox>
           {picked && (
-            <p className="mt-2 text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
-              Selected: {picked}
-            </p>
+            <p className="mt-2 text-label-12 text-gray-800">Selected: {picked}</p>
           )}
         </div>
       </div>
 
-      {/* Custom content — recents + suggestions + info banner */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Custom content (recents, banner)
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Custom content (recents section, banner)</SectionLabel>
         <div className="max-w-sm">
           <Combobox>
             <ComboboxInput
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              icon={<Search />}
-              placeholder="Search frameworks..."
+              value={query2}
+              onChange={(e) => setQuery2(e.target.value)}
+              prefix={<Search />}
+              prefixStyling={false}
+              placeholder="Search frameworks…"
+              clearable
+              onClear={() => setQuery2("")}
             />
             <ComboboxPopup>
-              {/* Info banner — arbitrary JSX, not a ComboboxItem */}
-              <div className="flex items-center gap-1.5 border-b-[0.5px] border-patch-border px-3 py-2 text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
+              {/* Banner spans edge-to-edge: no padding needed on the popup body */}
+              <div className="flex items-center gap-1.5 border-b border-gray-alpha-400 px-3 py-2 text-label-12 text-gray-800">
                 <Info className="h-3.5 w-3.5 shrink-0" aria-hidden />
                 <span>Recents shown first</span>
               </div>
 
-              {/* Recents section */}
-              {needle === "" && RECENT.length > 0 && (
-                <div className="border-b-[0.5px] border-patch-border p-1">
-                  <div className="px-2 pb-1 pt-1 text-[length:var(--text-patch-micro)] font-medium uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
+              {needle2 === "" && RECENT.length > 0 && (
+                <div className="border-b border-gray-alpha-400 py-1">
+                  <div className="px-3 pb-1 pt-1 text-button-12 text-gray-800">
                     Recent
                   </div>
                   {RECENT.map((r) => (
                     <ComboboxItem
                       key={`recent-${r}`}
-                      onSelect={() => {
-                        setPicked(r);
-                        setQuery(r);
-                      }}
+                      onSelect={() => setQuery2(r)}
                     >
                       {r}
                     </ComboboxItem>
@@ -119,21 +125,14 @@ export function ComboboxDemo() {
                 </div>
               )}
 
-              {/* Suggestions */}
-              <div className="p-1">
-                {matches.length === 0 ? (
-                  <div className="px-3 py-4 text-center text-[length:var(--text-patch-mini)] text-patch-text-tertiary">
+              <div className="py-1">
+                {matches2.length === 0 ? (
+                  <div className="px-3 py-4 text-center text-label-12 text-gray-800">
                     No matches.
                   </div>
                 ) : (
-                  matches.map((f) => (
-                    <ComboboxItem
-                      key={f}
-                      onSelect={() => {
-                        setPicked(f);
-                        setQuery(f);
-                      }}
-                    >
+                  matches2.map((f) => (
+                    <ComboboxItem key={f} onSelect={() => setQuery2(f)}>
                       {f}
                     </ComboboxItem>
                   ))

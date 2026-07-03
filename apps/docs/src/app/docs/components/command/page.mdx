@@ -1,5 +1,8 @@
 import { CommandDemo } from "./command-demo";
 
+
+export const metadata = { title: "Command" };
+
 # Command
 
 A command palette built on Base UI's Autocomplete (inline mode: the list is always visible, no positioned dropdown). Type to filter, arrow keys to move, Enter to select. Pass `items` for built-in filtering, or `filteredItems` to drive results from your own search index. Wrap in `CommandDialog` for a Cmd+K palette.
@@ -96,7 +99,7 @@ For grouped results, wrap items in `CommandSection` (or `CommandGroup` + `Comman
 ## Components
 
 - `Command` - root (Base UI Autocomplete in inline mode); takes `items` or `filteredItems`
-- `CommandDialog` - `Command` inside a `Dialog` for a Cmd+K palette
+- `CommandDialog` - `Command` inside a `Modal` for a Cmd+K palette
 - `CommandInput` - search input with a leading icon
 - `CommandList` - the results list; supports `density`
 - `CommandItem` - a selectable result; supports `selected` and `description`

@@ -1,8 +1,11 @@
 import { CheckboxDemo } from "./checkbox-demo";
 
+
+export const metadata = { title: "Checkbox" };
+
 # Checkbox
 
-A single boolean choice for forms, with controlled, uncontrolled, indeterminate, and disabled states.
+Two-state control (checked / unchecked) with an indeterminate visual for partial-selection headers. Pass a label as children and the whole label becomes the click target automatically.
 
 <Install name="checkbox" />
 
@@ -15,18 +18,29 @@ A single boolean choice for forms, with controlled, uncontrolled, indeterminate,
 ```tsx
 import { Checkbox } from "@patchui/react";
 
-// Uncontrolled
-<Checkbox defaultChecked />
+// With label as children — the label becomes clickable
+<Checkbox>Send weekly digest</Checkbox>
 
 // Controlled
 const [checked, setChecked] = useState(false);
-<Checkbox checked={checked} onCheckedChange={(c) => setChecked(c)} />
+<Checkbox checked={checked} onCheckedChange={setChecked}>
+  Notify on mentions
+</Checkbox>
 
-// Indeterminate (mixed state in a parent / child checkbox group)
-<Checkbox indeterminate />
+// Uncontrolled with initial state
+<Checkbox defaultChecked>Enabled by default</Checkbox>
+
+// Indeterminate (drive from a parent that knows partial selection)
+<Checkbox indeterminate>3 of 5 selected</Checkbox>
+
+// Bare (no label) — for row-select in tables, use aria-label
+<Checkbox aria-label="Select row" />
+
+// Acknowledgment (full sentence, ends in period)
+<Checkbox required>I agree to the Terms of Service.</Checkbox>
 
 // Disabled
-<Checkbox disabled />
+<Checkbox disabled>Locked option</Checkbox>
 ```
 
 ## Props
@@ -34,73 +48,84 @@ const [checked, setChecked] = useState(false);
 <PropsTable
   props={[
     {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional label. When present, wraps the checkbox in a `<label>` so the label is clickable.",
+    },
+    {
       name: "checked",
       type: "boolean",
       default: "-",
-      description: "Whether the checkbox is currently ticked. Use for controlled checkboxes.",
+      description: "Controlled checked state.",
     },
     {
       name: "defaultChecked",
       type: "boolean",
       default: "false",
-      description: "Whether the checkbox is initially ticked. Use for uncontrolled checkboxes.",
+      description: "Uncontrolled initial checked state.",
     },
     {
       name: "onCheckedChange",
       type: "(checked: boolean, details) => void",
       default: "-",
-      description: "Callback fired when the checkbox is ticked or unticked.",
+      description: "Fired when the box is ticked or unticked.",
     },
     {
       name: "indeterminate",
       type: "boolean",
       default: "false",
-      description: "Whether the checkbox is in a mixed state: neither ticked nor unticked. Renders a dash instead of a check.",
+      description: "Renders the dash instead of a check. Purely visual: the native input still reports unchecked.",
     },
     {
       name: "disabled",
       type: "boolean",
       default: "false",
-      description: "Disables the checkbox, preventing interaction.",
+      description: "Disables the checkbox.",
     },
     {
       name: "readOnly",
       type: "boolean",
       default: "false",
-      description: "Prevents the user from toggling the checkbox.",
+      description: "Prevents the user from toggling.",
     },
     {
       name: "required",
       type: "boolean",
       default: "false",
-      description: "Whether the checkbox must be ticked before submitting a form.",
+      description: "Requires the box to be ticked before form submission.",
     },
     {
       name: "name",
       type: "string",
       default: "-",
-      description: "Identifies the field when a form is submitted.",
+      description: "Field name when submitted with a form.",
     },
     {
       name: "value",
       type: "string",
       default: "-",
-      description: "The value submitted with the form when the checkbox is checked.",
+      description: "Value submitted with the form when checked.",
+    },
+    {
+      name: "wrapperClassName",
+      type: "string",
+      default: "-",
+      description: "Extra classes on the outer `<label>` (only used when `children` is provided).",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the checkbox root.",
+      description: "Extra classes on the checkbox root.",
     },
   ]}
 />
 
-
 <Callout title="Notes">
-- **Checkbox vs Switch:** Use a checkbox for form options that take effect on submit (e.g. "I agree to the terms"). Use a [Switch](/docs/components/switch) for settings that apply immediately.
-- **Checkbox vs Radio:** Use checkboxes when zero or more options can be selected. Use a [Radio group](/docs/components/radio) when exactly one must be chosen.
-- **Indeterminate:** A visual-only state, useful for "select all" headers when only some children are ticked. The native input is still reported as unchecked.
-- **Accessibility:** Renders a hidden `<input type="checkbox">` for native form participation. Wrap the checkbox and its label in a `<label>` so clicking the label toggles the checkbox.
-- **Controlled vs uncontrolled:** Use `checked` + `onCheckedChange` for controlled usage. Use `defaultChecked` for uncontrolled.
+- Reach for Checkbox when the user is picking zero or more from a list (opt-in preferences, table row select, filter multi-select) or affirming a specific statement (terms, exports). Reach for `Switch` when a single boolean setting saves immediately.
+- Indeterminate is only visual. Drive it from a parent that tracks partial selection: as soon as every child is either fully on or fully off, clear the indeterminate state.
+- For row-select checkboxes with no visible label, pass `aria-label="Select {row name}"` so the row stays identifiable when the surrounding context is off-screen.
+- Group related checkboxes in a `<fieldset>` with a `<legend>` so screen readers announce the group name before each option.
+- The checkbox is a `<button role="checkbox">` on top of a hidden `<input type="checkbox">`, so it participates in native forms without losing keyboard behavior.
 </Callout>

@@ -19,7 +19,8 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./theme/tokens.css": "./src/theme/tokens.css"
+    "./theme/tokens.css": "./src/theme/tokens.css",
+    "./blocks/*": "./src/blocks/*/index.tsx"
   },
   "files": [
     "dist",

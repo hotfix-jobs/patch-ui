@@ -1,18 +1,68 @@
 "use client";
 
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
-import type React from "react";
+import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
+export type SwitchVariant = "default" | "success" | "warning" | "error";
+export type SwitchSize = "sm" | "md" | "lg";
+
+export interface SwitchProps extends SwitchPrimitive.Root.Props {
+  /** Color of the on-state fill. */
+  variant?: SwitchVariant;
+  /** Size preset. */
+  size?: SwitchSize;
+  /** Icons rendered inside the thumb, per state. */
+  icon?: {
+    checked?: React.ReactNode;
+    unchecked?: React.ReactNode;
+  };
+}
+
+const trackBySize: Record<SwitchSize, string> = {
+  sm: "h-4 w-7",
+  md: "h-5 w-9",
+  lg: "h-6 w-11",
+};
+
+const thumbBySize: Record<SwitchSize, string> = {
+  sm: "size-3 data-checked:translate-x-3",
+  md: "size-[18px] data-checked:translate-x-4",
+  lg: "size-5 data-checked:translate-x-5",
+};
+
+const iconSizeBySize: Record<SwitchSize, string> = {
+  sm: "[&_svg]:size-2",
+  md: "[&_svg]:size-3",
+  lg: "[&_svg]:size-3.5",
+};
+
+// Status variants use the semantic role tokens (--success / --warning /
+// --error) instead of the -700 accent step. The accent scale inverts in
+// dark mode, so bg-green-700 becomes a light green which flips the
+// perceived status weight of the switch. Semantic tokens are theme-invariant.
+const onFillByVariant: Record<SwitchVariant, string> = {
+  default: "data-checked:bg-gray-1000",
+  success: "data-checked:bg-success",
+  warning: "data-checked:bg-warning",
+  error: "data-checked:bg-error",
+};
+
 export function Switch({
   className,
+  variant = "default",
+  size = "md",
+  icon,
   ...props
-}: SwitchPrimitive.Root.Props): React.ReactElement {
+}: SwitchProps): React.ReactElement {
   return (
     <SwitchPrimitive.Root
       className={cn(
-        "inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full p-px data-checked:bg-patch-text data-unchecked:bg-patch-border-hover data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "group inline-flex shrink-0 cursor-pointer items-center rounded-full p-px",
+        "data-unchecked:bg-gray-alpha-500 data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        trackBySize[size],
+        onFillByVariant[variant],
         colorTransition,
         focusRing,
         className,
@@ -21,9 +71,27 @@ export function Switch({
       {...props}
     >
       <SwitchPrimitive.Thumb
-        className="pointer-events-none block size-[18px] rounded-full bg-patch-surface shadow-[var(--shadow-patch-sm)] transition-[translate] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)] data-checked:translate-x-4 data-unchecked:translate-x-0"
+        className={cn(
+          "relative pointer-events-none rounded-full bg-background-100 shadow-[var(--shadow-card)]",
+          "transition-[translate] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "data-unchecked:translate-x-0",
+          "[&_svg]:text-gray-900",
+          iconSizeBySize[size],
+          thumbBySize[size],
+        )}
         data-slot="switch-thumb"
-      />
+      >
+        {icon?.unchecked && (
+          <span className="absolute inset-0 flex items-center justify-center group-data-checked:hidden">
+            {icon.unchecked}
+          </span>
+        )}
+        {icon?.checked && (
+          <span className="absolute inset-0 hidden items-center justify-center group-data-checked:flex">
+            {icon.checked}
+          </span>
+        )}
+      </SwitchPrimitive.Thumb>
     </SwitchPrimitive.Root>
   );
 }

@@ -1,8 +1,11 @@
 import { SelectDemo } from "./select-demo";
 
+
+export const metadata = { title: "Select" };
+
 # Select
 
-A dropdown selection component with support for grouped items, separators, and multiple sizes. Custom-built on `@floating-ui/react` with `motion`-driven spring open/close, keyboard navigation, and type-ahead.
+A native `<select>` wrapped in styled chrome. Uses the OS-native dropdown, which behaves correctly on every platform, especially mobile where the native picker is far better than any custom popup.
 
 <Install name="select" />
 
@@ -13,52 +16,46 @@ A dropdown selection component with support for grouped items, separators, and m
 ## Usage
 
 ```tsx
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectPopup,
-  SelectItem,
-  SelectGroup,
-  SelectGroupLabel,
-  SelectSeparator,
-} from "@patchui/react";
+import { Select } from "@patchui/react";
 
-// Basic select
-<Select defaultValue="apple">
-  <SelectTrigger>
-    <SelectValue placeholder="Choose a fruit…" />
-  </SelectTrigger>
-  <SelectPopup>
-    <SelectItem value="apple">Apple</SelectItem>
-    <SelectItem value="banana">Banana</SelectItem>
-    <SelectItem value="cherry">Cherry</SelectItem>
-  </SelectPopup>
+<Select
+  id="framework"
+  label="Framework"
+  value={framework}
+  onChange={(e) => setFramework(e.target.value)}
+>
+  <option value="react">React</option>
+  <option value="vue">Vue</option>
+  <option value="svelte">Svelte</option>
 </Select>
 
-// Grouped items
-<Select defaultValue="react">
-  <SelectTrigger className="w-56">
-    <SelectValue placeholder="Choose a framework…" />
-  </SelectTrigger>
-  <SelectPopup>
-    <SelectGroup>
-      <SelectGroupLabel>Frontend</SelectGroupLabel>
-      <SelectItem value="react">React</SelectItem>
-      <SelectItem value="vue">Vue</SelectItem>
-    </SelectGroup>
-    <SelectSeparator />
-    <SelectGroup>
-      <SelectGroupLabel>Backend</SelectGroupLabel>
-      <SelectItem value="node">Node.js</SelectItem>
-    </SelectGroup>
-  </SelectPopup>
+// Grouped options
+<Select id="assignee" label="Assignee" defaultValue="ana">
+  <optgroup label="Design">
+    <option value="ana">Ana</option>
+    <option value="ben">Ben</option>
+  </optgroup>
+  <optgroup label="Engineering">
+    <option value="chris">Chris</option>
+    <option value="dana">Dana</option>
+  </optgroup>
+</Select>
+
+// Placeholder + validation
+<Select
+  id="plan"
+  label="Plan"
+  required
+  error="Please select a plan."
+  defaultValue=""
+  placeholder="Select a plan…"
+>
+  <option value="hobby">Hobby</option>
+  <option value="pro">Pro</option>
 </Select>
 ```
 
 ## Props
-
-### SelectTrigger
 
 <PropsTable
   props={[
@@ -66,86 +63,63 @@ import {
       name: "size",
       type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "The size of the trigger button.",
+      description: "Controls the height and typography of the select.",
     },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
-
-### SelectValue
-
-<PropsTable
-  props={[
     {
       name: "placeholder",
       type: "string",
       default: "-",
-      description: "Text shown when no value is selected.",
+      description: "Rendered as a disabled first option; shown when no value is selected.",
     },
     {
-      name: "className",
+      name: "label",
       type: "string",
       default: "-",
-      description: "Additional CSS classes.",
+      description: "Renders a <label> above the select. Requires `id` for accessibility.",
     },
-  ]}
-/>
-
-### SelectPopup
-
-The popup auto-positions below the trigger with `bottom-start` placement, 4px offset, and auto-flip / shift middleware. It sizes itself to at least the trigger width and clamps its height to the available viewport (capped at 360px).
-
-### SelectItem
-
-<PropsTable
-  props={[
     {
-      name: "value",
+      name: "id",
       type: "string",
       default: "-",
-      description: "The value of this option, used for form submission and selection state.",
+      description: "Required when passing a string `label` so the label associates correctly.",
+    },
+    {
+      name: "prefix",
+      type: "ReactNode",
+      default: "-",
+      description: "Content rendered at the start of the field (icon, unit).",
+    },
+    {
+      name: "suffix",
+      type: "ReactNode",
+      default: "-",
+      description: "Content rendered at the end, before the chevron.",
+    },
+    {
+      name: "error",
+      type: "boolean | string",
+      default: "-",
+      description: "`true` for red-border state; a string renders the message below the field.",
     },
     {
       name: "disabled",
       type: "boolean",
       default: "false",
-      description: "Whether this item is disabled.",
+      description: "Disables the select.",
     },
     {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
+      name: "required",
+      type: "boolean",
+      default: "false",
+      description: "Marks the field as required and appends a red asterisk to the label.",
     },
   ]}
 />
 
-## Compound Components
-
-<CompoundComponents
-  components={[
-    { name: "Select", description: "Root component that manages open/close state and value." },
-    { name: "SelectTrigger", description: "Styled trigger button with size variants and chevron icon." },
-    { name: "SelectValue", description: "Displays the selected value text inside the trigger." },
-    { name: "SelectPopup", description: "Portal-rendered popup with positioner. Also exported as SelectContent." },
-    { name: "SelectItem", description: "An individual option with check indicator." },
-    { name: "SelectGroup", description: "Groups related items together." },
-    { name: "SelectGroupLabel", description: "Label for a group of items." },
-    { name: "SelectSeparator", description: "A visual separator between items or groups." },
-  ]}
-/>
-
-
 <Callout title="Notes">
-- **Portal rendering:** The popup renders via a `FloatingPortal`, so it appears above all other content regardless of overflow or stacking context.
-- **Composition:** Use `SelectTrigger` + `SelectValue` for the trigger. `SelectTrigger` renders the styled button with a chevron icon, and `SelectValue` displays the currently selected item text.
-- **Keyboard navigation:** Supports arrow keys, type-ahead, Home/End, and Enter/Space for selection.
-- **Motion:** Open and close both spring-animated (stiffness 400, damping 30, mass 0.6). Respects `prefers-reduced-motion`.
-- **Auto-positioning:** Uses `flip()` + `shift()` so the popup never overflows the viewport. `autoUpdate` recalculates on scroll/resize.
-- **Popup defaults:** `--radius-patch-sm` (6px), `--shadow-patch-popup`, and `--menu-item-hover` (= `--patch-accent`) for item highlight — visually consistent with Menu and Command.
+- **Native picker:** The dropdown itself is drawn by the OS (macOS system menu, iOS wheel picker, Android bottom sheet, Windows dropdown). We don't style it: that's the whole point.
+- **Rich options:** Native `<option>` accepts text only. If you need icons, descriptions, or inline actions in the list, reach for `Combobox` instead.
+- **Form integration:** Since this is a real `<select>`, it participates in native form submission and validation out of the box. Pass `required` and it will block form submission when empty.
+- **Grouping:** Use native `<optgroup label="…">` when the option count grows past ~10.
+- **Accessibility:** Native `<select>` is fully accessible by default. Add `aria-label` when there's no visible label.
 </Callout>

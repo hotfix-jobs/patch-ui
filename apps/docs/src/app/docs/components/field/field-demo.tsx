@@ -6,17 +6,15 @@ import {
   FieldDescription,
   FieldError,
   Input,
+  SectionLabel,
 } from "@patchui/react";
 
-/** Showcases Field compound: required, optional, error, disabled. */
+
 export function FieldDemo() {
   return (
     <div className="flex w-full flex-col gap-8">
-      {/* Basic Field */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Basic Field
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Basic Field</SectionLabel>
         <Field className="max-w-sm">
           <FieldLabel>Username</FieldLabel>
           <FieldDescription>Choose a unique username for your account.</FieldDescription>
@@ -24,11 +22,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      {/* Required */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Required label
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Required label</SectionLabel>
         <Field className="max-w-sm">
           <FieldLabel required>Email</FieldLabel>
           <FieldDescription>We&apos;ll use this to send notifications.</FieldDescription>
@@ -37,11 +32,8 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      {/* Optional */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Optional label
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Optional label</SectionLabel>
         <Field className="max-w-sm">
           <FieldLabel optional>Phone</FieldLabel>
           <FieldDescription>Used for SMS notifications only.</FieldDescription>
@@ -49,24 +41,18 @@ export function FieldDemo() {
         </Field>
       </div>
 
-      {/* Invalid / Error State */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Error State
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Error state</SectionLabel>
         <Field invalid className="max-w-sm">
           <FieldLabel required>Password</FieldLabel>
           <FieldDescription>Must be at least 8 characters.</FieldDescription>
-          <Input type="password" defaultValue="abc" invalid />
+          <Input type="password" defaultValue="abc" error />
           <FieldError>Password must be at least 8 characters long.</FieldError>
         </Field>
       </div>
 
-      {/* Disabled Field */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Disabled
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Disabled</SectionLabel>
         <Field disabled className="max-w-sm">
           <FieldLabel>Organization</FieldLabel>
           <FieldDescription>This field cannot be changed.</FieldDescription>

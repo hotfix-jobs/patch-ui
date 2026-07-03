@@ -24,6 +24,7 @@ import {
   useMergeRefs,
   useRole,
   useTypeahead,
+  type Placement,
 } from "@floating-ui/react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
@@ -42,7 +43,7 @@ import { cn } from "../utils";
 
 type Density = "compact" | "comfortable";
 
-const MenuDensityContext = createContext<Density>("compact");
+const MenuDensityContext = createContext<Density>("comfortable");
 
 type MenuContextValue = {
   open: boolean;
@@ -73,7 +74,14 @@ export interface MenuProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   defaultOpen?: boolean;
-  /** Internal — set on sub-menus to enable hover-open. */
+  /**
+   * Placement of the popup relative to the trigger. Auto-adapts based
+   * on window bounds: if there isn't room in the requested direction
+   * the popup flips to the opposite side. Default `bottom-start`
+   * (`right-start` for sub-menus).
+   */
+  position?: Placement;
+  /** Internal: set on sub-menus to enable hover-open. */
   modal?: boolean;
   children: React.ReactNode;
 }
@@ -82,6 +90,7 @@ function MenuInner({
   open: controlledOpen,
   onOpenChange,
   defaultOpen = false,
+  position,
   children,
 }: MenuProps): React.ReactElement {
   const parent = useContext(MenuContext);
@@ -109,7 +118,7 @@ function MenuInner({
     nodeId,
     open,
     onOpenChange: setOpen,
-    placement: isNested ? "right-start" : "bottom-start",
+    placement: position ?? (isNested ? "right-start" : "bottom-start"),
     // Disable floating-ui's transform-based positioning so motion's
     // animate transform (scale, etc.) doesn't fight the position transform.
     transform: false,
@@ -208,7 +217,7 @@ function MenuInner({
 export function Menu(props: MenuProps): React.ReactElement {
   const parentId = useFloatingParentNodeId();
   if (parentId == null) {
-    // Top-level menu — wrap in FloatingTree so nested sub-menus can register.
+    // Top-level menu: wrap in FloatingTree so nested sub-menus can register.
     return (
       <FloatingTree>
         <MenuInner {...props} />
@@ -256,15 +265,12 @@ export function MenuTrigger({
 export interface MenuPopupProps {
   className?: string;
   density?: Density;
-  side?: "top" | "right" | "bottom" | "left";
-  sideOffset?: number;
-  align?: "start" | "center" | "end";
   children: React.ReactNode;
 }
 
 export function MenuPopup({
   className,
-  density = "compact",
+  density = "comfortable",
   children,
 }: MenuPopupProps): React.ReactElement | null {
   const { open, context, refs, floatingStyles, getFloatingProps, isNested } =
@@ -309,7 +315,7 @@ export function MenuPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border border-[var(--patch-border)] shadow-patch-popup outline-none focus:outline-none",
+                "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400 shadow-menu outline-none focus:outline-none",
                 density === "compact"
                   ? "not-[class*='w-']:min-w-32"
                   : "not-[class*='w-']:min-w-56",
@@ -333,6 +339,9 @@ export function MenuPopup({
 
 export interface MenuItemProps {
   className?: string;
+  /** `error` renders in red for destructive actions. */
+  type?: "default" | "error";
+  /** @deprecated Use `type="error"`. */
   variant?: "default" | "destructive";
   inset?: boolean;
   /** Trailing check indicating "currently chosen". */
@@ -341,18 +350,34 @@ export interface MenuItemProps {
   description?: React.ReactNode;
   disabled?: boolean;
   label?: string;
-  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+  /** Leading node (icon). */
+  prefix?: React.ReactNode;
+  /** Trailing node (icon, kbd shortcut, badge). */
+  suffix?: React.ReactNode;
+  /** When set, renders as an anchor tag pointing to `href` instead of a div. */
+  href?: string;
+  /** Anchor target when `href` is set. */
+  target?: string;
+  /** Anchor rel when `href` is set. */
+  rel?: string;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   children?: React.ReactNode;
 }
 
 export function MenuItem({
   className,
-  variant = "default",
+  type,
+  variant,
   inset,
   selected,
   description,
   disabled,
   label,
+  prefix,
+  suffix,
+  href,
+  target,
+  rel,
   onClick,
   children,
 }: MenuItemProps): React.ReactElement {
@@ -360,18 +385,20 @@ export function MenuItem({
   const density = useContext(MenuDensityContext);
   const tree = useFloatingTree();
 
+  const isError = type === "error" || variant === "destructive";
+
   const itemLabel = label ?? (typeof children === "string" ? children : "");
   const { ref, index } = useListItem({ label: itemLabel });
   const isActive = activeIndex === index;
 
   const trailingCheck = selected && (
     <CheckIcon
-      className="ms-auto size-3.5 shrink-0 text-patch-text-tertiary"
+      className="ms-auto size-3.5 shrink-0 text-gray-800"
       strokeWidth={2.25}
     />
   );
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (disabled) return;
     onClick?.(event);
     setOpen(false);
@@ -379,48 +406,66 @@ export function MenuItem({
     tree?.events.emit("click");
   };
 
-  return (
-    <div
-      role="menuitem"
-      tabIndex={isActive ? 0 : -1}
-      ref={ref}
-      data-slot="menu-item"
-      data-variant={variant}
-      data-active={isActive ? "" : undefined}
-      data-disabled={disabled ? "" : undefined}
-      aria-disabled={disabled || undefined}
-      className={cn(
-        "cursor-default select-none rounded-[var(--radius-patch-xs)] text-patch-text outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        density === "compact"
-          ? "min-h-7 px-2 py-1.5 text-[length:var(--text-patch-control)]"
-          : "min-h-11 px-3 py-2.5 text-[length:var(--text-patch-body)] [&_svg:not([class*='size-'])]:size-[18px]",
-        variant === "destructive" &&
-          "text-patch-error data-[active]:text-patch-error",
-        inset && "ps-8",
-        className,
-      )}
-      {...getItemProps({
-        onClick: handleClick,
-      })}
-    >
-      {description != null ? (
-        <span className="flex w-full flex-col">
-          <span className="flex items-center gap-2">
-            {children}
-            {trailingCheck}
-          </span>
-          <span className="mt-0.5 truncate text-[length:var(--text-patch-mini)] font-normal text-patch-text-tertiary">
-            {description}
-          </span>
-        </span>
-      ) : (
+  const Component = href ? "a" : "div";
+  const commonProps = {
+    role: "menuitem" as const,
+    tabIndex: isActive ? 0 : -1,
+    ref,
+    "data-slot": "menu-item",
+    "data-type": isError ? "error" : "default",
+    "data-active": isActive ? "" : undefined,
+    "data-disabled": disabled ? "" : undefined,
+    "aria-disabled": disabled || undefined,
+    className: cn(
+      "flex cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 no-underline outline-none data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      density === "compact"
+        ? "min-h-7 px-2 py-1.5 text-label-13"
+        : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
+      isError &&
+        "text-red-800 data-[active]:bg-red-200 data-[active]:text-red-800",
+      inset && "ps-8",
+      className,
+    ),
+    ...getItemProps({
+      onClick: handleClick,
+    }),
+  };
+
+  const content =
+    description != null ? (
+      <span className="flex w-full flex-col">
         <span className="flex items-center gap-2">
+          {prefix}
           {children}
+          {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
           {trailingCheck}
         </span>
-      )}
-    </div>
-  );
+        <span className="mt-0.5 truncate text-label-12 text-gray-800">
+          {description}
+        </span>
+      </span>
+    ) : (
+      <span className="flex items-center gap-2">
+        {prefix}
+        {children}
+        {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
+        {trailingCheck}
+      </span>
+    );
+
+  if (Component === "a") {
+    return (
+      <a
+        {...(commonProps as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+        href={href}
+        target={target}
+        rel={rel}
+      >
+        {content}
+      </a>
+    );
+  }
+  return <div {...(commonProps as unknown as React.HTMLAttributes<HTMLDivElement>)}>{content}</div>;
 }
 
 /* --------------------------- CheckboxItem --------------------------- */
@@ -461,10 +506,10 @@ export function MenuCheckboxItem({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-patch-xs)] text-patch-text outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         density === "compact"
-          ? "min-h-7 py-1.5 ps-2 pe-4 text-[length:var(--text-patch-control)]"
-          : "min-h-11 py-2.5 ps-3 pe-5 text-[length:var(--text-patch-body)]",
+          ? "min-h-7 py-1.5 ps-2 pe-4 text-label-13"
+          : "min-h-11 py-2.5 ps-3 pe-5 text-copy-14",
         className,
       )}
       {...getItemProps({
@@ -557,10 +602,10 @@ export function MenuRadioItem({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-patch-xs)] text-patch-text outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         density === "compact"
-          ? "min-h-7 py-1.5 ps-2 pe-4 text-[length:var(--text-patch-control)]"
-          : "min-h-11 py-2.5 ps-3 pe-5 text-[length:var(--text-patch-body)]",
+          ? "min-h-7 py-1.5 ps-2 pe-4 text-label-13"
+          : "min-h-11 py-2.5 ps-3 pe-5 text-copy-14",
         className,
       )}
       {...getItemProps({
@@ -599,14 +644,19 @@ export function MenuGroup({
 }
 
 export function MenuSection({
+  title,
   label,
   className,
   children,
   ...props
-}: Omit<React.HTMLAttributes<HTMLDivElement>, "children"> & {
+}: Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> & {
+  /** Section header text. */
+  title?: React.ReactNode;
+  /** @deprecated Use `title`. */
   label?: React.ReactNode;
   children: React.ReactNode;
 }): React.ReactElement {
+  const heading = title ?? label;
   return (
     <div
       role="group"
@@ -614,7 +664,7 @@ export function MenuSection({
       className={cn("py-1 first:pt-0 last:pb-0", className)}
       {...props}
     >
-      {label != null && <MenuGroupLabel>{label}</MenuGroupLabel>}
+      {heading != null && <MenuGroupLabel>{heading}</MenuGroupLabel>}
       {children}
     </div>
   );
@@ -631,7 +681,7 @@ export function MenuGroupLabel({
     <div
       data-slot="menu-label"
       className={cn(
-        "px-2 py-1.5 font-medium uppercase text-[length:var(--text-patch-micro)] tracking-[var(--tracking-patch-label)] text-patch-text-tertiary",
+        "px-3 py-1.5 text-label-14 text-gray-800",
         inset && "ps-8",
         className,
       )}
@@ -640,15 +690,15 @@ export function MenuGroupLabel({
   );
 }
 
-export function MenuSeparator({
+export function MenuDivider({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>): React.ReactElement {
   return (
     <div
       role="separator"
-      data-slot="menu-separator"
-      className={cn("mx-1 my-1 h-px bg-[var(--separator-color)]", className)}
+      data-slot="menu-divider"
+      className={cn("my-1 h-px bg-gray-alpha-400", className)}
       {...props}
     />
   );
@@ -661,7 +711,7 @@ export function MenuShortcut({
   return (
     <kbd
       className={cn(
-        "ms-auto font-medium font-sans text-patch-text-tertiary text-xs tracking-widest",
+        "ms-auto font-medium font-sans text-gray-800 text-xs tracking-widest",
         className,
       )}
       data-slot="menu-shortcut"
@@ -716,10 +766,10 @@ export function MenuSubTrigger({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "flex cursor-default select-none items-center gap-2 rounded-[var(--radius-patch-xs)] text-patch-text outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[popup-open]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none",
+        "flex cursor-default select-none items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[popup-open]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none",
         density === "compact"
-          ? "min-h-7 px-2 py-1.5 text-[length:var(--text-patch-control)] [&_svg:not([class*='size-'])]:size-4"
-          : "min-h-11 px-3 py-2.5 text-[length:var(--text-patch-body)] [&_svg:not([class*='size-'])]:size-[18px]",
+          ? "min-h-7 px-2 py-1.5 text-label-13 [&_svg:not([class*='size-'])]:size-4"
+          : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
         inset && "ps-8",
         className,
       )}

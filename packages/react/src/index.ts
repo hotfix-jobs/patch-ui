@@ -1,40 +1,22 @@
 export { cn } from "./utils";
-export { focusRing, controlSize, colorTransition } from "./recipes";
+export { focusRing, controlSize, stateStepping, disabled, colorTransition } from "./recipes";
 export {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionPanel,
   AccordionPrimitive,
+  type AccordionProps,
   type AccordionItemProps,
   type AccordionTriggerProps,
   type AccordionPanelProps,
 } from "./components/accordion";
 export { Button, buttonVariants, type ButtonProps } from "./components/button";
 export { Input, InputPrimitive, type InputProps } from "./components/input";
+export { SearchInput, type SearchInputProps } from "./components/search-input";
 export { Textarea, type TextareaProps } from "./components/textarea";
 export { Label } from "./components/label";
-export {
-  Select,
-  SelectButton,
-  SelectTrigger,
-  SelectValue,
-  SelectPopup,
-  SelectContent,
-  SelectItem,
-  SelectSeparator,
-  SelectGroup,
-  SelectLabel,
-  SelectGroupLabel,
-  selectTriggerVariants,
-} from "./components/select";
-export type {
-  SelectProps,
-  SelectTriggerProps,
-  SelectValueProps,
-  SelectPopupProps,
-  SelectItemProps,
-} from "./components/select";
+export { Select, type SelectProps, type SelectSize } from "./components/select";
 export { Switch, SwitchPrimitive } from "./components/switch";
 export { Checkbox, CheckboxPrimitive } from "./components/checkbox";
 export {
@@ -44,20 +26,30 @@ export {
   RadioGroupPrimitive,
 } from "./components/radio";
 export { Slider, SliderValue, SliderPrimitive } from "./components/slider";
+export { Card, type CardProps } from "./components/card";
 export {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardAction,
-  CardContent,
-  CardFooter,
-  CardMeta,
-  cardVariants,
-  type CardProps,
-  type CardMetaProps,
-} from "./components/card";
+  Grid,
+  GridCell,
+  type GridProps,
+  type GridCellProps,
+} from "./components/grid";
+export {
+  Section,
+  SectionHeader,
+  SectionTitle,
+  SectionSubtitle,
+  SectionContent,
+  SectionFooter,
+  SectionFooterStatus,
+  SectionFooterActions,
+  type SectionFooterProps,
+} from "./components/section";
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
+export {
+  Breadcrumb,
+  type BreadcrumbProps,
+  type BreadcrumbItem,
+} from "./components/breadcrumb";
 export {
   Avatar,
   AvatarImage,
@@ -68,23 +60,10 @@ export {
   type AvatarProps,
   type AvatarGroupProps,
 } from "./components/avatar";
-export {
-  SectionLabel,
-  sectionLabelVariants,
-  type SectionLabelProps,
-} from "./components/section-label";
-export {
-  AppHeader,
-  AppHeaderBrand,
-  AppHeaderNav,
-  AppHeaderNavItem,
-  AppHeaderRight,
-  type AppHeaderProps,
-  type AppHeaderBrandProps,
-  type AppHeaderNavProps,
-  type AppHeaderNavItemProps,
-  type AppHeaderRightProps,
-} from "./components/app-header";
+// AppHeader lives as a block under packages/react/src/blocks/app-header: consumers
+// pull it via `npx shadcn add @patchui/app-header` and own the copy for
+// per-app customization (brand, feature flags, auth wiring, etc.). Not
+// exported from the package index.
 export {
   Sheet,
   SheetTrigger,
@@ -93,33 +72,31 @@ export {
   SheetHeader,
   SheetTitle,
   SheetDescription,
-  SheetPanel,
+  SheetBody,
   SheetFooter,
-  SheetHandle,
 } from "./components/sheet";
 export type {
   SheetProps,
   SheetTriggerProps,
   SheetContentProps,
   SheetCloseProps,
+  SheetFooterProps,
+  SheetSide,
 } from "./components/sheet";
 export {
-  Dialog,
-  DialogTrigger,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-  DialogPanel,
-} from "./components/dialog";
-export type {
-  DialogProps,
-  DialogTriggerProps,
-  DialogContentProps,
-  DialogCloseProps,
-} from "./components/dialog";
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  ModalSubtitle,
+  ModalInset,
+  ModalActions,
+  ModalAction,
+  type ModalProps,
+  type ModalSize,
+  type ModalActionsProps,
+  type ModalActionProps,
+} from "./components/modal";
 export {
   Menu,
   MenuPortal,
@@ -132,7 +109,7 @@ export {
   MenuRadioGroup,
   MenuRadioItem,
   MenuGroupLabel,
-  MenuSeparator,
+  MenuDivider,
   MenuShortcut,
   MenuSub,
   MenuSubTrigger,
@@ -163,13 +140,25 @@ export {
   type ToastOptions,
   type ToastAction,
 } from "./components/toast";
-export { Spinner, spinnerVariants, type SpinnerProps } from "./components/spinner";
-export { Skeleton } from "./components/skeleton";
+export { Spinner, type SpinnerProps } from "./components/spinner";
+export { Skeleton, type SkeletonProps } from "./components/skeleton";
 export {
-  DisplayHeading,
-  displayHeadingVariants,
-  type DisplayHeadingProps,
-} from "./components/display-heading";
+  ListRow,
+  ListRowContent,
+  ListRowList,
+  type ListRowProps,
+  type ListRowContentProps,
+  type ListRowListProps,
+} from "./components/list-row";
+export {
+  MiddleTruncate,
+  type MiddleTruncateProps,
+} from "./components/middle-truncate";
+export {
+  Scroller,
+  type ScrollerProps,
+  type ScrollerOverflow,
+} from "./components/scroller";
 export {
   Tabs,
   TabsList,
@@ -225,6 +214,7 @@ export {
   type ResolvedTheme,
 } from "./components/theme-toggle";
 export { Pagination, type PaginationProps } from "./components/pagination";
+export { LoadMore, type LoadMoreProps } from "./components/load-more";
 export {
   SegmentedToggle,
   SegmentedToggleItem,
@@ -241,34 +231,50 @@ export {
   type ComboboxPopupProps,
   type ComboboxItemProps,
 } from "./components/combobox";
-export {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverClose,
-  type PopoverProps,
-  type PopoverTriggerProps,
-  type PopoverContentProps,
-  type PopoverCloseProps,
-} from "./components/popover";
-export { Alert, alertVariants, type AlertProps } from "./components/alert";
 export { Progress, type ProgressProps } from "./components/progress";
 export { Separator, type SeparatorProps } from "./components/separator";
+export {
+  SectionLabel,
+  type SectionLabelProps,
+} from "./components/section-label";
+export {
+  SidebarProvider,
+  Sidebar,
+  SidebarInset,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarTrigger,
+  useSidebar,
+  type SidebarProviderProps,
+  type SidebarProps,
+  type SidebarInsetProps,
+  type SidebarHeaderProps,
+  type SidebarContentProps,
+  type SidebarFooterProps,
+  type SidebarGroupProps,
+  type SidebarGroupLabelProps,
+  type SidebarMenuProps,
+  type SidebarMenuItemProps,
+  type SidebarMenuButtonProps,
+  type SidebarTriggerProps,
+} from "./components/sidebar";
 export { Kbd, type KbdProps } from "./components/kbd";
 export { Toggle, toggleVariants, type ToggleProps } from "./components/toggle";
-export { TagInput, type TagInputProps } from "./components/tag-input";
-export { Dropzone, type DropzoneProps } from "./components/dropzone";
+// Dropzone lives as a block under packages/react/src/blocks/dropzone.
+// It composes Progress + Card + preview cards + delete X: apps
+// customize the preview and validation, so it ships as copy-in via
+// `npx shadcn add @patchui/dropzone`.
 export {
   Calendar,
   type CalendarProps,
   type DateRange,
 } from "./components/calendar";
-export {
-  DatePicker,
-  DateRangePicker,
-  type DatePickerProps,
-  type DateRangePickerProps,
-} from "./components/date-picker";
 export {
   Table,
   TableHeader,
@@ -280,6 +286,7 @@ export {
   TableCaption,
   type TableProps,
   type TableSectionProps,
+  type TableBodyProps,
   type TableRowProps,
   type TableHeadProps,
   type TableCellProps,

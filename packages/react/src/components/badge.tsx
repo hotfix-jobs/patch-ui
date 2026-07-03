@@ -5,39 +5,63 @@ import { useRender } from "@base-ui/react/use-render";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
 
 export const badgeVariants = cva(
-  "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap font-medium text-[length:var(--text-patch-micro)] tracking-[var(--tracking-patch-small)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3",
+  [
+    "relative inline-flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap",
+    "font-medium",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0",
+  ].join(" "),
   {
     defaultVariants: {
-      size: "sm",
+      size: "md",
       variant: "default",
-      shape: "rounded",
+      shape: "pill",
+      contrast: "high",
     },
     variants: {
       size: {
-        xs: "h-auto min-w-0 gap-0.5 px-2 py-[2px] [&_svg:not([class*='size-'])]:size-2.5",
-        sm: "h-auto min-w-0 px-2 py-[3px]",
-        lg: "h-auto min-w-0 px-2.5 py-[4px] text-[length:var(--text-patch-mini)]",
+        sm: "px-2 py-[2px] text-label-12 [&_svg:not([class*='size-'])]:size-3",
+        md: "px-2.5 py-1 text-label-12 [&_svg:not([class*='size-'])]:size-3.5",
+        lg: "px-3 py-1.5 text-label-13 [&_svg:not([class*='size-'])]:size-4",
       },
       variant: {
-        default: "bg-[var(--badge-default-bg)] text-[var(--badge-default-text)] border-0",
-        primary: "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] border-0",
-        ghost: "bg-transparent text-[var(--patch-text)] border border-[var(--patch-border)]",
-        secondary: "bg-[var(--badge-secondary-bg)] text-[var(--badge-secondary-text)] border-0",
-        success: "bg-[var(--badge-success-bg)] text-[var(--badge-success-text)] border-0",
-        warning: "bg-[var(--badge-warning-bg)] text-[var(--badge-warning-text)] border-0",
-        danger: "bg-[var(--badge-danger-bg)] text-[var(--badge-danger-text)] border-0",
-        successOutline: "bg-transparent text-[var(--badge-success-text)] border border-[var(--badge-success-text)]",
-        warningOutline: "bg-transparent text-[var(--badge-warning-text)] border border-[var(--badge-warning-text)]",
-        dangerOutline: "bg-transparent text-[var(--badge-danger-text)] border border-[var(--badge-danger-text)]",
+        default: "",
+        success: "",
+        warning: "",
+        error: "",
       },
       shape: {
-        rounded: "rounded-[var(--radius-patch-xs)]",
+        rounded: "rounded-[var(--radius-6)]",
         pill: "rounded-full",
       },
+      contrast: {
+        high: "",
+        low: "",
+      },
     },
+    compoundVariants: [
+      // High contrast: solid saturated fill, light text.
+      // Status variants use the semantic role tokens (--error / --warning /
+      // --success), not the -700 accent step. The accent scale inverts in
+      // dark mode (green-700 becomes a light green), which would leave
+      // white-on-light-green with no contrast. The semantic roles are
+      // fixed hex values that read identically in both themes.
+      { variant: "default", contrast: "high", class: "bg-gray-1000 text-background-100" },
+      // Semantic solids pair with the matching -fg text token so the
+      // label color inverts with the theme (light: white text on dark
+      // fill; dark: dark text on bright fill), matching Vercel Geist.
+      { variant: "success", contrast: "high", class: "bg-success text-success-fg" },
+      { variant: "warning", contrast: "high", class: "bg-warning text-warning-fg" },
+      { variant: "error",   contrast: "high", class: "bg-error text-error-fg" },
+      // Low contrast: subtle tint, darker text. The 100/900 pair inverts
+      // in dark mode (100 becomes very dark, 900 becomes very light), so
+      // dark-on-light in light mode becomes light-on-dark in dark mode.
+      { variant: "default", contrast: "low", class: "bg-gray-200 text-gray-1000" },
+      { variant: "success", contrast: "low", class: "bg-green-100 text-green-900" },
+      { variant: "warning", contrast: "low", class: "bg-amber-100 text-amber-900" },
+      { variant: "error",   contrast: "low", class: "bg-red-100 text-red-900" },
+    ],
   },
 );
 
@@ -45,14 +69,10 @@ export interface BadgeProps extends useRender.ComponentProps<"span"> {
   variant?: VariantProps<typeof badgeVariants>["variant"];
   size?: VariantProps<typeof badgeVariants>["size"];
   shape?: VariantProps<typeof badgeVariants>["shape"];
-  /**
-   * When provided, the badge becomes dismissible: a trailing × button is
-   * rendered that calls this handler. Use for removable filter tags, applied
-   * facets, token inputs, etc.
-   */
-  onRemove?: () => void;
-  /** Accessible label for the remove button. Default "Remove". */
-  removeLabel?: string;
+  /** `high` = solid saturated fill (default). `low` = subtle tinted fill for dense surfaces. */
+  contrast?: VariantProps<typeof badgeVariants>["contrast"];
+  /** Optional inline icon rendered before the label. */
+  icon?: React.ReactNode;
 }
 
 export function Badge({
@@ -60,50 +80,19 @@ export function Badge({
   variant,
   size,
   shape,
-  onRemove,
-  removeLabel = "Remove",
+  contrast,
+  icon,
   render,
   children,
   ...props
 }: BadgeProps): React.ReactElement {
   const defaultProps = {
-    className: cn(
-      badgeVariants({ className, size, variant, shape }),
-      // tighten trailing padding so the × sits closer to the edge;
-      // `group` lets the × respond to badge-level hover, signaling
-      // "this whole chip is dismissible."
-      onRemove && "group pe-1",
-    ),
+    className: cn(badgeVariants({ size, variant, shape, contrast }), className),
     "data-slot": "badge",
     children: (
       <>
+        {icon}
         {children}
-        {onRemove && (
-          <button
-            type="button"
-            aria-label={removeLabel}
-            onClick={onRemove}
-            className={cn(
-              "-me-0.5 inline-flex size-3.5 shrink-0 items-center justify-center rounded-[var(--radius-patch-xs)] opacity-50 transition-[opacity,transform] duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] group-hover:opacity-80 hover:!opacity-100 active:scale-90",
-              focusRing,
-            )}
-          >
-            <svg
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="size-2.5"
-            >
-              <path d="M18 6 6 18" />
-              <path d="m6 6 12 12" />
-            </svg>
-          </button>
-        )}
       </>
     ),
   };

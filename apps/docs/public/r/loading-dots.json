@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "loading-dots",
+  "title": "Loading Dots",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/loading-dots.tsx",
+      "content": "\"use client\";\n\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nconst wrapperVariants = cva(\n  \"inline-flex items-center gap-1 align-middle\",\n  {\n    defaultVariants: { size: \"md\" },\n    variants: {\n      size: {\n        sm: \"[--dot:4px]\",\n        md: \"[--dot:6px]\",\n        lg: \"[--dot:8px]\",\n      },\n    },\n  },\n);\n\nexport interface LoadingDotsProps\n  extends Omit<React.HTMLAttributes<HTMLSpanElement>, \"children\">,\n    VariantProps<typeof wrapperVariants> {\n  /** Trailing text label rendered before the dots (e.g. \"Saving\"). */\n  children?: React.ReactNode;\n  /** Custom dot diameter in px, overriding the size preset. */\n  dotSize?: number;\n}\n\n/**\n * LoadingDots — three dots pulsing in sequence, used inline in copy for\n * indeterminate short waits (\"Saving...\", \"Deploying...\"). For icon-sized\n * waits, use `Spinner`. For layout placeholders, use `Skeleton`.\n */\nexport function LoadingDots({\n  className,\n  size,\n  children,\n  dotSize,\n  ...props\n}: LoadingDotsProps): React.ReactElement {\n  const style = dotSize\n    ? ({ \"--dot\": `${dotSize}px` } as React.CSSProperties)\n    : undefined;\n\n  return (\n    <span\n      aria-live=\"polite\"\n      className={cn(wrapperVariants({ size }), className)}\n      style={style}\n      data-slot=\"loading-dots\"\n      {...props}\n    >\n      {children}\n      <span className=\"inline-flex items-center gap-[calc(var(--dot)*0.4)]\">\n        {[0, 1, 2].map((i) => (\n          <span\n            key={i}\n            aria-hidden=\"true\"\n            className=\"inline-block rounded-full bg-current\"\n            style={{\n              width: \"var(--dot)\",\n              height: \"var(--dot)\",\n              animation: \"patch-dots-pulse 1.2s ease-in-out infinite\",\n              animationDelay: `${i * 160}ms`,\n            }}\n          />\n        ))}\n      </span>\n    </span>\n  );\n}\n",
+      "type": "registry:ui",
+      "target": "components/ui/loading-dots.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

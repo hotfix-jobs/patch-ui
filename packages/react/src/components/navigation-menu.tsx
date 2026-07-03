@@ -6,13 +6,14 @@ import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
 /**
- * NavigationMenu - compound navigation built on Base UI NavigationMenu.
+ * NavigationMenu: horizontal menu bar with morphing dropdown panels.
  *
- * A horizontal menu bar (List + Items). An item is either a plain Link or a
- * Trigger + Content dropdown whose panels morph inside one shared popup. The
- * popup scaffold (Portal / Positioner / Popup / Viewport) is rendered for you,
- * so you only provide the List - it drops straight into a header (e.g. inside
- * AppHeader).
+ * A patch-ui extension (Vercel Geist doesn't ship a NavigationMenu: they
+ * expect consumers to compose their own top-nav from Menu / links). Built
+ * on Base UI's NavigationMenu primitive with our token surface: the
+ * List + Items live inline, and the dropdown panels morph inside one
+ * shared portalled popup so switching between triggers slides horizontally
+ * with size interpolation. Drop it straight into a header (AppHeader).
  *
  * Usage:
  *   <NavigationMenu>
@@ -46,15 +47,15 @@ export function NavigationMenu({
       <NavigationMenuPrimitive.Portal>
         <NavigationMenuPrimitive.Positioner
           data-slot="navigation-menu-positioner"
-          className="z-[80] box-border h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)] transition-[top,left,right,bottom] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]"
+          className="z-[80] box-border h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)] transition-[top,left,right,bottom] duration-[var(--duration-state)] ease-[var(--ease-standard)]"
           sideOffset={8}
           collisionPadding={12}
         >
           <NavigationMenuPrimitive.Popup
             data-slot="navigation-menu-popup"
             className={cn(
-              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-[var(--radius-patch-sm)] bg-patch-surface text-patch-text border border-[var(--patch-border)] shadow-patch-popup",
-              "transition-[opacity,transform,width,height] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-[var(--radius-12)] bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-menu",
+              "transition-[opacity,transform,width,height] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
               "data-[starting-style]:opacity-0 data-[starting-style]:scale-[0.97] data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.97]",
             )}
           >
@@ -109,7 +110,7 @@ export function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "group inline-flex items-center gap-1 rounded-[var(--radius-patch-sm)] px-3 py-1.5 text-[length:var(--text-patch-control)] font-medium text-patch-text-secondary hover:bg-[var(--menu-item-hover)] hover:text-patch-text data-[popup-open]:bg-[var(--menu-item-hover)] data-[popup-open]:text-patch-text",
+        "group inline-flex items-center gap-1 rounded-[var(--radius-6)] px-3 py-1.5 text-button-14 text-gray-1000 hover:bg-gray-alpha-100 hover:text-gray-1000 data-[popup-open]:bg-gray-alpha-100 data-[popup-open]:text-gray-1000",
         colorTransition,
         focusRing,
         className,
@@ -117,7 +118,7 @@ export function NavigationMenuTrigger({
       {...props}
     >
       {children}
-      <NavigationMenuPrimitive.Icon className="text-patch-text-tertiary transition-transform duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)] group-data-[popup-open]:rotate-180">
+      <NavigationMenuPrimitive.Icon className="text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[popup-open]:rotate-180">
         {chevron}
       </NavigationMenuPrimitive.Icon>
     </NavigationMenuPrimitive.Trigger>
@@ -132,7 +133,7 @@ export function NavigationMenuContent({
     <NavigationMenuPrimitive.Content
       data-slot="navigation-menu-content"
       className={cn(
-        "w-max p-2 transition-[opacity,transform] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+        "w-max p-2 transition-[opacity,transform] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
         "data-[activation-direction=left]:data-[starting-style]:translate-x-3",
         "data-[activation-direction=right]:data-[starting-style]:-translate-x-3",
@@ -153,7 +154,7 @@ export function NavigationMenuLink({
       data-slot="navigation-menu-link"
       closeOnClick={closeOnClick}
       className={cn(
-        "block rounded-[var(--radius-patch-xs)] px-3 py-2 text-[length:var(--text-patch-control)] text-patch-text-secondary hover:bg-[var(--menu-item-hover)] hover:text-patch-text",
+        "block rounded-[var(--radius-6)] px-3 py-2 text-label-13 text-gray-1000 hover:bg-gray-alpha-100 hover:text-gray-1000",
         colorTransition,
         focusRing,
         className,

@@ -1,0 +1,89 @@
+import { LoadMoreDemo } from "./load-more-demo";
+
+
+export const metadata = { title: "LoadMore" };
+
+# LoadMore
+
+A full-width, secondary-style button that appends more items to a paginated feed: job listings, search results, activity logs, anywhere the user wants to reveal more of the same data set without changing pages.
+
+For sequential navigation between distinct pages, use `Pagination`.
+
+<Install name="load-more" />
+
+<ComponentPreview label="LoadMore">
+  <LoadMoreDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { LoadMore } from "@patchui/react";
+
+// Basic
+<LoadMore onClick={loadMore}>Load More</LoadMore>
+
+// Loading state
+<LoadMore loading>Loading…</LoadMore>
+
+// Attached to a list container — no top margin, flush corners
+<Card border borderBetween>
+  {items.map(row => <Row key={row.id} row={row} />)}
+  <LoadMore noGap noBorderRadius loading={fetching} onClick={loadMore}>
+    Load More
+  </LoadMore>
+</Card>
+
+// Disabled when there's nothing more to load
+<LoadMore disabled>No more results</LoadMore>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "loading",
+      type: "boolean",
+      default: "false",
+      description: "Renders a spinner alongside the label and disables the button. Also sets `aria-busy` so assistive tech announces the state.",
+    },
+    {
+      name: "noGap",
+      type: "boolean",
+      default: "false",
+      description: "Removes the button's top margin. Use when the button sits directly against a list container with its own bottom margin.",
+    },
+    {
+      name: "noBorderRadius",
+      type: "boolean",
+      default: "false",
+      description: "Drops the rounded corners. Use when the button is attached to the bottom of a Card or list container.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      default: '"Load More"',
+      description: "Button label. Keep it a single Title Case phrase: `Load More`, `Show more results`, `View more jobs`.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the button. Use when there are no more items to load: a disabled `No more results` reads clearer than hiding the button.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- LoadMore is a `<button>`: style is a full-width secondary Button (`background-100` fill, `gray-alpha-400` border). It stays focusable during the loading state so keyboard users don't lose their place.
+- Combine `noGap` + `noBorderRadius` to attach LoadMore to the bottom edge of a Card that uses `borderBetween`: the top border seams with the last row and the bottom stays flush with the card's rounded corner.
+- Prefer `<LoadMore disabled>No more results</LoadMore>` over hiding the button once the list is exhausted. The disabled state confirms "you're at the end" instead of leaving the user wondering if more will arrive.
+- For sequential navigation between separate pages (docs articles, wizard steps), use `Pagination` instead. LoadMore is for revealing more rows of the same data.
+</Callout>

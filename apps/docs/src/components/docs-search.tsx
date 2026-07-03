@@ -100,11 +100,11 @@ export function DocsSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="hidden md:inline-flex items-center gap-2 rounded-[var(--radius-patch-sm)] border border-patch-border bg-patch-surface px-3 py-1.5 text-sm text-patch-text-tertiary transition-colors hover:border-patch-border-hover hover:text-patch-text-secondary"
+        className="hidden md:inline-flex cursor-pointer items-center gap-2 rounded-[var(--radius-6)] border-[0.5px] border-gray-alpha-400 bg-background-100 px-3 py-1.5 text-label-13 text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-100 hover:text-gray-1000 outline-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-[var(--focus-ring-color)] focus-visible:outline-offset-[var(--focus-ring-offset)]"
       >
         <SearchIcon size={14} />
-        <span>Search docs...</span>
-        <kbd className="pointer-events-none ml-4 inline-flex h-5 select-none items-center gap-0.5 rounded border border-patch-border bg-patch-bg px-1.5 font-mono text-[10px] font-medium text-patch-text-quaternary">
+        <span>Search docs</span>
+        <kbd className="pointer-events-none ml-4 inline-flex h-5 select-none items-center gap-0.5 rounded border-[0.5px] border-gray-alpha-400 bg-background-100 px-1.5 font-mono text-[10px] font-medium text-gray-700">
           <span className="text-xs">⌘</span>K
         </kbd>
       </button>
@@ -112,7 +112,7 @@ export function DocsSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex md:hidden h-8 w-8 items-center justify-center rounded-[var(--radius-patch-sm)] text-patch-text-secondary transition-colors hover:bg-patch-surface-hover hover:text-patch-text"
+        className="inline-flex md:hidden cursor-pointer size-9 items-center justify-center rounded-full text-gray-900 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-100 hover:text-gray-1000 outline-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-[var(--focus-ring-color)] focus-visible:outline-offset-[var(--focus-ring-offset)]"
         aria-label="Search docs"
       >
         <SearchIcon size={16} />
@@ -137,7 +137,7 @@ export function DocsSearch() {
                 className="justify-between gap-3"
               >
                 <span className="truncate">{item.title}</span>
-                <span className="shrink-0 text-[length:var(--text-patch-micro)] text-patch-text-tertiary">
+                <span className="shrink-0 text-label-12 text-gray-800">
                   {item.group}
                 </span>
               </CommandItem>
@@ -161,7 +161,7 @@ function SearchIcon({ size = 14 }: { size?: number }) {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="shrink-0 text-patch-text-tertiary"
+      className="shrink-0 text-gray-800"
     >
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.3-4.3" />

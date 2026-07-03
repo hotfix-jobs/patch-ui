@@ -5,187 +5,210 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { Spinner } from "./spinner";
 
-type InputVariant = "outlined" | "ghost" | "underline";
+export type InputSize = "sm" | "md" | "lg";
 
 export type InputProps = Omit<
   InputPrimitive.Props & React.RefAttributes<HTMLInputElement>,
-  "size"
+  "size" | "prefix"
 > & {
-  size?: "sm" | "md" | "lg" | number;
-  variant?: InputVariant;
-  icon?: React.ReactNode;
+  size?: InputSize;
+  /** Content rendered at the start (icon, unit symbol, or text like `https://`). */
   prefix?: React.ReactNode;
+  /** Content rendered at the end (icon, unit label, or text like `.com`). */
   suffix?: React.ReactNode;
-  /** Visual error state. Sets `aria-invalid` and switches border/focus to error tokens. */
-  invalid?: boolean;
+  /** Wraps prefix in a styled container (bg + separator). Default true. */
+  prefixStyling?: boolean;
+  /** Wraps suffix in a styled container (bg + separator). Default true. */
+  suffixStyling?: boolean;
+  /** Renders a `<label>` above the input. */
+  label?: string;
+  /** `id` required when passing a string `label`. */
+  id?: string;
+  /** Visual error state or inline error message. */
+  error?: boolean | string;
   /** Disables the input and renders a spinner in the trailing slot. */
   loading?: boolean;
-  /**
-   * When provided AND the input has a non-empty value, renders a trailing
-   * × clear button that calls this handler. Use for search inputs, filter
-   * fields, tag entry — anywhere "wipe my input" is a common action.
-   */
-  onClear?: () => void;
-  unstyled?: boolean;
-  nativeInput?: boolean;
+  /** Renders a full-radius (pill-shaped) input. */
+  rounded?: boolean;
 };
 
-const WRAPPER_VARIANT: Record<InputVariant, string> = {
-  outlined:
-    "rounded-[var(--radius-patch-sm)] border border-[var(--input-border)] bg-patch-surface " +
-    "hover:border border-[var(--patch-border-hover)] " +
-    "has-focus-visible:border border-[var(--patch-border-active)] " +
-    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
-  ghost:
-    "rounded-[var(--radius-patch-sm)] bg-transparent border-none " +
-    "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--patch-focus-ring)] has-focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
-  underline:
-    "rounded-none bg-transparent border-b border-[var(--input-border)] " +
-    "hover:border-b border-[var(--patch-border-hover)] " +
-    "has-focus-visible:border-b border-[var(--patch-border-active)]",
+const heightBySize: Record<InputSize, string> = {
+  sm: "h-8 text-label-12",
+  md: "h-10 text-copy-14",
+  lg: "h-12 text-copy-16",
 };
 
-const INVALID_BY_VARIANT: Record<InputVariant, string> = {
-  outlined:
-    "!border-[var(--patch-error)] has-focus-visible:!border-[var(--patch-error)] has-focus-visible:!outline-[var(--patch-error)]",
-  ghost:
-    "has-focus-visible:!outline-[var(--patch-error)]",
-  underline:
-    "!border-b border-[var(--patch-error)] has-focus-visible:!border-b border-[var(--patch-error)]",
+const leadingPad: Record<InputSize, string> = {
+  sm: "ps-3",
+  md: "ps-3.5",
+  lg: "ps-4",
 };
+
+const trailingPad: Record<InputSize, string> = {
+  sm: "pe-3",
+  md: "pe-3.5",
+  lg: "pe-4",
+};
+
+/** Styled affix wrapper: own bg + border on the input-facing side, stretched to input height. */
+function StyledAffix({
+  side,
+  children,
+  size,
+}: {
+  side: "start" | "end";
+  children: React.ReactNode;
+  size: InputSize;
+}) {
+  const border = side === "start" ? "border-r" : "border-l";
+  const pad = size === "sm" ? "px-2.5" : size === "lg" ? "px-3.5" : "px-3";
+  return (
+    <span
+      className={cn(
+        "self-stretch inline-flex shrink-0 items-center bg-gray-100 border-gray-alpha-400 text-gray-800",
+        border,
+        pad,
+        "[&_svg]:size-4",
+      )}
+      data-slot={`input-${side === "start" ? "prefix" : "suffix"}`}
+    >
+      {children}
+    </span>
+  );
+}
+
+/** Unstyled affix: floats inside the input area with just padding. */
+function UnstyledAffix({
+  side,
+  children,
+}: {
+  side: "start" | "end";
+  children: React.ReactNode;
+}) {
+  const pad = side === "start" ? "ps-3 pe-1.5" : "ps-1.5 pe-3";
+  return (
+    <span
+      className={cn("inline-flex shrink-0 items-center text-gray-800", pad, "[&_svg]:size-4")}
+      data-slot={`input-${side === "start" ? "prefix" : "suffix"}`}
+    >
+      {children}
+    </span>
+  );
+}
 
 export function Input({
   className,
   size = "md",
-  variant = "outlined",
-  icon,
   prefix,
   suffix,
-  invalid,
+  prefixStyling = true,
+  suffixStyling = true,
+  label,
+  id,
+  error,
   loading,
-  onClear,
-  unstyled = false,
-  nativeInput = false,
+  rounded,
   disabled,
   value,
   ...props
 }: InputProps): React.ReactElement {
   const isDisabled = disabled || loading;
-  const hasValue =
-    value != null && value !== "" && (typeof value !== "number" || !Number.isNaN(value));
-  const showClear = onClear != null && hasValue && !isDisabled;
   const trailingSpinner = loading ? <Spinner size="sm" /> : null;
+  const hasErrorMessage = typeof error === "string" && error.length > 0;
+  const hasError = Boolean(error);
+  const shape = rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
+  const errorId = id ? `${id}-error` : undefined;
 
-  const inputClassName = cn(
-    "h-10 w-full min-w-0 rounded-[inherit] border-none bg-transparent px-3.5 text-[length:var(--text-patch-control)] tracking-[-0.005em] shadow-none outline-none ring-0 placeholder:text-[var(--input-placeholder)] focus:outline-none focus:ring-0",
-    icon && "ps-0",
-    prefix && "ps-0",
-    (suffix || showClear || trailingSpinner) && "pe-0",
-    size === "sm" && "h-8 text-[length:var(--text-patch-mini)]",
-    size === "lg" && "h-11",
-    props.type === "search" &&
-      "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none [&::-webkit-search-results-button]:appearance-none [&::-webkit-search-results-decoration]:appearance-none",
-  );
+  const hasTrailing = Boolean(suffix) || Boolean(trailingSpinner);
 
-  const inputEl = nativeInput ? (
-    <input
-      className={inputClassName}
-      data-slot="input"
-      size={typeof size === "number" ? size : undefined}
-      disabled={isDisabled}
-      value={value}
-      aria-invalid={invalid || undefined}
-      {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
-    />
-  ) : (
+  const inputElement = (
     <InputPrimitive
-      className={inputClassName}
+      id={id}
+      className={cn(
+        "w-full min-w-0 bg-transparent border-none shadow-none outline-none ring-0",
+        "placeholder:text-gray-700 focus:outline-none focus:ring-0",
+        heightBySize[size],
+        // Leading padding: apply unless an unstyled prefix is handling it
+        (!prefix || prefixStyling) ? leadingPad[size] : "ps-0",
+        // Trailing padding: apply unless an unstyled suffix / clear / spinner sits there
+        (!hasTrailing || (suffix && suffixStyling)) ? trailingPad[size] : "pe-0",
+        props.type === "search" &&
+          "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none",
+      )}
       data-slot="input"
-      size={typeof size === "number" ? size : undefined}
       disabled={isDisabled}
       value={value}
-      aria-invalid={invalid || undefined}
+      aria-invalid={hasError || undefined}
+      aria-describedby={hasErrorMessage ? errorId : props["aria-describedby"]}
       {...props}
     />
   );
 
-  return (
+  const control = (
     <span
-      className={
-        cn(
-          !unstyled && [
-            "relative inline-flex w-full items-center",
-            "text-[length:var(--text-patch-control)] text-patch-text",
-            "transition-[color,background-color,box-shadow,outline-color] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
-            "has-disabled:opacity-50",
-            WRAPPER_VARIANT[variant],
-            invalid && INVALID_BY_VARIANT[variant],
-          ],
-          className,
-        ) || undefined
-      }
-      data-size={size}
-      data-variant={variant}
-      data-invalid={invalid || undefined}
-      data-loading={loading || undefined}
+      className={cn(
+        "relative inline-flex w-full items-center overflow-hidden text-gray-1000",
+        shape,
+        "bg-background-100 border border-gray-alpha-400",
+        "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "hover:border-gray-alpha-500",
+        "has-focus-visible:border-gray-alpha-600 has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
+        "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
+        hasError &&
+          "!border-[var(--error)] has-focus-visible:!border-[var(--error)] has-focus-visible:!outline-[var(--error)]",
+        !label && !hasErrorMessage && className,
+      )}
       data-slot="input-control"
     >
-      {icon && (
-        <span className="flex shrink-0 items-center ps-3 pe-1.5 text-patch-text-tertiary [&_svg]:size-4">
-          {icon}
-        </span>
-      )}
-      {prefix && (
-        <span className="flex shrink-0 items-center ps-3 text-patch-text-tertiary text-sm">
-          {prefix}
-        </span>
-      )}
-      {inputEl}
-      {showClear && (
-        <button
-          type="button"
-          tabIndex={-1}
-          aria-label="Clear input"
-          onClick={onClear}
-          className={cn(
-            "flex shrink-0 items-center justify-center",
-            "size-6 me-1.5 rounded-[var(--radius-patch-xs)]",
-            "text-patch-text-tertiary",
-            "transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-            "hover:bg-patch-surface-hover hover:text-patch-text",
-          )}
-          data-slot="input-clear"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="12"
-            height="12"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.25"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
-        </button>
-      )}
+      {prefix &&
+        (prefixStyling ? (
+          <StyledAffix side="start" size={size}>{prefix}</StyledAffix>
+        ) : (
+          <UnstyledAffix side="start">{prefix}</UnstyledAffix>
+        ))}
+      {inputElement}
       {trailingSpinner && (
-        <span
-          className="flex shrink-0 items-center pe-3 text-patch-text-tertiary"
-          data-slot="input-loading"
-        >
+        <span className="flex shrink-0 items-center pe-3 text-gray-800" data-slot="input-loading">
           {trailingSpinner}
         </span>
       )}
-      {suffix && !trailingSpinner && (
-        <span className="flex shrink-0 items-center pe-3 ps-2 ml-2 my-2 text-patch-text-tertiary text-[length:var(--text-patch-micro)] tracking-[-0.01em] border-l border-[var(--input-border)]">
-          {suffix}
-        </span>
-      )}
+      {suffix &&
+        !trailingSpinner &&
+        (suffixStyling ? (
+          <StyledAffix side="end" size={size}>{suffix}</StyledAffix>
+        ) : (
+          <UnstyledAffix side="end">{suffix}</UnstyledAffix>
+        ))}
     </span>
+  );
+
+  // Basic control-only path when no label and no error message
+  if (!label && !hasErrorMessage) return control;
+
+  // Fieldset-style path when label or error message is present
+  return (
+    <div className={cn("flex flex-col gap-1.5 w-full", className)} data-slot="input-field">
+      {label && (
+        <label
+          htmlFor={id}
+          className="text-label-14 text-gray-1000"
+          data-slot="input-label"
+        >
+          {label}
+        </label>
+      )}
+      {control}
+      {hasErrorMessage && (
+        <p
+          id={errorId}
+          role="alert"
+          className="text-label-13 text-[var(--error)]"
+          data-slot="input-error"
+        >
+          {error}
+        </p>
+      )}
+    </div>
   );
 }
 

@@ -14,35 +14,35 @@ export function CompoundComponents({ components }: CompoundComponentsProps) {
   const hasElement = components.some((c) => c.element);
 
   return (
-    <div className="compound-components my-6 overflow-x-auto rounded-[4px] border border-patch-border">
+    <div className="compound-components my-6 overflow-x-auto rounded-[4px] border border-gray-alpha-400">
       <table className="w-full text-sm">
-        <thead className="bg-patch-surface-hover">
+        <thead className="bg-gray-200">
           <tr>
-            <th className="px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
+            <th className="px-4 py-2.5 text-left text-label-11 text-gray-800">
               Component
             </th>
             {hasElement && (
-              <th className="px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
+              <th className="px-4 py-2.5 text-left text-label-11 text-gray-800">
                 Element
               </th>
             )}
-            <th className="px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
+            <th className="px-4 py-2.5 text-left text-label-11 text-gray-800">
               Description
             </th>
           </tr>
         </thead>
         <tbody>
           {components.map((comp) => (
-            <tr key={comp.name} className="border-t border-patch-border">
-              <td className="px-4 py-3 font-mono text-xs font-medium text-patch-text align-top">
+            <tr key={comp.name} className="border-t border-gray-alpha-400">
+              <td className="px-4 py-3 text-label-13 text-gray-1000 align-top">
                 {comp.name}
               </td>
               {hasElement && (
-                <td className="px-4 py-3 font-mono text-xs text-patch-text-secondary align-top">
+                <td className="px-4 py-3 text-label-13 text-gray-900 align-top">
                   {comp.element ?? "-"}
                 </td>
               )}
-              <td className="px-4 py-3 text-patch-text-secondary align-top">
+              <td className="px-4 py-3 text-gray-900 align-top">
                 {comp.description}
               </td>
             </tr>

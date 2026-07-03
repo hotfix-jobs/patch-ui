@@ -1,79 +1,66 @@
 "use client";
 
-import { Radio, RadioGroup } from "@patchui/react";
+import { Radio, RadioGroup , SectionLabel } from "@patchui/react";
 import { useState } from "react";
 
-/** Showcases RadioGroup with controlled, uncontrolled, and disabled states. */
+
 export function RadioDemo() {
   const [plan, setPlan] = useState<string>("standard");
+  const [cycle, setCycle] = useState<string>("monthly");
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Controlled */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Controlled
-        </p>
-        <RadioGroup
-          value={plan}
-          onValueChange={(v) => setPlan(v as string)}
-        >
-          {[
-            { value: "starter", label: "Starter" },
-            { value: "standard", label: "Standard" },
-            { value: "pro", label: "Pro" },
-          ].map((opt) => (
-            <label
-              key={opt.value}
-              className="flex cursor-pointer items-center gap-2 text-sm text-patch-text"
-            >
-              <Radio value={opt.value} />
-              {opt.label}
-            </label>
-          ))}
+      <div className="space-y-3">
+        <SectionLabel>Controlled with children labels</SectionLabel>
+        <RadioGroup value={plan} onValueChange={(v) => setPlan(v as string)}>
+          <Radio value="starter">Starter</Radio>
+          <Radio value="standard">Standard</Radio>
+          <Radio value="pro">Pro</Radio>
         </RadioGroup>
       </div>
 
-      {/* Default Value */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Default Value
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Uncontrolled with defaultValue</SectionLabel>
         <RadioGroup defaultValue="weekly">
-          {[
-            { value: "daily", label: "Daily" },
-            { value: "weekly", label: "Weekly" },
-            { value: "monthly", label: "Monthly" },
-          ].map((opt) => (
-            <label
-              key={opt.value}
-              className="flex cursor-pointer items-center gap-2 text-sm text-patch-text"
-            >
-              <Radio value={opt.value} />
-              {opt.label}
-            </label>
-          ))}
+          <Radio value="daily">Daily</Radio>
+          <Radio value="weekly">Weekly</Radio>
+          <Radio value="monthly">Monthly</Radio>
         </RadioGroup>
       </div>
 
-      {/* Disabled */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Disabled
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Billing cycle (2-option pattern)</SectionLabel>
+        <RadioGroup value={cycle} onValueChange={(v) => setCycle(v as string)}>
+          <Radio value="monthly">Monthly</Radio>
+          <Radio value="yearly">Yearly</Radio>
+        </RadioGroup>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Disabled group</SectionLabel>
         <RadioGroup defaultValue="yes" disabled>
-          {[
-            { value: "yes", label: "Yes" },
-            { value: "no", label: "No" },
-          ].map((opt) => (
-            <label
-              key={opt.value}
-              className="flex items-center gap-2 text-sm text-patch-text"
-            >
-              <Radio value={opt.value} />
-              {opt.label}
-            </label>
-          ))}
+          <Radio value="yes">Yes</Radio>
+          <Radio value="no">No</Radio>
+        </RadioGroup>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Bare radios (custom layout)</SectionLabel>
+        <RadioGroup defaultValue="a">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-copy-14 text-gray-1000">
+              <Radio value="a" aria-label="A" />
+              <span>A</span>
+            </div>
+            <div className="flex items-center gap-2 text-copy-14 text-gray-1000">
+              <Radio value="b" aria-label="B" />
+              <span>B</span>
+            </div>
+            <div className="flex items-center gap-2 text-copy-14 text-gray-1000">
+              <Radio value="c" aria-label="C" />
+              <span>C</span>
+            </div>
+          </div>
         </RadioGroup>
       </div>
     </div>

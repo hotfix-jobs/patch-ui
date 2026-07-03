@@ -1,63 +1,63 @@
 "use client";
 
-import { Slider, SliderValue } from "@patchui/react";
+import { Slider, SliderValue , SectionLabel } from "@patchui/react";
+import { useState } from "react";
 
-/** Showcases Slider with single value, range, SliderValue display, and disabled state. */
+
 export function SliderDemo() {
+  const [range, setRange] = useState<number[]>([50, 75]);
+
   return (
     <div className="flex flex-col gap-8">
-      {/* Single Value */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Single Value
-        </p>
-        <div className="max-w-xs">
+      <div className="space-y-3">
+        <SectionLabel>Single value</SectionLabel>
+        <div className="max-w-md">
           <Slider defaultValue={40} />
         </div>
       </div>
 
-      {/* With Value Display */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          With Value Display
-        </p>
-        <div className="max-w-xs">
+      <div className="space-y-3">
+        <SectionLabel>With value display</SectionLabel>
+        <div className="max-w-md">
           <Slider defaultValue={60}>
             <SliderValue />
           </Slider>
         </div>
       </div>
 
-      {/* Range (Two Thumbs) */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Range
-        </p>
-        <div className="max-w-xs">
+      <div className="space-y-3">
+        <SectionLabel>Range (two thumbs)</SectionLabel>
+        <div className="max-w-md">
           <Slider defaultValue={[20, 80]}>
             <SliderValue />
           </Slider>
         </div>
       </div>
 
-      {/* Custom Step */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Custom Step
-        </p>
-        <div className="max-w-xs">
+      <div className="space-y-3">
+        <SectionLabel>Range with numeric inputs</SectionLabel>
+        <div className="max-w-md">
+          <Slider
+            value={range}
+            onValueChange={(v) => setRange(Array.isArray(v) ? v : [v as number])}
+            showStartInput
+            showEndInput
+          />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Custom step</SectionLabel>
+        <div className="max-w-md">
           <Slider defaultValue={50} step={10} min={0} max={100}>
             <SliderValue />
           </Slider>
         </div>
       </div>
 
-      {/* Disabled */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Disabled
-        </p>
-        <div className="max-w-xs">
+      <div className="space-y-3">
+        <SectionLabel>Disabled</SectionLabel>
+        <div className="max-w-md">
           <Slider defaultValue={30} disabled />
         </div>
       </div>

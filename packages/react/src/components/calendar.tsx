@@ -63,7 +63,7 @@ const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
-const DAY_NAMES_SHORT = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+const DAY_NAMES_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 function startOfDay(d: Date): Date {
   const x = new Date(d);
@@ -123,8 +123,8 @@ function buildMonthGrid(month: Date, weekStartsOn: number): Date[][] {
 /* --------------------------- Calendar --------------------------- */
 
 /**
- * Calendar — month grid with single, range, or multiple date selection.
- * Pure UI primitive — keyboard navigable (arrow keys + Home/End +
+ * Calendar: month grid with single, range, or multiple date selection.
+ * Pure UI primitive: keyboard navigable (arrow keys + Home/End +
  * PageUp/PageDown). For an input-triggered popup, use `DatePicker`.
  */
 export function Calendar(props: CalendarProps): React.ReactElement {
@@ -304,24 +304,24 @@ export function Calendar(props: CalendarProps): React.ReactElement {
       data-slot="calendar"
       data-mode={mode}
       className={cn(
-        "w-fit select-none rounded-[var(--radius-patch-sm)] bg-patch-surface p-3 text-patch-text",
+        "w-fit select-none rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100 p-3 text-gray-1000",
         className,
       )}
     >
       {/* Header */}
       <div className="mb-2 flex items-center justify-between gap-2">
         <Button
-          variant="ghost"
+          variant="tertiary"
           size="sm"
           icon={<ChevronLeft className="size-4" />}
           onClick={() => setViewMonth((m) => addMonths(m, -1))}
           aria-label="Previous month"
         />
-        <div className="text-[length:var(--text-patch-control)] font-semibold tabular-nums">
+        <div className="text-button-14 tabular-nums text-gray-1000">
           {monthLabel}
         </div>
         <Button
-          variant="ghost"
+          variant="tertiary"
           size="sm"
           icon={<ChevronRight className="size-4" />}
           onClick={() => setViewMonth((m) => addMonths(m, 1))}
@@ -334,7 +334,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
         {dayNames.map((d, i) => (
           <div
             key={i}
-            className="text-center text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary"
+            className="text-center text-label-11 text-gray-800"
           >
             {d}
           </div>
@@ -363,19 +363,19 @@ export function Calendar(props: CalendarProps): React.ReactElement {
               data-selected={selected || undefined}
               data-in-range={inSelectedRange || undefined}
               className={cn(
-                "relative inline-flex h-8 w-8 items-center justify-center tabular-nums text-[length:var(--text-patch-control)] transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-                "rounded-[var(--radius-patch-xs)]",
-                outside && "text-patch-text-tertiary opacity-60",
-                !outside && !selected && "text-patch-text",
+                "relative inline-flex h-9 w-9 items-center justify-center tabular-nums text-copy-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+                "rounded-[var(--radius-6)]",
+                outside && "text-gray-700",
+                !outside && !selected && "text-gray-1000",
                 !selected &&
                   !disabledDay &&
-                  "hover:bg-[var(--menu-item-hover)]",
+                  "hover:bg-gray-alpha-100",
                 isToday &&
                   !selected &&
-                  "font-semibold ring-1 ring-inset ring-patch-border",
+                  "font-medium ring-1 ring-inset ring-gray-alpha-400",
                 selected &&
-                  "bg-patch-text text-patch-bg font-semibold hover:bg-patch-text",
-                inSelectedRange && !selected && "bg-patch-accent",
+                  "bg-gray-1000 text-background-100 font-medium hover:bg-gray-1000",
+                inSelectedRange && !selected && "bg-gray-alpha-100",
                 disabledDay && "pointer-events-none opacity-30",
                 focusRing,
               )}

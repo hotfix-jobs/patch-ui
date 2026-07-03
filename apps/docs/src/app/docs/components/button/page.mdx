@@ -1,8 +1,11 @@
 import { ButtonDemo } from "./button-demo";
 
+
+export const metadata = { title: "Button" };
+
 # Button
 
-A polymorphic button component with multiple variants, sizes, icon support, and loading state.
+A polymorphic button component with five variants, four sizes, icon support, three corner shapes, and a loading state.
 
 <Install name="button" />
 
@@ -16,25 +19,44 @@ A polymorphic button component with multiple variants, sizes, icon support, and 
 import { Button } from "@patchui/react";
 
 // Basic
-<Button variant="primary">Click me</Button>
+<Button variant="primary">Deploy Project</Button>
 
-// With icon
-<Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
+// Variants
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="tertiary">Tertiary</Button>
+<Button variant="warning">Warning</Button>
+<Button variant="error">Error</Button>
 
-// Icon only
-<Button variant="secondary" icon={<Download className="h-4 w-4" />} />
+// Sizes: tiny is for icon-only rails
+<Button size="tiny" aria-label="Add" icon={<Plus />} />
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
 
-// Trailing arrow (apply pattern)
+// Icon-only + shape (aria-label required)
+<Button shape="square" aria-label="Add" icon={<Plus />} />
+<Button shape="circle" aria-label="Add" icon={<Plus />} />
+
+// Rounded marketing shape (typically paired with shadow)
+<Button shape="rounded" shadow variant="primary" icon={<ArrowRight />} iconPosition="right">
+  Start Free Trial
+</Button>
+
+// Dismissible pill (repo chip pattern — click opens, × removes)
 <Button
-  variant="primary"
-  icon={<ArrowRight className="h-4 w-4" />}
-  iconPosition="right"
+  size="sm"
+  shape="pill"
+  variant="secondary"
+  icon={<GitBranch />}
+  onClick={openTag}
+  onRemove={removeTag}
 >
-  Apply now
+  design
 </Button>
 
 // Loading state
-<Button loading>Saving...</Button>
+<Button loading>Saving…</Button>
 
 // As a link (polymorphic render prop)
 <Button render={<a href="/dashboard" />}>Go to Dashboard</Button>
@@ -46,21 +68,45 @@ import { Button } from "@patchui/react";
   props={[
     {
       name: "variant",
-      type: '"primary" | "secondary" | "outline" | "ghost" | "danger" | "link" | "uppercase"',
+      type: '"primary" | "secondary" | "tertiary" | "warning" | "error"',
       default: '"primary"',
-      description: "The visual style of the button.",
+      description: "The visual style. Reserve `primary` for the single most important action on a view; use `error` only for destructive actions.",
     },
     {
       name: "size",
-      type: '"sm" | "md" | "lg"',
+      type: '"tiny" | "sm" | "md" | "lg"',
       default: '"md"',
-      description: "The size of the button.",
+      description: "Height: 24 / 32 / 40 / 48px. `tiny` is intended for icon-only buttons in tight rails/menus.",
+    },
+    {
+      name: "shape",
+      type: '"square" | "pill" | "circle" | "rounded"',
+      default: '"square"',
+      description: "Corner shape. `square` = 6px radius (default). `pill` = full radius for wide chips. `circle` = full radius (icon-only). `rounded` = 12px radius (marketing).",
+    },
+    {
+      name: "shadow",
+      type: "boolean",
+      default: "false",
+      description: "Adds a subtle elevation shadow. Typically paired with `shape=\"rounded\"` on marketing pages.",
+    },
+    {
+      name: "onRemove",
+      type: "() => void",
+      default: "-",
+      description: "When provided, renders a trailing × sub-button that calls this handler without triggering the parent Button's `onClick`. Use for dismissible pill chips (repo tags, applied filters).",
+    },
+    {
+      name: "removeLabel",
+      type: "string",
+      default: '"Remove"',
+      description: "Accessible label for the × sub-button.",
     },
     {
       name: "icon",
       type: "ReactNode",
       default: "-",
-      description: "An icon element to render alongside the button text. When passed without children, renders as an icon-only button.",
+      description: "An icon element rendered alongside the button text. When passed without children, renders as an icon-only button.",
     },
     {
       name: "iconPosition",
@@ -84,13 +130,13 @@ import { Button } from "@patchui/react";
       name: "render",
       type: "RenderProp<'button'>",
       default: "-",
-      description: "Polymorphic render prop - pass a different element (e.g. <a>) to change the rendered tag while keeping button styles.",
+      description: "Polymorphic render prop. Pass a different element (e.g. `<a>`) to change the rendered tag while keeping button styles.",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes to apply.",
+      description: "Additional CSS classes.",
     },
     {
       name: "children",
@@ -102,10 +148,12 @@ import { Button } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- **Polymorphic rendering:** Use the `render` prop to render the button as any HTML element. For example, `render={<a href="/page" />}` renders an anchor tag with button styling.
-- **Icon-only buttons:** Pass an `icon` without `children` to create a square icon button. The size adjusts automatically.
-- **Loading state:** When `loading` is true, the button content is replaced with a spinner and the button is disabled to prevent double-submission.
-- **Press feedback:** Every variant gets a subtle `active:scale-[0.97]` press animation — tactile click feedback without motion overhead.
-- **Outline variant:** Hairline-bordered button with `--patch-border` and a subtle `--patch-accent` hover fill (restrained). Distinct from `secondary` (no border, subtle fill).
-- **Touch targets:** All sizes include a minimum 44×44px touch target via a pseudo-element for accessibility on touch devices.
+- Each variant maps to a specific token: `primary` = `gray-1000`, `secondary` = `background-100` + `gray-alpha-400` border, `tertiary` = transparent + hover tint, `warning` = `amber-700`, `error` = `red-700`.
+- Reserve `primary` for the one hero action on a view. Reserve `error` for actions the user cannot undo without work.
+- Icon-only buttons: pass `icon` with no `children`. The button squares up to match the size. `aria-label` is required; a dev-time warning fires when it's missing.
+- `shape="rounded"` alongside `shadow` produces the taller marketing pill (12px radius + soft lift) used on hero CTAs.
+- Polymorphism: pass `render={<a href="…" />}` (or a `<Link>`) to render as an anchor with the button's styling and behavior.
+- `loading` swaps the content for a spinner and disables interaction so a double-tap can't fire twice.
+- Every size ships a hidden 44×44 touch target underneath, so the tap area works on coarse pointers even for a small button.
+- Labels: Title Case, verb + noun (`Deploy Project`, `Delete Member`). A lone `Submit` or `OK` tells the user nothing about what will happen.
 </Callout>

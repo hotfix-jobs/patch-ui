@@ -1,0 +1,106 @@
+import { BreadcrumbDemo } from "./breadcrumb-demo";
+
+
+export const metadata = { title: "Breadcrumb" };
+
+# Breadcrumb
+
+Ancestor trail leading to the current page. The Home crumb renders as an icon so the chain stays compact; long chains collapse the middle behind a `…` toggle on mobile and scroll horizontally as a fallback.
+
+<Install name="breadcrumb" />
+
+<ComponentPreview label="Breadcrumb">
+  <BreadcrumbDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Breadcrumb } from "@patchui/react";
+
+// Basic — the Home crumb (href="/" + name="Home") renders as an icon.
+<Breadcrumb
+  items={[
+    { name: "Home", href: "/" },
+    { name: "Docs", href: "/docs" },
+    { name: "Breadcrumb" }, // no href = current page
+  ]}
+/>
+
+// With Next.js Link (or any router link) via linkAs.
+import Link from "next/link";
+<Breadcrumb
+  items={items}
+  linkAs={({ href, children, ...rest }) => (
+    <Link href={href} {...rest}>{children}</Link>
+  )}
+/>
+
+// Custom leading icon on a crumb (overrides the auto home icon).
+import { Folder } from "lucide-react";
+<Breadcrumb
+  items={[
+    { name: "Home", href: "/" },
+    { name: "Projects", href: "/projects", icon: <Folder className="size-3.5" /> },
+    { name: "Enigma" },
+  ]}
+/>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "items",
+      type: "BreadcrumbItem[]",
+      default: "-",
+      description: "The trail, ordered root → leaf. The last item is always treated as the current page (no link, aria-current='page').",
+    },
+    {
+      name: "linkAs",
+      type: "({ href, children, ...aria }) => ReactElement",
+      default: "<a>",
+      description: "Render prop for the link element. Use this to plug in Next.js Link, React Router Link, etc.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Class applied to the <nav> wrapper.",
+    },
+  ]}
+/>
+
+## BreadcrumbItem
+
+<PropsTable
+  props={[
+    {
+      name: "name",
+      type: "string",
+      default: "-",
+      description: "Visible label. Also used as the accessible name for the home icon-only crumb.",
+    },
+    {
+      name: "href",
+      type: "string",
+      default: "-",
+      description: "Optional link target. Omit on the current page (last item).",
+    },
+    {
+      name: "icon",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional leading icon. Overrides the automatic home icon behavior.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Home crumb:** the pair `{ name: "Home", href: "/" }` auto-renders as an icon-only link. The visible name is hidden with `sr-only` so screen readers still get "Home".
+- **Long chains:** when `items.length > 3`, middle crumbs are hidden behind a `…` toggle below the `sm:` breakpoint. Tap the toggle to expand them inline. Desktop always shows the full chain.
+- **Overflow:** the trail scrolls horizontally with the scrollbar hidden, so a very long final crumb never wraps.
+- **Current page:** the last item has `aria-current="page"` and is not rendered as a link.
+- **JSON-LD:** every crumb stays in the DOM (mobile-hidden ones are just `display: none`), so a `BreadcrumbList` structured-data emitter can still walk the array.
+</Callout>

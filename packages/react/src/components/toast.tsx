@@ -10,9 +10,10 @@ import {
   CircleAlert,
   CircleCheck,
   Info,
-  Loader,
   TriangleAlert,
 } from "lucide-react";
+import { Spinner } from "./spinner";
+import { XIcon } from "../internal-icons";
 import {
   useCallback,
   useEffect,
@@ -187,15 +188,11 @@ export const toast: ToastApi = Object.assign(createToastFn("default"), {
 
 const TYPE_ICON: Record<ToastType, React.ReactNode | null> = {
   default: null,
-  success: <CircleCheck className="size-4 text-[var(--badge-success-text)]" />,
-  error: <CircleAlert className="size-4 text-[var(--badge-danger-text)]" />,
-  warning: (
-    <TriangleAlert className="size-4 text-[var(--badge-warning-text)]" />
-  ),
-  info: <Info className="size-4 text-patch-text-secondary" />,
-  loading: (
-    <Loader className="size-4 animate-spin text-patch-text-secondary" />
-  ),
+  success: <CircleCheck className="size-4 text-[var(--success)]" />,
+  error: <CircleAlert className="size-4 text-[var(--error)]" />,
+  warning: <TriangleAlert className="size-4 text-[var(--warning)]" />,
+  info: <Info className="size-4 text-gray-800" />,
+  loading: <Spinner size="sm" className="text-gray-800" />,
 };
 
 const TYPE_ARIA_LIVE: Record<ToastType, "polite" | "assertive"> = {
@@ -350,7 +347,7 @@ function ToastItem({
   }, [clear, t.id]);
 
   useEffect(() => {
-    // Only the frontmost toast counts down — toasts behind in the stack
+    // Only the frontmost toast counts down: toasts behind in the stack
     // are visually hidden anyway and would dismiss out of order.
     if (!isFront) return;
     if (!Number.isFinite(t.duration)) return;
@@ -400,12 +397,11 @@ function ToastItem({
       data-type={t.type}
       className={cn(
         "pointer-events-auto relative w-full select-none",
-        "rounded-[var(--radius-patch-sm)]",
-        "bg-patch-surface text-patch-text",
-        "border border-[var(--patch-border)] shadow-patch-popup",
+        "rounded-[var(--radius-12)]",
+        "bg-background-100 text-gray-1000",
+        "border border-gray-alpha-400 shadow-modal",
         "px-3 py-3 pe-10",
         "flex items-start gap-2.5",
-        "tracking-[var(--tracking-patch-small)]",
       )}
       style={{ originX: 0.5, originY: topPos ? 0 : 1 }}
     >
@@ -416,14 +412,14 @@ function ToastItem({
       )}
       <div className="min-w-0 flex-1">
         <div
-          className="text-[length:var(--text-patch-control)] font-semibold leading-tight text-patch-text"
+          className="text-heading-14 leading-tight text-gray-1000"
           data-slot="toast-title"
         >
           {t.title}
         </div>
         {t.description != null && (
           <div
-            className="mt-0.5 text-[length:var(--text-patch-mini)] leading-snug text-patch-text-secondary"
+            className="mt-0.5 text-label-12 leading-snug text-gray-800"
             data-slot="toast-description"
           >
             {t.description}
@@ -438,11 +434,11 @@ function ToastItem({
             }}
             className={cn(
               "mt-2 inline-flex items-center justify-center",
-              "rounded-[var(--radius-patch-sm)] border border-[var(--patch-border)]",
+              "rounded-[var(--radius-6)] border border-gray-alpha-400",
               "bg-transparent px-2.5 py-1",
-              "text-[length:var(--text-patch-control)] font-medium text-patch-text",
-              "transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-              "hover:bg-patch-accent",
+              "text-button-14 text-gray-1000",
+              "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+              "hover:bg-gray-alpha-100",
               focusRing,
             )}
             data-slot="toast-action"
@@ -459,26 +455,13 @@ function ToastItem({
         className={cn(
           "absolute top-1/2 -translate-y-1/2 end-2",
           "flex h-7 w-7 items-center justify-center",
-          "rounded-[var(--radius-patch-sm)] text-patch-text-tertiary",
-          "transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-          "hover:bg-patch-surface-hover hover:text-patch-text",
+          "rounded-[var(--radius-6)] text-gray-800",
+          "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "hover:bg-gray-alpha-200 hover:text-gray-1000",
           focusRing,
         )}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M18 6 6 18" />
-          <path d="m6 6 12 12" />
-        </svg>
+        <XIcon className="size-3" />
       </button>
     </motion.div>
   );

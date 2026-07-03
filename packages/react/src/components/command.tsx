@@ -5,11 +5,15 @@ import { createContext, useContext } from "react";
 import type * as React from "react";
 import { CheckIcon } from "../internal-icons";
 import { cn } from "../utils";
-import { Dialog, DialogContent } from "./dialog";
+import { Kbd } from "./kbd";
+import { Modal } from "./modal";
 
 type Density = "compact" | "comfortable";
 
-const CommandDensityContext = createContext<Density>("compact");
+const CommandDensityContext = createContext<Density>("comfortable");
+
+/** Provides the close handler so CommandInput can render a clickable Esc chip. */
+const CommandCloseContext = createContext<(() => void) | null>(null);
 
 /**
  * Command - a command palette / searchable list built on Base UI Autocomplete
@@ -44,7 +48,7 @@ function SearchIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="size-4 shrink-0 text-patch-text-tertiary"
+      className="size-4 shrink-0 text-gray-800"
     >
       <circle cx="11" cy="11" r="8" />
       <path d="m21 21-4.3-4.3" />
@@ -54,41 +58,47 @@ function SearchIcon() {
 
 export function CommandInput({
   className,
+  showEscape = true,
   ...props
-}: React.ComponentProps<typeof AutocompletePrimitive.Input>): React.ReactElement {
-  // Visually mirrors Input's `underline` variant + `lg` size: bottom border
-  // hairline, no other chrome, search icon left. Hand-built so the inner
-  // element can be Base UI's AutocompletePrimitive.Input (Command needs
-  // it for type-ahead + keyboard navigation).
+}: React.ComponentProps<typeof AutocompletePrimitive.Input> & {
+  /** Show the Esc chip on the right when a close handler is available. Default true. */
+  showEscape?: boolean;
+}): React.ReactElement {
+  const close = useContext(CommandCloseContext);
+  const showKbd = showEscape && close != null;
   return (
     <span
       className={cn(
-        "relative inline-flex w-full items-center",
-        "rounded-none bg-transparent",
-        "border-b border-[var(--input-border)]",
-        "has-focus-visible:border-b border-[var(--input-border-focus)]",
-        "transition-[color,box-shadow] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
+        "relative inline-flex w-full items-center border-b border-gray-alpha-400 bg-transparent",
       )}
       data-slot="command-input-wrapper"
     >
-      <span className="flex shrink-0 items-center ps-3 pe-2 text-patch-text-tertiary">
+      <span className="flex shrink-0 items-center ps-3 pe-2 text-gray-800">
         <SearchIcon />
       </span>
       <AutocompletePrimitive.Input
         data-slot="command-input"
         className={cn(
-          "h-11 w-full flex-1 border-none bg-transparent pe-3 text-[length:var(--text-patch-control)] tracking-[-0.005em] text-patch-text placeholder:text-[var(--input-placeholder)] outline-none ring-0 focus:outline-none focus:ring-0",
+          "h-12 w-full flex-1 border-none bg-transparent text-copy-14 text-gray-1000 placeholder:text-gray-700 outline-none ring-0 focus:outline-none focus:ring-0",
+          showKbd ? "pe-2" : "pe-3",
           className,
         )}
         {...props}
       />
+      {showKbd && (
+        <span className="flex shrink-0 items-center pe-3">
+          <Kbd onClick={close} aria-label="Close">
+            Esc
+          </Kbd>
+        </span>
+      )}
     </span>
   );
 }
 
 export function CommandList({
   className,
-  density = "compact",
+  density = "comfortable",
   children,
   ...props
 }: Omit<
@@ -111,19 +121,25 @@ export function CommandList({
   );
 }
 
+/**
+ * CommandEmpty renders text when the filtered list has no results.
+ *
+ * Base UI's Autocomplete.Empty root always stays mounted for aria-live
+ * announcements: it only null-toggles its CHILDREN based on filteredItems
+ * count. So the padding must live on an inner wrapper (which only renders
+ * as part of children), not on the Empty root itself; otherwise the padded
+ * root would take up vertical space even when items exist.
+ */
 export function CommandEmpty({
   className,
   children,
   ...props
 }: React.ComponentProps<typeof AutocompletePrimitive.Empty>): React.ReactElement {
-  // Base UI keeps the Empty root mounted always (it's an aria-live region), so
-  // padding must live on an inner wrapper that only renders when the list is
-  // actually empty - otherwise it leaves a persistent empty box under the list.
   return (
     <AutocompletePrimitive.Empty data-slot="command-empty" {...props}>
       <div
         className={cn(
-          "px-3 py-6 text-center text-[length:var(--text-patch-control)] text-patch-text-tertiary",
+          "px-3 py-6 text-center text-label-12 text-gray-800",
           className,
         )}
       >
@@ -137,31 +153,47 @@ export function CommandItem({
   className,
   selected,
   description,
+  prefix,
+  suffix,
   children,
   ...props
-}: React.ComponentProps<typeof AutocompletePrimitive.Item> & {
-  /** When true, renders a trailing check to indicate "currently chosen". */
+}: Omit<
+  React.ComponentProps<typeof AutocompletePrimitive.Item>,
+  "prefix" | "suffix"
+> & {
+  /** Trailing check indicating "currently chosen". */
   selected?: boolean;
   /** Secondary line below the title for two-line items. */
   description?: React.ReactNode;
+  /** Leading node (icon). */
+  prefix?: React.ReactNode;
+  /** Trailing node (kbd shortcut, badge, count). */
+  suffix?: React.ReactNode;
 }): React.ReactElement {
   const density = useContext(CommandDensityContext);
 
-  const trailingCheck = selected && (
+  // Selected check REPLACES the suffix: they share the trailing slot.
+  // `selected` is for persistent choices (Theme = "Dark"); ephemeral
+  // one-shot commands should leave it undefined.
+  const trailing = selected ? (
     <CheckIcon
-      className="ms-auto size-3.5 shrink-0 text-patch-text-tertiary"
+      className="ms-auto size-3.5 shrink-0 text-gray-800"
       strokeWidth={2.25}
     />
-  );
+  ) : suffix ? (
+    <span className="ms-auto flex items-center">{suffix}</span>
+  ) : null;
 
   return (
     <AutocompletePrimitive.Item
       data-slot="command-item"
       className={cn(
-        "cursor-default select-none rounded-[var(--radius-patch-xs)] text-patch-text-secondary outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-highlighted:bg-[var(--menu-item-hover)] data-highlighted:text-patch-text [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Inset rounded highlight (matches Menu). Popup owns 4px padding via
+        // CommandList's p-1; items rounded with radius-6.
+        "cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 outline-none data-highlighted:bg-gray-alpha-100 [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         density === "compact"
-          ? "min-h-7 px-2 py-1.5 text-[length:var(--text-patch-control)]"
-          : "min-h-11 px-3 py-2.5 text-[length:var(--text-patch-body)] [&_svg:not([class*='size-'])]:size-[18px]",
+          ? "min-h-7 px-2 py-1.5 text-label-13"
+          : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
         className,
       )}
       {...props}
@@ -169,17 +201,19 @@ export function CommandItem({
       {description != null ? (
         <span className="flex w-full flex-col">
           <span className="flex items-center gap-2">
+            {prefix}
             {children}
-            {trailingCheck}
+            {trailing}
           </span>
-          <span className="mt-0.5 truncate text-[length:var(--text-patch-mini)] font-normal text-patch-text-tertiary">
+          <span className="mt-0.5 truncate text-label-12 text-gray-800">
             {description}
           </span>
         </span>
       ) : (
         <span className="flex items-center gap-2">
+          {prefix}
           {children}
-          {trailingCheck}
+          {trailing}
         </span>
       )}
     </AutocompletePrimitive.Item>
@@ -225,7 +259,7 @@ export function CommandGroupLabel({
     <AutocompletePrimitive.GroupLabel
       data-slot="command-group-label"
       className={cn(
-        "px-2 pb-1 pt-2 text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary",
+        "px-3 pb-1 pt-2 text-label-12 text-gray-700",
         className,
       )}
       {...props}
@@ -246,7 +280,7 @@ export function CommandSeparator({
   return (
     <AutocompletePrimitive.Separator
       data-slot="command-separator"
-      className={cn("my-1 h-px bg-patch-border", className)}
+      className={cn("my-1 h-px bg-gray-alpha-400", className)}
       {...props}
     />
   );
@@ -264,16 +298,18 @@ export function CommandDialog({
   children,
   ...commandProps
 }: CommandDialogProps): React.ReactElement {
+  const close = () => onOpenChange?.(false);
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        showCloseButton={false}
-        size="xl"
-        className="gap-0 overflow-hidden p-0"
-      >
+    <Modal
+      active={open ?? false}
+      onClickOutside={close}
+      size="xl"
+      className="gap-0 overflow-hidden p-0"
+    >
+      <CommandCloseContext.Provider value={close}>
         <Command {...commandProps}>{children}</Command>
-      </DialogContent>
-    </Dialog>
+      </CommandCloseContext.Provider>
+    </Modal>
   );
 }
 

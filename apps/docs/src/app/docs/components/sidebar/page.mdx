@@ -1,0 +1,95 @@
+import { SidebarDemo } from "./sidebar-demo";
+
+export const metadata = { title: "Sidebar" };
+
+# Sidebar
+
+A compound sidebar primitive for docs and app layouts. `SidebarProvider` owns open/collapsed state and wires a `Cmd+B` / `Ctrl+B` keyboard shortcut by default. On desktop the sidebar is a fixed-position column with a spacer that reserves width in flex flow; on mobile it becomes a `Sheet`-based drawer with focus trap, escape-to-close, and portal rendering.
+
+Inspired by shadcn/ui's Sidebar block. Ships the same compound API: `SidebarProvider`, `Sidebar`, `SidebarInset`, `SidebarHeader`, `SidebarContent`, `SidebarFooter`, `SidebarGroup`, `SidebarGroupLabel`, `SidebarMenu`, `SidebarMenuItem`, `SidebarMenuButton`, `SidebarTrigger`, and the `useSidebar` hook.
+
+<Install name="sidebar" />
+
+<ComponentPreview label="Sidebar">
+  <SidebarDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@patchui/react";
+
+<SidebarProvider defaultOpen>
+  <Sidebar>
+    <SidebarHeader>{/* brand */}</SidebarHeader>
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton active render={<Link href="/" />}>
+              Overview
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+    </SidebarContent>
+  </Sidebar>
+  <SidebarInset>
+    <header>
+      <SidebarTrigger />
+    </header>
+    <main>{children}</main>
+  </SidebarInset>
+</SidebarProvider>
+```
+
+## SidebarProvider props
+
+<PropsTable
+  props={[
+    { name: "defaultOpen", type: "boolean", default: "true", description: "Initial desktop open state." },
+    { name: "open", type: "boolean", default: "-", description: "Controlled desktop open state." },
+    { name: "onOpenChange", type: "(open: boolean) => void", default: "-", description: "Called when the desktop open state changes." },
+    { name: "side", type: '"left" | "right"', default: '"left"', description: "Which side of the viewport the sidebar occupies." },
+    { name: "shortcut", type: "string | null", default: '"mod+b"', description: "Global keyboard shortcut that toggles the sidebar. Set null to disable." },
+  ]}
+/>
+
+## Sidebar props
+
+<PropsTable
+  props={[
+    { name: "collapsible", type: '"offcanvas" | "none"', default: '"offcanvas"', description: "Behavior when collapsed. offcanvas slides out of view; none keeps it always visible." },
+    { name: "width", type: "number", default: "256", description: "Fixed pixel width." },
+    { name: "topOffset", type: "number", default: "0", description: "Offset from the top of the viewport in pixels. Use to sit below a fixed header." },
+  ]}
+/>
+
+## SidebarMenuButton props
+
+<PropsTable
+  props={[
+    { name: "active", type: "boolean", default: "false", description: "Marks the current page. Sets aria-current='page' and applies the highlight fill." },
+    { name: "render", type: "ReactElement", default: "<button type='button' />", description: "Base UI render prop for polymorphism. Pair with a Link component for nav." },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Cmd+B shortcut** ships wired by default. Pass `shortcut="mod+i"` to change the key or `shortcut={null}` to disable.
+- **Mobile drawer** delegates to `Sheet`, so it inherits focus trap, escape-to-close, and portal rendering. No manual backdrop wiring.
+- **SidebarInset** is the main content column. It sits alongside the sidebar via a shared flex row provided by `SidebarProvider`. If you use Sidebar without SidebarInset, make sure the sibling main element is a flex-1 block.
+- **Active state** is set with the `active` prop on `SidebarMenuButton`. In routing frameworks, compute active from `pathname === item.href` and pass through.
+</Callout>

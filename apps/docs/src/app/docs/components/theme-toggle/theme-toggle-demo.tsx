@@ -10,10 +10,10 @@ export function ThemeToggleDemo() {
     <div className="flex flex-col gap-8">
       {/* Default (uncontrolled) */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Default
         </p>
-        <p className="mb-3 text-sm text-patch-text-secondary">
+        <p className="mb-3 text-sm text-gray-900">
           Click to toggle the site theme. Persists to localStorage.
         </p>
         <ThemeToggle />
@@ -21,7 +21,7 @@ export function ThemeToggleDemo() {
 
       {/* Sizes */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Sizes
         </p>
         <div className="flex items-center gap-3">
@@ -33,7 +33,7 @@ export function ThemeToggleDemo() {
 
       {/* Controlled */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
+        <p className="mb-3 text-xs font-medium text-gray-800">
           Controlled
         </p>
         <div className="flex items-center gap-3">
@@ -43,8 +43,8 @@ export function ThemeToggleDemo() {
             storageKey={false}
             applyClass={false}
           />
-          <span className="text-sm text-patch-text-secondary">
-            Current: <strong className="text-patch-text">{controlledTheme}</strong>
+          <span className="text-sm text-gray-900">
+            Current: <strong className="text-gray-1000">{controlledTheme}</strong>
           </span>
         </div>
       </div>

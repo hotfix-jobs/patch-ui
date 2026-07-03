@@ -4,30 +4,29 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 /**
- * Table - Patch UI primitive table set.
+ * Table: semantic HTML table with consistent chrome. Thin wrappers around
+ * the native `<table>` elements. Use for genuinely tabular data (multiple
+ * rows sharing shape, at least one comparable column); for simpler
+ * key/value layouts reach for Card / description-list patterns instead.
  *
- * Thin wrappers around the native <table> elements with consistent
- * Patch UI styling: hairline dividers, surface backgrounds, restrained
- * typography hierarchy. Mirrors the shadcn Base Table API
- * (Table / TableHeader / TableBody / TableFooter / TableHead /
- * TableRow / TableCell / TableCaption) so the components compose the
- * way developers expect.
- *
- * Used for any tabular data: leaderboards, comparison rows, pricing
- * matrices, or simple key/value pairs — any row/column display.
+ * TableBody accepts opt-in booleans that shape the whole body via CSS
+ * descendant selectors: no per-row prop drilling required:
+ *   - `striped`: alternating row backgrounds
+ *   - `bordered`: vertical cell borders
+ *   - `interactive`: row hover effect
  *
  * Usage:
  *   <Table>
  *     <TableHeader>
  *       <TableRow>
- *         <TableHead>Field</TableHead>
- *         <TableHead align="right">Median</TableHead>
+ *         <TableHead>Name</TableHead>
+ *         <TableHead align="right">Last used</TableHead>
  *       </TableRow>
  *     </TableHeader>
- *     <TableBody>
+ *     <TableBody interactive>
  *       <TableRow>
- *         <TableCell>Backend Engineering</TableCell>
- *         <TableCell align="right">$215k</TableCell>
+ *         <TableCell>acme-web</TableCell>
+ *         <TableCell align="right">2m ago</TableCell>
  *       </TableRow>
  *     </TableBody>
  *   </Table>
@@ -35,15 +34,18 @@ import { cn } from "../utils";
 
 export interface TableProps
   extends React.TableHTMLAttributes<HTMLTableElement> {
-  /** Wrap in a horizontally-scrollable container. Default true so
-   *  long-content tables stay usable on narrow viewports without
-   *  manual overflow handling at the call site. */
+  /**
+   * Wrap in a horizontally-scrollable container. Default true so
+   * long-content tables stay usable on narrow viewports without manual
+   * overflow handling at the call site.
+   */
   scrollable?: boolean;
   /**
    * Visual treatment.
-   * - `default`: rounded 12px outer, hairline border, surface bg — dashboard / data-card feel.
-   * - `flat`: no radius, no outer bg, no border — NYT / Bloomberg data-table feel.
-   *    Row + header backgrounds and hairlines still render.
+   * - `default`: rounded outer, hairline border, elevated surface bg:
+   *   dashboard / data-card feel.
+   * - `flat`: no radius, no outer bg, no border: reference / documentation
+   *   data-table feel.
    */
   variant?: "default" | "flat";
 }
@@ -59,15 +61,40 @@ export function Table({
       data-slot="table"
       data-variant={variant}
       className={cn(
-        "w-full caption-bottom border-collapse",
-        "text-[length:var(--text-patch-control)] text-patch-text",
-        variant === "default" &&
-          "rounded-[var(--radius-patch-lg)] overflow-hidden bg-patch-surface border border-[var(--patch-border)]",
+        // border-separate so cells accept border-radius (needed for
+        // interactive / striped rounded-row look). When a body has
+        // interactive or striped enabled, add 2px vertical border-spacing
+        // via :has() so the pill has natural gap from adjacent rows.
+        // Plain tables keep border-spacing-0 so border-b dividers on
+        // cells render as one continuous hairline.
+        "w-full caption-bottom border-separate border-spacing-0 text-copy-14 text-gray-1000",
+        "has-[tbody[data-interactive]]:[border-spacing:0_2px] has-[tbody[data-striped]]:[border-spacing:0_2px]",
         className,
       )}
       {...props}
     />
   );
+
+  // Default variant: outer chrome (border, radius, bg) lives on the
+  // container div. Only pad the table inside when the body opts into
+  // interactive / striped, so the rounded row pill has breathing room
+  // from the outer border. Plain tables sit flush.
+  if (variant === "default") {
+    return (
+      <div
+        data-slot="table-container"
+        className={cn(
+          "relative w-full overflow-hidden rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400",
+          scrollable && "overflow-x-auto",
+        )}
+      >
+        <div className="has-[tbody[data-interactive]]:p-1 has-[tbody[data-striped]]:p-1">
+          {tableEl}
+        </div>
+      </div>
+    );
+  }
+
   if (!scrollable) return tableEl;
   return (
     <div
@@ -79,6 +106,8 @@ export function Table({
   );
 }
 
+/* ------------------------------ Sections ----------------------------- */
+
 export type TableSectionProps = React.HTMLAttributes<HTMLTableSectionElement>;
 
 export function TableHeader({
@@ -88,20 +117,66 @@ export function TableHeader({
   return (
     <thead
       data-slot="table-header"
-      className={cn(
-        "bg-patch-surface-2 border-b border-[var(--patch-border)]",
-        className,
-      )}
+      // border-b lives on th (see TableHead) since border-separate
+      // stops thead-level borders from rendering across cell gaps.
+      className={cn("bg-background-200", className)}
       {...props}
     />
   );
 }
 
+export interface TableBodyProps
+  extends React.HTMLAttributes<HTMLTableSectionElement> {
+  /** Alternating row background colors. */
+  striped?: boolean;
+  /** Vertical cell borders. */
+  bordered?: boolean;
+  /** Row hover effect (opt-in for actionable rows, off by default). */
+  interactive?: boolean;
+}
+
 export function TableBody({
   className,
+  striped,
+  bordered,
+  interactive,
   ...props
-}: TableSectionProps): React.ReactElement {
-  return <tbody data-slot="table-body" className={className} {...props} />;
+}: TableBodyProps): React.ReactElement {
+  return (
+    <tbody
+      data-slot="table-body"
+      data-striped={striped ? "" : undefined}
+      data-bordered={bordered ? "" : undefined}
+      data-interactive={interactive ? "" : undefined}
+      className={cn(
+        // Last row drops its bottom border so it doesn't double up with
+        // the outer container's border.
+        "[&_tr:last-child>td]:border-b-0",
+        // Row hover applies bg to individual cells (border-collapse: separate
+        // means tr bg doesn't render as a single pill). Rounded corners on
+        // first and last cell of the hovered / striped row give the
+        // inset-pill look. Both modes DROP the cell border-b: the fill
+        // IS the row indicator, and letting the border-b fight the pill
+        // corners reads as a bug.
+        interactive && [
+          "[&_td]:!border-b-0",
+          "[&_tr]:cursor-pointer",
+          "[&_tr:hover>td]:bg-gray-alpha-100",
+          "[&_tr:hover>td:first-child]:rounded-l-[var(--radius-6)]",
+          "[&_tr:hover>td:last-child]:rounded-r-[var(--radius-6)]",
+        ],
+        striped && [
+          "[&_td]:!border-b-0",
+          "[&_tr:nth-child(even)>td]:bg-background-200",
+          "[&_tr:nth-child(even)>td:first-child]:rounded-l-[var(--radius-6)]",
+          "[&_tr:nth-child(even)>td:last-child]:rounded-r-[var(--radius-6)]",
+        ],
+        bordered && "[&_td+td]:border-l [&_th+th]:border-l",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 export function TableFooter({
@@ -112,13 +187,15 @@ export function TableFooter({
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "bg-patch-surface-2 border-t border-[var(--patch-border)] font-medium",
+        "bg-background-200 border-t border-gray-alpha-400 font-medium",
         className,
       )}
       {...props}
     />
   );
 }
+
+/* -------------------------------- Rows ------------------------------- */
 
 export type TableRowProps = React.HTMLAttributes<HTMLTableRowElement>;
 
@@ -127,23 +204,15 @@ export function TableRow({
   ...props
 }: TableRowProps): React.ReactElement {
   return (
-    <tr
-      data-slot="table-row"
-      className={cn(
-        "border-b border-[var(--patch-border)] last:shadow-none",
-        "transition-colors hover:bg-[var(--menu-item-hover)]",
-        className,
-      )}
-      {...props}
-    />
+    <tr data-slot="table-row" className={cn(className)} {...props} />
   );
 }
 
+/* -------------------------------- Cells ------------------------------ */
+
 export interface TableHeadProps
   extends React.ThHTMLAttributes<HTMLTableCellElement> {
-  /** Text alignment for the header cell content. Maps to text-{align}
-   *  rather than the legacy `align` attribute so it composes with the
-   *  rest of the Tailwind class chain. */
+  /** Text alignment for the header cell content. */
   align?: "left" | "center" | "right";
 }
 
@@ -156,8 +225,8 @@ export function TableHead({
     <th
       data-slot="table-head"
       className={cn(
-        "h-9 px-3 py-2 text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary",
-        "whitespace-nowrap",
+        "h-9 px-3 py-2 text-label-11 text-gray-800 whitespace-nowrap",
+        "border-b border-gray-alpha-400",
         align === "right" && "text-right",
         align === "center" && "text-center",
         align === "left" && "text-left",
@@ -182,8 +251,7 @@ export function TableCell({
     <td
       data-slot="table-cell"
       className={cn(
-        "px-3 py-3 align-middle",
-        "tracking-[-0.005em]",
+        "px-3 py-2.5 align-middle border-b border-gray-alpha-400",
         align === "right" && "text-right tabular-nums",
         align === "center" && "text-center",
         align === "left" && "text-left",
@@ -194,6 +262,8 @@ export function TableCell({
   );
 }
 
+/* ------------------------------ Caption ------------------------------ */
+
 export type TableCaptionProps = React.HTMLAttributes<HTMLTableCaptionElement>;
 
 export function TableCaption({
@@ -203,10 +273,7 @@ export function TableCaption({
   return (
     <caption
       data-slot="table-caption"
-      className={cn(
-        "mt-3 text-[length:var(--text-patch-mini)] text-patch-text-tertiary text-left",
-        className,
-      )}
+      className={cn("mt-3 text-label-12 text-gray-800 text-left", className)}
       {...props}
     />
   );

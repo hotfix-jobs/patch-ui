@@ -4,85 +4,67 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigation } from "@/lib/navigation";
-import { cn } from "@patchui/react";
+import {
+  Sidebar as SidebarRoot,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@patchui/react";
 
-export function Sidebar({
-  open,
-  onClose,
-}: {
-  open?: boolean;
-  onClose?: () => void;
-}) {
+/**
+ * Sidebar — the docs navigation column, built with the @patchui/sidebar
+ * primitives. State (open/closed on desktop, open/closed on mobile
+ * drawer) lives in the SidebarProvider in the root layout.
+ */
+export function Sidebar() {
   const pathname = usePathname();
   const activeRef = useRef<HTMLAnchorElement>(null);
 
-  // Keep the active item visible when navigating or on first load.
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: "nearest" });
   }, [pathname]);
 
   return (
-    <>
-      {open && (
-        <div
-          className="fixed inset-0 z-40 bg-black/10 backdrop-blur-sm lg:hidden"
-          onClick={onClose}
-          aria-hidden
-        />
-      )}
-
-      <div
-        className={cn(
-          "fixed top-14 bottom-0 left-0 z-50 w-64 overflow-y-auto",
-          "border-r-[0.5px] border-patch-border bg-patch-bg",
-          "transition-transform duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-out)]",
-          "lg:translate-x-0 lg:z-0",
-          open ? "translate-x-0" : "-translate-x-full",
-        )}
-      >
-        <nav
-          aria-label="Documentation"
-          className="flex flex-col px-4 py-6"
+    <SidebarRoot>
+      <SidebarHeader className="border-b-[0.5px] border-gray-alpha-400">
+        <Link
+          href="/"
+          className="rounded-[var(--radius-6)] px-2 py-1.5 text-heading-16 text-gray-1000 hover:bg-gray-alpha-100"
         >
-          {navigation.map((group, gi) => (
-            <div
-              key={group.title}
-              className={cn(
-                "flex flex-col gap-0.5",
-                gi > 0 &&
-                  "mt-6 pt-6 border-t-[0.5px] border-patch-border",
-              )}
-            >
-              <div className="px-2 pb-1 text-[length:var(--text-patch-micro)] font-semibold uppercase tracking-[var(--tracking-patch-label)] text-patch-text-tertiary">
-                {group.title}
-              </div>
+          Patch UI
+        </Link>
+      </SidebarHeader>
+      <SidebarContent>
+        {navigation.map((group, gi) => (
+          <SidebarGroup key={group.title} className={gi > 0 ? "mt-2 border-t border-gray-alpha-400 pt-4" : ""}>
+            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+            <SidebarMenu>
               {group.items.map((item) => {
                 const isActive = pathname === item.href;
                 return (
-                  <Link
-                    key={item.href}
-                    ref={isActive ? activeRef : undefined}
-                    href={item.href}
-                    onClick={onClose}
-                    aria-current={isActive ? "page" : undefined}
-                    className={cn(
-                      "rounded-[var(--radius-patch-xs)] px-2 py-1.5",
-                      "text-[length:var(--text-patch-control)]",
-                      "transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)]",
-                      "outline-none focus-visible:outline focus-visible:outline-1 focus-visible:outline-[var(--patch-focus-ring)] focus-visible:outline-offset-[var(--patch-focus-ring-offset)]",
-                      isActive
-                        ? "bg-[var(--menu-item-hover)] font-medium text-patch-text"
-                        : "text-patch-text-secondary hover:bg-[var(--menu-item-hover)] hover:text-patch-text",
-                    )}
-                  >
-                    {item.title}
-                  </Link>
+                  <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton
+                      active={isActive}
+                      render={
+                        <Link
+                          ref={isActive ? activeRef : undefined}
+                          href={item.href}
+                        />
+                      }
+                    >
+                      {item.title}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 );
               })}
-            </div>
-          ))}
-        </nav>
-      </div>
-    </>
+            </SidebarMenu>
+          </SidebarGroup>
+        ))}
+      </SidebarContent>
+    </SidebarRoot>
   );
 }

@@ -1,5 +1,8 @@
 import { TableDemo } from "./table-demo";
 
+
+export const metadata = { title: "Table" };
+
 # Table
 
 A set of composable table primitives - thin, styled wrappers around native table elements with hairline dividers, a surface background, and restrained typography. Mirrors the familiar shadcn table API so the parts compose the way you expect.
@@ -72,6 +75,31 @@ import {
   ]}
 />
 
+### TableBody
+
+<PropsTable
+  props={[
+    {
+      name: "striped",
+      type: "boolean",
+      default: "false",
+      description: "Alternating row backgrounds (background-200 on even rows) with the same rounded-inset pill treatment as interactive.",
+    },
+    {
+      name: "bordered",
+      type: "boolean",
+      default: "false",
+      description: "Vertical cell borders (border-l between adjacent cells).",
+    },
+    {
+      name: "interactive",
+      type: "boolean",
+      default: "false",
+      description: "Opt-in row hover + cursor-pointer. Hover fills the row with an inset gray-alpha-100 pill (rounded on first / last cell); drops per-row hairlines since the pill is the row indicator.",
+    },
+  ]}
+/>
+
 ### TableHead / TableCell
 
 <PropsTable
@@ -93,9 +121,11 @@ import {
 
 <Callout title="Notes">
 - **Composition:** `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, and `TableCaption` map directly to the native table elements, so standard HTML attributes pass through.
-- **Default vs flat:** Pick `default` for dashboard / data-card surfaces (rounded, surface bg, contained). Pick `flat` when the table is the primary content of a longform layout — it sheds the outer chrome and lets the hairline grid + typography carry the table's structure.
+- **Default vs flat:** Pick `default` for dashboard / data-card surfaces (rounded, surface bg, contained). Pick `flat` when the table is the primary content of a longform layout: it sheds the outer chrome and lets the hairline grid + typography carry the table's structure.
 - **Numerals:** Use `align="right"` on numeric `TableCell`s to right-align and enable tabular figures for clean column alignment.
-- **Hover:** Rows highlight on hover with `--menu-item-hover` (= `--patch-accent`), matching Menu / Select / Combobox item highlights for token consistency.
-- **TableHead tracking:** Uppercase micro-text uses `--tracking-patch-label` token (4% letter-spacing), aligned with `SectionLabel` and `MenuGroupLabel` for consistent label typography across the system.
+- **Interactive rows:** Pass `interactive` to `TableBody` to add hover + cursor-pointer to every row. Hover fills the row with a `gray-alpha-100` inset pill (rounded on the first/last cell) matching Menu item highlights, and drops the per-row hairlines since the pill is the row indicator.
+- **Striped / bordered:** Opt in via `TableBody`: `striped` alternates even rows to `background-200` (also rounded inset), `bordered` adds vertical cell dividers.
+- **Numerals:** Use `align="right"` on numeric `TableCell`s to right-align and enable tabular figures for clean column alignment.
+- **TableHead typography:** Small caption tier (`text-label-11 text-gray-800`) for column headers, matching the caption pattern used in Command sections.
 - **Key/value pairs:** For simple two-column key/value data, a two-cell `TableRow` per pair works well; reserve the header row for true tabular data.
 </Callout>

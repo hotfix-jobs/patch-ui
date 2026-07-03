@@ -1,8 +1,13 @@
 import { ProgressDemo } from "./progress-demo";
 
+
+export const metadata = { title: "Progress" };
+
 # Progress
 
-Determinate or indeterminate progress bar. Use for upload progress, multi-step forms, "X of Y complete", or any time you need a visual indicator of completion. For unbounded loading, prefer `Spinner`; for bounded operations, use Progress.
+Determinate progress bar for work whose total is knowable: file uploads, multi-step setup, build steps. Four intent variants, three preset heights, plus numeric `height`/`width` overrides for full control.
+
+For short indeterminate waits use `Spinner`; for inline copy use `Spinner variant="dots"`.
 
 <Install name="progress" />
 
@@ -15,23 +20,27 @@ Determinate or indeterminate progress bar. Use for upload progress, multi-step f
 ```tsx
 import { Progress } from "@patchui/react";
 
-// Determinate (0-100)
-<Progress value={40} />
+// Basic
+<Progress value={30} />
 
 // Custom max
-<Progress value={3} max={5} label="Step 3 of 5" />
+<Progress value={30} max={40} />
 
-// Variants
+// Intent variants
+<Progress value={40} variant="success" />
 <Progress value={70} variant="warning" />
-<Progress value={92} variant="danger" />
-<Progress value={100} variant="success" />
+<Progress value={90} variant="error" />
 
-// Sizes
-<Progress value={50} size="sm" />  // 4px tall
-<Progress value={50} size="md" />  // 6px (default)
-<Progress value={50} size="lg" />  // 10px tall
+// Preset heights
+<Progress value={60} size="sm" />   // 4px
+<Progress value={60} size="md" />   // 6px (default)
+<Progress value={60} size="lg" />   // 10px
 
-// Indeterminate
+// Exact pixel height and/or width
+<Progress value={60} height={4} width={200} />
+<Progress value={60} height={20} width="50%" />
+
+// Indeterminate (unknown total)
 <Progress value={null} />
 ```
 
@@ -43,37 +52,58 @@ import { Progress } from "@patchui/react";
       name: "value",
       type: "number | null",
       default: "0",
-      description: "Current progress (0 to max). Pass null for an indeterminate sweep animation.",
+      description: "Current value from 0 to `max`. Pass `null` for an indeterminate sweep animation.",
     },
     {
       name: "max",
       type: "number",
       default: "100",
-      description: "Maximum value. value/max determines the fill percentage.",
+      description: "The upper bound. Pass the real ceiling (`max={files.length}`) rather than hard-coding 100: the percentage is computed from `value / max`.",
     },
     {
       name: "variant",
-      type: '"default" | "success" | "warning" | "danger"',
+      type: '"default" | "success" | "warning" | "error"',
       default: '"default"',
-      description: "Fill color. default = --patch-text; success/warning/danger use the badge tokens.",
+      description: "Bar fill color. Default is `gray-1000`; success/warning/error use the matching hue.",
     },
     {
       name: "size",
       type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "Bar height — 4 / 6 / 10 px.",
+      description: "Height preset: `sm` (4px), `md` (6px), `lg` (10px). Ignored when `height` is set.",
+    },
+    {
+      name: "height",
+      type: "number",
+      default: "-",
+      description: "Exact bar height in pixels. Overrides the `size` preset.",
+    },
+    {
+      name: "width",
+      type: "number | string",
+      default: '"100%"',
+      description: "Bar width. Number is px; string is any CSS length (`\"50%\"`, `\"20rem\"`).",
     },
     {
       name: "label",
       type: "string",
       default: '"Progress"',
-      description: "Accessible label for the progressbar role.",
+      description: "Accessible label announced by screen readers alongside the value.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
     },
   ]}
 />
 
 <Callout title="Notes">
-- **Motion:** The fill width animates via a spring transition (`stiffness 200, damping 25`) — smooth when the value changes incrementally. Indeterminate mode sweeps a 1/3-width pill from off-screen-left to off-screen-right on an infinite loop.
-- **A11y:** Renders `role="progressbar"` with `aria-valuemin`, `aria-valuemax`, and `aria-valuenow` for determinate mode. For indeterminate, those attrs are omitted (per WAI-ARIA spec). Pass a meaningful `label`.
-- **Reduced motion:** With `prefers-reduced-motion`, the fill snaps to the new value instead of springing, and indeterminate mode parks the pill at 0% instead of sweeping.
+- Pair the bar with text that names the work and units: `Uploading 12 of 30 files`, `Building · 1.2 GB / 4 GB`. The bar alone doesn't say what's progressing.
+- Pass the real `max` for the ceiling. Hardcoding 100 loses meaning when the ceiling is variable.
+- Once the bar fills, swap to a completion state (toast, success row, redirect). Don't leave the filled bar sitting on screen with "Complete" tacked on.
+- Indeterminate mode animates a sweeping band. Reserve it for waits with no measurable total. Prefer `Spinner` (ring or dots variant) for sub-second waits.
+- Throttle rapid `value` updates in code: updating every animation frame will flood screen readers with `aria-valuenow` changes.
+- The fill transitions via CSS `transition-[width]` at overlay duration for a smooth animation without pulling in a motion library.
 </Callout>

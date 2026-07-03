@@ -1,55 +1,67 @@
 "use client";
 
 import { useState } from "react";
-import { Textarea } from "@patchui/react";
+import { Textarea , SectionLabel } from "@patchui/react";
 
-/** Showcases Textarea variants, error state, custom rows, and disabled. */
+const LOREM =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
+
 export function TextareaDemo() {
-  const [invalidValue, setInvalidValue] = useState("too short");
+  const [errValue, setErrValue] = useState("too short");
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Variants */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Variants
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Sizes</SectionLabel>
         <div className="flex flex-col gap-3 max-w-sm">
-          <Textarea variant="outlined" placeholder="Outlined (default)" />
-          <Textarea variant="ghost" placeholder="Ghost" />
-          <Textarea variant="underline" placeholder="Underline" />
+          <Textarea size="sm" defaultValue={LOREM} />
+          <Textarea size="md" defaultValue={LOREM} />
+          <Textarea size="lg" defaultValue={LOREM} />
         </div>
       </div>
 
-      {/* Custom Rows */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Custom Rows
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Placeholder</SectionLabel>
         <div className="max-w-sm">
-          <Textarea placeholder="This textarea has 6 rows" rows={6} />
+          <Textarea placeholder="Write something…" />
         </div>
       </div>
 
-      {/* Invalid */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Invalid state
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Fixed rows</SectionLabel>
         <div className="max-w-sm">
+          <Textarea placeholder="Textarea with fixed 5 rows" rows={5} />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Label + error message</SectionLabel>
+        <div className="flex flex-col gap-3 max-w-sm">
           <Textarea
-            invalid
-            value={invalidValue}
-            onChange={(e) => setInvalidValue(e.target.value)}
+            id="demo-desc"
+            label="Description"
+            placeholder="Describe this project"
+          />
+          <Textarea
+            id="demo-err"
+            label="Release Notes"
+            error="Release notes are required."
+            value={errValue}
+            onChange={(e) => setErrValue(e.target.value)}
           />
         </div>
       </div>
 
-      {/* Disabled */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Disabled
-        </p>
+      <div className="space-y-3">
+        <SectionLabel>Read only</SectionLabel>
+        <div className="max-w-sm">
+          <Textarea defaultValue={LOREM} readOnly />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Disabled</SectionLabel>
         <div className="max-w-sm">
           <Textarea placeholder="Disabled textarea" disabled />
         </div>

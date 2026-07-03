@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Button,
   Sheet,
@@ -8,94 +9,141 @@ import {
   SheetHeader,
   SheetTitle,
   SheetDescription,
+  SheetBody,
   SheetFooter,
-  Input,
+  SheetClose,
   Label,
+  Input,
 } from "@patchui/react";
+import { SectionLabel } from "@patchui/react";
 
-/** Showcases Sheet from different directions. */
 export function SheetDemo() {
+  const [name, setName] = useState("Ada Lovelace");
+  const [email, setEmail] = useState("ada@example.com");
+
   return (
     <div className="flex flex-col gap-8">
-      {/* Default (Right) */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Right (Default)
-        </p>
+      {/* Right side: editable profile */}
+      <div className="space-y-3">
+        <SectionLabel>Editable profile</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
-            Open Sheet
+            Open profile
           </SheetTrigger>
-          <SheetContent side="right">
+          <SheetContent>
             <SheetHeader>
-              <SheetTitle>Account Settings</SheetTitle>
+              <SheetTitle>Profile</SheetTitle>
               <SheetDescription>
-                Update your account preferences here.
+                Update the member's name and contact details.
               </SheetDescription>
             </SheetHeader>
-            <div className="flex flex-col gap-4 p-6">
+            <SheetBody>
               <div className="flex flex-col gap-2">
-                <Label htmlFor="sheet-name">Display Name</Label>
-                <Input id="sheet-name" defaultValue="Jane Doe" />
+                <Label htmlFor="sheet-name">Name</Label>
+                <Input
+                  id="sheet-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="sheet-email">Email</Label>
-                <Input id="sheet-email" type="email" defaultValue="jane@example.com" />
+                <Input
+                  id="sheet-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
               </div>
-            </div>
+            </SheetBody>
             <SheetFooter>
-              <Button>Save Changes</Button>
+              <SheetClose render={<Button variant="secondary">Cancel</Button>} />
+              <SheetClose render={<Button variant="primary">Save changes</Button>} />
             </SheetFooter>
           </SheetContent>
         </Sheet>
       </div>
 
-      {/* Directions */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Directions
-        </p>
-        <div className="flex flex-wrap gap-3">
-          {(["left", "right", "top", "bottom"] as const).map((side) => (
-            <Sheet key={side}>
-              <SheetTrigger render={<Button variant="secondary" />}>
-                {side.charAt(0).toUpperCase() + side.slice(1)}
-              </SheetTrigger>
-              <SheetContent side={side}>
-                <SheetHeader>
-                  <SheetTitle>Sheet - {side}</SheetTitle>
-                  <SheetDescription>
-                    This sheet slides in from the {side}.
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="p-6 text-sm text-patch-text-secondary">
-                  Sheet content goes here.
-                </div>
-              </SheetContent>
-            </Sheet>
-          ))}
-        </div>
-      </div>
-
-      {/* Without Close Button */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Without Close Button
-        </p>
+      {/* Non-modal inspector */}
+      <div className="space-y-3">
+        <SectionLabel>Non-modal inspector</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
-            No Close Button
+            Open inspector
           </SheetTrigger>
-          <SheetContent side="right" showCloseButton={false}>
+          <SheetContent modal={false}>
             <SheetHeader>
-              <SheetTitle>Custom Sheet</SheetTitle>
+              <SheetTitle>Deployment details</SheetTitle>
               <SheetDescription>
-                This sheet has no built-in close button. Click the backdrop to dismiss.
+                Non-modal: the page underneath stays interactive so you can
+                keep browsing while this stays open.
               </SheetDescription>
             </SheetHeader>
-            <div className="p-6 text-sm text-patch-text-secondary">
-              Use the backdrop or a custom close action to dismiss this sheet.
-            </div>
+            <SheetBody>
+              <p className="text-copy-14 text-gray-1000">
+                Use `modal={false}` for persistent side panels that pair with
+                the page underneath (record inspectors, help drawers).
+              </p>
+            </SheetBody>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Left side */}
+      <div className="space-y-3">
+        <SectionLabel>Left side (navigation)</SectionLabel>
+        <Sheet>
+          <SheetTrigger render={<Button variant="secondary" />}>
+            Open menu
+          </SheetTrigger>
+          <SheetContent side="left">
+            <SheetHeader>
+              <SheetTitle>Menu</SheetTitle>
+            </SheetHeader>
+            <SheetBody>
+              {[
+                "Home",
+                "Projects",
+                "Team",
+                "Analytics",
+                "Settings",
+              ].map((item) => (
+                <a
+                  key={item}
+                  href="#"
+                  className="text-copy-14 text-gray-1000 hover:text-gray-900"
+                >
+                  {item}
+                </a>
+              ))}
+            </SheetBody>
+          </SheetContent>
+        </Sheet>
+      </div>
+
+      {/* Bottom side */}
+      <div className="space-y-3">
+        <SectionLabel>Bottom side (mobile picker)</SectionLabel>
+        <Sheet>
+          <SheetTrigger render={<Button variant="secondary" />}>
+            Pick region
+          </SheetTrigger>
+          <SheetContent side="bottom" modal>
+            <SheetHeader>
+              <SheetTitle>Choose a region</SheetTitle>
+            </SheetHeader>
+            <SheetBody>
+              {["US East", "US West", "EU West", "Asia Pacific"].map((r) => (
+                <SheetClose
+                  key={r}
+                  render={
+                    <button className="w-full rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 px-3 py-3 text-copy-14 text-gray-1000 hover:bg-gray-alpha-100" />
+                  }
+                >
+                  {r}
+                </SheetClose>
+              ))}
+            </SheetBody>
           </SheetContent>
         </Sheet>
       </div>

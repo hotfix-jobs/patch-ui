@@ -6,40 +6,49 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Spinner } from "./spinner";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, controlSize, colorTransition } from "../recipes";
+import { focusRing, disabled, colorTransition } from "../recipes";
+import { XIcon } from "../internal-icons";
 
 export const buttonVariants = cva(
-  `relative inline-flex shrink-0 cursor-pointer items-center justify-center whitespace-nowrap font-medium tracking-[-0.005em] rounded-[var(--radius-patch-sm)] disabled:pointer-events-none disabled:opacity-50 pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11 [&_svg]:pointer-events-none [&_svg]:shrink-0 transition-transform duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-[0.97] ${focusRing} ${colorTransition}`,
+  [
+    "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",
+    "cursor-pointer",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11",
+    focusRing,
+    colorTransition,
+    disabled,
+  ].join(" "),
   {
-    defaultVariants: {
-      size: "md",
-      variant: "primary",
-    },
+    defaultVariants: { size: "md", variant: "primary", shape: "square", shadow: false },
     variants: {
       size: {
-        sm: controlSize.sm,
-        md: controlSize.md,
-        lg: controlSize.lg,
+        tiny: "h-6 px-2 gap-1 text-button-12",
+        sm: "h-8 px-3 gap-1.5 text-button-12",
+        md: "h-10 px-4 gap-2 text-button-14",
+        lg: "h-12 px-6 gap-2 text-button-16",
       },
       variant: {
         primary:
-          "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] border-none hover:bg-[var(--btn-primary-hover)] active:bg-[var(--btn-primary-active)]",
-        // Subtle-fill button: no border, soft fill. Distinct from the bordered
-        // 'outline' variant.
+          "bg-gray-1000 text-background-100 hover:bg-gray-900 active:bg-gray-800",
         secondary:
-          "bg-[var(--btn-secondary-bg)] text-[var(--btn-secondary-text)] border-none hover:bg-[var(--btn-secondary-hover)] active:bg-[var(--btn-secondary-active)]",
-        // Hairline-bordered button with a subtle neutral hover fill.
-        outline:
-          "bg-transparent text-[var(--patch-text)] border border-[var(--patch-border)] hover:bg-[var(--patch-accent)]",
-        ghost:
-          "bg-transparent text-[var(--patch-text)] border-none hover:bg-[var(--patch-surface-hover)] active:bg-[var(--patch-surface-active)]",
-        danger:
-          "bg-[var(--btn-danger-bg)] text-[var(--btn-danger-text)] border border-[var(--btn-danger-border)] hover:bg-[var(--btn-danger-hover)] active:bg-[var(--btn-danger-active)]",
-        // Inline text action with an animated draw-underline on hover.
-        link: "bg-transparent text-[var(--patch-text)] border-none rounded-none px-0 h-auto relative pb-0.5 before:content-[''] before:absolute before:inset-x-0 before:bottom-[2px] before:h-[0.5px] before:bg-[var(--patch-text)] before:scale-x-[0.3] before:origin-left before:transition-[scale] before:duration-[var(--duration-patch-spring)] before:ease-[var(--ease-patch-out)] hover:before:scale-x-100",
-        // Uppercase utility CTA (marketing/utility).
-        uppercase:
-          "bg-[var(--btn-primary-bg)] text-[var(--btn-primary-text)] border-none rounded-none uppercase tracking-[-0.01em] text-[length:var(--text-patch-micro)] hover:bg-[var(--btn-primary-hover)]",
+          "bg-background-100 text-gray-1000 border border-gray-alpha-400 hover:bg-gray-alpha-100 active:bg-gray-alpha-200",
+        tertiary:
+          "bg-transparent text-gray-1000 hover:bg-gray-alpha-100 active:bg-gray-alpha-200",
+        warning:
+          "bg-warning text-warning-fg hover:bg-warning-hover active:bg-warning-active",
+        error:
+          "bg-error text-error-fg hover:bg-error-hover active:bg-error-active",
+      },
+      shape: {
+        square: "rounded-[var(--radius-6)]",
+        pill: "rounded-full",
+        circle: "rounded-full",
+        rounded: "rounded-[var(--radius-12)]",
+      },
+      shadow: {
+        true: "shadow-card",
+        false: "",
       },
     },
   },
@@ -48,36 +57,56 @@ export const buttonVariants = cva(
 export interface ButtonProps extends useRender.ComponentProps<"button"> {
   variant?: VariantProps<typeof buttonVariants>["variant"];
   size?: VariantProps<typeof buttonVariants>["size"];
+  /** Corner shape. `square` (6px) is default; `circle` for icon-only, `rounded` (12px) for marketing. */
+  shape?: VariantProps<typeof buttonVariants>["shape"];
+  /** Adds a subtle elevation shadow. Typically paired with `shape="rounded"` on marketing pages. */
+  shadow?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   loading?: boolean;
   disabled?: boolean;
+  /**
+   * When provided, renders a trailing × sub-button that calls this handler
+   * without triggering the parent Button's onClick. Use for dismissible tag
+   * pills (repo chips, applied filters), typically with `shape="pill"`.
+   */
+  onRemove?: () => void;
+  /** Accessible label for the × sub-button. */
+  removeLabel?: string;
 }
+
+const iconOnlyWidth: Record<NonNullable<ButtonProps["size"]>, string> = {
+  tiny: "w-6 px-0",
+  sm: "w-8 px-0",
+  md: "w-10 px-0",
+  lg: "w-12 px-0",
+};
 
 export function Button({
   className,
   variant,
   size,
+  shape,
+  shadow,
   icon,
   iconPosition = "left",
   loading,
-  disabled,
+  disabled: isDisabled,
+  onRemove,
+  removeLabel = "Remove",
   render,
   children,
   ...props
 }: ButtonProps): React.ReactElement {
-  const typeValue: React.ButtonHTMLAttributes<HTMLButtonElement>["type"] =
-    render ? undefined : "button";
-
+  const effectiveSize: NonNullable<ButtonProps["size"]> = size ?? "md";
   const isIconOnly = icon != null && !children;
+  const iconOnly = isIconOnly ? iconOnlyWidth[effectiveSize] : "";
 
-  const iconOnlySizeClasses = isIconOnly
-    ? size === "sm"
-      ? "w-7 px-0"
-      : size === "lg"
-        ? "w-11 px-0"
-        : "w-9 px-0"
-    : "";
+  if (process.env.NODE_ENV !== "production" && isIconOnly && !props["aria-label"]) {
+    console.warn(
+      "[Button] Icon-only buttons must have an `aria-label` describing the action.",
+    );
+  }
 
   const content = loading ? (
     <Spinner size="sm" />
@@ -86,14 +115,44 @@ export function Button({
       {icon && iconPosition === "left" && icon}
       {children}
       {icon && iconPosition === "right" && icon}
+      {onRemove && (
+        <span
+          role="button"
+          tabIndex={0}
+          aria-label={removeLabel}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              e.stopPropagation();
+              onRemove();
+            }
+          }}
+          className={cn(
+            "-me-1 inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-70",
+            "hover:bg-gray-alpha-300 hover:opacity-100",
+            focusRing,
+            colorTransition,
+          )}
+          data-slot="button-remove"
+        >
+          <XIcon className="size-2.5" />
+        </span>
+      )}
     </>
   );
 
+  const typeValue: React.ButtonHTMLAttributes<HTMLButtonElement>["type"] =
+    render ? undefined : "button";
+
   const defaultProps = {
-    className: cn(buttonVariants({ className: cn(iconOnlySizeClasses, className), size, variant })),
+    className: cn(buttonVariants({ size: effectiveSize, variant, shape, shadow }), iconOnly, className),
     "data-slot": "button",
     type: typeValue,
-    disabled: disabled || loading,
+    disabled: isDisabled || loading,
     children: content,
   };
 

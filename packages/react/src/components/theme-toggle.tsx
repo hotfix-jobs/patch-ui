@@ -118,7 +118,7 @@ export function ThemeToggle({
       type="button"
       onClick={toggle}
       className={cn(
-        "relative inline-flex items-center justify-center overflow-hidden rounded-[var(--radius-patch-sm)] text-patch-text-secondary hover:bg-patch-surface-hover hover:text-patch-text transition-transform duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] active:scale-95",
+        "relative inline-flex items-center justify-center overflow-hidden rounded-[var(--radius-6)] text-gray-900 hover:bg-gray-alpha-100 hover:text-gray-1000",
         colorTransition,
         focusRing,
         sizeClasses[size],
@@ -139,7 +139,7 @@ export function ThemeToggle({
         // Default sync mode: AnimatePresence renders both icons during
         // transition (old still in DOM until its exit completes). Absolute
         // positioning stacks them in the same spot so the exit + enter
-        // animations crossfade — no blank frame between the two icons.
+        // animations crossfade: no blank frame between the two icons.
         <AnimatePresence initial={false}>
           {isDark ? (
             <motion.svg

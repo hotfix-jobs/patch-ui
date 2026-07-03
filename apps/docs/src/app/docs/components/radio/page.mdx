@@ -1,8 +1,11 @@
 import { RadioDemo } from "./radio-demo";
 
+
+export const metadata = { title: "Radio" };
+
 # Radio
 
-A single-select group for choosing one option from a small set, with controlled, uncontrolled, and disabled states.
+Single-select from a small set of mutually exclusive options. Pass the label as children and the whole row becomes the click target. For lists longer than ~6 options, reach for `Select` or `Combobox`.
 
 <Install name="radio" />
 
@@ -15,32 +18,29 @@ A single-select group for choosing one option from a small set, with controlled,
 ```tsx
 import { Radio, RadioGroup } from "@patchui/react";
 
-// Uncontrolled
+// Labeled radios (children pattern)
 <RadioGroup defaultValue="weekly">
-  <label className="flex items-center gap-2">
-    <Radio value="daily" /> Daily
-  </label>
-  <label className="flex items-center gap-2">
-    <Radio value="weekly" /> Weekly
-  </label>
+  <Radio value="daily">Daily</Radio>
+  <Radio value="weekly">Weekly</Radio>
+  <Radio value="monthly">Monthly</Radio>
 </RadioGroup>
 
 // Controlled
 const [plan, setPlan] = useState("standard");
 <RadioGroup value={plan} onValueChange={(v) => setPlan(v as string)}>
-  <label className="flex items-center gap-2">
-    <Radio value="starter" /> Starter
-  </label>
-  <label className="flex items-center gap-2">
-    <Radio value="standard" /> Standard
-  </label>
+  <Radio value="starter">Starter</Radio>
+  <Radio value="standard">Standard</Radio>
+  <Radio value="pro">Pro</Radio>
 </RadioGroup>
 
-// Disabled (applies to the whole group)
+// Disabled (whole group)
 <RadioGroup defaultValue="yes" disabled>
-  <Radio value="yes" />
-  <Radio value="no" />
+  <Radio value="yes">Yes</Radio>
+  <Radio value="no">No</Radio>
 </RadioGroup>
+
+// Bare radios for custom layout (pass aria-label)
+<Radio value="a" aria-label="A" />
 ```
 
 ## Props
@@ -53,19 +53,19 @@ const [plan, setPlan] = useState("standard");
       name: "value",
       type: "string",
       default: "-",
-      description: "The currently selected value. Use for controlled groups.",
+      description: "Currently selected value. Use for controlled groups.",
     },
     {
       name: "defaultValue",
       type: "string",
       default: "-",
-      description: "The initially selected value. Use for uncontrolled groups.",
+      description: "Initially selected value. Use for uncontrolled groups.",
     },
     {
       name: "onValueChange",
       type: "(value: string, details) => void",
       default: "-",
-      description: "Callback fired when the selected value changes.",
+      description: "Fired when the selected value changes.",
     },
     {
       name: "disabled",
@@ -83,13 +83,13 @@ const [plan, setPlan] = useState("standard");
       name: "required",
       type: "boolean",
       default: "false",
-      description: "Whether the user must pick a value before submitting a form.",
+      description: "The user must pick a value before form submission.",
     },
     {
       name: "name",
       type: "string",
       default: "-",
-      description: "Identifies the field when a form is submitted.",
+      description: "Field name when submitted with a form.",
     },
   ]}
 />
@@ -102,7 +102,13 @@ const [plan, setPlan] = useState("standard");
       name: "value",
       type: "string",
       default: "-",
-      description: "The value associated with this radio button. Must be unique within the group.",
+      description: "The value associated with this radio. Must be unique within the group.",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional label. When present, wraps the radio in a `<label>` so the label becomes clickable.",
     },
     {
       name: "disabled",
@@ -111,18 +117,24 @@ const [plan, setPlan] = useState("standard");
       description: "Disables this individual radio. Overrides group-level disabled when both are set.",
     },
     {
+      name: "wrapperClassName",
+      type: "string",
+      default: "-",
+      description: "Extra classes on the outer `<label>` (only used when `children` is provided).",
+    },
+    {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the radio root.",
+      description: "Extra classes on the radio root.",
     },
   ]}
 />
 
-
 <Callout title="Notes">
-- **Radio vs Checkbox:** Use a radio group when the user must pick exactly one option from a small set (less than 5 or so). For larger lists, prefer a [Select](/docs/components/select). For multiple selections, use [Checkbox](/docs/components/checkbox).
-- **Always pair with a label:** Each `Radio` should sit inside a `<label>` so clicking the text toggles selection.
-- **Accessibility:** The group renders with `role="radiogroup"` and arrow-key navigation between options. A hidden native `<input type="radio">` participates in form submission.
-- **Controlled vs uncontrolled:** Use `value` + `onValueChange` for controlled groups. Use `defaultValue` for uncontrolled.
+- Reach for Radio when the user must pick exactly one from a small set: 2 to 6 options where seeing every option matters (plan tier, billing cycle, notification frequency). Past 6 options, use `Select`.
+- Pre-select the safest default so the field reads as configured. Skip the default only when the choice has real consequences and you want a deliberate pick.
+- `required` and `disabled` live on the `RadioGroup`, not individual radios. Required-on-a-single-radio is meaningless.
+- Arrow keys move selection within the group. Tab moves to the next field, not the next radio.
+- Bare radios (no children) work for custom layouts. Always pass `aria-label`: a nameless radio is broken for screen readers.
 </Callout>

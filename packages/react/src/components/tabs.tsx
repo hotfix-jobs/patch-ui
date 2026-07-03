@@ -11,13 +11,14 @@ import {
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
+import { Tooltip } from "./tooltip";
 
 /**
  * Tabs - custom-built compound component.
  *
  * Two visual variants:
  *  - `underline` (default): a 1.5px bar tracks the active tab.
- *  - `pill`: a rounded `--menu-item-hover` background fills the active tab.
+ *  - `pill`: a rounded gray-alpha-100 background fills the active tab.
  *
  * The indicator (underline OR pill) uses motion's `layoutId` so it physically
  * slides between active tabs with spring physics, not CSS transitions. Each
@@ -115,8 +116,8 @@ export function TabsList({
         "relative flex",
         variant === "underline" && [
           orientation === "horizontal"
-            ? "items-center gap-6 border-b border-[var(--patch-border)]"
-            : "flex-col items-stretch gap-4 border-l border-[var(--patch-border)]",
+            ? "items-center gap-6 border-b border-gray-alpha-400"
+            : "flex-col items-stretch gap-4 border-l border-gray-alpha-400",
         ],
         variant === "pill" && [
           "gap-0.5",
@@ -136,6 +137,19 @@ export function TabsList({
 export interface TabsTriggerProps
   extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
   value: string;
+  /** Leading node (icon). */
+  icon?: React.ReactNode;
+  /**
+   * Trailing badge (count, dot). Hidden at 0 automatically when passed a
+   * number: Vercel spec says "drop the badge at zero".
+   */
+  badge?: React.ReactNode | number;
+  /**
+   * Sentence-case explanation for a disabled tab. Wraps the trigger in a
+   * Tooltip when set. Vercel spec: "pair the disabled tab with a tooltip
+   * that names the constraint."
+   */
+  tooltip?: React.ReactNode;
 }
 
 export function TabsTrigger({
@@ -143,6 +157,9 @@ export function TabsTrigger({
   className,
   children,
   disabled,
+  icon,
+  badge,
+  tooltip,
   onKeyDown,
   ...props
 }: TabsTriggerProps): React.ReactElement {
@@ -201,7 +218,10 @@ export function TabsTrigger({
         mass: 0.6,
       };
 
-  return (
+  // Hide numeric badges at 0; keep node badges as-is (consumer chose to render).
+  const showBadge = badge != null && (typeof badge !== "number" || badge > 0);
+
+  const trigger = (
     <button
       type="button"
       role="tab"
@@ -215,13 +235,13 @@ export function TabsTrigger({
       onClick={() => setValue(value)}
       onKeyDown={handleKeyDown}
       className={cn(
-        "relative font-medium tracking-[-0.005em] text-[length:var(--text-patch-control)] transition-colors disabled:pointer-events-none disabled:opacity-50",
+        "relative inline-flex items-center gap-2 text-copy-14 transition-colors disabled:pointer-events-none disabled:opacity-50",
         focusRing,
         variant === "underline" &&
-          "py-2 text-patch-text-secondary hover:text-patch-text data-[active]:text-patch-text",
+          "py-2.5 text-gray-800 hover:text-gray-1000 data-[active]:text-gray-1000",
         variant === "pill" && [
-          "z-10 rounded-[var(--radius-patch-sm)] px-2.5 py-1.5 text-left text-patch-text-secondary",
-          "hover:text-patch-text data-[active]:text-patch-text",
+          "z-10 rounded-[var(--radius-6)] px-3 py-1.5 text-left text-gray-800",
+          "hover:text-gray-1000 data-[active]:text-gray-1000",
         ],
         className,
       )}
@@ -233,7 +253,7 @@ export function TabsTrigger({
         <motion.div
           layoutId={`tabs-pill-${baseId}`}
           data-slot="tabs-indicator"
-          className="absolute inset-0 -z-10 rounded-[var(--radius-patch-sm)] bg-[var(--menu-item-hover)]"
+          className="absolute inset-0 -z-10 rounded-[var(--radius-6)] bg-gray-alpha-100"
           transition={indicatorTransition}
         />
       )}
@@ -242,17 +262,35 @@ export function TabsTrigger({
           layoutId={`tabs-underline-${baseId}`}
           data-slot="tabs-indicator"
           className={cn(
-            "absolute bg-patch-text",
+            "absolute bg-gray-1000",
             orientation === "horizontal"
-              ? "bottom-[-0.5px] left-0 right-0 h-[1.5px]"
-              : "top-0 bottom-0 left-[-0.5px] w-[1.5px]",
+              ? "-bottom-px left-0 right-0 h-[2px]"
+              : "top-0 bottom-0 -left-px w-[2px]",
           )}
           transition={indicatorTransition}
         />
       )}
+      {icon && (
+        <span className="shrink-0 [&_svg]:size-4" data-slot="tabs-trigger-icon">
+          {icon}
+        </span>
+      )}
       {children}
+      {showBadge && (
+        <span
+          data-slot="tabs-trigger-badge"
+          className="text-label-12 tabular-nums text-gray-800"
+        >
+          {badge}
+        </span>
+      )}
     </button>
   );
+
+  if (tooltip) {
+    return <Tooltip content={tooltip}>{trigger}</Tooltip>;
+  }
+  return trigger;
 }
 
 /* --------------------------- TabsPanel --------------------------- */

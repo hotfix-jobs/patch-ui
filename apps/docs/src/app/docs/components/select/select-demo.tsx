@@ -1,116 +1,131 @@
 "use client";
 
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectPopup,
-  SelectItem,
-  SelectGroup,
-  SelectGroupLabel,
-  SelectSeparator,
-} from "@patchui/react";
+import { useState } from "react";
+import { Select } from "@patchui/react";
+import { SectionLabel } from "@patchui/react";
+import { Globe } from "lucide-react";
 
-/** Showcases Select with basic items, grouped items, sizes, and disabled item. */
 export function SelectDemo() {
+  const [framework, setFramework] = useState("react");
+  const [region, setRegion] = useState("us-east");
+
   return (
     <div className="flex flex-col gap-8">
-      {/* Basic Select */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Basic
-        </p>
-        <Select defaultValue="Apple">
-          <SelectTrigger className="w-48">
-            <SelectValue placeholder="Choose a fruit…" />
-          </SelectTrigger>
-          <SelectPopup>
-            <SelectItem value="Apple">Apple</SelectItem>
-            <SelectItem value="Banana">Banana</SelectItem>
-            <SelectItem value="Cherry">Cherry</SelectItem>
-            <SelectItem value="Grape">Grape</SelectItem>
-          </SelectPopup>
-        </Select>
-      </div>
-
-      {/* Grouped Select */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Grouped
-        </p>
-        <Select defaultValue="React">
-          <SelectTrigger className="w-56">
-            <SelectValue placeholder="Choose a framework…" />
-          </SelectTrigger>
-          <SelectPopup>
-            <SelectGroup>
-              <SelectGroupLabel>Frontend</SelectGroupLabel>
-              <SelectItem value="React">React</SelectItem>
-              <SelectItem value="Vue">Vue</SelectItem>
-              <SelectItem value="Svelte">Svelte</SelectItem>
-            </SelectGroup>
-            <SelectSeparator />
-            <SelectGroup>
-              <SelectGroupLabel>Backend</SelectGroupLabel>
-              <SelectItem value="Node.js">Node.js</SelectItem>
-              <SelectItem value="Python">Python</SelectItem>
-              <SelectItem value="Go">Go</SelectItem>
-            </SelectGroup>
-          </SelectPopup>
-        </Select>
-      </div>
-
-      {/* Sizes */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Sizes
-        </p>
-        <div className="flex flex-wrap items-start gap-3">
-          <Select defaultValue="Small">
-            <SelectTrigger size="sm" className="w-36">
-              <SelectValue placeholder="Small" />
-            </SelectTrigger>
-            <SelectPopup>
-              <SelectItem value="Small">Small</SelectItem>
-              <SelectItem value="Medium">Medium</SelectItem>
-            </SelectPopup>
-          </Select>
-          <Select defaultValue="Default">
-            <SelectTrigger size="md" className="w-36">
-              <SelectValue placeholder="Default" />
-            </SelectTrigger>
-            <SelectPopup>
-              <SelectItem value="Default">Default</SelectItem>
-              <SelectItem value="Other">Other</SelectItem>
-            </SelectPopup>
-          </Select>
-          <Select defaultValue="Large">
-            <SelectTrigger size="lg" className="w-36">
-              <SelectValue placeholder="Large" />
-            </SelectTrigger>
-            <SelectPopup>
-              <SelectItem value="Large">Large</SelectItem>
-              <SelectItem value="Extra Large">Extra Large</SelectItem>
-            </SelectPopup>
+      {/* Basic */}
+      <div className="space-y-3">
+        <SectionLabel>Basic</SectionLabel>
+        <div className="max-w-sm">
+          <Select
+            id="framework"
+            label="Framework"
+            value={framework}
+            onChange={(e) => setFramework(e.target.value)}
+          >
+            <option value="react">React</option>
+            <option value="vue">Vue</option>
+            <option value="svelte">Svelte</option>
+            <option value="solid">Solid</option>
+            <option value="qwik">Qwik</option>
           </Select>
         </div>
       </div>
 
-      {/* Disabled Item */}
-      <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Disabled Item
-        </p>
-        <Select defaultValue="Available">
-          <SelectTrigger className="w-48">
-            <SelectValue placeholder="Choose status…" />
-          </SelectTrigger>
-          <SelectPopup>
-            <SelectItem value="Available">Available</SelectItem>
-            <SelectItem value="Busy">Busy</SelectItem>
-            <SelectItem value="Offline" disabled>Offline</SelectItem>
-          </SelectPopup>
-        </Select>
+      {/* With region */}
+      <div className="space-y-3">
+        <SectionLabel>Region</SectionLabel>
+        <div className="max-w-sm">
+          <Select
+            id="region"
+            label="Region"
+            value={region}
+            onChange={(e) => setRegion(e.target.value)}
+          >
+            <option value="us-east">US East (Virginia)</option>
+            <option value="us-west">US West (Oregon)</option>
+            <option value="eu-west">EU West (Ireland)</option>
+            <option value="ap-south">Asia Pacific (Singapore)</option>
+          </Select>
+        </div>
+      </div>
+
+      {/* Sizes */}
+      <div className="space-y-3">
+        <SectionLabel>Sizes</SectionLabel>
+        <div className="flex flex-col gap-3 max-w-sm">
+          <Select id="size-sm" label="Small" size="sm" defaultValue="a">
+            <option value="a">One</option>
+            <option value="b">Two</option>
+          </Select>
+          <Select id="size-md" label="Medium" size="md" defaultValue="a">
+            <option value="a">One</option>
+            <option value="b">Two</option>
+          </Select>
+          <Select id="size-lg" label="Large" size="lg" defaultValue="a">
+            <option value="a">One</option>
+            <option value="b">Two</option>
+          </Select>
+        </div>
+      </div>
+
+      {/* With prefix */}
+      <div className="space-y-3">
+        <SectionLabel>With prefix icon</SectionLabel>
+        <div className="max-w-sm">
+          <Select id="locale" label="Locale" prefix={<Globe />} defaultValue="en">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+          </Select>
+        </div>
+      </div>
+
+      {/* Grouped options */}
+      <div className="space-y-3">
+        <SectionLabel>Grouped options</SectionLabel>
+        <div className="max-w-sm">
+          <Select id="assignee" label="Assignee" defaultValue="ana">
+            <optgroup label="Design">
+              <option value="ana">Ana</option>
+              <option value="ben">Ben</option>
+            </optgroup>
+            <optgroup label="Engineering">
+              <option value="chris">Chris</option>
+              <option value="dana">Dana</option>
+              <option value="eli">Eli</option>
+            </optgroup>
+          </Select>
+        </div>
+      </div>
+
+      {/* Disabled */}
+      <div className="space-y-3">
+        <SectionLabel>Disabled</SectionLabel>
+        <div className="max-w-sm">
+          <Select id="disabled" label="Plan" disabled defaultValue="hobby">
+            <option value="hobby">Hobby</option>
+            <option value="pro">Pro</option>
+          </Select>
+        </div>
+      </div>
+
+      {/* Error state */}
+      <div className="space-y-3">
+        <SectionLabel>Error state</SectionLabel>
+        <div className="max-w-sm">
+          <Select
+            id="plan"
+            label="Plan"
+            required
+            error="Please select a plan."
+            defaultValue=""
+            placeholder="Select a plan…"
+          >
+            <option value="hobby">Hobby</option>
+            <option value="pro">Pro</option>
+            <option value="enterprise">Enterprise</option>
+          </Select>
+        </div>
       </div>
     </div>
   );

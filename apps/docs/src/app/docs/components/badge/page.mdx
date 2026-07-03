@@ -1,8 +1,11 @@
 import { BadgeDemo } from "./badge-demo";
 
+
+export const metadata = { title: "Badge" };
+
 # Badge
 
-A small status indicator for labels, counts, and tags. Supports multiple semantic variants and sizes.
+Short, scannable metadata that sits next to the thing it describes: status, plan tier, environment, or role. Four intent variants × high/low contrast × three sizes.
 
 <Install name="badge" />
 
@@ -18,33 +21,29 @@ import { Badge } from "@patchui/react";
 // Basic
 <Badge>Default</Badge>
 
-// Semantic variants (solid tinted)
+// Intent variants
 <Badge variant="success">Active</Badge>
 <Badge variant="warning">Pending</Badge>
-<Badge variant="danger">Error</Badge>
+<Badge variant="error">Failed</Badge>
 
-// Outline variants (transparent + colored hairline border)
-<Badge variant="successOutline">Active</Badge>
-<Badge variant="warningOutline">Pending</Badge>
-<Badge variant="dangerOutline">Error</Badge>
+// Contrast: high = solid saturated (default), low = subtle tint for dense surfaces
+<Badge variant="success" contrast="high">Deployed</Badge>
+<Badge variant="success" contrast="low">Deployed</Badge>
 
 // Sizes
-<Badge size="xs">Tiny</Badge>
 <Badge size="sm">Small</Badge>
+<Badge size="md">Medium</Badge>
 <Badge size="lg">Large</Badge>
 
+// With inline icon
+<Badge icon={<Shield />} variant="default">Verified</Badge>
+
 // Shape
-<Badge shape="rounded">Rounded</Badge>
-<Badge shape="pill">Pill</Badge>
-<Badge variant="success" shape="pill">Active</Badge>
+<Badge shape="pill">Pill</Badge>       // default
+<Badge shape="rounded">Rounded</Badge> // 6px radius
 
-// As a link (polymorphic render prop)
+// As a link
 <Badge render={<a href="/status" />}>Linked</Badge>
-
-// Dismissible - renders a trailing × (applied filters, tokens, facets)
-<Badge variant="secondary" onRemove={() => removeFilter("Design")}>
-  Design
-</Badge>
 ```
 
 ## Props
@@ -53,53 +52,55 @@ import { Badge } from "@patchui/react";
   props={[
     {
       name: "variant",
-      type: '"default" | "primary" | "secondary" | "ghost" | "success" | "warning" | "danger" | "successOutline" | "warningOutline" | "dangerOutline"',
+      type: '"default" | "success" | "warning" | "error"',
       default: '"default"',
-      description: "The visual style. Solid (success/warning/danger) flood the badge with a tinted bg + colored text. Outline variants (*Outline) are transparent with a colored hairline border + matching text — restrained alternative.",
+      description: "Intent variant. `default` = neutral gray, `success` = green, `warning` = amber, `error` = red.",
+    },
+    {
+      name: "contrast",
+      type: '"high" | "low"',
+      default: '"high"',
+      description: "`high` = solid saturated fill with light text (bold). `low` = subtle tinted fill with darker text (dense surfaces).",
     },
     {
       name: "size",
-      type: '"xs" | "sm" | "md" | "lg"',
-      default: '"sm"',
-      description: "The size of the badge.",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "Badge size.",
     },
     {
       name: "shape",
-      type: '"rounded" | "pill"',
-      default: '"rounded"',
-      description: "The border-radius style. Use pill for a fully rounded badge.",
+      type: '"pill" | "rounded"',
+      default: '"pill"',
+      description: "`pill` = fully rounded (default). `rounded` = 6px radius.",
     },
     {
-      name: "onRemove",
-      type: "() => void",
+      name: "icon",
+      type: "ReactNode",
       default: "-",
-      description: "When provided, renders a trailing × button that calls this handler. Turns the badge into a removable tag (applied filters, tokens, facets).",
-    },
-    {
-      name: "removeLabel",
-      type: "string",
-      default: '"Remove"',
-      description: "Accessible label for the × remove button.",
+      description: "Optional inline icon rendered before the label.",
     },
     {
       name: "render",
       type: "RenderProp<'span'>",
       default: "-",
-      description: "Polymorphic render prop - pass a different element (e.g. <a>) to change the rendered tag while keeping badge styles.",
+      description: "Polymorphic render prop. Pass a different element (e.g. `<a>`) to change the rendered tag while keeping badge styles. For clickable pills, use `<Pill>` instead.",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes to apply.",
+      description: "Additional CSS classes.",
     },
   ]}
 />
 
-
 <Callout title="Notes">
-- **Polymorphic rendering:** Use the `render` prop to render the badge as any HTML element. For example, `render={<a href="/status" />}` renders an anchor tag with badge styling.
-- **Solid vs Outline variants:** Solid (`success` / `warning` / `danger`) flood the badge with a tinted background — use for high-emphasis status. Outline (`successOutline` etc.) are transparent with a colored hairline border — quieter, for restrained surfaces.
-- **Dismissible hover:** When `onRemove` is set, the × button is 50% opacity at rest, fades up to 80% on badge hover (signals "this whole chip is clickable"), and 100% on direct × hover. Tactile click adds an `active:scale-90` micro-press.
-- **Sizing:** The `xs` size uses a smaller font and tighter padding, suitable for inline use within text.
+- Badge is display-only. If the value is clickable: remove it, open a menu, follow a link: reach for `<Button>` (with `shape="pill"` for the same silhouette).
+- Keep the text tight: one word if you can, two at most (`Active`, `Pending`, `Pro`, `Enterprise Trial`). Use the same wording as the value in your API and logs so labels and data stay in sync.
+- Colors carry the signal: don't double up. A `success` badge doesn't also need a check icon; an `error` badge doesn't need an ×. The color IS the meaning.
+- If a row has two badges, chances are the row wanted a second column.
+- `contrast="high"` is the loud version; `contrast="low"` is the quiet one for dense surfaces (tables, cards packed with metadata).
+- The variant color communicates state, but color alone isn't enough: the text has to make sense on its own. For icon-only or terse badges, set `title` so screen readers can announce it.
+- Don't nest a Badge inside a Badge, and don't stack two icons.
 </Callout>

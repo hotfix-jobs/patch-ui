@@ -6,9 +6,9 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export function TooltipProvider({
-  delay = 100,
+  delay = 150,
   closeDelay = 0,
-  timeout = 400,
+  timeout = 500,
   children,
 }: {
   delay?: number;
@@ -23,12 +23,22 @@ export function TooltipProvider({
   );
 }
 
+export type TooltipSide = "top" | "bottom" | "left" | "right";
+export type TooltipAlign = "start" | "center" | "end";
+
 export interface TooltipProps {
   children: React.ReactElement;
   content: React.ReactNode;
-  side?: "top" | "bottom" | "left" | "right";
+  /** Which side of the trigger the tooltip appears on. */
+  side?: TooltipSide;
+  /** Alignment along the trigger's axis. `start` = top/left edge, `end` = bottom/right edge. */
+  align?: TooltipAlign;
+  /** Pixel offset from the trigger. */
   sideOffset?: number;
-  arrow?: boolean;
+  /** Milliseconds to wait before opening. Small default so sweeping mouse motion doesn't flicker tooltips open. */
+  delay?: number;
+  /** Milliseconds to wait before closing. */
+  closeDelay?: number;
   className?: string;
 }
 
@@ -36,42 +46,38 @@ export function Tooltip({
   children,
   content,
   side = "top",
+  align = "center",
   sideOffset = 4,
-  arrow,
+  delay = 150,
+  closeDelay = 0,
   className,
 }: TooltipProps): React.ReactElement {
   const handle = useMemo(() => TooltipPrimitive.createHandle(), []);
 
   return (
-    <>
+    <TooltipPrimitive.Provider delay={delay} closeDelay={closeDelay}>
       <TooltipPrimitive.Trigger handle={handle} render={children} />
       <TooltipPrimitive.Root handle={handle}>
         <TooltipPrimitive.Portal>
           <TooltipPrimitive.Positioner
             side={side}
-            sideOffset={arrow ? sideOffset + 2 : sideOffset}
+            align={align}
+            sideOffset={sideOffset}
             className="z-[80]"
           >
             <TooltipPrimitive.Popup
               className={cn(
-                "rounded-[var(--radius-patch-xs)] bg-patch-text px-2.5 py-1.5 text-[length:var(--text-patch-micro)] text-patch-bg shadow-patch-md transition-[opacity,scale] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-spring)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+                "rounded-[var(--radius-6)] bg-gray-1000 px-2.5 py-1.5 text-label-12 text-background-100 shadow-menu transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
                 className,
               )}
               data-slot="tooltip-content"
             >
               {content}
-              {arrow && (
-                <TooltipPrimitive.Arrow className="text-patch-text data-[side=top]:-bottom-[5px] data-[side=bottom]:-top-[5px] data-[side=bottom]:rotate-180 data-[side=left]:-right-[5px] data-[side=left]:rotate-90 data-[side=right]:-left-[5px] data-[side=right]:-rotate-90">
-                  <svg width="10" height="5" viewBox="0 0 10 5" fill="currentColor">
-                    <path d="M0 0L5 5L10 0Z" />
-                  </svg>
-                </TooltipPrimitive.Arrow>
-              )}
             </TooltipPrimitive.Popup>
           </TooltipPrimitive.Positioner>
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>
-    </>
+    </TooltipPrimitive.Provider>
   );
 }
 
@@ -84,37 +90,31 @@ export function TooltipContent({
   className,
   sideOffset = 4,
   side = "top",
+  align = "center",
   children,
-  arrow,
   ...props
 }: TooltipPrimitive.Popup.Props & {
   sideOffset?: number;
-  side?: "top" | "bottom" | "left" | "right";
-  arrow?: boolean;
+  side?: TooltipSide;
+  align?: TooltipAlign;
 }): React.ReactElement {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Positioner
         side={side}
-        sideOffset={arrow ? sideOffset + 2 : sideOffset}
+        align={align}
+        sideOffset={sideOffset}
         className="z-[80]"
       >
         <TooltipPrimitive.Popup
           className={cn(
-            "rounded-[var(--radius-patch-xs)] bg-patch-text px-2.5 py-1.5 text-[length:var(--text-patch-micro)] text-patch-bg shadow-patch-md transition-[opacity,scale] duration-[var(--duration-patch-normal)] ease-[var(--ease-patch-spring)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+            "rounded-[var(--radius-6)] bg-gray-1000 px-2.5 py-1.5 text-label-12 text-background-100 shadow-menu transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
             className,
           )}
           data-slot="tooltip-content"
           {...props}
         >
           {children}
-          {arrow && (
-            <TooltipPrimitive.Arrow className="text-patch-text data-[side=top]:-bottom-[5px] data-[side=bottom]:-top-[5px] data-[side=bottom]:rotate-180 data-[side=left]:-right-[5px] data-[side=left]:rotate-90 data-[side=right]:-left-[5px] data-[side=right]:-rotate-90">
-              <svg width="10" height="5" viewBox="0 0 10 5" fill="currentColor">
-                <path d="M0 0L5 5L10 0Z" />
-              </svg>
-            </TooltipPrimitive.Arrow>
-          )}
         </TooltipPrimitive.Popup>
       </TooltipPrimitive.Positioner>
     </TooltipPrimitive.Portal>

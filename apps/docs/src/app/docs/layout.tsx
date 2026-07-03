@@ -1,23 +1,23 @@
-"use client";
-
-import { useState } from "react";
-import { Header } from "@/components/header";
+import { SidebarInset } from "@patchui/react";
 import { Sidebar } from "@/components/sidebar";
+import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 
 export default function DocsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
-    <div className="min-h-screen">
-      <Header onMenuToggle={() => setSidebarOpen((v) => !v)} />
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <main className="pt-14 lg:pl-64">
-        <div className="mx-auto max-w-3xl px-6 py-10">{children}</div>
-      </main>
-    </div>
+    <>
+      <Sidebar />
+      <SidebarInset className="flex flex-col">
+        <SiteHeader />
+        <div className="flex-1">
+          <div className="mx-auto max-w-3xl px-6 py-10">{children}</div>
+        </div>
+        <SiteFooter />
+      </SidebarInset>
+    </>
   );
 }

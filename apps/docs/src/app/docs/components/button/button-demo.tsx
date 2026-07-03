@@ -1,30 +1,28 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@patchui/react";
-import { ArrowRight, Download, Mail, Trash2 } from "lucide-react";
+import { ArrowRight, ChevronDown, Download, GitBranch, Mail, Plus, Trash2 } from "lucide-react";
 
-/** Showcases Button variants, sizes, icon usage, and loading state. */
+const INITIAL_TAGS = ["design", "engineering", "billing"];
+
 export function ButtonDemo() {
+  const [tags, setTags] = useState(INITIAL_TAGS);
   return (
     <div className="flex flex-col gap-8">
-      {/* Variants */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Variants
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Variants</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="primary">Primary</Button>
           <Button variant="secondary">Secondary</Button>
-          <Button variant="danger">Danger</Button>
-          <Button variant="link">Link</Button>
+          <Button variant="tertiary">Tertiary</Button>
+          <Button variant="warning">Warning</Button>
+          <Button variant="error">Error</Button>
         </div>
       </div>
 
-      {/* Sizes */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Sizes
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Sizes</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button size="sm">Small</Button>
           <Button size="md">Medium</Button>
@@ -32,44 +30,85 @@ export function ButtonDemo() {
         </div>
       </div>
 
-      {/* With Icons */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          With Icons
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Icon Only + Shapes</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
-          <Button icon={<ArrowRight className="h-4 w-4" />} iconPosition="right">
-            Next
-          </Button>
-          <Button variant="danger" icon={<Trash2 className="h-4 w-4" />}>
-            Delete
-          </Button>
-          <Button variant="secondary" icon={<Download className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="square" size="tiny" icon={<Plus className="h-3 w-3" />} />
+          <Button aria-label="Add" shape="square" size="sm" icon={<Plus className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="square" icon={<Plus className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="square" size="lg" icon={<Plus className="h-5 w-5" />} />
+          <Button aria-label="Add" shape="circle" size="sm" icon={<Plus className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="circle" icon={<Plus className="h-4 w-4" />} />
+          <Button aria-label="Add" shape="circle" size="lg" icon={<Plus className="h-5 w-5" />} />
         </div>
       </div>
 
-      {/* Apply with arrow */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          Apply with arrow
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">With Icons</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
+          <Button icon={<ChevronDown className="h-4 w-4" />} iconPosition="right">
+            Menu
+          </Button>
+          <Button variant="error" icon={<Trash2 className="h-4 w-4" />}>
+            Delete
+          </Button>
+          <Button variant="secondary" icon={<Download className="h-4 w-4" />}>
+            Download
+          </Button>
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-3 text-label-12 text-gray-800">Rounded marketing shape</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button
+            shape="rounded"
+            shadow
             variant="primary"
             icon={<ArrowRight className="h-4 w-4" />}
             iconPosition="right"
           >
-            Apply now
+            Start Free Trial
+          </Button>
+          <Button shape="rounded" shadow variant="secondary">
+            Learn More
           </Button>
         </div>
       </div>
 
-      {/* States */}
       <div>
-        <p className="mb-3 text-xs font-medium text-patch-text-tertiary">
-          States
-        </p>
+        <p className="mb-3 text-label-12 text-gray-800">Dismissible pill (repo chip pattern)</p>
+        <div className="flex min-h-9 flex-wrap items-center gap-2">
+          {tags.length === 0 ? (
+            <Button
+              size="sm"
+              variant="tertiary"
+              onClick={() => setTags(INITIAL_TAGS)}
+            >
+              Reset
+            </Button>
+          ) : (
+            tags.map((t) => (
+              <Button
+                key={t}
+                size="sm"
+                shape="pill"
+                variant="secondary"
+                icon={<GitBranch className="h-4 w-4" />}
+                onClick={() => alert(`Open ${t}`)}
+                onRemove={() => setTags((prev) => prev.filter((x) => x !== t))}
+                removeLabel={`Remove ${t}`}
+              >
+                {t}
+              </Button>
+            ))
+          )}
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-3 text-label-12 text-gray-800">States</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button loading>Loading</Button>
           <Button disabled>Disabled</Button>

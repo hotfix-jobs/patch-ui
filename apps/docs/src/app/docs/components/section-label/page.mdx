@@ -1,12 +1,15 @@
 import { SectionLabelDemo } from "./section-label-demo";
 
+
+export const metadata = { title: "SectionLabel" };
+
 # SectionLabel
 
-A small uppercase label for introducing a section of content, with an optional trailing action. Two variants: `bare` (just the label) and `divided` (adds a hairline rule beneath).
+A small bold heading used to introduce a labeled section within a larger surface: sidebar nav groups, showcase-wall cells, demo variant clusters, foundations-page charts. Kept centralized so the whole app carries the same section-title voice.
 
 <Install name="section-label" />
 
-<ComponentPreview label="SectionLabel Example">
+<ComponentPreview label="SectionLabel">
   <SectionLabelDemo />
 </ComponentPreview>
 
@@ -15,11 +18,10 @@ A small uppercase label for introducing a section of content, with an optional t
 ```tsx
 import { SectionLabel } from "@patchui/react";
 
-<SectionLabel>Overview</SectionLabel>
-
-<SectionLabel variant="divided" action="View all">
-  Recent activity
-</SectionLabel>
+<div className="space-y-3">
+  <SectionLabel>Bordered variants</SectionLabel>
+  <VariantList />
+</div>
 ```
 
 ## Props
@@ -27,33 +29,20 @@ import { SectionLabel } from "@patchui/react";
 <PropsTable
   props={[
     {
-      name: "variant",
-      type: '"bare" | "divided"',
-      default: '"bare"',
-      description: "bare is just the label; divided adds a hairline rule and more bottom spacing.",
-    },
-    {
-      name: "action",
-      type: "ReactNode",
-      default: "-",
-      description: "Optional trailing content (e.g. a link), rendered in normal case to the right of the label.",
-    },
-    {
-      name: "render",
-      type: "RenderProp<'div'>",
-      default: "-",
-      description: "Polymorphic render prop to change the rendered element while keeping the label styling.",
-    },
-    {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the label.",
+      description: "Merged with the base recipe via cn(). Use for spacing (mb, pt) or color overrides.",
+    },
+    {
+      name: "render",
+      type: "ReactElement",
+      default: "<p />",
+      description: "Base UI render prop. Swap the tag (e.g. <span />, <h4 />) without wrapping.",
     },
   ]}
 />
 
-<Callout title="Notes">
-- **Pairing:** Use above lists, cards, or form groups to label a region without the weight of a full heading.
-- **Action:** The `action` slot is right-aligned and rendered in normal case, ideal for a "View all" link or count.
+<Callout title="Layout is the parent's job">
+SectionLabel is typography only. It ships with no baked-in margin so no callsite has to fight a default. Reach for `space-y-*` or `gap-*` on the wrapper, or set explicit `mb-*` on the label itself when it makes sense.
 </Callout>

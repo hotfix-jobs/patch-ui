@@ -3,8 +3,7 @@
   "name": "section-label",
   "title": "Section Label",
   "dependencies": [
-    "@base-ui/react",
-    "class-variance-authority"
+    "@base-ui/react"
   ],
   "registryDependencies": [
     "https://ui.hotfix.jobs/r/tokens.json",
@@ -13,7 +12,7 @@
   "files": [
     {
       "path": "registry/components/ui/section-label.tsx",
-      "content": "\"use client\";\n\nimport { mergeProps } from \"@base-ui/react/merge-props\";\nimport { useRender } from \"@base-ui/react/use-render\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport const sectionLabelVariants = cva(\n  \"flex items-baseline justify-between text-[length:var(--text-patch-micro)] uppercase tracking-[0.08em] text-patch-text-secondary font-medium\",\n  {\n    defaultVariants: {\n      variant: \"bare\",\n    },\n    variants: {\n      variant: {\n        bare: \"mb-3\",\n        divided: \"mb-5 pb-3 border-b border-[var(--patch-border)]\",\n      },\n    },\n  },\n);\n\nexport interface SectionLabelProps extends useRender.ComponentProps<\"div\"> {\n  variant?: VariantProps<typeof sectionLabelVariants>[\"variant\"];\n  action?: React.ReactNode;\n  children?: React.ReactNode;\n}\n\nexport function SectionLabel({\n  className,\n  variant,\n  action,\n  children,\n  render,\n  ...props\n}: SectionLabelProps): React.ReactElement {\n  const defaultProps = {\n    className: cn(sectionLabelVariants({ className, variant })),\n    \"data-slot\": \"section-label\",\n    children: (\n      <>\n        <span>{children}</span>\n        {action && (\n          <span className=\"normal-case tracking-[var(--tracking-patch-small)] text-[length:var(--text-patch-mini)] font-medium text-patch-text\">\n            {action}\n          </span>\n        )}\n      </>\n    ),\n  };\n\n  return useRender({\n    defaultTagName: \"div\",\n    props: mergeProps<\"div\">(defaultProps, props),\n    render,\n  });\n}\n",
+      "content": "\"use client\";\n\nimport { mergeProps } from \"@base-ui/react/merge-props\";\nimport { useRender } from \"@base-ui/react/use-render\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface SectionLabelProps extends useRender.ComponentProps<\"p\"> {}\n\n/**\n * SectionLabel: a small bold heading used to introduce a labeled section\n * within a larger surface: sidebar nav groups, showcase-wall cells, demo\n * variant clusters, foundations-page charts.\n *\n * Typography only. Uses the `text-button-12` recipe (12px, weight 500).\n *\n * Named \"button\" in our type system for its most common use, but the\n * family represents the \"medium weight at this size\" recipe. Section\n * labels are a legitimate non-button consumer: they want a heavier\n * anchor than the 400-weight label family provides so they read as\n * intentional headings rather than muted metadata. Per our type\n * discipline (compound classes used alone, no `font-*` override), this\n * is how you get medium at 12px.\n *\n * Layout is the parent's job: reach for `space-y-*`, `gap-*`, or\n * explicit margin on the wrapper.\n *\n *   <div className=\"space-y-3\">\n *     <SectionLabel>Bordered variants</SectionLabel>\n *     {content}\n *   </div>\n */\nexport function SectionLabel({\n  className,\n  render,\n  ...props\n}: SectionLabelProps): React.ReactElement {\n  const defaultProps = {\n    \"data-slot\": \"section-label\",\n    className: cn(\n      \"text-button-12 text-gray-800\",\n      className,\n    ),\n  };\n\n  return useRender({\n    render: render ?? <p />,\n    props: mergeProps<\"p\">(defaultProps, props),\n  });\n}\n",
       "type": "registry:ui",
       "target": "components/ui/section-label.tsx"
     }

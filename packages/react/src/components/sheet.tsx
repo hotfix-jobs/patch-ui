@@ -24,15 +24,23 @@ import {
 import type * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
 
-type SheetSide = "right" | "left" | "top" | "bottom";
+/**
+ * Sheet: an edge-anchored panel that slides in from the top/right/bottom/left
+ * of the viewport. Non-modal by default (page underneath stays interactive);
+ * pass `modal` to darken the backdrop and block the page.
+ *
+ * Structure mirrors Modal: SheetHeader / SheetBody / SheetFooter as top-level
+ * children of SheetContent, separated by hairlines.
+ */
+
+export type SheetSide = "top" | "right" | "bottom" | "left";
 
 type SheetContextValue = {
   open: boolean;
   setOpen: (open: boolean) => void;
-  context: ReturnType<typeof useFloating>["context"];
   refs: ReturnType<typeof useFloating>["refs"];
+  context: ReturnType<typeof useFloating>["context"];
   getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"];
   getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"];
   titleId: string;
@@ -43,22 +51,21 @@ const SheetContext = createContext<SheetContextValue | null>(null);
 
 function useSheetContext(): SheetContextValue {
   const ctx = useContext(SheetContext);
-  if (!ctx) throw new Error("Sheet subcomponents must be used inside <Sheet>");
+  if (!ctx)
+    throw new Error("Sheet subcomponents must be used inside <Sheet>");
   return ctx;
 }
 
 export interface SheetProps {
+  /** Controlled open state. */
   open?: boolean;
+  /** Called when the open state should change. */
   onOpenChange?: (open: boolean) => void;
+  /** Initial open state when uncontrolled. */
   defaultOpen?: boolean;
   children: React.ReactNode;
 }
 
-/**
- * Root component managing open/close state and ARIA wiring. Built on
- * `@floating-ui/react` + `motion` with true bidirectional slide animations
- * coordinated through AnimatePresence.
- */
 export function Sheet({
   open: controlledOpen,
   onOpenChange,
@@ -67,10 +74,13 @@ export function Sheet({
 }: SheetProps): React.ReactElement {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
   const open = controlledOpen ?? uncontrolledOpen;
-  const setOpen = (next: boolean) => {
-    if (controlledOpen === undefined) setUncontrolledOpen(next);
-    onOpenChange?.(next);
-  };
+  const setOpen = useCallback(
+    (next: boolean) => {
+      if (controlledOpen === undefined) setUncontrolledOpen(next);
+      onOpenChange?.(next);
+    },
+    [controlledOpen, onOpenChange],
+  );
 
   const { refs, context } = useFloating({
     open,
@@ -95,8 +105,8 @@ export function Sheet({
       value={{
         open,
         setOpen,
-        context,
         refs,
+        context,
         getReferenceProps,
         getFloatingProps,
         titleId,
@@ -108,6 +118,8 @@ export function Sheet({
   );
 }
 
+/* ------------------------------ Trigger ------------------------------ */
+
 export interface SheetTriggerProps {
   render?: React.ReactElement;
   children?: React.ReactNode;
@@ -117,7 +129,8 @@ export function SheetTrigger({
   render,
   children,
   ...rest
-}: SheetTriggerProps & React.ButtonHTMLAttributes<HTMLButtonElement>): React.ReactElement {
+}: SheetTriggerProps &
+  React.ButtonHTMLAttributes<HTMLButtonElement>): React.ReactElement {
   const { refs, getReferenceProps } = useSheetContext();
   const triggerProps = getReferenceProps({
     ref: refs.setReference,
@@ -128,7 +141,8 @@ export function SheetTrigger({
     return cloneElement(render, {
       ...triggerProps,
       "data-slot": "sheet-trigger",
-      children: (render.props as { children?: React.ReactNode }).children ?? children,
+      children:
+        (render.props as { children?: React.ReactNode }).children ?? children,
     } as React.HTMLAttributes<HTMLElement>);
   }
   return (
@@ -138,57 +152,40 @@ export function SheetTrigger({
   );
 }
 
-/**
- * Motion enter/exit variants by edge.
- */
+/* ------------------------------ Content ------------------------------ */
+
 function getSlideVariants(side: SheetSide) {
   switch (side) {
     case "right":
-      return {
-        initial: { x: "100%" },
-        animate: { x: 0 },
-        exit: { x: "100%" },
-      };
+      return { initial: { x: "100%" }, animate: { x: 0 }, exit: { x: "100%" } };
     case "left":
-      return {
-        initial: { x: "-100%" },
-        animate: { x: 0 },
-        exit: { x: "-100%" },
-      };
+      return { initial: { x: "-100%" }, animate: { x: 0 }, exit: { x: "-100%" } };
     case "top":
-      return {
-        initial: { y: "-100%" },
-        animate: { y: 0 },
-        exit: { y: "-100%" },
-      };
+      return { initial: { y: "-100%" }, animate: { y: 0 }, exit: { y: "-100%" } };
     case "bottom":
-      return {
-        initial: { y: "100%" },
-        animate: { y: 0 },
-        exit: { y: "100%" },
-      };
+      return { initial: { y: "100%" }, animate: { y: 0 }, exit: { y: "100%" } };
   }
 }
 
 export interface SheetContentProps {
-  children?: React.ReactNode;
   side?: SheetSide;
-  showCloseButton?: boolean;
+  /** When true (default), renders a darkening backdrop and blocks page interaction. Pass `modal={false}` for a persistent inspector that keeps the page interactive. */
+  modal?: boolean;
   className?: string;
+  children?: React.ReactNode;
 }
 
 export function SheetContent({
-  children,
   side = "right",
-  showCloseButton = true,
+  modal = true,
   className,
+  children,
 }: SheetContentProps): React.ReactElement {
-  const { context, refs, open, titleId, descriptionId, getFloatingProps } =
+  const { context, open, titleId, descriptionId, getFloatingProps, refs } =
     useSheetContext();
   const reduceMotion = useReducedMotion();
   const variants = getSlideVariants(side);
-  // Mirror the floating element ref locally so FloatingFocusManager can
-  // receive a real RefObject (the floating-ui callback ref isn't one).
+
   const popupRef = useRef<HTMLDivElement | null>(null);
   const setPopupRef = useCallback(
     (node: HTMLDivElement | null) => {
@@ -198,93 +195,104 @@ export function SheetContent({
     [refs],
   );
 
+  const panel = (
+    <FloatingFocusManager
+      context={context}
+      initialFocus={popupRef as React.RefObject<HTMLElement>}
+      modal={modal}
+    >
+      <motion.div
+        ref={setPopupRef}
+        tabIndex={-1}
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        data-slot="sheet-popup"
+        data-side={side}
+        {...getFloatingProps()}
+        initial={reduceMotion ? false : variants.initial}
+        animate={variants.animate}
+        exit={reduceMotion ? undefined : variants.exit}
+        transition={
+          reduceMotion
+            ? { duration: 0 }
+            : { type: "spring", stiffness: 380, damping: 38, mass: 0.8 }
+        }
+        className={cn(
+          // Floating rounded card, small inset from the viewport edges so
+          // the backdrop peeks around it and all four corners can be seen.
+          "fixed z-70 flex flex-col overflow-hidden bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-modal rounded-[var(--radius-12)]",
+          // Mobile: span across with left-4 + right-4 (fills width minus 16px per side).
+          // sm+: release the opposite-side anchor and cap width via max-w-md.
+          side === "right" &&
+            "top-4 bottom-4 right-4 left-4 sm:left-auto sm:w-full sm:max-w-md",
+          side === "left" &&
+            "top-4 bottom-4 left-4 right-4 sm:right-auto sm:w-full sm:max-w-md",
+          side === "top" && "top-4 left-4 right-4",
+          side === "bottom" && "bottom-4 left-4 right-4",
+          className,
+        )}
+      >
+        {children}
+      </motion.div>
+    </FloatingFocusManager>
+  );
+
   return (
     <FloatingPortal>
       <AnimatePresence>
         {open && (
-          <FloatingOverlay
-            lockScroll={false}
-            className="fixed inset-0 z-70"
-            data-slot="sheet-overlay"
-          >
-            <RemoveScroll noIsolation>
-              <motion.div
-                aria-hidden="true"
-                data-slot="sheet-backdrop"
-                className="absolute inset-0 bg-black/5 backdrop-blur-xs"
-                initial={reduceMotion ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={reduceMotion ? undefined : { opacity: 0 }}
-                transition={
-                  reduceMotion
-                    ? { duration: 0 }
-                    : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
-                }
-              />
-              <FloatingFocusManager
-                context={context}
-                // Focus the popup root rather than the first focusable
-                // child — focusing an Input or focusable element inside
-                // can trigger a scrollIntoView that hijacks the slide
-                // animation. Focusing the container keeps the trap
-                // working without disturbing layout.
-                initialFocus={popupRef as React.RefObject<HTMLElement>}
+          <>
+            {modal ? (
+              <FloatingOverlay
+                lockScroll={false}
+                className="fixed inset-0 z-70"
+                data-slot="sheet-overlay"
               >
-                <motion.div
-                  ref={setPopupRef}
-                  tabIndex={-1}
-                  aria-labelledby={titleId}
-                  aria-describedby={descriptionId}
-                  data-slot="sheet-popup"
-                  {...getFloatingProps()}
-                  initial={reduceMotion ? false : variants.initial}
-                  animate={variants.animate}
-                  exit={reduceMotion ? undefined : variants.exit}
-                  transition={
-                    reduceMotion
-                      ? { duration: 0 }
-                      : {
-                          type: "spring",
-                          stiffness: 380,
-                          damping: 38,
-                          mass: 0.8,
-                        }
-                  }
-                  className={cn(
-                    "absolute z-70 flex flex-col bg-patch-surface text-patch-text border border-[var(--dialog-border)] shadow-patch-overlay",
-                    side === "right" &&
-                      "inset-y-0 right-0 h-full w-full max-w-md rounded-l-[var(--radius-patch-sm)]",
-                    side === "left" &&
-                      "inset-y-0 left-0 h-full w-full max-w-md rounded-r-[var(--radius-patch-sm)]",
-                    side === "top" &&
-                      "inset-x-0 top-0 w-full rounded-b-[var(--radius-patch-sm)]",
-                    side === "bottom" &&
-                      "inset-x-0 bottom-0 w-full rounded-t-[var(--radius-patch-sm)]",
-                    className,
-                  )}
-                >
-                  {children}
-                  {showCloseButton && <SheetClose />}
-                </motion.div>
-              </FloatingFocusManager>
-            </RemoveScroll>
-          </FloatingOverlay>
+                <RemoveScroll noIsolation>
+                  <motion.div
+                    aria-hidden="true"
+                    data-slot="sheet-backdrop"
+                    className="absolute inset-0 bg-white/60 dark:bg-black/60"
+                    initial={reduceMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={reduceMotion ? undefined : { opacity: 0 }}
+                    transition={
+                      reduceMotion
+                        ? { duration: 0 }
+                        : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
+                    }
+                  />
+                  {panel}
+                </RemoveScroll>
+              </FloatingOverlay>
+            ) : (
+              panel
+            )}
+          </>
         )}
       </AnimatePresence>
     </FloatingPortal>
   );
 }
 
+/* ------------------------------- Close ------------------------------- */
+
 export interface SheetCloseProps {
   render?: React.ReactElement;
   children?: React.ReactNode;
 }
 
+/**
+ * SheetClose: wraps a consumer-provided element to close the sheet on click.
+ * Use with `render={<Button />}` inside SheetFooter, or as children of any
+ * element that should dismiss the sheet.
+ */
 export function SheetClose({
   render,
   children,
   ...rest
-}: SheetCloseProps & React.ButtonHTMLAttributes<HTMLButtonElement>): React.ReactElement {
+}: SheetCloseProps &
+  React.ButtonHTMLAttributes<HTMLButtonElement>): React.ReactElement {
   const { setOpen } = useSheetContext();
   const onClick = () => setOpen(false);
 
@@ -293,62 +301,35 @@ export function SheetClose({
       onClick,
       "data-slot": "sheet-close",
       ...rest,
-      children: (render.props as { children?: React.ReactNode }).children ?? children,
+      children:
+        (render.props as { children?: React.ReactNode }).children ?? children,
     } as React.HTMLAttributes<HTMLElement>);
   }
-  if (children) {
-    return (
-      <button
-        type="button"
-        onClick={onClick}
-        data-slot="sheet-close"
-        {...rest}
-      >
-        {children}
-      </button>
-    );
-  }
-  // Default: corner × button used when SheetContent.showCloseButton is true.
   return (
     <button
       type="button"
-      aria-label="Close"
       onClick={onClick}
       data-slot="sheet-close"
-      className={cn(
-        "absolute end-3 top-5 flex h-7 w-7 items-center justify-center rounded-[var(--radius-patch-sm)] text-patch-text-tertiary transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] hover:bg-patch-surface-hover hover:text-patch-text",
-        focusRing,
-      )}
       {...rest}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M18 6 6 18" />
-        <path d="m6 6 12 12" />
-      </svg>
+      {children}
     </button>
   );
 }
+
+/* ------------------------------- Header ------------------------------ */
 
 export function SheetHeader({
   className,
   ...props
 }: React.ComponentProps<"div">): React.ReactElement {
-  // pr-12 reserves space for the absolute-positioned X close button
-  // (end-3 top-5, h-7 w-7) so titles never overlap it.
   return (
     <div
-      className={cn("flex flex-col gap-2 p-6 pr-12", className)}
       data-slot="sheet-header"
+      className={cn(
+        "flex flex-col gap-1 border-b border-gray-alpha-400 px-5 py-4",
+        className,
+      )}
       {...props}
     />
   );
@@ -362,11 +343,8 @@ export function SheetTitle({
   return (
     <h2
       id={titleId}
-      className={cn(
-        "font-semibold text-lg leading-none text-patch-text",
-        className,
-      )}
       data-slot="sheet-title"
+      className={cn("text-heading-16 text-gray-1000", className)}
       {...props}
     />
   );
@@ -380,53 +358,52 @@ export function SheetDescription({
   return (
     <p
       id={descriptionId}
-      className={cn("text-patch-text-secondary text-sm", className)}
       data-slot="sheet-description"
+      className={cn("text-copy-14 text-gray-800", className)}
       {...props}
     />
   );
 }
 
-export function SheetPanel({
+/* -------------------------------- Body ------------------------------- */
+
+export function SheetBody({
   className,
   ...props
 }: React.ComponentProps<"div">): React.ReactElement {
   return (
     <div
-      className={cn("flex-1 overflow-y-auto p-6", className)}
-      data-slot="sheet-panel"
+      data-slot="sheet-body"
+      className={cn(
+        "flex flex-col gap-4 p-5 flex-1 min-h-0 overflow-y-auto",
+        className,
+      )}
       {...props}
     />
   );
+}
+
+/* ------------------------------- Footer ------------------------------ */
+
+export interface SheetFooterProps extends React.ComponentProps<"div"> {
+  /** Stack actions vertically full-width. */
+  stacked?: boolean;
 }
 
 export function SheetFooter({
   className,
+  stacked = false,
   ...props
-}: React.ComponentProps<"div">): React.ReactElement {
+}: SheetFooterProps): React.ReactElement {
   return (
     <div
+      data-slot="sheet-footer"
       className={cn(
-        "flex flex-col-reverse gap-2 border-t border-[var(--patch-border)] px-6 py-4 sm:flex-row sm:justify-end",
+        "flex gap-2 border-t border-gray-alpha-400 bg-background-200 px-5 py-3",
+        stacked ? "flex-col" : "flex-row justify-between",
         className,
       )}
-      data-slot="sheet-footer"
       {...props}
     />
-  );
-}
-
-export function SheetHandle({
-  className,
-  ...props
-}: React.ComponentProps<"div">): React.ReactElement {
-  return (
-    <div
-      className={cn("flex justify-center pt-2 pb-1", className)}
-      data-slot="sheet-handle"
-      {...props}
-    >
-      <div className="h-1 w-8 rounded-full bg-[#333]" />
-    </div>
   );
 }

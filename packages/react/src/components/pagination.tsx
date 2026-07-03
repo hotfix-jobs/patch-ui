@@ -63,10 +63,10 @@ export function Pagination({
       )}
     >
       <Button
-        variant="ghost"
+        variant="tertiary"
         size="sm"
         className="h-8 w-8"
-        icon={<ChevronLeft className="h-3.5 w-3.5" />}
+        icon={<ChevronLeft className="size-3.5" />}
         onClick={() => go(page - 1)}
         disabled={atFirst || loading}
         aria-label="Previous page"
@@ -74,9 +74,9 @@ export function Pagination({
       {pages.map((p) => (
         <Button
           key={p}
-          variant={p === page ? "secondary" : "ghost"}
+          variant={p === page ? "secondary" : "tertiary"}
           size="sm"
-          className="h-8 min-w-8 px-2 tabular-nums tracking-[-0.01em]"
+          className="h-8 min-w-8 px-2 tabular-nums"
           onClick={() => go(p)}
           disabled={loading}
           aria-label={`Page ${p}`}
@@ -86,10 +86,10 @@ export function Pagination({
         </Button>
       ))}
       <Button
-        variant="ghost"
+        variant="tertiary"
         size="sm"
         className="h-8 w-8"
-        icon={<ChevronRight className="h-3.5 w-3.5" />}
+        icon={<ChevronRight className="size-3.5" />}
         onClick={() => go(page + 1)}
         disabled={atLast || loading}
         aria-label="Next page"

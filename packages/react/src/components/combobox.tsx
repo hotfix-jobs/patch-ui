@@ -29,6 +29,7 @@ import {
 import type * as React from "react";
 import { cn } from "../utils";
 import { Input, type InputProps } from "./input";
+import { XIcon } from "../internal-icons";
 
 /**
  * Combobox - an Input paired with a floating popup that shows arbitrary
@@ -37,7 +38,7 @@ import { Input, type InputProps } from "./input";
  * highlighted via aria-activedescendant) and motion-driven open/close.
  *
  * Unlike `Command`, the popup is anchored to an input and opens on focus.
- * Unlike `Menu`, the trigger is an input — typing filters externally;
+ * Unlike `Menu`, the trigger is an input: typing filters externally;
  * Combobox doesn't manage filtering, it manages the popup + keyboard
  * navigation + ARIA wiring. You compose the items / content yourself.
  *
@@ -115,7 +116,7 @@ export function Combobox({
     placement: "bottom-start",
     transform: false,
     // Combobox semantics: always anchor below the input. `size` constrains
-    // maxHeight to whatever fits — popup scrolls internally rather than
+    // maxHeight to whatever fits: popup scrolls internally rather than
     // flipping above the input (Google-search style, not menu-style).
     middleware: [
       offset(8),
@@ -176,9 +177,38 @@ export function Combobox({
 
 /* --------------------------- ComboboxInput --------------------------- */
 
+function ChevronIndicator({ open }: { open: boolean }): React.ReactElement {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cn(
+        "size-4 shrink-0 text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        open ? "rotate-180" : "rotate-0",
+      )}
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
 export interface ComboboxInputProps extends InputProps {
   /** Open the popup automatically when the input receives focus. Default true. */
   openOnFocus?: boolean;
+  /** Hide the auto-added chevron suffix that indicates open/close state. */
+  hideChevron?: boolean;
+  /**
+   * When true and the input has a non-empty value, renders a trailing × that
+   * clears the input. Wire `onClear` to reset your value state.
+   */
+  clearable?: boolean;
+  /** Fired when the user clicks the × to clear. */
+  onClear?: () => void;
 }
 
 export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
@@ -188,15 +218,53 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
       onFocus,
       onKeyDown,
       onClick,
+      hideChevron,
+      clearable,
+      onClear,
+      value,
+      suffix: userSuffix,
+      suffixStyling,
       ...props
     },
     forwardedRef,
   ) {
     const { open, setOpen, refs, getReferenceProps, baseId, activeIndex } =
       useComboboxContext();
+
+    const hasValue =
+      value != null && value !== "" && (typeof value !== "number" || !Number.isNaN(value));
+    const showClear = clearable && hasValue && !props.disabled;
+
+    // Build the combobox suffix: user-provided suffix + optional clear × + chevron.
+    // Wrapped as a single node passed to Input's `suffix` slot with styling disabled
+    // so it floats inline with the input area.
+    // Vercel-style suffix: the clear × REPLACES the chevron when there is a value
+    // to clear. Otherwise the chevron indicates open/close state. This keeps the
+    // affordance space to a single glyph.
+    const suffix = (userSuffix || showClear || !hideChevron) ? (
+      <span className="inline-flex items-center gap-1.5">
+        {userSuffix}
+        {showClear ? (
+          <button
+            type="button"
+            tabIndex={-1}
+            aria-label="Clear"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClear?.();
+            }}
+            className="inline-flex size-5 items-center justify-center rounded-full text-gray-800 hover:bg-gray-alpha-200 hover:text-gray-1000 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]"
+          >
+            <XIcon className="size-3" />
+          </button>
+        ) : (
+          !hideChevron && <ChevronIndicator open={open} />
+        )}
+      </span>
+    ) : undefined;
     // The Input component wraps the actual <input> in a <span> for icons /
     // suffix / clear button. The visible "field" box is the wrapper span,
-    // not the inner input — so anchor floating-ui to the parent element so
+    // not the inner input: so anchor floating-ui to the parent element so
     // the popup aligns with the full input chrome (icon included).
     const setReferenceToWrapper = useCallback(
       (node: HTMLInputElement | null) => {
@@ -244,6 +312,9 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
           activeIndex != null ? `${baseId}-item-${activeIndex}` : undefined
         }
         autoComplete="off"
+        value={value}
+        suffix={suffix}
+        suffixStyling={suffixStyling ?? false}
         {...mergedProps}
       />
     );
@@ -279,7 +350,7 @@ export function ComboboxPopup({
             context={context}
             modal={false}
             initialFocus={-1}
-            // Don't programmatically refocus the input on close — the input
+            // Don't programmatically refocus the input on close: the input
             // never lost focus (virtual focus model), and refocusing would
             // fire a focus event that triggers openOnFocus, reopening the
             // popup right after dismiss closed it.
@@ -309,7 +380,7 @@ export function ComboboxPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-patch-sm)] bg-patch-surface border border-[var(--patch-border)] shadow-patch-popup outline-none overflow-hidden",
+                "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400 shadow-menu outline-none overflow-hidden",
                 className,
               )}
             >
@@ -363,7 +434,7 @@ export function ComboboxItem({
       data-active={isActive ? "" : undefined}
       data-disabled={disabled ? "" : undefined}
       className={cn(
-        "flex cursor-default items-center gap-2 rounded-[var(--radius-patch-xs)] px-2 py-1.5 text-[length:var(--text-patch-control)] text-patch-text outline-none transition-colors duration-[var(--duration-patch-fast)] ease-[var(--ease-patch-out)] data-[active]:bg-[var(--menu-item-hover)] data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "mx-1 flex cursor-pointer items-center gap-2 rounded-[var(--radius-6)] px-3 py-2 text-copy-14 text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 data-[active]:bg-gray-alpha-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className,
       )}
       {...getItemProps({

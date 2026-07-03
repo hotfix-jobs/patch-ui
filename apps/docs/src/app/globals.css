@@ -6,8 +6,12 @@
 @source "../../node_modules/@patchui/react/dist";
 
 body {
-  background: var(--patch-bg);
-  color: var(--patch-text);
+  background: var(--background-100);
+  color: var(--gray-1000);
+}
+
+.dark body {
+  background: #000;
 }
 
 /* ── Code block inner styles (rehype-pretty-code) ── */
@@ -24,9 +28,9 @@ body {
   font-size: 0.8125rem;
   font-weight: 500;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-  border-bottom: 1px solid var(--patch-border);
-  background: var(--patch-surface-hover);
-  color: var(--patch-text-secondary);
+  border-bottom: 1px solid var(--gray-alpha-400);
+  background: var(--gray-100);
+  color: var(--gray-900);
 }
 
 /* Pre block */
@@ -36,7 +40,7 @@ body {
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.7;
-  background: var(--patch-surface);
+  background: var(--background-100);
 }
 
 /* Code element */
@@ -54,12 +58,12 @@ body {
 
 /* Highlighted lines */
 [data-rehype-pretty-code-figure] code > [data-highlighted-line] {
-  background: rgba(99, 102, 241, 0.08);
-  border-left-color: var(--patch-border-active);
+  background: var(--gray-alpha-100);
+  border-left-color: var(--gray-alpha-600);
 }
 
 .dark [data-rehype-pretty-code-figure] code > [data-highlighted-line] {
-  background: rgba(99, 102, 241, 0.15);
+  background: var(--gray-alpha-200);
 }
 
 /* Inline code (not in fenced blocks) */
@@ -68,6 +72,6 @@ body {
   border-radius: 0.25rem;
   font-size: 0.875em;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-  background: var(--patch-surface-hover);
-  color: var(--patch-text);
+  background: var(--gray-100);
+  color: var(--gray-1000);
 }

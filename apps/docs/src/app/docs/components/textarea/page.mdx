@@ -1,8 +1,11 @@
 import { TextareaDemo } from "./textarea-demo";
 
+
+export const metadata = { title: "Textarea" };
+
 # Textarea
 
-A multi-line text input that wraps the native `<textarea>` with consistent styling and Field integration.
+A multi-line text input that auto-grows with content by default. Three sizes, inline `label` and `error` message, read-only support. Uses the same `background-100` fill and translucent border stepping as `Input`.
 
 <Install name="textarea" />
 
@@ -15,22 +18,23 @@ A multi-line text input that wraps the native `<textarea>` with consistent styli
 ```tsx
 import { Textarea } from "@patchui/react";
 
-// Basic (outlined is the default)
-<Textarea placeholder="Write something..." />
+// Basic
+<Textarea placeholder="Write something…" />
 
-// Variants
-<Textarea variant="outlined" placeholder="Outlined" />
-<Textarea variant="ghost" placeholder="Ghost" />          // no border / bg
-<Textarea variant="underline" placeholder="Underline" />  // bottom border only
+// Sizes
+<Textarea size="sm" />   // label-12 text
+<Textarea size="md" />   // copy-14 text (default)
+<Textarea size="lg" />   // copy-16 text
 
-// Error state
-<Textarea invalid value={value} onChange={...} />
+// Fixed minimum rows
+<Textarea rows={6} placeholder="Tall" />
 
-// Custom rows
-<Textarea placeholder="Tall textarea" rows={6} />
+// Inline label + error
+<Textarea id="desc" label="Description" placeholder="Describe this project" />
+<Textarea id="notes" label="Release Notes" error="Release notes are required." />
 
-// Unstyled
-<Textarea unstyled className="my-custom-textarea" />
+// Read-only
+<Textarea defaultValue="Locked content" readOnly />
 ```
 
 ## Props
@@ -38,54 +42,67 @@ import { Textarea } from "@patchui/react";
 <PropsTable
   props={[
     {
-      name: "variant",
-      type: '"outlined" | "ghost" | "underline"',
-      default: '"outlined"',
-      description: "Visual style. outlined is the default boxed input. ghost has no border or background. underline shows only a bottom border, Material-style.",
+      name: "size",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "Text and padding scale.",
     },
     {
-      name: "invalid",
-      type: "boolean",
+      name: "label",
+      type: "string",
+      default: "-",
+      description: "Renders a `<label>` above the textarea. Requires `id`.",
+    },
+    {
+      name: "id",
+      type: "string",
+      default: "-",
+      description: "Required when `label` is a string. Wires up `htmlFor` and `aria-describedby`.",
+    },
+    {
+      name: "error",
+      type: "boolean | string",
       default: "false",
-      description: "Visual error state. Sets aria-invalid and switches border to the error color.",
+      description: "Visual error state. Pass a string to render an inline error message below the textarea.",
     },
     {
       name: "rows",
       type: "number",
       default: "-",
-      description: "The number of visible text rows. The textarea uses CSS field-sizing by default, so it auto-grows; set rows to enforce a minimum height.",
+      description: "Minimum visible rows. Uses CSS `field-sizing: content` so it auto-grows; `rows` enforces a minimum height.",
     },
     {
-      name: "unstyled",
+      name: "readOnly",
       type: "boolean",
       default: "false",
-      description: "When true, removes all default styling so you can apply your own.",
+      description: "Makes the textarea read-only. Users can still select and copy the value.",
     },
     {
       name: "disabled",
       type: "boolean",
       default: "false",
-      description: "Disables the textarea, preventing interaction.",
+      description: "Disables the textarea.",
     },
     {
       name: "placeholder",
       type: "string",
       default: "-",
-      description: "Placeholder text shown when the textarea is empty.",
+      description: "Placeholder text shown when empty.",
     },
     {
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the outer wrapper.",
+      description: "Additional CSS classes applied to the outer wrapper (or fieldset when `label`/`error` is set).",
     },
   ]}
 />
 
-
 <Callout title="Notes">
-- **Auto-growing:** The textarea uses `field-sizing: content` by default, so it grows with its content. The `rows` prop sets a minimum visible height.
-- **Field integration:** Internally wraps the native textarea with Base UI's `Field.Control`, enabling integration with the Field component for labels, descriptions, and validation messages.
-- **Hover / focus:** Outlined and underline variants darken the border on hover (`--patch-border-hover`) and on focus-visible (`--patch-border-active`) plus the standard 1px focus ring outline.
-- **Variants mirror Input:** Same three variants as `Input` — keeps form chrome consistent across single-line and multi-line fields.
+- Textarea handles anything with line breaks. Anything single-value is an Input.
+- Start with enough `rows` that the field feels finished at load. Growing the field beyond that is fine as long as the CTA doesn't disappear from view.
+- Auto-growing is the default via `field-sizing: content`. Set `rows` when you want a specific minimum height and no more.
+- `error` accepts a boolean or a string. A string renders below the field with `role="alert"`. Prefer strings: the message names what's wrong.
+- Read-only is a native attribute; users can still select and copy.
+- For descriptive helper text unrelated to validation, place it on a sibling element with `aria-describedby`.
 </Callout>

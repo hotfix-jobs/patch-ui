@@ -1,0 +1,107 @@
+import { SectionDemo } from "./section-demo";
+
+
+export const metadata = { title: "Section" };
+
+# Section
+
+An opinionated settings-page primitive: bordered card with a structured header (title + subtitle), optional content body, and a two-column footer (status text on the left, action buttons on the right).
+
+Different from `Card`, which is a general-purpose surface primitive (mix-and-match booleans). Reach for Section when the page reads as "here's a setting, here's how to save it."
+
+<Install name="section" />
+
+<ComponentPreview label="Section Examples">
+  <SectionDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+  SectionSubtitle,
+  SectionContent,
+  SectionFooter,
+  SectionFooterStatus,
+  SectionFooterActions,
+  Button,
+  Input,
+} from "@patchui/react";
+
+// Simple settings row (header + footer, no body)
+<Section>
+  <SectionHeader>
+    <SectionTitle>Account Settings</SectionTitle>
+    <SectionSubtitle>Manage your account preferences and settings.</SectionSubtitle>
+  </SectionHeader>
+  <SectionFooter>
+    <SectionFooterStatus>Need help? <a href="#">View documentation</a></SectionFooterStatus>
+    <SectionFooterActions>
+      <Button size="sm">Save Changes</Button>
+    </SectionFooterActions>
+  </SectionFooter>
+</Section>
+
+// With a content body (e.g. an input to edit)
+<Section>
+  <SectionHeader>
+    <SectionTitle>Project Name</SectionTitle>
+    <SectionSubtitle>The display name for your project.</SectionSubtitle>
+  </SectionHeader>
+  <SectionContent>
+    <Input placeholder="my-awesome-project" />
+  </SectionContent>
+  <SectionFooter>
+    <SectionFooterStatus>Please use 32 characters at maximum.</SectionFooterStatus>
+    <SectionFooterActions>
+      <Button size="sm">Save</Button>
+    </SectionFooterActions>
+  </SectionFooter>
+</Section>
+```
+
+## Components
+
+- **`Section`**: the bordered wrapper. Renders as `<section>` by default.
+- **`SectionHeader`**: the top block: title + subtitle.
+- **`SectionTitle`**: heading (renders as `<h3>` for correct outline).
+- **`SectionSubtitle`**: descriptive text under the title (renders as `<p>`).
+- **`SectionContent`**: optional body between header and footer.
+- **`SectionFooter`**: bordered footer with a two-column layout. Accepts an optional `secondary` prop to use a darker `gray-100` bg.
+- **`SectionFooterStatus`**: left-aligned status text (help link, last-updated stamp, validation hint).
+- **`SectionFooterActions`**: right-aligned action row (buttons).
+
+## Props
+
+### Section, SectionHeader, SectionTitle, SectionSubtitle, SectionContent, SectionFooterStatus, SectionFooterActions
+
+Each accepts `className` for overrides and `render` for polymorphic rendering (change the underlying element while keeping the styling).
+
+### SectionFooter
+
+<PropsTable
+  props={[
+    {
+      name: "secondary",
+      type: "boolean",
+      default: "false",
+      description: "Use the tonal secondary surface (`gray-100`) as the footer background instead of `background-200`. Emphasizes the footer against the main content.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- Section is opinionated on layout: `SectionFooter` uses `justify-between`, so status stretches left and actions stretch right. Skip either side and the other aligns naturally.
+- When only actions are present (no status text), the buttons will right-align: no need to add a spacer.
+- Section is a `<section>` element; `SectionTitle` renders as `<h3>` by default. If the parent already has an `<h2>`, that keeps the outline clean. Adjust with `render={<h2 />}` if the heading level needs to shift.
+- For general-purpose surfaces (nested cards, hoverable rows, dashed drop zones), reach for `<Card>`: it composes with `border` / `hoverable` / `shadow` / `secondary` / `borderBetween` boolean props.
+</Callout>
