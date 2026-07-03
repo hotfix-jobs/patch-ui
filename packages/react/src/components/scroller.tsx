@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -10,6 +11,13 @@ import {
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
+
+const CHEVRON_ICON = {
+  up: ChevronUp,
+  down: ChevronDown,
+  left: ChevronLeft,
+  right: ChevronRight,
+} as const;
 
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -246,13 +254,6 @@ export function Scroller({
 
 /* ------------------------------ Button ------------------------------ */
 
-const CHEVRON: Record<"up" | "down" | "left" | "right", string> = {
-  up: "M18 15l-6-6-6 6",
-  down: "M6 9l6 6 6-6",
-  left: "M15 18l-6-6 6-6",
-  right: "M9 6l6 6-6 6",
-};
-
 const POSITION: Record<"up" | "down" | "left" | "right", string> = {
   up: "top-2 left-1/2 -translate-x-1/2",
   down: "bottom-2 left-1/2 -translate-x-1/2",
@@ -276,6 +277,7 @@ function ScrollButton({
   visible: boolean;
   onClick: () => void;
 }) {
+  const Icon = CHEVRON_ICON[direction];
   return (
     <button
       type="button"
@@ -290,18 +292,7 @@ function ScrollButton({
         visible ? "opacity-100" : "pointer-events-none opacity-0",
       )}
     >
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="size-4"
-      >
-        <path d={CHEVRON[direction]} />
-      </svg>
+      <Icon aria-hidden="true" className="size-4" />
     </button>
   );
 }

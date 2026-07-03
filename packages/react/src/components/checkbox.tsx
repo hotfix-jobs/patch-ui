@@ -2,7 +2,7 @@
 
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 import type * as React from "react";
-import { Check } from "lucide-react";
+import { Check, Minus } from "lucide-react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
@@ -45,18 +45,11 @@ export function Checkbox({
           className="size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
           strokeWidth={2.5}
         />
-        <svg
+        <Minus
           aria-hidden="true"
           className="hidden size-3 group-data-indeterminate:block"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2.5"
-          viewBox="0 0 24 24"
-        >
-          <path d="M5 12h14" />
-        </svg>
+          strokeWidth={2.5}
+        />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );

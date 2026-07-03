@@ -31,7 +31,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { Input, type InputProps } from "./input";
 import { Button } from "./button";
-import { Search, X } from "lucide-react";
+import { ChevronDown, Search, X } from "lucide-react";
 
 const MOBILE_MEDIA_QUERY = "(max-width: 767px)";
 
@@ -226,21 +226,13 @@ export function Combobox({
 
 function ChevronIndicator({ open }: { open: boolean }): React.ReactElement {
   return (
-    <svg
+    <ChevronDown
       aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
       className={cn(
         "size-4 shrink-0 text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         open ? "rotate-180" : "rotate-0",
       )}
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
+    />
   );
 }
 

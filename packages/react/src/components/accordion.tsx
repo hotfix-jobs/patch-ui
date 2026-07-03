@@ -1,6 +1,7 @@
 "use client";
 
 import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
+import { ChevronDown } from "lucide-react";
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
@@ -99,18 +100,10 @@ export function AccordionTrigger({
         {...props}
       >
         <span>{children}</span>
-        <svg
+        <ChevronDown
           aria-hidden
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={2}
-          strokeLinecap="round"
-          strokeLinejoin="round"
           className="mt-0.5 h-4 w-4 shrink-0 text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[panel-open]:rotate-180"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );

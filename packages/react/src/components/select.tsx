@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import type * as React from "react";
 import { forwardRef } from "react";
 import { cn } from "../utils";
@@ -71,21 +72,13 @@ function Affix({
 function ChevronIndicator({ size }: { size: SelectSize }) {
   const right = size === "sm" ? "right-2.5" : size === "lg" ? "right-3.5" : "right-3";
   return (
-    <svg
+    <ChevronDown
       aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
       className={cn(
         "pointer-events-none absolute top-1/2 size-4 -translate-y-1/2 text-gray-800",
         right,
       )}
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
+    />
   );
 }
 

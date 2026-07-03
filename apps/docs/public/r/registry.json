@@ -45,7 +45,8 @@
       "type": "registry:ui",
       "title": "Accordion",
       "dependencies": [
-        "@base-ui/react"
+        "@base-ui/react",
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -463,7 +464,8 @@
       "type": "registry:ui",
       "title": "Navigation Menu",
       "dependencies": [
-        "@base-ui/react"
+        "@base-ui/react",
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -538,6 +540,9 @@
       "name": "scroller",
       "type": "registry:ui",
       "title": "Scroller",
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -633,6 +638,9 @@
       "name": "select",
       "type": "registry:ui",
       "title": "Select",
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"

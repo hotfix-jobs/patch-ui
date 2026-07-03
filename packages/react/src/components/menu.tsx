@@ -38,7 +38,7 @@ import {
   useState,
 } from "react";
 import type * as React from "react";
-import { Check } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 import { cn } from "../utils";
 import { Checkbox } from "./checkbox";
 
@@ -787,18 +787,10 @@ export function MenuSubTrigger({
       {...parent.getItemProps(getReferenceProps())}
     >
       {children}
-      <svg
+      <ChevronRight
+        aria-hidden="true"
         className="ms-auto -me-0.5 size-4 opacity-80"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m9 18 6-6-6-6" />
-      </svg>
+      />
     </div>
   );
 }

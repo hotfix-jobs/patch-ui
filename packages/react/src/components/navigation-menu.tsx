@@ -1,6 +1,7 @@
 "use client";
 
 import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/navigation-menu";
+import { ChevronDown } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
@@ -86,20 +87,7 @@ export function NavigationMenuItem(
   return <NavigationMenuPrimitive.Item data-slot="navigation-menu-item" {...props} />;
 }
 
-const chevron = (
-  <svg
-    aria-hidden="true"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="size-3.5"
-  >
-    <path d="m6 9 6 6 6-6" />
-  </svg>
-);
+const chevron = <ChevronDown aria-hidden="true" className="size-3.5" />;
 
 export function NavigationMenuTrigger({
   className,
