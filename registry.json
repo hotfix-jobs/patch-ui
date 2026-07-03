@@ -693,11 +693,11 @@
       "type": "registry:ui",
       "title": "Sidebar",
       "dependencies": [
-        "@base-ui/react",
-        "lucide-react"
+        "@base-ui/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/sheet.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],

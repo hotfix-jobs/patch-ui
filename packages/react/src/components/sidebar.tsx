@@ -10,10 +10,10 @@ import {
 } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
-import { X } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
+import { Sheet, SheetContent } from "./sheet";
 
 /* --------------------------- Context / hook --------------------------- */
 
@@ -215,53 +215,20 @@ export function Sidebar({
         </aside>
       </div>
 
-      {/* Mobile backdrop — z-[55] to sit above any sticky header (z-50)
-          so the header is dimmed when the drawer is open. */}
-      {openMobile && (
-        <div
-          className="fixed inset-0 z-[55] bg-black/40 backdrop-blur-sm lg:hidden"
-          onClick={() => setOpenMobile(false)}
-          aria-hidden
-        />
-      )}
-      {/* Mobile drawer — z-[60] so it renders above the backdrop and any
-          sticky header. Without this, headers rendered later in the DOM
-          (e.g. inside SidebarInset) at the same z-index would cover the
-          drawer's top. */}
-      <aside
-        data-slot="sidebar-mobile"
-        data-side={side}
-        data-state={openMobile ? "open" : "closed"}
-        style={dimensionVars}
-        className={cn(
-          "fixed inset-y-0 z-[60] flex w-[var(--sidebar-width)] flex-col overflow-y-auto bg-background-100 lg:hidden",
-          side === "left" ? "left-0 border-r" : "right-0 border-l",
-          "border-gray-alpha-400",
-          "transition-transform duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-          side === "left"
-            ? openMobile
-              ? "translate-x-0"
-              : "-translate-x-full"
-            : openMobile
-              ? "translate-x-0"
-              : "translate-x-full",
-        )}
-      >
-        <div className="sticky top-0 flex h-10 items-center justify-end border-b-[0.5px] border-gray-alpha-400 bg-background-100 px-2">
-          <button
-            type="button"
-            aria-label="Close sidebar"
-            onClick={() => setOpenMobile(false)}
-            className={cn(
-              "flex size-8 items-center justify-center rounded-[var(--radius-6)] text-gray-800 hover:bg-gray-alpha-100 hover:text-gray-1000",
-              focusRing,
-            )}
+      {/* Mobile drawer — delegates to <Sheet>. This gives us focus trap,
+          escape-to-close, portal rendering, and role="dialog" aria for
+          free instead of hand-rolling those on top of a fixed <aside>. */}
+      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
+        <SheetContent side={side} className="w-64 p-0 lg:hidden">
+          <div
+            data-slot="sidebar-mobile"
+            style={dimensionVars}
+            className="flex h-full w-full flex-col"
           >
-            <X className="size-4" aria-hidden />
-          </button>
-        </div>
-        {children}
-      </aside>
+            {children}
+          </div>
+        </SheetContent>
+      </Sheet>
     </>
   );
 }
