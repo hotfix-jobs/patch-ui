@@ -7,7 +7,7 @@ import { cn } from "../../utils";
 import { focusRing } from "../../recipes";
 import { Progress } from "../../components/progress";
 import { Card } from "../../components/card";
-import { XIcon } from "../../internal-icons";
+import { X } from "lucide-react";
 
 export interface DropzoneProps
   extends Omit<
@@ -262,7 +262,7 @@ export function Dropzone({
                       aria-label={`Remove ${f.name}`}
                       className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 hover:text-gray-1000"
                     >
-                      <XIcon className="size-3.5" />
+                      <X className="size-3.5" strokeWidth={2.5} />
                     </button>
                   )}
                 </Card>

@@ -2,7 +2,7 @@
 
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 import type * as React from "react";
-import { CheckIcon } from "../internal-icons";
+import { Check } from "lucide-react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
@@ -41,7 +41,7 @@ export function Checkbox({
         data-slot="checkbox-indicator"
         keepMounted
       >
-        <CheckIcon
+        <Check
           className="size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
           strokeWidth={2.5}
         />

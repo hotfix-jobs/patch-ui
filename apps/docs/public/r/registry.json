@@ -30,17 +30,6 @@
       ]
     },
     {
-      "name": "internal-icons",
-      "type": "registry:lib",
-      "files": [
-        {
-          "path": "registry/lib/internal-icons.tsx",
-          "type": "registry:lib",
-          "target": "lib/internal-icons.tsx"
-        }
-      ]
-    },
-    {
       "name": "tokens",
       "type": "registry:file",
       "files": [
@@ -137,10 +126,10 @@
       "title": "Button",
       "dependencies": [
         "@base-ui/react",
-        "class-variance-authority"
+        "class-variance-authority",
+        "lucide-react"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/spinner.json",
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -200,10 +189,10 @@
       "type": "registry:ui",
       "title": "Checkbox",
       "dependencies": [
-        "@base-ui/react"
+        "@base-ui/react",
+        "lucide-react"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -222,12 +211,12 @@
       "title": "Combobox",
       "dependencies": [
         "@floating-ui/react",
+        "lucide-react",
         "motion"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
         "https://ui.hotfix.jobs/r/input.json",
-        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -244,10 +233,10 @@
       "type": "registry:ui",
       "title": "Command",
       "dependencies": [
-        "@base-ui/react"
+        "@base-ui/react",
+        "lucide-react"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/kbd.json",
         "https://ui.hotfix.jobs/r/modal.json",
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -415,11 +404,11 @@
       "title": "Menu",
       "dependencies": [
         "@floating-ui/react",
+        "lucide-react",
         "motion"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/checkbox.json",
-        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -566,6 +555,9 @@
       "name": "search-input",
       "type": "registry:ui",
       "title": "Search Input",
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/input.json",
         "https://ui.hotfix.jobs/r/kbd.json",
@@ -887,7 +879,6 @@
         "motion"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/spinner.json",
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -968,7 +959,6 @@
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/card.json",
-        "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/progress.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",

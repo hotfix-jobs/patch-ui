@@ -31,7 +31,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { Input, type InputProps } from "./input";
 import { Button } from "./button";
-import { SearchIcon, XIcon } from "../internal-icons";
+import { Search, X } from "lucide-react";
 
 const MOBILE_MEDIA_QUERY = "(max-width: 767px)";
 
@@ -322,7 +322,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
             }}
             className="inline-flex size-5 items-center justify-center rounded-full text-gray-800 hover:bg-gray-alpha-200 hover:text-gray-1000 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]"
           >
-            <XIcon className="size-3" />
+            <X className="size-3" strokeWidth={2.5} />
           </button>
         ) : (
           !hideChevron && <ChevronIndicator open={open} />
@@ -507,7 +507,7 @@ export function ComboboxPopup({
                     variant="unstyled"
                     autoFocus
                     autoComplete="off"
-                    prefix={<SearchIcon />}
+                    prefix={<Search />}
                     prefixStyling={false}
                     value={ctxValue ?? ""}
                     onChange={(e) => onValueChange?.(e.target.value)}
@@ -522,7 +522,7 @@ export function ComboboxPopup({
                     onClick={() => setOpen(false)}
                     className="text-gray-800"
                   >
-                    <XIcon className="size-3.5" />
+                    <X className="size-3.5" />
                   </Button>
                 </div>
               )}

@@ -13,7 +13,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { Spinner } from "./spinner";
-import { XIcon } from "../internal-icons";
+import { X } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -461,7 +461,7 @@ function ToastItem({
           focusRing,
         )}
       >
-        <XIcon className="size-3" />
+        <X className="size-3" strokeWidth={2.5} />
       </button>
     </motion.div>
   );

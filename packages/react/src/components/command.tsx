@@ -3,7 +3,7 @@
 import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete";
 import { createContext, useContext } from "react";
 import type * as React from "react";
-import { CheckIcon } from "../internal-icons";
+import { Check, Search } from "lucide-react";
 import { cn } from "../utils";
 import { Kbd } from "./kbd";
 import { Modal } from "./modal";
@@ -38,24 +38,6 @@ export function Command(
   return <AutocompletePrimitive.Root data-slot="command" inline {...props} />;
 }
 
-function SearchIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-4 shrink-0 text-gray-800"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
 export function CommandInput({
   className,
   showEscape = true,
@@ -74,7 +56,7 @@ export function CommandInput({
       data-slot="command-input-wrapper"
     >
       <span className="flex shrink-0 items-center ps-3 pe-2 text-gray-800">
-        <SearchIcon />
+        <Search className="size-4 shrink-0" />
       </span>
       <AutocompletePrimitive.Input
         data-slot="command-input"
@@ -176,7 +158,7 @@ export function CommandItem({
   // `selected` is for persistent choices (Theme = "Dark"); ephemeral
   // one-shot commands should leave it undefined.
   const trailing = selected ? (
-    <CheckIcon
+    <Check
       className="ms-auto size-3.5 shrink-0 text-gray-800"
       strokeWidth={2.25}
     />

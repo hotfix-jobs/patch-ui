@@ -2,6 +2,7 @@
 
 import type * as React from "react";
 import { useCallback } from "react";
+import { Search } from "lucide-react";
 import { Input, type InputProps } from "./input";
 import { Kbd } from "./kbd";
 
@@ -17,24 +18,6 @@ export type SearchInputProps = Omit<
   /** Hide the Esc hint chip even when a value is present. */
   hideEscHint?: boolean;
 };
-
-function SearchIcon({ className }: { className?: string }): React.ReactElement {
-  return (
-    <svg
-      aria-hidden="true"
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="7" />
-      <path d="m21 21-4.35-4.35" />
-    </svg>
-  );
-}
 
 export function SearchInput({
   hideEscHint,
@@ -78,7 +61,7 @@ export function SearchInput({
       onChange={onChange}
       onKeyDown={handleKeyDown}
       placeholder={placeholder}
-      prefix={<SearchIcon />}
+      prefix={<Search />}
       prefixStyling={false}
       suffix={showEscHint ? <Kbd size="sm" onClick={handleClear} aria-label="Clear search">Esc</Kbd> : undefined}
       suffixStyling={false}

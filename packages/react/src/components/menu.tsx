@@ -38,7 +38,7 @@ import {
   useState,
 } from "react";
 import type * as React from "react";
-import { CheckIcon } from "../internal-icons";
+import { Check } from "lucide-react";
 import { cn } from "../utils";
 import { Checkbox } from "./checkbox";
 
@@ -398,7 +398,7 @@ export function MenuItem({
   const isActive = activeIndex === index;
 
   const trailingCheck = selected && (
-    <CheckIcon
+    <Check
       className="ms-auto size-3.5 shrink-0 text-gray-800"
       strokeWidth={2.25}
     />
@@ -628,7 +628,7 @@ export function MenuRadioItem({
       })}
     >
       <span className="col-start-1 -ms-0.5 flex items-center justify-center">
-        {checked && <CheckIcon className="size-4" />}
+        {checked && <Check className="size-4" />}
       </span>
       <span className="col-start-2">{children}</span>
     </div>

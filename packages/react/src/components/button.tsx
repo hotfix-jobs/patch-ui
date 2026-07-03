@@ -7,7 +7,7 @@ import { Spinner } from "./spinner";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, disabled, colorTransition } from "../recipes";
-import { XIcon } from "../internal-icons";
+import { X } from "lucide-react";
 
 export const buttonVariants = cva(
   [
@@ -145,7 +145,7 @@ export function Button({
           )}
           data-slot="button-remove"
         >
-          <XIcon className="size-2.5" />
+          <X className="size-2.5" strokeWidth={2.5} />
         </span>
       )}
     </>
