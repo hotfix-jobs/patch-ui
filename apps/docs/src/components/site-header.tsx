@@ -45,7 +45,9 @@ export function SiteHeader() {
           <PanelLeft className="size-4" aria-hidden />
         </SidebarTrigger>
       )}
-      <AppHeaderBrand render={<Link href="/" />}>Patch UI</AppHeaderBrand>
+      {!isDocs && (
+        <AppHeaderBrand render={<Link href="/" />}>Patch UI</AppHeaderBrand>
+      )}
       <AppHeaderRight>
         <DocsSearch />
         <Button
