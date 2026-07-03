@@ -5,7 +5,7 @@ import { useRender } from "@base-ui/react/use-render";
 import type * as React from "react";
 import { cn } from "../utils";
 
-export interface SectionLabelProps extends useRender.ComponentProps<"p"> {}
+export type SectionLabelProps = useRender.ComponentProps<"p">;
 
 /**
  * SectionLabel: a small bold heading used to introduce a labeled section

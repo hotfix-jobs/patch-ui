@@ -235,8 +235,7 @@ export function Sidebar({
 
 /* ------------------------------- Inset ------------------------------- */
 
-export interface SidebarInsetProps
-  extends React.HTMLAttributes<HTMLElement> {}
+export type SidebarInsetProps = React.HTMLAttributes<HTMLElement>;
 
 /**
  * SidebarInset — the main content column that sits alongside the sidebar.
@@ -269,7 +268,7 @@ export function SidebarInset({
 
 /* --------------------------- Compound slots --------------------------- */
 
-export interface SidebarHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SidebarHeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 /** SidebarHeader — sticky region at the top of the sidebar. Brand and search. */
 export function SidebarHeader({
@@ -285,7 +284,7 @@ export function SidebarHeader({
   );
 }
 
-export interface SidebarContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SidebarContentProps = React.HTMLAttributes<HTMLDivElement>;
 
 /** SidebarContent — scrollable middle region. Wrap SidebarGroup(s). */
 export function SidebarContent({
@@ -304,7 +303,7 @@ export function SidebarContent({
   );
 }
 
-export interface SidebarFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SidebarFooterProps = React.HTMLAttributes<HTMLDivElement>;
 
 /** SidebarFooter — sticky region at the bottom of the sidebar. User menu, attribution. */
 export function SidebarFooter({
@@ -325,7 +324,7 @@ export function SidebarFooter({
 
 /* -------------------------------- Group ------------------------------- */
 
-export interface SidebarGroupProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SidebarGroupProps = React.HTMLAttributes<HTMLDivElement>;
 
 /** SidebarGroup — a titled cluster of menu items. */
 export function SidebarGroup({
@@ -341,7 +340,7 @@ export function SidebarGroup({
   );
 }
 
-export interface SidebarGroupLabelProps extends React.HTMLAttributes<HTMLDivElement> {}
+export type SidebarGroupLabelProps = React.HTMLAttributes<HTMLDivElement>;
 
 /** SidebarGroupLabel — small label above a group. Uses the button-12 recipe for a medium 12px caption. */
 export function SidebarGroupLabel({
@@ -359,7 +358,7 @@ export function SidebarGroupLabel({
 
 /* -------------------------------- Menu -------------------------------- */
 
-export interface SidebarMenuProps extends React.HTMLAttributes<HTMLUListElement> {}
+export type SidebarMenuProps = React.HTMLAttributes<HTMLUListElement>;
 
 /** SidebarMenu — semantic <ul> wrapper for menu items. */
 export function SidebarMenu({
@@ -375,7 +374,7 @@ export function SidebarMenu({
   );
 }
 
-export interface SidebarMenuItemProps extends React.LiHTMLAttributes<HTMLLIElement> {}
+export type SidebarMenuItemProps = React.LiHTMLAttributes<HTMLLIElement>;
 
 /** SidebarMenuItem — <li> wrapper for a single menu button/link. */
 export function SidebarMenuItem({
@@ -428,8 +427,7 @@ export function SidebarMenuButton({
 
 /* ------------------------------- Trigger ------------------------------ */
 
-export interface SidebarTriggerProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+export type SidebarTriggerProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 /**
  * SidebarTrigger — button that toggles the sidebar. Reads viewport size

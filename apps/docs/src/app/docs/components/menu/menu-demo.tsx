@@ -7,7 +7,6 @@ import {
   MenuTrigger,
   MenuPopup,
   MenuItem,
-  MenuGroup,
   MenuSection,
   MenuCheckboxItem,
   MenuRadioGroup,

@@ -1,7 +1,7 @@
 "use client";
 
 import type * as React from "react";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
@@ -29,12 +29,14 @@ export interface KbdProps
  * (matches Vercel's default) so the glyph doesn't flicker on Mac clients.
  */
 function useIsMac(): boolean {
-  const [isMac, setIsMac] = useState(true);
-  useEffect(() => {
-    if (typeof navigator === "undefined") return;
-    setIsMac(/Mac|iPhone|iPad|iPod/.test(navigator.platform));
-  }, []);
-  return isMac;
+  return useSyncExternalStore(
+    // No subscription target: platform doesn't change while the page runs.
+    () => () => {},
+    () => /Mac|iPhone|iPad|iPod/.test(navigator.platform),
+    // Server + first-client-render snapshot. True matches Vercel's default
+    // so the glyph doesn't flicker on Mac clients between SSR and hydrate.
+    () => true,
+  );
 }
 
 function modifiers(mac: boolean, m: {

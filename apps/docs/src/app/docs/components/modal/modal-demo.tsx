@@ -8,7 +8,6 @@ import {
   ModalHeader,
   ModalTitle,
   ModalSubtitle,
-  ModalInset,
   ModalActions,
   ModalAction,
 } from "@patchui/react";
