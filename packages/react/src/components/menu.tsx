@@ -593,7 +593,7 @@ export function MenuRadioItem({
 }: MenuRadioItemProps): React.ReactElement {
   const group = useContext(RadioGroupContext);
   if (!group) throw new Error("MenuRadioItem must be inside MenuRadioGroup");
-  const { activeIndex, getItemProps } = useMenuContext();
+  const { activeIndex, getItemProps, setOpen } = useMenuContext();
   const density = useContext(MenuDensityContext);
 
   const checked = group.value === value;
@@ -613,24 +613,29 @@ export function MenuRadioItem({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "flex w-full cursor-default items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         density === "compact"
-          ? "min-h-7 py-1.5 ps-2 pe-4 text-label-13"
-          : "min-h-11 py-2.5 ps-3 pe-5 text-copy-14",
+          ? "min-h-7 py-1.5 px-2 text-label-13"
+          : "min-h-11 py-2.5 px-3 text-copy-14",
         className,
       )}
       {...getItemProps({
         onClick: (e: React.MouseEvent) => {
           if (disabled) return;
           group.setValue(value);
+          setOpen(false);
           e.preventDefault();
         },
       })}
     >
-      <span className="col-start-1 -ms-0.5 flex items-center justify-center">
-        {checked && <Check className="size-4" />}
-      </span>
-      <span className="col-start-2">{children}</span>
+      <span className="min-w-0 flex-1 truncate">{children}</span>
+      {checked && (
+        <Check
+          aria-hidden
+          className="ms-auto size-3.5 shrink-0 text-gray-800"
+          strokeWidth={2.25}
+        />
+      )}
     </div>
   );
 }
