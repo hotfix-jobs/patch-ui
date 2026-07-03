@@ -168,9 +168,9 @@ export function ListRowList({
         "flex flex-col",
         bordered &&
           "overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100",
-        // Hairline between rows via [&_[data-slot=list-row]+[data-slot=list-row]]:border-t.
-        "[&_[data-slot=list-row]+[data-slot=list-row]]:border-t [&_[data-slot=list-row]]:border-gray-alpha-400",
-        interactive && "[&_[data-slot=list-row]:hover]:bg-gray-alpha-100",
+        // Hairline between direct children so wrappers (e.g. an <article> around each ListRow) still get dividers.
+        "[&>*+*]:border-t [&>*]:border-gray-alpha-400",
+        interactive && "[&>*:hover]:bg-gray-alpha-100",
         className,
       )}
       {...props}
