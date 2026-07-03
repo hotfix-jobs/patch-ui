@@ -46,6 +46,19 @@ type Density = "compact" | "comfortable";
 
 const MenuDensityContext = createContext<Density>("comfortable");
 
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || !("matchMedia" in window)) return;
+    const mql = window.matchMedia(query);
+    const update = () => setMatches(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, [query]);
+  return matches;
+}
+
 type MenuContextValue = {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -286,6 +299,11 @@ export function MenuPopup({
     [refs],
   );
   const reduceMotion = useReducedMotion();
+  // Below the md breakpoint, top-level menus render as a bottom-anchored
+  // fixed panel (mirrors ComboboxPopup mobile). Submenus stay as
+  // floating popovers so they can anchor to their parent row.
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const asPanel = isMobile && !isNested;
 
   return (
     <FloatingPortal>
@@ -301,15 +319,31 @@ export function MenuPopup({
               ref={setFloating}
               data-slot="menu-popup"
               {...getFloatingProps()}
-              style={{
-                ...floatingStyles,
-                transformOrigin: "var(--transform-origin, top left)",
-              }}
-              initial={
-                reduceMotion ? false : { opacity: 0, scale: 0.97 }
+              style={
+                asPanel
+                  ? undefined
+                  : {
+                      ...floatingStyles,
+                      transformOrigin: "var(--transform-origin, top left)",
+                    }
               }
-              animate={{ opacity: 1, scale: 1 }}
-              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
+              initial={
+                reduceMotion
+                  ? false
+                  : asPanel
+                    ? { opacity: 0, y: 8 }
+                    : { opacity: 0, scale: 0.97 }
+              }
+              animate={
+                asPanel ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1 }
+              }
+              exit={
+                reduceMotion
+                  ? undefined
+                  : asPanel
+                    ? { opacity: 0, y: 8 }
+                    : { opacity: 0, scale: 0.97 }
+              }
               transition={
                 reduceMotion
                   ? { duration: 0 }
@@ -322,14 +356,23 @@ export function MenuPopup({
               }
               className={cn(
                 "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400 shadow-menu outline-none focus:outline-none",
-                density === "compact"
-                  ? "not-[class*='w-']:min-w-32"
-                  : "not-[class*='w-']:min-w-56",
+                asPanel
+                  ? "fixed bottom-2 left-2 right-2 max-h-[calc(100vh-1rem)]"
+                  : density === "compact"
+                    ? "not-[class*='w-']:min-w-32"
+                    : "not-[class*='w-']:min-w-56",
                 className,
               )}
             >
               <MenuDensityContext.Provider value={density}>
-                <div className="max-h-[var(--available-height,400px)] w-full overflow-y-auto p-1">
+                <div
+                  className={cn(
+                    "w-full overflow-y-auto p-1",
+                    asPanel
+                      ? "max-h-full"
+                      : "max-h-[var(--available-height,400px)]",
+                  )}
+                >
                   {children}
                 </div>
               </MenuDensityContext.Provider>
