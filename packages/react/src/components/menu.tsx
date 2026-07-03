@@ -40,6 +40,7 @@ import {
 import type * as React from "react";
 import { CheckIcon } from "../internal-icons";
 import { cn } from "../utils";
+import { Checkbox } from "./checkbox";
 
 type Density = "compact" | "comfortable";
 
@@ -511,10 +512,10 @@ export function MenuCheckboxItem({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "grid cursor-default grid-cols-[.75rem_1fr] items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "flex cursor-default items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         density === "compact"
-          ? "min-h-7 py-1.5 ps-2 pe-4 text-label-13"
-          : "min-h-11 py-2.5 ps-3 pe-5 text-copy-14",
+          ? "min-h-7 py-1.5 px-2 text-label-13"
+          : "min-h-11 py-2.5 px-3 text-copy-14",
         className,
       )}
       {...getItemProps({
@@ -525,10 +526,15 @@ export function MenuCheckboxItem({
         },
       })}
     >
-      <span className="col-start-1 -ms-0.5 flex items-center justify-center">
-        {checked && <CheckIcon className="size-4" />}
-      </span>
-      <span className="col-start-2">{children}</span>
+      {/* Purely visual: the row owns the click. pointer-events-none stops the
+          primitive from re-toggling and racing our onCheckedChange call. */}
+      <Checkbox
+        checked={checked}
+        tabIndex={-1}
+        aria-hidden
+        className="pointer-events-none"
+      />
+      <span className="min-w-0 flex-1 truncate">{children}</span>
     </div>
   );
 }

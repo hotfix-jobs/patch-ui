@@ -120,6 +120,12 @@ export function Button({
           role="button"
           tabIndex={0}
           aria-label={removeLabel}
+          // Stop mousedown/pointerdown so a parent trigger built on
+          // floating-ui's useClick (which fires on mousedown by default)
+          // doesn't open its popup when the user clicks the X. onClick
+          // alone runs too late.
+          onMouseDown={(e) => e.stopPropagation()}
+          onPointerDown={(e) => e.stopPropagation()}
           onClick={(e) => {
             e.stopPropagation();
             onRemove();

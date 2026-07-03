@@ -418,6 +418,7 @@
         "motion"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/checkbox.json",
         "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
