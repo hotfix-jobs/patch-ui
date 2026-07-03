@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 import { Button, SidebarTrigger } from "@patchui/react";
 import {
   AppHeader,
@@ -41,8 +41,8 @@ export function SiteHeader() {
   return (
     <AppHeader sticky>
       {isDocs && (
-        <SidebarTrigger className="lg:hidden">
-          <Menu className="size-4" aria-hidden />
+        <SidebarTrigger title="Toggle sidebar (⌘B)">
+          <PanelLeft className="size-4" aria-hidden />
         </SidebarTrigger>
       )}
       <AppHeaderBrand render={<Link href="/" />}>Patch UI</AppHeaderBrand>
