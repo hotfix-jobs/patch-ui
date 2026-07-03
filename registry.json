@@ -850,7 +850,7 @@
         "motion"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/button.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
