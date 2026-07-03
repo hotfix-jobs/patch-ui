@@ -103,9 +103,9 @@ export function SheetDemo() {
             <SheetBody>
               {[
                 "Home",
-                "Deployments",
+                "Projects",
+                "Team",
                 "Analytics",
-                "Domains",
                 "Settings",
               ].map((item) => (
                 <a

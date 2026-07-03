@@ -20,7 +20,7 @@ const MEMBERS = [
 
 const INTEGRATIONS = [
   { id: "gh", name: "GitHub", desc: "Sync repositories and PR events", icon: <GitBranch className="size-5" />, connected: true },
-  { id: "slack", name: "Slack", desc: "Post deploy status to a channel", icon: <MessageSquare className="size-5" />, connected: false },
+  { id: "slack", name: "Slack", desc: "Post project updates to a channel", icon: <MessageSquare className="size-5" />, connected: false },
   { id: "linkedin", name: "LinkedIn", desc: "Share posts to a company page", icon: <Send className="size-5" />, connected: false },
 ];
 
@@ -90,8 +90,8 @@ export function ListRowDemo() {
             right={<span className="text-label-13 text-gray-800">2m ago</span>}
           >
             <ListRowContent
-              title="New job matches your search"
-              description="4 senior React roles in San Francisco"
+              title="Project shared with you"
+              description="Ada Lovelace added you to Design system"
             />
           </ListRow>
           <ListRow
@@ -99,8 +99,8 @@ export function ListRowDemo() {
             right={<span className="text-label-13 text-gray-800">1h ago</span>}
           >
             <ListRowContent
-              title="Interview scheduled"
-              description="Loop with Acme on Thursday 2pm"
+              title="Review requested"
+              description="Alan Turing left comments on Q3 planning"
             />
           </ListRow>
           <ListRow
@@ -108,8 +108,8 @@ export function ListRowDemo() {
             right={<span className="text-label-13 text-gray-800">1d ago</span>}
           >
             <ListRowContent
-              title="Application status update"
-              description="Moved to phone screen"
+              title="Invoice paid"
+              description="November subscription $49.00"
             />
           </ListRow>
         </ListRowList>

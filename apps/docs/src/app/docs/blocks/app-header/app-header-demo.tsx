@@ -20,7 +20,7 @@ import {
 } from "@patchui/react/blocks/app-header";
 import { ChevronDown } from "lucide-react";
 
-const DASHBOARD_NAV = ["Home", "Jobs", "Insights", "Team"];
+const DASHBOARD_NAV = ["Home", "Projects", "Insights", "Team"];
 const MARKETING_NAV = ["Product", "Customers", "Company", "Pricing"];
 
 function MenuIcon() {

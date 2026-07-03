@@ -4,15 +4,15 @@ import { Scroller } from "@patchui/react";
 import { SectionLabel } from "@patchui/react";
 
 const CARDS = [
-  { title: "Frontend Engineer", meta: "Remote · Full-time" },
-  { title: "Backend Engineer", meta: "SF · Full-time" },
-  { title: "Design Engineer", meta: "Remote · Contract" },
-  { title: "Product Designer", meta: "NYC · Full-time" },
-  { title: "Data Engineer", meta: "Remote · Full-time" },
-  { title: "Platform Engineer", meta: "Berlin · Full-time" },
-  { title: "Growth Engineer", meta: "Remote · Full-time" },
-  { title: "Mobile Engineer", meta: "London · Full-time" },
-  { title: "DevOps Engineer", meta: "Remote · Full-time" },
+  { title: "Design system", meta: "12 members · Active" },
+  { title: "Q4 planning", meta: "8 members · Active" },
+  { title: "Marketing site", meta: "5 members · Draft" },
+  { title: "Onboarding revamp", meta: "4 members · Active" },
+  { title: "Billing migration", meta: "3 members · Active" },
+  { title: "Analytics rollout", meta: "6 members · Active" },
+  { title: "Mobile app v2", meta: "9 members · Draft" },
+  { title: "Docs refresh", meta: "2 members · Archived" },
+  { title: "API cleanup", meta: "4 members · Active" },
 ];
 
 const FEED = Array.from({ length: 24 }, (_, i) => ({
@@ -31,7 +31,7 @@ export function ScrollerDemo() {
           overflow="x"
           withButtons
           childrenContainerClassName="gap-3 p-1"
-          ariaLabel="Featured jobs"
+          ariaLabel="Featured projects"
         >
           {CARDS.map((c) => (
             <div

@@ -44,10 +44,10 @@ export function MiddleTruncateDemo() {
       <div className="space-y-3">
         <SectionLabel>Common patterns</SectionLabel>
         <div className="flex max-w-md flex-col gap-3">
-          <Row label="Deploy ID">
+          <Row label="Invoice ID">
             <MiddleTruncate
-              value="dpl_2XfHqvW9NbGkLm3pTZ7Yz4vJc8Bh1Rd6P9Ab"
-             
+              value="inv_2XfHqvW9NbGkLm3pTZ7Yz4vJc8Bh1Rd6P9Ab"
+
               className="text-copy-14 text-gray-1000"
             />
           </Row>

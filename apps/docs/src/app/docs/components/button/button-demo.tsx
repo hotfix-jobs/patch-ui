@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@patchui/react";
 import { ArrowRight, ChevronDown, Download, GitBranch, Mail, Plus, Trash2 } from "lucide-react";
 
-const INITIAL_TAGS = ["hotfix-jobs/patch-ui", "vercel/next.js", "shadcn/ui"];
+const INITIAL_TAGS = ["design", "engineering", "billing"];
 
 export function ButtonDemo() {
   const [tags, setTags] = useState(INITIAL_TAGS);

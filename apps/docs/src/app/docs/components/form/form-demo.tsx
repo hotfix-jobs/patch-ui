@@ -32,7 +32,7 @@ export function FormDemo() {
         >
           <Field name="name">
             <FieldLabel>Name</FieldLabel>
-            <Input placeholder="Jane Doe" required />
+            <Input placeholder="Ada Lovelace" required />
             <FieldError />
           </Field>
 
