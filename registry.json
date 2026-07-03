@@ -225,6 +225,7 @@
         "motion"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/button.json",
         "https://ui.hotfix.jobs/r/input.json",
         "https://ui.hotfix.jobs/r/internal-icons.json",
         "https://ui.hotfix.jobs/r/tokens.json",

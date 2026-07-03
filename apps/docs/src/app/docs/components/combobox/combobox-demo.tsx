@@ -2,13 +2,14 @@
 
 import { useState, useMemo } from "react";
 import {
+  Badge,
   Combobox,
   ComboboxInput,
   ComboboxPopup,
   ComboboxItem,
   SectionLabel,
 } from "@patchui/react";
-import { Info, Search } from "lucide-react";
+import { Info, Search, Check } from "lucide-react";
 
 const FRAMEWORKS = [
   "React",
@@ -31,6 +32,9 @@ export function ComboboxDemo() {
   const [picked, setPicked] = useState<string | null>(null);
   const [query2, setQuery2] = useState("");
 
+  const [multiQuery, setMultiQuery] = useState("");
+  const [selected, setSelected] = useState<string[]>(["React"]);
+
   const needle = query.trim().toLowerCase();
   const matches = useMemo(
     () => FRAMEWORKS.filter((f) => f.toLowerCase().includes(needle)),
@@ -43,18 +47,23 @@ export function ComboboxDemo() {
     [needle2],
   );
 
+  const multiNeedle = multiQuery.trim().toLowerCase();
+  const multiMatches = useMemo(
+    () => FRAMEWORKS.filter((f) => f.toLowerCase().includes(multiNeedle)),
+    [multiNeedle],
+  );
+  const toggle = (f: string) =>
+    setSelected((prev) => (prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]));
+
   return (
     <div className="flex flex-col gap-8">
       <div className="space-y-3">
         <SectionLabel>Basic: with search icon, chevron, and clearable</SectionLabel>
         <div className="max-w-sm">
-          <Combobox>
+          <Combobox value={query} onValueChange={setQuery} placeholder="Search…">
             <ComboboxInput
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
               prefix={<Search />}
               prefixStyling={false}
-              placeholder="Search…"
               clearable
               onClear={() => {
                 setQuery("");
@@ -92,13 +101,14 @@ export function ComboboxDemo() {
       <div className="space-y-3">
         <SectionLabel>Custom content (recents section, banner)</SectionLabel>
         <div className="max-w-sm">
-          <Combobox>
+          <Combobox
+            value={query2}
+            onValueChange={setQuery2}
+            placeholder="Search frameworks…"
+          >
             <ComboboxInput
-              value={query2}
-              onChange={(e) => setQuery2(e.target.value)}
               prefix={<Search />}
               prefixStyling={false}
-              placeholder="Search frameworks…"
               clearable
               onClear={() => setQuery2("")}
             />
@@ -140,6 +150,55 @@ export function ComboboxDemo() {
               </div>
             </ComboboxPopup>
           </Combobox>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Multi-select filter</SectionLabel>
+        <div className="max-w-sm">
+          <Combobox
+            value={multiQuery}
+            onValueChange={setMultiQuery}
+            placeholder="Filter by framework…"
+          >
+            <ComboboxInput prefix={<Search />} prefixStyling={false} />
+            <ComboboxPopup>
+              <div className="py-1">
+                {multiMatches.length === 0 ? (
+                  <div className="px-3 py-4 text-center text-label-12 text-gray-800">
+                    No matches.
+                  </div>
+                ) : (
+                  multiMatches.map((f) => {
+                    const isSelected = selected.includes(f);
+                    return (
+                      <ComboboxItem
+                        key={f}
+                        closeOnSelect={false}
+                        onSelect={() => toggle(f)}
+                      >
+                        <span className="flex flex-1 items-center justify-between gap-2">
+                          <span>{f}</span>
+                          {isSelected && (
+                            <Check className="size-4 text-gray-1000" aria-hidden />
+                          )}
+                        </span>
+                      </ComboboxItem>
+                    );
+                  })
+                )}
+              </div>
+            </ComboboxPopup>
+          </Combobox>
+          {selected.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {selected.map((s) => (
+                <Badge key={s} variant="default" contrast="low">
+                  {s}
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

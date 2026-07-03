@@ -6,12 +6,21 @@ import { cn } from "../utils";
 import { Spinner } from "./spinner";
 
 export type InputSize = "sm" | "md" | "lg";
+export type InputVariant = "default" | "unstyled";
 
 export type InputProps = Omit<
   InputPrimitive.Props & React.RefAttributes<HTMLInputElement>,
   "size" | "prefix"
 > & {
   size?: InputSize;
+  /**
+   * Visual variant of the input container.
+   * - `default` (unset): bordered, rounded, hover + focus outline.
+   * - `unstyled`: no border, no rounded, no hover, no focus outline.
+   *   Use when embedding an Input inside a surface that owns its
+   *   own container styling (panels, table cells, composite fields).
+   */
+  variant?: InputVariant;
   /** Content rendered at the start (icon, unit symbol, or text like `https://`). */
   prefix?: React.ReactNode;
   /** Content rendered at the end (icon, unit label, or text like `.com`). */
@@ -99,6 +108,7 @@ function UnstyledAffix({
 export function Input({
   className,
   size = "md",
+  variant = "default",
   prefix,
   suffix,
   prefixStyling = true,
@@ -116,7 +126,8 @@ export function Input({
   const trailingSpinner = loading ? <Spinner size="sm" /> : null;
   const hasErrorMessage = typeof error === "string" && error.length > 0;
   const hasError = Boolean(error);
-  const shape = rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
+  const unstyled = variant === "unstyled";
+  const shape = unstyled ? "" : rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
   const errorId = id ? `${id}-error` : undefined;
 
   const hasTrailing = Boolean(suffix) || Boolean(trailingSpinner);
@@ -149,10 +160,15 @@ export function Input({
       className={cn(
         "relative inline-flex w-full items-center overflow-hidden text-gray-1000",
         shape,
-        "bg-background-100 border border-gray-alpha-400",
-        "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        "hover:border-gray-alpha-500",
-        "has-focus-visible:border-gray-alpha-600 has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
+        // Container chrome only in default variant. Unstyled: the surrounding
+        // surface (mobile panel, table cell, composite field) owns its own
+        // container styling, so we skip bg + border + hover + focus outline.
+        !unstyled && [
+          "bg-background-100 border border-gray-alpha-400",
+          "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "hover:border-gray-alpha-500",
+          "has-focus-visible:border-gray-alpha-600 has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
+        ],
         "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
         hasError &&
           "!border-[var(--error)] has-focus-visible:!border-[var(--error)] has-focus-visible:!outline-[var(--error)]",

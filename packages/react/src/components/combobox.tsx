@@ -22,6 +22,7 @@ import {
   forwardRef,
   useCallback,
   useContext,
+  useEffect,
   useId,
   useRef,
   useState,
@@ -29,7 +30,23 @@ import {
 import type * as React from "react";
 import { cn } from "../utils";
 import { Input, type InputProps } from "./input";
-import { XIcon } from "../internal-icons";
+import { Button } from "./button";
+import { SearchIcon, XIcon } from "../internal-icons";
+
+const MOBILE_MEDIA_QUERY = "(max-width: 767px)";
+
+function useIsMobileCombobox(): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || !("matchMedia" in window)) return;
+    const mql = window.matchMedia(MOBILE_MEDIA_QUERY);
+    const update = () => setIsMobile(mql.matches);
+    update();
+    mql.addEventListener("change", update);
+    return () => mql.removeEventListener("change", update);
+  }, []);
+  return isMobile;
+}
 
 /**
  * Combobox - an Input paired with a floating popup that shows arbitrary
@@ -43,13 +60,8 @@ import { XIcon } from "../internal-icons";
  * navigation + ARIA wiring. You compose the items / content yourself.
  *
  * Usage:
- *   <Combobox>
- *     <ComboboxInput
- *       value={query}
- *       onChange={(e) => setQuery(e.target.value)}
- *       icon={<Search />}
- *       placeholder="Search..."
- *     />
+ *   <Combobox value={query} onValueChange={setQuery} placeholder="Search...">
+ *     <ComboboxInput prefix={<Search />} prefixStyling={false} />
  *     <ComboboxPopup>
  *       {results.map((r) => (
  *         <ComboboxItem key={r.id} onSelect={() => pick(r)}>
@@ -58,6 +70,10 @@ import { XIcon } from "../internal-icons";
  *       ))}
  *     </ComboboxPopup>
  *   </Combobox>
+ *
+ * Below the md breakpoint the popup renders as a bottom-anchored fixed
+ * panel with its own search input; desktop is unchanged. For multi-select
+ * pickers, pass `closeOnSelect={false}` on ComboboxItem.
  */
 
 type ComboboxContextValue = {
@@ -72,6 +88,12 @@ type ComboboxContextValue = {
   getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"];
   getItemProps: ReturnType<typeof useInteractions>["getItemProps"];
   baseId: string;
+  // Query state lives on the root so the trigger input and the mobile panel's
+  // own input can share it. Consumers may still override on ComboboxInput.
+  value: string | undefined;
+  onValueChange: ((next: string) => void) | undefined;
+  placeholder: string | undefined;
+  isMobile: boolean;
 };
 
 const ComboboxContext = createContext<ComboboxContextValue | null>(null);
@@ -87,6 +109,15 @@ export interface ComboboxProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /**
+   * Current query string. Wired through context so the trigger input and the
+   * mobile panel's own input share it. May still be overridden per-input.
+   */
+  value?: string;
+  /** Called when the query should change. Receives the new string. */
+  onValueChange?: (next: string) => void;
+  /** Placeholder for the trigger input and the mobile panel input. */
+  placeholder?: string;
   children: React.ReactNode;
 }
 
@@ -94,6 +125,9 @@ export function Combobox({
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
+  value,
+  onValueChange,
+  placeholder,
   children,
 }: ComboboxProps): React.ReactElement {
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
@@ -110,6 +144,10 @@ export function Combobox({
   const elementsRef = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
 
+  // Ref-mirror of isMobile so the size middleware (which lives outside React)
+  // can bail without triggering a `useFloating` re-init on breakpoint change.
+  const isMobileRef = useRef(false);
+
   const { refs, floatingStyles, context } = useFloating({
     open,
     onOpenChange: setOpen,
@@ -117,12 +155,15 @@ export function Combobox({
     transform: false,
     // Combobox semantics: always anchor below the input. `size` constrains
     // maxHeight to whatever fits: popup scrolls internally rather than
-    // flipping above the input (Google-search style, not menu-style).
+    // flipping above the input (Google-search style, not menu-style). On the
+    // mobile variant the popup owns its own fixed bottom-anchored geometry,
+    // so bail out entirely to avoid clobbering our layout.
     middleware: [
       offset(8),
       shift({ padding: 8 }),
       size({
         apply({ rects, elements, availableHeight }) {
+          if (isMobileRef.current) return;
           Object.assign(elements.floating.style, {
             minWidth: `${rects.reference.width}px`,
             maxHeight: `${Math.max(120, Math.min(availableHeight - 8, 400))}px`,
@@ -151,6 +192,8 @@ export function Combobox({
   );
 
   const baseId = useId();
+  const isMobile = useIsMobileCombobox();
+  isMobileRef.current = isMobile;
 
   return (
     <ComboboxContext.Provider
@@ -166,6 +209,10 @@ export function Combobox({
         getFloatingProps,
         getItemProps,
         baseId,
+        value,
+        onValueChange,
+        placeholder,
+        isMobile,
       }}
     >
       <FloatingList elementsRef={elementsRef} labelsRef={labelsRef}>
@@ -218,21 +265,41 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
       onFocus,
       onKeyDown,
       onClick,
+      onChange,
       hideChevron,
       clearable,
       onClear,
       value,
+      placeholder,
       suffix: userSuffix,
       suffixStyling,
       ...props
     },
     forwardedRef,
   ) {
-    const { open, setOpen, refs, getReferenceProps, baseId, activeIndex } =
-      useComboboxContext();
+    const {
+      open,
+      setOpen,
+      refs,
+      getReferenceProps,
+      baseId,
+      activeIndex,
+      value: ctxValue,
+      onValueChange,
+      placeholder: ctxPlaceholder,
+    } = useComboboxContext();
+
+    // Prefer the per-input override; fall back to root context. This keeps
+    // simple callsites (state on <Combobox>) working while still supporting
+    // advanced cases (a controlled override on a single input).
+    const effectiveValue = value !== undefined ? value : ctxValue;
+    const effectivePlaceholder =
+      placeholder !== undefined ? placeholder : ctxPlaceholder;
 
     const hasValue =
-      value != null && value !== "" && (typeof value !== "number" || !Number.isNaN(value));
+      effectiveValue != null &&
+      effectiveValue !== "" &&
+      (typeof effectiveValue !== "number" || !Number.isNaN(effectiveValue));
     const showClear = clearable && hasValue && !props.disabled;
 
     // Build the combobox suffix: user-provided suffix + optional clear × + chevron.
@@ -282,6 +349,12 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
     // separately would clobber whichever handlers were declared first.
     const mergedProps = getReferenceProps({
       ...(props as React.HTMLProps<HTMLInputElement>),
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+        // Root's onValueChange is the source of truth; any per-input onChange
+        // still fires as a side-effect hook (analytics, etc.).
+        onValueChange?.(e.target.value);
+        onChange?.(e as Parameters<NonNullable<typeof onChange>>[0]);
+      },
       onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
         // Base UI's typings re-wrap event types; cast on the user-handler call.
         onFocus?.(e as Parameters<NonNullable<typeof onFocus>>[0]);
@@ -312,7 +385,8 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
           activeIndex != null ? `${baseId}-item-${activeIndex}` : undefined
         }
         autoComplete="off"
-        value={value}
+        value={effectiveValue}
+        placeholder={effectivePlaceholder}
         suffix={suffix}
         suffixStyling={suffixStyling ?? false}
         {...mergedProps}
@@ -320,6 +394,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
     );
   },
 );
+
 
 /* --------------------------- ComboboxPopup --------------------------- */
 
@@ -332,8 +407,19 @@ export function ComboboxPopup({
   className,
   children,
 }: ComboboxPopupProps): React.ReactElement | null {
-  const { open, context, refs, floatingStyles, getFloatingProps, baseId } =
-    useComboboxContext();
+  const {
+    open,
+    context,
+    refs,
+    floatingStyles,
+    getFloatingProps,
+    baseId,
+    isMobile,
+    setOpen,
+    value: ctxValue,
+    onValueChange,
+    placeholder: ctxPlaceholder,
+  } = useComboboxContext();
   const setFloating = useCallback(
     (node: HTMLElement | null) => refs.setFloating(node),
     [refs],
@@ -344,15 +430,17 @@ export function ComboboxPopup({
     <FloatingPortal>
       <AnimatePresence>
         {open && (
-          // initialFocus={-1} keeps focus on the input (virtual focus model).
-          // visuallyHiddenDismiss adds an accessible close for screen readers.
+          // Desktop uses virtual focus (initialFocus={-1}: input keeps real focus,
+          // items highlight via aria-activedescendant). Mobile switches to real
+          // focus on the panel's own input (initialFocus={0}) since the trigger
+          // input is off-screen behind the panel.
           <FloatingFocusManager
             context={context}
             modal={false}
-            initialFocus={-1}
-            // Don't programmatically refocus the input on close: the input
-            // never lost focus (virtual focus model), and refocusing would
-            // fire a focus event that triggers openOnFocus, reopening the
+            initialFocus={isMobile ? 0 : -1}
+            // Don't programmatically refocus the trigger input on close: the
+            // input never lost focus on desktop (virtual focus), and refocusing
+            // would fire a focus event that triggers openOnFocus, reopening the
             // popup right after dismiss closed it.
             returnFocus={false}
             visuallyHiddenDismiss
@@ -361,14 +449,40 @@ export function ComboboxPopup({
               ref={setFloating}
               id={`${baseId}-popup`}
               data-slot="combobox-popup"
+              data-variant={isMobile ? "mobile" : "desktop"}
               {...getFloatingProps()}
-              style={{
-                ...floatingStyles,
-                transformOrigin: "top center",
-              }}
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
+              style={
+                isMobile
+                  ? {
+                      // Skip floating-ui's anchored position. Bottom-anchored
+                      // fixed panel with 8px inset on the horizontal + bottom
+                      // edges; height capped so it can't touch the top edge.
+                      position: "fixed",
+                      left: 8,
+                      right: 8,
+                      bottom: 8,
+                      maxHeight: "calc(100vh - 1rem)",
+                    }
+                  : {
+                      ...floatingStyles,
+                      transformOrigin: "top center",
+                    }
+              }
+              initial={
+                reduceMotion
+                  ? false
+                  : isMobile
+                    ? { opacity: 0, y: 8 }
+                    : { opacity: 0, scale: 0.97 }
+              }
+              animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1 }}
+              exit={
+                reduceMotion
+                  ? undefined
+                  : isMobile
+                    ? { opacity: 0, y: 8 }
+                    : { opacity: 0, scale: 0.97 }
+              }
               transition={
                 reduceMotion
                   ? { duration: 0 }
@@ -384,7 +498,35 @@ export function ComboboxPopup({
                 className,
               )}
             >
-              <div className="max-h-full overflow-y-auto">{children}</div>
+              {isMobile && (
+                <div
+                  data-slot="combobox-mobile-header"
+                  className="flex shrink-0 items-center gap-1 border-b border-gray-alpha-400 pe-2"
+                >
+                  <Input
+                    variant="unstyled"
+                    autoFocus
+                    autoComplete="off"
+                    prefix={<SearchIcon />}
+                    prefixStyling={false}
+                    value={ctxValue ?? ""}
+                    onChange={(e) => onValueChange?.(e.target.value)}
+                    placeholder={ctxPlaceholder}
+                    aria-label={ctxPlaceholder ?? "Search"}
+                  />
+                  <Button
+                    variant="tertiary"
+                    size="tiny"
+                    shape="circle"
+                    aria-label="Close"
+                    onClick={() => setOpen(false)}
+                    className="text-gray-800"
+                  >
+                    <XIcon className="size-3.5" />
+                  </Button>
+                </div>
+              )}
+              <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
             </motion.div>
           </FloatingFocusManager>
         )}
@@ -401,6 +543,12 @@ export interface ComboboxItemProps
   onSelect?: () => void;
   label?: string;
   disabled?: boolean;
+  /**
+   * Whether to close the popup after selection. Default true (single-select
+   * combobox). Set false for multi-select pickers where the user is expected
+   * to toggle several items before dismissing.
+   */
+  closeOnSelect?: boolean;
 }
 
 export function ComboboxItem({
@@ -409,6 +557,7 @@ export function ComboboxItem({
   onSelect,
   label,
   disabled,
+  closeOnSelect = true,
   onClick,
   ...props
 }: ComboboxItemProps): React.ReactElement {
@@ -420,7 +569,7 @@ export function ComboboxItem({
   const handleSelect = () => {
     if (disabled) return;
     onSelect?.();
-    setOpen(false);
+    if (closeOnSelect) setOpen(false);
   };
 
   return (
