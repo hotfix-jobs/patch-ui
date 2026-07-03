@@ -48,9 +48,12 @@ export const badgeVariants = cva(
       // white-on-light-green with no contrast. The semantic roles are
       // fixed hex values that read identically in both themes.
       { variant: "default", contrast: "high", class: "bg-gray-1000 text-background-100" },
-      { variant: "success", contrast: "high", class: "bg-success text-white" },
-      { variant: "warning", contrast: "high", class: "bg-warning text-white" },
-      { variant: "error",   contrast: "high", class: "bg-error text-white" },
+      // Semantic solids pair with the matching -fg text token so the
+      // label color inverts with the theme (light: white text on dark
+      // fill; dark: dark text on bright fill), matching Vercel Geist.
+      { variant: "success", contrast: "high", class: "bg-success text-success-fg" },
+      { variant: "warning", contrast: "high", class: "bg-warning text-warning-fg" },
+      { variant: "error",   contrast: "high", class: "bg-error text-error-fg" },
       // Low contrast: subtle tint, darker text. The 100/900 pair inverts
       // in dark mode (100 becomes very dark, 900 becomes very light), so
       // dark-on-light in light mode becomes light-on-dark in dark mode.

@@ -67,14 +67,24 @@ const checks = (theme: string): Target[] => [
   { fg: "pink-700",   bgs: ["background-100"], min: 4.5, label: `${theme}: pink-700 solid on bg AA` },
 
   { fg: "background-100", bgs: ["gray-1000"], min: 7.0, label: `${theme}: background-100 on gray-1000 (primary button) AAA` },
+
+  // Semantic status surfaces: each status token has a paired -fg token
+  // for its label color. The pair inverts per theme (dark bg + light
+  // text in light mode; bright bg + dark text in dark mode). Both
+  // combinations must clear AA.
+  { fg: "warning-fg", bgs: ["warning"], min: 4.5, label: `${theme}: --warning-fg on --warning (warning label) AA` },
+  { fg: "error-fg", bgs: ["error"], min: 4.5, label: `${theme}: --error-fg on --error (error label) AA` },
+  { fg: "success-fg", bgs: ["success"], min: 4.5, label: `${theme}: --success-fg on --success (success label) AA` },
 ];
 
 const fails: string[] = [];
 for (const [theme, vars] of [["light", light], ["dark", dark]] as const) {
   for (const c of checks(theme)) {
-    const fg = vars[c.fg];
+    // Support hex-literal fg (e.g. "#ffffff") for cases where the check
+    // is against a raw color like white text, not a token reference.
+    const fg = c.fg.startsWith("#") ? c.fg : vars[c.fg];
     for (const bgKey of c.bgs) {
-      const bg = vars[bgKey];
+      const bg = bgKey.startsWith("#") ? bgKey : vars[bgKey];
       if (!fg) { console.warn(`[WARN] missing --${c.fg} in ${theme}`); continue; }
       if (!bg) { console.warn(`[WARN] missing --${bgKey} in ${theme}`); continue; }
       const r = ratio(fg, bg);

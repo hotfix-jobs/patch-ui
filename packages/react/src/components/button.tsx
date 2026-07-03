@@ -36,9 +36,9 @@ export const buttonVariants = cva(
         tertiary:
           "bg-transparent text-gray-1000 hover:bg-gray-alpha-100 active:bg-gray-alpha-200",
         warning:
-          "bg-warning text-white hover:bg-warning-hover active:bg-warning-active",
+          "bg-warning text-warning-fg hover:bg-warning-hover active:bg-warning-active",
         error:
-          "bg-error text-white hover:bg-error-hover active:bg-error-active",
+          "bg-error text-error-fg hover:bg-error-hover active:bg-error-active",
       },
       shape: {
         square: "rounded-[var(--radius-6)]",

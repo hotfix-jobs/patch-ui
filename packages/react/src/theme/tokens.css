@@ -153,15 +153,24 @@
      in both themes. Status intent (destructive, warning, success)
      doesn't shift meaning between light and dark, so the fill shouldn't
      either. Values pulled from Vercel Geist red/amber/blue-800. */
-  --error: #ea001d;
-  --error-hover: #c00019;
-  --error-active: #9c0015;
+  /* Semantic status solids for Badge/Button/etc. Theme-aware: light mode
+     uses the darker end of each hue with light (white) text; dark mode
+     uses the lighter end with dark text. Matches Vercel Geist's rendered
+     Badge palette across both modes. The -fg tokens carry the label
+     color so consumers can `bg-<role> text-[var(--<role>-fg)]` in one
+     class pair without theme branching. */
+  --error: #c31313;
+  --error-hover: #9c0f0f;
+  --error-active: #720a0a;
+  --error-fg: #ffffff;
   --warning: #f5a623;
   --warning-hover: #d68910;
   --warning-active: #a97007;
-  --success: #15963f;
-  --success-hover: #007a2e;
-  --success-active: #005a22;
+  --warning-fg: #171717;
+  --success: #007a2e;
+  --success-hover: #005f24;
+  --success-active: #00461b;
+  --success-fg: #ffffff;
 
   /* Radius */
   --radius-6: 6px;
@@ -292,6 +301,21 @@
 
   --pink-100: #40001d; --pink-200: #6d0031; --pink-300: #970044; --pink-400: #c50057; --pink-500: #eb1a70;
   --pink-600: #ff408e; --pink-700: #ff70ac; --pink-800: #ffa2ca; --pink-900: #ffd1e5; --pink-1000: #ffedf5;
+
+  /* Semantic status solids invert for dark mode: brighter hue + dark
+     text. Matches Vercel Geist's dark-mode Badge palette. */
+  --error: #eb6b6b;
+  --error-hover: #f28a8a;
+  --error-active: #f7b6b6;
+  --error-fg: #171717;
+  --warning: #f6bd3d;
+  --warning-hover: #fdd77a;
+  --warning-active: #ffebb8;
+  --warning-fg: #171717;
+  --success: #33b25f;
+  --success-hover: #5fc884;
+  --success-active: #94dcaf;
+  --success-fg: #171717;
 
   --shadow-card: 0 2px 2px rgba(0, 0, 0, 0.4);
   --shadow-menu:
@@ -428,12 +452,15 @@
   --color-error: var(--error);
   --color-error-hover: var(--error-hover);
   --color-error-active: var(--error-active);
+  --color-error-fg: var(--error-fg);
   --color-warning: var(--warning);
   --color-warning-hover: var(--warning-hover);
   --color-warning-active: var(--warning-active);
+  --color-warning-fg: var(--warning-fg);
   --color-success: var(--success);
   --color-success-hover: var(--success-hover);
   --color-success-active: var(--success-active);
+  --color-success-fg: var(--success-fg);
 
   --radius-6: var(--radius-6);
   --radius-12: var(--radius-12);
