@@ -196,9 +196,10 @@ export function Scroller({
         scrollAxisClass,
         // Momentum scrolling + hide the browser scrollbar (mac trackpad
         // overlay bars, Windows/Linux gutters, IE10+). Keyboard + wheel
-        // + touch scroll still work.
+        // + touch scroll still work. `scrollbar-hide` utility beats the
+        // global thin-scrollbar defaults declared in @layer base.
         "[-webkit-overflow-scrolling:touch]",
-        "[&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]",
+        "scrollbar-hide",
         focusRing,
         className,
       )}
