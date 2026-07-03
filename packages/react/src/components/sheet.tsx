@@ -35,6 +35,7 @@ import { cn } from "../utils";
  */
 
 export type SheetSide = "top" | "right" | "bottom" | "left";
+export type SheetVariant = "floating" | "drawer";
 
 type SheetContextValue = {
   open: boolean;
@@ -169,6 +170,20 @@ function getSlideVariants(side: SheetSide) {
 
 export interface SheetContentProps {
   side?: SheetSide;
+  /**
+   * Layout treatment:
+   * - `floating` (default): rounded card inset 16px from every viewport edge so the
+   *   backdrop peeks around it. Right for editorial preview / inspector panels.
+   * - `drawer`: flush with the anchored edge, full length along the perpendicular
+   *   axis (top/bottom for side="right", left/right for side="top"), single
+   *   inward-facing border, inward-facing corners rounded to match floating.
+   *   Right for mobile navigation and app-shell drawers.
+   *
+   * If you find yourself piling `!important` overrides on `className` for the floating
+   * variant, you probably want `variant="drawer"` instead — floating is designed to
+   * fill the mobile viewport with 16px insets and won't cede its both-side anchors.
+   */
+  variant?: SheetVariant;
   /** When true (default), renders a darkening backdrop and blocks page interaction. Pass `modal={false}` for a persistent inspector that keeps the page interactive. */
   modal?: boolean;
   className?: string;
@@ -177,6 +192,7 @@ export interface SheetContentProps {
 
 export function SheetContent({
   side = "right",
+  variant = "floating",
   modal = true,
   className,
   children,
@@ -208,6 +224,7 @@ export function SheetContent({
         aria-describedby={descriptionId}
         data-slot="sheet-popup"
         data-side={side}
+        data-variant={variant}
         {...getFloatingProps()}
         initial={reduceMotion ? false : variants.initial}
         animate={variants.animate}
@@ -218,17 +235,35 @@ export function SheetContent({
             : { type: "spring", stiffness: 380, damping: 38, mass: 0.8 }
         }
         className={cn(
-          // Floating rounded card, small inset from the viewport edges so
-          // the backdrop peeks around it and all four corners can be seen.
-          "fixed z-70 flex flex-col overflow-hidden bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-modal rounded-[var(--radius-12)]",
-          // Mobile: span across with left-4 + right-4 (fills width minus 16px per side).
-          // sm+: release the opposite-side anchor and cap width via max-w-md.
-          side === "right" &&
+          "fixed z-70 flex flex-col overflow-hidden bg-background-100 text-gray-1000 shadow-modal",
+          // Floating: rounded card, 16px inset from every edge so the backdrop
+          // peeks around all four corners.
+          variant === "floating" &&
+            "border border-gray-alpha-400 rounded-[var(--radius-12)]",
+          variant === "floating" &&
+            side === "right" &&
             "top-4 bottom-4 right-4 left-4 sm:left-auto sm:w-full sm:max-w-md",
-          side === "left" &&
+          variant === "floating" &&
+            side === "left" &&
             "top-4 bottom-4 left-4 right-4 sm:right-auto sm:w-full sm:max-w-md",
-          side === "top" && "top-4 left-4 right-4",
-          side === "bottom" && "bottom-4 left-4 right-4",
+          variant === "floating" && side === "top" && "top-4 left-4 right-4",
+          variant === "floating" && side === "bottom" && "bottom-4 left-4 right-4",
+          // Drawer: flush with the anchored edge, single inward-facing hairline.
+          // The two inward-facing corners are rounded (radius-12, matching
+          // floating); the two edge-flush corners stay square. Sensible width
+          // cap on side="right"/"left"; consumers can shrink via className.
+          variant === "drawer" &&
+            side === "right" &&
+            "top-0 bottom-0 right-0 w-[85vw] max-w-md border-l border-gray-alpha-400 rounded-l-[var(--radius-12)]",
+          variant === "drawer" &&
+            side === "left" &&
+            "top-0 bottom-0 left-0 w-[85vw] max-w-md border-r border-gray-alpha-400 rounded-r-[var(--radius-12)]",
+          variant === "drawer" &&
+            side === "top" &&
+            "top-0 left-0 right-0 border-b border-gray-alpha-400 rounded-b-[var(--radius-12)]",
+          variant === "drawer" &&
+            side === "bottom" &&
+            "bottom-0 left-0 right-0 border-t border-gray-alpha-400 rounded-t-[var(--radius-12)]",
           className,
         )}
       >

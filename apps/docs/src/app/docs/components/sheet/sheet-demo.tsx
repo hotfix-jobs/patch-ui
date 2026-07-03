@@ -121,6 +121,38 @@ export function SheetDemo() {
         </Sheet>
       </div>
 
+      {/* Drawer variant */}
+      <div className="space-y-3">
+        <SectionLabel>Drawer variant (app-shell nav)</SectionLabel>
+        <Sheet>
+          <SheetTrigger render={<Button variant="secondary" />}>
+            Open drawer
+          </SheetTrigger>
+          <SheetContent side="left" variant="drawer">
+            <SheetHeader>
+              <SheetTitle>Navigation</SheetTitle>
+            </SheetHeader>
+            <SheetBody>
+              {[
+                "Home",
+                "Projects",
+                "Team",
+                "Analytics",
+                "Settings",
+              ].map((item) => (
+                <a
+                  key={item}
+                  href="#"
+                  className="text-copy-14 text-gray-1000 hover:text-gray-900"
+                >
+                  {item}
+                </a>
+              ))}
+            </SheetBody>
+          </SheetContent>
+        </Sheet>
+      </div>
+
       {/* Bottom side */}
       <div className="space-y-3">
         <SectionLabel>Bottom side (mobile picker)</SectionLabel>
