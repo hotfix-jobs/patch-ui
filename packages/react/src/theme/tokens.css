@@ -553,11 +553,18 @@
   .text-button-16 { font-size: var(--button-16-size); line-height: var(--button-16-leading); letter-spacing: var(--button-16-tracking); font-weight: var(--button-16-weight); }
   .text-button-14 { font-size: var(--button-14-size); line-height: var(--button-14-leading); letter-spacing: var(--button-14-tracking); font-weight: var(--button-14-weight); }
   .text-button-12 { font-size: var(--button-12-size); line-height: var(--button-12-leading); letter-spacing: var(--button-12-tracking); font-weight: var(--button-12-weight); }
+}
 
-  /* Opt an individual scrollable surface out of any scrollbar. Companion
-   * to the global thin-scrollbar defaults below. */
-  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-  .scrollbar-hide::-webkit-scrollbar { display: none; }
+/* Opt an individual scrollable surface out of any scrollbar. Companion
+ * to the global thin-scrollbar defaults below. Declared with @utility
+ * so it participates in Tailwind variants (md:scrollbar-hide,
+ * hover:scrollbar-hide, etc.). */
+@utility scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* ---------------------------------------------------------------
