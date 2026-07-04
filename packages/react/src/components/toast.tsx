@@ -398,7 +398,7 @@ function ToastItem({
       className={cn(
         "pointer-events-auto relative w-full select-none",
         "rounded-[var(--radius-12)]",
-        "bg-background-100 text-gray-1000",
+        "bg-background-200 text-gray-1000",
         "border border-gray-alpha-400 shadow-modal",
         "px-3 py-3 pe-10",
         "flex items-start gap-2.5",

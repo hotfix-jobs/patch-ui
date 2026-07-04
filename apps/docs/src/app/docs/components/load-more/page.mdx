@@ -82,7 +82,7 @@ import { LoadMore } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- LoadMore is a `<button>`: style is a centered `w-fit` secondary Button (`background-100` fill, `gray-alpha-400` border) that hugs its label. It stays focusable during the loading state so keyboard users don't lose their place.
+- LoadMore is a `<button>`: style is a centered `w-fit` hairline pill (`background-100` fill, `gray-alpha-400` border) that blends with the page bg, unlike other product surfaces which now elevate to `background-200`. Reads as a footer affordance rather than a control. Stays focusable during the loading state so keyboard users don't lose their place.
 - Combine `noGap` + `noBorderRadius` to attach LoadMore to the bottom edge of a Card that uses `borderBetween`: the top border seams with the last row and the bottom stays flush with the card's rounded corner.
 - Prefer `<LoadMore disabled>No more results</LoadMore>` over hiding the button once the list is exhausted. The disabled state confirms "you're at the end" instead of leaving the user wondering if more will arrive.
 - For sequential navigation between separate pages (docs articles, wizard steps), use `Pagination` instead. LoadMore is for revealing more rows of the same data.

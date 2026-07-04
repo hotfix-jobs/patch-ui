@@ -164,7 +164,7 @@ export function Input({
         // surface (mobile panel, table cell, composite field) owns its own
         // container styling, so we skip bg + border + hover + focus outline.
         !unstyled && [
-          "bg-background-100 border border-gray-alpha-400",
+          "bg-background-200 border border-gray-alpha-400",
           "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "hover:border-gray-alpha-500",
           "has-focus-visible:border-gray-alpha-600 has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",

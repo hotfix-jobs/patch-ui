@@ -32,7 +32,7 @@ export const buttonVariants = cva(
         primary:
           "bg-gray-1000 text-background-100 hover:bg-gray-900 active:bg-gray-800",
         secondary:
-          "bg-background-100 text-gray-1000 border border-gray-alpha-400 hover:bg-gray-alpha-100 active:bg-gray-alpha-200",
+          "bg-background-200 text-gray-1000 border border-gray-alpha-400 hover:bg-gray-alpha-200 active:bg-gray-alpha-300",
         tertiary:
           "bg-transparent text-gray-1000 hover:bg-gray-alpha-100 active:bg-gray-alpha-200",
         warning:

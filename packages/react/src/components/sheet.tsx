@@ -235,7 +235,7 @@ export function SheetContent({
             : { type: "spring", stiffness: 380, damping: 38, mass: 0.8 }
         }
         className={cn(
-          "fixed z-70 flex flex-col overflow-hidden bg-background-100 text-gray-1000 shadow-modal",
+          "fixed z-70 flex flex-col overflow-hidden bg-background-200 text-gray-1000 shadow-modal",
           // Floating: rounded card, 16px inset from every edge so the backdrop
           // peeks around all four corners.
           variant === "floating" &&

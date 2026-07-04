@@ -156,7 +156,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
     <span
       className={cn(
         "relative inline-flex w-full items-center overflow-hidden text-gray-1000 rounded-[var(--radius-6)]",
-        "bg-background-100 border border-gray-alpha-400",
+        "bg-background-200 border border-gray-alpha-400",
         "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         "hover:border-gray-alpha-500",
         "has-focus-visible:border-gray-alpha-600 has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",

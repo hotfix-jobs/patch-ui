@@ -486,7 +486,7 @@ export function ComboboxPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400 shadow-menu outline-none overflow-hidden",
+                "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-200 border border-gray-alpha-400 shadow-menu outline-none overflow-hidden",
                 className,
               )}
             >

@@ -38,7 +38,7 @@ export function CardDemo() {
         <SectionLabel>Secondary surface</SectionLabel>
         <Card secondary className="p-4 max-w-sm">
           <p className="text-copy-14 text-gray-900">
-            Nested surface: gray-100 fill instead of background-100.
+            Nested surface: gray-100 fill instead of background-200.
           </p>
         </Card>
       </div>

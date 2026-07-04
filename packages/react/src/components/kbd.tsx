@@ -81,7 +81,7 @@ export function Kbd({
 
   const cls = cn(
     "inline-flex items-center justify-center font-sans font-medium tabular-nums text-gray-900",
-    "rounded-[var(--radius-6)] bg-background-100",
+    "rounded-[var(--radius-6)] bg-background-200",
     "border border-gray-alpha-400 shadow-[inset_0_-1px_0_0_var(--gray-alpha-400)]",
     "text-label-12",
     size === "sm" && "h-[18px] min-w-[18px] px-1",

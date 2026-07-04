@@ -355,7 +355,7 @@ export function MenuPopup({
                     }
               }
               className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400 shadow-menu outline-none focus:outline-none",
+                "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-200 border border-gray-alpha-400 shadow-menu outline-none focus:outline-none",
                 asPanel
                   ? "fixed bottom-2 left-2 right-2 max-h-[calc(100vh-1rem)]"
                   : density === "compact"

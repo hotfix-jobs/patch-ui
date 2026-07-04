@@ -80,7 +80,7 @@ import { Card } from "@patchui/react";
       name: "secondary",
       type: "boolean",
       default: "false",
-      description: "Use the tonal secondary surface (`gray-100`) instead of `background-100`. Good for nested cards.",
+      description: "Use the tonal secondary surface (`gray-100`) instead of `background-200`. Good for nested cards.",
     },
     {
       name: "borderBetween",
@@ -117,7 +117,7 @@ import { Card } from "@patchui/react";
 
 <Callout title="Notes">
 - Card composes with booleans, not variants. Mix `border` + `hoverable` + `shadow` + `secondary` to build the exact surface you need.
-- The default Card (no props) is a rounded surface with `background-100` fill. Add `border` to give it an outline.
+- The default Card (no props) is a rounded surface with `background-200` fill so it elevates over the page. Add `border` to give it an outline.
 - `hoverable` makes the card interactive (cursor, hover state, focus ring). Wrap in a `<Link>` or handle `onClick` for actual navigation.
 - `borderBetween` turns Card into a list container: dividers between direct children handle themselves. Combine with `direction="row"` for horizontal splits.
 - Structure your content directly inside Card with divs and text tokens (`text-heading-20`, `text-copy-14`). For a fully structured settings-page pattern (title, subtitle, footer with status + actions), use `<Section>` instead.

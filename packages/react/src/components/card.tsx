@@ -13,7 +13,7 @@ export interface CardProps extends useRender.ComponentProps<"div"> {
   hoverable?: boolean;
   /** Add an elevation shadow. */
   shadow?: boolean;
-  /** Use the tonal secondary surface (gray-100) instead of background-100. */
+  /** Use the tonal secondary surface (gray-100) instead of background-200. */
   secondary?: boolean;
   /** Render dividers between direct children. */
   borderBetween?: boolean;
@@ -50,7 +50,7 @@ export function Card({
     className: cn(
       "relative flex rounded-[var(--radius-12)] text-gray-1000",
       direction === "column" ? "flex-col" : "flex-row",
-      secondary ? "bg-gray-100" : "bg-background-100",
+      secondary ? "bg-gray-100" : "bg-background-200",
       border && "border border-gray-alpha-400",
       shadow && "shadow-card",
       hoverable && [
