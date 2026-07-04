@@ -1,0 +1,119 @@
+import { MobileNavPanelDemo } from "./mobile-nav-panel-demo";
+
+
+export const metadata = { title: "MobileNavPanel" };
+
+# MobileNavPanel
+
+A header-anchored mobile navigation panel that opens beneath a sticky header. The header stays visible and interactive while the panel is open, so the trigger button doubles as the close affordance (typically wrapped around `MorphingMenuIcon`).
+
+Not a Sheet: MobileNavPanel starts below the header (not edge-anchored), has no backdrop, and is meant for the primary mobile navigation of an app shell. Reach for `Sheet` when you want an edge-anchored inspector or drawer with a dimmed background.
+
+<Install name="mobile-nav-panel" />
+
+<ComponentPreview label="MobileNavPanel">
+  <MobileNavPanelDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Button,
+  MobileNavPanel,
+  MobileNavPanelBody,
+  MobileNavPanelFooter,
+  MorphingMenuIcon,
+} from "@patchui/react";
+
+const [open, setOpen] = useState(false);
+
+<Button
+  variant="tertiary"
+  size="sm"
+  shape="circle"
+  className="md:hidden"
+  aria-label={open ? "Close menu" : "Open menu"}
+  onClick={() => setOpen((v) => !v)}
+  icon={<MorphingMenuIcon open={open} />}
+/>
+
+<MobileNavPanel open={open} onOpenChange={setOpen}>
+  <MobileNavPanelBody>
+    {links.map((l) => (
+      <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
+        {l.label}
+      </a>
+    ))}
+  </MobileNavPanelBody>
+  <MobileNavPanelFooter>
+    <Button variant="primary">Post a job</Button>
+  </MobileNavPanelFooter>
+</MobileNavPanel>
+```
+
+Consumers own the responsive gate (`className="md:hidden"` on the trigger, for example). The primitive itself has no baked-in breakpoint.
+
+## Sticky-header integration
+
+The top of the panel sits at `topOffset`, which defaults to `var(--app-header-height, 60px)`. Set that CSS variable to match your app's header height:
+
+```css
+:root {
+  --app-header-height: 56px;
+}
+```
+
+Or set it inline on the header element, or pass any valid CSS `top` value as the `topOffset` prop directly.
+
+## Props
+
+### MobileNavPanel
+
+<PropsTable
+  props={[
+    {
+      name: "open",
+      type: "boolean",
+      default: "-",
+      description: "Controlled open state.",
+    },
+    {
+      name: "onOpenChange",
+      type: "(open: boolean) => void",
+      default: "-",
+      description: "Called when the panel should open or close. Wired to Escape.",
+    },
+    {
+      name: "topOffset",
+      type: "string",
+      default: '"var(--app-header-height, 60px)"',
+      description: "Distance from the top of the viewport to the top of the panel. Any valid CSS `top` value; typically driven by the sticky header's height.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional classes on the panel.",
+    },
+  ]}
+/>
+
+## Compound Components
+
+<CompoundComponents
+  components={[
+    { name: "MobileNavPanel", description: "The portalled panel. Handles motion, Escape, scroll-lock." },
+    { name: "MobileNavPanelBody", description: "Scrollable middle region. Typical home for the primary link list." },
+    { name: "MobileNavPanelFooter", description: "Bottom region with a top hairline. Auth CTAs, secondary actions." },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Trigger doubles as close.** MobileNavPanel has no backdrop and no close button of its own. Consumers control the trigger, and the same button dismisses the panel when tapped again. `MorphingMenuIcon` gives you the animated two-bar / X toggle out of the box.
+- **Portal rendering.** The panel renders to `document.body`, so it stacks above your app chrome without needing a positioned ancestor.
+- **Scroll lock.** `react-remove-scroll` freezes the page while the panel is open so background content can't scroll away.
+- **Escape closes.** Wired to `document.keydown` while the panel is open.
+- **Motion.** 180ms opacity + `y: -8 → 0` slide, `cubic-bezier(0.22, 1, 0.36, 1)`. Respects `prefers-reduced-motion` (instant swap).
+- **Not a Sheet.** For inspectors, mode-switch drawers, or bottom pickers, reach for `Sheet` (variant `floating` or `drawer`) instead.
+</Callout>

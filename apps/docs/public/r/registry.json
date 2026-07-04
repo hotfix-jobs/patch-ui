@@ -438,6 +438,26 @@
       ]
     },
     {
+      "name": "mobile-nav-panel",
+      "type": "registry:ui",
+      "title": "Mobile Nav Panel",
+      "dependencies": [
+        "motion",
+        "react-remove-scroll"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/mobile-nav-panel.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/mobile-nav-panel.tsx"
+        }
+      ]
+    },
+    {
       "name": "modal",
       "type": "registry:ui",
       "title": "Modal",
@@ -456,6 +476,25 @@
           "path": "registry/components/ui/modal.tsx",
           "type": "registry:ui",
           "target": "components/ui/modal.tsx"
+        }
+      ]
+    },
+    {
+      "name": "morphing-menu-icon",
+      "type": "registry:ui",
+      "title": "Morphing Menu Icon",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/morphing-menu-icon.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/morphing-menu-icon.tsx"
         }
       ]
     },
@@ -1008,7 +1047,9 @@
         "https://ui.hotfix.jobs/r/load-more.json",
         "https://ui.hotfix.jobs/r/menu.json",
         "https://ui.hotfix.jobs/r/middle-truncate.json",
+        "https://ui.hotfix.jobs/r/mobile-nav-panel.json",
         "https://ui.hotfix.jobs/r/modal.json",
+        "https://ui.hotfix.jobs/r/morphing-menu-icon.json",
         "https://ui.hotfix.jobs/r/navigation-menu.json",
         "https://ui.hotfix.jobs/r/pagination.json",
         "https://ui.hotfix.jobs/r/progress.json",

@@ -1,0 +1,58 @@
+import { MorphingMenuIconDemo } from "./morphing-menu-icon-demo";
+
+
+export const metadata = { title: "MorphingMenuIcon" };
+
+# MorphingMenuIcon
+
+A two-bar hamburger that morphs into an X. Bars rotate 45 / -45 and converge on center when open; separate to top / bottom when closed. Matches the Vercel mobile-header pattern. Designed as the trigger icon for [MobileNavPanel](/docs/components/mobile-nav-panel) or any two-state open / close toggle.
+
+<Install name="morphing-menu-icon" />
+
+<ComponentPreview label="MorphingMenuIcon">
+  <MorphingMenuIconDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Button, MorphingMenuIcon } from "@patchui/react";
+
+const [open, setOpen] = useState(false);
+
+<Button
+  variant="tertiary"
+  size="sm"
+  shape="circle"
+  aria-label={open ? "Close menu" : "Open menu"}
+  onClick={() => setOpen((v) => !v)}
+  icon={<MorphingMenuIcon open={open} />}
+/>
+```
+
+Colors via `currentColor` so any text-color utility on the parent Button tints it. Respects `prefers-reduced-motion`.
+
+## Props
+
+<PropsTable
+  props={[
+    {
+      name: "open",
+      type: "boolean",
+      default: "-",
+      description: "Toggles the morph. `false` renders two bars stacked; `true` rotates them into an X.",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional classes on the outer wrapper. Default size is 18px square; override with `h-* w-*` if you need a different footprint.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **Two-state, not stateful.** The icon is purely visual: consumers own the `open` state and toggle it. Pair with `MobileNavPanel` or any menu / drawer that uses controlled open state.
+- **Motion.** 220ms rotate + translate, `cubic-bezier(0.22, 1, 0.36, 1)`. Reduced motion swaps the bars instantly.
+- **Emits `data-state`.** The wrapper carries `data-state="open"` or `data-state="closed"` for styling hooks (e.g. tint the parent button while open).
+</Callout>

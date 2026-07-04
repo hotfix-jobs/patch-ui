@@ -82,7 +82,16 @@ export type {
   SheetCloseProps,
   SheetFooterProps,
   SheetSide,
+  SheetVariant,
 } from "./components/sheet";
+export {
+  MobileNavPanel,
+  MobileNavPanelBody,
+  MobileNavPanelFooter,
+} from "./components/mobile-nav-panel";
+export type { MobileNavPanelProps } from "./components/mobile-nav-panel";
+export { MorphingMenuIcon } from "./components/morphing-menu-icon";
+export type { MorphingMenuIconProps } from "./components/morphing-menu-icon";
 export {
   Modal,
   ModalBody,
