@@ -172,16 +172,26 @@ export function AppHeaderNav({
 }
 AppHeaderNav.displayName = "AppHeaderNav";
 
-export interface AppHeaderNavItemProps extends useRender.ComponentProps<"a"> {
+export type AppHeaderNavItemProps = Omit<
+  useRender.ComponentProps<"a">,
+  "prefix"
+> & {
   /** Marks this item as the current page. */
   active?: boolean;
-}
+  /** Leading node (typically an icon). */
+  prefix?: React.ReactNode;
+  /** Trailing node (badge, count, chevron). Pushed to the row's end. */
+  suffix?: React.ReactNode;
+};
 
 export function AppHeaderNavItem({
   className,
   active,
+  prefix,
+  suffix,
   render,
   onClick,
+  children,
   ...props
 }: AppHeaderNavItemProps): React.ReactElement {
   const mobile = useContext(AppHeaderMobileRenderContext);
@@ -189,11 +199,11 @@ export function AppHeaderNavItem({
 
   const baseClasses = mobile
     ? cn(
-        "flex items-center gap-2 py-1 text-display-24 text-ink-muted hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        active && "text-ink font-medium",
+        "flex items-center gap-2.5 rounded-[var(--radius-6)] px-3 py-2.5 text-body-16 text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink [&_svg]:size-5",
+        active && "bg-surface-1 font-medium text-ink",
       )
     : cn(
-        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-body-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-body-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:size-4",
         active
           ? "text-ink font-medium"
           : "text-ink-muted hover:bg-surface-1 hover:text-ink",
@@ -210,6 +220,24 @@ export function AppHeaderNavItem({
     "data-active": active ? "" : undefined,
     "aria-current": active ? ("page" as const) : undefined,
     onClick: handleClick,
+    children: (
+      <>
+        {prefix && (
+          <span className="shrink-0 [&_svg]:shrink-0" data-slot="app-header-nav-item-prefix">
+            {prefix}
+          </span>
+        )}
+        <span className="min-w-0 flex-1 truncate">{children}</span>
+        {suffix && (
+          <span
+            className="ms-auto flex shrink-0 items-center [&_svg]:shrink-0"
+            data-slot="app-header-nav-item-suffix"
+          >
+            {suffix}
+          </span>
+        )}
+      </>
+    ),
   };
 
   return useRender({
@@ -237,10 +265,12 @@ export function AppHeaderNavSection({
   return (
     <div
       data-slot="app-header-nav-section"
-      className="flex flex-col gap-3"
+      className="flex flex-col gap-1"
     >
-      <div className="text-body-13 text-ink-tertiary">{title}</div>
-      <div className="flex flex-col gap-1">{children}</div>
+      <div className="px-3 pb-1 pt-2 text-caption-11 text-ink-tertiary">
+        {title}
+      </div>
+      <div className="flex flex-col gap-0.5">{children}</div>
     </div>
   );
 }
@@ -403,7 +433,7 @@ function AppHeaderMobilePanel(): React.ReactPortal | null {
             </div>
 
             <AppHeaderMobileRenderContext.Provider value={true}>
-              <nav className="flex flex-col gap-10 overflow-y-auto px-6 py-8">
+              <nav className="flex flex-col gap-4 overflow-y-auto p-3">
                 {groupMobileNavChildren(navChildren)}
               </nav>
             </AppHeaderMobileRenderContext.Provider>

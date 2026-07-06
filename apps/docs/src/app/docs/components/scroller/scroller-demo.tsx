@@ -55,7 +55,7 @@ export function ScrollerDemo() {
           childrenContainerClassName="gap-2 p-1"
           ariaLabel="Categories"
         >
-          {["Engineering", "Design", "Product", "Marketing", "Sales", "Operations", "Data", "Support", "Finance"].map(
+          {["All", "Latest", "Popular", "Featured", "Trending", "Recent", "Recommended", "Beta", "Coming soon"].map(
             (label) => (
               <button
                 key={label}

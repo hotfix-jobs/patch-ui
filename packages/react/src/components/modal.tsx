@@ -11,7 +11,9 @@ import {
 } from "@floating-ui/react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
+  Children,
   createContext,
+  isValidElement,
   useCallback,
   useContext,
   useEffect,
@@ -72,8 +74,24 @@ export interface ModalProps {
   size?: ModalSize;
   /** Mobile positioning: `sheet` slides up from the bottom, `centered` fades and scales. Default `sheet`. */
   mobileLayout?: ModalMobileLayout;
+  /** Auto-render a close X in the top-right corner. Defaults to true
+   *  when there are no `<ModalActions>` in the tree, false when there
+   *  are (since Cancel/dismiss is already reachable via the footer). */
+  showClose?: boolean;
   className?: string;
   children: React.ReactNode;
+}
+
+function hasChildOfType(
+  children: React.ReactNode,
+  Component: React.ComponentType,
+): boolean {
+  let found = false;
+  Children.forEach(children, (child) => {
+    if (!isValidElement(child)) return;
+    if (child.type === Component) found = true;
+  });
+  return found;
 }
 
 export function Modal({
@@ -82,9 +100,12 @@ export function Modal({
   initialFocusRef,
   size = "md",
   mobileLayout = "sheet",
+  showClose,
   className,
   children,
 }: ModalProps): React.ReactElement {
+  const resolvedShowClose =
+    showClose ?? !hasChildOfType(children, ModalActions);
   const setOpen = useCallback(
     (next: boolean) => {
       if (!next) onClickOutside?.();
@@ -188,6 +209,9 @@ export function Modal({
                       exit={exit}
                       transition={transition}
                     >
+                      {resolvedShowClose && (
+                        <ModalClose className="absolute top-2 end-2 z-10" />
+                      )}
                       {children}
                     </motion.div>
                   </FloatingFocusManager>

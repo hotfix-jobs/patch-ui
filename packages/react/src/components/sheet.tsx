@@ -12,6 +12,7 @@ import {
 } from "@floating-ui/react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
+  Children,
   cloneElement,
   createContext,
   isValidElement,
@@ -170,15 +171,34 @@ function getSlideVariants(side: SheetSide) {
 
 export interface SheetContentProps {
   side?: SheetSide;
+  /** Auto-render a close X in the top-right corner. Defaults to true
+   *  when there's no `<SheetFooter>` in the tree, false when there
+   *  is (the footer is expected to carry an explicit dismiss). */
+  showClose?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
 
+function hasChildOfType(
+  children: React.ReactNode,
+  Component: React.ComponentType,
+): boolean {
+  let found = false;
+  Children.forEach(children, (child) => {
+    if (!isValidElement(child)) return;
+    if (child.type === Component) found = true;
+  });
+  return found;
+}
+
 export function SheetContent({
   side = "right",
+  showClose,
   className,
   children,
 }: SheetContentProps): React.ReactElement {
+  const resolvedShowClose =
+    showClose ?? !hasChildOfType(children, SheetFooter);
   const { context, open, titleId, descriptionId, getFloatingProps, refs } =
     useSheetContext();
   const reduceMotion = useReducedMotion();
@@ -232,6 +252,7 @@ export function SheetContent({
           className,
         )}
       >
+        {resolvedShowClose && <SheetClose className="absolute top-2 end-2 z-10" />}
         {children}
       </motion.div>
     </FloatingFocusManager>

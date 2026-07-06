@@ -3,6 +3,7 @@
 import { useState } from "react";
 import {
   Avatar,
+  Badge,
   Button,
   NavigationMenu,
   NavigationMenuList,
@@ -13,6 +14,12 @@ import {
   SectionLabel,
 } from "@patchui/react";
 import {
+  ChartBar,
+  FolderOpen,
+  House,
+  Users,
+} from "@phosphor-icons/react/dist/ssr";
+import {
   AppHeader,
   AppHeaderBrand,
   AppHeaderNav,
@@ -21,29 +28,33 @@ import {
   AppHeaderRight,
 } from "@patchui/react/blocks/app-header";
 
-const DASHBOARD_NAV = ["Home", "Projects", "Insights", "Team"];
+const DASHBOARD_NAV: {
+  label: string;
+  prefix: React.ReactNode;
+  suffix?: React.ReactNode;
+}[] = [
+  { label: "Home", prefix: <House /> },
+  { label: "Projects", prefix: <FolderOpen />, suffix: <Badge>12</Badge> },
+  { label: "Insights", prefix: <ChartBar /> },
+  { label: "Team", prefix: <Users />, suffix: <Badge variant="success">New</Badge> },
+];
 
 const MARKETING_DROPDOWNS = [
   {
     label: "Product",
     items: [
-      { href: "#", eyebrow: "Overview", title: "See what the product does" },
-      { href: "#", eyebrow: "Features", title: "Everything in one place" },
-      { href: "#", eyebrow: "Automations", title: "Save time on repeatable work" },
-      { href: "#", eyebrow: "Insights", title: "Understand what's happening" },
-      { href: "#", eyebrow: "API", title: "Build on top of the platform" },
-      { href: "#", eyebrow: "Integrations", title: "Works with what you already use" },
+      { href: "#", eyebrow: "Overview", title: "Everything at a glance" },
+      { href: "#", eyebrow: "Pricing", title: "Plans that scale with you" },
+      { href: "#", eyebrow: "Changelog", title: "What shipped recently" },
     ],
   },
   {
-    label: "Resources",
+    label: "Company",
     items: [
-      { href: "#", eyebrow: "Docs", title: "Everything you need to know" },
-      { href: "#", eyebrow: "Guides", title: "Practical walk-throughs" },
+      { href: "#", eyebrow: "About", title: "Who we are" },
       { href: "#", eyebrow: "Blog", title: "Notes from the team" },
-      { href: "#", eyebrow: "Community", title: "Talk to other users" },
-      { href: "#", eyebrow: "Support", title: "Get help when you need it" },
-      { href: "#", eyebrow: "Changelog", title: "What shipped recently" },
+      { href: "#", eyebrow: "Careers", title: "Join the crew" },
+      { href: "#", eyebrow: "Contact", title: "Get in touch" },
     ],
   },
 ];
@@ -73,15 +84,17 @@ export function AppHeaderDemo() {
             <AppHeaderNav>
               {DASHBOARD_NAV.map((item) => (
                 <AppHeaderNavItem
-                  key={item}
+                  key={item.label}
                   href="#"
-                  active={active === item}
+                  active={active === item.label}
+                  prefix={item.prefix}
+                  suffix={item.suffix}
                   onClick={(e) => {
                     e.preventDefault();
-                    setActive(item);
+                    setActive(item.label);
                   }}
                 >
-                  {item}
+                  {item.label}
                 </AppHeaderNavItem>
               ))}
             </AppHeaderNav>
@@ -119,7 +132,7 @@ export function AppHeaderDemo() {
                     <NavigationMenuItem key={group.label}>
                       <NavigationMenuTrigger>{group.label}</NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <div className="grid w-[680px] grid-cols-3 gap-2 p-4">
+                        <div className="grid w-[440px] grid-cols-2 gap-2 p-4">
                           {group.items.map((item) => (
                             <NavigationMenuLink
                               key={item.eyebrow}
