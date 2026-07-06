@@ -30,6 +30,17 @@
       ]
     },
     {
+      "name": "use-media-query",
+      "type": "registry:hook",
+      "files": [
+        {
+          "path": "registry/hooks/use-media-query.ts",
+          "type": "registry:hook",
+          "target": "components/hooks/use-media-query.ts"
+        }
+      ]
+    },
+    {
       "name": "tokens",
       "type": "registry:file",
       "files": [
@@ -239,6 +250,7 @@
         "https://ui.hotfix.jobs/r/input.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/use-media-query.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
       "files": [
@@ -377,6 +389,7 @@
         "https://ui.hotfix.jobs/r/checkbox.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/use-media-query.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
       "files": [
@@ -595,6 +608,7 @@
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/use-media-query.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
       "files": [

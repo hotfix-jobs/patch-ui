@@ -1,0 +1,13 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-media-query",
+  "files": [
+    {
+      "path": "registry/hooks/use-media-query.ts",
+      "content": "\"use client\";\n\nimport { useEffect, useState } from \"react\";\n\n/**\n * SSR-safe media query hook. Returns `false` during SSR and hydration to\n * avoid a flash of the wrong layout, then flips to the real match after mount.\n */\nexport function useMediaQuery(query: string): boolean {\n  const [matches, setMatches] = useState(false);\n  useEffect(() => {\n    if (typeof window === \"undefined\" || !(\"matchMedia\" in window)) return;\n    const mql = window.matchMedia(query);\n    const update = () => setMatches(mql.matches);\n    update();\n    mql.addEventListener(\"change\", update);\n    return () => mql.removeEventListener(\"change\", update);\n  }, [query]);\n  return matches;\n}\n\nexport const MOBILE_MEDIA_QUERY = \"(max-width: 767px)\";\n",
+      "type": "registry:hook",
+      "target": "components/hooks/use-media-query.ts"
+    }
+  ],
+  "type": "registry:hook"
+}

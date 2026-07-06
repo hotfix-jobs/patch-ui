@@ -9,6 +9,7 @@
   "registryDependencies": [
     "https://ui.hotfix.jobs/r/recipes.json",
     "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/use-media-query.json",
     "https://ui.hotfix.jobs/r/utils.json"
   ],
   "files": [
