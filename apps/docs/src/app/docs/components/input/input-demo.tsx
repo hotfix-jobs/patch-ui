@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Input, SearchInput , SectionLabel } from "@patchui/react";
-import { ArrowCircleUp, Envelope, MagnifyingGlass } from "@phosphor-icons/react";
+import { ArrowCircleUp, Envelope, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
 export function InputDemo() {
   const [searchValue, setSearchValue] = useState("");
   const [emailValue, setEmailValue] = useState("not-an-email");

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { SectionLabel, Toggle } from "@patchui/react";
-import { PushPin, Star, TextB, TextItalic, TextUnderline } from "@phosphor-icons/react";
+import { PushPin, Star, TextB, TextItalic, TextUnderline } from "@phosphor-icons/react/dist/ssr";
 export function ToggleDemo() {
   const [starred, setStarred] = useState(false);
   const [pinned, setPinned] = useState(true);

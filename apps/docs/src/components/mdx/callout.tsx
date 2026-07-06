@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { Info, Lightbulb, Warning, WarningOctagon } from "@phosphor-icons/react";
+import { Info, Lightbulb, Warning, WarningOctagon } from "@phosphor-icons/react/dist/ssr";
 interface CalloutProps {
   children: React.ReactNode;
   type?: "note" | "warning" | "error" | "tip";

@@ -13,7 +13,7 @@ import {
 } from "@patchui/react";
 import { navigation } from "@/lib/navigation";
 
-import { MagnifyingGlass } from "@phosphor-icons/react";
+import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
 export const SEARCH_OPEN_EVENT = "docs-search:open";
 export function requestSearchOpen() {
   window.dispatchEvent(new CustomEvent(SEARCH_OPEN_EVENT));

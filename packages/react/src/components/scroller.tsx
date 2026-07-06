@@ -11,7 +11,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
-import { CaretDown, CaretLeft, CaretRight, CaretUp } from "@phosphor-icons/react";
+import { CaretDown, CaretLeft, CaretRight, CaretUp } from "@phosphor-icons/react/dist/ssr";
 const CHEVRON_ICON = {
   up: CaretUp,
   down: CaretDown,

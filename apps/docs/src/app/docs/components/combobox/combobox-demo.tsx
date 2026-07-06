@@ -12,7 +12,7 @@ import {
   ComboboxSection,
   SectionLabel,
 } from "@patchui/react";
-import { Info, MagnifyingGlass } from "@phosphor-icons/react";
+import { Info, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
 const FRAMEWORKS = [
   "React",
   "Vue",

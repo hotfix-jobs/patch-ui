@@ -16,7 +16,7 @@ import {
   MenuSubTrigger,
   MenuSubPopup,
 } from "@patchui/react";
-import { Calendar, Clock, CreditCard, Gear, SignOut, SortAscending, SortDescending, User } from "@phosphor-icons/react";
+import { Calendar, Clock, CreditCard, Gear, SignOut, SortAscending, SortDescending, User } from "@phosphor-icons/react/dist/ssr";
 export function MenuDemo() {
   const [showStatusBar, setShowStatusBar] = useState(false);
   const [showPanel, setShowPanel] = useState(false);

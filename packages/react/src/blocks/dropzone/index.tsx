@@ -6,7 +6,7 @@ import { cn } from "../../utils";
 import { focusRing } from "../../recipes";
 import { Progress } from "../../components/progress";
 import { Card } from "../../components/card";
-import { File, Upload, X } from "@phosphor-icons/react";
+import { File, Upload, X } from "@phosphor-icons/react/dist/ssr";
 export interface DropzoneProps
   extends Omit<
     React.HTMLAttributes<HTMLDivElement>,

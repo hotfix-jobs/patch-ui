@@ -33,7 +33,7 @@ import { iconMuted, itemGroupLabel, itemRow, popupDivider, popupSurface } from "
 import { Input, type InputProps } from "./input";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
-import { CaretDown, MagnifyingGlass, X } from "@phosphor-icons/react";
+import { CaretDown, MagnifyingGlass, X } from "@phosphor-icons/react/dist/ssr";
 const MOBILE_MEDIA_QUERY = "(max-width: 767px)";
 
 function useIsMobileCombobox(): boolean {

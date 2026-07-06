@@ -6,7 +6,7 @@ import { Button } from "./button";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
-import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
 type Mode = "single" | "range" | "multiple";
 
 export interface DateRange {

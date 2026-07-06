@@ -25,7 +25,7 @@ import type * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
 
-import { X } from "@phosphor-icons/react";
+import { X } from "@phosphor-icons/react/dist/ssr";
 /**
  * Sheet: an edge-anchored panel that slides in from the top/right/bottom/left
  * of the viewport. Non-modal by default (page underneath stays interactive);

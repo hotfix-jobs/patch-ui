@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Gear, House, SidebarSimple, SquaresFour, Users } from "@phosphor-icons/react";
+import { FileText, Gear, House, SidebarSimple, SquaresFour, Users } from "@phosphor-icons/react/dist/ssr";
 const NAV = [
   { icon: House, label: "Overview", active: true },
   { icon: SquaresFour, label: "Projects" },

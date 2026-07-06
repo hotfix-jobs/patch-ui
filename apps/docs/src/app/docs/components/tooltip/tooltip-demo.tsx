@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Tooltip, TooltipProvider } from "@patchui/react";
-import { FloppyDisk, Plus, Trash } from "@phosphor-icons/react";
+import { FloppyDisk, Plus, Trash } from "@phosphor-icons/react/dist/ssr";
 export function TooltipDemo() {
   return (
     <TooltipProvider>

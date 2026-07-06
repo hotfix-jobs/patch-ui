@@ -1,7 +1,7 @@
 "use client";
 
 import { Badge } from "@patchui/react";
-import { Lightning, Shield } from "@phosphor-icons/react";
+import { Lightning, Shield } from "@phosphor-icons/react/dist/ssr";
 export function BadgeDemo() {
   return (
     <div className="flex flex-col gap-8">

@@ -16,7 +16,7 @@ import {
   useSyncExternalStore,
 } from "react";
 
-import { CheckCircle, Info, Warning, WarningCircle, X } from "@phosphor-icons/react";
+import { CheckCircle, Info, Warning, WarningCircle, X } from "@phosphor-icons/react/dist/ssr";
 const emptySubscribe = () => () => {};
 function useMounted(): boolean {
   return useSyncExternalStore(emptySubscribe, () => true, () => false);

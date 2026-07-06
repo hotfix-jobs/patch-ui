@@ -3,7 +3,7 @@
 import type * as React from "react";
 import { cn } from "../utils";
 
-import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
 export interface PaginationProps {
   /** Current page (1-indexed). */
   page: number;

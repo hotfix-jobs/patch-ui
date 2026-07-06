@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Progress, SectionLabel } from "@patchui/react";
-import { CheckCircle, FileText, HardDrives } from "@phosphor-icons/react";
+import { CheckCircle, FileText, HardDrives } from "@phosphor-icons/react/dist/ssr";
 export function ProgressDemo() {
   const [upload, setUpload] = useState(20);
   useEffect(() => {

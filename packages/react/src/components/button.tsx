@@ -7,7 +7,7 @@ import { Spinner } from "./spinner";
 import type * as React from "react";
 import { cn } from "../utils";
 import { disabled, colorTransition, focusRing, iconMuted, iconMutedSolid } from "../recipes";
-import { X } from "@phosphor-icons/react";
+import { X } from "@phosphor-icons/react/dist/ssr";
 export const buttonVariants = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",

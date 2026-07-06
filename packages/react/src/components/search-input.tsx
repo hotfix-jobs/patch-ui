@@ -4,7 +4,7 @@ import type * as React from "react";
 import { useCallback } from "react";
 import { Input, type InputProps } from "./input";
 
-import { MagnifyingGlass, X } from "@phosphor-icons/react";
+import { MagnifyingGlass, X } from "@phosphor-icons/react/dist/ssr";
 /** SearchInput: search field with prefix icon and trailing clear button. */
 export type SearchInputProps = Omit<
   InputProps,

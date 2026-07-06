@@ -2,7 +2,7 @@
 
 import { Switch , SectionLabel } from "@patchui/react";
 import { useState } from "react";
-import { Check, X } from "@phosphor-icons/react";
+import { Check, X } from "@phosphor-icons/react/dist/ssr";
 export function SwitchDemo() {
   const [checked, setChecked] = useState(false);
   const [enabled, setEnabled] = useState(true);

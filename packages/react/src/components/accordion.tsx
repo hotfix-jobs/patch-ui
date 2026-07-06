@@ -6,7 +6,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, iconMuted } from "../recipes";
 
-import { CaretDown } from "@phosphor-icons/react";
+import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 // Panels stay mounted (`keepMounted`) for find-in-page compatibility.
 
 type AccordionContextValue = {

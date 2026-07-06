@@ -11,7 +11,7 @@ import type * as React from "react";
 import { Button } from "./button";
 import { cn } from "../utils";
 
-import { Moon, Sun } from "@phosphor-icons/react";
+import { Moon, Sun } from "@phosphor-icons/react/dist/ssr";
 export type Theme = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 

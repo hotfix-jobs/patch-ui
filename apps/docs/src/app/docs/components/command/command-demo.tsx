@@ -12,7 +12,7 @@ import {
   Button,
   Kbd,
 } from "@patchui/react";
-import { Bell, FilePlus, FolderOpen, Gear, Monitor, Moon, FloppyDisk, SquaresFour, Sun, UserPlus } from "@phosphor-icons/react";
+import { Bell, FilePlus, FolderOpen, Gear, Monitor, Moon, FloppyDisk, SquaresFour, Sun, UserPlus } from "@phosphor-icons/react/dist/ssr";
 type CommandEntry = {
   id: string;
   label: string;

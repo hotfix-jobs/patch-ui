@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Select } from "@patchui/react";
 import { SectionLabel } from "@patchui/react";
-import { Globe } from "@phosphor-icons/react";
+import { Globe } from "@phosphor-icons/react/dist/ssr";
 export function SelectDemo() {
   const [framework, setFramework] = useState("react");
   const [region, setRegion] = useState("us-east");

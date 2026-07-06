@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 
-import { Check, Copy } from "@phosphor-icons/react";
+import { Check, Copy } from "@phosphor-icons/react/dist/ssr";
 /** Per-component install command. Usage in MDX: <Install name="button" /> */
 export function Install({ name }: { name: string }) {
   const command = `npx shadcn add @patchui/${name}`;

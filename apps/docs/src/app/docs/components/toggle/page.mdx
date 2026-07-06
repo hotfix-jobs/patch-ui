@@ -18,7 +18,7 @@ Distinct from `Switch` (binary form-state control) and `Button` (one-shot action
 
 ```tsx
 import { Toggle } from "@patchui/react";
-import { Star } from "@phosphor-icons/react";
+import { Star } from "@phosphor-icons/react/dist/ssr";
 // Controlled
 const [starred, setStarred] = useState(false);
 <Toggle pressed={starred} onPressedChange={setStarred} icon={<Star />} aria-label="Star" />

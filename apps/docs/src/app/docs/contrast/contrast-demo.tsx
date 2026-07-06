@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Check, X } from "@phosphor-icons/react";
+import { Check, X } from "@phosphor-icons/react/dist/ssr";
 type Rgb = { r: number; g: number; b: number };
 
 function hexToRgb(hex: string): Rgb | null {

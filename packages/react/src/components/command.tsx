@@ -15,7 +15,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { iconMuted, itemGroupLabel, itemRow, popupDivider, popupSurface } from "../recipes";
 
-import { Check } from "@phosphor-icons/react";
+import { Check } from "@phosphor-icons/react/dist/ssr";
 type Density = "compact" | "comfortable";
 
 const CommandDensityContext = createContext<Density>("comfortable");

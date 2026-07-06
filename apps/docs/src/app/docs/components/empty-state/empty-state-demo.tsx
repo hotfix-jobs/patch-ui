@@ -1,6 +1,6 @@
 "use client";
 import { EmptyState, Button } from "@patchui/react";
-import { ArrowSquareOut, ChartBar, MagnifyingGlassMinus, Tray } from "@phosphor-icons/react";
+import { ArrowSquareOut, ChartBar, MagnifyingGlassMinus, Tray } from "@phosphor-icons/react/dist/ssr";
 export function EmptyStateDemo() {
   return (
     <div className="flex flex-col gap-14">

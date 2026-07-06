@@ -42,7 +42,7 @@ import { cn } from "../utils";
 import { iconMuted, itemGroupLabel, itemRow, popupDivider, popupSurface } from "../recipes";
 import { Checkbox } from "./checkbox";
 
-import { CaretRight, Check } from "@phosphor-icons/react";
+import { CaretRight, Check } from "@phosphor-icons/react/dist/ssr";
 type Density = "compact" | "comfortable";
 
 const MenuDensityContext = createContext<Density>("comfortable");

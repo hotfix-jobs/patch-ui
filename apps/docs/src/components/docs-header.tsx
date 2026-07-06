@@ -6,7 +6,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { SearchTrigger } from "./docs-search";
 import { navigation } from "@/lib/navigation";
 
-import { GithubLogo, SidebarSimple } from "@phosphor-icons/react";
+import { GithubLogo, SidebarSimple } from "@phosphor-icons/react/dist/ssr";
 
 function breadcrumbFromPath(pathname: string): { name: string; href?: string }[] {
   const items: { name: string; href?: string }[] = [

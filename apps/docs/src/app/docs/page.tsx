@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Card } from "@patchui/react";
 
-import { ArrowUpRight, Package, Palette, ShieldCheck } from "@phosphor-icons/react";
+import { ArrowUpRight, Package, Palette, ShieldCheck } from "@phosphor-icons/react/dist/ssr";
 export const metadata: Metadata = { title: "Introduction" };
 
 export default function DocsPage() {

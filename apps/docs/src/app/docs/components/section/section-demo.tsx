@@ -17,7 +17,7 @@ import {
   SectionLabel,
   Switch,
 } from "@patchui/react";
-import { CaretDown } from "@phosphor-icons/react";
+import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 function SelectChip({ value }: { value: string }) {
   return (
     <Button variant="secondary" size="sm">

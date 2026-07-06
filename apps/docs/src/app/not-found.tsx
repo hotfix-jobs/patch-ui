@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Button, EmptyState } from "@patchui/react";
-import { ArrowRight, FileDashed } from "@phosphor-icons/react";
+import { ArrowRight, FileDashed } from "@phosphor-icons/react/dist/ssr";
 export const metadata: Metadata = {
   title: "Not found",
   robots: { index: false, follow: false },

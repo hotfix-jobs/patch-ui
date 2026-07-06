@@ -6,7 +6,7 @@ import { Children, cloneElement, isValidElement } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 
-import { User } from "@phosphor-icons/react";
+import { User } from "@phosphor-icons/react/dist/ssr";
 export const avatarVariants = cva(
   // Compound text-button-* classes below carry the 500 weight for
   // monogram initials; no font-* utility here so the recipe wins.

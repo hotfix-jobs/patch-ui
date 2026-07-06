@@ -5,7 +5,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { colorTransition, iconMuted, popupSurface } from "../recipes";
 
-import { CaretDown } from "@phosphor-icons/react";
+import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 /** Horizontal menu bar with morphing dropdown panels sharing one portalled popup. */
 export function NavigationMenu({
   className,

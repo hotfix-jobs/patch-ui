@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { SegmentedToggle, SegmentedToggleItem , SectionLabel } from "@patchui/react";
-import { Rows, SquaresFour, TextAlignCenter, TextAlignLeft, TextAlignRight } from "@phosphor-icons/react";
+import { Rows, SquaresFour, TextAlignCenter, TextAlignLeft, TextAlignRight } from "@phosphor-icons/react/dist/ssr";
 export function SegmentedToggleDemo() {
   const [view, setView] = useState<string>("grid");
   const [align, setAlign] = useState("center");

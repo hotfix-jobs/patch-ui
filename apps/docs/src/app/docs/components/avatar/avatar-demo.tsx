@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarGroup, AvatarImage , SectionLabel } from "@patchui/react";
-import { ArrowCircleDown, CheckCircle, Clock } from "@phosphor-icons/react";
+import { ArrowCircleDown, CheckCircle, Clock } from "@phosphor-icons/react/dist/ssr";
 // GitHub avatars: public, always available.
 const gh = (u: string) => `https://github.com/${u}.png?size=200`;
 

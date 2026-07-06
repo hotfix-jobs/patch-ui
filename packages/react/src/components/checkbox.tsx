@@ -5,7 +5,7 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
-import { Check, Minus } from "@phosphor-icons/react";
+import { Check, Minus } from "@phosphor-icons/react/dist/ssr";
 export interface CheckboxProps extends CheckboxPrimitive.Root.Props {
   /** Optional label. When present, the checkbox is wrapped in a `<label>` so clicking the label toggles the box. */
   children?: React.ReactNode;

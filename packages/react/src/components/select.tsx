@@ -4,7 +4,7 @@ import type * as React from "react";
 import { forwardRef } from "react";
 import { cn } from "../utils";
 
-import { CaretDown } from "@phosphor-icons/react";
+import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 export type SelectSize = "sm" | "md" | "lg";
 
 export type SelectProps = Omit<

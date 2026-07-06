@@ -23,7 +23,7 @@ import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
 import { Button, type ButtonProps } from "./button";
 
-import { X } from "@phosphor-icons/react";
+import { X } from "@phosphor-icons/react/dist/ssr";
 /** Floating dialog surface; slides up as a sheet on mobile, centers on tablet+. */
 export type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
 

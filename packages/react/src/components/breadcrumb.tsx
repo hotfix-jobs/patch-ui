@@ -4,7 +4,7 @@ import { Fragment, useState } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 
-import { CaretRight, DotsThree, House } from "@phosphor-icons/react";
+import { CaretRight, DotsThree, House } from "@phosphor-icons/react/dist/ssr";
 export interface BreadcrumbItem {
   /** Label. If `href === "/"` and `name === "Home"`, renders as home icon. */
   name: string;

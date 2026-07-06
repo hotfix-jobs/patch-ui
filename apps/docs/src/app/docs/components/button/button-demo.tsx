@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@patchui/react";
-import { ArrowRight, CaretDown, Download, Envelope, Hash, Plus, Trash } from "@phosphor-icons/react";
+import { ArrowRight, CaretDown, Download, Envelope, Hash, Plus, Trash } from "@phosphor-icons/react/dist/ssr";
 const INITIAL_FILTERS = ["design", "engineering", "billing"];
 
 export function ButtonDemo() {
