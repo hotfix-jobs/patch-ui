@@ -174,11 +174,12 @@ function MenuInner({
 
   // Gated on autoFocusFirst so nested sub-menus keep letting useListNavigation own activeIndex;
   // a blanket reset caused sub-menu hover state to fight with the parent when moving between rows.
-  useEffect(() => {
-    if (!autoFocusFirst) return;
-    if (open) setActiveIndex(0);
-    else setActiveIndex(null);
-  }, [open, autoFocusFirst]);
+  // Adjusted during render (not in an effect) per React 19's "adjust state on prop change" idiom.
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (autoFocusFirst && prevOpen !== open) {
+    setPrevOpen(open);
+    setActiveIndex(open ? 0 : null);
+  }
 
   const tree = useFloatingTree();
   useEffect(() => {

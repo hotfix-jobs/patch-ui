@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+
+const emptySubscribe = () => () => {};
 
 import { Check, X } from "@phosphor-icons/react/dist/ssr";
 type Rgb = { r: number; g: number; b: number };
@@ -89,11 +91,10 @@ const STATUS = [
 ] as const;
 
 export function ContrastDemo() {
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const [, setTick] = useState(0);
 
   useEffect(() => {
-    setMounted(true);
     const obs = new MutationObserver(() => setTick((t) => t + 1));
     obs.observe(document.documentElement, {
       attributes: true,

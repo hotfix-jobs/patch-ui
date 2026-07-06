@@ -294,6 +294,9 @@ export function CommandDialog({
           >
             <FloatingFocusManager context={context} modal={false}>
               <motion.div
+                // False positive: refs.setFloating is a callback ref, not a
+                // ref access during render (floating-ui/floating-ui#3405).
+                // eslint-disable-next-line react-hooks/refs
                 ref={refs.setFloating}
                 {...getFloatingProps()}
                 data-slot="command-dialog"

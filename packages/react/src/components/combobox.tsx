@@ -24,6 +24,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -115,20 +116,15 @@ export function Combobox({
   const elementsRef = useRef<Array<HTMLElement | null>>([]);
   const labelsRef = useRef<Array<string | null>>([]);
 
-  // Ref-mirror of isMobile so the size middleware (outside React) can bail without a useFloating re-init.
-  const isMobileRef = useRef(false);
+  const isMobile = useIsMobileCombobox();
 
-  const { refs, floatingStyles, context } = useFloating({
-    open,
-    onOpenChange: setOpen,
-    placement: "bottom-start",
-    transform: false,
-    middleware: [
+  const middleware = useMemo(
+    () => [
       offset(8),
       shift({ padding: 8 }),
       size({
         apply({ rects, elements, availableHeight }) {
-          if (isMobileRef.current) return;
+          if (isMobile) return;
           Object.assign(elements.floating.style, {
             minWidth: `${rects.reference.width}px`,
             maxHeight: `${Math.max(120, Math.min(availableHeight - 8, 400))}px`,
@@ -137,6 +133,15 @@ export function Combobox({
         padding: 8,
       }),
     ],
+    [isMobile],
+  );
+
+  const { refs, floatingStyles, context } = useFloating({
+    open,
+    onOpenChange: setOpen,
+    placement: "bottom-start",
+    transform: false,
+    middleware,
     whileElementsMounted: autoUpdate,
   });
 
@@ -155,16 +160,14 @@ export function Combobox({
   );
 
   const baseId = useId();
-  const isMobile = useIsMobileCombobox();
-  isMobileRef.current = isMobile;
 
-  useEffect(() => {
-    if (!open) {
-      setActiveIndex(null);
-      return;
-    }
-    if (autoFocusFirst) setActiveIndex(0);
-  }, [open, autoFocusFirst]);
+  // Adjusted during render (not in an effect) per React 19's "adjust state on prop change" idiom.
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (prevOpen !== open) {
+    setPrevOpen(open);
+    if (!open) setActiveIndex(null);
+    else if (autoFocusFirst) setActiveIndex(0);
+  }
 
   return (
     <ComboboxContext.Provider
@@ -291,6 +294,10 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
       setReferenceToWrapper as React.Ref<HTMLInputElement>,
     ]);
 
+    // False positive on getReferenceProps: react-hooks/refs flags Floating UI's
+    // prop-getters as ref-during-render (see floating-ui/floating-ui#3405,
+    // react/react#34775). The `refs` object is plain and no ref is read here.
+    // eslint-disable-next-line react-hooks/refs
     const mergedProps = getReferenceProps({
       ...(props as React.HTMLProps<HTMLInputElement>),
       onChange: (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -12,7 +12,10 @@ import {
   useId,
   useMemo,
   useState,
+  useSyncExternalStore,
 } from "react";
+
+const emptySubscribe = () => () => {};
 import { createPortal } from "react-dom";
 import { RemoveScroll } from "react-remove-scroll";
 import type * as React from "react";
@@ -383,9 +386,7 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
 function AppHeaderMobilePanel(): React.ReactPortal | null {
   const { open, setOpen, panelId, brand, right, navChildren } = useAppHeaderContext();
   const reduceMotion = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   useEffect(() => {
     if (!open) return;
