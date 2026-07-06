@@ -1,6 +1,6 @@
-import { Info, Lightbulb, OctagonAlert, TriangleAlert } from "lucide-react";
 import type * as React from "react";
 
+import { Info, Lightbulb, Warning, WarningOctagon } from "@phosphor-icons/react";
 interface CalloutProps {
   children: React.ReactNode;
   type?: "note" | "warning" | "error" | "tip";
@@ -9,8 +9,8 @@ interface CalloutProps {
 
 const TYPE_CONFIG = {
   note: { Icon: Info, iconClass: "text-ink-muted" },
-  warning: { Icon: TriangleAlert, iconClass: "text-warning" },
-  error: { Icon: OctagonAlert, iconClass: "text-error" },
+  warning: { Icon: Warning, iconClass: "text-warning" },
+  error: { Icon: WarningOctagon, iconClass: "text-error" },
   tip: { Icon: Lightbulb, iconClass: "text-success" },
 } as const;
 

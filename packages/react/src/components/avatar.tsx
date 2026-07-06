@@ -2,11 +2,11 @@
 
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
 import { cva, type VariantProps } from "class-variance-authority";
-import { User } from "lucide-react";
 import { Children, cloneElement, isValidElement } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 
+import { User } from "@phosphor-icons/react";
 export const avatarVariants = cva(
   // Compound text-button-* classes below carry the 500 weight for
   // monogram initials; no font-* utility here so the recipe wins.
@@ -163,7 +163,7 @@ export function Avatar({
 }
 
 function PlaceholderIcon(): React.ReactElement {
-  return <User aria-hidden className="size-[60%]" strokeWidth={2} />;
+  return <User aria-hidden className="size-[60%]" />;
 }
 
 export function AvatarImage({

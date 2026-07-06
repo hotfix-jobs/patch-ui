@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
 import { SectionLabel, Toggle } from "@patchui/react";
-import { Bold, Italic, Pin, Star, Underline } from "lucide-react";
-
+import { PushPin, Star, TextB, TextItalic, TextUnderline } from "@phosphor-icons/react";
 export function ToggleDemo() {
   const [starred, setStarred] = useState(false);
   const [pinned, setPinned] = useState(true);
@@ -24,19 +23,19 @@ export function ToggleDemo() {
           onPressedChange={setPinned}
           aria-label="Pin"
         >
-          <Pin className={pinned ? "fill-current" : ""} />
+          <PushPin className={pinned ? "fill-current" : ""} />
         </Toggle>
       </Stack>
 
       <Stack label="Secondary variant (bordered)">
         <Toggle variant="secondary" defaultPressed aria-label="Bold">
-          <Bold />
+          <TextB />
         </Toggle>
         <Toggle variant="secondary" aria-label="Italic">
-          <Italic />
+          <TextItalic />
         </Toggle>
         <Toggle variant="secondary" aria-label="Underline">
-          <Underline />
+          <TextUnderline />
         </Toggle>
       </Stack>
 
@@ -48,7 +47,7 @@ export function ToggleDemo() {
 
       <Stack label="Shapes">
         <Toggle defaultPressed shape="square" aria-label="Square shape">
-          <Bold />
+          <TextB />
         </Toggle>
         <Toggle defaultPressed shape="pill">Pill</Toggle>
         <Toggle defaultPressed shape="circle" aria-label="Circle shape">
@@ -58,13 +57,13 @@ export function ToggleDemo() {
 
       <Stack label="Sizes">
         <Toggle defaultPressed size="sm" aria-label="sm">
-          <Bold />
+          <TextB />
         </Toggle>
         <Toggle defaultPressed size="md" aria-label="md">
-          <Bold />
+          <TextB />
         </Toggle>
         <Toggle defaultPressed size="lg" aria-label="lg">
-          <Bold />
+          <TextB />
         </Toggle>
       </Stack>
     </div>

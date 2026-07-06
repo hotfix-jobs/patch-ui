@@ -6,14 +6,7 @@ import {
   useReducedMotion,
   type Variants,
 } from "motion/react";
-import {
-  CircleAlert,
-  CircleCheck,
-  Info,
-  TriangleAlert,
-} from "lucide-react";
 import { Spinner } from "./spinner";
-import { X } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -23,6 +16,7 @@ import {
   useSyncExternalStore,
 } from "react";
 
+import { CheckCircle, Info, Warning, WarningCircle, X } from "@phosphor-icons/react";
 const emptySubscribe = () => () => {};
 function useMounted(): boolean {
   return useSyncExternalStore(emptySubscribe, () => true, () => false);
@@ -187,9 +181,9 @@ export const toast: ToastApi = Object.assign(createToastFn("default"), {
 
 const TYPE_ICON: Record<ToastType, React.ReactNode | null> = {
   default: null,
-  success: <CircleCheck className="size-4 text-success" />,
-  error: <CircleAlert className="size-4 text-error" />,
-  warning: <TriangleAlert className="size-4 text-warning" />,
+  success: <CheckCircle className="size-4 text-success" />,
+  error: <WarningCircle className="size-4 text-error" />,
+  warning: <Warning className="size-4 text-warning" />,
   info: <Info className="size-4 text-ink-muted" />,
   loading: <Spinner size="sm" className="text-ink-muted" />,
 };

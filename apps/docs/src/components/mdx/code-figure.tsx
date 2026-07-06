@@ -1,8 +1,8 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 
+import { Check, Copy } from "@phosphor-icons/react";
 /**
  * Wraps rehype-pretty-code's <figure> output with a copy button.
  * The figure already has syntax-highlighted <pre><code> from rehype-pretty-code.

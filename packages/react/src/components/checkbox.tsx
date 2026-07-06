@@ -2,10 +2,10 @@
 
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 import type * as React from "react";
-import { Check, Minus } from "lucide-react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
+import { Check, Minus } from "@phosphor-icons/react";
 export interface CheckboxProps extends CheckboxPrimitive.Root.Props {
   /** Optional label. When present, the checkbox is wrapped in a `<label>` so clicking the label toggles the box. */
   children?: React.ReactNode;
@@ -45,12 +45,10 @@ export function Checkbox({
         {/* !text-on-primary overrides iconMuted descendant selectors from parent rows (Menu, list). */}
         <Check
           className="!text-on-primary size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
-          strokeWidth={2.5}
         />
         <Minus
           aria-hidden="true"
           className="!text-on-primary hidden size-3 group-data-indeterminate:block"
-          strokeWidth={2.5}
         />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

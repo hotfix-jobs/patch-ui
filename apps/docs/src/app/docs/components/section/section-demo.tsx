@@ -17,13 +17,12 @@ import {
   SectionLabel,
   Switch,
 } from "@patchui/react";
-import { ChevronDown } from "lucide-react";
-
+import { CaretDown } from "@phosphor-icons/react";
 function SelectChip({ value }: { value: string }) {
   return (
     <Button variant="secondary" size="sm">
       {value}
-      <ChevronDown className="size-3.5 text-ink-muted" aria-hidden />
+      <CaretDown className="size-3.5 text-ink-muted" aria-hidden />
     </Button>
   );
 }

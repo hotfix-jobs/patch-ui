@@ -1,11 +1,11 @@
 "use client";
 
 import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/navigation-menu";
-import { ChevronDown } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../utils";
 import { colorTransition, iconMuted, popupSurface } from "../recipes";
 
+import { CaretDown } from "@phosphor-icons/react";
 /** Horizontal menu bar with morphing dropdown panels sharing one portalled popup. */
 export function NavigationMenu({
   className,
@@ -62,7 +62,7 @@ export function NavigationMenuItem(
   return <NavigationMenuPrimitive.Item data-slot="navigation-menu-item" {...props} />;
 }
 
-const chevron = <ChevronDown aria-hidden="true" className="size-3.5" />;
+const chevron = <CaretDown aria-hidden="true" className="size-3.5" />;
 
 export function NavigationMenuTrigger({
   className,

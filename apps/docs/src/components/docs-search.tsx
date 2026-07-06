@@ -3,7 +3,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import MiniSearch from "minisearch";
-import { Search } from "lucide-react";
 import {
   CommandDialog,
   CommandInput,
@@ -14,6 +13,7 @@ import {
 } from "@patchui/react";
 import { navigation } from "@/lib/navigation";
 
+import { MagnifyingGlass } from "@phosphor-icons/react";
 export const SEARCH_OPEN_EVENT = "docs-search:open";
 export function requestSearchOpen() {
   window.dispatchEvent(new CustomEvent(SEARCH_OPEN_EVENT));
@@ -41,7 +41,7 @@ export function SearchTrigger({ className }: { className?: string }) {
         (className ? " " + className : "")
       }
     >
-      <Search className="size-4" aria-hidden />
+      <MagnifyingGlass className="size-4" aria-hidden />
     </button>
   );
 }
@@ -129,7 +129,7 @@ export function SearchPalette() {
       onValueChange={setQuery}
       filteredItems={results}
     >
-      <CommandInput placeholder="Search documentation..." prefix={<Search />} />
+      <CommandInput placeholder="Search documentation..." prefix={<MagnifyingGlass />} />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandCollection>

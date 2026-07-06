@@ -1,8 +1,7 @@
 "use client";
 
 import { Button, Tooltip, TooltipProvider } from "@patchui/react";
-import { Plus, Save, Trash2 } from "lucide-react";
-
+import { FloppyDisk, Plus, Trash } from "@phosphor-icons/react";
 export function TooltipDemo() {
   return (
     <TooltipProvider>
@@ -37,13 +36,13 @@ export function TooltipDemo() {
           </p>
           <div className="flex flex-wrap items-center gap-3">
             <Tooltip content="Save changes">
-              <Button variant="secondary" icon={<Save className="size-4" />} />
+              <Button variant="secondary" icon={<FloppyDisk className="size-4" />} />
             </Tooltip>
             <Tooltip content="Add new item">
               <Button variant="secondary" icon={<Plus className="size-4" />} />
             </Tooltip>
             <Tooltip content="Delete item" side="bottom">
-              <Button variant="destructive" icon={<Trash2 className="size-4" />} />
+              <Button variant="destructive" icon={<Trash className="size-4" />} />
             </Tooltip>
           </div>
         </div>

@@ -2,15 +2,7 @@
 
 import { useState } from "react";
 import { SegmentedToggle, SegmentedToggleItem , SectionLabel } from "@patchui/react";
-import {
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  LayoutGrid,
-  Rows3,
-} from "lucide-react";
-
-
+import { Rows, SquaresFour, TextAlignCenter, TextAlignLeft, TextAlignRight } from "@phosphor-icons/react";
 export function SegmentedToggleDemo() {
   const [view, setView] = useState<string>("grid");
   const [align, setAlign] = useState("center");
@@ -24,10 +16,10 @@ export function SegmentedToggleDemo() {
         <SectionLabel>Icon-only view toggle</SectionLabel>
         <SegmentedToggle value={view} onValueChange={setView} aria-label="View">
           <SegmentedToggleItem value="grid" aria-label="Grid view">
-            <LayoutGrid />
+            <SquaresFour />
           </SegmentedToggleItem>
           <SegmentedToggleItem value="list" aria-label="List view">
-            <Rows3 />
+            <Rows />
           </SegmentedToggleItem>
         </SegmentedToggle>
       </div>
@@ -36,13 +28,13 @@ export function SegmentedToggleDemo() {
         <SectionLabel>Three options (alignment)</SectionLabel>
         <SegmentedToggle value={align} onValueChange={setAlign} aria-label="Alignment">
           <SegmentedToggleItem value="left" aria-label="Align left">
-            <AlignLeft />
+            <TextAlignLeft />
           </SegmentedToggleItem>
           <SegmentedToggleItem value="center" aria-label="Align center">
-            <AlignCenter />
+            <TextAlignCenter />
           </SegmentedToggleItem>
           <SegmentedToggleItem value="right" aria-label="Align right">
-            <AlignRight />
+            <TextAlignRight />
           </SegmentedToggleItem>
         </SegmentedToggle>
       </div>
@@ -60,18 +52,18 @@ export function SegmentedToggleDemo() {
         <div className="flex flex-col gap-3">
           <SegmentedToggle value={smView} onValueChange={setSmView} size="sm" aria-label="View">
             <SegmentedToggleItem value="grid" aria-label="Grid view">
-              <LayoutGrid />
+              <SquaresFour />
             </SegmentedToggleItem>
             <SegmentedToggleItem value="list" aria-label="List view">
-              <Rows3 />
+              <Rows />
             </SegmentedToggleItem>
           </SegmentedToggle>
           <SegmentedToggle value={view} onValueChange={setView} aria-label="View">
             <SegmentedToggleItem value="grid" aria-label="Grid view">
-              <LayoutGrid />
+              <SquaresFour />
             </SegmentedToggleItem>
             <SegmentedToggleItem value="list" aria-label="List view">
-              <Rows3 />
+              <Rows />
             </SegmentedToggleItem>
           </SegmentedToggle>
           <SegmentedToggle value={lgView} onValueChange={setLgView} size="lg" aria-label="View">

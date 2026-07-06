@@ -9,7 +9,6 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   createContext,
@@ -24,6 +23,7 @@ import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
 import { Button, type ButtonProps } from "./button";
 
+import { X } from "@phosphor-icons/react";
 /** Floating dialog surface; slides up as a sheet on mobile, centers on tablet+. */
 export type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
 

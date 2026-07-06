@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Moon, Sun } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -12,6 +11,7 @@ import type * as React from "react";
 import { Button } from "./button";
 import { cn } from "../utils";
 
+import { Moon, Sun } from "@phosphor-icons/react";
 export type Theme = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 

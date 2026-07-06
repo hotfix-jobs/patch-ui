@@ -12,8 +12,7 @@ import {
   ComboboxSection,
   SectionLabel,
 } from "@patchui/react";
-import { Info, Search } from "lucide-react";
-
+import { Info, MagnifyingGlass } from "@phosphor-icons/react";
 const FRAMEWORKS = [
   "React",
   "Vue",
@@ -28,7 +27,6 @@ const FRAMEWORKS = [
 ];
 
 const RECENT = ["React", "Vue"];
-
 
 export function ComboboxDemo() {
   const [query, setQuery] = useState("");
@@ -65,7 +63,7 @@ export function ComboboxDemo() {
         <div className="max-w-sm">
           <Combobox value={query} onValueChange={setQuery} placeholder="Search…">
             <ComboboxInput
-              prefix={<Search />}
+              prefix={<MagnifyingGlass />}
 
               clearable
               onClear={() => {
@@ -110,7 +108,7 @@ export function ComboboxDemo() {
             placeholder="Search frameworks…"
           >
             <ComboboxInput
-              prefix={<Search />}
+              prefix={<MagnifyingGlass />}
 
               clearable
               onClear={() => setQuery2("")}
@@ -166,7 +164,7 @@ export function ComboboxDemo() {
             placeholder="Filter by framework…"
             autoFocusFirst
           >
-            <ComboboxInput prefix={<Search />} />
+            <ComboboxInput prefix={<MagnifyingGlass />} />
             <ComboboxPopup>
               {multiMatches.length === 0 ? (
                 <div className="px-2.5 py-4 text-center text-caption-12 text-ink-muted md:px-2">

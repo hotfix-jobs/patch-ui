@@ -7,8 +7,7 @@ import { Spinner } from "./spinner";
 import type * as React from "react";
 import { cn } from "../utils";
 import { disabled, colorTransition, focusRing, iconMuted, iconMutedSolid } from "../recipes";
-import { X } from "lucide-react";
-
+import { X } from "@phosphor-icons/react";
 export const buttonVariants = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",
@@ -140,7 +139,7 @@ export function Button({
           )}
           data-slot="button-remove"
         >
-          <X className="size-2.5" strokeWidth={2.5} />
+          <X className="size-2.5" />
         </span>
       )}
     </>

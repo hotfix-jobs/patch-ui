@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Progress, SectionLabel } from "@patchui/react";
-import { CheckCircle2, FileText, HardDrive } from "lucide-react";
-
+import { CheckCircle, FileText, HardDrives } from "@phosphor-icons/react";
 export function ProgressDemo() {
   const [upload, setUpload] = useState(20);
   useEffect(() => {
@@ -48,7 +47,7 @@ export function ProgressDemo() {
         <SectionLabel>Storage quota</SectionLabel>
         <div className="flex flex-col gap-2 rounded-[var(--radius-6)] border border-hairline p-3">
           <div className="flex items-center gap-2">
-            <HardDrive className="size-4 text-ink-muted" aria-hidden />
+            <HardDrives className="size-4 text-ink-muted" aria-hidden />
             <span className="flex-1 text-body-13 text-ink">Storage</span>
             <span className="tabular-nums text-caption-12 text-ink-muted">
               12.4 GB of 20 GB
@@ -97,7 +96,7 @@ export function ProgressDemo() {
         <SectionLabel>Indeterminate</SectionLabel>
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="size-4 text-ink-muted" aria-hidden />
+            <CheckCircle className="size-4 text-ink-muted" aria-hidden />
             <span className="flex-1 text-body-13 text-ink">
               Preparing your export…
             </span>

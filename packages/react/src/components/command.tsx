@@ -12,10 +12,10 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { createContext, useContext } from "react";
 import type * as React from "react";
-import { Check } from "lucide-react";
 import { cn } from "../utils";
 import { iconMuted, itemGroupLabel, itemRow, popupDivider, popupSurface } from "../recipes";
 
+import { Check } from "@phosphor-icons/react";
 type Density = "compact" | "comfortable";
 
 const CommandDensityContext = createContext<Density>("comfortable");
@@ -145,7 +145,6 @@ export function CommandItem({
   const trailing = selected ? (
     <Check
       className="ms-auto size-3.5 shrink-0 text-ink-muted"
-      strokeWidth={2.25}
     />
   ) : suffix ? (
     <span className="ms-auto flex items-center">{suffix}</span>

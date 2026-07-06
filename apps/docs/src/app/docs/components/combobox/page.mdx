@@ -1,6 +1,5 @@
 import { ComboboxDemo } from "./combobox-demo";
 
-
 export const metadata = { title: "Combobox" };
 
 # Combobox
@@ -26,8 +25,7 @@ import {
   ComboboxPopup,
   ComboboxItem,
 } from "@patchui/react";
-import { Search } from "lucide-react";
-
+import { MagnifyingGlass } from "@phosphor-icons/react";
 const [query, setQuery] = useState("");
 const matches = items.filter((i) =>
   i.label.toLowerCase().includes(query.toLowerCase()),

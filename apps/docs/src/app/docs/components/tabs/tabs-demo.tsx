@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsPanel, SectionLabel } from "@patchui/react";
-import { Mail, Settings, Users } from "lucide-react";
-
+import { Envelope, Gear, Users } from "@phosphor-icons/react";
 function Body({ children }: { children: React.ReactNode }) {
   return (
     <div className="text-body-14 leading-relaxed text-ink">
@@ -23,7 +22,7 @@ export function TabsDemo() {
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="settings">Gear</TabsTrigger>
           </TabsList>
           <TabsPanel value="overview">
             <Body>A high-level summary lives here.</Body>
@@ -32,7 +31,7 @@ export function TabsDemo() {
             <Body>Recent activity lives here.</Body>
           </TabsPanel>
           <TabsPanel value="settings">
-            <Body>Settings live here.</Body>
+            <Body>Gear live here.</Body>
           </TabsPanel>
         </Tabs>
       </div>
@@ -44,11 +43,11 @@ export function TabsDemo() {
             <TabsTrigger value="members" icon={<Users />} badge={memberCount}>
               Members
             </TabsTrigger>
-            <TabsTrigger value="invites" icon={<Mail />} badge={0}>
+            <TabsTrigger value="invites" icon={<Envelope />} badge={0}>
               Invites
             </TabsTrigger>
-            <TabsTrigger value="settings" icon={<Settings />}>
-              Settings
+            <TabsTrigger value="settings" icon={<Gear />}>
+              Gear
             </TabsTrigger>
           </TabsList>
           <TabsPanel value="members">

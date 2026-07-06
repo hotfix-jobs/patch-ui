@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@patchui/react";
-import { ArrowRight, ChevronDown, Download, Hash, Mail, Plus, Trash2 } from "lucide-react";
-
+import { ArrowRight, CaretDown, Download, Envelope, Hash, Plus, Trash } from "@phosphor-icons/react";
 const INITIAL_FILTERS = ["design", "engineering", "billing"];
 
 export function ButtonDemo() {
@@ -45,11 +44,11 @@ export function ButtonDemo() {
       <div>
         <p className="mb-3 text-caption-12 text-ink-muted">With Icons</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
-          <Button icon={<ChevronDown className="h-4 w-4" />} iconPosition="right">
+          <Button icon={<Envelope className="h-4 w-4" />}>Send Email</Button>
+          <Button icon={<CaretDown className="h-4 w-4" />} iconPosition="right">
             Menu
           </Button>
-          <Button variant="destructive" icon={<Trash2 className="h-4 w-4" />}>
+          <Button variant="destructive" icon={<Trash className="h-4 w-4" />}>
             Delete
           </Button>
           <Button variant="secondary" icon={<Download className="h-4 w-4" />}>

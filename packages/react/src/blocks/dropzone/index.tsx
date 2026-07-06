@@ -1,14 +1,12 @@
 "use client";
 
-import { File, Upload } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import type * as React from "react";
 import { cn } from "../../utils";
 import { focusRing } from "../../recipes";
 import { Progress } from "../../components/progress";
 import { Card } from "../../components/card";
-import { X } from "lucide-react";
-
+import { File, Upload, X } from "@phosphor-icons/react";
 export interface DropzoneProps
   extends Omit<
     React.HTMLAttributes<HTMLDivElement>,

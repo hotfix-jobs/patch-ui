@@ -10,7 +10,6 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
-import { X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   cloneElement,
@@ -26,6 +25,7 @@ import type * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
 
+import { X } from "@phosphor-icons/react";
 /**
  * Sheet: an edge-anchored panel that slides in from the top/right/bottom/left
  * of the viewport. Non-modal by default (page underneath stays interactive);

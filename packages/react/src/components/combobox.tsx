@@ -33,8 +33,7 @@ import { iconMuted, itemGroupLabel, itemRow, popupDivider, popupSurface } from "
 import { Input, type InputProps } from "./input";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
-import { ChevronDown, Search, X } from "lucide-react";
-
+import { CaretDown, MagnifyingGlass, X } from "@phosphor-icons/react";
 const MOBILE_MEDIA_QUERY = "(max-width: 767px)";
 
 function useIsMobileCombobox(): boolean {
@@ -199,7 +198,7 @@ export function Combobox({
 
 function ChevronIndicator({ open }: { open: boolean }): React.ReactElement {
   return (
-    <ChevronDown
+    <CaretDown
       aria-hidden="true"
       className={cn(
         "size-4 shrink-0 text-ink-muted transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
@@ -273,7 +272,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
             }}
             className="inline-flex size-5 items-center justify-center rounded-full text-ink-muted hover:bg-surface-2 hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]"
           >
-            <X className="size-3" strokeWidth={2.5} />
+            <X className="size-3" />
           </button>
         ) : (
           !hideChevron && <ChevronIndicator open={open} />
@@ -344,7 +343,6 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
     );
   },
 );
-
 
 /* --------------------------- ComboboxPopup --------------------------- */
 
@@ -423,7 +421,7 @@ export function ComboboxPopup({
             size="lg"
             autoFocus
             autoComplete="off"
-            prefix={<Search />}
+            prefix={<MagnifyingGlass />}
             value={ctxValue ?? ""}
             onChange={(e) => onValueChange?.(e.target.value)}
             placeholder={ctxPlaceholder}

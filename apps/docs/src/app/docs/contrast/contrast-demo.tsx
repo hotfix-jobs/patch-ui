@@ -1,8 +1,8 @@
 "use client";
 
-import { Check, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { Check, X } from "@phosphor-icons/react";
 type Rgb = { r: number; g: number; b: number };
 
 function hexToRgb(hex: string): Rgb | null {

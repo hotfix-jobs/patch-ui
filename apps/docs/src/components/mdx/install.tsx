@@ -1,8 +1,8 @@
 "use client";
 
-import { Check, Copy } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 
+import { Check, Copy } from "@phosphor-icons/react";
 /** Per-component install command. Usage in MDX: <Install name="button" /> */
 export function Install({ name }: { name: string }) {
   const command = `npx shadcn add @patchui/${name}`;

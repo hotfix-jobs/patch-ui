@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { FileText, Home, LayoutDashboard, PanelLeft, Settings, Users } from "lucide-react";
-
+import { FileText, Gear, House, SidebarSimple, SquaresFour, Users } from "@phosphor-icons/react";
 const NAV = [
-  { icon: Home, label: "Overview", active: true },
-  { icon: LayoutDashboard, label: "Projects" },
+  { icon: House, label: "Overview", active: true },
+  { icon: SquaresFour, label: "Projects" },
   { icon: Users, label: "Team" },
   { icon: FileText, label: "Docs" },
-  { icon: Settings, label: "Settings" },
+  { icon: Gear, label: "Settings" },
 ];
 
 export function SidebarDemo() {
@@ -57,7 +56,7 @@ export function SidebarDemo() {
             aria-label="Toggle sidebar"
             className="inline-flex size-8 items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink"
           >
-            <PanelLeft className="size-4" aria-hidden />
+            <SidebarSimple className="size-4" aria-hidden />
           </button>
           <span className="text-body-14 text-ink-muted">Overview</span>
         </header>

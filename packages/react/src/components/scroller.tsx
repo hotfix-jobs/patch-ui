@@ -1,6 +1,5 @@
 "use client";
 
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -12,11 +11,12 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
+import { CaretDown, CaretLeft, CaretRight, CaretUp } from "@phosphor-icons/react";
 const CHEVRON_ICON = {
-  up: ChevronUp,
-  down: ChevronDown,
-  left: ChevronLeft,
-  right: ChevronRight,
+  up: CaretUp,
+  down: CaretDown,
+  left: CaretLeft,
+  right: CaretRight,
 } as const;
 
 const useIsoLayoutEffect =

@@ -46,7 +46,7 @@
       "title": "Accordion",
       "dependencies": [
         "@base-ui/react",
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -67,8 +67,8 @@
       "title": "Avatar",
       "dependencies": [
         "@base-ui/react",
-        "class-variance-authority",
-        "lucide-react"
+        "@phosphor-icons/react",
+        "class-variance-authority"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -107,7 +107,7 @@
       "type": "registry:ui",
       "title": "Breadcrumb",
       "dependencies": [
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -127,8 +127,8 @@
       "title": "Button",
       "dependencies": [
         "@base-ui/react",
-        "class-variance-authority",
-        "lucide-react"
+        "@phosphor-icons/react",
+        "class-variance-authority"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -149,7 +149,7 @@
       "type": "registry:ui",
       "title": "Calendar",
       "dependencies": [
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
@@ -191,7 +191,7 @@
       "title": "Checkbox",
       "dependencies": [
         "@base-ui/react",
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -212,7 +212,7 @@
       "title": "Combobox",
       "dependencies": [
         "@floating-ui/react",
-        "lucide-react",
+        "@phosphor-icons/react",
         "motion"
       ],
       "registryDependencies": [
@@ -238,7 +238,7 @@
       "dependencies": [
         "@base-ui/react",
         "@floating-ui/react",
-        "lucide-react",
+        "@phosphor-icons/react",
         "motion"
       ],
       "registryDependencies": [
@@ -355,7 +355,7 @@
       "title": "Menu",
       "dependencies": [
         "@floating-ui/react",
-        "lucide-react",
+        "@phosphor-icons/react",
         "motion"
       ],
       "registryDependencies": [
@@ -378,7 +378,7 @@
       "title": "Modal",
       "dependencies": [
         "@floating-ui/react",
-        "lucide-react",
+        "@phosphor-icons/react",
         "motion",
         "react-remove-scroll"
       ],
@@ -401,7 +401,7 @@
       "title": "Navigation Menu",
       "dependencies": [
         "@base-ui/react",
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -421,7 +421,7 @@
       "type": "registry:ui",
       "title": "Pagination",
       "dependencies": [
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -476,7 +476,7 @@
       "type": "registry:ui",
       "title": "Scroller",
       "dependencies": [
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -496,7 +496,7 @@
       "type": "registry:ui",
       "title": "Search Input",
       "dependencies": [
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/input.json",
@@ -573,7 +573,7 @@
       "type": "registry:ui",
       "title": "Select",
       "dependencies": [
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -609,7 +609,7 @@
       "title": "Sheet",
       "dependencies": [
         "@floating-ui/react",
-        "lucide-react",
+        "@phosphor-icons/react",
         "motion",
         "react-remove-scroll"
       ],
@@ -782,7 +782,7 @@
       "type": "registry:ui",
       "title": "Theme Toggle",
       "dependencies": [
-        "lucide-react",
+        "@phosphor-icons/react",
         "motion"
       ],
       "registryDependencies": [
@@ -819,7 +819,7 @@
       "type": "registry:ui",
       "title": "Toast",
       "dependencies": [
-        "lucide-react",
+        "@phosphor-icons/react",
         "motion"
       ],
       "registryDependencies": [
@@ -901,7 +901,7 @@
       "type": "registry:block",
       "title": "Dropzone",
       "dependencies": [
-        "lucide-react"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/card.json",

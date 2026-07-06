@@ -1,12 +1,12 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import type * as React from "react";
 import { Button } from "./button";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 type Mode = "single" | "range" | "multiple";
 
 export interface DateRange {
@@ -299,7 +299,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
         <Button
           variant="tertiary"
           size="sm"
-          icon={<ChevronLeft className="size-4" />}
+          icon={<CaretLeft className="size-4" />}
           onClick={() => setViewMonth((m) => addMonths(m, -1))}
           aria-label="Previous month"
         />
@@ -309,7 +309,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
         <Button
           variant="tertiary"
           size="sm"
-          icon={<ChevronRight className="size-4" />}
+          icon={<CaretRight className="size-4" />}
           onClick={() => setViewMonth((m) => addMonths(m, 1))}
           aria-label="Next month"
         />

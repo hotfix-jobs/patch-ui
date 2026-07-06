@@ -2,9 +2,9 @@
 
 import type * as React from "react";
 import { useCallback } from "react";
-import { Search, X } from "lucide-react";
 import { Input, type InputProps } from "./input";
 
+import { MagnifyingGlass, X } from "@phosphor-icons/react";
 /** SearchInput: search field with prefix icon and trailing clear button. */
 export type SearchInputProps = Omit<
   InputProps,
@@ -43,7 +43,7 @@ export function SearchInput({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      prefix={<Search />}
+      prefix={<MagnifyingGlass />}
       suffix={
         showClear ? (
           <button

@@ -1,9 +1,9 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../utils";
 
+import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 export interface PaginationProps {
   /** Current page (1-indexed). */
   page: number;
@@ -51,7 +51,7 @@ export function Pagination({
         href={href}
         onPageChange={onPageChange}
         ariaLabel="Previous page"
-        icon={<ChevronLeft className="size-3.5" />}
+        icon={<CaretLeft className="size-3.5" />}
         divider="end"
       />
       {items.map((item, i) => {
@@ -92,7 +92,7 @@ export function Pagination({
         href={href}
         onPageChange={onPageChange}
         ariaLabel="Next page"
-        icon={<ChevronRight className="size-3.5" />}
+        icon={<CaretRight className="size-3.5" />}
       />
     </nav>
   );

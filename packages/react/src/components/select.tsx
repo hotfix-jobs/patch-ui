@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
 import type * as React from "react";
 import { forwardRef } from "react";
 import { cn } from "../utils";
 
+import { CaretDown } from "@phosphor-icons/react";
 export type SelectSize = "sm" | "md" | "lg";
 
 export type SelectProps = Omit<
@@ -72,7 +72,7 @@ function Affix({
 function ChevronIndicator({ size }: { size: SelectSize }) {
   const right = size === "sm" ? "right-2" : size === "lg" ? "right-3" : "right-2.5";
   return (
-    <ChevronDown
+    <CaretDown
       aria-hidden="true"
       className={cn(
         "pointer-events-none absolute top-1/2 size-3.5 -translate-y-1/2 text-ink-muted",

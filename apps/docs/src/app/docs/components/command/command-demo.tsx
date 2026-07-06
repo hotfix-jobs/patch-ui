@@ -12,19 +12,7 @@ import {
   Button,
   Kbd,
 } from "@patchui/react";
-import {
-  Bell,
-  FilePlus,
-  FolderOpen,
-  LayoutDashboard,
-  Monitor,
-  Moon,
-  Save,
-  Settings,
-  Sun,
-  UserPlus,
-} from "lucide-react";
-
+import { Bell, FilePlus, FolderOpen, Gear, Monitor, Moon, FloppyDisk, SquaresFour, Sun, UserPlus } from "@phosphor-icons/react";
 type CommandEntry = {
   id: string;
   label: string;
@@ -35,14 +23,14 @@ type CommandEntry = {
 };
 
 const COMMANDS: CommandEntry[] = [
-  { id: "go-dashboard", label: "Go to dashboard", group: "Navigate", icon: <LayoutDashboard /> },
+  { id: "go-dashboard", label: "Go to dashboard", group: "Navigate", icon: <SquaresFour /> },
   { id: "go-projects", label: "Go to projects", group: "Navigate", icon: <FolderOpen /> },
   { id: "go-notifications", label: "Go to notifications", group: "Navigate", icon: <Bell /> },
   { id: "new-file", label: "New file", group: "Actions", icon: <FilePlus />, shortcut: <Kbd meta>N</Kbd>, description: "Create an empty file in this workspace" },
   { id: "open-file", label: "Open file", group: "Actions", icon: <FolderOpen />, shortcut: <Kbd meta>O</Kbd>, description: "Browse and open a file from disk" },
-  { id: "save", label: "Save", group: "Actions", icon: <Save />, shortcut: <Kbd meta>S</Kbd>, description: "Save the active file" },
+  { id: "save", label: "Save", group: "Actions", icon: <FloppyDisk />, shortcut: <Kbd meta>S</Kbd>, description: "Save the active file" },
   { id: "invite-teammate", label: "Invite a teammate", group: "Settings", icon: <UserPlus /> },
-  { id: "open-settings", label: "Open settings", group: "Settings", icon: <Settings /> },
+  { id: "open-settings", label: "Open settings", group: "Settings", icon: <Gear /> },
 ];
 
 const THEMES = [
@@ -71,7 +59,7 @@ export function CommandDemo() {
   const grouped = {
     Navigate: results.filter((r) => r.group === "Navigate"),
     Actions: results.filter((r) => r.group === "Actions"),
-    Settings: results.filter((r) => r.group === "Settings"),
+    Gear: results.filter((r) => r.group === "Settings"),
   };
 
   const totalCount = results.length + themeMatches.length;
@@ -160,13 +148,13 @@ export function CommandDemo() {
             </>
           )}
 
-          {grouped.Settings.length > 0 && (
+          {grouped.Gear.length > 0 && (
             <>
               {(grouped.Navigate.length > 0 || grouped.Actions.length > 0) && (
                 <CommandSeparator />
               )}
               <CommandSection title="Settings">
-                {grouped.Settings.map((entry) => (
+                {grouped.Gear.map((entry) => (
                   <CommandItem
                     key={entry.id}
                     value={entry.label}

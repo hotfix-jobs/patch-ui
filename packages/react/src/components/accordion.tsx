@@ -1,12 +1,12 @@
 "use client";
 
 import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
-import { ChevronDown } from "lucide-react";
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, iconMuted } from "../recipes";
 
+import { CaretDown } from "@phosphor-icons/react";
 // Panels stay mounted (`keepMounted`) for find-in-page compatibility.
 
 type AccordionContextValue = {
@@ -84,7 +84,7 @@ export function AccordionTrigger({
         {...props}
       >
         <span>{children}</span>
-        <ChevronDown
+        <CaretDown
           aria-hidden
           className="size-4 shrink-0 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[panel-open]:rotate-180"
         />

@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronRight, Home, MoreHorizontal } from "lucide-react";
 import { Fragment, useState } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 
+import { CaretRight, DotsThree, House } from "@phosphor-icons/react";
 export interface BreadcrumbItem {
   /** Label. If `href === "/"` and `name === "Home"`, renders as home icon. */
   name: string;
@@ -32,7 +32,7 @@ export interface BreadcrumbProps
 
 function Separator() {
   return (
-    <ChevronRight
+    <CaretRight
       aria-hidden
       className="size-3.5 shrink-0 text-ink-tertiary"
     />
@@ -81,7 +81,7 @@ export function Breadcrumb({
               </>
             ) : isHome ? (
               <>
-                <Home className="size-3.5 shrink-0" aria-hidden />
+                <House className="size-3.5 shrink-0" aria-hidden />
                 <span className="sr-only">{item.name}</span>
               </>
             ) : (
@@ -141,7 +141,7 @@ export function Breadcrumb({
                     aria-label="Show hidden breadcrumbs"
                     className="inline-flex items-center rounded-[var(--radius-6)] px-0.5 text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:text-ink"
                   >
-                    <MoreHorizontal className="size-4" aria-hidden />
+                    <DotsThree className="size-4" aria-hidden />
                   </button>
                 </li>
               )}

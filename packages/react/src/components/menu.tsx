@@ -38,11 +38,11 @@ import {
   useState,
 } from "react";
 import type * as React from "react";
-import { Check, ChevronRight } from "lucide-react";
 import { cn } from "../utils";
 import { iconMuted, itemGroupLabel, itemRow, popupDivider, popupSurface } from "../recipes";
 import { Checkbox } from "./checkbox";
 
+import { CaretRight, Check } from "@phosphor-icons/react";
 type Density = "compact" | "comfortable";
 
 const MenuDensityContext = createContext<Density>("comfortable");
@@ -435,7 +435,6 @@ export function MenuItem({
   const trailingCheck = selected && (
     <Check
       className="ms-auto size-3.5 shrink-0 text-ink-muted"
-      strokeWidth={2.25}
     />
   );
 
@@ -697,7 +696,6 @@ export function MenuRadioItem({
         <Check
           aria-hidden
           className="ms-auto size-3.5 shrink-0 text-ink-muted"
-          strokeWidth={2.25}
         />
       )}
     </div>
@@ -853,7 +851,7 @@ export function MenuSubTrigger({
       {...parent.getItemProps(getReferenceProps())}
     >
       {children}
-      <ChevronRight
+      <CaretRight
         aria-hidden="true"
         className="ms-auto -me-0.5 size-4 opacity-80"
       />

@@ -16,17 +16,7 @@ import {
   MenuSubTrigger,
   MenuSubPopup,
 } from "@patchui/react";
-import {
-  ArrowDownAZ,
-  ArrowUpAZ,
-  Calendar,
-  Clock,
-  CreditCard,
-  LogOut,
-  Settings,
-  User,
-} from "lucide-react";
-
+import { Calendar, Clock, CreditCard, Gear, SignOut, SortAscending, SortDescending, User } from "@phosphor-icons/react";
 export function MenuDemo() {
   const [showStatusBar, setShowStatusBar] = useState(false);
   const [showPanel, setShowPanel] = useState(false);
@@ -65,9 +55,9 @@ export function MenuDemo() {
           <MenuPopup>
             <MenuItem prefix={<User />}>Profile</MenuItem>
             <MenuItem prefix={<CreditCard />}>Billing</MenuItem>
-            <MenuItem prefix={<Settings />}>Settings</MenuItem>
+            <MenuItem prefix={<Gear />}>Gear</MenuItem>
             <MenuDivider />
-            <MenuItem prefix={<LogOut />} type="error">
+            <MenuItem prefix={<SignOut />} type="error">
               Log out
             </MenuItem>
           </MenuPopup>
@@ -139,14 +129,14 @@ export function MenuDemo() {
               Oldest first
             </MenuItem>
             <MenuItem
-              prefix={<ArrowDownAZ />}
+              prefix={<SortAscending />}
               selected={sortBy === "az"}
               onClick={() => setSortBy("az")}
             >
               A to Z
             </MenuItem>
             <MenuItem
-              prefix={<ArrowUpAZ />}
+              prefix={<SortDescending />}
               selected={sortBy === "za"}
               onClick={() => setSortBy("za")}
             >

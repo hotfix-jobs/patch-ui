@@ -1,8 +1,7 @@
 "use client";
 
 import { Badge } from "@patchui/react";
-import { Shield, Zap } from "lucide-react";
-
+import { Lightning, Shield } from "@phosphor-icons/react";
 export function BadgeDemo() {
   return (
     <div className="flex flex-col gap-8">
@@ -40,8 +39,8 @@ export function BadgeDemo() {
         <div className="flex flex-wrap items-center gap-3">
           <Badge icon={<Shield />} variant="default">Verified</Badge>
           <Badge icon={<Shield />} variant="default" contrast="low">Verified</Badge>
-          <Badge icon={<Zap />} variant="warning">Beta</Badge>
-          <Badge icon={<Zap />} variant="warning" contrast="low">Beta</Badge>
+          <Badge icon={<Lightning />} variant="warning">Beta</Badge>
+          <Badge icon={<Lightning />} variant="warning" contrast="low">Beta</Badge>
         </div>
       </div>
 
