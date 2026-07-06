@@ -24,6 +24,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "packages", "react", "src");
 const COMPONENTS = join(SRC, "components");
 const BLOCKS = join(SRC, "blocks");
+const HOOKS = join(SRC, "hooks");
 const OUT = join(ROOT, "registry");
 
 // Cross-registry deps must be full URLs. Bare names ("utils", "tokens") get
@@ -40,6 +41,8 @@ const IGNORED_NPM = new Set(["react", "react-dom", "react/jsx-runtime"]);
 function mapInternalUi(spec) {
   if (spec === "../utils") return { alias: "@/lib/utils", dep: "utils" };
   if (spec === "../recipes") return { alias: "@/lib/recipes", dep: "recipes" };
+  const hook = spec.match(/^\.\.\/hooks\/([a-z0-9-]+)$/); // ../hooks/<name>
+  if (hook) return { alias: spec, dep: hook[1] };
   const m = spec.match(/^\.\/([a-z0-9-]+)$/); // sibling ui component
   if (m) return { alias: `@/components/ui/${m[1]}`, dep: m[1] };
   return null;
@@ -107,6 +110,7 @@ function title(name) {
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(join(OUT, "components", "ui"), { recursive: true });
 mkdirSync(join(OUT, "lib"), { recursive: true });
+mkdirSync(join(OUT, "hooks"), { recursive: true });
 
 const items = [];
 
@@ -131,6 +135,36 @@ for (const [file, name] of [
       { path: `registry/lib/${file}`, type: "registry:lib", target: `lib/${file}` },
     ],
   });
+}
+
+// ---- hooks ----
+// Component-adjacent hooks (e.g. use-media-query). Consumers install them
+// alongside the ui components that import them via `../hooks/<name>`.
+if (existsSync(HOOKS)) {
+  for (const filename of readdirSync(HOOKS).sort()) {
+    if (!filename.endsWith(".ts")) continue;
+    const name = filename.replace(/\.ts$/, "");
+    const { content, dependencies, registryDependencies } = process(
+      readFileSync(join(HOOKS, filename), "utf8"),
+      mapInternalUi,
+    );
+    writeFileSync(join(OUT, "hooks", filename), content);
+    items.push({
+      name,
+      type: "registry:hook",
+      ...(dependencies.length ? { dependencies } : {}),
+      ...(registryDependencies.length
+        ? { registryDependencies: registryDependencies.map(toUrl) }
+        : {}),
+      files: [
+        {
+          path: `registry/hooks/${filename}`,
+          type: "registry:hook",
+          target: `components/hooks/${filename}`,
+        },
+      ],
+    });
+  }
 }
 
 // ---- tokens (shipped as a file the consumer @imports) ----
