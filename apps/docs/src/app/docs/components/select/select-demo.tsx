@@ -1,9 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Select } from "@patchui/react";
-import { SectionLabel } from "@patchui/react";
+import {
+  Select,
+  SelectItem,
+  SelectGroup,
+  SelectGroupLabel,
+  SectionLabel,
+} from "@patchui/react";
 import { Globe } from "@phosphor-icons/react/dist/ssr";
+
 export function SelectDemo() {
   const [framework, setFramework] = useState("react");
   const [region, setRegion] = useState("us-east");
@@ -17,13 +23,13 @@ export function SelectDemo() {
             id="framework"
             label="Framework"
             value={framework}
-            onChange={(e) => setFramework(e.target.value)}
+            onValueChange={setFramework}
           >
-            <option value="react">React</option>
-            <option value="vue">Vue</option>
-            <option value="svelte">Svelte</option>
-            <option value="solid">Solid</option>
-            <option value="qwik">Qwik</option>
+            <SelectItem value="react">React</SelectItem>
+            <SelectItem value="vue">Vue</SelectItem>
+            <SelectItem value="svelte">Svelte</SelectItem>
+            <SelectItem value="solid">Solid</SelectItem>
+            <SelectItem value="qwik">Qwik</SelectItem>
           </Select>
         </div>
       </div>
@@ -35,12 +41,12 @@ export function SelectDemo() {
             id="region"
             label="Region"
             value={region}
-            onChange={(e) => setRegion(e.target.value)}
+            onValueChange={setRegion}
           >
-            <option value="us-east">US East (Virginia)</option>
-            <option value="us-west">US West (Oregon)</option>
-            <option value="eu-west">EU West (Ireland)</option>
-            <option value="ap-south">Asia Pacific (Singapore)</option>
+            <SelectItem value="us-east">US East (Virginia)</SelectItem>
+            <SelectItem value="us-west">US West (Oregon)</SelectItem>
+            <SelectItem value="eu-west">EU West (Ireland)</SelectItem>
+            <SelectItem value="ap-south">Asia Pacific (Singapore)</SelectItem>
           </Select>
         </div>
       </div>
@@ -49,16 +55,16 @@ export function SelectDemo() {
         <SectionLabel>Sizes</SectionLabel>
         <div className="flex flex-col gap-3 max-w-sm">
           <Select id="size-sm" label="Small" size="sm" defaultValue="a">
-            <option value="a">One</option>
-            <option value="b">Two</option>
+            <SelectItem value="a">One</SelectItem>
+            <SelectItem value="b">Two</SelectItem>
           </Select>
           <Select id="size-md" label="Medium" size="md" defaultValue="a">
-            <option value="a">One</option>
-            <option value="b">Two</option>
+            <SelectItem value="a">One</SelectItem>
+            <SelectItem value="b">Two</SelectItem>
           </Select>
           <Select id="size-lg" label="Large" size="lg" defaultValue="a">
-            <option value="a">One</option>
-            <option value="b">Two</option>
+            <SelectItem value="a">One</SelectItem>
+            <SelectItem value="b">Two</SelectItem>
           </Select>
         </div>
       </div>
@@ -67,10 +73,10 @@ export function SelectDemo() {
         <SectionLabel>With prefix icon</SectionLabel>
         <div className="max-w-sm">
           <Select id="locale" label="Locale" prefix={<Globe />} defaultValue="en">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
-            <option value="de">Deutsch</option>
+            <SelectItem value="en">English</SelectItem>
+            <SelectItem value="es">Español</SelectItem>
+            <SelectItem value="fr">Français</SelectItem>
+            <SelectItem value="de">Deutsch</SelectItem>
           </Select>
         </div>
       </div>
@@ -79,15 +85,17 @@ export function SelectDemo() {
         <SectionLabel>Grouped options</SectionLabel>
         <div className="max-w-sm">
           <Select id="assignee" label="Assignee" defaultValue="ana">
-            <optgroup label="Design">
-              <option value="ana">Ana</option>
-              <option value="ben">Ben</option>
-            </optgroup>
-            <optgroup label="Engineering">
-              <option value="chris">Chris</option>
-              <option value="dana">Dana</option>
-              <option value="eli">Eli</option>
-            </optgroup>
+            <SelectGroup>
+              <SelectGroupLabel>Design</SelectGroupLabel>
+              <SelectItem value="ana">Ana</SelectItem>
+              <SelectItem value="ben">Ben</SelectItem>
+            </SelectGroup>
+            <SelectGroup>
+              <SelectGroupLabel>Engineering</SelectGroupLabel>
+              <SelectItem value="chris">Chris</SelectItem>
+              <SelectItem value="dana">Dana</SelectItem>
+              <SelectItem value="eli">Eli</SelectItem>
+            </SelectGroup>
           </Select>
         </div>
       </div>
@@ -96,8 +104,8 @@ export function SelectDemo() {
         <SectionLabel>Disabled</SectionLabel>
         <div className="max-w-sm">
           <Select id="disabled" label="Plan" disabled defaultValue="hobby">
-            <option value="hobby">Hobby</option>
-            <option value="pro">Pro</option>
+            <SelectItem value="hobby">Hobby</SelectItem>
+            <SelectItem value="pro">Pro</SelectItem>
           </Select>
         </div>
       </div>
@@ -110,12 +118,11 @@ export function SelectDemo() {
             label="Plan"
             required
             error="Please select a plan."
-            defaultValue=""
             placeholder="Select a plan…"
           >
-            <option value="hobby">Hobby</option>
-            <option value="pro">Pro</option>
-            <option value="enterprise">Enterprise</option>
+            <SelectItem value="hobby">Hobby</SelectItem>
+            <SelectItem value="pro">Pro</SelectItem>
+            <SelectItem value="enterprise">Enterprise</SelectItem>
           </Select>
         </div>
       </div>

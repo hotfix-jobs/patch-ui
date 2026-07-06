@@ -1,15 +1,7 @@
 "use client";
 
 import { Autocomplete as AutocompletePrimitive } from "@base-ui/react/autocomplete";
-import {
-  FloatingFocusManager,
-  FloatingPortal,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-} from "@floating-ui/react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
@@ -260,7 +252,7 @@ export interface CommandDialogProps
   onOpenChange?: (open: boolean) => void;
 }
 
-/** Floating command palette (not modal, no scrim). Escape and outside clicks dismiss. */
+/** Floating command palette. Escape and outside clicks dismiss. */
 export function CommandDialog({
   open,
   onOpenChange,
@@ -268,66 +260,39 @@ export function CommandDialog({
   ...commandProps
 }: CommandDialogProps): React.ReactElement | null {
   const close = () => onOpenChange?.(false);
-  const isOpen = open ?? false;
-
-  const { refs, context } = useFloating({
-    open: isOpen,
-    onOpenChange: (next) => {
-      if (!next) close();
-    },
-  });
-  const dismiss = useDismiss(context, { outsidePressEvent: "mousedown" });
-  const role = useRole(context, { role: "dialog" });
-  const { getFloatingProps } = useInteractions([dismiss, role]);
-
-  const reduceMotion = useReducedMotion();
 
   return (
-    <FloatingPortal>
-      <AnimatePresence>
-        {isOpen && (
-          // pointer-events-auto on the wrapper routes outside clicks to useDismiss
-          // instead of the app behind the palette.
-          <div
-            className="fixed inset-0 z-[80] flex items-start justify-center p-4 pt-[15vh] pointer-events-auto"
-            data-slot="command-dialog-overlay"
-          >
-            <FloatingFocusManager context={context} modal={false}>
-              <motion.div
-                // False positive: refs.setFloating is a callback ref, not a
-                // ref access during render (floating-ui/floating-ui#3405).
-                // eslint-disable-next-line react-hooks/refs
-                ref={refs.setFloating}
-                {...getFloatingProps()}
-                data-slot="command-dialog"
-                aria-modal="true"
-                className={cn(
-                  popupSurface,
-                  "flex w-full max-w-xl max-h-[70vh] flex-col overflow-hidden",
-                )}
-                initial={reduceMotion ? false : { opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
-                transition={
-                  reduceMotion
-                    ? { duration: 0 }
-                    : {
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 30,
-                        mass: 0.6,
-                      }
-                }
-              >
-                <CommandCloseContext.Provider value={close}>
-                  <Command {...commandProps}>{children}</Command>
-                </CommandCloseContext.Provider>
-              </motion.div>
-            </FloatingFocusManager>
-          </div>
-        )}
-      </AnimatePresence>
-    </FloatingPortal>
+    <DialogPrimitive.Root
+      open={open}
+      onOpenChange={(next) => {
+        if (!next) close();
+      }}
+    >
+      <DialogPrimitive.Portal>
+        <DialogPrimitive.Backdrop
+          data-slot="command-dialog-overlay"
+          className={cn(
+            "fixed inset-0 z-[80] bg-white/40 dark:bg-black/40",
+            "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+            "data-starting-style:opacity-0 data-ending-style:opacity-0",
+          )}
+        />
+        <DialogPrimitive.Popup
+          data-slot="command-dialog"
+          className={cn(
+            popupSurface,
+            "fixed left-1/2 top-[15vh] z-[80] flex w-full max-w-xl -translate-x-1/2 flex-col overflow-hidden max-h-[70vh]",
+            "transition-[opacity,scale] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+            "data-starting-style:opacity-0 data-starting-style:scale-97",
+            "data-ending-style:opacity-0 data-ending-style:scale-97",
+          )}
+        >
+          <CommandCloseContext.Provider value={close}>
+            <Command {...commandProps}>{children}</Command>
+          </CommandCloseContext.Provider>
+        </DialogPrimitive.Popup>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 }
 

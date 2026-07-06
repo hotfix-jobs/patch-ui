@@ -12,11 +12,30 @@ export {
   type AccordionPanelProps,
 } from "./components/accordion";
 export { Button, buttonVariants, type ButtonProps } from "./components/button";
+export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  CollapsiblePrimitive,
+  type CollapsibleProps,
+  type CollapsibleTriggerProps,
+  type CollapsibleContentProps,
+} from "./components/collapsible";
 export { Input, InputPrimitive, type InputProps } from "./components/input";
 export { SearchInput, type SearchInputProps } from "./components/search-input";
 export { Textarea, type TextareaProps } from "./components/textarea";
 export { Label } from "./components/label";
-export { Select, type SelectProps, type SelectSize } from "./components/select";
+export {
+  Select,
+  SelectItem,
+  SelectGroup,
+  SelectGroupLabel,
+  SelectSeparator,
+  SelectPrimitive,
+  type SelectProps,
+  type SelectItemProps,
+  type SelectSize,
+} from "./components/select";
 export { Switch, SwitchPrimitive } from "./components/switch";
 export { Checkbox, CheckboxPrimitive } from "./components/checkbox";
 export {
@@ -210,11 +229,11 @@ export {
 } from "./components/theme-toggle";
 export { Pagination, type PaginationProps } from "./components/pagination";
 export {
-  SegmentedToggle,
-  SegmentedToggleItem,
-  type SegmentedToggleProps,
-  type SegmentedToggleItemProps,
-} from "./components/segmented-toggle";
+  ToggleGroup,
+  ToggleGroupItem,
+  type ToggleGroupProps,
+  type ToggleGroupItemProps,
+} from "./components/toggle-group";
 export {
   Combobox,
   ComboboxInput,

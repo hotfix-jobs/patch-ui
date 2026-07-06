@@ -1,13 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useId,
-  useState,
-} from "react";
+import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
+import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
@@ -18,23 +12,16 @@ import { Tooltip } from "./tooltip";
 type TabsVariant = "underline" | "pill";
 type TabsOrientation = "horizontal" | "vertical";
 
-type TabsContextValue = {
-  value: string;
-  setValue: (value: string) => void;
-  variant: TabsVariant;
-  orientation: TabsOrientation;
-  baseId: string;
-};
+const TabsVariantContext = createContext<TabsVariant>("underline");
+const TabsOrientationContext = createContext<TabsOrientation>("horizontal");
 
-const TabsContext = createContext<TabsContextValue | null>(null);
+/* ---------------------------------- Root --------------------------------- */
 
-function useTabsContext(): TabsContextValue {
-  const ctx = useContext(TabsContext);
-  if (!ctx) throw new Error("Tabs subcomponents must be used inside <Tabs>");
-  return ctx;
-}
-
-export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
+export interface TabsProps
+  extends Omit<
+    React.ComponentProps<typeof TabsPrimitive.Root>,
+    "value" | "defaultValue" | "onValueChange"
+  > {
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
@@ -43,7 +30,7 @@ export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "o
 }
 
 export function Tabs({
-  value: controlledValue,
+  value,
   defaultValue,
   onValueChange,
   variant = "underline",
@@ -52,50 +39,42 @@ export function Tabs({
   children,
   ...props
 }: TabsProps): React.ReactElement {
-  const [uncontrolled, setUncontrolled] = useState(defaultValue ?? "");
-  const value = controlledValue ?? uncontrolled;
-  const setValue = useCallback(
-    (next: string) => {
-      if (controlledValue === undefined) setUncontrolled(next);
-      onValueChange?.(next);
-    },
-    [controlledValue, onValueChange],
-  );
-
-  const baseId = useId();
-
   return (
-    <TabsContext.Provider
-      value={{ value, setValue, variant, orientation, baseId }}
-    >
-      <div
-        data-slot="tabs"
-        data-variant={variant}
-        data-orientation={orientation}
-        className={className}
-        {...props}
-      >
-        {children}
-      </div>
-    </TabsContext.Provider>
+    <TabsVariantContext.Provider value={variant}>
+      <TabsOrientationContext.Provider value={orientation}>
+        <TabsPrimitive.Root
+          value={value}
+          defaultValue={defaultValue}
+          onValueChange={
+            onValueChange ? (next) => onValueChange(String(next)) : undefined
+          }
+          orientation={orientation}
+          data-slot="tabs"
+          data-variant={variant}
+          className={className}
+          {...props}
+        >
+          {children}
+        </TabsPrimitive.Root>
+      </TabsOrientationContext.Provider>
+    </TabsVariantContext.Provider>
   );
 }
 
-/* --------------------------- TabsList --------------------------- */
+/* --------------------------------- List --------------------------------- */
 
-export type TabsListProps = React.HTMLAttributes<HTMLDivElement>;
+export type TabsListProps = React.ComponentProps<typeof TabsPrimitive.List>;
 
 export function TabsList({
   className,
   children,
   ...props
 }: TabsListProps): React.ReactElement {
-  const { variant, orientation } = useTabsContext();
+  const variant = useContext(TabsVariantContext);
+  const orientation = useContext(TabsOrientationContext);
 
   return (
-    <div
-      role="tablist"
-      aria-orientation={orientation}
+    <TabsPrimitive.List
       data-slot="tabs-list"
       data-orientation={orientation}
       className={cn(
@@ -113,15 +92,26 @@ export function TabsList({
       )}
       {...props}
     >
+      {variant === "underline" && (
+        <TabsPrimitive.Indicator
+          data-slot="tabs-indicator"
+          className={cn(
+            "absolute bg-ink transition-[left,top,width,height] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+            orientation === "horizontal"
+              ? "-bottom-px h-[2px] left-[var(--active-tab-left)] w-[var(--active-tab-width)]"
+              : "-left-px w-[2px] top-[var(--active-tab-top)] h-[var(--active-tab-height)]",
+          )}
+        />
+      )}
       {children}
-    </div>
+    </TabsPrimitive.List>
   );
 }
 
-/* --------------------------- TabsTrigger --------------------------- */
+/* -------------------------------- Trigger ------------------------------- */
 
 export interface TabsTriggerProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "value"> {
+  extends Omit<React.ComponentProps<typeof TabsPrimitive.Tab>, "value"> {
   value: string;
   /** Leading node (icon). */
   icon?: React.ReactNode;
@@ -139,106 +129,30 @@ export function TabsTrigger({
   icon,
   badge,
   tooltip,
-  onKeyDown,
   ...props
 }: TabsTriggerProps): React.ReactElement {
-  const {
-    value: activeValue,
-    setValue,
-    variant,
-    orientation,
-    baseId,
-  } = useTabsContext();
-  const reduceMotion = useReducedMotion();
-  const isActive = activeValue === value;
-
-  const triggerId = `${baseId}-trigger-${value}`;
-  const panelId = `${baseId}-panel-${value}`;
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    onKeyDown?.(e);
-    if (e.defaultPrevented) return;
-
-    const list = e.currentTarget.closest('[role="tablist"]');
-    if (!list) return;
-    const triggers = Array.from(
-      list.querySelectorAll<HTMLButtonElement>(
-        '[role="tab"]:not([disabled])',
-      ),
-    );
-    const current = triggers.indexOf(e.currentTarget);
-    if (current === -1) return;
-
-    const isHorizontal = orientation === "horizontal";
-    const nextKey = isHorizontal ? "ArrowRight" : "ArrowDown";
-    const prevKey = isHorizontal ? "ArrowLeft" : "ArrowUp";
-
-    let next = -1;
-    if (e.key === nextKey) next = (current + 1) % triggers.length;
-    else if (e.key === prevKey)
-      next = (current - 1 + triggers.length) % triggers.length;
-    else if (e.key === "Home") next = 0;
-    else if (e.key === "End") next = triggers.length - 1;
-
-    if (next >= 0) {
-      e.preventDefault();
-      const target = triggers[next];
-      target.focus();
-      target.click();
-    }
-  };
-
-  const indicatorTransition = reduceMotion
-    ? { duration: 0 }
-    : {
-        type: "spring" as const,
-        stiffness: 400,
-        damping: 30,
-        mass: 0.6,
-      };
-
+  const variant = useContext(TabsVariantContext);
   const showBadge = badge != null && (typeof badge !== "number" || badge > 0);
 
   const trigger = (
-    <button
-      type="button"
-      role="tab"
-      id={triggerId}
-      aria-selected={isActive}
-      aria-controls={panelId}
-      tabIndex={isActive ? 0 : -1}
+    <TabsPrimitive.Tab
+      value={value}
       disabled={disabled}
       data-slot="tabs-trigger"
-      data-active={isActive ? "" : undefined}
-      onClick={() => setValue(value)}
-      onKeyDown={handleKeyDown}
       className={cn(
-        "relative inline-flex items-center gap-2 text-body-14 transition-colors disabled:pointer-events-none disabled:opacity-50",
+        "relative inline-flex items-center gap-2 text-body-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
         focusRing,
         variant === "underline" &&
-          "py-2.5 text-ink-muted hover:text-ink data-[active]:text-ink",
+          "py-2.5 text-ink-muted hover:text-ink data-[selected]:text-ink",
         variant === "pill" && [
           "rounded-full border border-hairline px-3 py-1 text-left text-ink-muted",
           "hover:bg-surface-1 hover:text-ink",
-          "data-[active]:bg-surface-elevated data-[active]:text-ink",
+          "data-[selected]:bg-surface-elevated data-[selected]:text-ink",
         ],
         className,
       )}
       {...props}
     >
-      {variant === "underline" && isActive && (
-        <motion.div
-          layoutId={`tabs-underline-${baseId}`}
-          data-slot="tabs-indicator"
-          className={cn(
-            "absolute bg-ink",
-            orientation === "horizontal"
-              ? "-bottom-px left-0 right-0 h-[2px]"
-              : "top-0 bottom-0 -left-px w-[2px]",
-          )}
-          transition={indicatorTransition}
-        />
-      )}
       {icon && (
         <span className="shrink-0 [&_svg]:size-4" data-slot="tabs-trigger-icon">
           {icon}
@@ -253,7 +167,7 @@ export function TabsTrigger({
           {badge}
         </span>
       )}
-    </button>
+    </TabsPrimitive.Tab>
   );
 
   if (tooltip) {
@@ -262,10 +176,10 @@ export function TabsTrigger({
   return trigger;
 }
 
-/* --------------------------- TabsPanel --------------------------- */
+/* -------------------------------- Panel -------------------------------- */
 
 export interface TabsPanelProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "value"> {
+  extends Omit<React.ComponentProps<typeof TabsPrimitive.Panel>, "value"> {
   value: string;
   /** Keep the panel mounted (hidden) when inactive. */
   keepMounted?: boolean;
@@ -273,30 +187,22 @@ export interface TabsPanelProps
 
 export function TabsPanel({
   value,
-  keepMounted = false,
+  keepMounted,
   className,
   children,
   ...props
-}: TabsPanelProps): React.ReactElement | null {
-  const { value: activeValue, baseId } = useTabsContext();
-  const isActive = activeValue === value;
-  const triggerId = `${baseId}-trigger-${value}`;
-  const panelId = `${baseId}-panel-${value}`;
-
-  if (!isActive && !keepMounted) return null;
-
+}: TabsPanelProps): React.ReactElement {
   return (
-    <div
-      role="tabpanel"
-      id={panelId}
-      aria-labelledby={triggerId}
-      hidden={!isActive}
-      tabIndex={0}
+    <TabsPrimitive.Panel
+      value={value}
+      keepMounted={keepMounted}
       data-slot="tabs-panel"
       className={cn("pt-6 focus-visible:outline-none", className)}
       {...props}
     >
       {children}
-    </div>
+    </TabsPrimitive.Panel>
   );
 }
+
+export { TabsPrimitive };

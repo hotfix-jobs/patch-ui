@@ -5,7 +5,7 @@ export const metadata = { title: "Tabs" };
 
 # Tabs
 
-Compound component built on Base UI Tabs. Two variants: `underline` (default) draws a single sliding underline; `pill` slides a rounded background between active tabs. Both indicators animate spring-eased between positions via Base UI's `Tabs.Indicator` + the `--active-tab-*` CSS variables it populates. The `pill` variant works in both orientations, so one component can render a vertical sidebar on desktop and a horizontal strip on mobile.
+Compound component built on Base UI Tabs. Two variants: `underline` (default) draws a single sliding underline that eases between the active tab position; `pill` renders each tab as an outlined rounded button with a filled active state. The underline animates via Base UI's `Tabs.Indicator` and the `--active-tab-*` CSS variables it populates. The `pill` variant works in both orientations, so one component can render a vertical sidebar on desktop and a horizontal strip on mobile.
 
 <Install name="tabs" />
 
@@ -79,13 +79,13 @@ import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
 ## Components
 
 - `Tabs` - root; accepts `variant`, `orientation`, `defaultValue` or controlled `value`/`onValueChange`
-- `TabsList` - container for triggers; renders the sliding indicator (underline OR pill background)
-- `TabsTrigger` - individual tab; for pill variant, sits above the sliding indicator via z-index
+- `TabsList` - container for triggers; renders `Tabs.Indicator` in the underline variant
+- `TabsTrigger` - individual tab; carries `data-[selected]` for active-state styling
 - `TabsPanel` - matched panel for a trigger value
 
 <Callout title="Notes">
-- **Sliding indicator:** Both variants share the same motion `layoutId` infrastructure. Underline draws a 2px `gray-1000` bar under the active tab; pill paints a `gray-alpha-100` wash behind the active tab. Motion springs the indicator between active tabs.
-- **Underline vs pill:** Use `underline` for switching content panels; use `pill` for navigation-style tabs (settings sections, sidebar nav) where a filled active state reads better.
-- **Responsive nav:** With `variant="pill"`, render `orientation="vertical"` on larger screens and horizontal on small screens: the sliding indicator works in both.
-- **Keyboard:** Triggers are arrow-key navigable (Base UI) and show the standard focus outline.
+- **Underline indicator:** Positioned via the `--active-tab-left` / `--active-tab-width` (or `top`/`height` when vertical) CSS variables that Base UI populates on `Tabs.Indicator`. Standard state/overlay easing tokens carry it between positions.
+- **Underline vs pill:** Use `underline` for switching content panels; use `pill` for navigation-style tabs (settings sections, sidebar nav) where an outlined active state reads better.
+- **Responsive nav:** With `variant="pill"`, render `orientation="vertical"` on larger screens and horizontal on small screens.
+- **Keyboard:** Base UI ships proper roving tabindex + arrow-key navigation, Home / End, and standard focus outline.
 </Callout>

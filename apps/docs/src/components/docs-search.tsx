@@ -10,6 +10,7 @@ import {
   CommandEmpty,
   CommandCollection,
   CommandItem,
+  cn,
 } from "@patchui/react";
 import { navigation } from "@/lib/navigation";
 
@@ -36,10 +37,10 @@ export function SearchTrigger({ className }: { className?: string }) {
       onClick={requestSearchOpen}
       aria-label="Search docs"
       title="Search docs (⌘K)"
-      className={
-        "inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink" +
-        (className ? " " + className : "")
-      }
+      className={cn(
+        "inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink",
+        className,
+      )}
     >
       <MagnifyingGlass className="size-4" aria-hidden />
     </button>

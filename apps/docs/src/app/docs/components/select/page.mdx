@@ -5,7 +5,7 @@ export const metadata = { title: "Select" };
 
 # Select
 
-A native `<select>` wrapped in styled chrome. Uses the OS-native dropdown, which behaves correctly on every platform, especially mobile where the native picker is far better than any custom popup.
+A rich single-select with a styled popup. Use `SelectItem` children; group with `SelectGroup` + `SelectGroupLabel`. For a searchable list, reach for `Combobox`.
 
 <Install name="select" />
 
@@ -16,29 +16,31 @@ A native `<select>` wrapped in styled chrome. Uses the OS-native dropdown, which
 ## Usage
 
 ```tsx
-import { Select } from "@patchui/react";
+import { Select, SelectItem, SelectGroup, SelectGroupLabel } from "@patchui/react";
 
 <Select
   id="framework"
   label="Framework"
   value={framework}
-  onChange={(e) => setFramework(e.target.value)}
+  onValueChange={setFramework}
 >
-  <option value="react">React</option>
-  <option value="vue">Vue</option>
-  <option value="svelte">Svelte</option>
+  <SelectItem value="react">React</SelectItem>
+  <SelectItem value="vue">Vue</SelectItem>
+  <SelectItem value="svelte">Svelte</SelectItem>
 </Select>
 
 // Grouped options
 <Select id="assignee" label="Assignee" defaultValue="ana">
-  <optgroup label="Design">
-    <option value="ana">Ana</option>
-    <option value="ben">Ben</option>
-  </optgroup>
-  <optgroup label="Engineering">
-    <option value="chris">Chris</option>
-    <option value="dana">Dana</option>
-  </optgroup>
+  <SelectGroup>
+    <SelectGroupLabel>Design</SelectGroupLabel>
+    <SelectItem value="ana">Ana</SelectItem>
+    <SelectItem value="ben">Ben</SelectItem>
+  </SelectGroup>
+  <SelectGroup>
+    <SelectGroupLabel>Engineering</SelectGroupLabel>
+    <SelectItem value="chris">Chris</SelectItem>
+    <SelectItem value="dana">Dana</SelectItem>
+  </SelectGroup>
 </Select>
 
 // Placeholder + validation
@@ -47,11 +49,10 @@ import { Select } from "@patchui/react";
   label="Plan"
   required
   error="Please select a plan."
-  defaultValue=""
   placeholder="Select a plan…"
 >
-  <option value="hobby">Hobby</option>
-  <option value="pro">Pro</option>
+  <SelectItem value="hobby">Hobby</SelectItem>
+  <SelectItem value="pro">Pro</SelectItem>
 </Select>
 ```
 
@@ -60,22 +61,40 @@ import { Select } from "@patchui/react";
 <PropsTable
   props={[
     {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Controlled value.",
+    },
+    {
+      name: "defaultValue",
+      type: "string",
+      default: "-",
+      description: "Initial value (uncontrolled).",
+    },
+    {
+      name: "onValueChange",
+      type: "(value: string) => void",
+      default: "-",
+      description: "Called when the selection changes.",
+    },
+    {
       name: "size",
       type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "Controls the height and typography of the select.",
+      description: "Controls the height and typography of the trigger.",
     },
     {
       name: "placeholder",
       type: "string",
       default: "-",
-      description: "Rendered as a disabled first option; shown when no value is selected.",
+      description: "Shown in the trigger when no value is selected.",
     },
     {
       name: "label",
       type: "string",
       default: "-",
-      description: "Renders a <label> above the select. Requires `id` for accessibility.",
+      description: "Renders a <label> above the trigger. Requires `id` for accessibility.",
     },
     {
       name: "id",
@@ -87,7 +106,7 @@ import { Select } from "@patchui/react";
       name: "prefix",
       type: "ReactNode",
       default: "-",
-      description: "Content rendered at the start of the field (icon, unit).",
+      description: "Content rendered at the start of the trigger (icon, unit).",
     },
     {
       name: "suffix",
@@ -117,9 +136,9 @@ import { Select } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- **Native picker:** The dropdown itself is drawn by the OS (macOS system menu, iOS wheel picker, Android bottom sheet, Windows dropdown). We don't style it: that's the whole point.
-- **Rich options:** Native `<option>` accepts text only. If you need icons, descriptions, or inline actions in the list, reach for `Combobox` instead.
-- **Form integration:** Since this is a real `<select>`, it participates in native form submission and validation out of the box. Pass `required` and it will block form submission when empty.
-- **Grouping:** Use native `<optgroup label="…">` when the option count grows past ~10.
-- **Accessibility:** Native `<select>` is fully accessible by default. Add `aria-label` when there's no visible label.
+- **Rich items:** `SelectItem` accepts arbitrary children — icons, badges, two-line rows. Selection state renders a check icon via `SelectPrimitive.ItemIndicator`.
+- **Grouping:** Wrap sets of items in `SelectGroup` with a `SelectGroupLabel` when the option count grows past 10.
+- **Searchable list:** For 20+ items or fuzzy matching, reach for `Combobox` instead.
+- **Accessibility:** Base UI Select ships proper roving tabindex, ARIA, and type-ahead out of the box.
+- **Form integration:** Pass `name` and the selected value posts as a hidden input. `required` blocks submission when empty.
 </Callout>

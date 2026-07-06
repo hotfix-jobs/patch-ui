@@ -98,7 +98,7 @@ export function Button({
   const isIconOnly = (icon != null && !children) || shape === "circle";
   const iconOnly = isIconOnly ? iconOnlyWidth[effectiveSize] : "";
 
-  if (process.env.NODE_ENV !== "production" && isIconOnly && !props["aria-label"]) {
+  if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production" && isIconOnly && !props["aria-label"]) {
     console.warn(
       "[Button] Icon-only buttons must have an `aria-label` describing the action.",
     );
@@ -116,8 +116,9 @@ export function Button({
           role="button"
           tabIndex={0}
           aria-label={removeLabel}
-          // Stop mousedown so floating-ui's useClick (mousedown by default) on a parent
-          // trigger doesn't fire when the user clicks the X; onClick alone runs too late.
+          // Stop mousedown so a parent trigger (Base UI opens on mousedown by
+          // default) doesn't fire when the user clicks the X; onClick alone
+          // runs too late.
           onMouseDown={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
           onClick={(e) => {

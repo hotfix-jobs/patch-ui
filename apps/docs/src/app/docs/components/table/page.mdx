@@ -83,7 +83,7 @@ import {
       name: "striped",
       type: "boolean",
       default: "false",
-      description: "Alternating row backgrounds (background-200 on even rows) with the same rounded-inset pill treatment as interactive.",
+      description: "Alternating row backgrounds (--surface-1 on even rows) with the same rounded-inset pill treatment as interactive.",
     },
     {
       name: "bordered",
@@ -95,7 +95,7 @@ import {
       name: "interactive",
       type: "boolean",
       default: "false",
-      description: "Opt-in row hover + cursor-pointer. Hover fills the row with an inset gray-alpha-100 pill (rounded on first / last cell); drops per-row hairlines since the pill is the row indicator.",
+      description: "Opt-in row hover + cursor-pointer. Hover fills the row with an inset --surface-1 pill (rounded on first / last cell); drops per-row hairlines since the pill is the row indicator.",
     },
   ]}
 />
@@ -123,8 +123,8 @@ import {
 - **Composition:** `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, and `TableCaption` map directly to the native table elements, so standard HTML attributes pass through.
 - **Default vs flat:** Pick `default` for dashboard / data-card surfaces (rounded, surface bg, contained). Pick `flat` when the table is the primary content of a longform layout: it sheds the outer chrome and lets the hairline grid + typography carry the table's structure.
 - **Numerals:** Use `align="right"` on numeric `TableCell`s to right-align and enable tabular figures for clean column alignment.
-- **Interactive rows:** Pass `interactive` to `TableBody` to add hover + cursor-pointer to every row. Hover fills the row with a `gray-alpha-100` inset pill (rounded on the first/last cell) matching Menu item highlights, and drops the per-row hairlines since the pill is the row indicator.
-- **Striped / bordered:** Opt in via `TableBody`: `striped` alternates even rows to `background-200` (also rounded inset), `bordered` adds vertical cell dividers.
+- **Interactive rows:** Pass `interactive` to `TableBody` to add hover + cursor-pointer to every row. Hover fills the row with a `--surface-1` inset pill (rounded on the first/last cell) matching Menu item highlights, and drops the per-row hairlines since the pill is the row indicator.
+- **Striped / bordered:** Opt in via `TableBody`: `striped` alternates even rows to `--surface-1` (also rounded inset), `bordered` adds vertical cell dividers.
 - **Numerals:** Use `align="right"` on numeric `TableCell`s to right-align and enable tabular figures for clean column alignment.
 - **TableHead typography:** Small caption tier (`text-caption-11 text-ink-muted`) for column headers, matching the caption pattern used in Command sections.
 - **Key/value pairs:** For simple two-column key/value data, a two-cell `TableRow` per pair works well; reserve the header row for true tabular data.

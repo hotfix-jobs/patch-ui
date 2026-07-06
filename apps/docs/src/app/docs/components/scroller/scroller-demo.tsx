@@ -26,10 +26,9 @@ export function ScrollerDemo() {
     <div className="flex flex-col gap-8">
       {/* Horizontal rail with buttons */}
       <div className="space-y-3">
-        <SectionLabel>Horizontal rail (with buttons)</SectionLabel>
+        <SectionLabel>Horizontal rail</SectionLabel>
         <Scroller
           overflow="x"
-          withButtons
           childrenContainerClassName="gap-3 p-1"
           ariaLabel="Featured projects"
         >
@@ -49,7 +48,7 @@ export function ScrollerDemo() {
 
       {/* Horizontal rail without buttons: touch / trackpad scroll only */}
       <div className="space-y-3">
-        <SectionLabel>Horizontal rail (no buttons)</SectionLabel>
+        <SectionLabel>Category pills</SectionLabel>
         <Scroller
           overflow="x"
           childrenContainerClassName="gap-2 p-1"
@@ -75,7 +74,6 @@ export function ScrollerDemo() {
         <Scroller
           overflow="y"
           height={280}
-          withButtons
           childrenContainerClassName="p-3"
           ariaLabel="Activity feed"
           className="rounded-[var(--radius-12)] border border-hairline-strong bg-canvas"

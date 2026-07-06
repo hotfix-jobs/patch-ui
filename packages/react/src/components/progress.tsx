@@ -1,12 +1,14 @@
 "use client";
 
+import { Progress as ProgressPrimitive } from "@base-ui/react/progress";
 import type * as React from "react";
 import { cn } from "../utils";
 
 export type ProgressVariant = "default" | "success" | "warning" | "error";
 export type ProgressSize = "sm" | "md" | "lg";
 
-export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ProgressProps
+  extends Omit<React.ComponentProps<typeof ProgressPrimitive.Root>, "value"> {
   /** Current value (0-max). Pass null for indeterminate. */
   value?: number | null;
   /** Maximum value. Default 100. */
@@ -23,8 +25,6 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   label?: string;
 }
 
-// Status variants use semantic role tokens (fixed hex in both themes);
-// the accent scale inverts in dark mode and would flip the reading.
 const fillByVariant: Record<ProgressVariant, string> = {
   default: "bg-primary",
   success: "bg-success",
@@ -50,54 +50,45 @@ export function Progress({
   style,
   ...props
 }: ProgressProps): React.ReactElement {
-  const indeterminate = value == null;
-  const pct = indeterminate
-    ? 0
-    : Math.max(0, Math.min(100, ((value as number) / max) * 100));
-
   const trackStyle: React.CSSProperties = {
     ...(height != null ? { height } : {}),
-    ...(width != null ? { width: typeof width === "number" ? `${width}px` : width } : {}),
+    ...(width != null
+      ? { width: typeof width === "number" ? `${width}px` : width }
+      : {}),
     ...style,
   };
 
   return (
-    <div
-      role="progressbar"
+    <ProgressPrimitive.Root
+      value={value}
+      max={max}
       aria-label={label}
-      aria-valuemin={0}
-      aria-valuemax={indeterminate ? undefined : max}
-      aria-valuenow={indeterminate ? undefined : (value as number)}
       data-slot="progress"
-      data-state={indeterminate ? "indeterminate" : "determinate"}
-      className={cn(
-        "relative w-full overflow-hidden rounded-full bg-surface-2",
-        height == null && heightBySize[size],
-        className,
-      )}
-      style={trackStyle}
+      className={cn("w-full", className)}
       {...props}
     >
-      {indeterminate ? (
-        <span
-          aria-hidden="true"
-          className={cn(
-            "absolute inset-y-0 w-1/3 rounded-full animate-[patch-progress-indeterminate_1.4s_ease-in-out_infinite]",
-            "motion-reduce:animate-none",
-            fillByVariant[variant],
-          )}
-        />
-      ) : (
-        <span
-          aria-hidden="true"
+      <ProgressPrimitive.Track
+        data-slot="progress-track"
+        className={cn(
+          "relative w-full overflow-hidden rounded-full bg-surface-2",
+          height == null && heightBySize[size],
+        )}
+        style={trackStyle}
+      >
+        <ProgressPrimitive.Indicator
+          data-slot="progress-indicator"
           className={cn(
             "block h-full rounded-full",
             "transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+            "data-[indeterminate]:absolute data-[indeterminate]:inset-y-0 data-[indeterminate]:w-1/3",
+            "data-[indeterminate]:animate-[patch-progress-indeterminate_1.4s_ease-in-out_infinite]",
+            "motion-reduce:data-[indeterminate]:animate-none",
             fillByVariant[variant],
           )}
-          style={{ width: `${pct}%` }}
         />
-      )}
-    </div>
+      </ProgressPrimitive.Track>
+    </ProgressPrimitive.Root>
   );
 }
+
+export { ProgressPrimitive };

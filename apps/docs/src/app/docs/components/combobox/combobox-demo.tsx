@@ -162,7 +162,6 @@ export function ComboboxDemo() {
             value={multiQuery}
             onValueChange={setMultiQuery}
             placeholder="Filter by framework…"
-            autoFocusFirst
           >
             <ComboboxInput prefix={<MagnifyingGlass />} />
             <ComboboxPopup>

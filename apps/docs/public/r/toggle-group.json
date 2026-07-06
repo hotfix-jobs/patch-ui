@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle-group",
+  "title": "Toggle Group",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/recipes.json",
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/toggle-group.tsx",
+      "content": "\"use client\";\n\nimport { Toggle as TogglePrimitive } from \"@base-ui/react/toggle\";\nimport { ToggleGroup as ToggleGroupPrimitive } from \"@base-ui/react/toggle-group\";\nimport { createContext, useContext } from \"react\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { focusRing, iconMuted } from \"@/lib/recipes\";\n\ntype ToggleGroupSize = \"sm\" | \"md\" | \"lg\";\n\nconst ToggleGroupSizeContext = createContext<ToggleGroupSize>(\"md\");\n\nexport interface ToggleGroupProps\n  extends Omit<\n    React.ComponentProps<typeof ToggleGroupPrimitive<string>>,\n    \"value\" | \"defaultValue\" | \"onValueChange\" | \"multiple\"\n  > {\n  /** Active item value (single-select). */\n  value?: string;\n  defaultValue?: string;\n  onValueChange?: (value: string) => void;\n  size?: ToggleGroupSize;\n}\n\n/** Compact segmented radio-style control. Single-select toggle group. */\nexport function ToggleGroup({\n  value,\n  defaultValue,\n  onValueChange,\n  size = \"md\",\n  className,\n  children,\n  ...props\n}: ToggleGroupProps): React.ReactElement {\n  return (\n    <ToggleGroupSizeContext.Provider value={size}>\n      <ToggleGroupPrimitive<string>\n        value={value !== undefined ? [value] : undefined}\n        defaultValue={defaultValue !== undefined ? [defaultValue] : undefined}\n        onValueChange={\n          onValueChange\n            ? (next: string[]) => onValueChange(next[0] ?? \"\")\n            : undefined\n        }\n        data-slot=\"toggle-group\"\n        data-size={size}\n        className={cn(\n          \"inline-flex w-fit self-start items-center rounded-[var(--radius-6)] border border-hairline bg-surface-1 p-0.5\",\n          className,\n        )}\n        {...props}\n      >\n        {children}\n      </ToggleGroupPrimitive>\n    </ToggleGroupSizeContext.Provider>\n  );\n}\n\nexport interface ToggleGroupItemProps\n  extends Omit<React.ComponentProps<typeof TogglePrimitive>, \"value\"> {\n  value: string;\n}\n\nexport function ToggleGroupItem({\n  value,\n  className,\n  children,\n  ...props\n}: ToggleGroupItemProps): React.ReactElement {\n  const size = useContext(ToggleGroupSizeContext);\n  return (\n    <TogglePrimitive\n      value={value}\n      data-slot=\"toggle-group-item\"\n      className={cn(\n        \"relative inline-flex items-center justify-center rounded-[var(--radius-6)] transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50\",\n        \"text-ink-muted hover:text-ink data-[pressed]:text-ink\",\n        \"not-data-[pressed]:hover:bg-surface-elevated-hover\",\n        \"data-[pressed]:bg-surface-elevated\",\n        iconMuted,\n        size === \"sm\" && \"h-6 min-w-6 px-1.5 gap-1.5 text-caption-12 [&_svg]:size-3.5\",\n        size === \"md\" && \"h-7 min-w-7 px-2 gap-2 text-body-13 [&_svg]:size-4\",\n        size === \"lg\" && \"h-9 min-w-9 px-3 gap-2 text-body-14 [&_svg]:size-4\",\n        focusRing,\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </TogglePrimitive>\n  );\n}\n\nexport { ToggleGroupPrimitive };\n",
+      "type": "registry:ui",
+      "target": "components/ui/toggle-group.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

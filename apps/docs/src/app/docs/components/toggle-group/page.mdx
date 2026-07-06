@@ -1,0 +1,115 @@
+import { ToggleGroupDemo } from "./toggle-group-demo";
+
+export const metadata = { title: "ToggleGroup" };
+
+# ToggleGroup
+
+A compact segmented radio-style control. Use for view-mode toggles (grid / list), sort direction, density, or any small set of mutually-exclusive options.
+
+<Install name="toggle-group" />
+
+<ComponentPreview label="ToggleGroup">
+  <ToggleGroupDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@patchui/react";
+import { SquaresFour, Rows } from "@phosphor-icons/react/dist/ssr";
+
+// Icon-only view toggle
+<ToggleGroup value={view} onValueChange={setView} aria-label="View">
+  <ToggleGroupItem value="grid" aria-label="Grid view">
+    <SquaresFour />
+  </ToggleGroupItem>
+  <ToggleGroupItem value="list" aria-label="List view">
+    <Rows />
+  </ToggleGroupItem>
+</ToggleGroup>
+
+// Text labels
+<ToggleGroup value={sort} onValueChange={setSort} aria-label="Sort">
+  <ToggleGroupItem value="newest">Newest</ToggleGroupItem>
+  <ToggleGroupItem value="oldest">Oldest</ToggleGroupItem>
+</ToggleGroup>
+
+// Small size for tight chrome
+<ToggleGroup size="sm" value={view} onValueChange={setView} aria-label="View">
+  ...
+</ToggleGroup>
+```
+
+## Props
+
+### ToggleGroup
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Selected value (controlled).",
+    },
+    {
+      name: "defaultValue",
+      type: "string",
+      default: "-",
+      description: "Initial value (uncontrolled).",
+    },
+    {
+      name: "onValueChange",
+      type: "(value: string) => void",
+      default: "-",
+      description: "Called when the selection changes.",
+    },
+    {
+      name: "size",
+      type: '"sm" | "md" | "lg"',
+      default: '"md"',
+      description: "Control density. sm = 24px, md = 28px, lg = 36px.",
+    },
+    {
+      name: "aria-label",
+      type: "string",
+      default: "-",
+      description: "Required for accessibility: describes what this group controls.",
+    },
+  ]}
+/>
+
+### ToggleGroupItem
+
+<PropsTable
+  props={[
+    {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Identifier matched against the parent's value.",
+    },
+    {
+      name: "aria-label",
+      type: "string",
+      default: "-",
+      description: "Required for icon-only items so screen readers can announce them.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disables the option.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- Reach for ToggleGroup when 2 to 3 options are mutually exclusive and different views of the same surface: `Grid` / `List`, `Source` / `Output`, alignment picker. Past 3 options, use `Tabs` or a `Select`.
+- Icon-only items need their own `aria-label`: the icon alone doesn't announce the choice.
+- Base UI ToggleGroup ships proper keyboard navigation (arrows / Home / End) and roving tabindex out of the box.
+- For multi-select behavior, reach for a checkbox group instead — ToggleGroup here is intentionally single-select.
+</Callout>

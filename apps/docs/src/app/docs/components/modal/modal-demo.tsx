@@ -6,11 +6,12 @@ import {
   Input,
   Modal,
   ModalBody,
-  ModalHeader,
-  ModalTitle,
-  ModalSubtitle,
   ModalActions,
   ModalAction,
+  ModalClose,
+  ModalHeader,
+  ModalSubtitle,
+  ModalTitle,
   SectionLabel,
 } from "@patchui/react";
 import { Warning } from "@phosphor-icons/react/dist/ssr";
@@ -21,21 +22,21 @@ export function ModalDemo() {
   const [basic, setBasic] = useState(false);
   const [destructive, setDestructive] = useState(false);
   const [bodyOnly, setBodyOnly] = useState(false);
-  const [longContent, setLongContent] = useState(false);
+  const [detail, setDetail] = useState(false);
   const [typed, setTyped] = useState("");
 
   return (
     <div className="flex flex-col gap-8">
       <div className="space-y-3">
-        <SectionLabel>Basic</SectionLabel>
+        <SectionLabel>Basic confirmation</SectionLabel>
         <Button onClick={() => setBasic(true)}>Publish changes</Button>
         <Modal active={basic} onClickOutside={() => setBasic(false)}>
-          <ModalBody>
-            <h2 className="text-display-20 text-ink">Publish changes</h2>
-            <p className="text-body-14 text-ink-muted">
+          <ModalHeader>
+            <ModalTitle>Publish changes</ModalTitle>
+            <ModalSubtitle>
               The queued edits will go live. This can be reverted from history.
-            </p>
-          </ModalBody>
+            </ModalSubtitle>
+          </ModalHeader>
           <ModalActions>
             <ModalAction onClick={() => setBasic(false)}>Cancel</ModalAction>
             <ModalAction variant="primary" onClick={() => setBasic(false)}>
@@ -54,26 +55,26 @@ export function ModalDemo() {
           active={destructive}
           onClickOutside={() => setDestructive(false)}
         >
-          <ModalBody>
-            <h2 className="text-display-20 text-ink">Delete project</h2>
-            <p className="text-body-14 text-ink">
+          <ModalHeader>
+            <ModalTitle>Delete project</ModalTitle>
+            <ModalSubtitle>
               <span className="font-semibold">{PROJECT_NAME}</span> and all of
               its contents will be permanently removed.
-            </p>
+            </ModalSubtitle>
+          </ModalHeader>
+          <ModalBody>
             <div className="flex items-center gap-2 rounded-[var(--radius-6)] border border-error bg-error/10 px-3 py-2 text-error">
               <Warning className="size-4 shrink-0" aria-hidden />
               <p className="text-body-13">
                 Removing {PROJECT_NAME} can't be undone.
               </p>
             </div>
-            <div className="flex flex-col gap-2">
-              <Input
-                id="delete-confirm"
-                label={`To confirm, type the project name "${PROJECT_NAME}"`}
-                value={typed}
-                onChange={(e) => setTyped(e.target.value)}
-              />
-            </div>
+            <Input
+              id="delete-confirm"
+              label={`To confirm, type the project name "${PROJECT_NAME}"`}
+              value={typed}
+              onChange={(e) => setTyped(e.target.value)}
+            />
           </ModalBody>
           <ModalActions>
             <ModalAction onClick={() => setDestructive(false)}>
@@ -94,55 +95,54 @@ export function ModalDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Body only (no footer actions)</SectionLabel>
+        <SectionLabel>Announcement (no footer)</SectionLabel>
         <Button variant="secondary" onClick={() => setBodyOnly(true)}>
-          Show release note
+          You're all set
         </Button>
         <Modal active={bodyOnly} onClickOutside={() => setBodyOnly(false)}>
-          <ModalBody>
-            <h2 className="text-display-20 text-ink">You're all set</h2>
-            <p className="text-body-14 text-ink-muted">
+          <ModalHeader>
+            <ModalTitle>You're all set</ModalTitle>
+            <ModalSubtitle>
               Every change from the last review has been merged. Close this
               window to head back to your workspace.
-            </p>
-          </ModalBody>
+            </ModalSubtitle>
+          </ModalHeader>
         </Modal>
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Long content with fixed header</SectionLabel>
-        <Button onClick={() => setLongContent(true)}>Open changelog</Button>
+        <SectionLabel>Rich content with header</SectionLabel>
+        <Button variant="secondary" onClick={() => setDetail(true)}>
+          Open release note
+        </Button>
         <Modal
-          active={longContent}
-          onClickOutside={() => setLongContent(false)}
+          active={detail}
+          onClickOutside={() => setDetail(false)}
           size="lg"
+          showClose={false}
         >
-          <ModalHeader>
-            <ModalTitle>Changelog</ModalTitle>
-            <ModalSubtitle>
-              Everything that shipped since your last visit.
-            </ModalSubtitle>
+          <ModalHeader
+            leading={<span>Oct 12</span>}
+            trailing={<ModalClose className="static size-7" />}
+          >
+            <ModalTitle>Release note</ModalTitle>
           </ModalHeader>
           <ModalBody>
-            {Array.from({ length: 12 }).map((_, i) => (
-              <p key={i} className="text-body-14 text-ink">
-                Entry {i + 1}. A short note about something that landed this
-                week. Long enough to force the body to scroll while the
-                header stays put above.
-              </p>
-            ))}
+            <h2 className="text-display-24 text-ink">Templates</h2>
+            <p className="text-body-14 leading-relaxed text-ink">
+              Save any layout as a template to reuse across projects.
+              Templates carry field defaults, sub-tasks, and labels so you
+              can spin up a fresh project in a single click.
+            </p>
+            <div className="flex flex-col gap-2">
+              <h3 className="text-button-14 text-ink">What's new</h3>
+              <ul className="flex flex-col gap-1.5 text-body-14 text-ink">
+                <li>Share templates with your team from the sidebar</li>
+                <li>Turn any existing project into a template</li>
+                <li>Set field defaults per template</li>
+              </ul>
+            </div>
           </ModalBody>
-          <ModalActions>
-            <ModalAction onClick={() => setLongContent(false)}>
-              Close
-            </ModalAction>
-            <ModalAction
-              variant="primary"
-              onClick={() => setLongContent(false)}
-            >
-              Got it
-            </ModalAction>
-          </ModalActions>
         </Modal>
       </div>
     </div>

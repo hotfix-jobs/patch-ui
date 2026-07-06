@@ -5,7 +5,7 @@ export const metadata = { title: "Menu" };
 
 # Menu
 
-A dropdown menu with support for items, groups, checkbox items, radio items, sub-menus, keyboard shortcuts, and separators. Custom-built on `@floating-ui/react` with `motion`-driven spring open/close, `FloatingTree` for sub-menu coordination, list navigation, and type-ahead.
+A dropdown menu with support for items, groups, checkbox items, radio items, sub-menus, keyboard shortcuts, and separators. Built on Base UI Menu: `SubmenuRoot` handles nested submenu coordination and safePolygon hover, roving keyboard navigation and type-ahead ship in the box, and open / close uses CSS-driven `data-starting-style` / `data-ending-style` transitions.
 
 <Install name="menu" />
 
@@ -179,10 +179,10 @@ const [value, setValue] = useState("system");
 - **Keyboard navigation:** Supports arrow keys, type-ahead, Home/End, Enter/Space, and Escape.
 - **Sub-menus:** Nest `MenuSub` > `MenuSubTrigger` + `MenuSubPopup` for cascading menus. Sub-menus open on hover. The sub-popup inherits the parent `MenuPopup`'s density unless overridden.
 - **Portal rendering:** The popup renders outside the DOM tree via a portal, so it appears above all other content.
-- **Mobile panel:** Below the `md` breakpoint (max-width 767px), a top-level `MenuPopup` renders as a bottom-anchored fixed panel (`fixed bottom-2 left-2 right-2`) with y-8 enter/exit motion. Sub-menus stay as anchored popovers so they hang off their parent row.
+- **Mobile panel:** Below the `md` breakpoint (max-width 767px), a top-level `MenuPopup` renders as a bottom-anchored fixed panel (`fixed bottom-2 left-2 right-2`). Sub-menus stay as anchored popovers so they hang off their parent row.
 - **`MenuRadioItem` matches `selected`:** Radio rows render with a trailing check when they're the group's current value (same layout as `MenuItem selected`) and close the menu on click. Consistent affordance across every single-select menu.
 - **Inset alignment:** Use the `inset` prop on `MenuItem`, `MenuGroupLabel`, and `MenuSubTrigger` to align text with items that have icons or check indicators.
-- **Motion:** Open AND close are spring-animated via `motion` + `AnimatePresence` (true bidirectional, not CSS-driven). Stiffness 400, damping 30, mass 0.6. Respects `prefers-reduced-motion`.
-- **Foundation:** Built on `@floating-ui/react`: `useFloating` for positioning, `useListNavigation` for arrow keys, `useTypeahead` for type-to-jump, `FloatingTree` so nested sub-menus coordinate dismissal cleanly.
+- **Motion:** Open / close driven by Base UI's `data-starting-style` and `data-ending-style` transitions at overlay duration, so both directions animate without a JS animation runtime. Respects `prefers-reduced-motion`.
+- **Foundation:** Built on Base UI Menu — `SubmenuRoot` + `SubmenuTrigger` handle nested submenu coordination and safePolygon hover; roving keyboard navigation, type-ahead, and focus scoping are handled by the primitive.
 - **`selected` vs `MenuCheckboxItem`:** Use `selected` for single-select "currently chosen" UI with a trailing check. Use `MenuCheckboxItem` for multi-select toggles with a leading indicator.
 </Callout>

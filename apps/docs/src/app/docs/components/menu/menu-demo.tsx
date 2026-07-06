@@ -68,7 +68,7 @@ export function MenuDemo() {
         <p className="mb-3 text-xs font-medium text-ink-muted">
           Sections
         </p>
-        <Menu autoFocusFirst>
+        <Menu>
           <MenuTrigger render={<Button variant="secondary" />}>
             View Options
           </MenuTrigger>

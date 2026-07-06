@@ -1,11 +1,11 @@
 "use client";
 
+import { Separator as SeparatorPrimitive } from "@base-ui/react/separator";
 import type * as React from "react";
 import { cn } from "../utils";
 
-export interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Horizontal (default) or vertical. */
-  orientation?: "horizontal" | "vertical";
+export interface SeparatorProps
+  extends React.ComponentProps<typeof SeparatorPrimitive> {
   /** Optional inline label (horizontal only) for "OR"/"AND" split patterns. */
   label?: React.ReactNode;
   /** Decorative separators are hidden from screen readers. */
@@ -19,21 +19,17 @@ export function Separator({
   className,
   ...props
 }: SeparatorProps): React.ReactElement {
-  const role = decorative ? "none" : "separator";
-  const ariaOrientation = orientation === "vertical" ? "vertical" : "horizontal";
-
   if (label && orientation === "horizontal") {
     return (
       <div
-        role={role}
-        aria-orientation={ariaOrientation}
+        role={decorative ? "none" : "separator"}
+        aria-orientation="horizontal"
         data-slot="separator"
-        data-orientation={orientation}
+        data-orientation="horizontal"
         className={cn(
           "flex w-full items-center gap-3 text-caption-12 text-ink-muted",
           className,
         )}
-        {...props}
       >
         <span className="h-px flex-1 bg-hairline" aria-hidden />
         <span>{label}</span>
@@ -43,11 +39,10 @@ export function Separator({
   }
 
   return (
-    <div
-      role={role}
-      aria-orientation={ariaOrientation}
+    <SeparatorPrimitive
+      orientation={orientation}
+      role={decorative ? "none" : undefined}
       data-slot="separator"
-      data-orientation={orientation}
       className={cn(
         "shrink-0 bg-hairline",
         orientation === "horizontal" ? "h-px w-full" : "h-full w-px",
@@ -57,3 +52,5 @@ export function Separator({
     />
   );
 }
+
+export { SeparatorPrimitive };

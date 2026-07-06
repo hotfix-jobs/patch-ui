@@ -207,16 +207,34 @@
       ]
     },
     {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/collapsible.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/collapsible.tsx"
+        }
+      ]
+    },
+    {
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
       "dependencies": [
-        "@floating-ui/react",
-        "@phosphor-icons/react",
-        "motion"
+        "@base-ui/react",
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/button.json",
         "https://ui.hotfix.jobs/r/checkbox.json",
         "https://ui.hotfix.jobs/r/input.json",
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -237,9 +255,7 @@
       "title": "Command",
       "dependencies": [
         "@base-ui/react",
-        "@floating-ui/react",
-        "@phosphor-icons/react",
-        "motion"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -354,9 +370,8 @@
       "type": "registry:ui",
       "title": "Menu",
       "dependencies": [
-        "@floating-ui/react",
-        "@phosphor-icons/react",
-        "motion"
+        "@base-ui/react",
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/checkbox.json",
@@ -377,10 +392,8 @@
       "type": "registry:ui",
       "title": "Modal",
       "dependencies": [
-        "@floating-ui/react",
-        "@phosphor-icons/react",
-        "motion",
-        "react-remove-scroll"
+        "@base-ui/react",
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
@@ -459,6 +472,9 @@
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",
+      "dependencies": [
+        "@base-ui/react"
+      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -496,7 +512,7 @@
       "type": "registry:ui",
       "title": "Scroller",
       "dependencies": [
-        "@phosphor-icons/react"
+        "@base-ui/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -569,33 +585,15 @@
       ]
     },
     {
-      "name": "segmented-toggle",
-      "type": "registry:ui",
-      "title": "Segmented Toggle",
-      "dependencies": [
-        "motion"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/recipes.json",
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/segmented-toggle.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/segmented-toggle.tsx"
-        }
-      ]
-    },
-    {
       "name": "select",
       "type": "registry:ui",
       "title": "Select",
       "dependencies": [
+        "@base-ui/react",
         "@phosphor-icons/react"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -611,6 +609,9 @@
       "name": "separator",
       "type": "registry:ui",
       "title": "Separator",
+      "dependencies": [
+        "@base-ui/react"
+      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -628,10 +629,8 @@
       "type": "registry:ui",
       "title": "Sheet",
       "dependencies": [
-        "@floating-ui/react",
-        "@phosphor-icons/react",
-        "motion",
-        "react-remove-scroll"
+        "@base-ui/react",
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -762,7 +761,7 @@
       "type": "registry:ui",
       "title": "Tabs",
       "dependencies": [
-        "motion"
+        "@base-ui/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -839,8 +838,8 @@
       "type": "registry:ui",
       "title": "Toast",
       "dependencies": [
-        "@phosphor-icons/react",
-        "motion"
+        "@base-ui/react",
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
@@ -857,10 +856,31 @@
       ]
     },
     {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "dependencies": [
+        "@base-ui/react"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/components/ui/toggle-group.tsx",
+          "type": "registry:ui",
+          "target": "components/ui/toggle-group.tsx"
+        }
+      ]
+    },
+    {
       "name": "toggle",
       "type": "registry:ui",
       "title": "Toggle",
       "dependencies": [
+        "@base-ui/react",
         "class-variance-authority"
       ],
       "registryDependencies": [
@@ -953,6 +973,7 @@
         "https://ui.hotfix.jobs/r/calendar.json",
         "https://ui.hotfix.jobs/r/card.json",
         "https://ui.hotfix.jobs/r/checkbox.json",
+        "https://ui.hotfix.jobs/r/collapsible.json",
         "https://ui.hotfix.jobs/r/combobox.json",
         "https://ui.hotfix.jobs/r/command.json",
         "https://ui.hotfix.jobs/r/dropzone.json",
@@ -972,7 +993,6 @@
         "https://ui.hotfix.jobs/r/search-input.json",
         "https://ui.hotfix.jobs/r/section.json",
         "https://ui.hotfix.jobs/r/section-label.json",
-        "https://ui.hotfix.jobs/r/segmented-toggle.json",
         "https://ui.hotfix.jobs/r/select.json",
         "https://ui.hotfix.jobs/r/separator.json",
         "https://ui.hotfix.jobs/r/sheet.json",
@@ -988,6 +1008,7 @@
         "https://ui.hotfix.jobs/r/time-ago.json",
         "https://ui.hotfix.jobs/r/toast.json",
         "https://ui.hotfix.jobs/r/toggle.json",
+        "https://ui.hotfix.jobs/r/toggle-group.json",
         "https://ui.hotfix.jobs/r/tooltip.json"
       ],
       "files": []

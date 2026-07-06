@@ -1,7 +1,7 @@
 "use client";
 
+import { Toggle as TogglePrimitive } from "@base-ui/react/toggle";
 import { cva, type VariantProps } from "class-variance-authority";
-import { useCallback, useState } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, colorTransition, iconMuted } from "../recipes";
@@ -29,10 +29,10 @@ export const toggleVariants = cva(
       },
       variant: {
         tertiary:
-          "bg-transparent text-ink-muted hover:bg-surface-1 hover:text-ink data-[state=on]:bg-surface-2 data-[state=on]:text-ink " +
+          "bg-transparent text-ink-muted hover:bg-surface-1 hover:text-ink data-[pressed]:bg-surface-2 data-[pressed]:text-ink " +
           iconMuted,
         secondary:
-          "bg-transparent text-ink-muted border border-hairline hover:bg-surface-1 hover:text-ink hover:border-hairline-strong data-[state=on]:bg-surface-2 data-[state=on]:text-ink data-[state=on]:border-hairline-strong " +
+          "bg-transparent text-ink-muted border border-hairline hover:bg-surface-1 hover:text-ink hover:border-hairline-strong data-[pressed]:bg-surface-2 data-[pressed]:text-ink data-[pressed]:border-hairline-strong " +
           iconMuted,
       },
     },
@@ -40,52 +40,30 @@ export const toggleVariants = cva(
 );
 
 export interface ToggleProps
-  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "value" | "defaultValue">,
+  extends Omit<
+      React.ComponentProps<typeof TogglePrimitive>,
+      "value" | "defaultValue" | "className"
+    >,
     VariantProps<typeof toggleVariants> {
-  /** Controlled pressed state. */
-  pressed?: boolean;
-  /** Initial pressed state when uncontrolled. */
-  defaultPressed?: boolean;
-  /** Called when the pressed state changes. */
-  onPressedChange?: (pressed: boolean) => void;
+  className?: string;
+  value?: string;
 }
 
 /** Press-to-toggle button with persistent on/off state. */
 export function Toggle({
-  pressed: controlledPressed,
-  defaultPressed = false,
-  onPressedChange,
   variant,
   size,
   shape,
   className,
-  onClick,
-  disabled,
   ...props
 }: ToggleProps): React.ReactElement {
-  const [uncontrolled, setUncontrolled] = useState(defaultPressed);
-  const pressed = controlledPressed ?? uncontrolled;
-  const setPressed = useCallback(
-    (next: boolean) => {
-      if (controlledPressed === undefined) setUncontrolled(next);
-      onPressedChange?.(next);
-    },
-    [controlledPressed, onPressedChange],
-  );
-
   return (
-    <button
-      type="button"
-      aria-pressed={pressed}
-      disabled={disabled}
+    <TogglePrimitive
       data-slot="toggle"
-      data-state={pressed ? "on" : "off"}
       className={cn(toggleVariants({ variant, size, shape }), className)}
-      onClick={(e) => {
-        onClick?.(e);
-        if (!e.defaultPrevented) setPressed(!pressed);
-      }}
       {...props}
     />
   );
 }
+
+export { TogglePrimitive };

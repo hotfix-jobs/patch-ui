@@ -5,7 +5,7 @@ export const metadata = { title: "Toast" };
 
 # Toast
 
-Stackable notification toasts built on [Sonner](https://sonner.emilkowal.ski/) with a PatchUI-styled wrapper. Supports types (success, error, warning, info, loading), descriptions, action buttons, swipe-to-dismiss, and configurable positioning. Trigger via the `toast()` function from anywhere in your app.
+Stackable notification toasts built on Base UI Toast. Supports types (success, error, warning, info, loading), descriptions, action buttons, swipe-to-dismiss, and configurable positioning. Trigger via the `toast()` function from anywhere in your app: it forwards to a global `createToastManager()` singleton, no provider context required at the call site.
 
 <Install name="toast" />
 
@@ -54,16 +54,13 @@ const id = toast.loading("Uploading...");
 toast.dismiss(id);
 ```
 
-## PatchUI styling
+## Chrome
 
-PatchUI's `Toaster` is a pre-configured Sonner wrapper. Compared to Sonner defaults:
-
-- **radius-12** rounded corners, **1px** hairline border in `gray-alpha-400`, `shadow-modal` drop shadow: matches Modal / Sheet / Menu chrome
-- **Semantic icon color** signals the variant: `--success` (green) for success, `--error` (red) for error, `--warning` (amber) for warning. No background flood on the toast itself.
-- **Compact padding** matching Menu density
-- **Typography**: title is `text-button-14` (14px, 600), description is `text-caption-12 text-ink-muted`
-- **Action button** renders as a bordered secondary button inside the toast
-- **Close button** matches the `XIcon` used across pill Button + Combobox clear
+- **radius-12** rounded corners, **1px** hairline border, `shadow-modal` drop shadow: matches Modal / Sheet / Menu chrome.
+- **Semantic icon color** signals the variant: `--success` for success, `--error` for error, `--warning` for warning. No background flood on the toast itself.
+- **Compact padding** matching Menu density.
+- **Typography**: title is `text-button-14`, description is `text-caption-12 text-ink-muted`.
+- **Action button** renders as a bordered secondary button inside the toast.
 
 ## Props
 
@@ -78,33 +75,56 @@ PatchUI's `Toaster` is a pre-configured Sonner wrapper. Compared to Sonner defau
       description: "Where toasts appear on screen.",
     },
     {
-      name: "theme",
-      type: '"light" | "dark" | "system"',
-      default: '"system"',
-      description: "Color scheme. `system` follows the user's OS preference.",
+      name: "visibleToasts",
+      type: "number",
+      default: "3",
+      description: "Maximum number of toasts stacked at once. Older toasts drop off as new ones arrive.",
+    },
+    {
+      name: "toastWidth",
+      type: "number",
+      default: "360",
+      description: "Fixed toast width in pixels.",
+    },
+  ]}
+/>
+
+### toast options
+
+<PropsTable
+  props={[
+    {
+      name: "id",
+      type: "string",
+      default: "-",
+      description: "Custom id. Reusing an id upserts the existing toast in place.",
+    },
+    {
+      name: "description",
+      type: "ReactNode",
+      default: "-",
+      description: "Secondary body text below the title.",
     },
     {
       name: "duration",
       type: "number",
       default: "5000",
-      description: "Auto-dismiss delay in ms. Loading toasts persist until manually dismissed.",
+      description: "Auto-dismiss delay in ms. Warning defaults to 6000, error to 7000. Loading defaults to 0 (persistent).",
     },
     {
-      name: "closeButton",
-      type: "boolean",
-      default: "true",
-      description: "Show a close button on each toast.",
+      name: "action",
+      type: "{ label: ReactNode; onClick: () => void }",
+      default: "-",
+      description: "Renders an inline action button. Clicking it fires onClick then dismisses the toast.",
     },
   ]}
 />
 
-`Toaster` accepts all other props from Sonner's `Toaster` component (for example `expand`, `visibleToasts`, `offset`, `gap`, `richColors`). PatchUI sets `richColors: false` by default to preserve the neutral surface; setting `richColors: true` floods the toast with variant colors instead.
-
 <Callout title="Notes">
-- **Mount Toaster once** at the root of your app or layout. Multiple Toasters render their own queues.
-- **Imperative API:** `toast()` and its variants (`toast.success`, `toast.error`, etc.) work from anywhere: no provider context needed (Sonner uses an internal queue).
-- **Stack behavior:** Multiple toasts stack with a peek animation. Hover over the stack to expand.
-- **Swipe to dismiss:** Touch and mouse drag dismissals are built in.
-- **Returns an id:** Every `toast()` call returns an id you can pass to `toast.dismiss(id)` for programmatic dismissal.
-- **Promise helper:** Use `toast.promise(myPromise, { loading, success, error })` to wire a toast to an async operation.
+- **Mount Toaster once** at the root of your app or layout. Multiple Toasters share the same global queue.
+- **Imperative API:** `toast()` and its variants (`toast.success`, `toast.error`, etc.) forward to a global `createToastManager()`. No provider context needed at the call site.
+- **Stack behavior:** Toasts stack with a peek animation. Hover expands the stack; leaving it collapses again.
+- **Swipe to dismiss:** Base UI ships native swipe-to-dismiss on touch and mouse drag.
+- **Priority + ARIA:** `warning` and `error` announce `assertive`; everything else announces `polite`.
+- **Returns an id:** Every `toast()` call returns an id you can pass to `toast.dismiss(id)` for programmatic dismissal. `toast.dismiss()` with no argument clears all.
 </Callout>

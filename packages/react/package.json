@@ -34,7 +34,6 @@
   },
   "peerDependencies": {
     "@base-ui/react": "^1.4.0",
-    "@floating-ui/react": "^0.27.19",
     "motion": "^12.41.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"

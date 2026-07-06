@@ -70,7 +70,7 @@ import {
 - **`SectionTitle`**: heading (renders as `<h3>` for correct outline).
 - **`SectionSubtitle`**: descriptive text under the title (renders as `<p>`).
 - **`SectionContent`**: optional body between header and footer.
-- **`SectionFooter`**: bordered footer with a two-column layout. Accepts an optional `secondary` prop to use a darker `gray-100` bg.
+- **`SectionFooter`**: bordered footer with a two-column layout. Accepts an optional `secondary` prop to use a darker `--surface-1` bg.
 - **`SectionFooterStatus`**: left-aligned status text (help link, last-updated stamp, validation hint).
 - **`SectionFooterActions`**: right-aligned action row (buttons).
 
@@ -88,7 +88,7 @@ Each accepts `className` for overrides and `render` for polymorphic rendering (c
       name: "secondary",
       type: "boolean",
       default: "false",
-      description: "Use the tonal secondary surface (`gray-100`) as the footer background instead of `background-200`. Emphasizes the footer against the main content.",
+      description: "Use the tonal secondary surface (`--surface-1`) as the footer background instead of the elevated rung. Emphasizes the footer against the main content.",
     },
     {
       name: "className",

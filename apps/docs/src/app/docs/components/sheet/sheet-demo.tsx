@@ -104,12 +104,16 @@ export function SheetDemo() {
             <SheetHeader>
               <SheetTitle>Choose a region</SheetTitle>
             </SheetHeader>
-            <SheetBody>
+            <SheetBody className="gap-1 p-2">
               {["US East", "US West", "EU West", "Asia Pacific"].map((r) => (
                 <SheetClose
                   key={r}
                   render={
-                    <button className="w-full rounded-[var(--radius-6)] border border-hairline-strong bg-canvas px-3 py-3 text-body-14 text-ink hover:bg-surface-1" />
+                    <Button
+                      variant="tertiary"
+                      size="lg"
+                      className="w-full justify-start hover:bg-surface-2 active:bg-surface-3"
+                    />
                   }
                 >
                   {r}

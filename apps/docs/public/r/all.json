@@ -13,6 +13,7 @@
     "https://ui.hotfix.jobs/r/calendar.json",
     "https://ui.hotfix.jobs/r/card.json",
     "https://ui.hotfix.jobs/r/checkbox.json",
+    "https://ui.hotfix.jobs/r/collapsible.json",
     "https://ui.hotfix.jobs/r/combobox.json",
     "https://ui.hotfix.jobs/r/command.json",
     "https://ui.hotfix.jobs/r/dropzone.json",
@@ -32,7 +33,6 @@
     "https://ui.hotfix.jobs/r/search-input.json",
     "https://ui.hotfix.jobs/r/section.json",
     "https://ui.hotfix.jobs/r/section-label.json",
-    "https://ui.hotfix.jobs/r/segmented-toggle.json",
     "https://ui.hotfix.jobs/r/select.json",
     "https://ui.hotfix.jobs/r/separator.json",
     "https://ui.hotfix.jobs/r/sheet.json",
@@ -48,6 +48,7 @@
     "https://ui.hotfix.jobs/r/time-ago.json",
     "https://ui.hotfix.jobs/r/toast.json",
     "https://ui.hotfix.jobs/r/toggle.json",
+    "https://ui.hotfix.jobs/r/toggle-group.json",
     "https://ui.hotfix.jobs/r/tooltip.json"
   ],
   "files": [],

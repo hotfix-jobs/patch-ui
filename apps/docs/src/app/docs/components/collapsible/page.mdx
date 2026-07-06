@@ -1,0 +1,121 @@
+import { CollapsibleDemo } from "./collapsible-demo";
+
+
+export const metadata = { title: "Collapsible" };
+
+# Collapsible
+
+A single-section reveal. Use for inline "Show more" toggles, filter panels, and optional form fields, where the trigger's shape matters more than the section chrome. Built on Base UI Collapsible with height-animated open / close driven by the `--collapsible-panel-height` CSS variable Base UI populates on the panel.
+
+**Collapsible vs Accordion.** Reach for `Accordion` when a group of related sections shares coordinated state (FAQ list, settings sections that behave as one control). Reach for `Collapsible` when a single show / hide is inline in your own layout: a "Show more" toggle in prose, a "Filters" button that expands a panel, an "Add description" affordance in a form. Collapsible ships no trigger chrome; you supply the trigger's shape via `render` (Button, link-style span, plain text, anything).
+
+<Install name="collapsible" />
+
+<ComponentPreview label="Collapsible Examples">
+  <CollapsibleDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  Button,
+} from "@patchui/react";
+import { Funnel } from "@phosphor-icons/react/dist/ssr";
+
+// Trigger as a Button
+<Collapsible>
+  <CollapsibleTrigger
+    render={<Button variant="secondary" size="sm" icon={<Funnel />}>Filters</Button>}
+  />
+  <CollapsibleContent>...</CollapsibleContent>
+</Collapsible>
+
+// Trigger as inline text
+<Collapsible>
+  <CollapsibleTrigger
+    render={<button className="text-body-14 text-ink-muted hover:text-ink" />}
+  >
+    Show more
+  </CollapsibleTrigger>
+  <CollapsibleContent>...</CollapsibleContent>
+</Collapsible>
+
+// Hide the trigger once open
+<CollapsibleTrigger
+  render={<Button className="data-[panel-open]:hidden">Add description</Button>}
+/>
+
+// Controlled
+const [open, setOpen] = useState(false);
+<Collapsible open={open} onOpenChange={setOpen}>
+  ...
+</Collapsible>
+```
+
+## Props
+
+### Collapsible
+
+<PropsTable
+  props={[
+    {
+      name: "open",
+      type: "boolean",
+      default: "-",
+      description: "Controlled open state.",
+    },
+    {
+      name: "defaultOpen",
+      type: "boolean",
+      default: "false",
+      description: "Initial open state when uncontrolled.",
+    },
+    {
+      name: "onOpenChange",
+      type: "(open: boolean) => void",
+      default: "-",
+      description: "Called when the open state changes.",
+    },
+    {
+      name: "disabled",
+      type: "boolean",
+      default: "false",
+      description: "Disable the trigger.",
+    },
+  ]}
+/>
+
+### CollapsibleTrigger
+
+Renders a `<button>` by default. Pass any interactive element through `render` (Button, link, custom button) to supply the trigger's shape. Gets `data-panel-open` while open so you can style the open state — for example `data-[panel-open]:hidden` to remove the trigger once the content is revealed.
+
+### CollapsibleContent
+
+<PropsTable
+  props={[
+    {
+      name: "hiddenUntilFound",
+      type: "boolean",
+      default: "false",
+      description: "Uses `hidden='until-found'` so the browser's find-in-page can expand the panel to reveal a match.",
+    },
+    {
+      name: "keepMounted",
+      type: "boolean",
+      default: "true",
+      description: "Keep the panel in the DOM while closed. On by default so heavy content doesn't remount on every open.",
+    },
+  ]}
+/>
+
+<Callout title="Notes">
+- **No default chrome.** Collapsible ships neutral: no caret, no padding, no typography opinions. The `render` prop is the API — compose the trigger you actually want.
+- **Animation.** Base UI populates `--collapsible-panel-height` on the panel with the measured content height, so height transitions from `0` to that value on open and back on close. Reduced motion collapses the transition to instant via the token setup.
+- **`data-panel-open`.** The trigger carries `data-panel-open=""` while open. Style rotation, text swaps, or full disappearance (`data-[panel-open]:hidden`) off it.
+- **Find-in-page.** Set `hiddenUntilFound` on `CollapsibleContent` when the panel contains long-form text you want the browser's built-in search to expand automatically.
+- **When to reach for Accordion instead.** If more than one collapsible sits together and they should behave as a group (only one open at a time, coordinated state, uniform trigger chrome), that's `Accordion`. Collapsible is for the one-off.
+</Callout>

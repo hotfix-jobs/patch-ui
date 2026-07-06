@@ -14,15 +14,18 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@patchui/react";
 
 export function Sidebar() {
   const pathname = usePathname();
   const activeRef = useRef<HTMLAnchorElement>(null);
+  const { setOpenMobile } = useSidebar();
 
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: "nearest" });
-  }, [pathname]);
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
 
   return (
     <SidebarRoot>
