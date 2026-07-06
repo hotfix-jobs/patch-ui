@@ -1,19 +1,7 @@
 "use client";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@patchui/react";
-import { FileText, Home, LayoutDashboard, Settings, Users } from "lucide-react";
+import { useState } from "react";
+import { FileText, Home, LayoutDashboard, PanelLeft, Settings, Users } from "lucide-react";
 
 const NAV = [
   { icon: Home, label: "Overview", active: true },
@@ -24,43 +12,60 @@ const NAV = [
 ];
 
 export function SidebarDemo() {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
-    <div className="overflow-hidden rounded-[var(--radius-12)] border border-gray-alpha-400">
-      <SidebarProvider defaultOpen>
-        <Sidebar width={224}>
-          <SidebarHeader className="border-b-[0.5px] border-gray-alpha-400">
-            <div className="px-2 py-1 text-heading-16 text-gray-1000">
-              Acme
+    <div className="flex h-[420px] w-full overflow-hidden rounded-[var(--radius-12)] border border-hairline bg-canvas">
+      <aside
+        className={`flex shrink-0 flex-col overflow-hidden border-r border-hairline bg-canvas transition-[width] duration-[var(--duration-overlay)] ease-[var(--ease-standard)] ${collapsed ? "w-0" : "w-56"}`}
+      >
+        <div className="flex h-14 shrink-0 flex-row items-center border-b border-hairline px-3">
+          <div className="text-button-16 text-ink">Acme</div>
+        </div>
+
+        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-3">
+          <div>
+            <div className="px-2 pt-2 text-button-12 text-primary">
+              Workspace
             </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarGroupLabel>Workspace</SidebarGroupLabel>
-              <SidebarMenu>
-                {NAV.map((item) => (
-                  <SidebarMenuItem key={item.label}>
-                    <SidebarMenuButton active={item.active}>
-                      <item.icon className="size-4" aria-hidden />
+            <ul className="mt-1 flex flex-col gap-0.5">
+              {NAV.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <li key={item.label}>
+                    <button
+                      type="button"
+                      aria-current={item.active ? "page" : undefined}
+                      className={`flex w-full items-center gap-2 rounded-[var(--radius-6)] px-2 py-1.5 text-body-13 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] ${item.active ? "bg-surface-1 font-medium text-ink" : "text-ink-muted hover:bg-surface-1 hover:text-ink"}`}
+                    >
+                      <Icon className="size-4 shrink-0" aria-hidden />
                       {item.label}
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroup>
-          </SidebarContent>
-        </Sidebar>
-        <SidebarInset>
-          <header className="flex h-12 items-center gap-2 border-b-[0.5px] border-gray-alpha-400 px-3">
-            <SidebarTrigger title="Toggle sidebar (⌘B)" />
-            <span className="text-copy-14 text-gray-800">Overview</span>
-          </header>
-          <div className="min-h-[220px] p-6 text-copy-14 text-gray-900">
-            Main content flows here. Try the toggle in the header or press
-            <span className="mx-1 font-mono text-label-12 text-gray-1000">⌘B</span>
-            to collapse the sidebar.
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
-        </SidebarInset>
-      </SidebarProvider>
+        </div>
+      </aside>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-hairline px-3">
+          <button
+            type="button"
+            onClick={() => setCollapsed((v) => !v)}
+            aria-label="Toggle sidebar"
+            className="inline-flex size-8 items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink"
+          >
+            <PanelLeft className="size-4" aria-hidden />
+          </button>
+          <span className="text-body-14 text-ink-muted">Overview</span>
+        </header>
+        <div className="min-h-0 flex-1 p-6 text-body-14 text-ink">
+          Main content flows here. Click the toggle in the header to collapse
+          the sidebar.
+        </div>
+      </div>
     </div>
   );
 }

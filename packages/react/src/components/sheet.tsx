@@ -10,6 +10,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
+import { X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   cloneElement,
@@ -35,7 +36,6 @@ import { cn } from "../utils";
  */
 
 export type SheetSide = "top" | "right" | "bottom" | "left";
-export type SheetVariant = "floating" | "drawer";
 
 type SheetContextValue = {
   open: boolean;
@@ -170,30 +170,12 @@ function getSlideVariants(side: SheetSide) {
 
 export interface SheetContentProps {
   side?: SheetSide;
-  /**
-   * Layout treatment:
-   * - `floating` (default): rounded card inset 16px from every viewport edge so the
-   *   backdrop peeks around it. Right for editorial preview / inspector panels.
-   * - `drawer`: flush with the anchored edge, full length along the perpendicular
-   *   axis (top/bottom for side="right", left/right for side="top"), single
-   *   inward-facing border, inward-facing corners rounded to match floating.
-   *   Right for mobile navigation and app-shell drawers.
-   *
-   * If you find yourself piling `!important` overrides on `className` for the floating
-   * variant, you probably want `variant="drawer"` instead — floating is designed to
-   * fill the mobile viewport with 16px insets and won't cede its both-side anchors.
-   */
-  variant?: SheetVariant;
-  /** When true (default), renders a darkening backdrop and blocks page interaction. Pass `modal={false}` for a persistent inspector that keeps the page interactive. */
-  modal?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
 
 export function SheetContent({
   side = "right",
-  variant = "floating",
-  modal = true,
   className,
   children,
 }: SheetContentProps): React.ReactElement {
@@ -215,7 +197,7 @@ export function SheetContent({
     <FloatingFocusManager
       context={context}
       initialFocus={popupRef as React.RefObject<HTMLElement>}
-      modal={modal}
+      modal
     >
       <motion.div
         ref={setPopupRef}
@@ -224,7 +206,6 @@ export function SheetContent({
         aria-describedby={descriptionId}
         data-slot="sheet-popup"
         data-side={side}
-        data-variant={variant}
         {...getFloatingProps()}
         initial={reduceMotion ? false : variants.initial}
         animate={variants.animate}
@@ -235,35 +216,19 @@ export function SheetContent({
             : { type: "spring", stiffness: 380, damping: 38, mass: 0.8 }
         }
         className={cn(
-          "fixed z-70 flex flex-col overflow-hidden bg-background-200 text-gray-1000 shadow-modal",
-          // Floating: rounded card, 16px inset from every edge so the backdrop
-          // peeks around all four corners.
-          variant === "floating" &&
-            "border border-gray-alpha-400 rounded-[var(--radius-12)]",
-          variant === "floating" &&
-            side === "right" &&
-            "top-4 bottom-4 right-4 left-4 sm:left-auto sm:w-full sm:max-w-md",
-          variant === "floating" &&
-            side === "left" &&
-            "top-4 bottom-4 left-4 right-4 sm:right-auto sm:w-full sm:max-w-md",
-          variant === "floating" && side === "top" && "top-4 left-4 right-4",
-          variant === "floating" && side === "bottom" && "bottom-4 left-4 right-4",
-          // Drawer: flush with the anchored edge, single inward-facing hairline.
-          // The two inward-facing corners are rounded (radius-12, matching
-          // floating); the two edge-flush corners stay square. Sensible width
-          // cap on side="right"/"left"; consumers can shrink via className.
-          variant === "drawer" &&
-            side === "right" &&
-            "top-0 bottom-0 right-0 w-[85vw] max-w-md border-l border-gray-alpha-400 rounded-l-[var(--radius-12)]",
-          variant === "drawer" &&
-            side === "left" &&
-            "top-0 bottom-0 left-0 w-[85vw] max-w-md border-r border-gray-alpha-400 rounded-r-[var(--radius-12)]",
-          variant === "drawer" &&
-            side === "top" &&
-            "top-0 left-0 right-0 border-b border-gray-alpha-400 rounded-b-[var(--radius-12)]",
-          variant === "drawer" &&
-            side === "bottom" &&
-            "bottom-0 left-0 right-0 border-t border-gray-alpha-400 rounded-t-[var(--radius-12)]",
+          // Canonical drawer: flush with the anchored edge, single
+          // inward-facing hairline border, inward-facing corners
+          // rounded (radius-12). Sensible width cap on side="right"
+          // / "left"; consumers can shrink via className.
+          "fixed z-70 flex flex-col overflow-hidden bg-surface-elevated text-ink shadow-modal",
+          side === "right" &&
+            "top-0 bottom-0 right-0 w-[85vw] max-w-md border-l border-hairline rounded-l-[var(--radius-12)]",
+          side === "left" &&
+            "top-0 bottom-0 left-0 w-[85vw] max-w-md border-r border-hairline rounded-r-[var(--radius-12)]",
+          side === "top" &&
+            "top-0 left-0 right-0 border-b border-hairline rounded-b-[var(--radius-12)]",
+          side === "bottom" &&
+            "bottom-0 left-0 right-0 border-t border-hairline rounded-t-[var(--radius-12)]",
           className,
         )}
       >
@@ -276,34 +241,28 @@ export function SheetContent({
     <FloatingPortal>
       <AnimatePresence>
         {open && (
-          <>
-            {modal ? (
-              <FloatingOverlay
-                lockScroll={false}
-                className="fixed inset-0 z-70"
-                data-slot="sheet-overlay"
-              >
-                <RemoveScroll noIsolation>
-                  <motion.div
-                    aria-hidden="true"
-                    data-slot="sheet-backdrop"
-                    className="absolute inset-0 bg-white/60 dark:bg-black/60"
-                    initial={reduceMotion ? false : { opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={reduceMotion ? undefined : { opacity: 0 }}
-                    transition={
-                      reduceMotion
-                        ? { duration: 0 }
-                        : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
-                    }
-                  />
-                  {panel}
-                </RemoveScroll>
-              </FloatingOverlay>
-            ) : (
-              panel
-            )}
-          </>
+          <FloatingOverlay
+            lockScroll={false}
+            className="fixed inset-0 z-70"
+            data-slot="sheet-overlay"
+          >
+            <RemoveScroll noIsolation>
+              <motion.div
+                aria-hidden="true"
+                data-slot="sheet-backdrop"
+                className="absolute inset-0 bg-white/60 dark:bg-black/60"
+                initial={reduceMotion ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={reduceMotion ? undefined : { opacity: 0 }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
+                }
+              />
+              {panel}
+            </RemoveScroll>
+          </FloatingOverlay>
         )}
       </AnimatePresence>
     </FloatingPortal>
@@ -318,36 +277,69 @@ export interface SheetCloseProps {
 }
 
 /**
- * SheetClose: wraps a consumer-provided element to close the sheet on click.
- * Use with `render={<Button />}` inside SheetFooter, or as children of any
- * element that should dismiss the sheet.
+ * SheetClose: dismisses the sheet on click. Two modes:
+ *
+ * 1. **Bare** (`<SheetClose />`): renders the styled X icon button
+ *    typically placed in the top-right of a SheetHeader. 32px circle,
+ *    ink-muted at rest, lifts to ink on hover with a surface-2 fill.
+ *
+ * 2. **Passthrough** (`<SheetClose render={<Button>Cancel</Button>} />`):
+ *    wraps the consumer's element with the close-onClick handler. Use
+ *    for footer "Cancel" buttons, custom dismiss triggers, etc.
  */
 export function SheetClose({
   render,
   children,
+  className,
   ...rest
 }: SheetCloseProps &
   React.ButtonHTMLAttributes<HTMLButtonElement>): React.ReactElement {
   const { setOpen } = useSheetContext();
-  const onClick = () => setOpen(false);
+  const handleClick: React.MouseEventHandler<HTMLElement> = (e) => {
+    rest.onClick?.(e as React.MouseEvent<HTMLButtonElement>);
+    if (!e.defaultPrevented) setOpen(false);
+  };
 
   if (render && isValidElement(render)) {
     return cloneElement(render, {
-      onClick,
+      onClick: handleClick,
       "data-slot": "sheet-close",
       ...rest,
       children:
         (render.props as { children?: React.ReactNode }).children ?? children,
     } as React.HTMLAttributes<HTMLElement>);
   }
+
+  // Bare mode: styled X icon button. If children are provided (e.g.
+  // a custom label), wrap them in a plain button instead so consumers
+  // aren't forced into the icon-only shape.
+  if (children != null) {
+    return (
+      <button
+        type="button"
+        onClick={handleClick}
+        data-slot="sheet-close"
+        className={className}
+        {...rest}
+      >
+        {children}
+      </button>
+    );
+  }
+
   return (
     <button
       type="button"
-      onClick={onClick}
+      aria-label="Close"
+      onClick={handleClick}
       data-slot="sheet-close"
+      className={cn(
+        "inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-surface-2 hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        className,
+      )}
       {...rest}
     >
-      {children}
+      <X aria-hidden className="size-4" />
     </button>
   );
 }
@@ -362,7 +354,7 @@ export function SheetHeader({
     <div
       data-slot="sheet-header"
       className={cn(
-        "flex flex-col gap-1 border-b border-gray-alpha-400 px-5 py-4",
+        "flex flex-col gap-1 border-b border-hairline px-5 py-4",
         className,
       )}
       {...props}
@@ -379,7 +371,7 @@ export function SheetTitle({
     <h2
       id={titleId}
       data-slot="sheet-title"
-      className={cn("text-heading-16 text-gray-1000", className)}
+      className={cn("text-button-16 text-ink", className)}
       {...props}
     />
   );
@@ -394,7 +386,7 @@ export function SheetDescription({
     <p
       id={descriptionId}
       data-slot="sheet-description"
-      className={cn("text-copy-14 text-gray-800", className)}
+      className={cn("text-body-14 text-ink-muted", className)}
       {...props}
     />
   );
@@ -434,7 +426,10 @@ export function SheetFooter({
     <div
       data-slot="sheet-footer"
       className={cn(
-        "flex gap-2 border-t border-gray-alpha-400 bg-background-200 px-5 py-3",
+        // Softer top border; no bg fill. bg-surface-1 was invisible on
+        // the elevated sheet in dark mode. Divider alone carries the
+        // region separation.
+        "flex gap-2 border-t border-hairline px-5 py-3",
         stacked ? "flex-col" : "flex-row justify-between",
         className,
       )}

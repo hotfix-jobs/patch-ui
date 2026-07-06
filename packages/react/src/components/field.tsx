@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import type * as React from "react";
 import { cn } from "../utils";
 
+/** Field wraps a label + control + description + error stack. */
 export function Field({
   className,
   ...props
@@ -36,7 +37,7 @@ export function FieldLabel({
   return (
     <FieldPrimitive.Label
       className={cn(
-        "inline-flex items-center gap-1.5 text-button-14 text-gray-900",
+        "inline-flex items-center gap-1.5 text-button-14 text-ink",
         className,
       )}
       data-slot="field-label"
@@ -46,7 +47,7 @@ export function FieldLabel({
       {required && (
         <span
           aria-hidden="true"
-          className="text-[var(--error)] text-label-12 leading-none"
+          className="text-caption-12 leading-none text-error"
           data-slot="field-required"
         >
           *
@@ -55,7 +56,7 @@ export function FieldLabel({
       {optional && !required && (
         <span
           aria-hidden="true"
-          className="text-gray-800 text-label-12"
+          className="text-caption-12 text-ink-muted"
           data-slot="field-optional"
         >
           (optional)
@@ -84,21 +85,14 @@ export function FieldDescription({
 }: FieldPrimitive.Description.Props): React.ReactElement {
   return (
     <FieldPrimitive.Description
-      className={cn(
-        "text-gray-900 text-label-12 leading-[1.5] tracking-[-0.005em]",
-        className,
-      )}
+      className={cn("text-caption-12 text-ink-subtle", className)}
       data-slot="field-description"
       {...props}
     />
   );
 }
 
-/**
- * Renders an error message when the field is invalid. Base UI controls
- * mount/unmount via validity state; motion adds a subtle opacity + slight
- * slide on appearance so the message doesn't snap in.
- */
+/** Error message shown when the field is invalid. */
 export function FieldError({
   className,
   ...props
@@ -107,7 +101,7 @@ export function FieldError({
   return (
     <FieldPrimitive.Error
       className={cn(
-        "inline-flex items-center gap-1.5 text-label-12 leading-[1.5] tracking-[-0.005em] text-[var(--error)] before:content-[''] before:size-[5px] before:rounded-full before:bg-[var(--error)]",
+        "inline-flex items-center gap-1.5 text-caption-12 text-error before:content-[''] before:size-[5px] before:rounded-full before:bg-error",
         className,
       )}
       data-slot="field-error"

@@ -10,174 +10,168 @@ import {
 } from "@patchui/react";
 import { SectionLabel } from "@patchui/react";
 
-const DEPLOYMENTS = [
-  { name: "acme-web", branch: "main", status: "Ready", lastUsed: "2m ago" },
-  { name: "acme-api", branch: "main", status: "Building", lastUsed: "5m ago" },
-  { name: "acme-docs", branch: "feat/redesign", status: "Ready", lastUsed: "1h ago" },
-  { name: "acme-marketing", branch: "main", status: "Failed", lastUsed: "3h ago" },
-  { name: "acme-cli", branch: "main", status: "Ready", lastUsed: "1d ago" },
+const MEMBERS = [
+  { name: "Ada Lovelace", role: "Owner", status: "Active", lastActive: "2m ago" },
+  { name: "Alan Turing", role: "Admin", status: "Active", lastActive: "12m ago" },
+  { name: "Grace Hopper", role: "Member", status: "Invited", lastActive: "1h ago" },
+  { name: "Katherine Johnson", role: "Member", status: "Active", lastActive: "3h ago" },
+  { name: "Linus Torvalds", role: "Member", status: "Suspended", lastActive: "5d ago" },
 ];
 
 function StatusBadge({ status }: { status: string }) {
   const color =
-    status === "Ready"
+    status === "Active"
       ? "text-[var(--success)]"
-      : status === "Failed"
+      : status === "Suspended"
         ? "text-[var(--error)]"
-        : "text-gray-800";
+        : "text-ink-muted";
   return <span className={color}>{status}</span>;
 }
 
 export function TableDemo() {
   return (
     <div className="flex flex-col gap-10">
-      {/* Default */}
       <div className="space-y-3">
         <SectionLabel>Default</SectionLabel>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Branch</TableHead>
+              <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead align="right">Last used</TableHead>
+              <TableHead align="right">Last active</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {DEPLOYMENTS.map((d) => (
-              <TableRow key={d.name}>
-                <TableCell>{d.name}</TableCell>
-                <TableCell>{d.branch}</TableCell>
+            {MEMBERS.map((m) => (
+              <TableRow key={m.name}>
+                <TableCell>{m.name}</TableCell>
+                <TableCell>{m.role}</TableCell>
                 <TableCell>
-                  <StatusBadge status={d.status} />
+                  <StatusBadge status={m.status} />
                 </TableCell>
-                <TableCell align="right">{d.lastUsed}</TableCell>
+                <TableCell align="right">{m.lastActive}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Interactive */}
       <div className="space-y-3">
         <SectionLabel>Interactive rows (opt-in hover)</SectionLabel>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Branch</TableHead>
+              <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead align="right">Last used</TableHead>
+              <TableHead align="right">Last active</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody interactive>
-            {DEPLOYMENTS.slice(0, 4).map((d) => (
-              <TableRow key={d.name}>
-                <TableCell>{d.name}</TableCell>
-                <TableCell>{d.branch}</TableCell>
+            {MEMBERS.slice(0, 4).map((m) => (
+              <TableRow key={m.name}>
+                <TableCell>{m.name}</TableCell>
+                <TableCell>{m.role}</TableCell>
                 <TableCell>
-                  <StatusBadge status={d.status} />
+                  <StatusBadge status={m.status} />
                 </TableCell>
-                <TableCell align="right">{d.lastUsed}</TableCell>
+                <TableCell align="right">{m.lastActive}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Striped */}
       <div className="space-y-3">
         <SectionLabel>Striped rows</SectionLabel>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Branch</TableHead>
-              <TableHead align="right">Last used</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead align="right">Last active</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody striped>
-            {DEPLOYMENTS.map((d) => (
-              <TableRow key={d.name}>
-                <TableCell>{d.name}</TableCell>
-                <TableCell>{d.branch}</TableCell>
-                <TableCell align="right">{d.lastUsed}</TableCell>
+            {MEMBERS.map((m) => (
+              <TableRow key={m.name}>
+                <TableCell>{m.name}</TableCell>
+                <TableCell>{m.role}</TableCell>
+                <TableCell align="right">{m.lastActive}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Bordered */}
       <div className="space-y-3">
         <SectionLabel>Bordered cells</SectionLabel>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Branch</TableHead>
-              <TableHead align="right">Last used</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead align="right">Last active</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody bordered>
-            {DEPLOYMENTS.slice(0, 3).map((d) => (
-              <TableRow key={d.name}>
-                <TableCell>{d.name}</TableCell>
-                <TableCell>{d.branch}</TableCell>
-                <TableCell align="right">{d.lastUsed}</TableCell>
+            {MEMBERS.slice(0, 3).map((m) => (
+              <TableRow key={m.name}>
+                <TableCell>{m.name}</TableCell>
+                <TableCell>{m.role}</TableCell>
+                <TableCell align="right">{m.lastActive}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Flat variant */}
       <div className="space-y-3">
         <SectionLabel>Flat variant (no outer chrome)</SectionLabel>
         <Table variant="flat">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Branch</TableHead>
-              <TableHead align="right">Last used</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead align="right">Last active</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {DEPLOYMENTS.slice(0, 3).map((d) => (
-              <TableRow key={d.name}>
-                <TableCell>{d.name}</TableCell>
-                <TableCell>{d.branch}</TableCell>
-                <TableCell align="right">{d.lastUsed}</TableCell>
+            {MEMBERS.slice(0, 3).map((m) => (
+              <TableRow key={m.name}>
+                <TableCell>{m.name}</TableCell>
+                <TableCell>{m.role}</TableCell>
+                <TableCell align="right">{m.lastActive}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Unknown values as em-dash */}
       <div className="space-y-3">
-        <SectionLabel>Unknown values render as em-dash (:)</SectionLabel>
+        <SectionLabel>Missing values</SectionLabel>
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Owner</TableHead>
-              <TableHead align="right">Last used</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead align="right">Last active</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell>acme-web</TableCell>
-              <TableCell>Ada</TableCell>
+              <TableCell>Ada Lovelace</TableCell>
+              <TableCell>Owner</TableCell>
               <TableCell align="right">2m ago</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>orphan-repo</TableCell>
+              <TableCell>Pending invite</TableCell>
               <TableCell>
-                <span className="text-gray-700">:</span>
+                <span className="text-ink-subtle">None</span>
               </TableCell>
               <TableCell align="right">
-                <span className="text-gray-700">:</span>
+                <span className="text-ink-subtle">None</span>
               </TableCell>
             </TableRow>
           </TableBody>

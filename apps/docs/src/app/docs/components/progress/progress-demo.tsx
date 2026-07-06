@@ -1,56 +1,110 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { Progress } from "@patchui/react";
+import { Progress, SectionLabel } from "@patchui/react";
+import { CheckCircle2, FileText, HardDrive } from "lucide-react";
 
 export function ProgressDemo() {
-  const [value, setValue] = useState(20);
+  const [upload, setUpload] = useState(20);
   useEffect(() => {
     const id = setInterval(() => {
-      setValue((v) => (v >= 100 ? 0 : v + 7));
+      setUpload((v) => (v >= 100 ? 0 : v + 7));
     }, 800);
     return () => clearInterval(id);
   }, []);
 
   return (
-    <div className="flex flex-col gap-6 max-w-sm">
-      <Stack label="Animated">
-        <Progress value={value} />
-      </Stack>
-      <Stack label="Variants">
-        <Progress value={40} variant="success" />
-        <Progress value={70} variant="warning" />
-        <Progress value={90} variant="error" />
-      </Stack>
-      <Stack label="Sizes">
-        <Progress value={60} size="sm" />
-        <Progress value={60} size="md" />
-        <Progress value={60} size="lg" />
-      </Stack>
-      <Stack label="Custom height">
-        <Progress value={60} height={4} />
-        <Progress value={60} height={10} />
-        <Progress value={60} height={20} />
-      </Stack>
-      <Stack label="Custom width">
-        <Progress value={60} width={120} />
-        <Progress value={60} width={200} />
-        <Progress value={60} width="100%" />
-      </Stack>
-      <Stack label="Custom max">
-        <Progress value={30} max={40} />
-      </Stack>
-      <Stack label="Indeterminate">
-        <Progress value={null} />
-      </Stack>
-    </div>
-  );
-}
+    <div className="flex max-w-md flex-col gap-10">
+      <div className="space-y-3">
+        <SectionLabel>File upload</SectionLabel>
+        <div className="flex flex-col gap-2 rounded-[var(--radius-6)] border border-hairline p-3">
+          <div className="flex items-center gap-2">
+            <FileText className="size-4 text-ink-muted" aria-hidden />
+            <span className="flex-1 text-body-13 text-ink">
+              resume-final.pdf
+            </span>
+            <span className="tabular-nums text-caption-12 text-ink-muted">
+              {upload}%
+            </span>
+          </div>
+          <Progress value={upload} size="sm" />
+        </div>
+      </div>
 
-function Stack({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <p className="mb-2 text-label-12 text-gray-800">{label}</p>
-      <div className="flex flex-col gap-2">{children}</div>
+      <div className="space-y-3">
+        <SectionLabel>Onboarding step</SectionLabel>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-baseline justify-between">
+            <span className="text-button-14 text-ink">Set up your workspace</span>
+            <span className="tabular-nums text-caption-12 text-ink-muted">
+              Step 2 of 4
+            </span>
+          </div>
+          <Progress value={2} max={4} size="sm" />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Storage quota</SectionLabel>
+        <div className="flex flex-col gap-2 rounded-[var(--radius-6)] border border-hairline p-3">
+          <div className="flex items-center gap-2">
+            <HardDrive className="size-4 text-ink-muted" aria-hidden />
+            <span className="flex-1 text-body-13 text-ink">Storage</span>
+            <span className="tabular-nums text-caption-12 text-ink-muted">
+              12.4 GB of 20 GB
+            </span>
+          </div>
+          <Progress value={12.4} max={20} size="sm" />
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Status variants</SectionLabel>
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <div className="flex items-baseline justify-between">
+              <span className="text-body-13 text-ink">Sync complete</span>
+              <span className="tabular-nums text-caption-12 text-ink-muted">
+                100%
+              </span>
+            </div>
+            <Progress value={100} variant="success" size="sm" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-baseline justify-between">
+              <span className="text-body-13 text-ink">
+                Approaching rate limit
+              </span>
+              <span className="tabular-nums text-caption-12 text-ink-muted">
+                80%
+              </span>
+            </div>
+            <Progress value={80} variant="warning" size="sm" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-baseline justify-between">
+              <span className="text-body-13 text-ink">Quota exceeded</span>
+              <span className="tabular-nums text-caption-12 text-ink-muted">
+                108%
+              </span>
+            </div>
+            <Progress value={100} variant="error" size="sm" />
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Indeterminate</SectionLabel>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="size-4 text-ink-muted" aria-hidden />
+            <span className="flex-1 text-body-13 text-ink">
+              Preparing your export…
+            </span>
+          </div>
+          <Progress value={null} size="sm" />
+        </div>
+      </div>
     </div>
   );
 }

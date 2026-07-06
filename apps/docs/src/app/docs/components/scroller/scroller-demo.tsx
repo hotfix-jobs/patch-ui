@@ -36,12 +36,12 @@ export function ScrollerDemo() {
           {CARDS.map((c) => (
             <div
               key={c.title}
-              className="w-52 shrink-0 rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100 p-4"
+              className="w-52 shrink-0 rounded-[var(--radius-12)] border border-hairline-strong bg-canvas p-4"
             >
-              <p className="text-button-14 text-gray-1000">
+              <p className="text-button-14 text-ink">
                 {c.title}
               </p>
-              <p className="mt-1 text-label-13 text-gray-800">{c.meta}</p>
+              <p className="mt-1 text-body-13 text-ink-muted">{c.meta}</p>
             </div>
           ))}
         </Scroller>
@@ -60,7 +60,7 @@ export function ScrollerDemo() {
               <button
                 key={label}
                 type="button"
-                className="shrink-0 rounded-full border border-gray-alpha-400 bg-background-100 px-4 py-1.5 text-label-13 text-gray-1000 hover:bg-gray-alpha-100"
+                className="shrink-0 rounded-full border border-hairline-strong bg-canvas px-4 py-1.5 text-body-13 text-ink hover:bg-surface-1"
               >
                 {label}
               </button>
@@ -78,17 +78,17 @@ export function ScrollerDemo() {
           withButtons
           childrenContainerClassName="p-3"
           ariaLabel="Activity feed"
-          className="rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100"
+          className="rounded-[var(--radius-12)] border border-hairline-strong bg-canvas"
         >
           {FEED.map((item) => (
             <div
               key={item.id}
-              className="border-b border-gray-alpha-400 py-2 last:border-b-0"
+              className="border-b border-hairline-strong py-2 last:border-b-0"
             >
-              <p className="text-button-14 text-gray-1000">
+              <p className="text-button-14 text-ink">
                 {item.title}
               </p>
-              <p className="mt-0.5 text-label-13 text-gray-800">{item.body}</p>
+              <p className="mt-0.5 text-body-13 text-ink-muted">{item.body}</p>
             </div>
           ))}
         </Scroller>

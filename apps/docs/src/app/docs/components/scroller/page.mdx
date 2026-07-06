@@ -84,5 +84,5 @@ import { Scroller } from "@patchui/react";
 - **Keyboard.** The scroll region itself is focusable (`tabIndex={0}`) so keyboard users can arrow through the content. Children keep their DOM tab order: Tab moves through items regardless of visual scroll direction.
 - **Trackpad + touch.** Native momentum scrolling works alongside the buttons. `[-webkit-overflow-scrolling:touch]` is set so iOS scrolls smoothly.
 - **Scrollbar visibility.** Horizontal rails (`overflow="x"`) hide the browser scrollbar via the `scrollbar-hide` utility since the edge fade masks are the affordance. Vertical and both-axis rails keep the global thin scrollbar as the "more content below" cue.
-- **Not for pagination.** Reach for `Pagination` when there are discrete pages of the same dataset, `LoadMore` for appending more items to a feed, and `ShowMore` for progressive disclosure of a single list. Scroller is only for content that overflows one screen.
+- **Not for pagination.** Reach for `Pagination` when there are discrete pages of the same dataset, or a virtualization / infinite-scroll library for append-as-you-scroll feeds. Scroller is only for content that overflows one screen.
 </Callout>

@@ -5,7 +5,7 @@ export const metadata = { title: "Pagination" };
 
 # Pagination
 
-A minimal page navigator: prev/next chevron buttons flanking a sliding window of up to five page-number buttons. The number row reads as the caption (no "Page X of Y" text), and the active page sits centered as the window slides. Renders nothing when there is only one page.
+A grouped bar of page numbers between prev/next arrows, enclosed in a single hairline pill. First and last pages are always rendered so crawlers discover the whole series; an ellipsis fills the gaps for long ranges. Renders nothing when there is only one page.
 
 <Install name="pagination" />
 
@@ -21,7 +21,7 @@ import { Pagination } from "@patchui/react";
 
 const [page, setPage] = useState(1);
 
-// Basic
+// Client-side (dashboards, auth-gated pages)
 <Pagination page={page} totalPages={12} onPageChange={setPage} />
 
 // Loading state during async page transitions
@@ -37,6 +37,21 @@ const [page, setPage] = useState(1);
   loading={loading}
 />
 ```
+
+## SEO-friendly server-rendered pages
+
+For indexable content (jobs boards, listings, blog archives), pass an `href` builder. Every control renders as a real `<a href>` — no JavaScript required, crawlable by search engines, right-clickable, works with SSR / RSC.
+
+```tsx
+// Server component
+<Pagination
+  page={currentPage}
+  totalPages={totalPages}
+  href={(p) => (p === 1 ? "/jobs" : `/jobs?page=${p}`)}
+/>
+```
+
+The `p === 1` special-case keeps the canonical URL for the first page as the bare route (`/jobs` not `/jobs?page=1`), so the same page doesn't get indexed under two URLs.
 
 ## Props
 
@@ -55,10 +70,22 @@ const [page, setPage] = useState(1);
       description: "Total number of pages.",
     },
     {
+      name: "href",
+      type: "(page: number) => string",
+      default: "-",
+      description: "Builds the URL for each page. When provided, controls render as anchors — the SEO-friendly path. Prefer this over onPageChange for indexable content.",
+    },
+    {
       name: "onPageChange",
       type: "(page: number) => void",
       default: "-",
-      description: "Fired when the user picks a new page (a value from 1 to totalPages).",
+      description: "Client-side handler; rendered as button when href is not given. Use for in-app pages that don't need indexing.",
+    },
+    {
+      name: "siblingCount",
+      type: "number",
+      default: "1",
+      description: "How many page-number siblings to render on each side of the current page. Default 1 renders `1 … 4 [5] 6 … 42`.",
     },
     {
       name: "loading",
@@ -76,11 +103,9 @@ const [page, setPage] = useState(1);
 />
 
 <Callout title="Notes">
-- **Sliding window:** Always renders up to five number buttons, centered on the active page, clamped so the window never crosses 1 or totalPages. On page 1 the window is 1, 2, 3, 4, 5; on page 7 of 14 it is 5, 6, 7, 8, 9; on page 14 it is 10, 11, 12, 13, 14.
-- **No caption:** The number row is the caption, so there is no "Page X of Y" text to maintain or localize.
+- **First and last always visible:** Even in long ranges, page 1 and the final page always render. Ellipsis fills gaps in between. This is deliberate for crawler discovery: with `href`, every enumerated page URL becomes a real anchor Googlebot can follow.
 - **Tabular numerals:** Page numbers use tabular figures so digits stay column-aligned regardless of width.
-- **Tap targets:** Each number button is `h-8 min-w-8 px-2`, large enough for touch while staying visually compact.
-- **Active semantics:** The active page button gets `aria-current="page"`, renders with the `secondary` Button variant, and is non-interactive (clicking it is a no-op since you are already there).
+- **Active semantics:** The active page cell gets `aria-current="page"` and reads with a subtle `surface-2` lift (matching how Menu and Combobox items highlight their active row), not a shouty solid fill.
 - **Loading state:** When `loading={true}`, every control is disabled, the nav fades, and `aria-busy="true"` signals to assistive tech that a transition is in progress.
-- **Keyboard:** All controls are Tab-focusable with the standard Button focus outline. Use Tab + Enter or Space to navigate; arrow keys are intentionally unbound so the control composes inside horizontal scroll containers.
+- **Keyboard:** All controls are Tab-focusable. Use Tab + Enter or Space to navigate; arrow keys are intentionally unbound so the control composes inside horizontal scroll containers.
 </Callout>

@@ -4,35 +4,9 @@ import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/naviga
 import { ChevronDown } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
+import { colorTransition, iconMuted, popupSurface } from "../recipes";
 
-/**
- * NavigationMenu: horizontal menu bar with morphing dropdown panels.
- *
- * A patch-ui extension (Vercel Geist doesn't ship a NavigationMenu: they
- * expect consumers to compose their own top-nav from Menu / links). Built
- * on Base UI's NavigationMenu primitive with our token surface: the
- * List + Items live inline, and the dropdown panels morph inside one
- * shared portalled popup so switching between triggers slides horizontally
- * with size interpolation. Drop it straight into a header (AppHeader).
- *
- * Usage:
- *   <NavigationMenu>
- *     <NavigationMenuList>
- *       <NavigationMenuItem>
- *         <NavigationMenuTrigger>Product</NavigationMenuTrigger>
- *         <NavigationMenuContent>
- *           <NavigationMenuLink href="/features">Features</NavigationMenuLink>
- *           <NavigationMenuLink href="/pricing">Pricing</NavigationMenuLink>
- *         </NavigationMenuContent>
- *       </NavigationMenuItem>
- *       <NavigationMenuItem>
- *         <NavigationMenuLink href="/docs">Docs</NavigationMenuLink>
- *       </NavigationMenuItem>
- *     </NavigationMenuList>
- *   </NavigationMenu>
- */
-
+/** Horizontal menu bar with morphing dropdown panels sharing one portalled popup. */
 export function NavigationMenu({
   className,
   children,
@@ -55,7 +29,8 @@ export function NavigationMenu({
           <NavigationMenuPrimitive.Popup
             data-slot="navigation-menu-popup"
             className={cn(
-              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden rounded-[var(--radius-12)] bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-menu",
+              popupSurface,
+              "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden text-ink",
               "transition-[opacity,transform,width,height] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
               "data-[starting-style]:opacity-0 data-[starting-style]:scale-[0.97] data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.97]",
             )}
@@ -98,15 +73,14 @@ export function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "group inline-flex items-center gap-1 rounded-[var(--radius-6)] px-3 py-1.5 text-button-14 text-gray-1000 hover:bg-gray-alpha-100 hover:text-gray-1000 data-[popup-open]:bg-gray-alpha-100 data-[popup-open]:text-gray-1000",
+        "group inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-body-14 text-ink-muted hover:bg-surface-1 hover:text-ink data-[popup-open]:bg-surface-1 data-[popup-open]:text-ink outline-none",
         colorTransition,
-        focusRing,
         className,
       )}
       {...props}
     >
       {children}
-      <NavigationMenuPrimitive.Icon className="text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[popup-open]:rotate-180">
+      <NavigationMenuPrimitive.Icon className="transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[popup-open]:rotate-180">
         {chevron}
       </NavigationMenuPrimitive.Icon>
     </NavigationMenuPrimitive.Trigger>
@@ -142,9 +116,9 @@ export function NavigationMenuLink({
       data-slot="navigation-menu-link"
       closeOnClick={closeOnClick}
       className={cn(
-        "block rounded-[var(--radius-6)] px-3 py-2 text-label-13 text-gray-1000 hover:bg-gray-alpha-100 hover:text-gray-1000",
+        "block rounded-[var(--radius-6)] px-3 py-2 text-body-13 text-ink-muted hover:bg-surface-2 hover:text-ink outline-none",
+        iconMuted,
         colorTransition,
-        focusRing,
         className,
       )}
       {...props}

@@ -11,7 +11,6 @@ export function SelectDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Basic */}
       <div className="space-y-3">
         <SectionLabel>Basic</SectionLabel>
         <div className="max-w-sm">
@@ -30,7 +29,6 @@ export function SelectDemo() {
         </div>
       </div>
 
-      {/* With region */}
       <div className="space-y-3">
         <SectionLabel>Region</SectionLabel>
         <div className="max-w-sm">
@@ -48,7 +46,6 @@ export function SelectDemo() {
         </div>
       </div>
 
-      {/* Sizes */}
       <div className="space-y-3">
         <SectionLabel>Sizes</SectionLabel>
         <div className="flex flex-col gap-3 max-w-sm">
@@ -67,7 +64,6 @@ export function SelectDemo() {
         </div>
       </div>
 
-      {/* With prefix */}
       <div className="space-y-3">
         <SectionLabel>With prefix icon</SectionLabel>
         <div className="max-w-sm">
@@ -80,7 +76,6 @@ export function SelectDemo() {
         </div>
       </div>
 
-      {/* Grouped options */}
       <div className="space-y-3">
         <SectionLabel>Grouped options</SectionLabel>
         <div className="max-w-sm">
@@ -98,7 +93,6 @@ export function SelectDemo() {
         </div>
       </div>
 
-      {/* Disabled */}
       <div className="space-y-3">
         <SectionLabel>Disabled</SectionLabel>
         <div className="max-w-sm">
@@ -109,7 +103,6 @@ export function SelectDemo() {
         </div>
       </div>
 
-      {/* Error state */}
       <div className="space-y-3">
         <SectionLabel>Error state</SectionLabel>
         <div className="max-w-sm">

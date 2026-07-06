@@ -64,7 +64,7 @@ Import the copied tokens through your Tailwind CSS entry file (not a JS import, 
 @import "./styles/patch-ui-tokens.css";
 ```
 
-This registers the tokens as utilities (`bg-background-100`, `text-gray-1000`, `text-copy-14`, `rounded-[var(--radius-6)]`, etc.) and drives light and dark mode simultaneously.
+This registers the tokens as utilities (`bg-canvas`, `text-ink`, `text-body-14`, `rounded-[var(--radius-6)]`, etc.) and drives light and dark mode simultaneously.
 
 ### Light and dark mode
 
@@ -86,13 +86,13 @@ export default function App() {
     <div className="flex gap-3">
       <Button variant="primary">Save</Button>
       <Button variant="secondary">Cancel</Button>
-      <Button variant="error">Delete</Button>
+      <Button variant="destructive">Delete</Button>
     </div>
   );
 }
 ```
 
-Button ships five variants (`primary`, `secondary`, `tertiary`, `warning`, `error`), three sizes (`sm`, `md`, `lg`), four shapes (`square`, `pill`, `circle`, `rounded`), icon slots on either side, and a loading state. See the [Button docs](/docs/components/button) for the full API.
+Button ships five variants (`primary`, `secondary`, `tertiary`, `warning`, `destructive`), three sizes (`sm`, `md`, `lg`), three shapes (`square`, `pill`, `circle`), icon slots on either side, and a loading state. See the [Button docs](/docs/components/button) for the full API.
 
 ## What you own
 
@@ -102,7 +102,6 @@ Button ships five variants (`primary`, `secondary`, `tertiary`, `warning`, `erro
 
 ## Next steps
 
-- Read the [Theme & Design Tokens](/docs/theme) reference to understand the token system.
-- Skim the [Contrast contract](/docs/contrast) if you care about accessibility (you should).
+- Read the [Theme](/docs/theme) reference to understand the token system.
+- Skim the [Contrast](/docs/contrast) contract if you care about accessibility.
 - Browse the components, starting with [Button](/docs/components/button).
-- See what Patch UI is built on and inspired by in [Credits](/docs/credits).

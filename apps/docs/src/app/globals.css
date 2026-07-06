@@ -5,9 +5,14 @@
 @source "../../../../packages/react/src";
 @source "../../node_modules/@patchui/react/dist";
 
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
-  background: var(--background-100);
-  color: var(--gray-1000);
+  background: var(--canvas);
+  color: var(--ink);
 }
 
 .dark body {
@@ -28,9 +33,9 @@ body {
   font-size: 0.8125rem;
   font-weight: 500;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-  border-bottom: 1px solid var(--gray-alpha-400);
-  background: var(--gray-100);
-  color: var(--gray-900);
+  border-bottom: 1px solid var(--hairline-strong);
+  background: var(--surface-1);
+  color: var(--ink);
 }
 
 /* Pre block */
@@ -40,7 +45,7 @@ body {
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.7;
-  background: var(--background-100);
+  background: var(--canvas);
 }
 
 /* Code element */
@@ -58,12 +63,12 @@ body {
 
 /* Highlighted lines */
 [data-rehype-pretty-code-figure] code > [data-highlighted-line] {
-  background: var(--gray-alpha-100);
-  border-left-color: var(--gray-alpha-600);
+  background: var(--hairline);
+  border-left-color: var(--hairline-tertiary);
 }
 
 .dark [data-rehype-pretty-code-figure] code > [data-highlighted-line] {
-  background: var(--gray-alpha-200);
+  background: var(--hairline);
 }
 
 /* Inline code (not in fenced blocks) */
@@ -72,6 +77,6 @@ body {
   border-radius: 0.25rem;
   font-size: 0.875em;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-  background: var(--gray-100);
-  color: var(--gray-1000);
+  background: var(--surface-1);
+  color: var(--ink);
 }

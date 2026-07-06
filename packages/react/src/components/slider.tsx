@@ -26,7 +26,6 @@ export function Slider({
   onValueChange,
   ...props
 }: SliderProps): React.ReactElement {
-  // Normalize value to an array for internal use
   const arrayFrom = React.useCallback((v: number | readonly number[] | undefined): number[] => {
     if (v === undefined) return [min];
     return Array.isArray(v) ? [...v] : [v as number];
@@ -44,7 +43,6 @@ export function Slider({
       const clamped = Math.max(min, Math.min(max, next));
       const nextValues = values.slice();
       nextValues[index] = clamped;
-      // Prevent thumbs from crossing in range mode.
       if (isRange) {
         if (index === 0 && nextValues[0] > nextValues[1]) nextValues[0] = nextValues[1];
         if (index === 1 && nextValues[1] < nextValues[0]) nextValues[1] = nextValues[0];
@@ -78,21 +76,19 @@ export function Slider({
         data-slot="slider-control"
       >
         <SliderPrimitive.Track
-          className="relative grow select-none rounded-full bg-gray-alpha-300 data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full"
+          className="relative grow select-none rounded-full bg-surface-2 data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full"
           data-slot="slider-track"
         >
           <SliderPrimitive.Indicator
-            className="select-none rounded-full bg-gray-1000"
+            className="select-none rounded-full bg-primary"
             data-slot="slider-indicator"
           />
           {Array.from({ length: values.length }, (_, index) => (
             <SliderPrimitive.Thumb
               className={cn(
-                "block h-4 w-[6px] shrink-0 select-none rounded-[3px]",
-                "border border-gray-alpha-500 bg-background-100 shadow-[var(--shadow-card)]",
-                "outline-none",
-                "transition-[height,width] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-                "hover:h-[18px] hover:w-2 data-dragging:h-[18px] data-dragging:w-2",
+                "block size-3.5 shrink-0 select-none rounded-full bg-primary shadow-[var(--shadow-card)] outline-none",
+                "transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+                "hover:scale-110 data-dragging:scale-110",
                 "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-2",
               )}
               data-slot="slider-thumb"
@@ -158,7 +154,7 @@ export function SliderValue({
   return (
     <SliderPrimitive.Value
       className={cn(
-        "block text-end text-label-13 tabular-nums text-gray-900 self-end",
+        "block text-end text-body-13 tabular-nums text-ink self-end",
         className,
       )}
       data-slot="slider-value"

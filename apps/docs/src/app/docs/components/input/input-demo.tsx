@@ -22,29 +22,12 @@ export function InputDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Prefix and suffix (styled, default)</SectionLabel>
+        <SectionLabel>Prefix and suffix</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
-          <Input prefix={<ArrowUpCircle />} placeholder="Default" />
-          <Input suffix={<ArrowUpCircle />} placeholder="Default" />
-          <Input prefix="https://" suffix=".com" placeholder="Default" />
-        </div>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Prefix and suffix (unstyled, floating)</SectionLabel>
-        <div className="flex flex-col gap-3 max-w-xs">
-          <Input
-            prefix={<ArrowUpCircle />}
-            prefixStyling={false}
-            suffix={<ArrowUpCircle />}
-            suffixStyling={false}
-            placeholder="Default"
-          />
-          <Input
-            prefix={<Search />}
-            prefixStyling={false}
-            placeholder="Search projects"
-          />
+          <Input prefix={<ArrowUpCircle />} placeholder="Icon prefix" />
+          <Input suffix={<ArrowUpCircle />} placeholder="Icon suffix" />
+          <Input prefix="https://" suffix=".com" placeholder="Text prefix and suffix" />
+          <Input prefix={<Search />} placeholder="Search projects" />
         </div>
       </div>
 
@@ -66,17 +49,12 @@ export function InputDemo() {
       <div className="space-y-3">
         <SectionLabel>Rounded (pill-shaped)</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
-          <Input
-            rounded
-            prefix={<Search />}
-            prefixStyling={false}
-            placeholder="Search"
-          />
+          <Input rounded prefix={<Search />} placeholder="Search" />
         </div>
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>SearchInput (clears on Escape or Esc chip click)</SectionLabel>
+        <SectionLabel>SearchInput (X button clears the value)</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
           <SearchInput
             placeholder="Search projects"

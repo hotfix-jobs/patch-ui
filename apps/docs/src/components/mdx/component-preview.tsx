@@ -13,7 +13,7 @@ interface ComponentPreviewProps {
 export function ComponentPreview({ children }: ComponentPreviewProps) {
   return (
     <div
-      className="my-6 overflow-hidden rounded-[6px] ring-1 ring-gray-alpha-400"
+      className="my-6 overflow-hidden rounded-[var(--radius-12)] border border-hairline"
       data-slot="component-preview"
     >
       <div className="w-full min-w-0 overflow-hidden p-6">{children}</div>

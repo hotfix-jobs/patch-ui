@@ -9,6 +9,7 @@ import {
   useInteractions,
   useRole,
 } from "@floating-ui/react";
+import { X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   createContext,
@@ -23,13 +24,7 @@ import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
 import { Button, type ButtonProps } from "./button";
 
-/**
- * Modal: floating dialog surface for content that requires user attention.
- * Controlled externally via `active`. On mobile viewports the modal anchors
- * to the bottom of the screen and slides up as a sheet; on tablet+ it centers
- * and scales in.
- */
-
+/** Floating dialog surface; slides up as a sheet on mobile, centers on tablet+. */
 export type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
 
 const SIZE_CLASSES: Record<ModalSize, string> = {
@@ -43,6 +38,7 @@ const SIZE_CLASSES: Record<ModalSize, string> = {
 type ModalContextValue = {
   titleId: string;
   subtitleId: string;
+  close: () => void;
 };
 
 const ModalContext = createContext<ModalContextValue | null>(null);
@@ -54,7 +50,6 @@ function useModalContext(): ModalContextValue {
   return ctx;
 }
 
-/** Detect if we're rendering to a viewport at or below Tailwind's `sm` breakpoint (640px). */
 function useIsMobile(): boolean {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -67,15 +62,16 @@ function useIsMobile(): boolean {
   return isMobile;
 }
 
+export type ModalMobileLayout = "sheet" | "centered";
+
 export interface ModalProps {
-  /** Whether the modal is visible. Controlled by the consumer. */
   active: boolean;
-  /** Called when the user presses Escape or clicks the backdrop. */
   onClickOutside?: () => void;
-  /** Element to focus when the modal opens. Default: the first focusable element. */
   initialFocusRef?: React.RefObject<HTMLElement | null>;
-  /** Max-width. Only applies on tablet+; mobile is always full-width. Default `md`. */
+  /** Max-width on tablet+; mobile is full-width. Default `md`. */
   size?: ModalSize;
+  /** Mobile positioning: `sheet` slides up from the bottom, `centered` fades and scales. Default `sheet`. */
+  mobileLayout?: ModalMobileLayout;
   className?: string;
   children: React.ReactNode;
 }
@@ -85,6 +81,7 @@ export function Modal({
   onClickOutside,
   initialFocusRef,
   size = "md",
+  mobileLayout = "sheet",
   className,
   children,
 }: ModalProps): React.ReactElement {
@@ -115,26 +112,28 @@ export function Modal({
     [refs],
   );
 
-  // Mobile: slide up from below. Desktop: subtle scale + fade.
+  const isMobileSheet = isMobile && mobileLayout === "sheet";
   const initial = reduceMotion
     ? false
-    : isMobile
+    : isMobileSheet
       ? { y: "100%", opacity: 1 }
       : { opacity: 0, scale: 0.97 };
-  const animate = isMobile ? { y: 0, opacity: 1 } : { opacity: 1, scale: 1 };
+  const animate = isMobileSheet ? { y: 0, opacity: 1 } : { opacity: 1, scale: 1 };
   const exit = reduceMotion
     ? undefined
-    : isMobile
+    : isMobileSheet
       ? { y: "100%", opacity: 1 }
       : { opacity: 0, scale: 0.97 };
   const transition = reduceMotion
     ? { duration: 0 }
-    : isMobile
+    : isMobileSheet
       ? { type: "spring" as const, stiffness: 420, damping: 40, mass: 0.7 }
       : { type: "spring" as const, stiffness: 400, damping: 35, mass: 0.6 };
 
+  const close = useCallback(() => onClickOutside?.(), [onClickOutside]);
+
   return (
-    <ModalContext.Provider value={{ titleId, subtitleId }}>
+    <ModalContext.Provider value={{ titleId, subtitleId, close }}>
       <FloatingPortal>
         <AnimatePresence>
           {active && (
@@ -157,7 +156,12 @@ export function Modal({
                       : { duration: 0.2, ease: [0.16, 1, 0.3, 1] }
                   }
                 />
-                <div className="absolute inset-0 flex items-end justify-center sm:items-center sm:p-4">
+                <div
+                  className={cn(
+                    "absolute inset-0 flex justify-center sm:items-center sm:p-4",
+                    mobileLayout === "sheet" ? "items-end" : "items-center p-4",
+                  )}
+                >
                   <FloatingFocusManager
                     context={context}
                     initialFocus={initialFocusRef ?? undefined}
@@ -169,12 +173,13 @@ export function Modal({
                       data-slot="modal-popup"
                       {...getFloatingProps()}
                       className={cn(
-                        // Base container: full-width bottom sheet on mobile, centered popup on desktop.
-                        "relative flex w-full min-w-0 min-h-0 flex-col overflow-hidden bg-background-200 text-gray-1000 border border-gray-alpha-400 shadow-modal",
-                        // Rounded only at top on mobile (sheet), fully rounded on desktop.
-                        "rounded-t-[var(--radius-12)] sm:rounded-[var(--radius-12)]",
-                        // Height: cap at 85vh on mobile, calc(100vh-2rem) on desktop.
-                        "max-h-[85vh] sm:max-h-[calc(100vh-2rem)]",
+                        "relative flex w-full min-w-0 min-h-0 flex-col overflow-hidden bg-surface-elevated text-ink border border-hairline shadow-modal",
+                        mobileLayout === "sheet"
+                          ? "rounded-t-[var(--radius-12)] sm:rounded-[var(--radius-12)]"
+                          : "rounded-[var(--radius-12)]",
+                        mobileLayout === "sheet"
+                          ? "max-h-[85vh] sm:max-h-[calc(100vh-2rem)]"
+                          : "max-h-[calc(100dvh-2rem)]",
                         SIZE_CLASSES[size],
                         className,
                       )}
@@ -196,8 +201,6 @@ export function Modal({
   );
 }
 
-/* ------------------------------- Header ------------------------------ */
-
 export function ModalHeader({
   className,
   ...props
@@ -206,7 +209,7 @@ export function ModalHeader({
     <div
       data-slot="modal-header"
       className={cn(
-        "flex flex-col gap-1 border-b border-gray-alpha-400 px-5 py-4",
+        "flex flex-col gap-1 border-b border-hairline px-5 py-4",
         className,
       )}
       {...props}
@@ -223,7 +226,7 @@ export function ModalTitle({
     <h2
       id={titleId}
       data-slot="modal-title"
-      className={cn("text-heading-16 text-gray-1000", className)}
+      className={cn("text-button-16 text-ink", className)}
       {...props}
     />
   );
@@ -238,13 +241,37 @@ export function ModalSubtitle({
     <p
       id={subtitleId}
       data-slot="modal-subtitle"
-      className={cn("text-copy-14 text-gray-800", className)}
+      className={cn("text-body-14 text-ink-muted", className)}
       {...props}
     />
   );
 }
 
-/* -------------------------------- Body ------------------------------- */
+export function ModalClose({
+  className,
+  onClick,
+  ...props
+}: React.ComponentProps<"button">): React.ReactElement {
+  const { close } = useModalContext();
+  return (
+    <button
+      type="button"
+      aria-label="Close"
+      data-slot="modal-close"
+      onClick={(e) => {
+        onClick?.(e);
+        if (!e.defaultPrevented) close();
+      }}
+      className={cn(
+        "inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-surface-2 hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        className,
+      )}
+      {...props}
+    >
+      <X aria-hidden className="size-4" />
+    </button>
+  );
+}
 
 export function ModalBody({
   className,
@@ -262,12 +289,6 @@ export function ModalBody({
   );
 }
 
-/* -------------------------------- Inset ------------------------------ */
-
-/**
- * ModalInset: a visually distinct block inside the body. Use for previews,
- * code, or "here's what will change" summaries.
- */
 export function ModalInset({
   className,
   ...props
@@ -276,7 +297,9 @@ export function ModalInset({
     <div
       data-slot="modal-inset"
       className={cn(
-        "rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-200 p-4",
+        // surface-2 (not surface-1) stays visible on the elevated modal in dark mode,
+        // where surface-1 and surface-elevated both resolve to the same value.
+        "rounded-[var(--radius-6)] border border-hairline bg-surface-2 p-4",
         className,
       )}
       {...props}
@@ -284,10 +307,8 @@ export function ModalInset({
   );
 }
 
-/* ------------------------------ Actions ------------------------------ */
-
 export interface ModalActionsProps extends React.ComponentProps<"div"> {
-  /** Stack actions vertically full-width. Useful on very narrow mobile modals. */
+  /** Stack actions vertically full-width. */
   stacked?: boolean;
 }
 
@@ -300,7 +321,7 @@ export function ModalActions({
     <div
       data-slot="modal-actions"
       className={cn(
-        "flex gap-2 border-t border-gray-alpha-400 bg-background-200 px-5 py-3",
+        "flex gap-2 border-t border-hairline px-5 py-3",
         stacked ? "flex-col" : "flex-row justify-between",
         className,
       )}
@@ -310,16 +331,11 @@ export function ModalActions({
 }
 
 export interface ModalActionProps extends Omit<ButtonProps, "variant"> {
-  /** Match Button variants. Default `secondary`. */
+  /** Default `secondary`. */
   variant?: ButtonProps["variant"];
-  /** Full-width in the actions row. Useful for stacked mobile actions. */
   fullWidth?: boolean;
 }
 
-/**
- * ModalAction: a Button inside <ModalActions>. Thin passthrough so consumers
- * get consistent sizing and a familiar API surface for common cases.
- */
 export function ModalAction({
   variant = "secondary",
   fullWidth,

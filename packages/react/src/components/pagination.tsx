@@ -3,119 +3,201 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { Button } from "./button";
 
 export interface PaginationProps {
   /** Current page (1-indexed). */
   page: number;
-  /** Total number of pages. */
   totalPages: number;
-  /** Fired when the user picks a new page (any value 1..totalPages). */
-  onPageChange: (page: number) => void;
-  /**
-   * When true, disables every control. Use during async page transitions
-   * so users get feedback that something is loading.
-   */
+  /** When provided, each control renders as a real `<a href>` for SEO-friendly navigation. */
+  href?: (page: number) => string;
+  /** Client-side handler. Rendered as `<button>` when `href` is not given. */
+  onPageChange?: (page: number) => void;
+  /** Number of page-number siblings on each side of the current page. Default 1. */
+  siblingCount?: number;
   loading?: boolean;
   className?: string;
 }
 
-const WINDOW_SIZE = 5;
-
-/**
- * Pagination, a sliding window of up to 5 page-number buttons flanked by
- * prev/next chevrons. No ellipses, no "Page X of Y" caption: the number
- * row is the caption. Renders nothing when there's only one page.
- *
- * The window slides to keep the active page centered; clamps at both ends
- * so the leftmost number is never below 1 and the rightmost is never above
- * totalPages.
- */
+/** Grouped bar of page numbers between prev/next arrows. Renders nothing when totalPages <= 1. */
 export function Pagination({
   page,
   totalPages,
+  href,
   onPageChange,
+  siblingCount = 1,
   loading = false,
   className,
 }: PaginationProps): React.ReactElement | null {
   if (totalPages <= 1) return null;
 
-  const pages = getPageWindow(page, totalPages);
   const atFirst = page === 1;
   const atLast = page === totalPages;
-
-  function go(p: number) {
-    if (loading) return;
-    if (p < 1 || p > totalPages || p === page) return;
-    onPageChange(p);
-  }
+  const items = getPageItems(page, totalPages, siblingCount);
 
   return (
     <nav
       data-slot="pagination"
       aria-label="Pagination"
       aria-busy={loading || undefined}
-      data-loading={loading || undefined}
       className={cn(
-        "flex items-center justify-center gap-1 pt-6 pb-2",
+        "inline-flex items-stretch overflow-hidden rounded-[var(--radius-6)] border border-hairline text-body-13",
         loading && "opacity-70",
         className,
       )}
     >
-      <Button
-        variant="tertiary"
-        size="sm"
-        className="h-8 w-8"
-        icon={<ChevronLeft className="size-3.5" />}
-        onClick={() => go(page - 1)}
+      <PageCell
+        page={page - 1}
         disabled={atFirst || loading}
-        aria-label="Previous page"
+        href={href}
+        onPageChange={onPageChange}
+        ariaLabel="Previous page"
+        icon={<ChevronLeft className="size-3.5" />}
+        divider="end"
       />
-      {pages.map((p) => (
-        <Button
-          key={p}
-          variant={p === page ? "secondary" : "tertiary"}
-          size="sm"
-          className="h-8 min-w-8 px-2 tabular-nums"
-          onClick={() => go(p)}
-          disabled={loading}
-          aria-label={`Page ${p}`}
-          aria-current={p === page ? "page" : undefined}
-        >
-          {p}
-        </Button>
-      ))}
-      <Button
-        variant="tertiary"
-        size="sm"
-        className="h-8 w-8"
-        icon={<ChevronRight className="size-3.5" />}
-        onClick={() => go(page + 1)}
+      {items.map((item, i) => {
+        const isLast = i === items.length - 1;
+        if (item === "ellipsis") {
+          return (
+            <span
+              key={`ellipsis-${i}`}
+              aria-hidden
+              className={cn(
+                // Matches PageCell size-8 so the bar's width stays stable.
+                "inline-flex size-8 shrink-0 items-center justify-center text-ink-tertiary tabular-nums",
+                !isLast && "border-e border-hairline",
+              )}
+              data-slot="pagination-ellipsis"
+            >
+              …
+            </span>
+          );
+        }
+        return (
+          <PageCell
+            key={item}
+            page={item}
+            current={item === page}
+            disabled={loading}
+            href={href}
+            onPageChange={onPageChange}
+            ariaLabel={`Page ${item}`}
+            label={String(item)}
+            divider="end"
+          />
+        );
+      })}
+      <PageCell
+        page={page + 1}
         disabled={atLast || loading}
-        aria-label="Next page"
+        href={href}
+        onPageChange={onPageChange}
+        ariaLabel="Next page"
+        icon={<ChevronRight className="size-3.5" />}
       />
     </nav>
   );
 }
 
-/**
- * Sliding window of up to WINDOW_SIZE pages centered on the active page.
- * Clamps so the window never extends past 1 or totalPages.
- */
-function getPageWindow(page: number, totalPages: number): number[] {
-  if (totalPages <= WINDOW_SIZE) {
+interface PageCellProps {
+  page: number;
+  label?: string;
+  icon?: React.ReactNode;
+  ariaLabel: string;
+  current?: boolean;
+  disabled?: boolean;
+  href?: (page: number) => string;
+  onPageChange?: (page: number) => void;
+  divider?: "end";
+}
+
+function PageCell({
+  page,
+  label,
+  icon,
+  ariaLabel,
+  current,
+  disabled,
+  href,
+  onPageChange,
+  divider,
+}: PageCellProps): React.ReactElement {
+  const className = cn(
+    // Fixed 32x32 cell + tabular-nums so the bar width stays stable across page counts.
+    "inline-flex size-8 shrink-0 items-center justify-center text-body-13 tabular-nums transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+    current
+      ? "bg-surface-2 text-ink"
+      : "text-ink-muted hover:bg-surface-1 hover:text-ink",
+    disabled && "pointer-events-none text-ink-tertiary",
+    divider === "end" && "border-e border-hairline",
+  );
+  const inner = icon ?? label;
+
+  if (href && !disabled) {
+    return (
+      <a
+        href={href(page)}
+        aria-label={ariaLabel}
+        aria-current={current ? "page" : undefined}
+        className={className}
+      >
+        {inner}
+      </a>
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={() => !disabled && onPageChange?.(page)}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      aria-current={current ? "page" : undefined}
+      className={className}
+    >
+      {inner}
+    </button>
+  );
+}
+
+// Produces exactly `siblingCount * 2 + 5` items when ellipses are needed, so the bar
+// width stays stable as `page` changes. Near start/end, one side widens to absorb
+// the slot the missing ellipsis would have taken.
+function getPageItems(
+  page: number,
+  totalPages: number,
+  siblingCount: number,
+): Array<number | "ellipsis"> {
+  const totalRendered = siblingCount * 2 + 5;
+
+  // Short ranges: everything fits without ellipsis.
+  if (totalPages <= totalRendered) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
-  const half = Math.floor(WINDOW_SIZE / 2);
-  let start = page - half;
-  let end = page + half;
-  if (start < 1) {
-    start = 1;
-    end = WINDOW_SIZE;
+
+  const items: Array<number | "ellipsis"> = [];
+
+  // Near start: [1 .. 2·sib+3] … last  → same total slots.
+  if (page <= siblingCount + 3) {
+    for (let p = 1; p <= siblingCount * 2 + 3; p++) items.push(p);
+    items.push("ellipsis");
+    items.push(totalPages);
+    return items;
   }
-  if (end > totalPages) {
-    end = totalPages;
-    start = totalPages - WINDOW_SIZE + 1;
+
+  // Near end: 1 … [last-(2·sib+2) .. last]
+  if (page >= totalPages - siblingCount - 2) {
+    items.push(1);
+    items.push("ellipsis");
+    for (let p = totalPages - siblingCount * 2 - 2; p <= totalPages; p++) {
+      items.push(p);
+    }
+    return items;
   }
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+
+  // Middle: 1 … [current-sib .. current+sib] … last
+  items.push(1);
+  items.push("ellipsis");
+  for (let p = page - siblingCount; p <= page + siblingCount; p++) items.push(p);
+  items.push("ellipsis");
+  items.push(totalPages);
+  return items;
 }

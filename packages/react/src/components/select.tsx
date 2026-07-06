@@ -30,21 +30,21 @@ export type SelectProps = Omit<
 };
 
 const heightBySize: Record<SelectSize, string> = {
-  sm: "h-8 text-label-12",
-  md: "h-10 text-copy-14",
-  lg: "h-12 text-copy-16",
+  sm: "h-6 text-body-13",
+  md: "h-8 text-body-14",
+  lg: "h-10 text-body-16",
 };
 
 const leadingPad: Record<SelectSize, string> = {
   sm: "ps-3",
-  md: "ps-3.5",
-  lg: "ps-4",
+  md: "ps-3",
+  lg: "ps-3.5",
 };
 
 const chevronPadBySize: Record<SelectSize, string> = {
-  sm: "pe-8",
-  md: "pe-9",
-  lg: "pe-10",
+  sm: "pe-7",
+  md: "pe-8",
+  lg: "pe-9",
 };
 
 function Affix({
@@ -58,7 +58,7 @@ function Affix({
   return (
     <span
       className={cn(
-        "pointer-events-none inline-flex shrink-0 items-center text-gray-800",
+        "pointer-events-none inline-flex shrink-0 items-center text-ink-muted",
         pad,
         "[&_svg]:size-4",
       )}
@@ -70,28 +70,19 @@ function Affix({
 }
 
 function ChevronIndicator({ size }: { size: SelectSize }) {
-  const right = size === "sm" ? "right-2.5" : size === "lg" ? "right-3.5" : "right-3";
+  const right = size === "sm" ? "right-2" : size === "lg" ? "right-3" : "right-2.5";
   return (
     <ChevronDown
       aria-hidden="true"
       className={cn(
-        "pointer-events-none absolute top-1/2 size-4 -translate-y-1/2 text-gray-800",
+        "pointer-events-none absolute top-1/2 size-3.5 -translate-y-1/2 text-ink-muted",
         right,
       )}
     />
   );
 }
 
-/**
- * Select: a native `<select>` wrapped in styled chrome.
- *
- * Uses the OS-native dropdown UI, which behaves correctly on every
- * platform (especially mobile where the native picker is far better
- * than any custom popup). For rich options with icons, descriptions,
- * or search, reach for `Combobox` instead.
- *
- * Children are native `<option>` and `<optgroup>` elements.
- */
+/** Native `<select>` wrapped in styled chrome. For rich options with icons or search, use Combobox. */
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
   {
     className,
@@ -124,6 +115,15 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         ? ""
         : undefined;
 
+  const { onChange: userOnChange, ...rest } = props;
+
+  // OS picker often leaves the browser in :focus-visible after selection, sticking the focus border.
+  // Blurring on change resets it; Tab-through order is unaffected.
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    userOnChange?.(e);
+    if (!e.defaultPrevented) e.currentTarget.blur();
+  };
+
   const selectElement = (
     <select
       ref={ref}
@@ -140,8 +140,9 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
       required={required}
       {...(isControlled ? { value } : { defaultValue: resolvedDefault })}
       aria-invalid={hasError || undefined}
-      aria-describedby={hasErrorMessage ? errorId : props["aria-describedby"]}
-      {...props}
+      aria-describedby={hasErrorMessage ? errorId : rest["aria-describedby"]}
+      onChange={handleChange}
+      {...rest}
     >
       {placeholder && (
         <option value="" disabled hidden>
@@ -155,14 +156,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
   const control = (
     <span
       className={cn(
-        "relative inline-flex w-full items-center overflow-hidden text-gray-1000 rounded-[var(--radius-6)]",
-        "bg-background-200 border border-gray-alpha-400",
+        "relative inline-flex w-full items-center overflow-hidden text-ink rounded-[var(--radius-6)]",
+        "bg-surface-elevated border border-hairline",
         "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        "hover:border-gray-alpha-500",
-        "has-focus-visible:border-gray-alpha-600 has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
+        "hover:border-hairline-strong",
+        "has-focus-visible:border-primary",
         "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
-        hasError &&
-          "!border-[var(--error)] has-focus-visible:!border-[var(--error)] has-focus-visible:!outline-[var(--error)]",
+        hasError && "!border-error",
         !label && !hasErrorMessage && className,
       )}
       data-slot="select-control"
@@ -177,15 +177,15 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
   if (!label && !hasErrorMessage) return control;
 
   return (
-    <div className={cn("flex flex-col gap-1.5 w-full", className)} data-slot="select-field">
+    <div className={cn("flex flex-col gap-2 w-full", className)} data-slot="select-field">
       {label && (
         <label
           htmlFor={id}
-          className="text-label-14 text-gray-1000"
+          className="text-button-14 text-ink"
           data-slot="select-label"
         >
           {label}
-          {required && <span className="ms-0.5 text-[var(--error)]">*</span>}
+          {required && <span className="ms-0.5 text-error">*</span>}
         </label>
       )}
       {control}
@@ -193,7 +193,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         <p
           id={errorId}
           role="alert"
-          className="text-label-13 text-[var(--error)]"
+          className="text-caption-12 text-error"
           data-slot="select-error"
         >
           {error}

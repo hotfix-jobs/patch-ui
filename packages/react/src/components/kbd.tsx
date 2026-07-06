@@ -24,17 +24,11 @@ export interface KbdProps
   shift?: boolean;
 }
 
-/**
- * Client-side mac detection. During SSR and the first render we assume Mac
- * (matches Vercel's default) so the glyph doesn't flicker on Mac clients.
- */
+// SSR and first render assume Mac so the glyph doesn't flicker on Mac clients between SSR and hydrate.
 function useIsMac(): boolean {
   return useSyncExternalStore(
-    // No subscription target: platform doesn't change while the page runs.
     () => () => {},
     () => /Mac|iPhone|iPad|iPod/.test(navigator.platform),
-    // Server + first-client-render snapshot. True matches Vercel's default
-    // so the glyph doesn't flicker on Mac clients between SSR and hydrate.
     () => true,
   );
 }
@@ -80,15 +74,13 @@ export function Kbd({
   );
 
   const cls = cn(
-    "inline-flex items-center justify-center font-sans font-medium tabular-nums text-gray-900",
-    "rounded-[var(--radius-6)] bg-background-200",
-    "border border-gray-alpha-400 shadow-[inset_0_-1px_0_0_var(--gray-alpha-400)]",
-    "text-label-12",
+    "inline-flex items-center justify-center tabular-nums font-sans text-button-12 text-ink-muted",
+    "rounded-[var(--radius-4)] bg-surface-1 border border-hairline",
     size === "sm" && "h-[18px] min-w-[18px] px-1",
     size === "md" && "h-5 min-w-5 px-1.5",
     mods.length > 0 && "px-1.5 gap-1",
     interactive && [
-      "cursor-pointer hover:bg-gray-100 hover:text-gray-1000",
+      "cursor-pointer hover:bg-surface-2 hover:text-ink",
       focusRing,
       colorTransition,
     ],

@@ -288,7 +288,10 @@ function ScrollButton({
       tabIndex={visible ? 0 : -1}
       data-slot="scroller-button"
       className={cn(
-        "absolute z-10 flex size-8 items-center justify-center rounded-full bg-background-100 text-gray-1000 border border-gray-alpha-400 shadow-menu transition-opacity duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-100",
+        // Floating over-content chevron pill: elevated surface (matches
+        // popups + toasts), softer hairline border, muted-to-ink icon
+        // treatment on hover so the affordance stays quiet at rest.
+        "absolute z-10 flex size-8 items-center justify-center rounded-full bg-surface-elevated text-ink-muted border border-hairline shadow-menu transition-[opacity,color,background-color] duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink",
         POSITION[direction],
         focusRing,
         visible ? "opacity-100" : "pointer-events-none opacity-0",

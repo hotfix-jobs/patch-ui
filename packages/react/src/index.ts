@@ -28,12 +28,6 @@ export {
 export { Slider, SliderValue, SliderPrimitive } from "./components/slider";
 export { Card, type CardProps } from "./components/card";
 export {
-  Grid,
-  GridCell,
-  type GridProps,
-  type GridCellProps,
-} from "./components/grid";
-export {
   Section,
   SectionHeader,
   SectionTitle,
@@ -42,7 +36,9 @@ export {
   SectionFooter,
   SectionFooterStatus,
   SectionFooterActions,
+  SectionRow,
   type SectionFooterProps,
+  type SectionRowProps,
 } from "./components/section";
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
 export {
@@ -60,10 +56,7 @@ export {
   type AvatarProps,
   type AvatarGroupProps,
 } from "./components/avatar";
-// AppHeader lives as a block under packages/react/src/blocks/app-header: consumers
-// pull it via `npx shadcn add @patchui/app-header` and own the copy for
-// per-app customization (brand, feature flags, auth wiring, etc.). Not
-// exported from the package index.
+// AppHeader ships as a copy-in block; not exported from the package index.
 export {
   Sheet,
   SheetTrigger,
@@ -82,22 +75,14 @@ export type {
   SheetCloseProps,
   SheetFooterProps,
   SheetSide,
-  SheetVariant,
 } from "./components/sheet";
-export {
-  MobileNavPanel,
-  MobileNavPanelBody,
-  MobileNavPanelFooter,
-} from "./components/mobile-nav-panel";
-export type { MobileNavPanelProps } from "./components/mobile-nav-panel";
-export { MorphingMenuIcon } from "./components/morphing-menu-icon";
-export type { MorphingMenuIconProps } from "./components/morphing-menu-icon";
 export {
   Modal,
   ModalBody,
   ModalHeader,
   ModalTitle,
   ModalSubtitle,
+  ModalClose,
   ModalInset,
   ModalActions,
   ModalAction,
@@ -151,18 +136,6 @@ export {
 } from "./components/toast";
 export { Spinner, type SpinnerProps } from "./components/spinner";
 export { Skeleton, type SkeletonProps } from "./components/skeleton";
-export {
-  ListRow,
-  ListRowContent,
-  ListRowList,
-  type ListRowProps,
-  type ListRowContentProps,
-  type ListRowListProps,
-} from "./components/list-row";
-export {
-  MiddleTruncate,
-  type MiddleTruncateProps,
-} from "./components/middle-truncate";
 export {
   Scroller,
   type ScrollerProps,
@@ -223,7 +196,6 @@ export {
   type ResolvedTheme,
 } from "./components/theme-toggle";
 export { Pagination, type PaginationProps } from "./components/pagination";
-export { LoadMore, type LoadMoreProps } from "./components/load-more";
 export {
   SegmentedToggle,
   SegmentedToggleItem,
@@ -235,8 +207,14 @@ export {
   ComboboxInput,
   ComboboxPopup,
   ComboboxItem,
+  ComboboxCheckboxItem,
+  ComboboxDivider,
+  ComboboxGroupLabel,
+  ComboboxSection,
   type ComboboxProps,
   type ComboboxInputProps,
+  type ComboboxCheckboxItemProps,
+  type ComboboxSectionProps,
   type ComboboxPopupProps,
   type ComboboxItemProps,
 } from "./components/combobox";
@@ -275,10 +253,7 @@ export {
 } from "./components/sidebar";
 export { Kbd, type KbdProps } from "./components/kbd";
 export { Toggle, toggleVariants, type ToggleProps } from "./components/toggle";
-// Dropzone lives as a block under packages/react/src/blocks/dropzone.
-// It composes Progress + Card + preview cards + delete X: apps
-// customize the preview and validation, so it ships as copy-in via
-// `npx shadcn add @patchui/dropzone`.
+// Dropzone ships as a copy-in block; not exported from the package index.
 export {
   Calendar,
   type CalendarProps,

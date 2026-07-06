@@ -47,12 +47,7 @@ export interface DropzoneProps
   title?: React.ReactNode;
   /** Helper text rendered below the title. */
   description?: React.ReactNode;
-  /**
-   * When set, the dropzone is in an uploading state: interactions are
-   * disabled and a Progress bar replaces the size text on each file row.
-   * Pass a number 0-100 for determinate, `null` for indeterminate.
-   * Omit to hide.
-   */
+  /** Uploading state: number 0-100 for determinate, `null` for indeterminate. */
   progress?: number | null;
 }
 
@@ -64,15 +59,7 @@ function formatBytes(bytes: number): string {
   return `${(bytes / 1024 / 1024 / 1024).toFixed(1)} GB`;
 }
 
-/**
- * Dropzone: drag-and-drop file upload with file list. Accepts files via
- * drop or via a click-to-browse fallback. Renders a preview row per file
- * with a remove × button.
- *
- * Use for any file-upload UX: avatars, attachments, document uploads,
- * resume parsers. Pure UI primitive: consumers wire `onValueChange` to
- * their upload pipeline.
- */
+/** Drag-and-drop file upload with file list. */
 export function Dropzone({
   value: controlledValue,
   defaultValue,
@@ -180,10 +167,10 @@ export function Dropzone({
           }
         }}
         className={cn(
-          "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-6)] border border-dashed border-gray-alpha-400 px-6 py-10",
+          "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-6)] border border-dashed border-hairline-strong px-6 py-10",
           "text-center transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          "hover:border-gray-alpha-500 hover:bg-gray-100",
-          "data-[drag-over]:border-gray-1000 data-[drag-over]:bg-gray-100",
+          "hover:border-hairline-tertiary hover:bg-surface-1",
+          "data-[drag-over]:border-primary data-[drag-over]:bg-surface-1",
           disabled && "pointer-events-none opacity-50",
           isUploading && "pointer-events-none",
           focusRing,
@@ -191,16 +178,16 @@ export function Dropzone({
       >
         <div
           aria-hidden
-          className="flex size-10 items-center justify-center rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 text-gray-900"
+          className="flex size-10 items-center justify-center rounded-[var(--radius-6)] border border-hairline bg-surface-elevated text-ink"
         >
           <Upload className="size-5" />
         </div>
         <div className="flex flex-col gap-1">
-          <p className="text-button-14 text-gray-1000">
+          <p className="text-button-14 text-ink">
             {title}
           </p>
           {description && (
-            <p className="text-label-12 text-gray-800">
+            <p className="text-caption-12 text-ink-muted">
               {description}
             </p>
           )}
@@ -238,9 +225,9 @@ export function Dropzone({
                   direction="row"
                   className="items-center gap-3 px-3 py-2 !rounded-[var(--radius-6)]"
                 >
-                  <File className="size-4 shrink-0 text-gray-800" />
+                  <File className="size-4 shrink-0 text-ink-muted" />
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
-                    <span className="truncate text-label-13 text-gray-1000">
+                    <span className="truncate text-body-13 text-ink">
                       {f.name}
                     </span>
                     {isUploading ? (
@@ -250,7 +237,7 @@ export function Dropzone({
                         label={`Uploading ${f.name}`}
                       />
                     ) : (
-                      <span className="text-label-12 text-gray-800">
+                      <span className="text-caption-12 text-ink-muted">
                         {formatBytes(f.size)}
                       </span>
                     )}
@@ -260,9 +247,9 @@ export function Dropzone({
                       type="button"
                       onClick={() => removeAt(i)}
                       aria-label={`Remove ${f.name}`}
-                      className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 hover:text-gray-1000"
+                      className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-2 hover:text-ink"
                     >
-                      <X className="size-3.5" strokeWidth={2.5} />
+                      <X className="size-3.5" aria-hidden />
                     </button>
                   )}
                 </Card>

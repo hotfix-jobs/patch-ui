@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { Moon, Sun } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -11,12 +12,8 @@ import type * as React from "react";
 import { Button } from "./button";
 import { cn } from "../utils";
 
-// ─── Types ──────────────────────────────────────────────────────────────
-
 export type Theme = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
-
-// ─── Utilities ──────────────────────────────────────────────────────────
 
 function getSystemTheme(): ResolvedTheme {
   if (typeof window === "undefined") return "light";
@@ -39,13 +36,6 @@ function useMounted() {
   );
 }
 
-// ─── ThemeToggle ────────────────────────────────────────────────────────
-
-/**
- * Sun/moon crossfade icon. Wrapped in a positioned container so both
- * icons stack in the same spot during AnimatePresence transitions,
- * rotating + scaling in and out from opposite directions.
- */
 function ThemeIcon({
   isDark,
   mounted,
@@ -73,16 +63,9 @@ function ThemeIcon({
     >
       <AnimatePresence initial={false}>
         {isDark ? (
-          <motion.svg
+          <motion.span
             key="sun"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="absolute h-full w-full"
+            className="absolute inset-0 flex items-center justify-center"
             initial={
               reduceMotion ? false : { rotate: -90, scale: 0, opacity: 0 }
             }
@@ -92,27 +75,12 @@ function ThemeIcon({
             }
             transition={spring}
           >
-            <circle cx="12" cy="12" r="4" />
-            <path d="M12 2v2" />
-            <path d="M12 20v2" />
-            <path d="m4.93 4.93 1.41 1.41" />
-            <path d="m17.66 17.66 1.41 1.41" />
-            <path d="M2 12h2" />
-            <path d="M20 12h2" />
-            <path d="m6.34 17.66-1.41 1.41" />
-            <path d="m19.07 4.93-1.41 1.41" />
-          </motion.svg>
+            <Sun className="size-full" aria-hidden />
+          </motion.span>
         ) : (
-          <motion.svg
+          <motion.span
             key="moon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="absolute h-full w-full"
+            className="absolute inset-0 flex items-center justify-center"
             initial={
               reduceMotion ? false : { rotate: 90, scale: 0, opacity: 0 }
             }
@@ -122,8 +90,8 @@ function ThemeIcon({
             }
             transition={spring}
           >
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-          </motion.svg>
+            <Moon className="size-full" aria-hidden />
+          </motion.span>
         )}
       </AnimatePresence>
     </span>
@@ -132,28 +100,14 @@ function ThemeIcon({
 
 export interface ThemeToggleProps
   extends Omit<React.ComponentProps<"button">, "children"> {
-  /** Controlled theme value. */
   theme?: Theme;
-  /** Called when the theme changes. */
   onThemeChange?: (theme: ResolvedTheme) => void;
   /** localStorage key for persisting the theme. Set to `false` to disable. */
   storageKey?: string | false;
-  /** Whether to apply the `.dark` class to `<html>`. Defaults to true. */
+  /** Whether to apply the `.dark` class to `<html>`. */
   applyClass?: boolean;
-  /** Size of the toggle. Maps to Button sizes: sm→tiny, md→sm, lg→md. */
   size?: "sm" | "md" | "lg";
 }
-
-// Theme-toggle size vocabulary predates the Button primitive; map to
-// Button's ladder to preserve the on-screen dimensions consumers expect.
-const buttonSizeBySize: Record<
-  NonNullable<ThemeToggleProps["size"]>,
-  "tiny" | "sm" | "md"
-> = {
-  sm: "tiny",
-  md: "sm",
-  lg: "md",
-};
 
 const iconSizeBySize: Record<NonNullable<ThemeToggleProps["size"]>, string> = {
   sm: "size-3.5",
@@ -172,9 +126,7 @@ export function ThemeToggle({
 }: ThemeToggleProps): React.ReactElement {
   const mounted = useMounted();
 
-  // Internal state for uncontrolled mode. Lazy initializer reads from storage
-  // / system preference once at mount, so the first render already reflects
-  // the persisted choice (no flash + no setState-in-effect).
+  // Lazy initializer reads persisted / system theme at mount so first render reflects it (no flash).
   const [internalTheme, setInternalTheme] = useState<ResolvedTheme>(() => {
     if (typeof window === "undefined") return "light";
     if (storageKey !== false) {
@@ -189,7 +141,6 @@ export function ThemeToggle({
       ? resolveTheme(controlledTheme)
       : internalTheme;
 
-  // Apply .dark class
   useEffect(() => {
     if (!applyClass || !mounted) return;
     document.documentElement.classList.toggle("dark", resolved === "dark");
@@ -211,7 +162,7 @@ export function ThemeToggle({
   return (
     <Button
       variant="tertiary"
-      size={buttonSizeBySize[size]}
+      size={size}
       shape="circle"
       onClick={toggle}
       className={cn("overflow-hidden", className)}

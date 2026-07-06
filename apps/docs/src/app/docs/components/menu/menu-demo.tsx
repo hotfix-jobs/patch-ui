@@ -12,7 +12,6 @@ import {
   MenuRadioGroup,
   MenuRadioItem,
   MenuDivider,
-  MenuShortcut,
   MenuSub,
   MenuSubTrigger,
   MenuSubPopup,
@@ -29,8 +28,9 @@ import {
 } from "lucide-react";
 
 export function MenuDemo() {
-  const [showStatusBar, setShowStatusBar] = useState(true);
+  const [showStatusBar, setShowStatusBar] = useState(false);
   const [showPanel, setShowPanel] = useState(false);
+  const [showFullWidth, setShowFullWidth] = useState(false);
   const [theme, setTheme] = useState("system");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "az" | "za">(
     "newest",
@@ -38,9 +38,8 @@ export function MenuDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Basic: plain items, no icons */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
+        <p className="mb-3 text-xs font-medium text-ink-muted">
           Basic
         </p>
         <Menu>
@@ -55,25 +54,18 @@ export function MenuDemo() {
         </Menu>
       </div>
 
-      {/* With prefix icons and shortcuts */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
-          Prefix icons + shortcuts
+        <p className="mb-3 text-xs font-medium text-ink-muted">
+          Prefix icons
         </p>
         <Menu>
           <MenuTrigger render={<Button variant="secondary" />}>
             My Account
           </MenuTrigger>
           <MenuPopup>
-            <MenuItem prefix={<User />} suffix={<MenuShortcut>⇧⌘P</MenuShortcut>}>
-              Profile
-            </MenuItem>
-            <MenuItem prefix={<CreditCard />} suffix={<MenuShortcut>⌘B</MenuShortcut>}>
-              Billing
-            </MenuItem>
-            <MenuItem prefix={<Settings />} suffix={<MenuShortcut>⌘S</MenuShortcut>}>
-              Settings
-            </MenuItem>
+            <MenuItem prefix={<User />}>Profile</MenuItem>
+            <MenuItem prefix={<CreditCard />}>Billing</MenuItem>
+            <MenuItem prefix={<Settings />}>Settings</MenuItem>
             <MenuDivider />
             <MenuItem prefix={<LogOut />} type="error">
               Log out
@@ -82,12 +74,11 @@ export function MenuDemo() {
         </Menu>
       </div>
 
-      {/* Sections with titles */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
+        <p className="mb-3 text-xs font-medium text-ink-muted">
           Sections
         </p>
-        <Menu>
+        <Menu autoFocusFirst>
           <MenuTrigger render={<Button variant="secondary" />}>
             View Options
           </MenuTrigger>
@@ -105,7 +96,10 @@ export function MenuDemo() {
               >
                 Activity Panel
               </MenuCheckboxItem>
-              <MenuCheckboxItem checked disabled>
+              <MenuCheckboxItem
+                checked={showFullWidth}
+                onCheckedChange={setShowFullWidth}
+              >
                 Full Width Layout
               </MenuCheckboxItem>
             </MenuSection>
@@ -121,9 +115,8 @@ export function MenuDemo() {
         </Menu>
       </div>
 
-      {/* Selected indicator (single-select via regular MenuItem) */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
+        <p className="mb-3 text-xs font-medium text-ink-muted">
           Selected indicator
         </p>
         <Menu>
@@ -163,9 +156,8 @@ export function MenuDemo() {
         </Menu>
       </div>
 
-      {/* Nested sub-menu */}
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
+        <p className="mb-3 text-xs font-medium text-ink-muted">
           Sub-menu
         </p>
         <Menu>

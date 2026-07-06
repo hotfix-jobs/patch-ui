@@ -5,27 +5,9 @@ import { ChevronDown } from "lucide-react";
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { focusRing, iconMuted } from "../recipes";
 
-/**
- * Accordion: compound built on Base UI Accordion.
- *
- * Titles are visually-primary heading-14, content sits in copy-14 body
- * type. Set `bordered` on the root to auto-apply the hairline row
- * pattern to every item (Vercel Geist Collapse look). Pass `multiple`
- * to allow more than one item open at once (Vercel's CollapseGroup.multiple).
- *
- * Panels stay mounted for find-in-page compatibility; they collapse via
- * Base UI's `--accordion-panel-height` CSS var with a smooth transition.
- *
- * Usage:
- *   <Accordion bordered defaultValue={["item-1"]}>
- *     <AccordionItem value="item-1">
- *       <AccordionTrigger>How do I get started?</AccordionTrigger>
- *       <AccordionPanel>Install the package…</AccordionPanel>
- *     </AccordionItem>
- *   </Accordion>
- */
+// Panels stay mounted (`keepMounted`) for find-in-page compatibility.
 
 type AccordionContextValue = {
   bordered: boolean;
@@ -70,7 +52,7 @@ export function AccordionItem({
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn(
-        bordered && "border-t border-gray-alpha-400 last:border-b",
+        bordered && "border-t border-hairline last:border-b",
         className,
       )}
       {...props}
@@ -92,8 +74,10 @@ export function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "group flex w-full items-start justify-between gap-3 py-4 text-left",
-          "text-heading-14 text-gray-1000",
+          "group flex w-full items-center justify-between gap-3 py-3 text-left",
+          "text-button-14 text-ink",
+          iconMuted,
+          "data-[panel-open]:[&_svg]:text-ink",
           focusRing,
           className,
         )}
@@ -102,7 +86,7 @@ export function AccordionTrigger({
         <span>{children}</span>
         <ChevronDown
           aria-hidden
-          className="mt-0.5 h-4 w-4 shrink-0 text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[panel-open]:rotate-180"
+          className="size-4 shrink-0 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[panel-open]:rotate-180"
         />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
@@ -130,7 +114,7 @@ export function AccordionPanel({
       )}
       {...props}
     >
-      <div className="pb-4 text-copy-14 text-gray-1000">
+      <div className="pb-3 text-body-14 text-ink-muted">
         {children}
       </div>
     </AccordionPrimitive.Panel>

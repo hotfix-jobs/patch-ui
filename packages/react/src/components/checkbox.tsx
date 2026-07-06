@@ -24,10 +24,11 @@ export function Checkbox({
     <CheckboxPrimitive.Root
       disabled={disabled}
       className={cn(
-        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[var(--radius-6)]",
-        "bg-transparent border border-gray-alpha-500",
-        "data-checked:border-gray-1000 data-checked:bg-gray-1000",
-        "data-indeterminate:border-gray-1000 data-indeterminate:bg-gray-1000",
+        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[var(--radius-4)]",
+        "bg-transparent border border-hairline-strong",
+        "hover:border-hairline-tertiary",
+        "data-checked:border-primary data-checked:bg-primary data-checked:hover:bg-primary-hover data-checked:hover:border-primary-hover",
+        "data-indeterminate:border-primary data-indeterminate:bg-primary",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
         focusRing,
@@ -37,17 +38,18 @@ export function Checkbox({
       {...props}
     >
       <CheckboxPrimitive.Indicator
-        className="group flex items-center justify-center text-background-100"
+        className="group flex items-center justify-center"
         data-slot="checkbox-indicator"
         keepMounted
       >
+        {/* !text-on-primary overrides iconMuted descendant selectors from parent rows (Menu, list). */}
         <Check
-          className="size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
+          className="!text-on-primary size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
           strokeWidth={2.5}
         />
         <Minus
           aria-hidden="true"
-          className="hidden size-3 group-data-indeterminate:block"
+          className="!text-on-primary hidden size-3 group-data-indeterminate:block"
           strokeWidth={2.5}
         />
       </CheckboxPrimitive.Indicator>
@@ -59,7 +61,7 @@ export function Checkbox({
   return (
     <label
       className={cn(
-        "inline-flex items-center gap-2 text-copy-14 text-gray-1000",
+        "inline-flex items-center gap-2 text-body-14 text-ink",
         !disabled && "cursor-pointer",
         disabled && "cursor-not-allowed opacity-50",
         wrapperClassName,

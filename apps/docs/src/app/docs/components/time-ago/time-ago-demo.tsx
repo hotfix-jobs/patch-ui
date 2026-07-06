@@ -11,10 +11,7 @@ interface DemoDates {
   lastWeek: string;
 }
 
-// Capture Date.now() once on the client (after hydration). Module-level cache
-// keeps the snapshot stable across re-renders so useSyncExternalStore's
-// getSnapshot stays pure. Server snapshot is null so SSR renders placeholders
-// and avoids a hydration mismatch from server/client timestamp drift.
+// Server snapshot is null so SSR renders placeholders, avoiding a hydration mismatch from server/client timestamp drift.
 let cachedClientNow: number | null = null;
 const noopSubscribe = () => () => {};
 function getClientNow(): number {
@@ -39,16 +36,16 @@ export function TimeAgoDemo() {
     };
   }, [now]);
 
-  const placeholder = <span className="text-gray-700">…</span>;
+  const placeholder = <span className="text-ink-subtle">…</span>;
 
   return (
-    <div className="space-y-2 text-label-13">
+    <div className="space-y-2 text-body-13">
       <div>Just now: {dates ? <TimeAgo dateStr={dates.now} /> : placeholder}</div>
       <div>5 min ago: {dates ? <TimeAgo dateStr={dates.fiveMinAgo} /> : placeholder}</div>
       <div>3 hours ago: {dates ? <TimeAgo dateStr={dates.threeHoursAgo} /> : placeholder}</div>
       <div>2 days ago: {dates ? <TimeAgo dateStr={dates.twoDaysAgo} /> : placeholder}</div>
       <div>Last week: {dates ? <TimeAgo dateStr={dates.lastWeek} /> : placeholder}</div>
-      <div className="pt-3 border-t border-gray-alpha-300">
+      <div className="pt-3 border-t border-hairline">
         Sans variant: {dates ? <TimeAgo dateStr={dates.twoDaysAgo} variant="sans" /> : placeholder}
       </div>
     </div>

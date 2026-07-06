@@ -9,26 +9,26 @@ export function CalendarDemo() {
   return (
     <div className="flex flex-wrap items-start gap-8">
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
+        <p className="mb-3 text-xs font-medium text-ink-muted">
           Single
         </p>
         <Calendar
           mode="single"
           value={single}
           onValueChange={setSingle}
-          className="border-[0.5px] border-gray-alpha-400"
+          className="border-[0.5px] border-hairline-strong"
         />
       </div>
 
       <div>
-        <p className="mb-3 text-xs font-medium text-gray-800">
+        <p className="mb-3 text-xs font-medium text-ink-muted">
           Range
         </p>
         <Calendar
           mode="range"
           value={range}
           onValueChange={setRange}
-          className="border-[0.5px] border-gray-alpha-400"
+          className="border-[0.5px] border-hairline-strong"
         />
       </div>
     </div>

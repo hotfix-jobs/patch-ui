@@ -10,47 +10,46 @@ export const metadata = { title: "Theme" };
 
 A single stylesheet (`tokens.css`) defines every color, size, and motion value in Patch UI. Components read from it through Tailwind utilities. Light and dark switch from one `.dark` class on `<html>`. No JavaScript required.
 
-The system is inspired by [Vercel Geist](https://vercel.com/geist): the 100→1000 scale structure with a consistent intent per step, the four-family typography approach, and the two-tone background convention all come from there. The specific values vary: some (like the semantic status colors) track Geist directly, others (like the accent hues, radius steps, and motion timings) are adaptations or independent choices. The Tailwind v4 three-layer implementation, the compound utility classes, and the `check:contrast` gate are ours. See [Credits](/docs/credits) for the full attribution.
+The scheme is deliberately small: one canvas, a four-step surface ladder plus an elevated rung for popups, four ink tiers, three hairline steps, three fixed semantic status roles, one monochrome primary. Consumers layer their own brand accent by redefining `--primary` in a single downstream layer.
 
 ## Colors
 
-Every color scale runs `100` (lightest fill) to `1000` (heaviest text) with the same intent at each step:
-
-| Step | Role |
-|------|------|
-| `100` – `300` | fills (background, hover, active) |
-| `400` – `600` | borders (rest, hover, active) |
-| `700` – `800` | solid (button background, saturated fill + its hover) |
-| `900` – `1000` | text (secondary, primary) |
-
 <ColorScales />
 
-**Also available:**
-- `--gray-alpha-100` through `--gray-alpha-1000` for hover states that need to sit on any background color.
-- `--background-100` (canvas) and `--background-200` (lightly elevated). In dark mode both are near-black; elevation comes from border and shadow, not brightness.
-- `--error`, `--warning`, `--success` (plus `-hover` and `-active` variants) as fixed hex values that read identically in both themes.
+**Canvas + surface ladder.** The page sits on `--canvas`. `--surface-1` through `--surface-4` are the successively-lifted rungs (used for hover tints, segmented-toggle tracks, striped-table fills, skeleton blocks). `--surface-elevated` is the popup + control-chrome rung: it lifts toward pure white in light mode and one step above canvas in dark mode. Every Card, Menu, Combobox, Tooltip, Input, Select, and Table container reads from `--surface-elevated`.
+
+**Ink (text).** Four tiers, deliberately narrow. `--ink` is primary text (headings, body). `--ink-muted` is meta text and default icon tone. `--ink-subtle` is placeholder and "missing value" copy. `--ink-tertiary` is disabled and footnote.
+
+**Semantic status.** `--error`, `--warning`, `--success` are fixed hex, identical in both themes so a warning always reads as a warning. Each has `-hover`, `-active`, and `-fg` variants; the `-fg` token carries label color so fill and text invert together.
+
+**Hairlines.** Three tiers, all rgba-alpha, so borders read cleanly on any surface without hard-coded color. `--hairline` (4%) is the default separator. `--hairline-strong` (8%) is for hovered inputs and structural section dividers. `--hairline-tertiary` (14%) is for nested content that sits on top of an already-lifted surface.
+
+**Primary (monochrome).** `--primary` resolves to `--ink` and `--on-primary` to `--canvas`. No chromatic brand ships. `--primary-hover` and `--primary-active` are computed via `color-mix` toward `--canvas`, so a consumer's brand override on `--primary` automatically produces matching hover/active steps.
 
 ## Typography
 
-Four families cover every use. Each class applies size, line-height, tracking, and weight in one shot.
+Three families cover every use: **Inter Display** for display sizes, **Inter** for body / buttons / captions, **JetBrains Mono** for code. Each `text-*` class bakes in size, line-height, tracking, and weight, so you never pair it with a `font-*` utility.
 
 <TypographySamples />
 
+Rules of thumb:
+- Never combine a compound `text-*` class with `font-medium` or `font-semibold`. If you need a different weight at a given size, switch families: `text-heading-*` is 600, `text-button-*` is 500, `text-body-*` and `text-caption-*` are 400.
+- Never `text-[Npx]` inline. If a size is missing, add it to the scale.
+- Never `font-mono` for decoration. Reserve for `code`, `pre`, `kbd`, install snippets, and hex values shown as code.
+
 ## Sizing and motion
 
-**Radius.** Four values only.
+**Radius.** Four values.
 
 <RadiusSamples />
 
-Controls use `radius-6`, surfaces use `radius-12`, marketing chrome uses `radius-16`, chips use `radius-full`.
+`radius-6` for controls (Button, Input, Select, Checkbox, Menu row). `radius-12` for surfaces (Card, Dialog, Menu popup). `radius-16` for marketing chrome (hero panels). `radius-full` for chips (Badge, Avatar, pill Button).
 
-**Shadows.** Elevation is flat with 1px hairline borders. Shadows appear only on overlays: `--shadow-card` (marketing cards), `--shadow-menu` (popovers, menus, tooltips), `--shadow-modal` (dialogs, sheets).
+**Shadows.** Elevation is flat with 1px hairline borders. Shadows appear only on true overlays: `--shadow-card` (marketing cards), `--shadow-menu` (Menu / Combobox / Select popup), `--shadow-tooltip` (Tooltip), `--shadow-modal` (Dialog / Sheet / Toast).
 
 **Motion.** One easing (`--ease-standard`), two durations: `--duration-state` (75ms, for hover/active transitions) and `--duration-overlay` (150ms, for open/close). Under `prefers-reduced-motion: reduce`, both collapse to `0ms` automatically.
 
-**Focus.** A 1px neutral outline via `--focus-ring-color` and `--focus-ring-offset`. Consumed through the shared `focusRing` recipe so every component matches.
-
-**Spacing.** Tailwind's default `p-*`, `m-*`, `gap-*`, `h-*` utilities are unchanged (`0.25rem` multiplier). Named `--space-4` through `--space-96` variables are exposed at `:root` if you need exact pixel alignment in a token-critical layout.
+**Focus.** A 2px outline offset 2px outside the element border, colored `--primary` so it inherits any consumer brand override. Delivered through the `focusRing` recipe. Inputs are the intentional exception: on focus their border shifts to `--primary` instead of stacking an outside ring, so the input's own edge carries the state.
 
 ## Customizing
 
@@ -61,13 +60,17 @@ Every token is a plain CSS variable. Override in your own CSS after importing th
 @import "tailwindcss";
 @import "./styles/patch-ui-tokens.css";
 
+/* Ship a lavender brand: every primary Button, active tab, focus
+   ring, and slider indicator picks it up automatically. */
 :root {
-  --gray-1000: #0a0a0a;
+  --primary: #8b5cf6;
+  --on-primary: #ffffff;
 }
 
 .dark {
-  --gray-1000: #f5f5f5;
+  --primary: #a78bfa;
+  --on-primary: #0f0f10;
 }
 ```
 
-If you edit a color that affects readable text, run `npm run check:contrast -w packages/react` to verify the [contrast contract](/docs/contrast) still holds.
+If you edit tokens that affect readable text, run `npm run check:contrast -w packages/react` to verify the [contrast contract](/docs/contrast) still holds.

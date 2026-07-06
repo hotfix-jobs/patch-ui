@@ -34,7 +34,7 @@ const matches = items.filter((i) =>
 );
 
 <Combobox value={query} onValueChange={setQuery} placeholder="Search...">
-  <ComboboxInput prefix={<Search />} prefixStyling={false} />
+  <ComboboxInput prefix={<Search />} />
   <ComboboxPopup>
     {matches.map((item) => (
       <ComboboxItem key={item.id} onSelect={() => pick(item)}>
@@ -49,7 +49,7 @@ For multi-select, pass `closeOnSelect={false}` on `ComboboxItem` so the popup st
 
 ```tsx
 <Combobox value={query} onValueChange={setQuery}>
-  <ComboboxInput prefix={<Search />} prefixStyling={false} />
+  <ComboboxInput prefix={<Search />} />
   <ComboboxPopup>
     {matches.map((item) => (
       <ComboboxItem
@@ -69,7 +69,7 @@ The popup accepts arbitrary JSX: only `ComboboxItem` gets keyboard navigation. M
 ```tsx
 <ComboboxPopup>
   {/* Info banner — not navigable */}
-  <div className="flex items-center gap-1.5 border-b-[0.5px] border-gray-alpha-400 px-3 py-2 text-mini text-gray-800">
+  <div className="flex items-center gap-1.5 border-b-[0.5px] border-hairline-strong px-3 py-2 text-mini text-ink-muted">
     <Info className="h-3.5 w-3.5" /> Recents shown first
   </div>
 

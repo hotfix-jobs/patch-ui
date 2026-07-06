@@ -13,27 +13,17 @@ export interface CardProps extends useRender.ComponentProps<"div"> {
   hoverable?: boolean;
   /** Add an elevation shadow. */
   shadow?: boolean;
-  /** Use the tonal secondary surface (gray-100) instead of background-200. */
+  /** Sit on the next surface step up. Use for cards nested inside another card. */
   secondary?: boolean;
-  /** Render dividers between direct children. */
+  /** Render hairline dividers between direct children (list container). */
   borderBetween?: boolean;
   /** Layout direction. */
   direction?: "column" | "row";
-  /**
-   * When true, switches the border to `gray-1000` for a stronger highlight
-   * (multi-pick galleries, plan comparison). Also sets `aria-selected`.
-   */
+  /** Border adopts `--primary` and sets `aria-selected` for definitive selected state. */
   selected?: boolean;
 }
 
-/**
- * Card: a surface primitive. Bordered, rounded, tokenized. Compose with
- * boolean props (`border`, `hoverable`, `shadow`, `secondary`, `borderBetween`,
- * `direction`) to fit the surface you need.
- *
- * Card is intentionally content-agnostic: for structured header/content/
- * footer layouts (settings pages, plan pickers), reach for `Section`.
- */
+/** Surface primitive. For structured header/content/footer layouts, use `Section`. */
 export function Card({
   className,
   border = true,
@@ -48,22 +38,21 @@ export function Card({
 }: CardProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "relative flex rounded-[var(--radius-12)] text-gray-1000",
+      "relative flex rounded-[var(--radius-12)] text-ink",
       direction === "column" ? "flex-col" : "flex-row",
-      secondary ? "bg-gray-100" : "bg-background-200",
-      border && "border border-gray-alpha-400",
+      secondary ? "bg-surface-1" : "bg-surface-elevated",
+      border && "border border-hairline",
       shadow && "shadow-card",
       hoverable && [
         "cursor-pointer",
-        secondary ? "hover:bg-gray-200" : "hover:bg-gray-100",
-        border && "hover:border-gray-alpha-500",
+        secondary ? "hover:bg-surface-1" : "hover:bg-surface-elevated-hover",
         focusRing,
       ],
       borderBetween &&
         (direction === "column"
-          ? "[&>*+*]:border-t [&>*+*]:border-gray-alpha-400"
-          : "[&>*+*]:border-l [&>*+*]:border-gray-alpha-400"),
-      selected && "!border-gray-1000",
+          ? "[&>*+*]:border-t [&>*+*]:border-hairline"
+          : "[&>*+*]:border-l [&>*+*]:border-hairline"),
+      selected && "!border-primary",
       colorTransition,
       className,
     ),

@@ -107,7 +107,7 @@ export function CommandDemo() {
         <Kbd meta>K</Kbd>
       </Button>
       {ran && (
-        <p className="text-label-12 text-gray-800">Ran: {ran}</p>
+        <p className="text-caption-12 text-ink-muted">Ran: {ran}</p>
       )}
 
       <CommandDialog
@@ -126,7 +126,7 @@ export function CommandDemo() {
           )}
 
           {grouped.Navigate.length > 0 && (
-            <CommandSection label="Navigate">
+            <CommandSection title="Navigate">
               {grouped.Navigate.map((entry) => (
                 <CommandItem
                   key={entry.id}
@@ -143,7 +143,7 @@ export function CommandDemo() {
           {grouped.Actions.length > 0 && (
             <>
               {grouped.Navigate.length > 0 && <CommandSeparator />}
-              <CommandSection label="Actions">
+              <CommandSection title="Actions">
                 {grouped.Actions.map((entry) => (
                   <CommandItem
                     key={entry.id}
@@ -165,7 +165,7 @@ export function CommandDemo() {
               {(grouped.Navigate.length > 0 || grouped.Actions.length > 0) && (
                 <CommandSeparator />
               )}
-              <CommandSection label="Settings">
+              <CommandSection title="Settings">
                 {grouped.Settings.map((entry) => (
                   <CommandItem
                     key={entry.id}
@@ -184,7 +184,7 @@ export function CommandDemo() {
           {themeMatches.length > 0 && (
             <>
               {results.length > 0 && <CommandSeparator />}
-              <CommandSection label="Theme">
+              <CommandSection title="Theme">
                 {themeMatches.map((t) => (
                   <CommandItem
                     key={t.value}

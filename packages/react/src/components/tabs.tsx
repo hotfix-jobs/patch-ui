@@ -13,21 +13,7 @@ import { cn } from "../utils";
 import { focusRing } from "../recipes";
 import { Tooltip } from "./tooltip";
 
-/**
- * Tabs - custom-built compound component.
- *
- * Two visual variants:
- *  - `underline` (default): a 1.5px bar tracks the active tab.
- *  - `pill`: a rounded gray-alpha-100 background fills the active tab.
- *
- * The indicator (underline OR pill) uses motion's `layoutId` so it physically
- * slides between active tabs with spring physics, not CSS transitions. Each
- * Tabs instance gets a unique `layoutId` namespace so multiple Tabs on a
- * page don't share indicators.
- *
- * Both orientations supported via `orientation`. Keyboard navigation
- * (Arrow keys / Home / End) handled inline.
- */
+/** Tabs compound component with underline or pill variants. */
 
 type TabsVariant = "underline" | "pill";
 type TabsOrientation = "horizontal" | "vertical";
@@ -116,11 +102,11 @@ export function TabsList({
         "relative flex",
         variant === "underline" && [
           orientation === "horizontal"
-            ? "items-center gap-6 border-b border-gray-alpha-400"
-            : "flex-col items-stretch gap-4 border-l border-gray-alpha-400",
+            ? "items-center gap-6 border-b border-hairline-strong"
+            : "flex-col items-stretch gap-4 border-l border-hairline-strong",
         ],
         variant === "pill" && [
-          "gap-0.5",
+          "gap-1",
           orientation === "vertical" && "flex-col items-stretch",
         ],
         className,
@@ -139,16 +125,9 @@ export interface TabsTriggerProps
   value: string;
   /** Leading node (icon). */
   icon?: React.ReactNode;
-  /**
-   * Trailing badge (count, dot). Hidden at 0 automatically when passed a
-   * number: Vercel spec says "drop the badge at zero".
-   */
+  /** Trailing badge; numeric badges hide at 0. */
   badge?: React.ReactNode | number;
-  /**
-   * Sentence-case explanation for a disabled tab. Wraps the trigger in a
-   * Tooltip when set. Vercel spec: "pair the disabled tab with a tooltip
-   * that names the constraint."
-   */
+  /** Tooltip for a disabled tab explaining the constraint. */
   tooltip?: React.ReactNode;
 }
 
@@ -218,7 +197,6 @@ export function TabsTrigger({
         mass: 0.6,
       };
 
-  // Hide numeric badges at 0; keep node badges as-is (consumer chose to render).
   const showBadge = badge != null && (typeof badge !== "number" || badge > 0);
 
   const trigger = (
@@ -235,34 +213,25 @@ export function TabsTrigger({
       onClick={() => setValue(value)}
       onKeyDown={handleKeyDown}
       className={cn(
-        "relative inline-flex items-center gap-2 text-copy-14 transition-colors disabled:pointer-events-none disabled:opacity-50",
+        "relative inline-flex items-center gap-2 text-body-14 transition-colors disabled:pointer-events-none disabled:opacity-50",
         focusRing,
         variant === "underline" &&
-          "py-2.5 text-gray-800 hover:text-gray-1000 data-[active]:text-gray-1000",
+          "py-2.5 text-ink-muted hover:text-ink data-[active]:text-ink",
         variant === "pill" && [
-          "z-10 rounded-[var(--radius-6)] px-3 py-1.5 text-left text-gray-800",
-          "hover:text-gray-1000 data-[active]:text-gray-1000",
+          "rounded-full border border-hairline px-3 py-1 text-left text-ink-muted",
+          "hover:bg-surface-1 hover:text-ink",
+          "data-[active]:bg-surface-elevated data-[active]:text-ink",
         ],
         className,
       )}
       {...props}
     >
-      {/* Active-tab indicator. layoutId makes motion animate the bar/pill
-          between tab positions when the active tab changes. */}
-      {variant === "pill" && isActive && (
-        <motion.div
-          layoutId={`tabs-pill-${baseId}`}
-          data-slot="tabs-indicator"
-          className="absolute inset-0 -z-10 rounded-[var(--radius-6)] bg-gray-alpha-100"
-          transition={indicatorTransition}
-        />
-      )}
       {variant === "underline" && isActive && (
         <motion.div
           layoutId={`tabs-underline-${baseId}`}
           data-slot="tabs-indicator"
           className={cn(
-            "absolute bg-gray-1000",
+            "absolute bg-ink",
             orientation === "horizontal"
               ? "-bottom-px left-0 right-0 h-[2px]"
               : "top-0 bottom-0 -left-px w-[2px]",
@@ -279,7 +248,7 @@ export function TabsTrigger({
       {showBadge && (
         <span
           data-slot="tabs-trigger-badge"
-          className="text-label-12 tabular-nums text-gray-800"
+          className="text-caption-12 tabular-nums text-ink-muted"
         >
           {badge}
         </span>
@@ -298,11 +267,7 @@ export function TabsTrigger({
 export interface TabsPanelProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "value"> {
   value: string;
-  /**
-   * When true, the panel stays mounted while not active (hidden via
-   * `hidden` attribute). Use for panels with heavy content that you
-   * don't want to remount each switch.
-   */
+  /** Keep the panel mounted (hidden) when inactive. */
   keepMounted?: boolean;
 }
 

@@ -11,14 +11,12 @@ const absoluteFmt = new Intl.DateTimeFormat("en-US", {
   timeZone: "UTC",
 });
 
-// Average month / year lengths in seconds (Gregorian). Used to roll up
-// older deltas into "Xmo" / "Xy" rather than `52w`.
 const MIN = 60;
 const HOUR = 60 * 60;
 const DAY = 24 * 60 * 60;
 const WEEK = 7 * DAY;
-const MONTH = 30.4375 * DAY; // 86400 × 30.4375 ≈ 2,629,800
-const YEAR = 365.25 * DAY; // 86400 × 365.25 = 31,557,600
+const MONTH = 30.4375 * DAY;
+const YEAR = 365.25 * DAY;
 
 function formatTimeAgo(dateStr: string): string {
   const deltaMs = new Date(dateStr).getTime() - Date.now();
@@ -38,24 +36,17 @@ function formatTimeAgo(dateStr: string): string {
   return future ? `in ${value}` : `${value} ago`;
 }
 
-/**
- * Pick a refresh interval that matches the precision of the current
- * label. Goal: never lag more than one "tick" of the current unit. For
- * months and years, the label changes so slowly that scheduling a
- * refresh would just churn: return null to stop.
- */
+// Returns null once the label rolls over slowly enough that scheduling refreshes would just churn.
 function nextRefreshDelay(dateStr: string): number | null {
   const seconds = Math.abs((Date.now() - new Date(dateStr).getTime()) / 1000);
-  if (seconds < MIN) return 10_000; // < 1m → refresh every 10s ("Just now" → "1m ago")
-  if (seconds < HOUR) return 30_000; // < 1h → every 30s
-  if (seconds < DAY) return 60_000; // < 1d → every minute
-  if (seconds < WEEK) return 60 * 60 * 1000; // < 1w → every hour
+  if (seconds < MIN) return 10_000;
+  if (seconds < HOUR) return 30_000;
+  if (seconds < DAY) return 60_000;
+  if (seconds < WEEK) return 60 * 60 * 1000;
   return null;
 }
 
-// useSyncExternalStore is the idiomatic "has hydrated" probe - returns false
-// during SSR via getServerSnapshot, true post-mount via getSnapshot. No
-// external store to subscribe to, so subscribe is a no-op.
+// useSyncExternalStore as a "has hydrated" probe: false via getServerSnapshot, true post-mount.
 const subscribe = () => () => {};
 const getSnapshot = () => true;
 const getServerSnapshot = () => false;
@@ -66,30 +57,13 @@ export interface TimeAgoProps
   dateStr: string;
   /** Fallback rendered during SSR / initial hydration. Defaults to formatted absolute date. */
   fallback?: string;
-  /**
-   * Typography variant. "mono" (default) applies tabular numerals with a
-   * tightened tracking, since timestamps are always numeric and benefit
-   * from column alignment in lists. "sans" inherits the parent's typography
-   * with no overrides. The variant name is retained for backwards compat
-   * across consumers; the rendering uses the body sans (Geist Sans) in
-   * both modes: only `font-variant-numeric` differs.
-   */
+  /** "mono" applies tabular numerals with tightened tracking; "sans" inherits parent typography. */
   variant?: "mono" | "sans";
-  /**
-   * Re-render the relative label on a smart interval so "Just now" doesn't
-   * stick around for 30 minutes. Default true. Refresh frequency scales
-   * with age: 10s under a minute, 30s under an hour, every minute under a
-   * day, every hour under a week. Above a week the label rolls over too
-   * slowly to bother scheduling.
-   */
+  /** Re-render on a smart interval so the label stays current. */
   liveUpdate?: boolean;
 }
 
-/**
- * TimeAgo - renders an absolute date during SSR / initial hydration and
- * swaps to a relative "N ago" / "in N" string after mount. Supports past
- * AND future dates. Stays current via smart-interval live updates.
- */
+/** Renders an absolute date during SSR and swaps to a relative label after mount. */
 export function TimeAgo({
   dateStr,
   fallback,
@@ -104,9 +78,7 @@ export function TimeAgo({
     getServerSnapshot,
   );
 
-  // Tick state forces a re-render on each scheduled refresh. The effect
-  // re-runs because `tick` is in its deps, which lets it schedule the
-  // *next* refresh based on the now-current age.
+  // `tick` in the effect's deps lets it schedule the next refresh based on the now-current age.
   const [tick, setTick] = useState(0);
 
   useEffect(() => {

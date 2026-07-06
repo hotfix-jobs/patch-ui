@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Spinner } from "./spinner";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, disabled, colorTransition } from "../recipes";
+import { disabled, colorTransition, focusRing, iconMuted, iconMutedSolid } from "../recipes";
 import { X } from "lucide-react";
 
 export const buttonVariants = cva(
@@ -14,8 +14,10 @@ export const buttonVariants = cva(
     "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",
     "cursor-pointer",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
+    // Extend tap target to 44px on coarse pointers without changing visual size.
     "pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11",
-    focusRing,
+    // Keyboard focus mirrors hover per variant (no outside ring).
+    "outline-none",
     colorTransition,
     disabled,
   ].join(" "),
@@ -23,28 +25,31 @@ export const buttonVariants = cva(
     defaultVariants: { size: "md", variant: "primary", shape: "square", shadow: false },
     variants: {
       size: {
-        tiny: "h-6 px-2 gap-1 text-button-12",
-        sm: "h-8 px-3 gap-1.5 text-button-12",
-        md: "h-10 px-4 gap-2 text-button-14",
-        lg: "h-12 px-6 gap-2 text-button-16",
+        sm: "h-6 px-2.5 gap-1.5 text-button-12",
+        md: "h-8 px-3.5 gap-2 text-button-14",
+        lg: "h-10 px-4 gap-2 text-button-16",
       },
       variant: {
         primary:
-          "bg-gray-1000 text-background-100 hover:bg-gray-900 active:bg-gray-800",
+          "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover active:bg-primary-active " +
+          iconMutedSolid,
         secondary:
-          "bg-background-200 text-gray-1000 border border-gray-alpha-400 hover:bg-gray-alpha-200 active:bg-gray-alpha-300",
+          "bg-surface-elevated text-ink border border-hairline hover:bg-surface-elevated-hover focus-visible:bg-surface-elevated-hover active:bg-surface-1 " +
+          iconMuted,
         tertiary:
-          "bg-transparent text-gray-1000 hover:bg-gray-alpha-100 active:bg-gray-alpha-200",
+          "bg-transparent text-ink hover:bg-surface-1 focus-visible:bg-surface-1 active:bg-surface-2 " +
+          iconMuted,
         warning:
-          "bg-warning text-warning-fg hover:bg-warning-hover active:bg-warning-active",
-        error:
-          "bg-error text-error-fg hover:bg-error-hover active:bg-error-active",
+          "bg-warning text-warning-fg hover:bg-warning-hover focus-visible:bg-warning-hover active:bg-warning-active " +
+          iconMutedSolid,
+        destructive:
+          "bg-error text-error-fg hover:bg-error-hover focus-visible:bg-error-hover active:bg-error-active " +
+          iconMutedSolid,
       },
       shape: {
         square: "rounded-[var(--radius-6)]",
         pill: "rounded-full",
         circle: "rounded-full",
-        rounded: "rounded-[var(--radius-12)]",
       },
       shadow: {
         true: "shadow-card",
@@ -57,29 +62,21 @@ export const buttonVariants = cva(
 export interface ButtonProps extends useRender.ComponentProps<"button"> {
   variant?: VariantProps<typeof buttonVariants>["variant"];
   size?: VariantProps<typeof buttonVariants>["size"];
-  /** Corner shape. `square` (6px) is default; `circle` for icon-only, `rounded` (12px) for marketing. */
   shape?: VariantProps<typeof buttonVariants>["shape"];
-  /** Adds a subtle elevation shadow. Typically paired with `shape="rounded"` on marketing pages. */
   shadow?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   loading?: boolean;
   disabled?: boolean;
-  /**
-   * When provided, renders a trailing × sub-button that calls this handler
-   * without triggering the parent Button's onClick. Use for dismissible tag
-   * pills (repo chips, applied filters), typically with `shape="pill"`.
-   */
+  /** Renders a trailing × sub-button; fires without triggering the parent onClick. */
   onRemove?: () => void;
-  /** Accessible label for the × sub-button. */
   removeLabel?: string;
 }
 
 const iconOnlyWidth: Record<NonNullable<ButtonProps["size"]>, string> = {
-  tiny: "w-6 px-0",
-  sm: "w-8 px-0",
-  md: "w-10 px-0",
-  lg: "w-12 px-0",
+  sm: "w-6 px-0",
+  md: "w-8 px-0",
+  lg: "w-10 px-0",
 };
 
 export function Button({
@@ -120,10 +117,8 @@ export function Button({
           role="button"
           tabIndex={0}
           aria-label={removeLabel}
-          // Stop mousedown/pointerdown so a parent trigger built on
-          // floating-ui's useClick (which fires on mousedown by default)
-          // doesn't open its popup when the user clicks the X. onClick
-          // alone runs too late.
+          // Stop mousedown so floating-ui's useClick (mousedown by default) on a parent
+          // trigger doesn't fire when the user clicks the X; onClick alone runs too late.
           onMouseDown={(e) => e.stopPropagation()}
           onPointerDown={(e) => e.stopPropagation()}
           onClick={(e) => {
@@ -139,7 +134,7 @@ export function Button({
           }}
           className={cn(
             "-me-1 inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-70",
-            "hover:bg-gray-alpha-300 hover:opacity-100",
+            "hover:bg-surface-2 hover:opacity-100",
             focusRing,
             colorTransition,
           )}

@@ -6,29 +6,16 @@ import { cn } from "../utils";
 
 export interface EmptyStateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
-  /** Title: a short sentence describing the empty condition. */
   title: React.ReactNode;
-  /** Helper text expanding on the title. Two lines max reads best. */
   description?: React.ReactNode;
-  /** Optional icon, rendered in a rounded-square container above the title. */
   icon?: React.ReactNode;
-  /** Primary CTA: typically a `<Button>`. */
+  /** Primary CTA, typically a `<Button>`. */
   action?: React.ReactNode;
-  /**
-   * Additional slots rendered below the primary action. Use for a
-   * secondary link ("Learn more") or supporting content.
-   */
+  /** Additional slots rendered below the primary action. */
   children?: React.ReactNode;
 }
 
-/**
- * EmptyState: "no results" / "no data yet" placeholder.
- *
- * Structure: icon → title → description → primary action → optional
- * secondary children. Everything horizontally centered with generous
- * vertical spacing. Fades in on mount so the transition from a loading
- * state or a list-with-data feels intentional rather than abrupt.
- */
+/** EmptyState: "no results" / "no data yet" placeholder. */
 export function EmptyState({
   title,
   description,
@@ -59,33 +46,33 @@ export function EmptyState({
       {icon && (
         <div
           aria-hidden
-          className="mb-5 flex size-14 items-center justify-center rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 text-gray-1000 [&_svg]:size-6"
+          className="mb-6 flex size-24 items-center justify-center rounded-[var(--radius-12)] bg-surface-1 text-ink-muted [&_svg]:size-8"
           data-slot="empty-state-icon"
         >
           {icon}
         </div>
       )}
       <h3
-        className="text-heading-20 text-gray-1000"
+        className="text-body-16 text-ink-muted"
         data-slot="empty-state-title"
       >
         {title}
       </h3>
       {description && (
         <p
-          className="mt-2 max-w-md text-copy-14 text-gray-900"
+          className="mt-1.5 max-w-md text-body-14 text-ink-subtle"
           data-slot="empty-state-description"
         >
           {description}
         </p>
       )}
       {action && (
-        <div className="mt-5" data-slot="empty-state-action">
+        <div className="mt-6" data-slot="empty-state-action">
           {action}
         </div>
       )}
       {children && (
-        <div className="mt-4 flex flex-col items-center gap-2" data-slot="empty-state-extras">
+        <div className="mt-6 flex flex-col items-center gap-2 w-full" data-slot="empty-state-extras">
           {children}
         </div>
       )}

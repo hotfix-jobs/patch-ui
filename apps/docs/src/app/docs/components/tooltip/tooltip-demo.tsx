@@ -7,9 +7,8 @@ export function TooltipDemo() {
   return (
     <TooltipProvider>
       <div className="flex flex-col gap-8">
-        {/* Basic */}
         <div>
-          <p className="mb-3 text-xs font-medium text-gray-800">
+          <p className="mb-3 text-xs font-medium text-ink-muted">
             Basic
           </p>
           <Tooltip content="This is a tooltip">
@@ -17,9 +16,8 @@ export function TooltipDemo() {
           </Tooltip>
         </div>
 
-        {/* Sides */}
         <div>
-          <p className="mb-3 text-xs font-medium text-gray-800">
+          <p className="mb-3 text-xs font-medium text-ink-muted">
             Sides
           </p>
           <div className="flex flex-wrap items-center gap-3">
@@ -33,9 +31,8 @@ export function TooltipDemo() {
           </div>
         </div>
 
-        {/* Icon buttons */}
         <div>
-          <p className="mb-3 text-xs font-medium text-gray-800">
+          <p className="mb-3 text-xs font-medium text-ink-muted">
             Icon-only buttons
           </p>
           <div className="flex flex-wrap items-center gap-3">
@@ -46,7 +43,7 @@ export function TooltipDemo() {
               <Button variant="secondary" icon={<Plus className="size-4" />} />
             </Tooltip>
             <Tooltip content="Delete item" side="bottom">
-              <Button variant="error" icon={<Trash2 className="size-4" />} />
+              <Button variant="destructive" icon={<Trash2 className="size-4" />} />
             </Tooltip>
           </div>
         </div>

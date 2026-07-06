@@ -108,6 +108,27 @@ For grouped results, wrap items in `CommandSection` (or `CommandGroup` + `Comman
 - `CommandGroup` / `CommandGroupLabel` / `CommandCollection` - low-level grouped sections
 - `CommandSeparator` - a divider between groups
 
+## Keyboard hints (`Kbd`)
+
+Shortcut chips shown in the `suffix` slot of a `CommandItem` are rendered with the `Kbd` primitive. It handles platform glyph switching for you (`⌘` on Mac, `Ctrl` on Windows / Linux) and composes multiple modifiers into one chip.
+
+```tsx
+import { Kbd } from "@patchui/react";
+
+<CommandItem
+  suffix={<Kbd meta>N</Kbd>}
+  onClick={() => run("new-file")}
+>
+  New file
+</CommandItem>
+
+// Multiple modifiers compose in order
+<Kbd meta shift>P</Kbd>  // ⇧⌘P on Mac, Ctrl+Shift+P elsewhere
+<Kbd ctrl>K</Kbd>        // ⌃K on Mac, Ctrl+K elsewhere
+```
+
+Props: `meta` (⌘ / Ctrl), `ctrl` (⌃ / Ctrl), `alt` (⌥ / Alt), `shift` (⇧), plus a `size` (`sm` | `md`) and an optional `onClick` — passing a handler renders it as a `<button>` with hover state, useful for a clickable Esc chip in an input's `action` slot.
+
 <Callout title="Notes">
 - **Built on Base UI Autocomplete** - filtering, roving focus, type-ahead, and ARIA are handled for you; no extra command library.
 - **Bring your own search:** pass `filteredItems` to render results from a fuzzy index (this docs site does exactly that for its Cmd+K search).

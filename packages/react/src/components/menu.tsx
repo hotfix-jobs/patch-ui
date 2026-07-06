@@ -40,6 +40,7 @@ import {
 import type * as React from "react";
 import { Check, ChevronRight } from "lucide-react";
 import { cn } from "../utils";
+import { iconMuted, itemGroupLabel, itemRow, popupDivider, popupSurface } from "../recipes";
 import { Checkbox } from "./checkbox";
 
 type Density = "compact" | "comfortable";
@@ -88,15 +89,11 @@ export interface MenuProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   defaultOpen?: boolean;
-  /**
-   * Placement of the popup relative to the trigger. Auto-adapts based
-   * on window bounds: if there isn't room in the requested direction
-   * the popup flips to the opposite side. Default `bottom-start`
-   * (`right-start` for sub-menus).
-   */
+  /** Placement of the popup relative to the trigger. Default `bottom-start` (`right-start` for sub-menus). */
   position?: Placement;
-  /** Internal: set on sub-menus to enable hover-open. */
   modal?: boolean;
+  /** On open, pre-activate the first row so Space toggles it without an arrow-down first. */
+  autoFocusFirst?: boolean;
   children: React.ReactNode;
 }
 
@@ -105,6 +102,7 @@ function MenuInner({
   onOpenChange,
   defaultOpen = false,
   position,
+  autoFocusFirst = false,
   children,
 }: MenuProps): React.ReactElement {
   const parent = useContext(MenuContext);
@@ -133,12 +131,8 @@ function MenuInner({
     open,
     onOpenChange: setOpen,
     placement: position ?? (isNested ? "right-start" : "bottom-start"),
-    // Disable floating-ui's transform-based positioning so motion's
-    // animate transform (scale, etc.) doesn't fight the position transform.
+    // Disable floating-ui's transform positioning so motion's animate transform doesn't fight it.
     transform: false,
-    // 4px gap from trigger; shift away from edges; flip to opposite side
-    // when there isn't room. Sub-menus offset along the cross axis to keep
-    // their first item aligned with the trigger.
     middleware: [
       offset({ mainAxis: 4, alignmentAxis: isNested ? -4 : 0 }),
       flip(),
@@ -164,6 +158,9 @@ function MenuInner({
     activeIndex,
     nested: isNested,
     onNavigate: setActiveIndex,
+    // Skipping auto-focus on hover-open prevents a sub-menu's first item from lingering
+    // active when the mouse moves back to the parent (safePolygon keeps the sub-menu open).
+    focusItemOnOpen: autoFocusFirst,
   });
   const typeahead = useTypeahead(context, {
     listRef: labelsRef,
@@ -175,8 +172,14 @@ function MenuInner({
     [click, hover, dismiss, role, listNavigation, typeahead],
   );
 
-  // Close all parent menus when an action item runs (so the whole tree
-  // collapses after click). Tracked via tree events.
+  // Gated on autoFocusFirst so nested sub-menus keep letting useListNavigation own activeIndex;
+  // a blanket reset caused sub-menu hover state to fight with the parent when moving between rows.
+  useEffect(() => {
+    if (!autoFocusFirst) return;
+    if (open) setActiveIndex(0);
+    else setActiveIndex(null);
+  }, [open, autoFocusFirst]);
+
   const tree = useFloatingTree();
   useEffect(() => {
     if (!tree) return;
@@ -231,7 +234,6 @@ function MenuInner({
 export function Menu(props: MenuProps): React.ReactElement {
   const parentId = useFloatingParentNodeId();
   if (parentId == null) {
-    // Top-level menu: wrap in FloatingTree so nested sub-menus can register.
     return (
       <FloatingTree>
         <MenuInner {...props} />
@@ -240,8 +242,6 @@ export function Menu(props: MenuProps): React.ReactElement {
   }
   return <MenuInner {...props} />;
 }
-
-/* --------------------------- Trigger --------------------------- */
 
 export interface MenuTriggerProps {
   render?: React.ReactElement;
@@ -279,8 +279,6 @@ export function MenuTrigger({
   );
 }
 
-/* --------------------------- Popup --------------------------- */
-
 export interface MenuPopupProps {
   className?: string;
   density?: Density;
@@ -289,7 +287,7 @@ export interface MenuPopupProps {
 
 export function MenuPopup({
   className,
-  density = "comfortable",
+  density,
   children,
 }: MenuPopupProps): React.ReactElement | null {
   const { open, context, refs, floatingStyles, getFloatingProps, isNested } =
@@ -299,11 +297,66 @@ export function MenuPopup({
     [refs],
   );
   const reduceMotion = useReducedMotion();
-  // Below the md breakpoint, top-level menus render as a bottom-anchored
-  // fixed panel (mirrors ComboboxPopup mobile). Submenus stay as
-  // floating popovers so they can anchor to their parent row.
+  // Below md, top-level menus render as a centered fixed panel; submenus stay as popovers.
   const isMobile = useMediaQuery("(max-width: 767px)");
   const asPanel = isMobile && !isNested;
+
+  const effectiveDensity: Density = density ?? (asPanel ? "comfortable" : "compact");
+
+  const popup = (
+    <motion.div
+      ref={setFloating}
+      data-slot="menu-popup"
+      {...getFloatingProps()}
+      style={
+        asPanel
+          ? undefined
+          : {
+              ...floatingStyles,
+              transformOrigin: "var(--transform-origin, top left)",
+            }
+      }
+      initial={reduceMotion ? false : { opacity: 0, scale: 0.97 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
+      transition={
+        reduceMotion
+          ? { duration: 0 }
+          : {
+              type: "spring",
+              stiffness: 400,
+              damping: 30,
+              mass: 0.6,
+            }
+      }
+      className={cn(
+        "flex flex-col",
+        popupSurface,
+        asPanel
+          ? "pointer-events-auto w-full max-w-md max-h-[calc(100dvh-2rem)]"
+          : [
+              "z-[80]",
+              effectiveDensity === "compact"
+                ? "not-[class*='w-']:min-w-32"
+                : "not-[class*='w-']:min-w-56",
+            ],
+        className,
+      )}
+    >
+      <MenuDensityContext.Provider value={effectiveDensity}>
+        <div
+          className={cn(
+            "w-full overflow-y-auto p-1",
+            asPanel
+              ? "max-h-full"
+              : "max-h-[var(--available-height,400px)]",
+          )}
+        >
+          {children}
+        </div>
+      </MenuDensityContext.Provider>
+    </motion.div>
+  );
 
   return (
     <FloatingPortal>
@@ -315,76 +368,21 @@ export function MenuPopup({
             initialFocus={isNested ? -1 : 0}
             returnFocus={!isNested}
           >
-            <motion.div
-              ref={setFloating}
-              data-slot="menu-popup"
-              {...getFloatingProps()}
-              style={
-                asPanel
-                  ? undefined
-                  : {
-                      ...floatingStyles,
-                      transformOrigin: "var(--transform-origin, top left)",
-                    }
-              }
-              initial={
-                reduceMotion
-                  ? false
-                  : asPanel
-                    ? { opacity: 0, y: 8 }
-                    : { opacity: 0, scale: 0.97 }
-              }
-              animate={
-                asPanel ? { opacity: 1, y: 0 } : { opacity: 1, scale: 1 }
-              }
-              exit={
-                reduceMotion
-                  ? undefined
-                  : asPanel
-                    ? { opacity: 0, y: 8 }
-                    : { opacity: 0, scale: 0.97 }
-              }
-              transition={
-                reduceMotion
-                  ? { duration: 0 }
-                  : {
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 30,
-                      mass: 0.6,
-                    }
-              }
-              className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-200 border border-gray-alpha-400 shadow-menu outline-none focus:outline-none",
-                asPanel
-                  ? "fixed bottom-2 left-2 right-2 max-h-[calc(100vh-1rem)]"
-                  : density === "compact"
-                    ? "not-[class*='w-']:min-w-32"
-                    : "not-[class*='w-']:min-w-56",
-                className,
-              )}
-            >
-              <MenuDensityContext.Provider value={density}>
-                <div
-                  className={cn(
-                    "w-full overflow-y-auto p-1",
-                    asPanel
-                      ? "max-h-full"
-                      : "max-h-[var(--available-height,400px)]",
-                  )}
-                >
-                  {children}
-                </div>
-              </MenuDensityContext.Provider>
-            </motion.div>
+            {asPanel ? (
+              // Outer wrapper is pointer-events-none so useDismiss can catch scrim clicks;
+              // the motion.div re-enables pointer events on the panel itself.
+              <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 pointer-events-none">
+                {popup}
+              </div>
+            ) : (
+              popup
+            )}
           </FloatingFocusManager>
         )}
       </AnimatePresence>
     </FloatingPortal>
   );
 }
-
-/* --------------------------- Item --------------------------- */
 
 export interface MenuItemProps {
   className?: string;
@@ -393,21 +391,15 @@ export interface MenuItemProps {
   /** @deprecated Use `type="error"`. */
   variant?: "default" | "destructive";
   inset?: boolean;
-  /** Trailing check indicating "currently chosen". */
   selected?: boolean;
-  /** Secondary line below the title for two-line items. */
   description?: React.ReactNode;
   disabled?: boolean;
   label?: string;
-  /** Leading node (icon). */
   prefix?: React.ReactNode;
-  /** Trailing node (icon, kbd shortcut, badge). */
   suffix?: React.ReactNode;
-  /** When set, renders as an anchor tag pointing to `href` instead of a div. */
+  /** When set, renders as an anchor tag instead of a div. */
   href?: string;
-  /** Anchor target when `href` is set. */
   target?: string;
-  /** Anchor rel when `href` is set. */
   rel?: string;
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   children?: React.ReactNode;
@@ -442,7 +434,7 @@ export function MenuItem({
 
   const trailingCheck = selected && (
     <Check
-      className="ms-auto size-3.5 shrink-0 text-gray-800"
+      className="ms-auto size-3.5 shrink-0 text-ink-muted"
       strokeWidth={2.25}
     />
   );
@@ -451,7 +443,6 @@ export function MenuItem({
     if (disabled) return;
     onClick?.(event);
     setOpen(false);
-    // Tell the whole tree to close (parent menus collapse too).
     tree?.events.emit("click");
   };
 
@@ -466,17 +457,27 @@ export function MenuItem({
     "data-disabled": disabled ? "" : undefined,
     "aria-disabled": disabled || undefined,
     className: cn(
-      "flex cursor-default select-none rounded-[var(--radius-6)] text-gray-1000 no-underline outline-none data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      itemRow.base,
+      "no-underline [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+      iconMuted,
       density === "compact"
-        ? "min-h-7 px-2 py-1.5 text-label-13"
-        : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
+        ? itemRow.compact
+        : cn(itemRow.comfortable, "[&_svg:not([class*='size-'])]:size-[18px]"),
       isError &&
-        "text-red-800 data-[active]:bg-red-200 data-[active]:text-red-800",
+        "text-error data-[active]:bg-error/10 data-[active]:text-error [&_svg]:!text-error",
       inset && "ps-8",
       className,
     ),
     ...getItemProps({
       onClick: handleClick,
+      // div (and <a>) don't map Enter/Space to click natively, so wire it explicitly.
+      onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => {
+        if (disabled) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          handleClick(e as unknown as React.MouseEvent<HTMLElement>);
+        }
+      },
     }),
   };
 
@@ -489,7 +490,7 @@ export function MenuItem({
           {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
           {trailingCheck}
         </span>
-        <span className="mt-0.5 truncate text-label-12 text-gray-800">
+        <span className="mt-0.5 truncate text-caption-12 text-ink-muted">
           {description}
         </span>
       </span>
@@ -517,14 +518,14 @@ export function MenuItem({
   return <div {...(commonProps as unknown as React.HTMLAttributes<HTMLDivElement>)}>{content}</div>;
 }
 
-/* --------------------------- CheckboxItem --------------------------- */
-
 export interface MenuCheckboxItemProps {
   className?: string;
   checked?: boolean;
   onCheckedChange?: (checked: boolean) => void;
   disabled?: boolean;
   label?: string;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
   children?: React.ReactNode;
 }
 
@@ -534,6 +535,8 @@ export function MenuCheckboxItem({
   onCheckedChange,
   disabled,
   label,
+  prefix,
+  suffix,
   children,
 }: MenuCheckboxItemProps): React.ReactElement {
   const { activeIndex, getItemProps } = useMenuContext();
@@ -555,10 +558,10 @@ export function MenuCheckboxItem({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "flex cursor-default items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        density === "compact"
-          ? "min-h-7 py-1.5 px-2 text-label-13"
-          : "min-h-11 py-2.5 px-3 text-copy-14",
+        itemRow.base,
+        "group/checkbox-item gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        iconMuted,
+        density === "compact" ? itemRow.compact : itemRow.comfortable,
         className,
       )}
       {...getItemProps({
@@ -567,22 +570,33 @@ export function MenuCheckboxItem({
           onCheckedChange?.(!checked);
           e.preventDefault();
         },
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (disabled) return;
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onCheckedChange?.(!checked);
+          }
+        },
       })}
     >
-      {/* Purely visual: the row owns the click. pointer-events-none stops the
-          primitive from re-toggling and racing our onCheckedChange call. */}
+      {/* Row owns the click; pointer-events-none stops the checkbox from re-toggling.
+          Opacity (not display) preserves layout when the checkbox appears on desktop. */}
       <Checkbox
         checked={checked}
         tabIndex={-1}
         aria-hidden
-        className="pointer-events-none"
+        className={cn(
+          "pointer-events-none transition-opacity duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "md:opacity-0",
+          "md:group-hover/checkbox-item:opacity-100 md:group-data-[active]/checkbox-item:opacity-100 md:group-data-[state=checked]/checkbox-item:opacity-100",
+        )}
       />
+      {prefix}
       <span className="min-w-0 flex-1 truncate">{children}</span>
+      {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
     </div>
   );
 }
-
-/* --------------------------- RadioGroup / RadioItem --------------------------- */
 
 type RadioGroupContextValue = {
   value: string;
@@ -656,10 +670,9 @@ export function MenuRadioItem({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "flex w-full cursor-default items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        density === "compact"
-          ? "min-h-7 py-1.5 px-2 text-label-13"
-          : "min-h-11 py-2.5 px-3 text-copy-14",
+        itemRow.base,
+        "w-full gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        density === "compact" ? itemRow.compact : itemRow.comfortable,
         className,
       )}
       {...getItemProps({
@@ -669,21 +682,27 @@ export function MenuRadioItem({
           setOpen(false);
           e.preventDefault();
         },
+        onKeyDown: (e: React.KeyboardEvent) => {
+          if (disabled) return;
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            group.setValue(value);
+            setOpen(false);
+          }
+        },
       })}
     >
       <span className="min-w-0 flex-1 truncate">{children}</span>
       {checked && (
         <Check
           aria-hidden
-          className="ms-auto size-3.5 shrink-0 text-gray-800"
+          className="ms-auto size-3.5 shrink-0 text-ink-muted"
           strokeWidth={2.25}
         />
       )}
     </div>
   );
 }
-
-/* --------------------------- Group / Section / Label --------------------------- */
 
 export function MenuGroup({
   className,
@@ -709,7 +728,6 @@ export function MenuSection({
   children,
   ...props
 }: Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> & {
-  /** Section header text. */
   title?: React.ReactNode;
   /** @deprecated Use `title`. */
   label?: React.ReactNode;
@@ -736,11 +754,13 @@ export function MenuGroupLabel({
 }: React.HTMLAttributes<HTMLDivElement> & {
   inset?: boolean;
 }): React.ReactElement {
+  const density = useContext(MenuDensityContext);
   return (
     <div
       data-slot="menu-label"
       className={cn(
-        "px-3 py-1.5 text-label-14 text-gray-800",
+        itemGroupLabel.base,
+        density === "compact" ? itemGroupLabel.compact : itemGroupLabel.comfortable,
         inset && "ps-8",
         className,
       )}
@@ -757,7 +777,7 @@ export function MenuDivider({
     <div
       role="separator"
       data-slot="menu-divider"
-      className={cn("my-1 h-px bg-gray-alpha-400", className)}
+      className={cn(popupDivider, className)}
       {...props}
     />
   );
@@ -770,7 +790,7 @@ export function MenuShortcut({
   return (
     <kbd
       className={cn(
-        "ms-auto font-medium font-sans text-gray-800 text-xs tracking-widest",
+        "ms-auto font-medium font-sans text-ink-muted text-xs tracking-widest",
         className,
       )}
       data-slot="menu-shortcut"
@@ -778,8 +798,6 @@ export function MenuShortcut({
     />
   );
 }
-
-/* --------------------------- Sub-menu --------------------------- */
 
 export function MenuSub({ children }: { children: React.ReactNode }): React.ReactElement {
   return <Menu>{children}</Menu>;
@@ -805,9 +823,7 @@ export function MenuSubTrigger({
   if (!parent) throw new Error("MenuSubTrigger must be inside <MenuSub>");
   const density = useContext(MenuDensityContext);
 
-  // SubTrigger is BOTH an item in the parent's list AND a reference for
-  // the sub-menu's floating popup. Merge refs from parent's useListItem
-  // and the sub-menu's useFloating.
+  // SubTrigger is both an item in the parent's list and the reference for the sub-menu popup.
   const itemLabel = label ?? (typeof children === "string" ? children : "");
   const { ref: listItemRef, index } = useListItem({ label: itemLabel });
   const isActive = parent.activeIndex === index;
@@ -825,10 +841,12 @@ export function MenuSubTrigger({
       data-disabled={disabled ? "" : undefined}
       aria-disabled={disabled || undefined}
       className={cn(
-        "flex cursor-default select-none items-center gap-2 rounded-[var(--radius-6)] text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[active]:bg-gray-alpha-100 data-[popup-open]:bg-gray-alpha-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none",
+        itemRow.base,
+        "gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[popup-open]:bg-surface-2 [&_svg]:pointer-events-none",
+        iconMuted,
         density === "compact"
-          ? "min-h-7 px-2 py-1.5 text-label-13 [&_svg:not([class*='size-'])]:size-4"
-          : "min-h-11 px-3 py-2.5 text-copy-14 [&_svg:not([class*='size-'])]:size-[18px]",
+          ? cn(itemRow.compact, "[&_svg:not([class*='size-'])]:size-4")
+          : cn(itemRow.comfortable, "[&_svg:not([class*='size-'])]:size-[18px]"),
         inset && "ps-8",
         className,
       )}
@@ -844,8 +862,6 @@ export function MenuSubTrigger({
 }
 
 export const MenuSubPopup = MenuPopup;
-
-/* --------------------------- Aliases for back-compat --------------------------- */
 
 export const MenuPortal = ({ children }: { children: React.ReactNode }) => (
   <>{children}</>

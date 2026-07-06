@@ -23,16 +23,15 @@ export function ModalDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Basic: short confirmation, no header */}
       <div className="space-y-3">
         <SectionLabel>Basic</SectionLabel>
         <Button onClick={() => setBasic(true)}>Update project</Button>
         <Modal active={basic} onClickOutside={() => setBasic(false)}>
           <ModalBody>
-            <h2 className="text-heading-20 text-gray-1000">
+            <h2 className="text-display-20 text-ink">
               Update project
             </h2>
-            <p className="text-copy-14 text-gray-800">
+            <p className="text-body-14 text-ink-muted">
               Rolling out the queued changes to the current environment.
             </p>
           </ModalBody>
@@ -48,10 +47,9 @@ export function ModalDemo() {
         </Modal>
       </div>
 
-      {/* Destructive with typed confirmation gate */}
       <div className="space-y-3">
         <SectionLabel>Destructive with typed confirmation</SectionLabel>
-        <Button variant="error" onClick={() => setDestructive(true)}>
+        <Button variant="destructive" onClick={() => setDestructive(true)}>
           Delete repository
         </Button>
         <Modal
@@ -59,15 +57,14 @@ export function ModalDemo() {
           onClickOutside={() => setDestructive(false)}
         >
           <ModalBody>
-            <h2 className="text-heading-20 text-gray-1000">
+            <h2 className="text-display-20 text-ink">
               Delete repository
             </h2>
-            <p className="text-copy-14 text-gray-1000">
+            <p className="text-body-14 text-ink">
               <span className="font-semibold">{REPO_NAME}</span> and all of its
               branches, releases, and settings will be permanently removed.
             </p>
-            {/* Irreversibility band */}
-            <div className="flex items-center gap-2 rounded-[var(--radius-6)] border border-red-300 bg-red-200 px-3 py-2 text-red-800">
+            <div className="flex items-center gap-2 rounded-[var(--radius-6)] border border-error bg-error/10 px-3 py-2 text-error">
               <svg
                 aria-hidden="true"
                 width="18"
@@ -84,14 +81,14 @@ export function ModalDemo() {
                 <line x1="12" y1="8" x2="12" y2="12" />
                 <line x1="12" y1="16" x2="12.01" y2="16" />
               </svg>
-              <p className="text-label-13">
+              <p className="text-body-13">
                 Removing {REPO_NAME} can't be undone.
               </p>
             </div>
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="delete-confirm"
-                className="text-label-14 text-gray-1000"
+                className="text-body-14 text-ink"
               >
                 To confirm, type the repository name{" "}
                 <span className="font-semibold">"{REPO_NAME}"</span>
@@ -101,7 +98,7 @@ export function ModalDemo() {
                 type="text"
                 value={typed}
                 onChange={(e) => setTyped(e.target.value)}
-                className="w-full rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 px-3 h-10 text-copy-14 outline-none hover:border-gray-alpha-500 focus-visible:border-gray-alpha-600"
+                className="w-full rounded-[var(--radius-6)] border border-hairline-strong bg-canvas px-3 h-10 text-body-14 outline-none hover:border-hairline-tertiary focus-visible:border-hairline-tertiary"
               />
             </div>
           </ModalBody>
@@ -110,7 +107,7 @@ export function ModalDemo() {
               Cancel
             </ModalAction>
             <ModalAction
-              variant="error"
+              variant="destructive"
               disabled={typed !== REPO_NAME}
               onClick={() => {
                 setDestructive(false);
@@ -123,7 +120,6 @@ export function ModalDemo() {
         </Modal>
       </div>
 
-      {/* Long content: header stays fixed while body scrolls */}
       <div className="space-y-3">
         <SectionLabel>Long content with fixed header</SectionLabel>
         <Button onClick={() => setLongContent(true)}>Open change log</Button>
@@ -140,7 +136,7 @@ export function ModalDemo() {
           </ModalHeader>
           <ModalBody>
             {Array.from({ length: 12 }).map((_, i) => (
-              <p key={i} className="text-copy-14 text-gray-1000">
+              <p key={i} className="text-body-14 text-ink">
                 Entry {i + 1}. A small note about a fix, refactor, or new
                 surface that landed this week. Long enough to force the body
                 to scroll while the header stays put above.

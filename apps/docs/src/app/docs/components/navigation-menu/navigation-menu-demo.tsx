@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -9,137 +8,101 @@ import {
   NavigationMenuContent,
   NavigationMenuLink,
   Button,
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetBody,
 } from "@patchui/react";
-import {
-  AppHeader,
-  AppHeaderBrand,
-  AppHeaderRight,
-} from "@patchui/react/blocks/app-header";
 
-function LinkCard({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
+const DROPDOWNS = [
+  {
+    label: "Product",
+    items: [
+      { href: "#", eyebrow: "Overview", title: "See what the product does" },
+      { href: "#", eyebrow: "Analytics", title: "Turn data into decisions" },
+      { href: "#", eyebrow: "Automations", title: "Save time on repeat work" },
+      { href: "#", eyebrow: "Reports", title: "Share what you've learned" },
+      { href: "#", eyebrow: "API", title: "Build on top of the platform" },
+      { href: "#", eyebrow: "Integrations", title: "Connect the tools you use" },
+    ],
+  },
+  {
+    label: "Resources",
+    items: [
+      { href: "#", eyebrow: "Docs", title: "Everything you need to know" },
+      { href: "#", eyebrow: "Guides", title: "Practical walk-throughs" },
+      { href: "#", eyebrow: "Blog", title: "Notes from the team" },
+      { href: "#", eyebrow: "Community", title: "Talk to other users" },
+      { href: "#", eyebrow: "Support", title: "Get help when you need it" },
+      { href: "#", eyebrow: "Changelog", title: "What shipped recently" },
+    ],
+  },
+];
+
+function LogoMark() {
   return (
-    <NavigationMenuLink href="#">
-      <span className="block font-medium text-gray-1000">{title}</span>
-      <span className="mt-0.5 block text-label-12 text-gray-800">
-        {description}
-      </span>
-    </NavigationMenuLink>
+    <span className="flex size-6 items-center justify-center rounded-[var(--radius-6)] bg-ink text-canvas text-button-14">
+      P
+    </span>
   );
 }
-
-function MenuIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="size-5"
-    >
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <line x1="3" y1="12" x2="21" y2="12" />
-      <line x1="3" y1="18" x2="21" y2="18" />
-    </svg>
-  );
-}
-
-const MOBILE_LINKS = ["Product", "Resources", "Pricing"];
 
 export function NavigationMenuDemo() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400">
-      <AppHeader>
-        <AppHeaderBrand>Patch</AppHeaderBrand>
+    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-hairline bg-canvas">
+      {/* Header-style row so the dropdown reads in a realistic context.
+          NavigationMenu is desktop-only -- on small viewports use a
+          Sheet or the AppHeader block's mobile panel instead. */}
+      <div className="flex w-full items-center gap-6 px-4 py-3.5 md:px-6 md:gap-8 md:py-4">
+        <div className="flex shrink-0 items-center gap-2 text-button-16 text-ink">
+          <LogoMark />
+          <span>Patch</span>
+        </div>
 
-        <NavigationMenu className="hidden sm:block">
+        <NavigationMenu className="hidden md:block">
           <NavigationMenuList>
+            {DROPDOWNS.map((group) => (
+              <NavigationMenuItem key={group.label}>
+                <NavigationMenuTrigger>{group.label}</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="grid w-[680px] grid-cols-3 gap-2 p-4">
+                    {group.items.map((item) => (
+                      <NavigationMenuLink
+                        key={item.eyebrow}
+                        href={item.href}
+                        onClick={(e) => e.preventDefault()}
+                        className="block rounded-[var(--radius-6)] bg-transparent p-3 hover:bg-surface-2 group"
+                      >
+                        <div className="flex flex-col gap-1">
+                          <span className="text-caption-12 text-ink-muted group-hover:text-ink transition-colors">
+                            {item.eyebrow}
+                          </span>
+                          <span className="text-body-14 text-ink">
+                            {item.title}
+                          </span>
+                        </div>
+                      </NavigationMenuLink>
+                    ))}
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            ))}
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Product</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="grid w-[min(440px,calc(100vw-2rem))] grid-cols-2 gap-1">
-                  <LinkCard title="Features" description="Everything in the box." />
-                  <LinkCard title="Integrations" description="Connect your stack." />
-                  <LinkCard title="Changelog" description="What shipped lately." />
-                  <LinkCard title="Customers" description="Teams who use it." />
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuTrigger>Resources</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="grid w-[min(220px,calc(100vw-2rem))] gap-0.5">
-                  <NavigationMenuLink href="#">Docs</NavigationMenuLink>
-                  <NavigationMenuLink href="#">Guides</NavigationMenuLink>
-                  <NavigationMenuLink href="#">Blog</NavigationMenuLink>
-                  <NavigationMenuLink href="#">Support</NavigationMenuLink>
-                </div>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <NavigationMenuLink href="#" className="px-3 py-1.5 font-medium">
+              <NavigationMenuLink
+                href="#"
+                onClick={(e) => e.preventDefault()}
+                className="!inline-flex !items-center !rounded-full !px-3 !py-1.5 !text-body-14 !text-ink-muted !bg-transparent hover:!bg-surface-1 hover:!text-ink"
+              >
                 Pricing
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
-        <AppHeaderRight>
-          <Button size="sm" className="hidden sm:inline-flex">
+        <div className="ms-auto flex items-center gap-2">
+          <Button variant="tertiary" size="md" shape="pill">
+            Sign in
+          </Button>
+          <Button variant="primary" size="md" shape="pill">
             Get started
           </Button>
-          <Button
-            variant="tertiary"
-            size="sm"
-            aria-label="Open menu"
-            className="sm:hidden"
-            icon={<MenuIcon />}
-            onClick={() => setOpen(true)}
-          />
-        </AppHeaderRight>
-      </AppHeader>
-
-      {/* Mobile drawer (NavigationMenu is desktop-only; use a Sheet on mobile) */}
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="left" className="w-64">
-          <SheetHeader>
-            <SheetTitle>Patch</SheetTitle>
-          </SheetHeader>
-          <SheetBody>
-            <nav className="flex flex-col gap-0.5">
-              {MOBILE_LINKS.map((label) => (
-                <a
-                  key={label}
-                  href="#"
-                  onClick={() => setOpen(false)}
-                  className="rounded-[var(--radius-6)] px-2 py-2 text-label-13 text-gray-900 transition-colors hover:bg-gray-200 hover:text-gray-1000"
-                >
-                  {label}
-                </a>
-              ))}
-            </nav>
-          </SheetBody>
-        </SheetContent>
-      </Sheet>
-
-      <div className="p-6 text-label-13 text-gray-900">
-        Hover or focus the menu items to open the morphing dropdown. Under the
-        <code> sm</code> breakpoint it collapses to a Sheet drawer.
+        </div>
       </div>
     </div>
   );

@@ -16,9 +16,9 @@ export type TextareaProps = React.ComponentProps<"textarea"> & {
 };
 
 const paddingBySize: Record<TextareaSize, string> = {
-  sm: "px-3 py-1.5 text-label-12",
-  md: "px-3 py-2 text-copy-14",
-  lg: "px-3.5 py-2.5 text-copy-16",
+  sm: "px-2.5 py-1.5 text-body-13",
+  md: "px-3 py-2 text-body-14",
+  lg: "px-3.5 py-2.5 text-body-16",
 };
 
 export function Textarea({
@@ -38,13 +38,12 @@ export function Textarea({
     <span
       className={cn(
         "relative inline-flex w-full rounded-[var(--radius-6)]",
-        "bg-background-200 border border-gray-alpha-400 text-gray-1000",
+        "bg-surface-elevated border border-hairline text-ink",
         "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        "hover:border-gray-alpha-500",
-        "has-focus-visible:border-gray-alpha-600 has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
+        "hover:border-hairline-strong",
+        "has-focus-visible:border-primary",
         "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
-        hasError &&
-          "!border-[var(--error)] has-focus-visible:!border-[var(--error)] has-focus-visible:!outline-[var(--error)]",
+        hasError && "!border-error",
         !label && !hasErrorMessage && className,
       )}
       data-slot="textarea-control"
@@ -54,8 +53,8 @@ export function Textarea({
           <textarea
             id={id}
             className={cn(
-              "field-sizing-content min-h-[5rem] w-full rounded-[inherit] bg-transparent outline-none",
-              "placeholder:text-gray-700",
+              "field-sizing-content min-h-24 w-full rounded-[inherit] bg-transparent outline-none resize-y",
+              "placeholder:text-ink-subtle",
               paddingBySize[size],
             )}
             data-slot="textarea"
@@ -72,11 +71,11 @@ export function Textarea({
   if (!label && !hasErrorMessage) return control;
 
   return (
-    <div className={cn("flex flex-col gap-1.5 w-full", className)} data-slot="textarea-field">
+    <div className={cn("flex flex-col gap-2 w-full", className)} data-slot="textarea-field">
       {label && (
         <label
           htmlFor={id}
-          className="text-label-14 text-gray-1000"
+          className="text-button-14 text-ink"
           data-slot="textarea-label"
         >
           {label}
@@ -87,7 +86,7 @@ export function Textarea({
         <p
           id={errorId}
           role="alert"
-          className="text-label-13 text-[var(--error)]"
+          className="text-caption-12 text-error"
           data-slot="textarea-error"
         >
           {error}

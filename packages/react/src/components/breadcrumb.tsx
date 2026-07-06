@@ -4,7 +4,6 @@ import { ChevronRight, Home, MoreHorizontal } from "lucide-react";
 import { Fragment, useState } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
 
 export interface BreadcrumbItem {
   /** Label. If `href === "/"` and `name === "Home"`, renders as home icon. */
@@ -35,21 +34,12 @@ function Separator() {
   return (
     <ChevronRight
       aria-hidden
-      className="size-3.5 shrink-0 text-gray-700"
+      className="size-3.5 shrink-0 text-ink-tertiary"
     />
   );
 }
 
-/**
- * Breadcrumb: horizontal trail of ancestor links leading to the current page.
- *
- * - The Home crumb (href="/" + name="Home") renders as an icon-only link to
- *   keep the chain compact; screen readers still get "Home" via sr-only.
- * - Long chains (4+ items) collapse the middle behind a `…` toggle below sm:.
- *   Tapping expands them inline. Desktop always shows the full chain.
- * - Overflow scrolls horizontally with the scrollbar hidden so long final
- *   crumbs never wrap.
- */
+/** Horizontal trail of ancestor links. Long chains collapse middle items on mobile. */
 export function Breadcrumb({
   items,
   linkAs,
@@ -68,10 +58,10 @@ export function Breadcrumb({
     <nav
       aria-label="Breadcrumb"
       data-slot="breadcrumb"
-      className={cn("text-copy-13", className)}
+      className={cn("text-body-13", className)}
       {...props}
     >
-      <ol className="flex items-center gap-2 overflow-x-auto whitespace-nowrap text-gray-800 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      <ol className="flex items-center gap-2 overflow-x-auto whitespace-nowrap text-ink-muted [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {items.map((item, idx) => {
           const isLast = idx === items.length - 1;
           const isMiddle = idx > 0 && !isLast;
@@ -98,11 +88,7 @@ export function Breadcrumb({
               <span className={cn(isLast && "truncate")}>{item.name}</span>
             );
 
-          const inlineClass = cn(
-            "inline-flex items-center gap-1",
-            focusRing,
-            "rounded-[var(--radius-4)]",
-          );
+          const inlineClass = "inline-flex items-center gap-1 rounded-[var(--radius-6)]";
 
           const crumb =
             item.href && !isLast ? (
@@ -111,7 +97,7 @@ export function Breadcrumb({
                 aria-label={isHome ? item.name : undefined}
                 className={cn(
                   inlineClass,
-                  "text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:text-gray-1000",
+                  "text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:text-ink",
                 )}
               >
                 {content}
@@ -121,7 +107,7 @@ export function Breadcrumb({
                 aria-current={isLast ? "page" : undefined}
                 className={cn(
                   inlineClass,
-                  isLast && "text-gray-1000 min-w-0",
+                  isLast && "text-ink min-w-0",
                 )}
               >
                 {content}
@@ -153,10 +139,7 @@ export function Breadcrumb({
                     onClick={() => setExpanded(true)}
                     aria-expanded={expanded}
                     aria-label="Show hidden breadcrumbs"
-                    className={cn(
-                      "inline-flex items-center rounded-[var(--radius-4)] px-0.5 text-gray-800 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:text-gray-1000",
-                      focusRing,
-                    )}
+                    className="inline-flex items-center rounded-[var(--radius-6)] px-0.5 text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:text-ink"
                   >
                     <MoreHorizontal className="size-4" aria-hidden />
                   </button>

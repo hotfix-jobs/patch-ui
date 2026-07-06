@@ -124,7 +124,6 @@ class ToastStore {
       duration,
       action: input.action,
     };
-    // Replace if id already present (used by update()); otherwise append.
     const existingIndex = this.toasts.findIndex((t) => t.id === id);
     if (existingIndex >= 0) {
       this.toasts = [
@@ -188,11 +187,11 @@ export const toast: ToastApi = Object.assign(createToastFn("default"), {
 
 const TYPE_ICON: Record<ToastType, React.ReactNode | null> = {
   default: null,
-  success: <CircleCheck className="size-4 text-[var(--success)]" />,
-  error: <CircleAlert className="size-4 text-[var(--error)]" />,
-  warning: <TriangleAlert className="size-4 text-[var(--warning)]" />,
-  info: <Info className="size-4 text-gray-800" />,
-  loading: <Spinner size="sm" className="text-gray-800" />,
+  success: <CircleCheck className="size-4 text-success" />,
+  error: <CircleAlert className="size-4 text-error" />,
+  warning: <TriangleAlert className="size-4 text-warning" />,
+  info: <Info className="size-4 text-ink-muted" />,
+  loading: <Spinner size="sm" className="text-ink-muted" />,
 };
 
 const TYPE_ARIA_LIVE: Record<ToastType, "polite" | "assertive"> = {
@@ -241,8 +240,6 @@ export function Toaster({
   const mounted = useMounted();
   const [isPaused, setIsPaused] = useState(false);
 
-  // Newest at end of array; show most-recent N. For top positions we want
-  // newest visually at the top; for bottom positions, newest at the bottom.
   const visible = useMemo(() => {
     const slice = toasts.slice(-visibleToasts);
     return isTopPosition(position) ? slice.reverse() : slice;
@@ -304,13 +301,9 @@ function ToastItem({
   const topPos = isTopPosition(position);
   const enterY = topPos ? -16 : 16;
 
-  // Stacking: only the front toast is fully visible; behind toasts scale
-  // down and lose opacity. stackIndex 0 is frontmost (visible).
   const isFront = stackIndex === 0;
   const stackScale = Math.max(0, 1 - stackIndex * 0.05);
   const stackOpacity = stackIndex === 0 ? 1 : Math.max(0, 1 - stackIndex * 0.3);
-  // Peek the stack by translating behind toasts slightly toward the viewport
-  // edge (visually layering).
   const stackOffset = stackIndex * 6 * (topPos ? 1 : -1);
 
   const variants: Variants = {
@@ -329,7 +322,6 @@ function ToastItem({
       : { opacity: 0, y: enterY, scale: 0.96 },
   };
 
-  // Auto-dismiss timer with pause-on-hover. Resumes from remaining time.
   const remainingRef = useRef(t.duration);
   const startedAtRef = useRef<number>(0);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -347,8 +339,7 @@ function ToastItem({
   }, [clear, t.id]);
 
   useEffect(() => {
-    // Only the frontmost toast counts down: toasts behind in the stack
-    // are visually hidden anyway and would dismiss out of order.
+    // Only the frontmost toast counts down so hidden toasts don't dismiss out of order.
     if (!isFront) return;
     if (!Number.isFinite(t.duration)) return;
 
@@ -398,8 +389,8 @@ function ToastItem({
       className={cn(
         "pointer-events-auto relative w-full select-none",
         "rounded-[var(--radius-12)]",
-        "bg-background-200 text-gray-1000",
-        "border border-gray-alpha-400 shadow-modal",
+        "bg-surface-elevated text-ink",
+        "border border-hairline shadow-modal",
         "px-3 py-3 pe-10",
         "flex items-start gap-2.5",
       )}
@@ -412,14 +403,14 @@ function ToastItem({
       )}
       <div className="min-w-0 flex-1">
         <div
-          className="text-heading-14 leading-tight text-gray-1000"
+          className="text-button-14 leading-tight text-ink"
           data-slot="toast-title"
         >
           {t.title}
         </div>
         {t.description != null && (
           <div
-            className="mt-0.5 text-label-12 leading-snug text-gray-800"
+            className="mt-0.5 text-caption-12 leading-snug text-ink-muted"
             data-slot="toast-description"
           >
             {t.description}
@@ -434,11 +425,11 @@ function ToastItem({
             }}
             className={cn(
               "mt-2 inline-flex items-center justify-center",
-              "rounded-[var(--radius-6)] border border-gray-alpha-400",
-              "bg-transparent px-2.5 py-1",
-              "text-button-14 text-gray-1000",
+              "rounded-[var(--radius-6)] border border-hairline",
+              "bg-surface-elevated px-2.5 py-1",
+              "text-button-14 text-ink",
               "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-              "hover:bg-gray-alpha-100",
+              "hover:bg-surface-elevated-hover",
               focusRing,
             )}
             data-slot="toast-action"
@@ -454,14 +445,14 @@ function ToastItem({
         data-slot="toast-close"
         className={cn(
           "absolute top-1/2 -translate-y-1/2 end-2",
-          "flex h-7 w-7 items-center justify-center",
-          "rounded-[var(--radius-6)] text-gray-800",
+          "flex size-7 items-center justify-center",
+          "rounded-full text-ink-muted",
           "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          "hover:bg-gray-alpha-200 hover:text-gray-1000",
+          "hover:bg-surface-2 hover:text-ink",
           focusRing,
         )}
       >
-        <X className="size-3" strokeWidth={2.5} />
+        <X className="size-3.5" aria-hidden />
       </button>
     </motion.div>
   );

@@ -2,26 +2,20 @@
 
 import type * as React from "react";
 import { useCallback } from "react";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { Input, type InputProps } from "./input";
-import { Kbd } from "./kbd";
 
-/**
- * SearchInput: a scoped search field aligned with Geist. Renders a
- * magnifying-glass prefix, a clickable Esc-hint Kbd (when the value is
- * non-empty), and clears the input on Escape or click.
- */
+/** SearchInput: search field with prefix icon and trailing clear button. */
 export type SearchInputProps = Omit<
   InputProps,
-  "prefix" | "prefixStyling" | "suffix" | "suffixStyling" | "type"
+  "prefix" | "suffix" | "type"
 > & {
-  /** Hide the Esc hint chip even when a value is present. */
-  hideEscHint?: boolean;
+  /** Hide the clear button even when a value is present. */
+  hideClear?: boolean;
 };
 
 export function SearchInput({
-  hideEscHint,
-  onKeyDown,
+  hideClear,
   onChange,
   value,
   placeholder = "Search",
@@ -41,30 +35,28 @@ export function SearchInput({
     }
   }, [onChange]);
 
-  const handleKeyDown = useCallback(
-    (e: Parameters<NonNullable<typeof onKeyDown>>[0]) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        handleClear();
-      }
-      onKeyDown?.(e);
-    },
-    [handleClear, onKeyDown],
-  );
-
-  const showEscHint = hasValue && !hideEscHint;
+  const showClear = hasValue && !hideClear;
 
   return (
     <Input
       type="search"
       value={value}
       onChange={onChange}
-      onKeyDown={handleKeyDown}
       placeholder={placeholder}
       prefix={<Search />}
-      prefixStyling={false}
-      suffix={showEscHint ? <Kbd size="sm" onClick={handleClear} aria-label="Clear search">Esc</Kbd> : undefined}
-      suffixStyling={false}
+      suffix={
+        showClear ? (
+          <button
+            type="button"
+            onClick={handleClear}
+            aria-label="Clear search"
+            className="inline-flex items-center justify-center rounded-[var(--radius-6)] text-ink-muted hover:text-ink outline-none focus-visible:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]"
+            data-slot="search-input-clear"
+          >
+            <X className="size-3.5" />
+          </button>
+        ) : undefined
+      }
       {...props}
     />
   );
