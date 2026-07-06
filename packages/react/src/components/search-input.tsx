@@ -3,42 +3,19 @@
 import type * as React from "react";
 import { useCallback } from "react";
 import { Input, type InputProps } from "./input";
-import { Kbd } from "./kbd";
 
-/**
- * SearchInput: a scoped search field aligned with Geist. Renders a
- * magnifying-glass prefix, a clickable Esc-hint Kbd (when the value is
- * non-empty), and clears the input on Escape or click.
- */
+import { MagnifyingGlass, X } from "@phosphor-icons/react/dist/ssr";
+/** SearchInput: search field with prefix icon and trailing clear button. */
 export type SearchInputProps = Omit<
   InputProps,
-  "prefix" | "prefixStyling" | "suffix" | "suffixStyling" | "type"
+  "prefix" | "suffix" | "type"
 > & {
-  /** Hide the Esc hint chip even when a value is present. */
-  hideEscHint?: boolean;
+  /** Hide the clear button even when a value is present. */
+  hideClear?: boolean;
 };
 
-function SearchIcon({ className }: { className?: string }): React.ReactElement {
-  return (
-    <svg
-      aria-hidden="true"
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="7" />
-      <path d="m21 21-4.35-4.35" />
-    </svg>
-  );
-}
-
 export function SearchInput({
-  hideEscHint,
-  onKeyDown,
+  hideClear,
   onChange,
   value,
   placeholder = "Search",
@@ -58,30 +35,28 @@ export function SearchInput({
     }
   }, [onChange]);
 
-  const handleKeyDown = useCallback(
-    (e: Parameters<NonNullable<typeof onKeyDown>>[0]) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        handleClear();
-      }
-      onKeyDown?.(e);
-    },
-    [handleClear, onKeyDown],
-  );
-
-  const showEscHint = hasValue && !hideEscHint;
+  const showClear = hasValue && !hideClear;
 
   return (
     <Input
       type="search"
       value={value}
       onChange={onChange}
-      onKeyDown={handleKeyDown}
       placeholder={placeholder}
-      prefix={<SearchIcon />}
-      prefixStyling={false}
-      suffix={showEscHint ? <Kbd size="sm" onClick={handleClear} aria-label="Clear search">Esc</Kbd> : undefined}
-      suffixStyling={false}
+      prefix={<MagnifyingGlass />}
+      suffix={
+        showClear ? (
+          <button
+            type="button"
+            onClick={handleClear}
+            aria-label="Clear search"
+            className="inline-flex items-center justify-center rounded-[var(--radius-6)] text-ink-muted hover:text-ink outline-none focus-visible:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]"
+            data-slot="search-input-clear"
+          >
+            <X className="size-3.5" />
+          </button>
+        ) : undefined
+      }
       {...props}
     />
   );

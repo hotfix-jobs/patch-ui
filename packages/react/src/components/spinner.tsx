@@ -25,23 +25,6 @@ const ringWrapper = cva(
 
 type SpinnerSize = NonNullable<VariantProps<typeof ringWrapper>["size"]>;
 
-/**
- * Border thickness scales with diameter (~1/8 of the size). Tailwind's
- * border-N picks up here for standard values, otherwise we drop to an
- * arbitrary border-[Npx].
- */
-const ringBySize: Record<SpinnerSize, string> = {
-  xs: "border-2",
-  sm: "border-2",
-  md: "border-[3px]",
-  lg: "border-[3px]",
-  xl: "border-4",
-  "2xl": "border-[5px]",
-  "3xl": "border-[6px]",
-  "4xl": "border-[8px]",
-};
-
-/** Dot diameter (in px) per size preset for `variant="dots"`. */
 const dotSizeBySize: Record<SpinnerSize, number> = {
   xs: 3,
   sm: 4,
@@ -56,15 +39,10 @@ const dotSizeBySize: Record<SpinnerSize, number> = {
 export interface SpinnerProps
   extends React.ComponentProps<"span">,
     VariantProps<typeof ringWrapper> {
-  /** Accessible label. Use for context: "Saving", "Uploading 3 of 12". */
+  /** Accessible label. */
   label?: string;
-  /**
-   * Visual style. `ring` is a spinning circle (icon-sized waits, buttons);
-   * `dots` is three pulsing dots for inline copy ("Saving…", "Deploying…").
-   * Default `ring`.
-   */
   variant?: "ring" | "dots";
-  /** Custom dot diameter in px, overriding the size preset. Only affects `variant="dots"`. */
+  /** Custom dot diameter in px (overrides size preset for `variant="dots"`). */
   dotSize?: number;
 }
 
@@ -111,6 +89,21 @@ export function Spinner({
     );
   }
 
+  const strokePx: Record<SpinnerSize, number> = {
+    xs: 2.5,
+    sm: 2.5,
+    md: 2.75,
+    lg: 3,
+    xl: 3,
+    "2xl": 3.5,
+    "3xl": 4,
+    "4xl": 5,
+  };
+  const stroke = strokePx[resolvedSize];
+  const radius = (24 - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const arc = circumference * 0.28;
+
   return (
     <span
       role="status"
@@ -120,14 +113,33 @@ export function Spinner({
       className={cn(ringWrapper({ size }), className)}
       {...props}
     >
-      <span
+      <svg
         aria-hidden="true"
+        viewBox="0 0 24 24"
         className={cn(
-          "size-full rounded-full border-solid border-current border-e-transparent",
-          "animate-spin motion-reduce:animate-[spin_1.5s_linear_infinite]",
-          ringBySize[resolvedSize],
+          "size-full animate-spin motion-reduce:animate-[spin_1.5s_linear_infinite]",
         )}
-      />
+      >
+        <circle
+          cx="12"
+          cy="12"
+          r={radius}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={stroke}
+          className="opacity-20"
+        />
+        <circle
+          cx="12"
+          cy="12"
+          r={radius}
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={`${arc} ${circumference}`}
+        />
+      </svg>
       <span className="sr-only">{label}</span>
     </span>
   );

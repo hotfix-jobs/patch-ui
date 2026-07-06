@@ -40,7 +40,6 @@ const IGNORED_NPM = new Set(["react", "react-dom", "react/jsx-runtime"]);
 function mapInternalUi(spec) {
   if (spec === "../utils") return { alias: "@/lib/utils", dep: "utils" };
   if (spec === "../recipes") return { alias: "@/lib/recipes", dep: "recipes" };
-  if (spec === "../internal-icons") return { alias: "@/lib/internal-icons", dep: "internal-icons" };
   const m = spec.match(/^\.\/([a-z0-9-]+)$/); // sibling ui component
   if (m) return { alias: `@/components/ui/${m[1]}`, dep: m[1] };
   return null;
@@ -57,7 +56,6 @@ function mapInternalUi(spec) {
 function mapInternalBlock(spec, blockName) {
   if (spec === "../../utils") return { alias: "@/lib/utils", dep: "utils" };
   if (spec === "../../recipes") return { alias: "@/lib/recipes", dep: "recipes" };
-  if (spec === "../../internal-icons") return { alias: "@/lib/internal-icons", dep: "internal-icons" };
   const ui = spec.match(/^\.\.\/\.\.\/components\/([a-z0-9-]+)$/);
   if (ui) return { alias: `@/components/ui/${ui[1]}`, dep: ui[1] };
   const sib = spec.match(/^\.\/([a-z0-9-]+)$/);
@@ -116,7 +114,6 @@ const items = [];
 for (const [file, name] of [
   ["utils.ts", "utils"],
   ["recipes.ts", "recipes"],
-  ["internal-icons.tsx", "internal-icons"],
 ]) {
   const { content, dependencies, registryDependencies } = process(
     readFileSync(join(SRC, file), "utf8"),
@@ -234,7 +231,7 @@ if (existsSync(BLOCKS)) {
 // Installs every UI component and block in one command:
 //   npx shadcn add @patchui/all
 // The CLI walks registryDependencies transitively, so consumers get every
-// component plus utils, recipes, internal-icons, and tokens automatically.
+// component plus utils, recipes, and tokens automatically.
 const allRegDeps = items
   .filter((i) => i.type === "registry:ui" || i.type === "registry:block")
   .map((i) => i.name)

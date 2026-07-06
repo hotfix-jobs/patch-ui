@@ -1,16 +1,16 @@
 "use client";
 import { useState } from "react";
 import { SectionLabel, Toggle } from "@patchui/react";
-import { Bold, Italic, Pin, Star, Underline } from "lucide-react";
-
+import { PushPin, Star, TextB, TextItalic, TextUnderline } from "@phosphor-icons/react/dist/ssr";
 export function ToggleDemo() {
   const [starred, setStarred] = useState(false);
   const [pinned, setPinned] = useState(true);
 
   return (
     <div className="flex flex-col gap-6">
-      <Stack label="Single press-to-toggle">
+      <Stack label="Icon-only press-to-toggle (circle)">
         <Toggle
+          shape="circle"
           pressed={starred}
           onPressedChange={setStarred}
           aria-label="Star"
@@ -18,23 +18,24 @@ export function ToggleDemo() {
           <Star className={starred ? "fill-current" : ""} />
         </Toggle>
         <Toggle
+          shape="circle"
           pressed={pinned}
           onPressedChange={setPinned}
           aria-label="Pin"
         >
-          <Pin className={pinned ? "fill-current" : ""} />
+          <PushPin className={pinned ? "fill-current" : ""} />
         </Toggle>
       </Stack>
 
       <Stack label="Secondary variant (bordered)">
         <Toggle variant="secondary" defaultPressed aria-label="Bold">
-          <Bold />
+          <TextB />
         </Toggle>
         <Toggle variant="secondary" aria-label="Italic">
-          <Italic />
+          <TextItalic />
         </Toggle>
         <Toggle variant="secondary" aria-label="Underline">
-          <Underline />
+          <TextUnderline />
         </Toggle>
       </Stack>
 
@@ -44,15 +45,25 @@ export function ToggleDemo() {
         <Toggle variant="secondary">Beta</Toggle>
       </Stack>
 
+      <Stack label="Shapes">
+        <Toggle defaultPressed shape="square" aria-label="Square shape">
+          <TextB />
+        </Toggle>
+        <Toggle defaultPressed shape="pill">Pill</Toggle>
+        <Toggle defaultPressed shape="circle" aria-label="Circle shape">
+          <Star />
+        </Toggle>
+      </Stack>
+
       <Stack label="Sizes">
         <Toggle defaultPressed size="sm" aria-label="sm">
-          <Bold />
+          <TextB />
         </Toggle>
         <Toggle defaultPressed size="md" aria-label="md">
-          <Bold />
+          <TextB />
         </Toggle>
         <Toggle defaultPressed size="lg" aria-label="lg">
-          <Bold />
+          <TextB />
         </Toggle>
       </Stack>
     </div>

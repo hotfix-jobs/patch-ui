@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "collapsible",
+  "title": "Collapsible",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "https://ui.hotfix.jobs/r/recipes.json",
+    "https://ui.hotfix.jobs/r/tokens.json",
+    "https://ui.hotfix.jobs/r/utils.json"
+  ],
+  "files": [
+    {
+      "path": "registry/components/ui/collapsible.tsx",
+      "content": "\"use client\";\n\nimport { Collapsible as CollapsiblePrimitive } from \"@base-ui/react/collapsible\";\nimport type * as React from \"react\";\nimport { cn } from \"@/lib/utils\";\nimport { focusRing } from \"@/lib/recipes\";\n\n/**\n * Single-section reveal. Use for inline \"Show more\" toggles, filter panels,\n * optional form fields, and any one-off show / hide interaction where the\n * trigger's shape matters more than the group. For a coordinated stack of\n * collapsible sections, reach for `Accordion`.\n *\n *   <Collapsible>\n *     <CollapsibleTrigger render={<Button>Show details</Button>} />\n *     <CollapsibleContent>...</CollapsibleContent>\n *   </Collapsible>\n *\n * The default trigger and content are intentionally neutral: no caret, no\n * padding, no typography opinions. Compose in `render` to plug in a Button,\n * a link-style span, or any other affordance.\n */\n\nexport type CollapsibleProps = React.ComponentProps<\n  typeof CollapsiblePrimitive.Root\n>;\n\nexport function Collapsible({\n  className,\n  ...props\n}: CollapsibleProps): React.ReactElement {\n  return (\n    <CollapsiblePrimitive.Root\n      data-slot=\"collapsible\"\n      className={className}\n      {...props}\n    />\n  );\n}\n\nexport type CollapsibleTriggerProps = React.ComponentProps<\n  typeof CollapsiblePrimitive.Trigger\n>;\n\nexport function CollapsibleTrigger({\n  className,\n  ...props\n}: CollapsibleTriggerProps): React.ReactElement {\n  return (\n    <CollapsiblePrimitive.Trigger\n      data-slot=\"collapsible-trigger\"\n      className={cn(\"cursor-pointer\", focusRing, className)}\n      {...props}\n    />\n  );\n}\n\nexport type CollapsibleContentProps = React.ComponentProps<\n  typeof CollapsiblePrimitive.Panel\n>;\n\nexport function CollapsibleContent({\n  className,\n  ...props\n}: CollapsibleContentProps): React.ReactElement {\n  return (\n    <CollapsiblePrimitive.Panel\n      data-slot=\"collapsible-content\"\n      keepMounted\n      className={cn(\n        \"h-[var(--collapsible-panel-height)] overflow-hidden\",\n        \"transition-[height] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]\",\n        \"data-[starting-style]:h-0 data-[ending-style]:h-0\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { CollapsiblePrimitive };\n",
+      "type": "registry:ui",
+      "target": "components/ui/collapsible.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

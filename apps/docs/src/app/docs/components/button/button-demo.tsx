@@ -2,27 +2,26 @@
 
 import { useState } from "react";
 import { Button } from "@patchui/react";
-import { ArrowRight, ChevronDown, Download, GitBranch, Mail, Plus, Trash2 } from "lucide-react";
-
-const INITIAL_TAGS = ["design", "engineering", "billing"];
+import { ArrowRight, CaretDown, Download, Envelope, Hash, Plus, Trash } from "@phosphor-icons/react/dist/ssr";
+const INITIAL_FILTERS = ["design", "engineering", "billing"];
 
 export function ButtonDemo() {
-  const [tags, setTags] = useState(INITIAL_TAGS);
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Variants</p>
+        <p className="mb-3 text-caption-12 text-ink-muted">Variants</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="primary">Primary</Button>
           <Button variant="secondary">Secondary</Button>
           <Button variant="tertiary">Tertiary</Button>
           <Button variant="warning">Warning</Button>
-          <Button variant="error">Error</Button>
+          <Button variant="destructive">Destructive</Button>
         </div>
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Sizes</p>
+        <p className="mb-3 text-caption-12 text-ink-muted">Sizes</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button size="sm">Small</Button>
           <Button size="md">Medium</Button>
@@ -31,26 +30,25 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Icon Only + Shapes</p>
+        <p className="mb-3 text-caption-12 text-ink-muted">Icon Only + Shapes</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Button aria-label="Add" shape="square" size="tiny" icon={<Plus className="h-3 w-3" />} />
-          <Button aria-label="Add" shape="square" size="sm" icon={<Plus className="h-4 w-4" />} />
-          <Button aria-label="Add" shape="square" icon={<Plus className="h-4 w-4" />} />
-          <Button aria-label="Add" shape="square" size="lg" icon={<Plus className="h-5 w-5" />} />
-          <Button aria-label="Add" shape="circle" size="sm" icon={<Plus className="h-4 w-4" />} />
-          <Button aria-label="Add" shape="circle" icon={<Plus className="h-4 w-4" />} />
-          <Button aria-label="Add" shape="circle" size="lg" icon={<Plus className="h-5 w-5" />} />
+          <Button variant="secondary" aria-label="Add" shape="square" size="sm" icon={<Plus className="h-4 w-4" />} />
+          <Button variant="secondary" aria-label="Add" shape="square" icon={<Plus className="h-4 w-4" />} />
+          <Button variant="secondary" aria-label="Add" shape="square" size="lg" icon={<Plus className="h-5 w-5" />} />
+          <Button variant="secondary" aria-label="Add" shape="circle" size="sm" icon={<Plus className="h-4 w-4" />} />
+          <Button variant="secondary" aria-label="Add" shape="circle" icon={<Plus className="h-4 w-4" />} />
+          <Button variant="secondary" aria-label="Add" shape="circle" size="lg" icon={<Plus className="h-5 w-5" />} />
         </div>
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">With Icons</p>
+        <p className="mb-3 text-caption-12 text-ink-muted">With Icons</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Button icon={<Mail className="h-4 w-4" />}>Send Email</Button>
-          <Button icon={<ChevronDown className="h-4 w-4" />} iconPosition="right">
+          <Button icon={<Envelope className="h-4 w-4" />}>Send Email</Button>
+          <Button icon={<CaretDown className="h-4 w-4" />} iconPosition="right">
             Menu
           </Button>
-          <Button variant="error" icon={<Trash2 className="h-4 w-4" />}>
+          <Button variant="destructive" icon={<Trash className="h-4 w-4" />}>
             Delete
           </Button>
           <Button variant="secondary" icon={<Download className="h-4 w-4" />}>
@@ -60,10 +58,10 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Rounded marketing shape</p>
+        <p className="mb-3 text-caption-12 text-ink-muted">Marketing pill shape</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button
-            shape="rounded"
+            shape="pill"
             shadow
             variant="primary"
             icon={<ArrowRight className="h-4 w-4" />}
@@ -71,36 +69,36 @@ export function ButtonDemo() {
           >
             Start Free Trial
           </Button>
-          <Button shape="rounded" shadow variant="secondary">
+          <Button shape="pill" shadow variant="secondary">
             Learn More
           </Button>
         </div>
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Dismissible pill (repo chip pattern)</p>
+        <p className="mb-3 text-caption-12 text-ink-muted">Dismissible filter chip</p>
         <div className="flex min-h-9 flex-wrap items-center gap-2">
-          {tags.length === 0 ? (
+          {filters.length === 0 ? (
             <Button
               size="sm"
               variant="tertiary"
-              onClick={() => setTags(INITIAL_TAGS)}
+              onClick={() => setFilters(INITIAL_FILTERS)}
             >
               Reset
             </Button>
           ) : (
-            tags.map((t) => (
+            filters.map((f) => (
               <Button
-                key={t}
+                key={f}
                 size="sm"
                 shape="pill"
                 variant="secondary"
-                icon={<GitBranch className="h-4 w-4" />}
-                onClick={() => alert(`Open ${t}`)}
-                onRemove={() => setTags((prev) => prev.filter((x) => x !== t))}
-                removeLabel={`Remove ${t}`}
+                icon={<Hash className="h-4 w-4" />}
+                onClick={() => alert(`Focus ${f} filter`)}
+                onRemove={() => setFilters((prev) => prev.filter((x) => x !== f))}
+                removeLabel={`Remove ${f}`}
               >
-                {t}
+                {f}
               </Button>
             ))
           )}
@@ -108,7 +106,7 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">States</p>
+        <p className="mb-3 text-caption-12 text-ink-muted">States</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button loading>Loading</Button>
           <Button disabled>Disabled</Button>

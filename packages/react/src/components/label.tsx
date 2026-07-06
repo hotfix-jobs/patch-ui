@@ -12,7 +12,9 @@ export function Label({
 }: useRender.ComponentProps<"label">): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "inline-flex items-center gap-2 text-label-14 text-gray-1000",
+      // Same recipe as FieldLabel so a standalone <Label> and a
+      // Field-compound label read at identical weight (button-14 = 500).
+      "inline-flex items-center gap-2 text-button-14 text-ink",
       className,
     ),
     "data-slot": "label",

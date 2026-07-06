@@ -1,6 +1,6 @@
 # Patch UI
 
-A React component library built on [Base UI](https://base-ui.com/) primitives, Tailwind CSS v4, and a token system inspired by [Vercel Geist](https://vercel.com/geist). Crisp, restrained, accessible.
+A React component library built on [Base UI](https://base-ui.com/) primitives and Tailwind CSS v4, with a crisp-minimal design language: near-black flat canvas, a four-step surface ladder plus a `surface-elevated` popup rung, softer hairline borders, monochrome primary that consumers override for brand.
 
 Patch UI is **copy-in**: you add a component and its source lands in your own repo, fully yours to edit. There is no npm package to install, no version to bump, no Tailwind purge config to maintain.
 
@@ -43,7 +43,7 @@ Full guide: **[ui.hotfix.jobs/docs/getting-started](https://ui.hotfix.jobs/docs/
 
 ## What is inside
 
-**Primitives:** Accordion, Avatar, Badge, Breadcrumb, Button, Calendar, Card, Checkbox, Combobox, Command, EmptyState, Field, Form, Grid, Input, Kbd, Label, ListRow, LoadMore, Menu, MiddleTruncate, Modal, NavigationMenu, Pagination, Progress, Radio, Scroller, Section, SectionLabel, SegmentedToggle, Select, Separator, Sheet, Skeleton, Slider, Spinner, Switch, Table, Tabs, Textarea, ThemeToggle, TimeAgo, Toast, Toggle, Tooltip.
+**Primitives:** Accordion, Avatar, Badge, Breadcrumb, Button, Calendar, Card, Checkbox, Combobox, Command, EmptyState, Field, Form, Input, Label, Menu, Modal, NavigationMenu, Pagination, Progress, Radio, Scroller, SearchInput, Section, SegmentedToggle, Select, Separator, Sheet, Sidebar, Skeleton, Slider, Spinner, Switch, Table, Tabs, Textarea, ThemeToggle, TimeAgo, Toast, Toggle, Tooltip.
 
 **Blocks:** AppHeader, Dropzone.
 
@@ -56,10 +56,6 @@ NPM workspaces monorepo:
 - `packages/react`: the component source (`@patchui/react`, private; backs the registry and powers the docs demos)
 - `apps/docs`: the [Next.js documentation site](https://ui.hotfix.jobs)
 - `registry.json` + `scripts/build-registry-source.mjs`: the registry generator; `npm run registry` builds `apps/docs/public/r/*.json`
-
-## Credits
-
-Design system inspired by Vercel Geist. Built on Base UI, Floating UI, Motion, Tailwind CSS v4, class-variance-authority, clsx, tailwind-merge, and Lucide. Distribution via shadcn/ui's registry format. See [ui.hotfix.jobs/docs/credits](https://ui.hotfix.jobs/docs/credits) for the full attribution.
 
 ## License
 

@@ -1,8 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarGroup, AvatarImage , SectionLabel } from "@patchui/react";
-import { ArrowDownCircle, CheckCircle, Clock } from "lucide-react";
-
+import { ArrowCircleDown, CheckCircle, Clock } from "@phosphor-icons/react/dist/ssr";
 // GitHub avatars: public, always available.
 const gh = (u: string) => `https://github.com/${u}.png?size=200`;
 
@@ -18,7 +17,6 @@ const EXTENDED = [
   { image: gh("wycats"), letter: "YK", alt: "Yehuda" },
   { image: gh("ezmobius"), letter: "EM", alt: "Ezra" },
 ];
-
 
 export function AvatarDemo() {
   return (
@@ -93,7 +91,7 @@ export function AvatarDemo() {
           <Avatar
             placeholder
             size={40}
-            icon={<ArrowDownCircle className="size-3" />}
+            icon={<ArrowCircleDown className="size-3" />}
           />
           <Avatar
             placeholder

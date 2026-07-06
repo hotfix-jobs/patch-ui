@@ -5,7 +5,7 @@ export const metadata = { title: "AppHeader" };
 
 # AppHeader
 
-An application-level header block: a full-width row with generous gutter padding, brand, primary navigation, and right-aligned actions. Composed from `AppHeaderBrand`, `AppHeaderNav`, `AppHeaderNavItem`, and `AppHeaderRight`. This is a **Block** - an opinionated layout assembled from primitives, rather than a low-level primitive itself.
+A complete site-header block. Renders brand slot + primary nav + right-aligned actions on desktop, and below the `md` breakpoint automatically collapses the nav into a morphing menu trigger that opens a full-viewport panel with the same nav items rendered as large muted-to-ink links. Open/close state, focus, escape-to-close, and scroll lock are owned by the block — consumers write the same declarative markup and get responsive behavior for free.
 
 <Install name="app-header" />
 
@@ -21,23 +21,46 @@ import {
   AppHeaderBrand,
   AppHeaderNav,
   AppHeaderNavItem,
+  AppHeaderNavSection,
   AppHeaderRight,
   Button,
 } from "@patchui/react";
 
 <AppHeader>
   <AppHeaderBrand render={<a href="/" />}>Patch</AppHeaderBrand>
+
   <AppHeaderNav>
-    <AppHeaderNavItem href="/dashboard" active>
-      Dashboard
-    </AppHeaderNavItem>
-    <AppHeaderNavItem href="/projects">Projects</AppHeaderNavItem>
+    <AppHeaderNavItem href="/product">Product</AppHeaderNavItem>
+    <AppHeaderNavItem href="/pricing">Pricing</AppHeaderNavItem>
+
+    {/* Sections render as titled groups inside the mobile panel.
+        On desktop the items still show inline (title is dropped). */}
+    <AppHeaderNavSection title="Resources">
+      <AppHeaderNavItem href="/blog">Blog</AppHeaderNavItem>
+      <AppHeaderNavItem href="/docs">Docs</AppHeaderNavItem>
+    </AppHeaderNavSection>
   </AppHeaderNav>
+
   <AppHeaderRight>
-    <Button size="sm">Get started</Button>
+    <Button variant="tertiary" size="sm" shape="pill">Sign in</Button>
+    <Button variant="primary" size="sm" shape="pill">Get started</Button>
   </AppHeaderRight>
 </AppHeader>
 ```
+
+## Mobile behavior
+
+Below `md`:
+- `AppHeaderNav` is hidden.
+- A **morphing hamburger trigger** slides into place at the end of `AppHeaderRight` (patch-ui provides it — you don't render one yourself).
+- Tapping the trigger opens a **full-viewport panel** that includes the same brand + right actions at the top (so the panel reads as an extended header) plus every nav item rendered as a large muted-to-ink link. Tapping a link closes the panel and lets navigation proceed.
+
+## Styling notes
+
+- **Desktop nav items** default to `text-ink-muted`. On hover they lift to `text-ink` and pick up a subtle `bg-surface-1` pill fill. The `active` prop lands the item at full `text-ink` + `font-medium`: no pill fill so "current page" reads distinctly from "hovered link."
+- **Marketing headers**: reach for `shape="pill"` on Buttons in the right slot. `Button shape="pill"` gives the fully-rounded chip look for "Log in" / "Sign up" CTAs.
+- **Sticky headers**: pass `sticky` to pin the header. Panel `z-50` clears sticky content beneath it.
+- **Escape hatch**: if you need a custom mobile pattern (drawer instead of full-viewport panel), skip this block and compose the primitives (`Sheet` + your own trigger).
 
 ## Props
 
@@ -49,7 +72,7 @@ import {
       name: "bordered",
       type: "boolean",
       default: "true",
-      description: "Renders a hairline bottom border. Set false for borderless headers (e.g. laid over a hero image).",
+      description: "Renders a hairline bottom border. Set false for borderless headers laid over a hero image.",
     },
     {
       name: "sticky",
@@ -74,7 +97,7 @@ import {
       name: "active",
       type: "boolean",
       default: "false",
-      description: "Marks the item as the current page - applies full-strength text color and a data-active attribute.",
+      description: "Marks the item as the current page — text-ink at full weight, no pill fill on hover so it reads distinct from a hovered inactive link.",
     },
     {
       name: "href",
@@ -91,9 +114,28 @@ import {
   ]}
 />
 
+### AppHeaderNavSection
+
+<PropsTable
+  props={[
+    {
+      name: "title",
+      type: "ReactNode",
+      default: "-",
+      description: "Section heading — only rendered inside the mobile panel, above the section's items. On desktop the section is transparent (children render inline in the nav row).",
+    },
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "AppHeaderNavItem elements.",
+    },
+  ]}
+/>
+
 <Callout title="Notes">
-- **Layout defaults:** Full-width (no max-width constraint), with responsive gutter padding `px-6 md:px-12 lg:px-16`. Vertical padding `py-3.5` gives ~60px header height.
-- **Composition:** `AppHeaderRight` pushes its content to the far end with `ml-auto`, so it sits opposite the brand/nav.
+- **Composition:** Extract logic runs on `AppHeader`'s children — put `AppHeaderBrand`, `AppHeaderNav`, and `AppHeaderRight` as direct children (order-independent) and the block wires desktop + mobile automatically.
+- **Same tree, two layouts:** The nav children you write once serve both the desktop row and the mobile panel. No duplication.
 - **Routing:** Use the `render` prop on `AppHeaderBrand` and `AppHeaderNavItem` to integrate your router's link component.
-- **Block:** AppHeader is an opinionated layout. For full control, compose your own header from the underlying primitives.
+- **Block, not primitive:** For full control (custom mobile pattern, custom collapsing rules, drawers), compose your own header from the underlying primitives.
 </Callout>

@@ -5,7 +5,7 @@ const BASE = "https://ui.hotfix.jobs";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const paths = new Set<string>(["/"]);
+  const paths = new Set<string>(["/docs"]);
   for (const group of navigation) {
     for (const item of group.items) paths.add(item.href);
   }

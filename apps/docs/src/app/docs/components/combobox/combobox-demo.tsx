@@ -2,14 +2,17 @@
 
 import { useState, useMemo } from "react";
 import {
+  Badge,
   Combobox,
   ComboboxInput,
   ComboboxPopup,
   ComboboxItem,
+  ComboboxCheckboxItem,
+  ComboboxDivider,
+  ComboboxSection,
   SectionLabel,
 } from "@patchui/react";
-import { Info, Search } from "lucide-react";
-
+import { Info, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
 const FRAMEWORKS = [
   "React",
   "Vue",
@@ -25,11 +28,13 @@ const FRAMEWORKS = [
 
 const RECENT = ["React", "Vue"];
 
-
 export function ComboboxDemo() {
   const [query, setQuery] = useState("");
   const [picked, setPicked] = useState<string | null>(null);
   const [query2, setQuery2] = useState("");
+
+  const [multiQuery, setMultiQuery] = useState("");
+  const [selected, setSelected] = useState<string[]>(["React"]);
 
   const needle = query.trim().toLowerCase();
   const matches = useMemo(
@@ -43,18 +48,23 @@ export function ComboboxDemo() {
     [needle2],
   );
 
+  const multiNeedle = multiQuery.trim().toLowerCase();
+  const multiMatches = useMemo(
+    () => FRAMEWORKS.filter((f) => f.toLowerCase().includes(multiNeedle)),
+    [multiNeedle],
+  );
+  const toggle = (f: string) =>
+    setSelected((prev) => (prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]));
+
   return (
     <div className="flex flex-col gap-8">
       <div className="space-y-3">
         <SectionLabel>Basic: with search icon, chevron, and clearable</SectionLabel>
         <div className="max-w-sm">
-          <Combobox>
+          <Combobox value={query} onValueChange={setQuery} placeholder="Search…">
             <ComboboxInput
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              prefix={<Search />}
-              prefixStyling={false}
-              placeholder="Search…"
+              prefix={<MagnifyingGlass />}
+
               clearable
               onClear={() => {
                 setQuery("");
@@ -63,7 +73,7 @@ export function ComboboxDemo() {
             />
             <ComboboxPopup>
               {matches.length === 0 ? (
-                <div className="px-3 py-6 text-center text-label-13 text-gray-800">
+                <div className="px-3 py-6 text-center text-body-13 text-ink-muted">
                   No matches.
                 </div>
               ) : (
@@ -84,7 +94,7 @@ export function ComboboxDemo() {
             </ComboboxPopup>
           </Combobox>
           {picked && (
-            <p className="mt-2 text-label-12 text-gray-800">Selected: {picked}</p>
+            <p className="mt-2 text-caption-12 text-ink-muted">Selected: {picked}</p>
           )}
         </div>
       </div>
@@ -92,42 +102,44 @@ export function ComboboxDemo() {
       <div className="space-y-3">
         <SectionLabel>Custom content (recents section, banner)</SectionLabel>
         <div className="max-w-sm">
-          <Combobox>
+          <Combobox
+            value={query2}
+            onValueChange={setQuery2}
+            placeholder="Search frameworks…"
+          >
             <ComboboxInput
-              value={query2}
-              onChange={(e) => setQuery2(e.target.value)}
-              prefix={<Search />}
-              prefixStyling={false}
-              placeholder="Search frameworks…"
+              prefix={<MagnifyingGlass />}
+
               clearable
               onClear={() => setQuery2("")}
             />
             <ComboboxPopup>
-              {/* Banner spans edge-to-edge: no padding needed on the popup body */}
-              <div className="flex items-center gap-1.5 border-b border-gray-alpha-400 px-3 py-2 text-label-12 text-gray-800">
-                <Info className="h-3.5 w-3.5 shrink-0" aria-hidden />
+              {/* Banner: matches item padding so text lines up with rows below */}
+              <div className="flex items-center gap-1.5 px-2.5 py-1.5 text-caption-12 text-ink-muted md:px-2">
+                <Info className="size-3.5 shrink-0" aria-hidden />
                 <span>Recents shown first</span>
               </div>
+              <ComboboxDivider />
 
               {needle2 === "" && RECENT.length > 0 && (
-                <div className="border-b border-gray-alpha-400 py-1">
-                  <div className="px-3 pb-1 pt-1 text-button-12 text-gray-800">
-                    Recent
-                  </div>
-                  {RECENT.map((r) => (
-                    <ComboboxItem
-                      key={`recent-${r}`}
-                      onSelect={() => setQuery2(r)}
-                    >
-                      {r}
-                    </ComboboxItem>
-                  ))}
-                </div>
+                <>
+                  <ComboboxSection title="Recent">
+                    {RECENT.map((r) => (
+                      <ComboboxItem
+                        key={`recent-${r}`}
+                        onSelect={() => setQuery2(r)}
+                      >
+                        {r}
+                      </ComboboxItem>
+                    ))}
+                  </ComboboxSection>
+                  <ComboboxDivider />
+                </>
               )}
 
-              <div className="py-1">
+              <ComboboxSection title="All frameworks">
                 {matches2.length === 0 ? (
-                  <div className="px-3 py-4 text-center text-label-12 text-gray-800">
+                  <div className="px-2.5 py-4 text-center text-caption-12 text-ink-muted md:px-2">
                     No matches.
                   </div>
                 ) : (
@@ -137,9 +149,48 @@ export function ComboboxDemo() {
                     </ComboboxItem>
                   ))
                 )}
-              </div>
+              </ComboboxSection>
             </ComboboxPopup>
           </Combobox>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Multi-select filter</SectionLabel>
+        <div className="max-w-sm">
+          <Combobox
+            value={multiQuery}
+            onValueChange={setMultiQuery}
+            placeholder="Filter by framework…"
+          >
+            <ComboboxInput prefix={<MagnifyingGlass />} />
+            <ComboboxPopup>
+              {multiMatches.length === 0 ? (
+                <div className="px-2.5 py-4 text-center text-caption-12 text-ink-muted md:px-2">
+                  No matches.
+                </div>
+              ) : (
+                multiMatches.map((f) => (
+                  <ComboboxCheckboxItem
+                    key={f}
+                    checked={selected.includes(f)}
+                    onCheckedChange={() => toggle(f)}
+                  >
+                    {f}
+                  </ComboboxCheckboxItem>
+                ))
+              )}
+            </ComboboxPopup>
+          </Combobox>
+          {selected.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {selected.map((s) => (
+                <Badge key={s} variant="default" contrast="low">
+                  {s}
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

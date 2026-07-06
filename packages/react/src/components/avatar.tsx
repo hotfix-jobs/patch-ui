@@ -6,17 +6,20 @@ import { Children, cloneElement, isValidElement } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 
+import { User } from "@phosphor-icons/react/dist/ssr";
 export const avatarVariants = cva(
-  "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-gray-1000 font-medium text-background-100",
+  // Compound text-button-* classes below carry the 500 weight for
+  // monogram initials; no font-* utility here so the recipe wins.
+  "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-ink text-canvas",
   {
     defaultVariants: { size: "md", shape: "circle" },
     variants: {
       size: {
-        xs: "size-6 text-label-12",
-        sm: "size-7 text-label-12",
-        md: "size-9 text-label-13",
-        lg: "size-11 text-copy-14",
-        xl: "size-14 text-copy-18",
+        xs: "size-6 text-button-12",
+        sm: "size-7 text-button-12",
+        md: "size-9 text-button-14",
+        lg: "size-11 text-button-14",
+        xl: "size-14 text-button-16",
       },
       shape: {
         circle: "rounded-full",
@@ -45,13 +48,13 @@ function toPx(size: AvatarSize): number {
   return typeof size === "number" ? size : sizePx[size];
 }
 
-/** Text size (Tailwind class) that reads well inside an avatar of a given pixel diameter. */
+/** Text size (Tailwind class) that reads well inside an avatar of a given
+ *  pixel diameter. Compound text-button-* classes bundle the 500 weight
+ *  used for monogram initials, so no separate font-* utility is needed. */
 function textClassForPx(px: number): string {
-  if (px <= 24) return "text-label-12";
-  if (px <= 32) return "text-label-12";
-  if (px <= 40) return "text-label-13";
-  if (px <= 48) return "text-copy-14";
-  return "text-copy-18";
+  if (px <= 28) return "text-button-12";
+  if (px <= 44) return "text-button-14";
+  return "text-button-16";
 }
 
 export interface AvatarProps
@@ -90,19 +93,19 @@ export function Avatar({
   const inlineSize = numericSize ? { width: size, height: size } : undefined;
 
   const fillClass = placeholder
-    ? "bg-background-200 text-gray-800"
-    : "bg-gray-1000 text-background-100";
+    ? "bg-surface-1 text-ink-muted"
+    : "bg-ink text-canvas";
 
   const baseClass = numericSize
     ? cn(
-        "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden font-medium",
+        "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden",
         fillClass,
         shape === "square" ? "rounded-[var(--radius-6)]" : "rounded-full",
         textClassForPx(size),
       )
     : cn(
         avatarVariants({ size, shape }),
-        placeholder && "!bg-background-200 !text-gray-800",
+        placeholder && "!bg-surface-1 !text-ink-muted",
       );
 
   // Main avatar body: children > letter > placeholder icon.
@@ -136,8 +139,8 @@ export function Avatar({
           aria-hidden="true"
           className={cn(
             "absolute -bottom-0.5 -left-0.5 inline-flex items-center justify-center rounded-full",
-            "ring-2 ring-background-100",
-            iconBackground ? "bg-gray-1000 text-background-100" : "bg-background-100 text-gray-800",
+            "ring-2 ring-canvas",
+            iconBackground ? "bg-ink text-canvas" : "bg-canvas text-ink-muted",
           )}
           style={{ width: badgePx, height: badgePx }}
         >
@@ -160,19 +163,7 @@ export function Avatar({
 }
 
 function PlaceholderIcon(): React.ReactElement {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      className="size-[60%]"
-    >
-      <path
-        d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 1 1 14 0v.5H5V20Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
+  return <User aria-hidden className="size-[60%]" />;
 }
 
 export function AvatarImage({
@@ -277,7 +268,7 @@ export function AvatarGroup({
             key={m.id ?? i}
             size={size}
             shape={shape}
-            className={cn(ring, "ring-background-100")}
+            className={cn(ring, "ring-canvas")}
             style={{
               marginInlineStart: i === 0 ? 0 : marginStart,
               zIndex: reverse ? i : shown.length - i,
@@ -290,17 +281,7 @@ export function AvatarGroup({
         {showChip && (
           <span
             data-slot="avatar-group-overflow"
-            className={cn(
-              baseChipClass(size, shape),
-              ring,
-              "ring-background-100",
-              "!bg-background-200 !text-gray-1000",
-            )}
-            style={{
-              marginInlineStart: marginStart,
-              zIndex: 0,
-              ...(typeof size === "number" ? { width: size, height: size } : {}),
-            }}
+            className={cn("ms-2", overflowTextClass(size))}
           >
             +{overflow}
           </span>
@@ -320,7 +301,7 @@ export function AvatarGroup({
     return cloneElement(child as React.ReactElement<AvatarProps>, {
       size: childProps.size ?? size,
       shape: childProps.shape ?? shape,
-      className: cn(ring, "ring-background-100", childProps.className),
+      className: cn(ring, "ring-canvas", childProps.className),
       style: {
         marginInlineStart: i === 0 ? 0 : marginStart,
         zIndex: reverse ? i : shown.length - i,
@@ -340,17 +321,7 @@ export function AvatarGroup({
       {showChip && (
         <span
           data-slot="avatar-group-overflow"
-          className={cn(
-            baseChipClass(size, shape),
-            ring,
-            "ring-background-100",
-            "!bg-background-200 !text-gray-1000",
-          )}
-          style={{
-            marginInlineStart: marginStart,
-            zIndex: 0,
-            ...(typeof size === "number" ? { width: size, height: size } : {}),
-          }}
+          className={cn("ms-2", overflowTextClass(size))}
         >
           +{overflow}
         </span>
@@ -359,16 +330,13 @@ export function AvatarGroup({
   );
 }
 
-function baseChipClass(size: AvatarSize, shape: AvatarShape): string {
-  const numeric = typeof size === "number";
-  const textCls = numeric ? textClassForPx(size) : "";
-  return numeric
-    ? cn(
-        "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden font-medium",
-        shape === "square" ? "rounded-[var(--radius-6)]" : "rounded-full",
-        textCls,
-      )
-    : avatarVariants({ size: size as AvatarSizeEnum, shape });
+/** Text sizing for the "+N" overflow indicator. Reads a step smaller
+ *  than the initials inside an avatar so it feels like a quiet counter
+ *  rather than another face. */
+function overflowTextClass(size: AvatarSize): string {
+  const px = toPx(size);
+  const cls = px <= 32 ? "text-caption-12" : px <= 44 ? "text-body-13" : "text-body-14";
+  return cn("shrink-0 select-none text-ink-muted", cls);
 }
 
 function ringWidthForSize(size: AvatarSize): string {

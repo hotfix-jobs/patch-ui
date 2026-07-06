@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigation } from "@/lib/navigation";
+import { SearchTrigger } from "./docs-search";
 import {
   Sidebar as SidebarRoot,
   SidebarContent,
@@ -13,34 +14,41 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@patchui/react";
 
-/**
- * Sidebar — the docs navigation column, built with the @patchui/sidebar
- * primitives. State (open/closed on desktop, open/closed on mobile
- * drawer) lives in the SidebarProvider in the root layout.
- */
 export function Sidebar() {
   const pathname = usePathname();
   const activeRef = useRef<HTMLAnchorElement>(null);
+  const { setOpenMobile } = useSidebar();
 
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: "nearest" });
-  }, [pathname]);
+    setOpenMobile(false);
+  }, [pathname, setOpenMobile]);
 
   return (
     <SidebarRoot>
-      <SidebarHeader className="border-b-[0.5px] border-gray-alpha-400">
+      <SidebarHeader className="h-14 flex-row items-center gap-2 border-b border-hairline px-3">
         <Link
           href="/"
-          className="rounded-[var(--radius-6)] px-2 py-1.5 text-heading-16 text-gray-1000 hover:bg-gray-alpha-100"
+          className="rounded-[var(--radius-6)] px-2 py-1 text-button-16 text-ink hover:bg-surface-1"
         >
           Patch UI
         </Link>
+        <div className="ms-auto">
+          <SearchTrigger className="hidden lg:inline-flex" />
+        </div>
       </SidebarHeader>
+
       <SidebarContent>
         {navigation.map((group, gi) => (
-          <SidebarGroup key={group.title} className={gi > 0 ? "mt-2 border-t border-gray-alpha-400 pt-4" : ""}>
+          <SidebarGroup
+            key={group.title}
+            className={
+              gi > 0 ? "-mx-3 border-t border-hairline px-3 pt-4 mt-2" : ""
+            }
+          >
             <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
             <SidebarMenu>
               {group.items.map((item) => {

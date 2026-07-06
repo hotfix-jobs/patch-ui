@@ -1,13 +1,14 @@
 import { ComboboxDemo } from "./combobox-demo";
 
-
 export const metadata = { title: "Combobox" };
 
 # Combobox
 
-An `Input` paired with a floating popup that shows arbitrary filterable content: suggestions, recent searches, custom rows, banners. Built on `@floating-ui/react` with virtual focus (the input keeps real focus; items highlight via `aria-activedescendant`) and motion-driven open / close.
+An `Input` paired with a floating popup that shows arbitrary filterable content: suggestions, recent searches, custom rows, banners. Built on Base UI Combobox: virtual focus (the input keeps real focus; items highlight via `aria-activedescendant`), roving keyboard navigation, and CSS-driven open / close transitions.
 
 Use Combobox when you need an input-driven dropdown with custom row shapes (recents with chips, sign-in nudges, mode-specific banners). For simple command palettes, use [Command](/docs/components/command). For trigger-button dropdowns, use [Menu](/docs/components/menu).
+
+Query state (`value` / `onValueChange` / `placeholder`) lives on the `<Combobox>` root so the trigger input and the mobile panel's own search input can share it. On viewports below the `md` breakpoint the popup automatically switches to a bottom-anchored panel with its own search input.
 
 <Install name="combobox" />
 
@@ -24,24 +25,37 @@ import {
   ComboboxPopup,
   ComboboxItem,
 } from "@patchui/react";
-import { Search } from "lucide-react";
-
+import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
 const [query, setQuery] = useState("");
 const matches = items.filter((i) =>
   i.label.toLowerCase().includes(query.toLowerCase()),
 );
 
-<Combobox>
-  <ComboboxInput
-    value={query}
-    onChange={(e) => setQuery(e.target.value)}
-    icon={<Search />}
-    placeholder="Search..."
-  />
+<Combobox value={query} onValueChange={setQuery} placeholder="Search...">
+  <ComboboxInput prefix={<Search />} />
   <ComboboxPopup>
     {matches.map((item) => (
       <ComboboxItem key={item.id} onSelect={() => pick(item)}>
         {item.label}
+      </ComboboxItem>
+    ))}
+  </ComboboxPopup>
+</Combobox>
+```
+
+For multi-select, pass `closeOnSelect={false}` on `ComboboxItem` so the popup stays open while the user toggles rows:
+
+```tsx
+<Combobox value={query} onValueChange={setQuery}>
+  <ComboboxInput prefix={<Search />} />
+  <ComboboxPopup>
+    {matches.map((item) => (
+      <ComboboxItem
+        key={item.id}
+        closeOnSelect={false}
+        onSelect={() => toggle(item)}
+      >
+        {item.label} {selected.has(item.id) && <Check />}
       </ComboboxItem>
     ))}
   </ComboboxPopup>
@@ -53,7 +67,7 @@ The popup accepts arbitrary JSX: only `ComboboxItem` gets keyboard navigation. M
 ```tsx
 <ComboboxPopup>
   {/* Info banner — not navigable */}
-  <div className="flex items-center gap-1.5 border-b-[0.5px] border-gray-alpha-400 px-3 py-2 text-mini text-gray-800">
+  <div className="flex items-center gap-1.5 border-b-[0.5px] border-hairline-strong px-3 py-2 text-mini text-ink-muted">
     <Info className="h-3.5 w-3.5" /> Recents shown first
   </div>
 
@@ -80,6 +94,24 @@ The popup accepts arbitrary JSX: only `ComboboxItem` gets keyboard navigation. M
 <PropsTable
   props={[
     {
+      name: "value",
+      type: "string",
+      default: "-",
+      description: "Current query string. Shared by the trigger input and the mobile panel's own search input.",
+    },
+    {
+      name: "onValueChange",
+      type: "(next: string) => void",
+      default: "-",
+      description: "Called when the query should change. Wired to both inputs.",
+    },
+    {
+      name: "placeholder",
+      type: "string",
+      default: "-",
+      description: "Placeholder for the trigger input and the mobile panel input.",
+    },
+    {
       name: "open",
       type: "boolean",
       default: "-",
@@ -102,7 +134,7 @@ The popup accepts arbitrary JSX: only `ComboboxItem` gets keyboard navigation. M
 
 ### ComboboxInput
 
-Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `label`, etc.) and adds:
+Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `label`, etc.) and adds the props below. `value`, `onChange`, and `placeholder` read from the `<Combobox>` root by default; pass them directly on this input only when you need a per-input override.
 
 <PropsTable
   props={[
@@ -141,7 +173,13 @@ Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `labe
       name: "onSelect",
       type: "() => void",
       default: "-",
-      description: "Fired on click or Enter while the item is keyboard-active. The popup closes automatically after select.",
+      description: "Fired on click or Enter while the item is keyboard-active.",
+    },
+    {
+      name: "closeOnSelect",
+      type: "boolean",
+      default: "true",
+      description: "Whether to close the popup after selection. Set false for multi-select pickers where the user is expected to toggle several items before dismissing.",
     },
     {
       name: "label",
@@ -159,7 +197,10 @@ Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `labe
 />
 
 <Callout title="Notes">
-- The input keeps real focus while you type and arrow through options. Items get `aria-activedescendant` instead of taking focus, which is the proper ARIA combobox pattern: screen readers announce the active option without interrupting typing.
+- **Query state on the root.** Put `value` / `onValueChange` / `placeholder` on `<Combobox>` so the trigger input and the mobile panel's own input share them. The input still accepts `value` / `onChange` / `placeholder` as per-input overrides for advanced cases.
+- **Mobile panel.** Below 768px the popup renders as a bottom-anchored fixed panel with its own search input (real focus, autoFocus) and a close X. Desktop behavior is unchanged.
+- **Multi-select.** Pass `closeOnSelect={false}` on items you want to toggle without dismissing the popup. Track selection in your own state.
+- The input keeps real focus while you type and arrow through options on desktop. Items get `aria-activedescendant` instead of taking focus, which is the proper ARIA combobox pattern: screen readers announce the active option without interrupting typing.
 - Combobox doesn't filter for you. Filter your data based on the current input value and render the matches as `<ComboboxItem>` children. Substring, fuzzy index, async API: any strategy works.
 - Anything inside `ComboboxPopup` renders. Only `<ComboboxItem>` is keyboard-navigable, so you can drop in banners, section headers, and dividers as plain JSX between item groups.
 - Keyboard: Arrow keys navigate, Enter selects, Esc closes, ↓ opens when closed. Typing is just text input: the popup stays open.

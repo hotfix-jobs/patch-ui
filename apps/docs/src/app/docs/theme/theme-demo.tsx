@@ -1,170 +1,100 @@
 "use client";
 
-/**
- * Color scale swatch rows. Class names must be written out literally so
- * Tailwind's compile-time scanner sees them; a `bg-${token}` template
- * string would be purged.
- */
 export function ColorScales() {
   return (
-    <div className="flex flex-col gap-6 rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-background-100 p-6">
-      <Scale name="Gray">
-        <Swatch className="bg-gray-100" label="100" />
-        <Swatch className="bg-gray-200" label="200" />
-        <Swatch className="bg-gray-300" label="300" />
-        <Swatch className="bg-gray-400" label="400" />
-        <Swatch className="bg-gray-500" label="500" />
-        <Swatch className="bg-gray-600" label="600" />
-        <Swatch className="bg-gray-700" label="700" />
-        <Swatch className="bg-gray-800" label="800" />
-        <Swatch className="bg-gray-900" label="900" />
-        <Swatch className="bg-gray-1000" label="1000" />
-      </Scale>
-      <Scale name="Blue">
-        <Swatch className="bg-blue-100" label="100" />
-        <Swatch className="bg-blue-200" label="200" />
-        <Swatch className="bg-blue-300" label="300" />
-        <Swatch className="bg-blue-400" label="400" />
-        <Swatch className="bg-blue-500" label="500" />
-        <Swatch className="bg-blue-600" label="600" />
-        <Swatch className="bg-blue-700" label="700" />
-        <Swatch className="bg-blue-800" label="800" />
-        <Swatch className="bg-blue-900" label="900" />
-        <Swatch className="bg-blue-1000" label="1000" />
-      </Scale>
-      <Scale name="Red">
-        <Swatch className="bg-red-100" label="100" />
-        <Swatch className="bg-red-200" label="200" />
-        <Swatch className="bg-red-300" label="300" />
-        <Swatch className="bg-red-400" label="400" />
-        <Swatch className="bg-red-500" label="500" />
-        <Swatch className="bg-red-600" label="600" />
-        <Swatch className="bg-red-700" label="700" />
-        <Swatch className="bg-red-800" label="800" />
-        <Swatch className="bg-red-900" label="900" />
-        <Swatch className="bg-red-1000" label="1000" />
-      </Scale>
-      <Scale name="Amber">
-        <Swatch className="bg-amber-100" label="100" />
-        <Swatch className="bg-amber-200" label="200" />
-        <Swatch className="bg-amber-300" label="300" />
-        <Swatch className="bg-amber-400" label="400" />
-        <Swatch className="bg-amber-500" label="500" />
-        <Swatch className="bg-amber-600" label="600" />
-        <Swatch className="bg-amber-700" label="700" />
-        <Swatch className="bg-amber-800" label="800" />
-        <Swatch className="bg-amber-900" label="900" />
-        <Swatch className="bg-amber-1000" label="1000" />
-      </Scale>
-      <Scale name="Green">
-        <Swatch className="bg-green-100" label="100" />
-        <Swatch className="bg-green-200" label="200" />
-        <Swatch className="bg-green-300" label="300" />
-        <Swatch className="bg-green-400" label="400" />
-        <Swatch className="bg-green-500" label="500" />
-        <Swatch className="bg-green-600" label="600" />
-        <Swatch className="bg-green-700" label="700" />
-        <Swatch className="bg-green-800" label="800" />
-        <Swatch className="bg-green-900" label="900" />
-        <Swatch className="bg-green-1000" label="1000" />
-      </Scale>
-      <Scale name="Teal">
-        <Swatch className="bg-teal-100" label="100" />
-        <Swatch className="bg-teal-200" label="200" />
-        <Swatch className="bg-teal-300" label="300" />
-        <Swatch className="bg-teal-400" label="400" />
-        <Swatch className="bg-teal-500" label="500" />
-        <Swatch className="bg-teal-600" label="600" />
-        <Swatch className="bg-teal-700" label="700" />
-        <Swatch className="bg-teal-800" label="800" />
-        <Swatch className="bg-teal-900" label="900" />
-        <Swatch className="bg-teal-1000" label="1000" />
-      </Scale>
-      <Scale name="Purple">
-        <Swatch className="bg-purple-100" label="100" />
-        <Swatch className="bg-purple-200" label="200" />
-        <Swatch className="bg-purple-300" label="300" />
-        <Swatch className="bg-purple-400" label="400" />
-        <Swatch className="bg-purple-500" label="500" />
-        <Swatch className="bg-purple-600" label="600" />
-        <Swatch className="bg-purple-700" label="700" />
-        <Swatch className="bg-purple-800" label="800" />
-        <Swatch className="bg-purple-900" label="900" />
-        <Swatch className="bg-purple-1000" label="1000" />
-      </Scale>
-      <Scale name="Pink">
-        <Swatch className="bg-pink-100" label="100" />
-        <Swatch className="bg-pink-200" label="200" />
-        <Swatch className="bg-pink-300" label="300" />
-        <Swatch className="bg-pink-400" label="400" />
-        <Swatch className="bg-pink-500" label="500" />
-        <Swatch className="bg-pink-600" label="600" />
-        <Swatch className="bg-pink-700" label="700" />
-        <Swatch className="bg-pink-800" label="800" />
-        <Swatch className="bg-pink-900" label="900" />
-        <Swatch className="bg-pink-1000" label="1000" />
-      </Scale>
+    <div className="flex flex-col gap-6 rounded-[var(--radius-12)] border border-hairline bg-surface-elevated p-6">
+      <Row label="Canvas & surfaces">
+        <Swatch className="bg-canvas" label="canvas" />
+        <Swatch className="bg-surface-1" label="surface-1" />
+        <Swatch className="bg-surface-2" label="surface-2" />
+        <Swatch className="bg-surface-3" label="surface-3" />
+        <Swatch className="bg-surface-4" label="surface-4" />
+        <Swatch className="bg-surface-elevated" label="elevated" />
+      </Row>
+      <Row label="Ink (text)">
+        <Swatch className="bg-ink" label="ink" />
+        <Swatch className="bg-ink-muted" label="muted" />
+        <Swatch className="bg-ink-subtle" label="subtle" />
+        <Swatch className="bg-ink-tertiary" label="tertiary" />
+      </Row>
+      <Row label="Semantic status">
+        <Swatch className="bg-error" label="error" />
+        <Swatch className="bg-warning" label="warning" />
+        <Swatch className="bg-success" label="success" />
+      </Row>
+      <Row label="Hairlines">
+        <Hairline className="border-hairline" label="hairline" />
+        <Hairline className="border-hairline-strong" label="strong" />
+        <Hairline className="border-hairline-tertiary" label="tertiary" />
+      </Row>
     </div>
   );
 }
 
-function Scale({ name, children }: { name: string; children: React.ReactNode }) {
+function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-label-12 text-gray-800">{name}</div>
-      <div className="grid grid-cols-10 gap-1">{children}</div>
+      <div className="text-caption-12 text-ink-muted">{label}</div>
+      <div className="flex flex-wrap gap-3">{children}</div>
     </div>
   );
 }
 
 function Swatch({ className, label }: { className: string; label: string }) {
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-col items-center gap-1.5">
       <div
-        className={`aspect-square w-full rounded-[var(--radius-6)] border-[0.5px] border-gray-alpha-400 ${className}`}
+        className={`size-14 rounded-[var(--radius-6)] border border-hairline ${className}`}
       />
-      <div className="text-label-11 text-gray-700">{label}</div>
+      <div className="text-caption-11 text-ink-subtle">{label}</div>
+    </div>
+  );
+}
+
+function Hairline({ className, label }: { className: string; label: string }) {
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <div
+        className={`flex size-14 items-center justify-center rounded-[var(--radius-6)] border bg-canvas ${className}`}
+      >
+        <div className="h-px w-8 bg-current opacity-60" />
+      </div>
+      <div className="text-caption-11 text-ink-subtle">{label}</div>
     </div>
   );
 }
 
 export function TypographySamples() {
   return (
-    <div className="flex flex-col gap-4 rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-background-100 p-6">
-      <Sample cls="text-heading-56" name="text-heading-56" text="Heading 56" />
-      <Sample cls="text-heading-40" name="text-heading-40" text="Heading 40" />
-      <Sample cls="text-heading-24" name="text-heading-24" text="Heading 24" />
-      <Sample cls="text-heading-16" name="text-heading-16" text="Heading 16" />
-      <Sample cls="text-copy-18" name="text-copy-18" text="Copy 18: lead paragraphs" />
-      <Sample cls="text-copy-14" name="text-copy-14" text="Copy 14: default body text" />
-      <Sample cls="text-copy-13" name="text-copy-13" text="Copy 13: body inside dense surfaces" />
-      <Sample cls="text-label-14" name="text-label-14" text="Label 14: form labels" />
-      <Sample cls="text-label-12" name="text-label-12" text="Label 12: metadata + captions" />
-      <Sample cls="text-button-14" name="text-button-14" text="Button 14: control label text" />
+    <div className="flex flex-col gap-4 rounded-[var(--radius-12)] border border-hairline bg-surface-elevated p-6">
+      <Sample cls="text-display-32" text="Display 32" />
+      <Sample cls="text-display-24" text="Display 24" />
+      <Sample cls="text-display-20" text="Display 20" />
+      <Sample cls="text-body-18" text="Body 18 — lead paragraph" />
+      <Sample cls="text-body-16" text="Body 16 — default body copy" />
+      <Sample cls="text-body-14" text="Body 14 — dense UI copy" />
+      <Sample cls="text-body-13" text="Body 13 — sidebar item, table cell" />
+      <Sample cls="text-caption-12" text="Caption 12 — metadata, hint, badge" />
+      <Sample cls="text-button-16" text="Button 16 — large control label" />
+      <Sample cls="text-button-14" text="Button 14 — default control label" />
+      <Sample cls="text-button-12" text="Button 12 — small control label, chip" />
+      <Sample cls="text-mono-13" text="Mono 13 — inline code, kbd, install snippet" />
     </div>
   );
 }
 
-function Sample({
-  cls,
-  name,
-  text,
-}: {
-  cls: string;
-  name: string;
-  text: string;
-}) {
+function Sample({ cls, text }: { cls: string; text: string }) {
   return (
     <div className="flex flex-wrap items-baseline gap-4">
-      <span className={`${cls} text-gray-1000`}>{text}</span>
-      <span className="text-label-11 text-gray-700">.{name}</span>
+      <span className={`${cls} text-ink`}>{text}</span>
+      <span className="text-caption-11 text-ink-subtle">.{cls}</span>
     </div>
   );
 }
 
 export function RadiusSamples() {
   return (
-    <div className="grid grid-cols-2 gap-3 rounded-[var(--radius-12)] border-[0.5px] border-gray-alpha-400 bg-background-100 p-6 sm:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 rounded-[var(--radius-12)] border border-hairline bg-surface-elevated p-6 sm:grid-cols-4">
       <RadiusCell label="radius-6" cls="rounded-[var(--radius-6)]" />
       <RadiusCell label="radius-12" cls="rounded-[var(--radius-12)]" />
       <RadiusCell label="radius-16" cls="rounded-[var(--radius-16)]" />
@@ -176,10 +106,8 @@ export function RadiusSamples() {
 function RadiusCell({ label, cls }: { label: string; cls: string }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div
-        className={`h-16 w-full border-[0.5px] border-gray-alpha-400 bg-gray-alpha-100 ${cls}`}
-      />
-      <div className="text-label-11 text-gray-700">{label}</div>
+      <div className={`h-16 w-full border border-hairline bg-surface-1 ${cls}`} />
+      <div className="text-caption-11 text-ink-subtle">{label}</div>
     </div>
   );
 }

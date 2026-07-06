@@ -3,34 +3,18 @@ import { cn } from "../utils";
 
 export interface SkeletonProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
-  /** Skeleton width. Number → px; string → passed through (e.g. "50%"). */
+  /** Number → px; string passed through. */
   width?: number | string;
-  /** Skeleton height. Number → px; string → passed through (e.g. "1.5rem"). */
+  /** Number → px; string passed through. */
   height?: number | string;
-  /** Corner treatment. Default `rounded`; `pill` for avatars; `squared` for code blocks. */
   shape?: "rounded" | "pill" | "squared";
-  /** Shimmer animation. Default true; set false for a static block. */
   animated?: boolean;
-  /**
-   * When false, render `children` instead of the skeleton. Simplifies the
-   * "show placeholder while loading" pattern to a single component.
-   */
+  /** When false, render `children` instead of the skeleton. */
   show?: boolean;
-  /** Content to reveal once `show` becomes false. */
   children?: React.ReactNode;
 }
 
-/**
- * Skeleton: placeholder for async content in a known layout.
- *
- * Match dimensions to the final content to prevent layout shift.
- * Use `shape="pill"` for avatars, `shape="rounded"` (default) for
- * buttons + text lines, `shape="squared"` for code blocks.
- *
- *   <Skeleton show={loading} width={200} height={20}>
- *     {data && <p>{data.name}</p>}
- *   </Skeleton>
- */
+/** Placeholder for async content. */
 export function Skeleton({
   className,
   width,
@@ -57,14 +41,12 @@ export function Skeleton({
       aria-live="polite"
       data-slot="skeleton"
       className={cn(
-        // Calm surface block: subtle bg + gentle opacity pulse, no
-        // sweeping gradient or border.
-        "bg-gray-100",
+        "bg-surface-2",
         shape === "rounded" && "rounded-[var(--radius-6)]",
         shape === "squared" && "rounded-none",
         shape === "pill" && "rounded-full",
         animated &&
-          "animate-[patch-skeleton-pulse_1.6s_ease-in-out_infinite] motion-reduce:animate-none",
+          "animate-[patch-skeleton-pulse_1.8s_ease-in-out_infinite] motion-reduce:animate-none",
         className,
       )}
       style={dimStyle}

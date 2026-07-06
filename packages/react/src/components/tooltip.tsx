@@ -29,15 +29,10 @@ export type TooltipAlign = "start" | "center" | "end";
 export interface TooltipProps {
   children: React.ReactElement;
   content: React.ReactNode;
-  /** Which side of the trigger the tooltip appears on. */
   side?: TooltipSide;
-  /** Alignment along the trigger's axis. `start` = top/left edge, `end` = bottom/right edge. */
   align?: TooltipAlign;
-  /** Pixel offset from the trigger. */
   sideOffset?: number;
-  /** Milliseconds to wait before opening. Small default so sweeping mouse motion doesn't flicker tooltips open. */
   delay?: number;
-  /** Milliseconds to wait before closing. */
   closeDelay?: number;
   className?: string;
 }
@@ -67,7 +62,7 @@ export function Tooltip({
           >
             <TooltipPrimitive.Popup
               className={cn(
-                "rounded-[var(--radius-6)] bg-gray-1000 px-2.5 py-1.5 text-label-12 text-background-100 shadow-menu transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+                "rounded-[var(--radius-6)] bg-surface-elevated border border-hairline px-2.5 py-1.5 text-caption-12 text-ink shadow-tooltip transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
                 className,
               )}
               data-slot="tooltip-content"
@@ -81,7 +76,6 @@ export function Tooltip({
   );
 }
 
-// Sub-components for advanced handle-based usage
 export const TooltipRoot: typeof TooltipPrimitive.Root = TooltipPrimitive.Root;
 export const TooltipTrigger: typeof TooltipPrimitive.Trigger = TooltipPrimitive.Trigger;
 export const TooltipCreateHandle: typeof TooltipPrimitive.createHandle = TooltipPrimitive.createHandle;
@@ -108,7 +102,7 @@ export function TooltipContent({
       >
         <TooltipPrimitive.Popup
           className={cn(
-            "rounded-[var(--radius-6)] bg-gray-1000 px-2.5 py-1.5 text-label-12 text-background-100 shadow-menu transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+            "rounded-[var(--radius-6)] bg-surface-elevated border border-hairline px-2.5 py-1.5 text-caption-12 text-ink shadow-tooltip transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
             className,
           )}
           data-slot="tooltip-content"

@@ -62,7 +62,7 @@ export function AccordionDemo() {
         <Accordion>
           <AccordionItem
             value="q-1"
-            className="rounded-[var(--radius-12)] border border-gray-alpha-400 mb-2 px-4"
+            className="rounded-[var(--radius-12)] border border-hairline-strong mb-2 px-4"
           >
             <AccordionTrigger>Card-styled item</AccordionTrigger>
             <AccordionPanel>
@@ -72,7 +72,7 @@ export function AccordionDemo() {
           </AccordionItem>
           <AccordionItem
             value="q-2"
-            className="rounded-[var(--radius-12)] border border-gray-alpha-400 mb-2 px-4"
+            className="rounded-[var(--radius-12)] border border-hairline-strong mb-2 px-4"
           >
             <AccordionTrigger>Second card</AccordionTrigger>
             <AccordionPanel>

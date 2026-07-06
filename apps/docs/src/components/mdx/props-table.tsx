@@ -35,16 +35,16 @@ export function PropsTable({ props }: PropsTableProps) {
         <TableBody>
           {props.map((prop) => (
             <TableRow key={prop.name}>
-              <TableCell className="text-label-13 text-gray-1000 align-top">
+              <TableCell className="text-body-13 text-ink align-top">
                 {prop.name}
               </TableCell>
-              <TableCell className="text-label-13 text-gray-900 align-top">
+              <TableCell className="text-body-13 text-ink align-top">
                 {prop.type}
               </TableCell>
-              <TableCell className="text-label-13 text-gray-900 align-top">
+              <TableCell className="text-body-13 text-ink align-top">
                 {prop.default ?? "-"}
               </TableCell>
-              <TableCell className="text-gray-900 align-top">
+              <TableCell className="text-body-13 text-ink align-top">
                 {prop.description}
               </TableCell>
             </TableRow>

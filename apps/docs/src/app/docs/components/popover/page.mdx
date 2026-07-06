@@ -1,0 +1,64 @@
+import { PopoverDemo } from "./popover-demo";
+
+export const metadata = { title: "Popover" };
+
+# Popover
+
+A floating panel anchored to a trigger. Use for arbitrary content: notification lists, filter panels, mini-forms, and row action menus. When you want a single list of clickable actions, reach for [Menu](/docs/components/menu); when you want a hover chip for one line of text, reach for [Tooltip](/docs/components/tooltip); when you need a blocking dialog, reach for [Modal](/docs/components/modal).
+
+<Install name="popover" />
+
+<ComponentPreview label="Popover examples">
+  <PopoverDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { Popover, PopoverTrigger, PopoverContent, PopoverClose } from "@patchui/react";
+import { Button } from "@patchui/react";
+
+<Popover>
+  <PopoverTrigger render={<Button variant="secondary">Open</Button>} />
+  <PopoverContent>
+    <p className="text-body-14 text-ink">Anything you want, anchored to the trigger.</p>
+    <PopoverClose render={<Button size="sm">Done</Button>} />
+  </PopoverContent>
+</Popover>
+```
+
+## Props
+
+### `<Popover>`
+
+<PropsTable
+  props={[
+    { name: "open", type: "boolean", default: "-", description: "Controlled open state." },
+    { name: "defaultOpen", type: "boolean", default: "false", description: "Initial open state when uncontrolled." },
+    { name: "onOpenChange", type: "(open: boolean) => void", default: "-", description: "Called when open state changes." },
+    { name: "modal", type: "boolean", default: "false", description: "Trap focus + block interaction with the rest of the page. Off by default so notification-style popovers stay non-blocking." },
+  ]}
+/>
+
+### `<PopoverContent>`
+
+<PropsTable
+  props={[
+    { name: "side", type: '"top" | "bottom" | "left" | "right"', default: '"bottom"', description: "Which side of the trigger the popover appears on." },
+    { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "Alignment along the trigger's axis. `end` is useful for right-aligned nav triggers so the popover stays inside the viewport." },
+    { name: "sideOffset", type: "number", default: "6", description: "Pixel offset from the trigger." },
+    { name: "arrow", type: "boolean", default: "false", description: "Render a subtle arrow pointing at the trigger." },
+    { name: "className", type: "string", default: "-", description: "Applied to the popup surface. Set width (`w-72`, `w-[360px]`) and padding here." },
+  ]}
+/>
+
+### `<PopoverClose>`
+
+Wraps a trigger (usually a `Button`) that dismisses the popover on click. Compose via `render`.
+
+<Callout title="Notes">
+- The default `align="center"` is right for a triggerbelow-header. For an icon button in the top-right of a header (bell icon), pass `align="end"` so the popover doesn't overflow.
+- Set width on `PopoverContent` via className (`w-72`, `w-[360px]`). Default `min-w-[220px]` keeps small popovers legible.
+- The popover content region has no built-in padding. Pass `p-4` (for a form) or `p-0` (for a list that carries its own row padding).
+- Popovers don't trap focus by default. Set `modal` on `<Popover>` if you want the surrounding page inert while the popover is open.
+</Callout>

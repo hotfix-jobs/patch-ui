@@ -2,12 +2,10 @@
 
 import { Switch , SectionLabel } from "@patchui/react";
 import { useState } from "react";
-import { Lock, Unlock } from "lucide-react";
-
-
+import { Check, X } from "@phosphor-icons/react/dist/ssr";
 export function SwitchDemo() {
   const [checked, setChecked] = useState(false);
-  const [locked, setLocked] = useState(true);
+  const [enabled, setEnabled] = useState(true);
 
   return (
     <div className="flex flex-col gap-8">
@@ -15,7 +13,7 @@ export function SwitchDemo() {
         <SectionLabel>Controlled</SectionLabel>
         <div className="flex items-center gap-3">
           <Switch checked={checked} onCheckedChange={(c) => setChecked(c)} />
-          <span className="text-copy-14 text-gray-1000">{checked ? "On" : "Off"}</span>
+          <span className="text-body-14 text-ink">{checked ? "On" : "Off"}</span>
         </div>
       </div>
 
@@ -42,16 +40,15 @@ export function SwitchDemo() {
         <SectionLabel>With icons in the thumb</SectionLabel>
         <div className="flex items-center gap-3">
           <Switch
-            checked={locked}
-            onCheckedChange={setLocked}
-            variant="success"
+            checked={enabled}
+            onCheckedChange={setEnabled}
             icon={{
-              checked: <Lock />,
-              unchecked: <Unlock />,
+              checked: <Check />,
+              unchecked: <X />,
             }}
           />
-          <span className="text-copy-14 text-gray-1000">
-            {locked ? "Locked" : "Unlocked"}
+          <span className="text-body-14 text-ink">
+            {enabled ? "Enabled" : "Disabled"}
           </span>
         </div>
       </div>
@@ -61,11 +58,11 @@ export function SwitchDemo() {
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <Switch disabled />
-            <span className="text-copy-14 text-gray-1000">Disabled off</span>
+            <span className="text-body-14 text-ink">Disabled off</span>
           </div>
           <div className="flex items-center gap-3">
             <Switch disabled defaultChecked />
-            <span className="text-copy-14 text-gray-1000">Disabled on</span>
+            <span className="text-body-14 text-ink">Disabled on</span>
           </div>
         </div>
       </div>

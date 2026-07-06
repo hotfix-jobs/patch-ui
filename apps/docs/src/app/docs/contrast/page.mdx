@@ -1,18 +1,17 @@
 import { ContrastDemo } from "./contrast-demo";
 
-
 export const metadata = { title: "Contrast" };
 
 # Contrast Contract
 
-Every text and accent token has a declared WCAG target against the surfaces it sits on. The same checks run in CI via `npm run check:contrast -w packages/react`, so a token change that breaks a target fails the build. This page is the visual counterpart: ratios recompute the moment you toggle light or dark mode.
+Every text token has a declared WCAG target against the surfaces it can sit on. The same checks run in CI via `npm run check:contrast -w packages/react`, so a token change that breaks a target fails the build. This page is the visual counterpart: ratios recompute the moment you toggle light or dark mode.
 
-- `gray-1000` on backgrounds: AAA body (7:1)
-- `gray-900` on backgrounds: AA body (4.5:1)
-- `gray-800` on backgrounds: AA metadata / labels (4.5:1)
-- `gray-700` on backgrounds: AA-large / disabled hint (3:1)
-- Accent `-700` solids on `background-100`: AA (4.5:1)
-- `background-100` on `gray-1000` (primary Button label): AAA (7:1)
+- **`ink`** on any canvas or lifted surface: AAA body (7:1)
+- **`ink-muted`** on canvas / surface-1 / surface-2: AA secondary (4.5:1)
+- **`ink-subtle`** on canvas: AA placeholder (4.5:1)
+- **`ink-tertiary`** on canvas: AA-large / disabled hint (3:1)
+- **`on-primary`** on **`primary`** (primary Button label): AAA (7:1)
+- **`error-fg`** / **`warning-fg`** / **`success-fg`** on their status fills: AA (4.5:1)
 
 Green pill = passing, red = failing.
 
@@ -22,12 +21,12 @@ Green pill = passing, red = failing.
 
 ## When to use each text tier
 
-- **`gray-1000`**: primary body, headings, anything the user must read precisely.
-- **`gray-900`**: supporting body copy, descriptions, long-form prose.
-- **`gray-800`**: labels, timestamps, metadata, section overlines. Not for body paragraphs.
-- **`gray-700`**: disabled controls, placeholder hints, decorative accent. AA-large only; do not use for content the user actually needs to read.
+- **`ink`** — primary body, headings, anything the user must read precisely.
+- **`ink-muted`** — meta text, secondary labels, table cell secondaries, default icon tone.
+- **`ink-subtle`** — placeholders, "missing value" copy, disabled label on a light surface. AA against canvas only; sitting `ink-subtle` on a lifted card can drop under threshold. Reach for `ink-muted` there instead.
+- **`ink-tertiary`** — disabled controls, footnotes, timestamps. AA-large only; do not use for content the user actually needs to read.
 
 ## Notes
 
-- Accent tokens outside the `-700` step are not audited. Lighter steps (`-100` to `-400`) are fill colors, not text; heavier steps (`-800` to `-1000`) are text but only used on tinted surfaces where the ratio is guaranteed by construction.
-- If you override `--gray-*` or `--background-*` in your own CSS, re-run `check:contrast` before merging. The script is fast and takes no arguments.
+- Semantic status roles (`error`, `warning`, `success`) are fixed hex and theme-invariant. Their `-fg` variants are chosen to guarantee AA against the fill in both themes.
+- If you override `--primary`, `--on-primary`, `--ink*`, `--canvas`, or `--surface-*` in your own CSS, re-run `check:contrast` before merging. The script parses `packages/react/src/theme/tokens.css` directly, so a downstream override needs to be reflected in that file (or added to the script's target list) for the check to catch it.

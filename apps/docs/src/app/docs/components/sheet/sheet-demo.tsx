@@ -23,7 +23,6 @@ export function SheetDemo() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Right side: editable profile */}
       <div className="space-y-3">
         <SectionLabel>Editable profile</SectionLabel>
         <Sheet>
@@ -64,32 +63,6 @@ export function SheetDemo() {
         </Sheet>
       </div>
 
-      {/* Non-modal inspector */}
-      <div className="space-y-3">
-        <SectionLabel>Non-modal inspector</SectionLabel>
-        <Sheet>
-          <SheetTrigger render={<Button variant="secondary" />}>
-            Open inspector
-          </SheetTrigger>
-          <SheetContent modal={false}>
-            <SheetHeader>
-              <SheetTitle>Deployment details</SheetTitle>
-              <SheetDescription>
-                Non-modal: the page underneath stays interactive so you can
-                keep browsing while this stays open.
-              </SheetDescription>
-            </SheetHeader>
-            <SheetBody>
-              <p className="text-copy-14 text-gray-1000">
-                Use `modal={false}` for persistent side panels that pair with
-                the page underneath (record inspectors, help drawers).
-              </p>
-            </SheetBody>
-          </SheetContent>
-        </Sheet>
-      </div>
-
-      {/* Left side */}
       <div className="space-y-3">
         <SectionLabel>Left side (navigation)</SectionLabel>
         <Sheet>
@@ -111,7 +84,7 @@ export function SheetDemo() {
                 <a
                   key={item}
                   href="#"
-                  className="text-copy-14 text-gray-1000 hover:text-gray-900"
+                  className="text-body-14 text-ink hover:text-ink"
                 >
                   {item}
                 </a>
@@ -121,23 +94,26 @@ export function SheetDemo() {
         </Sheet>
       </div>
 
-      {/* Bottom side */}
       <div className="space-y-3">
         <SectionLabel>Bottom side (mobile picker)</SectionLabel>
         <Sheet>
           <SheetTrigger render={<Button variant="secondary" />}>
             Pick region
           </SheetTrigger>
-          <SheetContent side="bottom" modal>
+          <SheetContent side="bottom">
             <SheetHeader>
               <SheetTitle>Choose a region</SheetTitle>
             </SheetHeader>
-            <SheetBody>
+            <SheetBody className="gap-1 p-2">
               {["US East", "US West", "EU West", "Asia Pacific"].map((r) => (
                 <SheetClose
                   key={r}
                   render={
-                    <button className="w-full rounded-[var(--radius-6)] border border-gray-alpha-400 bg-background-100 px-3 py-3 text-copy-14 text-gray-1000 hover:bg-gray-alpha-100" />
+                    <Button
+                      variant="tertiary"
+                      size="lg"
+                      className="w-full justify-start hover:bg-surface-2 active:bg-surface-3"
+                    />
                   }
                 >
                   {r}

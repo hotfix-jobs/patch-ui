@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 
+import { Check, Copy } from "@phosphor-icons/react/dist/ssr";
 /**
  * Wraps rehype-pretty-code's <figure> output with a copy button.
  * The figure already has syntax-highlighted <pre><code> from rehype-pretty-code.
@@ -38,7 +39,7 @@ export function CodeFigure({
   return (
     <div
       ref={figureRef}
-      className="group/codeblock relative my-6 min-w-0 overflow-hidden rounded-[6px] ring-1 ring-gray-alpha-400"
+      className="group/codeblock relative my-6 min-w-0 overflow-hidden rounded-[var(--radius-12)] border border-hairline"
       data-slot="code-block"
     >
       <figure {...props} className="m-0">
@@ -47,19 +48,14 @@ export function CodeFigure({
       <button
         type="button"
         onClick={handleCopy}
-        className={`absolute right-3 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-[4px] text-gray-800 transition-all hover:bg-gray-200 hover:text-gray-1000 lg:opacity-0 lg:group-hover/codeblock:opacity-100 ${copied ? "!text-success !opacity-100" : ""}`}
+        className={`absolute right-3 top-3 z-10 flex size-8 items-center justify-center rounded-full transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink lg:opacity-0 lg:group-hover/codeblock:opacity-100 ${copied ? "text-success opacity-100" : "text-ink-muted"}`}
         aria-label={copied ? "Copied" : "Copy code"}
         data-slot="code-block-copy"
       >
         {copied ? (
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20 6 9 17l-5-5" />
-          </svg>
+          <Check className="size-3.5" aria-hidden />
         ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-          </svg>
+          <Copy className="size-3.5" aria-hidden />
         )}
       </button>
     </div>

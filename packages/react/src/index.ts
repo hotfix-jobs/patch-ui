@@ -12,11 +12,30 @@ export {
   type AccordionPanelProps,
 } from "./components/accordion";
 export { Button, buttonVariants, type ButtonProps } from "./components/button";
+export {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  CollapsiblePrimitive,
+  type CollapsibleProps,
+  type CollapsibleTriggerProps,
+  type CollapsibleContentProps,
+} from "./components/collapsible";
 export { Input, InputPrimitive, type InputProps } from "./components/input";
 export { SearchInput, type SearchInputProps } from "./components/search-input";
 export { Textarea, type TextareaProps } from "./components/textarea";
 export { Label } from "./components/label";
-export { Select, type SelectProps, type SelectSize } from "./components/select";
+export {
+  Select,
+  SelectItem,
+  SelectGroup,
+  SelectGroupLabel,
+  SelectSeparator,
+  SelectPrimitive,
+  type SelectProps,
+  type SelectItemProps,
+  type SelectSize,
+} from "./components/select";
 export { Switch, SwitchPrimitive } from "./components/switch";
 export { Checkbox, CheckboxPrimitive } from "./components/checkbox";
 export {
@@ -28,12 +47,6 @@ export {
 export { Slider, SliderValue, SliderPrimitive } from "./components/slider";
 export { Card, type CardProps } from "./components/card";
 export {
-  Grid,
-  GridCell,
-  type GridProps,
-  type GridCellProps,
-} from "./components/grid";
-export {
   Section,
   SectionHeader,
   SectionTitle,
@@ -42,7 +55,9 @@ export {
   SectionFooter,
   SectionFooterStatus,
   SectionFooterActions,
+  SectionRow,
   type SectionFooterProps,
+  type SectionRowProps,
 } from "./components/section";
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
 export {
@@ -60,10 +75,7 @@ export {
   type AvatarProps,
   type AvatarGroupProps,
 } from "./components/avatar";
-// AppHeader lives as a block under packages/react/src/blocks/app-header: consumers
-// pull it via `npx shadcn add @patchui/app-header` and own the copy for
-// per-app customization (brand, feature flags, auth wiring, etc.). Not
-// exported from the package index.
+// AppHeader ships as a copy-in block; not exported from the package index.
 export {
   Sheet,
   SheetTrigger,
@@ -89,6 +101,7 @@ export {
   ModalHeader,
   ModalTitle,
   ModalSubtitle,
+  ModalClose,
   ModalInset,
   ModalActions,
   ModalAction,
@@ -132,6 +145,19 @@ export {
   TooltipContent,
 } from "./components/tooltip";
 export {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+  PopoverPrimitive,
+  type PopoverProps,
+  type PopoverTriggerProps,
+  type PopoverContentProps,
+  type PopoverCloseProps,
+  type PopoverSide,
+  type PopoverAlign,
+} from "./components/popover";
+export {
   Toaster,
   toast,
   type ToasterProps,
@@ -142,18 +168,6 @@ export {
 } from "./components/toast";
 export { Spinner, type SpinnerProps } from "./components/spinner";
 export { Skeleton, type SkeletonProps } from "./components/skeleton";
-export {
-  ListRow,
-  ListRowContent,
-  ListRowList,
-  type ListRowProps,
-  type ListRowContentProps,
-  type ListRowListProps,
-} from "./components/list-row";
-export {
-  MiddleTruncate,
-  type MiddleTruncateProps,
-} from "./components/middle-truncate";
 export {
   Scroller,
   type ScrollerProps,
@@ -214,20 +228,25 @@ export {
   type ResolvedTheme,
 } from "./components/theme-toggle";
 export { Pagination, type PaginationProps } from "./components/pagination";
-export { LoadMore, type LoadMoreProps } from "./components/load-more";
 export {
-  SegmentedToggle,
-  SegmentedToggleItem,
-  type SegmentedToggleProps,
-  type SegmentedToggleItemProps,
-} from "./components/segmented-toggle";
+  ToggleGroup,
+  ToggleGroupItem,
+  type ToggleGroupProps,
+  type ToggleGroupItemProps,
+} from "./components/toggle-group";
 export {
   Combobox,
   ComboboxInput,
   ComboboxPopup,
   ComboboxItem,
+  ComboboxCheckboxItem,
+  ComboboxDivider,
+  ComboboxGroupLabel,
+  ComboboxSection,
   type ComboboxProps,
   type ComboboxInputProps,
+  type ComboboxCheckboxItemProps,
+  type ComboboxSectionProps,
   type ComboboxPopupProps,
   type ComboboxItemProps,
 } from "./components/combobox";
@@ -266,10 +285,7 @@ export {
 } from "./components/sidebar";
 export { Kbd, type KbdProps } from "./components/kbd";
 export { Toggle, toggleVariants, type ToggleProps } from "./components/toggle";
-// Dropzone lives as a block under packages/react/src/blocks/dropzone.
-// It composes Progress + Card + preview cards + delete X: apps
-// customize the preview and validation, so it ships as copy-in via
-// `npx shadcn add @patchui/dropzone`.
+// Dropzone ships as a copy-in block; not exported from the package index.
 export {
   Calendar,
   type CalendarProps,

@@ -8,22 +8,22 @@ export function SpinnerDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Sizes (ring)</p>
+        <p className="mb-3 text-caption-12 text-ink-muted">Sizes (ring)</p>
         <div className="flex flex-wrap items-center gap-6">
           {SIZES.map((size) => (
             <div key={size} className="flex flex-col items-center gap-2">
               <Spinner size={size} />
-              <span className="text-label-12 text-gray-800">{size}</span>
+              <span className="text-caption-12 text-ink-muted">{size}</span>
             </div>
           ))}
         </div>
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">
+        <p className="mb-3 text-caption-12 text-ink-muted">
           Dots variant: inline for copy waits
         </p>
-        <div className="flex flex-col gap-3 text-copy-14 text-gray-1000">
+        <div className="flex flex-col gap-3 text-body-14 text-ink">
           <p className="inline-flex items-center gap-1.5">
             Saving <Spinner variant="dots" size="sm" />
           </p>
@@ -37,13 +37,13 @@ export function SpinnerDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-label-12 text-gray-800">Color inheritance</p>
-        <div className="flex flex-wrap items-center gap-6 text-copy-14">
-          <div className="flex items-center gap-2 text-gray-1000">
+        <p className="mb-3 text-caption-12 text-ink-muted">Color inheritance</p>
+        <div className="flex flex-wrap items-center gap-6 text-body-14">
+          <div className="flex items-center gap-2 text-ink">
             <Spinner />
             <span>Default</span>
           </div>
-          <div className="flex items-center gap-2 text-gray-800">
+          <div className="flex items-center gap-2 text-ink-muted">
             <Spinner />
             <span>Muted</span>
           </div>

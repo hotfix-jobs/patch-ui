@@ -38,12 +38,8 @@ const iconSizeBySize: Record<SwitchSize, string> = {
   lg: "[&_svg]:size-3.5",
 };
 
-// Status variants use the semantic role tokens (--success / --warning /
-// --error) instead of the -700 accent step. The accent scale inverts in
-// dark mode, so bg-green-700 becomes a light green which flips the
-// perceived status weight of the switch. Semantic tokens are theme-invariant.
 const onFillByVariant: Record<SwitchVariant, string> = {
-  default: "data-checked:bg-gray-1000",
+  default: "data-checked:bg-primary",
   success: "data-checked:bg-success",
   warning: "data-checked:bg-warning",
   error: "data-checked:bg-error",
@@ -60,7 +56,7 @@ export function Switch({
     <SwitchPrimitive.Root
       className={cn(
         "group inline-flex shrink-0 cursor-pointer items-center rounded-full p-px",
-        "data-unchecked:bg-gray-alpha-500 data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "data-unchecked:bg-surface-3 data-unchecked:hover:bg-surface-4 data-disabled:cursor-not-allowed data-disabled:opacity-50",
         trackBySize[size],
         onFillByVariant[variant],
         colorTransition,
@@ -72,10 +68,11 @@ export function Switch({
     >
       <SwitchPrimitive.Thumb
         className={cn(
-          "relative pointer-events-none rounded-full bg-background-100 shadow-[var(--shadow-card)]",
-          "transition-[translate] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "relative pointer-events-none rounded-full shadow-[var(--shadow-card)]",
+          "transition-[translate,background-color,color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "bg-canvas dark:data-unchecked:bg-ink-tertiary",
+          "[&_svg]:text-ink dark:data-unchecked:[&_svg]:text-canvas",
           "data-unchecked:translate-x-0",
-          "[&_svg]:text-gray-900",
           iconSizeBySize[size],
           thumbBySize[size],
         )}

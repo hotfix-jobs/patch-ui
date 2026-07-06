@@ -1,11 +1,10 @@
 import { InputDemo } from "./input-demo";
 
-
 export const metadata = { title: "Input" };
 
 # Input
 
-A text input with three sizes, styled/unstyled `prefix` + `suffix` slots, built-in `label` and `error` message, and a `rounded` (pill) variant. Uses `background-100` fill and translucent borders that step through hover/focus.
+A text input with three sizes, styled/unstyled `prefix` + `suffix` slots, built-in `label` and `error` message, and a `rounded` (pill) variant. Uses `--surface-elevated` fill so it lifts over the page, with translucent borders that step through hover/focus.
 
 <Install name="input" />
 
@@ -17,8 +16,7 @@ A text input with three sizes, styled/unstyled `prefix` + `suffix` slots, built-
 
 ```tsx
 import { Input } from "@patchui/react";
-import { Search, Mail, ArrowUpCircle } from "lucide-react";
-
+import { MagnifyingGlass, Envelope, ArrowCircleUp } from "@phosphor-icons/react/dist/ssr";
 // Basic
 <Input placeholder="Enter text" />
 
@@ -27,25 +25,22 @@ import { Search, Mail, ArrowUpCircle } from "lucide-react";
 <Input size="md" placeholder="Medium" />  // 40px (default)
 <Input size="lg" placeholder="Large" />   // 48px
 
-// Prefix and suffix (styled by default — own container + separator)
-<Input prefix={<ArrowUpCircle />} placeholder="Default" />
-<Input suffix={<ArrowUpCircle />} placeholder="Default" />
-<Input prefix="https://" suffix=".com" placeholder="Default" />
-
-// Unstyled prefix/suffix (icons float inside the input area)
-<Input prefix={<Search />} prefixStyling={false} placeholder="Search" />
+// Prefix and suffix (inline muted glyph or short label)
+<Input prefix={<ArrowUpCircle />} placeholder="Icon prefix" />
+<Input suffix={<ArrowUpCircle />} placeholder="Icon suffix" />
+<Input prefix="https://" suffix=".com" placeholder="Text prefix and suffix" />
 
 // Inline label and error message
 <Input id="domain" label="Domain" placeholder="example.com" />
 <Input id="email" label="Email" error="Enter a valid email address." />
 
 // Rounded (pill-shaped)
-<Input rounded prefix={<Search />} prefixStyling={false} placeholder="Search" />
+<Input rounded prefix={<Search />} placeholder="Search" />
 
-// Loading — disables input, shows spinner
+// Loading: disables input, shows a spinner
 <Input loading value={value} />
 
-// For clearable search, use SearchInput (clears on Esc key or Esc chip click)
+// For clearable search, use SearchInput (X button clears the value)
 <SearchInput
   value={query}
   onChange={(e) => setQuery(e.target.value)}
@@ -61,31 +56,19 @@ import { Search, Mail, ArrowUpCircle } from "lucide-react";
       name: "size",
       type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "Control height. 32 / 40 / 48px.",
+      description: "Control height. 24 / 32 / 40 px.",
     },
     {
       name: "prefix",
       type: "ReactNode",
       default: "-",
-      description: "Content rendered at the start (icon, unit symbol, or text like `https://`).",
+      description: "Content rendered at the start (icon, unit symbol, or text like `https://`). Rendered inline in muted color -- no background or separator.",
     },
     {
       name: "suffix",
       type: "ReactNode",
       default: "-",
-      description: "Content rendered at the end (icon, unit label, or text like `.com`). Hidden while loading.",
-    },
-    {
-      name: "prefixStyling",
-      type: "boolean",
-      default: "true",
-      description: "Wraps prefix in a styled container (subtle bg + separator). Set false to float the prefix inside the input area.",
-    },
-    {
-      name: "suffixStyling",
-      type: "boolean",
-      default: "true",
-      description: "Wraps suffix in a styled container (subtle bg + separator). Set false to float the suffix inside the input area.",
+      description: "Content rendered at the end (icon, unit label, or text like `.com`). Rendered inline in muted color. Hidden while loading.",
     },
     {
       name: "label",
@@ -136,7 +119,7 @@ import { Search, Mail, ArrowUpCircle } from "lucide-react";
 - The `error` prop takes a boolean (just the visual state) or a string (renders the message inline with `role="alert"`). Prefer strings.
 - Whitespace-trim the value at submit time so a stray space doesn't slip past a required check.
 - Placeholders should look like a real value the user would type: `example.com`, `my-project`. Skip the "Enter your…" instructions; the label already does that job.
-- Styled prefixes and suffixes read as their own module: good for `https://` schemes, `.com` domains, currency units. Turn styling off (`prefixStyling={false}`) when the affix is really an icon that lives inside the field.
+- Prefix and suffix render inline in muted color. Good for icons (`<Search />`, `<Mail />`), short text (`https://`, `.com`, currency symbols), and Kbd hints (`Esc`).
 - For an action button that sits inside an input row, use `<Button shape="circle">` with `aria-label`, not a naked icon.
-- Use `<SearchInput>` for search boxes so keyboard Esc and the Esc chip both clear the value.
+- Use `<SearchInput>` for search boxes: the trailing X button appears once the field has a value and clears it on click.
 </Callout>

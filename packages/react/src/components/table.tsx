@@ -3,50 +3,12 @@
 import type * as React from "react";
 import { cn } from "../utils";
 
-/**
- * Table: semantic HTML table with consistent chrome. Thin wrappers around
- * the native `<table>` elements. Use for genuinely tabular data (multiple
- * rows sharing shape, at least one comparable column); for simpler
- * key/value layouts reach for Card / description-list patterns instead.
- *
- * TableBody accepts opt-in booleans that shape the whole body via CSS
- * descendant selectors: no per-row prop drilling required:
- *   - `striped`: alternating row backgrounds
- *   - `bordered`: vertical cell borders
- *   - `interactive`: row hover effect
- *
- * Usage:
- *   <Table>
- *     <TableHeader>
- *       <TableRow>
- *         <TableHead>Name</TableHead>
- *         <TableHead align="right">Last used</TableHead>
- *       </TableRow>
- *     </TableHeader>
- *     <TableBody interactive>
- *       <TableRow>
- *         <TableCell>acme-web</TableCell>
- *         <TableCell align="right">2m ago</TableCell>
- *       </TableRow>
- *     </TableBody>
- *   </Table>
- */
+/** Semantic HTML table with consistent chrome. */
 
 export interface TableProps
   extends React.TableHTMLAttributes<HTMLTableElement> {
-  /**
-   * Wrap in a horizontally-scrollable container. Default true so
-   * long-content tables stay usable on narrow viewports without manual
-   * overflow handling at the call site.
-   */
+  /** Wrap in a horizontally-scrollable container. */
   scrollable?: boolean;
-  /**
-   * Visual treatment.
-   * - `default`: rounded outer, hairline border, elevated surface bg:
-   *   dashboard / data-card feel.
-   * - `flat`: no radius, no outer bg, no border: reference / documentation
-   *   data-table feel.
-   */
   variant?: "default" | "flat";
 }
 
@@ -61,13 +23,8 @@ export function Table({
       data-slot="table"
       data-variant={variant}
       className={cn(
-        // border-separate so cells accept border-radius (needed for
-        // interactive / striped rounded-row look). When a body has
-        // interactive or striped enabled, add 2px vertical border-spacing
-        // via :has() so the pill has natural gap from adjacent rows.
-        // Plain tables keep border-spacing-0 so border-b dividers on
-        // cells render as one continuous hairline.
-        "w-full caption-bottom border-separate border-spacing-0 text-copy-14 text-gray-1000",
+        // border-separate is required so cells accept border-radius for the interactive/striped pill look.
+        "w-full caption-bottom border-separate border-spacing-0 text-body-14 text-ink",
         "has-[tbody[data-interactive]]:[border-spacing:0_2px] has-[tbody[data-striped]]:[border-spacing:0_2px]",
         className,
       )}
@@ -75,22 +32,16 @@ export function Table({
     />
   );
 
-  // Default variant: outer chrome (border, radius, bg) lives on the
-  // container div. Only pad the table inside when the body opts into
-  // interactive / striped, so the rounded row pill has breathing room
-  // from the outer border. Plain tables sit flush.
   if (variant === "default") {
     return (
       <div
         data-slot="table-container"
         className={cn(
-          "relative w-full overflow-hidden rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400",
+          "relative w-full overflow-hidden rounded-[var(--radius-12)] bg-surface-elevated border border-hairline-strong",
           scrollable && "overflow-x-auto",
         )}
       >
-        <div className="has-[tbody[data-interactive]]:p-1 has-[tbody[data-striped]]:p-1">
-          {tableEl}
-        </div>
+        {tableEl}
       </div>
     );
   }
@@ -117,9 +68,7 @@ export function TableHeader({
   return (
     <thead
       data-slot="table-header"
-      // border-b lives on th (see TableHead) since border-separate
-      // stops thead-level borders from rendering across cell gaps.
-      className={cn("bg-background-200", className)}
+      className={cn(className)}
       {...props}
     />
   );
@@ -149,25 +98,17 @@ export function TableBody({
       data-bordered={bordered ? "" : undefined}
       data-interactive={interactive ? "" : undefined}
       className={cn(
-        // Last row drops its bottom border so it doesn't double up with
-        // the outer container's border.
         "[&_tr:last-child>td]:border-b-0",
-        // Row hover applies bg to individual cells (border-collapse: separate
-        // means tr bg doesn't render as a single pill). Rounded corners on
-        // first and last cell of the hovered / striped row give the
-        // inset-pill look. Both modes DROP the cell border-b: the fill
-        // IS the row indicator, and letting the border-b fight the pill
-        // corners reads as a bug.
         interactive && [
           "[&_td]:!border-b-0",
           "[&_tr]:cursor-pointer",
-          "[&_tr:hover>td]:bg-gray-alpha-100",
+          "[&_tr:hover>td]:bg-surface-2",
           "[&_tr:hover>td:first-child]:rounded-l-[var(--radius-6)]",
           "[&_tr:hover>td:last-child]:rounded-r-[var(--radius-6)]",
         ],
         striped && [
           "[&_td]:!border-b-0",
-          "[&_tr:nth-child(even)>td]:bg-background-200",
+          "[&_tr:nth-child(even)>td]:bg-surface-2",
           "[&_tr:nth-child(even)>td:first-child]:rounded-l-[var(--radius-6)]",
           "[&_tr:nth-child(even)>td:last-child]:rounded-r-[var(--radius-6)]",
         ],
@@ -187,7 +128,7 @@ export function TableFooter({
     <tfoot
       data-slot="table-footer"
       className={cn(
-        "bg-background-200 border-t border-gray-alpha-400 font-medium",
+        "border-t border-hairline font-medium",
         className,
       )}
       {...props}
@@ -225,8 +166,8 @@ export function TableHead({
     <th
       data-slot="table-head"
       className={cn(
-        "h-9 px-3 py-2 text-label-11 text-gray-800 whitespace-nowrap",
-        "border-b border-gray-alpha-400",
+        "h-9 px-3 py-2 text-button-12 text-ink-muted whitespace-nowrap",
+        "border-b border-hairline",
         align === "right" && "text-right",
         align === "center" && "text-center",
         align === "left" && "text-left",
@@ -251,7 +192,7 @@ export function TableCell({
     <td
       data-slot="table-cell"
       className={cn(
-        "px-3 py-2.5 align-middle border-b border-gray-alpha-400",
+        "px-3 py-2.5 align-middle border-b border-hairline",
         align === "right" && "text-right tabular-nums",
         align === "center" && "text-center",
         align === "left" && "text-left",
@@ -273,7 +214,7 @@ export function TableCaption({
   return (
     <caption
       data-slot="table-caption"
-      className={cn("mt-3 text-label-12 text-gray-800 text-left", className)}
+      className={cn("mt-3 text-caption-12 text-ink-muted text-left", className)}
       {...props}
     />
   );

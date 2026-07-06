@@ -2,15 +2,13 @@
 
 import { Button, Toaster, toast } from "@patchui/react";
 
-/** Showcases Toast notifications with different types and actions. */
 export function ToastDemo() {
   return (
     <>
       <Toaster position="bottom-right" />
       <div className="flex flex-col gap-8">
-        {/* Types */}
         <div>
-          <p className="mb-3 text-xs font-medium text-gray-800">
+          <p className="mb-3 text-xs font-medium text-ink-muted">
             Types
           </p>
           <div className="flex flex-wrap gap-3">
@@ -47,9 +45,8 @@ export function ToastDemo() {
           </div>
         </div>
 
-        {/* Default (No Type) */}
         <div>
-          <p className="mb-3 text-xs font-medium text-gray-800">
+          <p className="mb-3 text-xs font-medium text-ink-muted">
             Default
           </p>
           <Button
@@ -60,9 +57,8 @@ export function ToastDemo() {
           </Button>
         </div>
 
-        {/* With Description */}
         <div>
-          <p className="mb-3 text-xs font-medium text-gray-800">
+          <p className="mb-3 text-xs font-medium text-ink-muted">
             With Description
           </p>
           <Button
@@ -77,9 +73,8 @@ export function ToastDemo() {
           </Button>
         </div>
 
-        {/* With Action */}
         <div>
-          <p className="mb-3 text-xs font-medium text-gray-800">
+          <p className="mb-3 text-xs font-medium text-ink-muted">
             With Action
           </p>
           <Button

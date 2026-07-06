@@ -1,457 +1,474 @@
 "use client";
 
-import {
-  FloatingFocusManager,
-  FloatingList,
-  FloatingPortal,
-  autoUpdate,
-  offset,
-  shift,
-  size,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useListItem,
-  useListNavigation,
-  useMergeRefs,
-  useRole,
-} from "@floating-ui/react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import {
-  createContext,
-  forwardRef,
-  useCallback,
-  useContext,
-  useId,
-  useRef,
-  useState,
-} from "react";
+import { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox";
+import { CaretDown, MagnifyingGlass, X } from "@phosphor-icons/react/dist/ssr";
+import { createContext, forwardRef, useContext, useMemo } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { Input, type InputProps } from "./input";
-import { XIcon } from "../internal-icons";
+import {
+  iconMuted,
+  itemGroupLabel,
+  itemRow,
+  popupDivider,
+  popupSurface,
+} from "../recipes";
+import type { InputSize } from "./input";
+import { Checkbox } from "./checkbox";
+import {
+  MOBILE_MEDIA_QUERY,
+  useMediaQuery,
+} from "../hooks/use-media-query";
 
-/**
- * Combobox - an Input paired with a floating popup that shows arbitrary
- * filterable content (suggestions, recent searches, custom rows). Built on
- * `@floating-ui/react` with virtual focus (input keeps focus, items
- * highlighted via aria-activedescendant) and motion-driven open/close.
- *
- * Unlike `Command`, the popup is anchored to an input and opens on focus.
- * Unlike `Menu`, the trigger is an input: typing filters externally;
- * Combobox doesn't manage filtering, it manages the popup + keyboard
- * navigation + ARIA wiring. You compose the items / content yourself.
- *
- * Usage:
- *   <Combobox>
- *     <ComboboxInput
- *       value={query}
- *       onChange={(e) => setQuery(e.target.value)}
- *       icon={<Search />}
- *       placeholder="Search..."
- *     />
- *     <ComboboxPopup>
- *       {results.map((r) => (
- *         <ComboboxItem key={r.id} onSelect={() => pick(r)}>
- *           {r.label}
- *         </ComboboxItem>
- *       ))}
- *     </ComboboxPopup>
- *   </Combobox>
- */
-
-type ComboboxContextValue = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  activeIndex: number | null;
-  setActiveIndex: (i: number | null) => void;
-  refs: ReturnType<typeof useFloating>["refs"];
-  floatingStyles: React.CSSProperties;
-  context: ReturnType<typeof useFloating>["context"];
-  getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"];
-  getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"];
-  getItemProps: ReturnType<typeof useInteractions>["getItemProps"];
-  baseId: string;
-};
-
-const ComboboxContext = createContext<ComboboxContextValue | null>(null);
-
-function useComboboxContext(): ComboboxContextValue {
-  const ctx = useContext(ComboboxContext);
-  if (!ctx)
-    throw new Error("Combobox subcomponents must be used inside <Combobox>");
-  return ctx;
-}
+/* --------------------------------- Root -------------------------------- */
 
 export interface ComboboxProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Search text. */
+  value?: string;
+  onValueChange?: (next: string) => void;
+  placeholder?: string;
   children: React.ReactNode;
 }
 
+const ComboboxSharedContext = createContext<{ placeholder?: string }>({});
+
 export function Combobox({
-  open: controlledOpen,
-  defaultOpen = false,
+  open,
+  defaultOpen,
   onOpenChange,
+  value,
+  onValueChange,
+  placeholder,
   children,
 }: ComboboxProps): React.ReactElement {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-  const open = controlledOpen ?? uncontrolledOpen;
-  const setOpen = useCallback(
-    (next: boolean) => {
-      if (controlledOpen === undefined) setUncontrolledOpen(next);
-      onOpenChange?.(next);
-    },
-    [controlledOpen, onOpenChange],
-  );
-
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const elementsRef = useRef<Array<HTMLElement | null>>([]);
-  const labelsRef = useRef<Array<string | null>>([]);
-
-  const { refs, floatingStyles, context } = useFloating({
-    open,
-    onOpenChange: setOpen,
-    placement: "bottom-start",
-    transform: false,
-    // Combobox semantics: always anchor below the input. `size` constrains
-    // maxHeight to whatever fits: popup scrolls internally rather than
-    // flipping above the input (Google-search style, not menu-style).
-    middleware: [
-      offset(8),
-      shift({ padding: 8 }),
-      size({
-        apply({ rects, elements, availableHeight }) {
-          Object.assign(elements.floating.style, {
-            minWidth: `${rects.reference.width}px`,
-            maxHeight: `${Math.max(120, Math.min(availableHeight - 8, 400))}px`,
-          });
-        },
-        padding: 8,
-      }),
-    ],
-    whileElementsMounted: autoUpdate,
-  });
-
-  const dismiss = useDismiss(context, { outsidePressEvent: "mousedown" });
-  const role = useRole(context, { role: "listbox" });
-  // Virtual focus: input keeps real focus, items get aria-activedescendant.
-  // The proper ARIA combobox pattern.
-  const listNavigation = useListNavigation(context, {
-    listRef: elementsRef,
-    activeIndex,
-    onNavigate: setActiveIndex,
-    virtual: true,
-    loop: true,
-  });
-
-  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
-    [dismiss, role, listNavigation],
-  );
-
-  const baseId = useId();
-
+  const shared = useMemo(() => ({ placeholder }), [placeholder]);
   return (
-    <ComboboxContext.Provider
-      value={{
-        open,
-        setOpen,
-        activeIndex,
-        setActiveIndex,
-        refs,
-        floatingStyles,
-        context,
-        getReferenceProps,
-        getFloatingProps,
-        getItemProps,
-        baseId,
-      }}
-    >
-      <FloatingList elementsRef={elementsRef} labelsRef={labelsRef}>
+    <ComboboxSharedContext.Provider value={shared}>
+      <ComboboxPrimitive.Root
+        open={open}
+        defaultOpen={defaultOpen}
+        onOpenChange={
+          onOpenChange ? (next) => onOpenChange(next) : undefined
+        }
+        inputValue={value}
+        onInputValueChange={
+          onValueChange ? (next) => onValueChange(next) : undefined
+        }
+      >
         {children}
-      </FloatingList>
-    </ComboboxContext.Provider>
+      </ComboboxPrimitive.Root>
+    </ComboboxSharedContext.Provider>
   );
 }
 
-/* --------------------------- ComboboxInput --------------------------- */
+/* -------------------------------- Input -------------------------------- */
 
-function ChevronIndicator({ open }: { open: boolean }): React.ReactElement {
+function ChevronIndicator(): React.ReactElement {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={cn(
-        "size-4 shrink-0 text-gray-800 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        open ? "rotate-180" : "rotate-0",
-      )}
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
+    <ComboboxPrimitive.Icon
+      render={
+        <CaretDown
+          aria-hidden
+          className="size-4 shrink-0 text-ink-muted transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]"
+        />
+      }
+    />
   );
 }
 
-export interface ComboboxInputProps extends InputProps {
-  /** Open the popup automatically when the input receives focus. Default true. */
-  openOnFocus?: boolean;
-  /** Hide the auto-added chevron suffix that indicates open/close state. */
+export interface ComboboxInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "prefix"> {
+  size?: InputSize;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
+  /** Hide the trailing chevron. */
   hideChevron?: boolean;
-  /**
-   * When true and the input has a non-empty value, renders a trailing × that
-   * clears the input. Wire `onClear` to reset your value state.
-   */
+  /** Show a trailing X to clear the input. */
   clearable?: boolean;
-  /** Fired when the user clicks the × to clear. */
   onClear?: () => void;
+  /** Renders a full-radius (pill-shaped) input. */
+  rounded?: boolean;
+  /** Visual error state. */
+  error?: boolean;
+}
+
+const heightBySize: Record<InputSize, string> = {
+  sm: "h-6 text-body-13",
+  md: "h-8 text-body-14",
+  lg: "h-10 text-body-16",
+};
+
+const startPadBySize: Record<InputSize, string> = {
+  sm: "ps-3",
+  md: "ps-3",
+  lg: "ps-3.5",
+};
+
+const endPadBySize: Record<InputSize, string> = {
+  sm: "pe-3",
+  md: "pe-3",
+  lg: "pe-3.5",
+};
+
+function ComboboxAffix({
+  side,
+  children,
+}: {
+  side: "start" | "end";
+  children: React.ReactNode;
+}) {
+  return (
+    <span
+      className={cn(
+        "inline-flex shrink-0 items-center text-ink-muted",
+        side === "start" ? "ps-3 pe-1.5" : "ps-1.5 pe-3",
+        "[&_svg]:size-4",
+      )}
+      data-slot={`combobox-input-${side === "start" ? "prefix" : "suffix"}`}
+    >
+      {children}
+    </span>
+  );
 }
 
 export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
   function ComboboxInput(
     {
-      openOnFocus = true,
-      onFocus,
-      onKeyDown,
-      onClick,
+      size = "md",
+      prefix,
+      suffix,
       hideChevron,
       clearable,
       onClear,
-      value,
-      suffix: userSuffix,
-      suffixStyling,
+      rounded,
+      error,
+      disabled,
+      className,
       ...props
     },
     forwardedRef,
   ) {
-    const { open, setOpen, refs, getReferenceProps, baseId, activeIndex } =
-      useComboboxContext();
-
-    const hasValue =
-      value != null && value !== "" && (typeof value !== "number" || !Number.isNaN(value));
-    const showClear = clearable && hasValue && !props.disabled;
-
-    // Build the combobox suffix: user-provided suffix + optional clear × + chevron.
-    // Wrapped as a single node passed to Input's `suffix` slot with styling disabled
-    // so it floats inline with the input area.
-    // Vercel-style suffix: the clear × REPLACES the chevron when there is a value
-    // to clear. Otherwise the chevron indicates open/close state. This keeps the
-    // affordance space to a single glyph.
-    const suffix = (userSuffix || showClear || !hideChevron) ? (
-      <span className="inline-flex items-center gap-1.5">
-        {userSuffix}
-        {showClear ? (
-          <button
-            type="button"
-            tabIndex={-1}
-            aria-label="Clear"
-            onClick={(e) => {
-              e.stopPropagation();
-              onClear?.();
-            }}
-            className="inline-flex size-5 items-center justify-center rounded-full text-gray-800 hover:bg-gray-alpha-200 hover:text-gray-1000 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]"
-          >
-            <XIcon className="size-3" />
-          </button>
-        ) : (
-          !hideChevron && <ChevronIndicator open={open} />
-        )}
-      </span>
-    ) : undefined;
-    // The Input component wraps the actual <input> in a <span> for icons /
-    // suffix / clear button. The visible "field" box is the wrapper span,
-    // not the inner input: so anchor floating-ui to the parent element so
-    // the popup aligns with the full input chrome (icon included).
-    const setReferenceToWrapper = useCallback(
-      (node: HTMLInputElement | null) => {
-        refs.setReference(node?.parentElement ?? node);
-      },
-      [refs],
-    );
-    const inputRef = useMergeRefs([
-      forwardedRef,
-      setReferenceToWrapper as React.Ref<HTMLInputElement>,
-    ]);
-
-    // Pass our handlers THROUGH getReferenceProps so floating-ui can merge
-    // them with its own interaction handlers. Spreading getReferenceProps()
-    // separately would clobber whichever handlers were declared first.
-    const mergedProps = getReferenceProps({
-      ...(props as React.HTMLProps<HTMLInputElement>),
-      onFocus: (e: React.FocusEvent<HTMLInputElement>) => {
-        // Base UI's typings re-wrap event types; cast on the user-handler call.
-        onFocus?.(e as Parameters<NonNullable<typeof onFocus>>[0]);
-        if (openOnFocus && !e.defaultPrevented) setOpen(true);
-      },
-      onClick: (e: React.MouseEvent<HTMLInputElement>) => {
-        onClick?.(e as Parameters<NonNullable<typeof onClick>>[0]);
-        if (openOnFocus && !e.defaultPrevented) setOpen(true);
-      },
-      onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
-        onKeyDown?.(e as Parameters<NonNullable<typeof onKeyDown>>[0]);
-        if (e.defaultPrevented) return;
-        if (!open && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
-          e.preventDefault();
-          setOpen(true);
-        }
-      },
-    });
+    const shape = rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
+    const trailing = (clearable || !hideChevron || suffix) ? (
+      <ComboboxAffix side="end">
+        <span className="inline-flex items-center gap-1.5">
+          {suffix}
+          {clearable && (
+            <ComboboxPrimitive.Clear
+              aria-label="Clear"
+              onClick={onClear}
+              className="inline-flex size-5 items-center justify-center rounded-full text-ink-muted hover:bg-surface-2 hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[empty]:hidden"
+            >
+              <X className="size-3" />
+            </ComboboxPrimitive.Clear>
+          )}
+          {!hideChevron && <ChevronIndicator />}
+        </span>
+      </ComboboxAffix>
+    ) : null;
 
     return (
-      <Input
-        ref={inputRef}
-        role="combobox"
-        aria-autocomplete="list"
-        aria-expanded={open}
-        aria-controls={`${baseId}-popup`}
-        aria-activedescendant={
-          activeIndex != null ? `${baseId}-item-${activeIndex}` : undefined
-        }
-        autoComplete="off"
-        value={value}
-        suffix={suffix}
-        suffixStyling={suffixStyling ?? false}
-        {...mergedProps}
-      />
+      <ComboboxPrimitive.InputGroup
+        data-slot="combobox-input-group"
+        className={cn(
+          "relative inline-flex w-full items-center overflow-hidden text-ink",
+          shape,
+          "bg-surface-elevated border border-hairline",
+          "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "hover:border-hairline-strong",
+          "has-focus-visible:border-primary",
+          "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
+          error && "!border-error",
+          className,
+        )}
+      >
+        {prefix && <ComboboxAffix side="start">{prefix}</ComboboxAffix>}
+        <ComboboxPrimitive.Input
+          ref={forwardedRef}
+          disabled={disabled}
+          autoComplete="off"
+          data-slot="combobox-input"
+          className={cn(
+            "w-full min-w-0 bg-transparent border-none shadow-none outline-none ring-0",
+            "placeholder:text-ink-subtle focus:outline-none focus:ring-0",
+            heightBySize[size],
+            prefix ? "ps-0" : startPadBySize[size],
+            trailing ? "pe-0" : endPadBySize[size],
+          )}
+          {...props}
+        />
+        {trailing}
+      </ComboboxPrimitive.InputGroup>
     );
   },
 );
 
-/* --------------------------- ComboboxPopup --------------------------- */
+/* -------------------------------- Popup -------------------------------- */
 
 export interface ComboboxPopupProps {
   className?: string;
+  side?: "top" | "bottom" | "left" | "right";
+  align?: "start" | "center" | "end";
+  sideOffset?: number;
   children: React.ReactNode;
 }
 
 export function ComboboxPopup({
   className,
+  side = "bottom",
+  align = "start",
+  sideOffset = 6,
   children,
-}: ComboboxPopupProps): React.ReactElement | null {
-  const { open, context, refs, floatingStyles, getFloatingProps, baseId } =
-    useComboboxContext();
-  const setFloating = useCallback(
-    (node: HTMLElement | null) => refs.setFloating(node),
-    [refs],
-  );
-  const reduceMotion = useReducedMotion();
+}: ComboboxPopupProps): React.ReactElement {
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
+  const { placeholder } = useContext(ComboboxSharedContext);
+
+  if (isMobile) {
+    return (
+      <ComboboxPrimitive.Portal>
+        <ComboboxPrimitive.Backdrop
+          data-slot="combobox-backdrop"
+          className={cn(
+            "fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm",
+            "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+            "data-starting-style:opacity-0 data-ending-style:opacity-0",
+          )}
+        />
+        <ComboboxPrimitive.Positioner className="contents">
+          <ComboboxPrimitive.Popup
+            data-slot="combobox-popup"
+            data-mobile="true"
+            className={cn(
+              "fixed inset-x-2 bottom-2 z-[80] flex flex-col overflow-hidden outline-none",
+              "rounded-[var(--radius-16)] bg-surface-elevated border border-hairline shadow-modal",
+              "max-h-[calc(100dvh-1rem)]",
+              "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+              "data-starting-style:opacity-0 data-starting-style:translate-y-8",
+              "data-ending-style:opacity-0 data-ending-style:translate-y-8",
+              className,
+            )}
+          >
+            <ComboboxPrimitive.InputGroup
+              data-slot="combobox-mobile-input"
+              className="flex-none flex w-full items-center gap-2 border-b border-hairline px-3 text-ink"
+            >
+              <MagnifyingGlass
+                aria-hidden
+                className="size-4 shrink-0 text-ink-muted"
+              />
+              <ComboboxPrimitive.Input
+                autoComplete="off"
+                placeholder={placeholder}
+                className="h-11 w-full min-w-0 bg-transparent border-none shadow-none outline-none ring-0 placeholder:text-ink-subtle focus:outline-none focus:ring-0 text-body-16"
+              />
+            </ComboboxPrimitive.InputGroup>
+            <ComboboxPrimitive.List className="min-h-0 flex-1 overflow-y-auto p-1">
+              {children}
+            </ComboboxPrimitive.List>
+          </ComboboxPrimitive.Popup>
+        </ComboboxPrimitive.Positioner>
+      </ComboboxPrimitive.Portal>
+    );
+  }
 
   return (
-    <FloatingPortal>
-      <AnimatePresence>
-        {open && (
-          // initialFocus={-1} keeps focus on the input (virtual focus model).
-          // visuallyHiddenDismiss adds an accessible close for screen readers.
-          <FloatingFocusManager
-            context={context}
-            modal={false}
-            initialFocus={-1}
-            // Don't programmatically refocus the input on close: the input
-            // never lost focus (virtual focus model), and refocusing would
-            // fire a focus event that triggers openOnFocus, reopening the
-            // popup right after dismiss closed it.
-            returnFocus={false}
-            visuallyHiddenDismiss
-          >
-            <motion.div
-              ref={setFloating}
-              id={`${baseId}-popup`}
-              data-slot="combobox-popup"
-              {...getFloatingProps()}
-              style={{
-                ...floatingStyles,
-                transformOrigin: "top center",
-              }}
-              initial={reduceMotion ? false : { opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={reduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
-              transition={
-                reduceMotion
-                  ? { duration: 0 }
-                  : {
-                      type: "spring",
-                      stiffness: 400,
-                      damping: 30,
-                      mass: 0.6,
-                    }
-              }
-              className={cn(
-                "z-[80] flex flex-col rounded-[var(--radius-12)] bg-background-100 border border-gray-alpha-400 shadow-menu outline-none overflow-hidden",
-                className,
-              )}
-            >
-              <div className="max-h-full overflow-y-auto">{children}</div>
-            </motion.div>
-          </FloatingFocusManager>
-        )}
-      </AnimatePresence>
-    </FloatingPortal>
+    <ComboboxPrimitive.Portal>
+      <ComboboxPrimitive.Positioner
+        side={side}
+        align={align}
+        sideOffset={sideOffset}
+        className="z-[80] outline-none"
+      >
+        <ComboboxPrimitive.Popup
+          data-slot="combobox-popup"
+          className={cn(
+            "flex flex-col overflow-hidden outline-none",
+            popupSurface,
+            "min-w-[var(--anchor-width)] max-h-[min(var(--available-height),400px)]",
+            "transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+            "data-starting-style:opacity-0 data-starting-style:scale-95",
+            "data-ending-style:opacity-0 data-ending-style:scale-95",
+            className,
+          )}
+        >
+          <ComboboxPrimitive.List className="min-h-0 flex-1 overflow-y-auto p-1">
+            {children}
+          </ComboboxPrimitive.List>
+        </ComboboxPrimitive.Popup>
+      </ComboboxPrimitive.Positioner>
+    </ComboboxPrimitive.Portal>
   );
 }
 
-/* --------------------------- ComboboxItem --------------------------- */
+/* --------------------------------- Item -------------------------------- */
 
 export interface ComboboxItemProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> {
-  /** Fired when the user clicks or presses Enter while this item is active. */
   onSelect?: () => void;
-  label?: string;
   disabled?: boolean;
+  value?: unknown;
 }
 
 export function ComboboxItem({
   className,
   children,
   onSelect,
-  label,
   disabled,
+  value,
   onClick,
   ...props
 }: ComboboxItemProps): React.ReactElement {
-  const { activeIndex, getItemProps, setOpen, baseId } = useComboboxContext();
-  const itemLabel = label ?? (typeof children === "string" ? children : "");
-  const { ref, index } = useListItem({ label: itemLabel });
-  const isActive = activeIndex === index;
-
-  const handleSelect = () => {
-    if (disabled) return;
-    onSelect?.();
-    setOpen(false);
-  };
-
   return (
-    <div
-      role="option"
-      ref={ref}
-      id={`${baseId}-item-${index}`}
-      aria-selected={isActive}
-      aria-disabled={disabled || undefined}
+    <ComboboxPrimitive.Item
+      value={value}
+      disabled={disabled}
       data-slot="combobox-item"
-      data-active={isActive ? "" : undefined}
-      data-disabled={disabled ? "" : undefined}
       className={cn(
-        "mx-1 flex cursor-pointer items-center gap-2 rounded-[var(--radius-6)] px-3 py-2 text-copy-14 text-gray-1000 outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-gray-alpha-200 data-[active]:bg-gray-alpha-200 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        itemRow.base,
+        itemRow.comfortable,
+        "md:min-h-7 md:px-2 md:py-1.5 md:text-body-13",
+        "cursor-pointer gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        iconMuted,
         className,
       )}
-      {...getItemProps({
-        onClick: (e: React.MouseEvent<HTMLDivElement>) => {
-          onClick?.(e);
-          if (!e.defaultPrevented) handleSelect();
-        },
-        onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            handleSelect();
-          }
-        },
-      })}
+      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        onClick?.(e);
+        if (e.defaultPrevented) return;
+        onSelect?.();
+      }}
       {...props}
     >
       {children}
-    </div>
+    </ComboboxPrimitive.Item>
   );
 }
+
+/* ---------------------------- CheckboxItem ---------------------------- */
+
+export interface ComboboxCheckboxItemProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect" | "prefix"> {
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  onSelect?: (checked: boolean) => void;
+  disabled?: boolean;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
+  value?: unknown;
+}
+
+export function ComboboxCheckboxItem({
+  className,
+  children,
+  checked = false,
+  onCheckedChange,
+  onSelect,
+  disabled,
+  prefix,
+  suffix,
+  value,
+  onClick,
+  ...props
+}: ComboboxCheckboxItemProps): React.ReactElement {
+  return (
+    <ComboboxPrimitive.Item
+      value={value}
+      disabled={disabled}
+      data-slot="combobox-checkbox-item"
+      data-state={checked ? "checked" : "unchecked"}
+      aria-checked={checked}
+      className={cn(
+        itemRow.base,
+        itemRow.comfortable,
+        "md:min-h-7 md:px-2 md:py-1.5 md:text-body-13",
+        "cursor-pointer gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        iconMuted,
+        className,
+      )}
+      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        onClick?.(e);
+        if (e.defaultPrevented) return;
+        if (disabled) return;
+        const next = !checked;
+        onCheckedChange?.(next);
+        onSelect?.(next);
+        e.preventDefault();
+      }}
+      {...props}
+    >
+      <Checkbox
+        checked={checked}
+        tabIndex={-1}
+        aria-hidden
+        className="pointer-events-none"
+      />
+      {prefix}
+      <span className="min-w-0 flex-1 truncate">{children}</span>
+      {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
+    </ComboboxPrimitive.Item>
+  );
+}
+
+/* -------------------------------- Divider ----------------------------- */
+
+export function ComboboxDivider({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>): React.ReactElement {
+  return (
+    <ComboboxPrimitive.Separator
+      data-slot="combobox-divider"
+      className={cn(popupDivider, className)}
+      {...props}
+    />
+  );
+}
+
+/* ---------------------------- Group / Section ------------------------- */
+
+export function ComboboxGroupLabel({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>): React.ReactElement {
+  return (
+    <ComboboxPrimitive.GroupLabel
+      data-slot="combobox-group-label"
+      className={cn(
+        itemGroupLabel.base,
+        itemGroupLabel.comfortable,
+        "md:px-2",
+        className,
+      )}
+      {...props}
+    />
+  );
+}
+
+export interface ComboboxSectionProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children" | "title"> {
+  title?: React.ReactNode;
+  children: React.ReactNode;
+}
+
+export function ComboboxSection({
+  title,
+  className,
+  children,
+  ...props
+}: ComboboxSectionProps): React.ReactElement {
+  return (
+    <ComboboxPrimitive.Group
+      data-slot="combobox-section"
+      className={cn("py-1 first:pt-0 last:pb-0", className)}
+      {...props}
+    >
+      {title != null && <ComboboxGroupLabel>{title}</ComboboxGroupLabel>}
+      {children}
+    </ComboboxPrimitive.Group>
+  );
+}
+
+export { MagnifyingGlass as ComboboxSearchIcon };
+export { ComboboxPrimitive };

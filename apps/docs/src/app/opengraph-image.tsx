@@ -4,11 +4,7 @@ export const alt = "Patch UI: accessible React components, copy-in";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/**
- * Root OpenGraph image. Static-shaped card used across the site (each page
- * inherits it unless it defines its own). Rendered via Next.js's
- * ImageResponse: no external assets, everything drawn with inline styles.
- */
+/** Root OpenGraph image inherited by pages that do not define their own. */
 export default function OpengraphImage() {
   return new ImageResponse(
     (
@@ -25,7 +21,6 @@ export default function OpengraphImage() {
           fontFamily: "sans-serif",
         }}
       >
-        {/* Top: brand */}
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <div
             style={{
@@ -46,7 +41,6 @@ export default function OpengraphImage() {
           <div style={{ fontSize: 32, fontWeight: 600 }}>Patch UI</div>
         </div>
 
-        {/* Middle: headline */}
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           <div
             style={{
@@ -72,7 +66,6 @@ export default function OpengraphImage() {
           </div>
         </div>
 
-        {/* Bottom: URL + install command */}
         <div
           style={{
             display: "flex",

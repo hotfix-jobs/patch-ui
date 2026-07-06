@@ -1,12 +1,12 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import type * as React from "react";
 import { Button } from "./button";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
 
+import { CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
 type Mode = "single" | "range" | "multiple";
 
 export interface DateRange {
@@ -56,8 +56,6 @@ export type CalendarProps =
   | RangeCalendarProps
   | MultipleCalendarProps;
 
-/* --------------------------- date helpers --------------------------- */
-
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MONTH_NAMES = [
   "January", "February", "March", "April", "May", "June",
@@ -97,10 +95,6 @@ function inRange(d: Date, from: Date, to: Date): boolean {
   return t >= startOfDay(from).getTime() && t <= startOfDay(to).getTime();
 }
 
-/**
- * Build the 6-week grid for a month. Each row is a week (7 days),
- * starting from the configured weekStartsOn.
- */
 function buildMonthGrid(month: Date, weekStartsOn: number): Date[][] {
   const first = new Date(month.getFullYear(), month.getMonth(), 1);
   const startOffset = (first.getDay() - weekStartsOn + 7) % 7;
@@ -120,13 +114,7 @@ function buildMonthGrid(month: Date, weekStartsOn: number): Date[][] {
   return weeks;
 }
 
-/* --------------------------- Calendar --------------------------- */
-
-/**
- * Calendar: month grid with single, range, or multiple date selection.
- * Pure UI primitive: keyboard navigable (arrow keys + Home/End +
- * PageUp/PageDown). For an input-triggered popup, use `DatePicker`.
- */
+/** Month grid with single, range, or multiple date selection. For an input-triggered popup, use `DatePicker`. */
 export function Calendar(props: CalendarProps): React.ReactElement {
   const {
     mode = "single",
@@ -139,7 +127,6 @@ export function Calendar(props: CalendarProps): React.ReactElement {
     className,
   } = props as BaseProps & { mode: Mode };
 
-  // Resolve initial month: defaultMonth → first selected date → today.
   const initialMonth = useMemo(() => {
     if (defaultMonth) return startOfDay(defaultMonth);
     if (mode === "single") {
@@ -166,7 +153,6 @@ export function Calendar(props: CalendarProps): React.ReactElement {
   const [viewMonth, setViewMonth] = useState<Date>(initialMonth);
   const today = startOfDay(new Date());
 
-  // Track selection (controlled or uncontrolled per mode).
   const [singleUncontrolled, setSingleUncontrolled] = useState<Date | null>(
     mode === "single"
       ? ((props as SingleCalendarProps).defaultValue ?? null)
@@ -304,7 +290,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
       data-slot="calendar"
       data-mode={mode}
       className={cn(
-        "w-fit select-none rounded-[var(--radius-12)] border border-gray-alpha-400 bg-background-100 p-3 text-gray-1000",
+        "w-fit select-none rounded-[var(--radius-12)] border border-hairline bg-surface-elevated p-3 text-ink",
         className,
       )}
     >
@@ -313,17 +299,17 @@ export function Calendar(props: CalendarProps): React.ReactElement {
         <Button
           variant="tertiary"
           size="sm"
-          icon={<ChevronLeft className="size-4" />}
+          icon={<CaretLeft className="size-4" />}
           onClick={() => setViewMonth((m) => addMonths(m, -1))}
           aria-label="Previous month"
         />
-        <div className="text-button-14 tabular-nums text-gray-1000">
+        <div className="text-button-14 tabular-nums text-ink">
           {monthLabel}
         </div>
         <Button
           variant="tertiary"
           size="sm"
-          icon={<ChevronRight className="size-4" />}
+          icon={<CaretRight className="size-4" />}
           onClick={() => setViewMonth((m) => addMonths(m, 1))}
           aria-label="Next month"
         />
@@ -334,7 +320,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
         {dayNames.map((d, i) => (
           <div
             key={i}
-            className="text-center text-label-11 text-gray-800"
+            className="text-center text-caption-11 text-ink-muted"
           >
             {d}
           </div>
@@ -363,19 +349,17 @@ export function Calendar(props: CalendarProps): React.ReactElement {
               data-selected={selected || undefined}
               data-in-range={inSelectedRange || undefined}
               className={cn(
-                "relative inline-flex h-9 w-9 items-center justify-center tabular-nums text-copy-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+                "relative inline-flex size-9 items-center justify-center tabular-nums text-body-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
                 "rounded-[var(--radius-6)]",
-                outside && "text-gray-700",
-                !outside && !selected && "text-gray-1000",
-                !selected &&
-                  !disabledDay &&
-                  "hover:bg-gray-alpha-100",
+                outside && "text-ink-subtle",
+                !outside && !selected && "text-ink",
+                !selected && !disabledDay && "hover:bg-surface-1",
                 isToday &&
                   !selected &&
-                  "font-medium ring-1 ring-inset ring-gray-alpha-400",
+                  "text-button-14 ring-1 ring-inset ring-hairline-strong",
                 selected &&
-                  "bg-gray-1000 text-background-100 font-medium hover:bg-gray-1000",
-                inSelectedRange && !selected && "bg-gray-alpha-100",
+                  "bg-primary text-on-primary text-button-14 hover:bg-primary-hover",
+                inSelectedRange && !selected && "bg-surface-1",
                 disabledDay && "pointer-events-none opacity-30",
                 focusRing,
               )}

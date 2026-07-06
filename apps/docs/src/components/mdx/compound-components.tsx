@@ -1,3 +1,12 @@
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from "@patchui/react";
+
 interface CompoundComponentDef {
   name: string;
   description: string;
@@ -8,47 +17,45 @@ interface CompoundComponentsProps {
   components: CompoundComponentDef[];
 }
 
+/**
+ * MDX shortcode for listing the sub-components of a compound primitive
+ * (Menu.Root / Menu.Trigger / Menu.Positioner / ...). Renders through
+ * the Patch UI Table primitives so it dogfoods the same chrome the
+ * PropsTable uses.
+ */
 export function CompoundComponents({ components }: CompoundComponentsProps) {
   if (!components || components.length === 0) return null;
 
   const hasElement = components.some((c) => c.element);
 
   return (
-    <div className="compound-components my-6 overflow-x-auto rounded-[4px] border border-gray-alpha-400">
-      <table className="w-full text-sm">
-        <thead className="bg-gray-200">
-          <tr>
-            <th className="px-4 py-2.5 text-left text-label-11 text-gray-800">
-              Component
-            </th>
-            {hasElement && (
-              <th className="px-4 py-2.5 text-left text-label-11 text-gray-800">
-                Element
-              </th>
-            )}
-            <th className="px-4 py-2.5 text-left text-label-11 text-gray-800">
-              Description
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="my-6">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Component</TableHead>
+            {hasElement && <TableHead>Element</TableHead>}
+            <TableHead>Description</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {components.map((comp) => (
-            <tr key={comp.name} className="border-t border-gray-alpha-400">
-              <td className="px-4 py-3 text-label-13 text-gray-1000 align-top">
-                {comp.name}
-              </td>
+            <TableRow key={comp.name}>
+              <TableCell className="align-top text-body-13">{comp.name}</TableCell>
               {hasElement && (
-                <td className="px-4 py-3 text-label-13 text-gray-900 align-top">
-                  {comp.element ?? "-"}
-                </td>
+                <TableCell className="align-top text-body-13">
+                  {comp.element ?? (
+                    <span className="text-ink-subtle">None</span>
+                  )}
+                </TableCell>
               )}
-              <td className="px-4 py-3 text-gray-900 align-top">
+              <TableCell className="align-top text-body-13">
                 {comp.description}
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

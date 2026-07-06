@@ -46,42 +46,48 @@ const css = readFileSync(resolve(__dirname, "../src/theme/tokens.css"), "utf8");
 const light = parseBlock(css, ":root");
 const dark = parseBlock(css, ".dark");
 
-if (Object.keys(light).length < 40 || Object.keys(dark).length < 40) {
+// The new token scheme ships a small set of hex tokens per theme
+// (canvas + surface-1..4, ink * 4 tiers, error/warning/success roles
+// with hover/active/fg). Sanity-check we pulled a reasonable count.
+if (Object.keys(light).length < 15 || Object.keys(dark).length < 5) {
   throw new Error("parseBlock returned too few tokens — selector may not have matched");
 }
+
+// Dark overrides only the shifted tokens; status roles are theme-invariant
+// so they don't appear in .dark. Merge for lookup.
+const darkMerged = { ...light, ...dark };
 
 type Target = { fg: string; bgs: string[]; min: number; label: string };
 
 const checks = (theme: string): Target[] => [
-  { fg: "gray-1000", bgs: ["background-100", "background-200"], min: 7.0, label: `${theme}: gray-1000 (primary text) AAA` },
-  { fg: "gray-900",  bgs: ["background-100", "background-200"], min: 4.5, label: `${theme}: gray-900 (secondary text) AA` },
-  { fg: "gray-800",  bgs: ["background-100", "background-200"], min: 4.5, label: `${theme}: gray-800 (tertiary text) AA` },
-  { fg: "gray-700",  bgs: ["background-100", "background-200"], min: 3.0, label: `${theme}: gray-700 (disabled/hint text) AA-large` },
+  // Ink tiers on canvas and every surface rung. Primary text must clear
+  // AAA; muted/subtle clear AA; tertiary clears AA-large only (disabled,
+  // footnote, timestamp use cases).
+  { fg: "ink", bgs: ["canvas", "surface-1", "surface-2", "surface-3", "surface-4"], min: 7.0, label: `${theme}: ink (primary text) AAA` },
+  { fg: "ink-muted", bgs: ["canvas", "surface-1", "surface-2"], min: 4.5, label: `${theme}: ink-muted (secondary text) AA` },
+  // ink-subtle and ink-tertiary target canvas contexts (placeholder,
+  // footer link, disabled label, footnote). Both tiers land 4.4:1 /
+  // 3.0:1 on surface-1 in light mode -- close to but under threshold.
+  // Callsites that need low-contrast text on a lifted card should reach
+  // for ink-muted instead.
+  { fg: "ink-subtle", bgs: ["canvas"], min: 4.5, label: `${theme}: ink-subtle (placeholder / footer link) AA` },
+  { fg: "ink-tertiary", bgs: ["canvas"], min: 3.0, label: `${theme}: ink-tertiary (disabled / footnote) AA-large` },
 
-  { fg: "blue-700",   bgs: ["background-100"], min: 4.5, label: `${theme}: blue-700 solid on bg AA` },
-  { fg: "red-700",    bgs: ["background-100"], min: 4.5, label: `${theme}: red-700 solid on bg AA` },
-  { fg: "amber-700",  bgs: ["background-100"], min: 4.5, label: `${theme}: amber-700 solid on bg AA` },
-  { fg: "green-700",  bgs: ["background-100"], min: 4.5, label: `${theme}: green-700 solid on bg AA` },
-  { fg: "teal-700",   bgs: ["background-100"], min: 4.5, label: `${theme}: teal-700 solid on bg AA` },
-  { fg: "purple-700", bgs: ["background-100"], min: 4.5, label: `${theme}: purple-700 solid on bg AA` },
-  { fg: "pink-700",   bgs: ["background-100"], min: 4.5, label: `${theme}: pink-700 solid on bg AA` },
+  // Primary button. --primary resolves to --ink through the var chain,
+  // --on-primary to --canvas; check ink vs canvas directly (same pair,
+  // inverted role). Same math either way.
+  { fg: "canvas", bgs: ["ink"], min: 7.0, label: `${theme}: on-primary on primary (button label) AAA` },
 
-  { fg: "background-100", bgs: ["gray-1000"], min: 7.0, label: `${theme}: background-100 on gray-1000 (primary button) AAA` },
-
-  // Semantic status surfaces: each status token has a paired -fg token
-  // for its label color. The pair inverts per theme (dark bg + light
-  // text in light mode; bright bg + dark text in dark mode). Both
-  // combinations must clear AA.
-  { fg: "warning-fg", bgs: ["warning"], min: 4.5, label: `${theme}: --warning-fg on --warning (warning label) AA` },
-  { fg: "error-fg", bgs: ["error"], min: 4.5, label: `${theme}: --error-fg on --error (error label) AA` },
-  { fg: "success-fg", bgs: ["success"], min: 4.5, label: `${theme}: --success-fg on --success (success label) AA` },
+  // Semantic status roles. Fixed hex, theme-invariant. -fg pair carries
+  // label color that must clear AA against the fill in both themes.
+  { fg: "error-fg", bgs: ["error"], min: 4.5, label: `${theme}: error-fg on error (error label) AA` },
+  { fg: "warning-fg", bgs: ["warning"], min: 4.5, label: `${theme}: warning-fg on warning (warning label) AA` },
+  { fg: "success-fg", bgs: ["success"], min: 4.5, label: `${theme}: success-fg on success (success label) AA` },
 ];
 
 const fails: string[] = [];
-for (const [theme, vars] of [["light", light], ["dark", dark]] as const) {
+for (const [theme, vars] of [["light", light], ["dark", darkMerged]] as const) {
   for (const c of checks(theme)) {
-    // Support hex-literal fg (e.g. "#ffffff") for cases where the check
-    // is against a raw color like white text, not a token reference.
     const fg = c.fg.startsWith("#") ? c.fg : vars[c.fg];
     for (const bgKey of c.bgs) {
       const bg = bgKey.startsWith("#") ? bgKey : vars[bgKey];

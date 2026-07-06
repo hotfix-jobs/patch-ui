@@ -1,36 +1,17 @@
 "use client";
 
+import { Toast as ToastPrimitive } from "@base-ui/react/toast";
 import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-  type Variants,
-} from "motion/react";
-import {
-  CircleAlert,
-  CircleCheck,
+  CheckCircle,
   Info,
-  TriangleAlert,
-} from "lucide-react";
-import { Spinner } from "./spinner";
-import { XIcon } from "../internal-icons";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
-
-const emptySubscribe = () => () => {};
-function useMounted(): boolean {
-  return useSyncExternalStore(emptySubscribe, () => true, () => false);
-}
+  Warning,
+  WarningCircle,
+  X,
+} from "@phosphor-icons/react/dist/ssr";
 import type * as React from "react";
-import { createPortal } from "react-dom";
 import { cn } from "../utils";
 import { focusRing } from "../recipes";
+import { Spinner } from "./spinner";
 
 /* ----------------------------- types ----------------------------- */
 
@@ -62,16 +43,11 @@ export interface ToastOptions {
   action?: ToastAction;
 }
 
-interface ToastData {
-  id: string;
-  type: ToastType;
-  title: React.ReactNode;
-  description?: React.ReactNode;
-  duration: number;
+type ToastData = {
   action?: ToastAction;
-}
+};
 
-/* ----------------------------- store ----------------------------- */
+/* --------------------------- manager --------------------------- */
 
 const DEFAULT_DURATIONS: Record<ToastType, number> = {
   default: 5000,
@@ -79,80 +55,29 @@ const DEFAULT_DURATIONS: Record<ToastType, number> = {
   info: 5000,
   warning: 6000,
   error: 7000,
-  loading: Number.POSITIVE_INFINITY,
+  loading: 0,
 };
 
-type Listener = () => void;
+const HIGH_PRIORITY: Partial<Record<ToastType, true>> = {
+  warning: true,
+  error: true,
+};
 
-class ToastStore {
-  private toasts: ToastData[] = [];
-  private listeners = new Set<Listener>();
-  private idCounter = 0;
+const manager = ToastPrimitive.createToastManager<ToastData>();
 
-  subscribe(listener: Listener): () => void {
-    this.listeners.add(listener);
-    return () => this.listeners.delete(listener);
-  }
-
-  getSnapshot = (): ToastData[] => this.toasts;
-
-  private emit() {
-    this.listeners.forEach((l) => l());
-  }
-
-  private nextId(): string {
-    this.idCounter += 1;
-    return `t${this.idCounter}`;
-  }
-
-  add(input: {
-    type?: ToastType;
-    title: React.ReactNode;
-    description?: React.ReactNode;
-    duration?: number;
-    action?: ToastAction;
-    id?: string;
-  }): string {
-    const type = input.type ?? "default";
-    const id = input.id ?? this.nextId();
-    const duration = input.duration ?? DEFAULT_DURATIONS[type];
-    const next: ToastData = {
-      id,
-      type,
-      title: input.title,
-      description: input.description,
-      duration,
-      action: input.action,
-    };
-    // Replace if id already present (used by update()); otherwise append.
-    const existingIndex = this.toasts.findIndex((t) => t.id === id);
-    if (existingIndex >= 0) {
-      this.toasts = [
-        ...this.toasts.slice(0, existingIndex),
-        next,
-        ...this.toasts.slice(existingIndex + 1),
-      ];
-    } else {
-      this.toasts = [...this.toasts, next];
-    }
-    this.emit();
-    return id;
-  }
-
-  dismiss(id?: string): void {
-    this.toasts = id == null ? [] : this.toasts.filter((t) => t.id !== id);
-    this.emit();
-  }
+function addToast(type: ToastType, title: React.ReactNode, options?: ToastOptions): string {
+  return manager.add({
+    id: options?.id,
+    type,
+    title,
+    description: options?.description,
+    timeout: options?.duration ?? DEFAULT_DURATIONS[type],
+    priority: HIGH_PRIORITY[type] ? "high" : "low",
+    data: options?.action ? { action: options.action } : undefined,
+  });
 }
 
-const store = new ToastStore();
-
-/* --------------------------- public API --------------------------- */
-
-type ToastFn = (
-  title: React.ReactNode,
-  options?: ToastOptions,
-) => string;
+type ToastFn = (title: React.ReactNode, options?: ToastOptions) => string;
 
 interface ToastApi extends ToastFn {
   success: ToastFn;
@@ -163,55 +88,27 @@ interface ToastApi extends ToastFn {
   dismiss: (id?: string) => void;
 }
 
-function createToastFn(type: ToastType): ToastFn {
-  return (title, options) =>
-    store.add({
-      type,
-      title,
-      description: options?.description,
-      duration: options?.duration,
-      action: options?.action,
-      id: options?.id,
-    });
-}
-
-export const toast: ToastApi = Object.assign(createToastFn("default"), {
-  success: createToastFn("success"),
-  error: createToastFn("error"),
-  warning: createToastFn("warning"),
-  info: createToastFn("info"),
-  loading: createToastFn("loading"),
-  dismiss: (id?: string) => store.dismiss(id),
-});
+export const toast: ToastApi = Object.assign(
+  ((title, options) => addToast("default", title, options)) as ToastFn,
+  {
+    success: (title, options) => addToast("success", title, options),
+    error: (title, options) => addToast("error", title, options),
+    warning: (title, options) => addToast("warning", title, options),
+    info: (title, options) => addToast("info", title, options),
+    loading: (title, options) => addToast("loading", title, options),
+    dismiss: (id?: string) => manager.close(id),
+  } satisfies Omit<ToastApi, keyof ToastFn>,
+);
 
 /* --------------------------- Toaster --------------------------- */
 
-const TYPE_ICON: Record<ToastType, React.ReactNode | null> = {
-  default: null,
-  success: <CircleCheck className="size-4 text-[var(--success)]" />,
-  error: <CircleAlert className="size-4 text-[var(--error)]" />,
-  warning: <TriangleAlert className="size-4 text-[var(--warning)]" />,
-  info: <Info className="size-4 text-gray-800" />,
-  loading: <Spinner size="sm" className="text-gray-800" />,
-};
-
-const TYPE_ARIA_LIVE: Record<ToastType, "polite" | "assertive"> = {
-  default: "polite",
-  success: "polite",
-  info: "polite",
-  loading: "polite",
-  warning: "assertive",
-  error: "assertive",
-};
-
 const POSITION_CLASSES: Record<ToastPosition, string> = {
-  "top-left": "top-4 left-4 sm:top-6 sm:left-6 items-start",
-  "top-center": "top-4 left-1/2 -translate-x-1/2 sm:top-6 items-center",
-  "top-right": "top-4 right-4 sm:top-6 sm:right-6 items-end",
-  "bottom-left": "bottom-4 left-4 sm:bottom-6 sm:left-6 items-start",
-  "bottom-center":
-    "bottom-4 left-1/2 -translate-x-1/2 sm:bottom-6 items-center",
-  "bottom-right": "bottom-4 right-4 sm:bottom-6 sm:right-6 items-end",
+  "top-left": "top-4 left-4 sm:top-6 sm:left-6",
+  "top-center": "top-4 left-1/2 -translate-x-1/2 sm:top-6",
+  "top-right": "top-4 right-4 sm:top-6 sm:right-6",
+  "bottom-left": "bottom-4 left-4 sm:bottom-6 sm:left-6",
+  "bottom-center": "bottom-4 left-1/2 -translate-x-1/2 sm:bottom-6",
+  "bottom-right": "bottom-4 right-4 sm:bottom-6 sm:right-6",
 };
 
 function isTopPosition(p: ToastPosition): boolean {
@@ -221,7 +118,6 @@ function isTopPosition(p: ToastPosition): boolean {
 export interface ToasterProps {
   position?: ToastPosition;
   visibleToasts?: number;
-  gap?: number;
   toastWidth?: number;
   className?: string;
 }
@@ -229,240 +125,124 @@ export interface ToasterProps {
 export function Toaster({
   position = "bottom-right",
   visibleToasts = 3,
-  gap = 8,
   toastWidth = 360,
   className,
-}: ToasterProps): React.ReactPortal | null {
-  const toasts = useSyncExternalStore(
-    (l) => store.subscribe(l),
-    store.getSnapshot,
-    store.getSnapshot,
-  );
-  const mounted = useMounted();
-  const [isPaused, setIsPaused] = useState(false);
-
-  // Newest at end of array; show most-recent N. For top positions we want
-  // newest visually at the top; for bottom positions, newest at the bottom.
-  const visible = useMemo(() => {
-    const slice = toasts.slice(-visibleToasts);
-    return isTopPosition(position) ? slice.reverse() : slice;
-  }, [toasts, visibleToasts, position]);
-
-  if (!mounted) return null;
-
-  const topPos = isTopPosition(position);
-
-  return createPortal(
-    <div
-      role="region"
-      aria-label="Notifications"
-      data-slot="toaster"
-      className={cn(
-        "pointer-events-none fixed z-90 flex flex-col",
-        POSITION_CLASSES[position],
-        className,
-      )}
-      style={{ width: toastWidth, gap }}
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
-      onFocusCapture={() => setIsPaused(true)}
-      onBlurCapture={() => setIsPaused(false)}
-    >
-      <AnimatePresence initial={false} mode="popLayout">
-        {visible.map((t, idx) => {
-          const stackIndex = topPos ? idx : visible.length - 1 - idx;
-          return (
-            <ToastItem
-              key={t.id}
-              toast={t}
-              stackIndex={stackIndex}
-              isPaused={isPaused}
-              position={position}
-            />
-          );
-        })}
-      </AnimatePresence>
-    </div>,
-    document.body,
+}: ToasterProps): React.ReactElement {
+  return (
+    <ToastPrimitive.Provider toastManager={manager} limit={visibleToasts}>
+      <ToastPrimitive.Viewport
+        data-slot="toaster"
+        data-position={position}
+        className={cn(
+          "pointer-events-none fixed z-90",
+          POSITION_CLASSES[position],
+          className,
+        )}
+        style={{ width: toastWidth }}
+      >
+        <ToastList position={position} />
+      </ToastPrimitive.Viewport>
+    </ToastPrimitive.Provider>
   );
 }
 
-/* --------------------------- ToastItem --------------------------- */
+/* --------------------------- ToastList --------------------------- */
 
-function ToastItem({
-  toast: t,
-  stackIndex,
-  isPaused,
-  position,
-}: {
-  toast: ToastData;
-  stackIndex: number;
-  isPaused: boolean;
-  position: ToastPosition;
-}): React.ReactElement {
-  const reduceMotion = useReducedMotion();
-  const topPos = isTopPosition(position);
-  const enterY = topPos ? -16 : 16;
+const TYPE_ICON: Record<string, React.ReactNode> = {
+  success: <CheckCircle className="size-4 text-success" />,
+  error: <WarningCircle className="size-4 text-error" />,
+  warning: <Warning className="size-4 text-warning" />,
+  info: <Info className="size-4 text-ink-muted" />,
+  loading: <Spinner size="sm" className="text-ink-muted" />,
+};
 
-  // Stacking: only the front toast is fully visible; behind toasts scale
-  // down and lose opacity. stackIndex 0 is frontmost (visible).
-  const isFront = stackIndex === 0;
-  const stackScale = Math.max(0, 1 - stackIndex * 0.05);
-  const stackOpacity = stackIndex === 0 ? 1 : Math.max(0, 1 - stackIndex * 0.3);
-  // Peek the stack by translating behind toasts slightly toward the viewport
-  // edge (visually layering).
-  const stackOffset = stackIndex * 6 * (topPos ? 1 : -1);
-
-  const variants: Variants = {
-    initial: reduceMotion
-      ? { opacity: 0 }
-      : { opacity: 0, y: enterY, scale: 0.96 },
-    animate: reduceMotion
-      ? { opacity: stackOpacity }
-      : {
-          opacity: stackOpacity,
-          y: stackOffset,
-          scale: stackScale,
-        },
-    exit: reduceMotion
-      ? { opacity: 0 }
-      : { opacity: 0, y: enterY, scale: 0.96 },
-  };
-
-  // Auto-dismiss timer with pause-on-hover. Resumes from remaining time.
-  const remainingRef = useRef(t.duration);
-  const startedAtRef = useRef<number>(0);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const clear = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-    }
-  }, []);
-
-  const dismiss = useCallback(() => {
-    clear();
-    store.dismiss(t.id);
-  }, [clear, t.id]);
-
-  useEffect(() => {
-    // Only the frontmost toast counts down: toasts behind in the stack
-    // are visually hidden anyway and would dismiss out of order.
-    if (!isFront) return;
-    if (!Number.isFinite(t.duration)) return;
-
-    if (isPaused) {
-      if (timerRef.current && startedAtRef.current) {
-        const elapsed = performance.now() - startedAtRef.current;
-        remainingRef.current = Math.max(0, remainingRef.current - elapsed);
-        clear();
-      }
-      return;
-    }
-
-    startedAtRef.current = performance.now();
-    timerRef.current = setTimeout(() => {
-      store.dismiss(t.id);
-    }, remainingRef.current);
-
-    return clear;
-  }, [isFront, isPaused, t.id, t.duration, clear]);
-
-  const icon = TYPE_ICON[t.type];
-  const ariaLive = TYPE_ARIA_LIVE[t.type];
+function ToastList({ position }: { position: ToastPosition }): React.ReactElement {
+  const { toasts } = ToastPrimitive.useToastManager<ToastData>();
+  const top = isTopPosition(position);
 
   return (
-    <motion.div
-      layout
-      variants={variants}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      transition={
-        reduceMotion
-          ? { duration: 0 }
-          : {
-              type: "spring",
-              stiffness: 380,
-              damping: 36,
-              mass: 0.7,
-              opacity: { duration: 0.18 },
-            }
-      }
-      role="status"
-      aria-live={ariaLive}
-      aria-atomic="true"
-      data-slot="toast"
-      data-type={t.type}
-      className={cn(
-        "pointer-events-auto relative w-full select-none",
-        "rounded-[var(--radius-12)]",
-        "bg-background-100 text-gray-1000",
-        "border border-gray-alpha-400 shadow-modal",
-        "px-3 py-3 pe-10",
-        "flex items-start gap-2.5",
-      )}
-      style={{ originX: 0.5, originY: topPos ? 0 : 1 }}
-    >
-      {icon && (
-        <span className="mt-px shrink-0" data-slot="toast-icon">
-          {icon}
-        </span>
-      )}
-      <div className="min-w-0 flex-1">
-        <div
-          className="text-heading-14 leading-tight text-gray-1000"
-          data-slot="toast-title"
-        >
-          {t.title}
-        </div>
-        {t.description != null && (
-          <div
-            className="mt-0.5 text-label-12 leading-snug text-gray-800"
-            data-slot="toast-description"
-          >
-            {t.description}
-          </div>
-        )}
-        {t.action && (
-          <button
-            type="button"
-            onClick={() => {
-              t.action?.onClick();
-              dismiss();
-            }}
+    <>
+      {toasts.map((t) => {
+        const icon = t.type ? TYPE_ICON[t.type] : null;
+        const action = t.data?.action;
+        return (
+          <ToastPrimitive.Root
+            key={t.id}
+            toast={t}
+            swipeDirection={top ? ["up", "right"] : ["down", "right"]}
+            data-slot="toast"
+            data-type={t.type ?? "default"}
             className={cn(
-              "mt-2 inline-flex items-center justify-center",
-              "rounded-[var(--radius-6)] border border-gray-alpha-400",
-              "bg-transparent px-2.5 py-1",
-              "text-button-14 text-gray-1000",
-              "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-              "hover:bg-gray-alpha-100",
-              focusRing,
+              "pointer-events-auto absolute w-full select-none",
+              "rounded-[var(--radius-12)]",
+              "bg-surface-elevated text-ink",
+              "border border-hairline shadow-modal",
+              "px-3 py-3 pe-10",
+              "flex items-start gap-2.5",
+              // Stacking + transitions via Base UI CSS variables
+              top
+                ? "top-0 [transform:translateY(calc(var(--toast-index)*var(--toast-swipe-movement-y,0px)+var(--toast-index)*8px))_scale(calc(1-var(--toast-index)*0.05))]"
+                : "bottom-0 [transform:translateY(calc(var(--toast-index)*-8px+var(--toast-swipe-movement-y,0px)))_scale(calc(1-var(--toast-index)*0.05))]",
+              "transition-[transform,opacity] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+              "data-[starting-style]:opacity-0",
+              top
+                ? "data-[starting-style]:-translate-y-4 data-[ending-style]:-translate-y-4"
+                : "data-[starting-style]:translate-y-4 data-[ending-style]:translate-y-4",
+              "data-[ending-style]:opacity-0",
+              "[[data-expanded]_&]:!translate-y-[var(--toast-offset-y)] [[data-expanded]_&]:!scale-100",
             )}
-            data-slot="toast-action"
           >
-            {t.action.label}
-          </button>
-        )}
-      </div>
-      <button
-        type="button"
-        aria-label="Dismiss"
-        onClick={dismiss}
-        data-slot="toast-close"
-        className={cn(
-          "absolute top-1/2 -translate-y-1/2 end-2",
-          "flex h-7 w-7 items-center justify-center",
-          "rounded-[var(--radius-6)] text-gray-800",
-          "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          "hover:bg-gray-alpha-200 hover:text-gray-1000",
-          focusRing,
-        )}
-      >
-        <XIcon className="size-3" />
-      </button>
-    </motion.div>
+            {icon && (
+              <span className="mt-px shrink-0" data-slot="toast-icon">
+                {icon}
+              </span>
+            )}
+            <div className="min-w-0 flex-1">
+              <ToastPrimitive.Title
+                className="text-button-14 leading-tight text-ink"
+                data-slot="toast-title"
+              />
+              <ToastPrimitive.Description
+                className="mt-0.5 text-caption-12 leading-snug text-ink-muted data-[empty]:hidden"
+                data-slot="toast-description"
+              />
+              {action && (
+                <ToastPrimitive.Action
+                  onClick={action.onClick}
+                  className={cn(
+                    "mt-2 inline-flex items-center justify-center",
+                    "rounded-[var(--radius-6)] border border-hairline",
+                    "bg-surface-elevated px-2.5 py-1",
+                    "text-button-14 text-ink",
+                    "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+                    "hover:bg-surface-elevated-hover",
+                    focusRing,
+                  )}
+                  data-slot="toast-action"
+                >
+                  {action.label}
+                </ToastPrimitive.Action>
+              )}
+            </div>
+            <ToastPrimitive.Close
+              aria-label="Dismiss"
+              data-slot="toast-close"
+              className={cn(
+                "absolute top-1/2 -translate-y-1/2 end-2",
+                "flex size-7 items-center justify-center",
+                "rounded-full text-ink-muted",
+                "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+                "hover:bg-surface-2 hover:text-ink",
+                focusRing,
+              )}
+            >
+              <X className="size-3.5" aria-hidden />
+            </ToastPrimitive.Close>
+          </ToastPrimitive.Root>
+        );
+      })}
+    </>
   );
 }
+
+export { ToastPrimitive };

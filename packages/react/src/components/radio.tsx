@@ -38,8 +38,9 @@ export function Radio({
       disabled={disabled}
       className={cn(
         "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full",
-        "bg-transparent border border-gray-alpha-500",
-        "data-checked:border-gray-1000",
+        "bg-transparent border border-hairline-strong",
+        "hover:border-hairline-tertiary",
+        "data-checked:border-primary",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
         focusRing,
@@ -52,7 +53,10 @@ export function Radio({
         className="flex items-center justify-center"
         data-slot="radio-indicator"
       >
-        <span aria-hidden="true" className="size-1.5 rounded-full bg-gray-1000" />
+        <span
+          aria-hidden="true"
+          className="!bg-primary size-1.5 rounded-full"
+        />
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>
   );
@@ -62,7 +66,7 @@ export function Radio({
   return (
     <label
       className={cn(
-        "inline-flex items-center gap-2 text-copy-14 text-gray-1000",
+        "inline-flex items-center gap-2 text-body-14 text-ink",
         !disabled && "cursor-pointer",
         disabled && "cursor-not-allowed opacity-50",
         wrapperClassName,

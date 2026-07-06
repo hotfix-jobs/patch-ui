@@ -6,20 +6,25 @@ import { cn } from "../utils";
 import { Spinner } from "./spinner";
 
 export type InputSize = "sm" | "md" | "lg";
+export type InputVariant = "default" | "unstyled";
 
 export type InputProps = Omit<
   InputPrimitive.Props & React.RefAttributes<HTMLInputElement>,
   "size" | "prefix"
 > & {
   size?: InputSize;
+  /**
+   * Visual variant of the input container.
+   * - `default` (unset): bordered, rounded, hover + focus outline.
+   * - `unstyled`: no border, no rounded, no hover, no focus outline.
+   *   Use when embedding an Input inside a surface that owns its
+   *   own container styling (panels, table cells, composite fields).
+   */
+  variant?: InputVariant;
   /** Content rendered at the start (icon, unit symbol, or text like `https://`). */
   prefix?: React.ReactNode;
   /** Content rendered at the end (icon, unit label, or text like `.com`). */
   suffix?: React.ReactNode;
-  /** Wraps prefix in a styled container (bg + separator). Default true. */
-  prefixStyling?: boolean;
-  /** Wraps suffix in a styled container (bg + separator). Default true. */
-  suffixStyling?: boolean;
   /** Renders a `<label>` above the input. */
   label?: string;
   /** `id` required when passing a string `label`. */
@@ -32,63 +37,50 @@ export type InputProps = Omit<
   rounded?: boolean;
 };
 
+// Heights per DESIGN.md: sm=24, md=32, lg=40. Text drops to body-13 at
+// sm so the label fits comfortably inside 24px; md and lg carry body-14
+// and body-16 respectively.
 const heightBySize: Record<InputSize, string> = {
-  sm: "h-8 text-label-12",
-  md: "h-10 text-copy-14",
-  lg: "h-12 text-copy-16",
+  sm: "h-6 text-body-13",
+  md: "h-8 text-body-14",
+  lg: "h-10 text-body-16",
 };
 
-const leadingPad: Record<InputSize, string> = {
+// Padding ramps stored as literal ps-/pe- strings so Tailwind's JIT
+// picks them up in source (a computed `"px-2.5".replace(...)` would
+// yield `ps-2.5` at runtime but the class rule would never get emitted).
+// Padding scales with height. sm/md/lg heights are 24/32/40, so 8/12/14
+// keeps roughly the same padding-to-height ratio (~33-37%) across sizes.
+const startPadBySize: Record<InputSize, string> = {
   sm: "ps-3",
-  md: "ps-3.5",
-  lg: "ps-4",
+  md: "ps-3",
+  lg: "ps-3.5",
 };
 
-const trailingPad: Record<InputSize, string> = {
+const endPadBySize: Record<InputSize, string> = {
   sm: "pe-3",
-  md: "pe-3.5",
-  lg: "pe-4",
+  md: "pe-3",
+  lg: "pe-3.5",
 };
 
-/** Styled affix wrapper: own bg + border on the input-facing side, stretched to input height. */
-function StyledAffix({
+/** Inline affix. No background, no border, no hover -- just a muted
+ *  glyph or short label rendered inline with the input text. When a
+ *  prefix or suffix is present, it takes over the leading / trailing
+ *  padding on that side so nothing double-pads. */
+function Affix({
   side,
   children,
-  size,
 }: {
   side: "start" | "end";
   children: React.ReactNode;
-  size: InputSize;
 }) {
-  const border = side === "start" ? "border-r" : "border-l";
-  const pad = size === "sm" ? "px-2.5" : size === "lg" ? "px-3.5" : "px-3";
   return (
     <span
       className={cn(
-        "self-stretch inline-flex shrink-0 items-center bg-gray-100 border-gray-alpha-400 text-gray-800",
-        border,
-        pad,
+        "inline-flex shrink-0 items-center text-ink-muted",
+        side === "start" ? "ps-3 pe-1.5" : "ps-1.5 pe-3",
         "[&_svg]:size-4",
       )}
-      data-slot={`input-${side === "start" ? "prefix" : "suffix"}`}
-    >
-      {children}
-    </span>
-  );
-}
-
-/** Unstyled affix: floats inside the input area with just padding. */
-function UnstyledAffix({
-  side,
-  children,
-}: {
-  side: "start" | "end";
-  children: React.ReactNode;
-}) {
-  const pad = side === "start" ? "ps-3 pe-1.5" : "ps-1.5 pe-3";
-  return (
-    <span
-      className={cn("inline-flex shrink-0 items-center text-gray-800", pad, "[&_svg]:size-4")}
       data-slot={`input-${side === "start" ? "prefix" : "suffix"}`}
     >
       {children}
@@ -99,10 +91,9 @@ function UnstyledAffix({
 export function Input({
   className,
   size = "md",
+  variant = "default",
   prefix,
   suffix,
-  prefixStyling = true,
-  suffixStyling = true,
   label,
   id,
   error,
@@ -116,7 +107,8 @@ export function Input({
   const trailingSpinner = loading ? <Spinner size="sm" /> : null;
   const hasErrorMessage = typeof error === "string" && error.length > 0;
   const hasError = Boolean(error);
-  const shape = rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
+  const unstyled = variant === "unstyled";
+  const shape = unstyled ? "" : rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
   const errorId = id ? `${id}-error` : undefined;
 
   const hasTrailing = Boolean(suffix) || Boolean(trailingSpinner);
@@ -126,12 +118,13 @@ export function Input({
       id={id}
       className={cn(
         "w-full min-w-0 bg-transparent border-none shadow-none outline-none ring-0",
-        "placeholder:text-gray-700 focus:outline-none focus:ring-0",
+        "placeholder:text-ink-subtle focus:outline-none focus:ring-0",
         heightBySize[size],
-        // Leading padding: apply unless an unstyled prefix is handling it
-        (!prefix || prefixStyling) ? leadingPad[size] : "ps-0",
-        // Trailing padding: apply unless an unstyled suffix / clear / spinner sits there
-        (!hasTrailing || (suffix && suffixStyling)) ? trailingPad[size] : "pe-0",
+        // Prefix owns the leading padding on that side; otherwise the
+        // input carries its own padding.
+        prefix ? "ps-0" : startPadBySize[size],
+        // Suffix / spinner owns the trailing padding on that side.
+        hasTrailing ? "pe-0" : endPadBySize[size],
         props.type === "search" &&
           "[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none",
       )}
@@ -147,51 +140,49 @@ export function Input({
   const control = (
     <span
       className={cn(
-        "relative inline-flex w-full items-center overflow-hidden text-gray-1000",
+        "relative inline-flex w-full items-center overflow-hidden text-ink",
         shape,
-        "bg-background-100 border border-gray-alpha-400",
-        "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        "hover:border-gray-alpha-500",
-        "has-focus-visible:border-gray-alpha-600 has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-[var(--focus-ring-offset)]",
+        !unstyled && [
+          "bg-surface-elevated border border-hairline",
+          "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "hover:border-hairline-strong",
+          // Focus lifts the border to --primary. No outside ring: the
+          // component's own edge does the work. Solid ink by default
+          // and brand-colored automatically when a consumer overrides
+          // --primary.
+          "has-focus-visible:border-primary",
+        ],
         "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
-        hasError &&
-          "!border-[var(--error)] has-focus-visible:!border-[var(--error)] has-focus-visible:!outline-[var(--error)]",
+        // Error state: the border stays solid error even at rest so
+        // the field reads as invalid before the user focuses it back.
+        hasError && "!border-error",
         !label && !hasErrorMessage && className,
       )}
       data-slot="input-control"
     >
-      {prefix &&
-        (prefixStyling ? (
-          <StyledAffix side="start" size={size}>{prefix}</StyledAffix>
-        ) : (
-          <UnstyledAffix side="start">{prefix}</UnstyledAffix>
-        ))}
+      {prefix && <Affix side="start">{prefix}</Affix>}
       {inputElement}
       {trailingSpinner && (
-        <span className="flex shrink-0 items-center pe-3 text-gray-800" data-slot="input-loading">
+        <span className="flex shrink-0 items-center pe-3 text-ink-muted" data-slot="input-loading">
           {trailingSpinner}
         </span>
       )}
-      {suffix &&
-        !trailingSpinner &&
-        (suffixStyling ? (
-          <StyledAffix side="end" size={size}>{suffix}</StyledAffix>
-        ) : (
-          <UnstyledAffix side="end">{suffix}</UnstyledAffix>
-        ))}
+      {suffix && !trailingSpinner && <Affix side="end">{suffix}</Affix>}
     </span>
   );
 
   // Basic control-only path when no label and no error message
   if (!label && !hasErrorMessage) return control;
 
-  // Fieldset-style path when label or error message is present
+  // Fieldset-style path when label or error message is present.
+  // Label uses button-14 for the weight-500 form-label recipe; error
+  // uses caption-12 in error per DESIGN.md field spec.
   return (
-    <div className={cn("flex flex-col gap-1.5 w-full", className)} data-slot="input-field">
+    <div className={cn("flex flex-col gap-2 w-full", className)} data-slot="input-field">
       {label && (
         <label
           htmlFor={id}
-          className="text-label-14 text-gray-1000"
+          className="text-button-14 text-ink"
           data-slot="input-label"
         >
           {label}
@@ -202,7 +193,7 @@ export function Input({
         <p
           id={errorId}
           role="alert"
-          className="text-label-13 text-[var(--error)]"
+          className="text-caption-12 text-error"
           data-slot="input-error"
         >
           {error}

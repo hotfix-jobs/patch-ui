@@ -2,29 +2,27 @@
 
 import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsPanel, SectionLabel } from "@patchui/react";
-import { Bell, Settings, User } from "lucide-react";
-
+import { Envelope, Gear, Users } from "@phosphor-icons/react/dist/ssr";
 function Body({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-copy-14 leading-relaxed text-gray-1000">
+    <div className="text-body-14 leading-relaxed text-ink">
       {children}
     </div>
   );
 }
 
 export function TabsDemo() {
-  const [watchingCount, setWatchingCount] = useState(4);
+  const [memberCount, setMemberCount] = useState(4);
 
   return (
     <div className="flex w-full flex-col gap-10">
-      {/* Underline (default) */}
       <div className="space-y-3">
         <SectionLabel>Underline (default)</SectionLabel>
         <Tabs defaultValue="overview" aria-label="Project sections">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="settings">Gear</TabsTrigger>
           </TabsList>
           <TabsPanel value="overview">
             <Body>A high-level summary lives here.</Body>
@@ -33,49 +31,47 @@ export function TabsDemo() {
             <Body>Recent activity lives here.</Body>
           </TabsPanel>
           <TabsPanel value="settings">
-            <Body>Settings live here.</Body>
+            <Body>Gear live here.</Body>
           </TabsPanel>
         </Tabs>
       </div>
 
-      {/* With icons + badge */}
       <div className="space-y-3">
         <SectionLabel>With icons and count badges</SectionLabel>
-        <Tabs defaultValue="watching" aria-label="Feed">
+        <Tabs defaultValue="members" aria-label="Team">
           <TabsList>
-            <TabsTrigger value="watching" icon={<User />} badge={watchingCount}>
-              Watching
+            <TabsTrigger value="members" icon={<Users />} badge={memberCount}>
+              Members
             </TabsTrigger>
-            <TabsTrigger value="notifications" icon={<Bell />} badge={0}>
-              Notifications
+            <TabsTrigger value="invites" icon={<Envelope />} badge={0}>
+              Invites
             </TabsTrigger>
-            <TabsTrigger value="settings" icon={<Settings />}>
-              Settings
+            <TabsTrigger value="settings" icon={<Gear />}>
+              Gear
             </TabsTrigger>
           </TabsList>
-          <TabsPanel value="watching">
+          <TabsPanel value="members">
             <Body>
-              You're watching {watchingCount} items.{" "}
+              {memberCount} members in this workspace.{" "}
               <button
                 type="button"
-                onClick={() => setWatchingCount((n) => n + 1)}
-                className="underline decoration-gray-alpha-400 underline-offset-4 hover:decoration-gray-alpha-600"
+                onClick={() => setMemberCount((n) => n + 1)}
+                className="underline decoration-hairline-strong underline-offset-4 hover:decoration-hairline-tertiary"
               >
-                Watch one more
+                Add one more
               </button>
               .
             </Body>
           </TabsPanel>
-          <TabsPanel value="notifications">
-            <Body>No new notifications: badge is hidden at 0.</Body>
+          <TabsPanel value="invites">
+            <Body>No pending invites. Badges hide when count is zero.</Body>
           </TabsPanel>
           <TabsPanel value="settings">
-            <Body>Adjust feed preferences here.</Body>
+            <Body>Team-wide preferences live here.</Body>
           </TabsPanel>
         </Tabs>
       </div>
 
-      {/* Disabled with tooltip */}
       <div className="space-y-3">
         <SectionLabel>Disabled tab with tooltip explaining why</SectionLabel>
         <Tabs defaultValue="overview" aria-label="Project sections">
@@ -99,35 +95,39 @@ export function TabsDemo() {
         </Tabs>
       </div>
 
-      {/* Pill variant */}
       <div className="space-y-3">
-        <SectionLabel>Pill: orientation flips by breakpoint</SectionLabel>
-        <div className="flex flex-col gap-8 sm:flex-row sm:gap-12">
-          <div>
-            <p className="mb-2 text-label-12 text-gray-700">
-              Desktop (vertical)
-            </p>
-            <Tabs variant="pill" orientation="vertical" defaultValue="profile">
-              <TabsList className="w-44">
-                <TabsTrigger value="profile">Profile</TabsTrigger>
-                <TabsTrigger value="billing">Billing</TabsTrigger>
-                <TabsTrigger value="team">Team</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-          <div>
-            <p className="mb-2 text-label-12 text-gray-700">
-              Mobile (horizontal)
-            </p>
-            <Tabs variant="pill" defaultValue="profile">
-              <TabsList>
-                <TabsTrigger value="profile">Profile</TabsTrigger>
-                <TabsTrigger value="billing">Billing</TabsTrigger>
-                <TabsTrigger value="team">Team</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        </div>
+        <SectionLabel>Pill (horizontal)</SectionLabel>
+        <Tabs variant="pill" defaultValue="all" aria-label="Status filter">
+          <TabsList>
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="active">Active</TabsTrigger>
+            <TabsTrigger value="draft">Draft</TabsTrigger>
+            <TabsTrigger value="archived">Archived</TabsTrigger>
+          </TabsList>
+          <TabsPanel value="all">
+            <Body>Showing every item.</Body>
+          </TabsPanel>
+          <TabsPanel value="active">
+            <Body>Showing active items only.</Body>
+          </TabsPanel>
+          <TabsPanel value="draft">
+            <Body>Showing drafts only.</Body>
+          </TabsPanel>
+          <TabsPanel value="archived">
+            <Body>Showing archived items only.</Body>
+          </TabsPanel>
+        </Tabs>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Pill (vertical)</SectionLabel>
+        <Tabs variant="pill" orientation="vertical" defaultValue="profile">
+          <TabsList className="w-44">
+            <TabsTrigger value="profile">Profile</TabsTrigger>
+            <TabsTrigger value="billing">Billing</TabsTrigger>
+            <TabsTrigger value="team">Team</TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
     </div>
   );

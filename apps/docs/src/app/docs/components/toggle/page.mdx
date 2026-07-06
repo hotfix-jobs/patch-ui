@@ -1,6 +1,5 @@
 import { ToggleDemo } from "./toggle-demo";
 
-
 export const metadata = { title: "Toggle" };
 
 # Toggle
@@ -19,8 +18,7 @@ Distinct from `Switch` (binary form-state control) and `Button` (one-shot action
 
 ```tsx
 import { Toggle } from "@patchui/react";
-import { Star } from "lucide-react";
-
+import { Star } from "@phosphor-icons/react/dist/ssr";
 // Controlled
 const [starred, setStarred] = useState(false);
 <Toggle pressed={starred} onPressedChange={setStarred} icon={<Star />} aria-label="Star" />
@@ -84,9 +82,9 @@ const [starred, setStarred] = useState(false);
 />
 
 <Callout title="Notes">
-- The pressed state flips the fill to `gray-1000` with `background-100` text: inverted so the pressed button reads as "on" at a glance.
+- The pressed state flips the fill to `--primary` with `--on-primary` text: inverted so the pressed button reads as "on" at a glance.
 - Rendered as a `<button>` with `aria-pressed`, so screen readers announce "Star, toggle button, pressed" / "not pressed". Provide `aria-label` for icon-only toggles.
 - For a binary on/off setting slider (Dark mode, Enable notifications), reach for `Switch` instead: Switch reads as a noun (a setting), Toggle reads as a verb (an action).
 - Reach for `Toggle` when the state is about the toolbar action (`Star` this item, `Pin` to top). Reach for `Switch` when the state is a setting (`Dark mode`, `Enable Firewall`). Toggle reads as a verb, Switch as a noun.
-- `SegmentedToggle` is the multi-choice sibling: one active option out of several (Grid / List view).
+- `ToggleGroup` is the multi-choice sibling: one active option out of several (Grid / List view).
 </Callout>

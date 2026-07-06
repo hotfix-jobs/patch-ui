@@ -15,14 +15,12 @@ const narrowAlign = (a: string | undefined): CellAlign =>
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    // Custom components
     ComponentPreview,
     PropsTable,
     CompoundComponents,
     Callout,
     Install,
 
-    // Override rehype-pretty-code figures
     figure: (props: React.ComponentProps<"figure">) => {
       if ("data-rehype-pretty-code-figure" in props) {
         return <CodeFigure {...props} />;
@@ -30,46 +28,36 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       return <figure {...props} />;
     },
 
-    // Typography
     h1: (props: React.ComponentProps<"h1">) => (
-      <h1
-        className="text-3xl font-bold tracking-tight text-gray-1000"
-        {...props}
-      />
+      <h1 className="text-display-32 text-ink" {...props} />
     ),
     h2: (props: React.ComponentProps<"h2">) => (
       <h2
-        className="mt-10 mb-4 border-b border-gray-alpha-400 pb-2 text-xl font-semibold tracking-tight text-gray-1000 first:mt-0"
+        className="mt-10 mb-4 border-b border-hairline pb-2 text-display-24 text-ink first:mt-0"
         {...props}
       />
     ),
     h3: (props: React.ComponentProps<"h3">) => (
-      <h3
-        className="mt-8 mb-3 text-lg font-semibold tracking-tight text-gray-1000"
-        {...props}
-      />
+      <h3 className="mt-8 mb-3 text-display-20 text-ink" {...props} />
     ),
     h4: (props: React.ComponentProps<"h4">) => (
-      <h4
-        className="mt-6 mb-2 text-base font-semibold text-gray-1000"
-        {...props}
-      />
+      <h4 className="mt-6 mb-2 text-button-16 text-ink" {...props} />
     ),
     p: (props: React.ComponentProps<"p">) => (
       <p
-        className="mb-4 leading-7 text-gray-900 [&:first-child]:mt-0"
+        className="mb-4 text-body-16 text-ink [&:first-child]:mt-0"
         {...props}
       />
     ),
     ul: (props: React.ComponentProps<"ul">) => (
       <ul
-        className="mb-4 ml-6 list-disc text-gray-900 [&>li]:mt-1.5 [&>li]:leading-7"
+        className="mb-4 ml-6 list-disc text-body-16 text-ink [&>li]:mt-1.5"
         {...props}
       />
     ),
     ol: (props: React.ComponentProps<"ol">) => (
       <ol
-        className="mb-4 ml-6 list-decimal text-gray-900 [&>li]:mt-1.5 [&>li]:leading-7"
+        className="mb-4 ml-6 list-decimal text-body-16 text-ink [&>li]:mt-1.5"
         {...props}
       />
     ),
@@ -78,23 +66,22 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     blockquote: (props: React.ComponentProps<"blockquote">) => (
       <blockquote
-        className="mb-4 border-l-2 border-gray-alpha-600 pl-4 text-gray-900 italic"
+        className="mb-4 border-l-2 border-hairline pl-4 text-body-16 text-ink italic"
         {...props}
       />
     ),
     hr: (props: React.ComponentProps<"hr">) => (
-      <hr className="my-8 border-gray-alpha-400" {...props} />
+      <hr className="my-8 border-hairline" {...props} />
     ),
     a: (props: React.ComponentProps<"a">) => (
       <a
-        className="font-medium text-gray-1000 underline underline-offset-4 decoration-gray-alpha-500 hover:decoration-gray-1000 transition-colors"
+        className="text-button-14 text-ink underline underline-offset-4 decoration-hairline-tertiary transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:decoration-ink"
         {...props}
       />
     ),
     strong: (props: React.ComponentProps<"strong">) => (
-      <strong className="font-semibold text-gray-1000" {...props} />
+      <strong className="font-semibold text-ink" {...props} />
     ),
-    // Markdown tables render with the Patch UI Table primitives (dogfood).
     table: (props: React.ComponentProps<"table">) => (
       <div className="my-6">
         <Table {...props} />

@@ -5,7 +5,7 @@ export const metadata = { title: "Button" };
 
 # Button
 
-A polymorphic button component with five variants, four sizes, icon support, three corner shapes, and a loading state.
+A polymorphic button component with five variants, three sizes, icon support, four corner shapes, and a loading state.
 
 <Install name="button" />
 
@@ -26,10 +26,9 @@ import { Button } from "@patchui/react";
 <Button variant="secondary">Secondary</Button>
 <Button variant="tertiary">Tertiary</Button>
 <Button variant="warning">Warning</Button>
-<Button variant="error">Error</Button>
+<Button variant="destructive">Destructive</Button>
 
-// Sizes: tiny is for icon-only rails
-<Button size="tiny" aria-label="Add" icon={<Plus />} />
+// Sizes: 24 / 32 / 40 px
 <Button size="sm">Small</Button>
 <Button size="md">Medium</Button>
 <Button size="lg">Large</Button>
@@ -38,19 +37,19 @@ import { Button } from "@patchui/react";
 <Button shape="square" aria-label="Add" icon={<Plus />} />
 <Button shape="circle" aria-label="Add" icon={<Plus />} />
 
-// Rounded marketing shape (typically paired with shadow)
-<Button shape="rounded" shadow variant="primary" icon={<ArrowRight />} iconPosition="right">
+// Marketing pill shape (typically paired with shadow)
+<Button shape="pill" shadow variant="primary" icon={<ArrowRight />} iconPosition="right">
   Start Free Trial
 </Button>
 
-// Dismissible pill (repo chip pattern — click opens, × removes)
+// Dismissible filter chip (click focuses, × removes)
 <Button
   size="sm"
   shape="pill"
   variant="secondary"
-  icon={<GitBranch />}
-  onClick={openTag}
-  onRemove={removeTag}
+  icon={<Hash />}
+  onClick={focusFilter}
+  onRemove={removeFilter}
 >
   design
 </Button>
@@ -68,21 +67,21 @@ import { Button } from "@patchui/react";
   props={[
     {
       name: "variant",
-      type: '"primary" | "secondary" | "tertiary" | "warning" | "error"',
+      type: '"primary" | "secondary" | "tertiary" | "warning" | "destructive"',
       default: '"primary"',
-      description: "The visual style. Reserve `primary` for the single most important action on a view; use `error` only for destructive actions.",
+      description: "The visual style. Reserve `primary` for the single most important action on a view; use `destructive` only for irreversible actions.",
     },
     {
       name: "size",
-      type: '"tiny" | "sm" | "md" | "lg"',
+      type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "Height: 24 / 32 / 40 / 48px. `tiny` is intended for icon-only buttons in tight rails/menus.",
+      description: "Height: 24 / 32 / 40 px.",
     },
     {
       name: "shape",
-      type: '"square" | "pill" | "circle" | "rounded"',
+      type: '"square" | "pill" | "circle"',
       default: '"square"',
-      description: "Corner shape. `square` = 6px radius (default). `pill` = full radius for wide chips. `circle` = full radius (icon-only). `rounded` = 12px radius (marketing).",
+      description: "Corner shape. `square` = 6px radius (default control). `pill` = full radius (dismissible chips and marketing CTAs). `circle` = full radius with equal width/height (icon-only).",
     },
     {
       name: "shadow",
@@ -94,7 +93,7 @@ import { Button } from "@patchui/react";
       name: "onRemove",
       type: "() => void",
       default: "-",
-      description: "When provided, renders a trailing × sub-button that calls this handler without triggering the parent Button's `onClick`. Use for dismissible pill chips (repo tags, applied filters).",
+      description: "When provided, renders a trailing × sub-button that calls this handler without triggering the parent Button's `onClick`. Use for dismissible chips (applied filters, selected labels, chosen recipients).",
     },
     {
       name: "removeLabel",
@@ -148,10 +147,11 @@ import { Button } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- Each variant maps to a specific token: `primary` = `gray-1000`, `secondary` = `background-100` + `gray-alpha-400` border, `tertiary` = transparent + hover tint, `warning` = `amber-700`, `error` = `red-700`.
-- Reserve `primary` for the one hero action on a view. Reserve `error` for actions the user cannot undo without work.
+- Each variant maps to a specific token: `primary` reads the `--primary` / `--on-primary` chain (monochrome by default, brand-overridable), `secondary` = `surface-1` + `hairline` border (elevates over the page), `tertiary` = transparent + hover tint, `warning` = fixed `--warning` role, `destructive` = fixed `--error` role.
+- Reserve `primary` for the one hero action on a view. Reserve `destructive` for actions the user cannot undo without work.
+- Brand override: redefine `--primary`, `--on-primary`, `--primary-hover`, and `--primary-active` in a consumer stylesheet after the token import to swap the monochrome default for a chromatic brand color. Every primary Button picks it up without callsite edits.
 - Icon-only buttons: pass `icon` with no `children`. The button squares up to match the size. `aria-label` is required; a dev-time warning fires when it's missing.
-- `shape="rounded"` alongside `shadow` produces the taller marketing pill (12px radius + soft lift) used on hero CTAs.
+- `shape="pill"` alongside `shadow` produces the marketing hero CTA: full-radius pill with a soft elevation shadow. Reserve for hero and closing-CTA rows on landing pages, not general controls.
 - Polymorphism: pass `render={<a href="…" />}` (or a `<Link>`) to render as an anchor with the button's styling and behavior.
 - `loading` swaps the content for a spinner and disables interaction so a double-tap can't fire twice.
 - Every size ships a hidden 44×44 touch target underneath, so the tap area works on coarse pointers even for a small button.

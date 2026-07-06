@@ -5,7 +5,7 @@ export const metadata = { title: "Scroller" };
 
 # Scroller
 
-A scroll container for overflowing lists: horizontal rails, long vertical feeds, or free bidirectional canvases. Optional Prev / Next buttons page through the visible content and fade out when there's nothing more to scroll to.
+A scroll container for overflowing lists: horizontal rails, long vertical feeds, or free bidirectional canvases. Built on Base UI Scroll Area with an overlay scrollbar in vertical / bidirectional modes, and hidden in horizontal mode where the edge fade masks are the affordance.
 
 Use for card rails (job listings, categories, cover art), long vertical feeds (activity logs, notifications), and free-scroll canvases (image comparisons, wide diagrams).
 
@@ -20,7 +20,7 @@ Use for card rails (job listings, categories, cover art), long vertical feeds (a
 ```tsx
 import { Scroller } from "@patchui/react";
 
-<Scroller overflow="x" withButtons childrenContainerClassName="gap-3">
+<Scroller overflow="x" childrenContainerClassName="gap-3">
   {items.map((item) => (
     <Card key={item.id} className="shrink-0 w-64">
       {/* … */}
@@ -52,16 +52,16 @@ import { Scroller } from "@patchui/react";
       description: "Container width. Number → px, string → passed through.",
     },
     {
-      name: "withButtons",
+      name: "fade",
       type: "boolean",
-      default: "false",
-      description: "Render Prev / Next auto-scroll buttons that fade in/out based on scroll position.",
+      default: "true",
+      description: "Fade the leading / trailing edge with a mask when there's more content in that direction. Only meaningful for overflow='x' and overflow='y'.",
     },
     {
-      name: "scrollStep",
+      name: "fadeWidth",
       type: "number",
-      default: "240",
-      description: "How far each button click scrolls, in pixels.",
+      default: "32",
+      description: "Fade mask width in pixels.",
     },
     {
       name: "childrenContainerClassName",
@@ -79,9 +79,10 @@ import { Scroller } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- **Consistent item widths.** In horizontal rails, give children a fixed width and `shrink-0` so the rail snaps cleanly and the Next button pages the same amount every time.
-- **Button visibility.** Buttons only appear when there's actually scroll room in that direction: they fade out at the start / end so consumers get the affordance only when it's useful.
-- **Keyboard.** The scroll region itself is focusable (`tabIndex={0}`) so keyboard users can arrow through the content. Children keep their DOM tab order: Tab moves through items regardless of visual scroll direction.
-- **Trackpad + touch.** Native momentum scrolling works alongside the buttons. `[-webkit-overflow-scrolling:touch]` is set so iOS scrolls smoothly.
-- **Not for pagination.** Reach for `Pagination` when there are discrete pages of the same dataset, `LoadMore` for appending more items to a feed, and `ShowMore` for progressive disclosure of a single list. Scroller is only for content that overflows one screen.
+- **Consistent item widths.** In horizontal rails, give children a fixed width and `shrink-0` so the rail snaps cleanly.
+- **Edge fade.** When there's more content past an edge, that edge fades to transparent. This is the "more content" affordance in horizontal mode, and a soft cue in vertical mode alongside the scrollbar.
+- **Scrollbar visibility.** Horizontal rails hide the scrollbar entirely; vertical and both-axis rails show an overlay scrollbar that fades in on hover / scroll (Base UI Scroll Area default).
+- **Keyboard.** The viewport is focusable (`tabIndex={0}`) so keyboard users can arrow through the content. Children keep their DOM tab order: Tab moves through items regardless of visual scroll direction.
+- **Trackpad + touch.** Native momentum scrolling; `[-webkit-overflow-scrolling:touch]` is set so iOS scrolls smoothly.
+- **Not for pagination.** Reach for `Pagination` when there are discrete pages of the same dataset, or a virtualization / infinite-scroll library for append-as-you-scroll feeds. Scroller is only for content that overflows one screen.
 </Callout>

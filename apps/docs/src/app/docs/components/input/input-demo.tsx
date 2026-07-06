@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { Input, SearchInput , SectionLabel } from "@patchui/react";
-import { ArrowUpCircle, Mail, Search } from "lucide-react";
-
-
+import { ArrowCircleUp, Envelope, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
 export function InputDemo() {
   const [searchValue, setSearchValue] = useState("");
   const [emailValue, setEmailValue] = useState("not-an-email");
@@ -22,29 +20,12 @@ export function InputDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Prefix and suffix (styled, default)</SectionLabel>
+        <SectionLabel>Prefix and suffix</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
-          <Input prefix={<ArrowUpCircle />} placeholder="Default" />
-          <Input suffix={<ArrowUpCircle />} placeholder="Default" />
-          <Input prefix="https://" suffix=".com" placeholder="Default" />
-        </div>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Prefix and suffix (unstyled, floating)</SectionLabel>
-        <div className="flex flex-col gap-3 max-w-xs">
-          <Input
-            prefix={<ArrowUpCircle />}
-            prefixStyling={false}
-            suffix={<ArrowUpCircle />}
-            suffixStyling={false}
-            placeholder="Default"
-          />
-          <Input
-            prefix={<Search />}
-            prefixStyling={false}
-            placeholder="Search projects"
-          />
+          <Input prefix={<ArrowCircleUp />} placeholder="Icon prefix" />
+          <Input suffix={<ArrowCircleUp />} placeholder="Icon suffix" />
+          <Input prefix="https://" suffix=".com" placeholder="Text prefix and suffix" />
+          <Input prefix={<MagnifyingGlass />} placeholder="Search projects" />
         </div>
       </div>
 
@@ -55,7 +36,7 @@ export function InputDemo() {
           <Input
             id="demo-err"
             label="Email"
-            prefix={<Mail />}
+            prefix={<Envelope />}
             value={emailValue}
             onChange={(e) => setEmailValue(e.target.value)}
             error="Enter a valid email address."
@@ -66,17 +47,12 @@ export function InputDemo() {
       <div className="space-y-3">
         <SectionLabel>Rounded (pill-shaped)</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
-          <Input
-            rounded
-            prefix={<Search />}
-            prefixStyling={false}
-            placeholder="Search"
-          />
+          <Input rounded prefix={<MagnifyingGlass />} placeholder="Search" />
         </div>
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>SearchInput (clears on Escape or Esc chip click)</SectionLabel>
+        <SectionLabel>SearchInput (X button clears the value)</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
           <SearchInput
             placeholder="Search projects"

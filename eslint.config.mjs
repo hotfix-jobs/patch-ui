@@ -35,6 +35,15 @@ export default tseslint.config(
     settings: { react: { version: "19.0" } },
     rules: {
       ...reactHooks.configs["recommended-latest"][0].rules,
+      // React Compiler-oriented rules that don't apply to us (we're not
+      // on the compiler) and produce noisy false positives with Floating
+      // UI patterns (`refs.setFloating`, `getReferenceProps`, etc.).
+      // Per the Floating UI maintainer (floating-ui/floating-ui#3405)
+      // and the React repo (react/react#34775), these are known false
+      // positives with no code-level fix short of restructuring around
+      // a working library API.
+      "react-hooks/refs": "off",
+      "react-hooks/set-state-in-effect": "off",
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
       "@typescript-eslint/no-unused-vars": [

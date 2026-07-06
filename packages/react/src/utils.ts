@@ -2,17 +2,20 @@ import { type ClassValue, clsx } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
 // Register our custom typography scales as font-size utilities. Without this,
-// tailwind-merge lumps text-label-10 / text-copy-14 / etc into the same conflict
-// group as text-gray-700 (a color) and strips whichever comes first, so the
-// combined `text-label-10 text-gray-700` collapses to just `text-gray-700`.
+// tailwind-merge lumps text-body-14 / text-caption-11 / etc into the same
+// conflict group as text-ink (a color) and strips whichever comes first, so
+// a destructive MenuItem's `text-body-13 ... text-error` collapses to just
+// `text-error`, dropping the 13px size back to browser default.
 const twMerge = extendTailwindMerge({
   extend: {
     classGroups: {
       "font-size": [
-        { "text-heading": ["14", "16", "20", "24", "32", "40", "48", "56", "64", "72"] },
-        { "text-label": ["10", "11", "12", "13", "14", "16", "18", "20"] },
-        { "text-copy": ["13", "14", "16", "18", "20", "24"] },
+        { "text-display": ["20", "24", "32", "40", "48", "56", "64", "72"] },
+        { "text-body": ["13", "14", "16", "18", "20"] },
+        { "text-caption": ["11", "12"] },
         { "text-button": ["12", "14", "16"] },
+        { "text-mono": ["12", "13", "14"] },
+        "text-eyebrow",
       ],
     },
   },

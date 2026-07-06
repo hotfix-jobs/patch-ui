@@ -2,10 +2,10 @@
 
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 import type * as React from "react";
-import { CheckIcon } from "../internal-icons";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
+import { Check, Minus } from "@phosphor-icons/react/dist/ssr";
 export interface CheckboxProps extends CheckboxPrimitive.Root.Props {
   /** Optional label. When present, the checkbox is wrapped in a `<label>` so clicking the label toggles the box. */
   children?: React.ReactNode;
@@ -24,10 +24,11 @@ export function Checkbox({
     <CheckboxPrimitive.Root
       disabled={disabled}
       className={cn(
-        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[var(--radius-6)]",
-        "bg-transparent border border-gray-alpha-500",
-        "data-checked:border-gray-1000 data-checked:bg-gray-1000",
-        "data-indeterminate:border-gray-1000 data-indeterminate:bg-gray-1000",
+        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[var(--radius-4)]",
+        "bg-transparent border border-hairline-strong",
+        "hover:border-hairline-tertiary",
+        "data-checked:border-primary data-checked:bg-primary data-checked:hover:bg-primary-hover data-checked:hover:border-primary-hover",
+        "data-indeterminate:border-primary data-indeterminate:bg-primary",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
         focusRing,
@@ -37,26 +38,18 @@ export function Checkbox({
       {...props}
     >
       <CheckboxPrimitive.Indicator
-        className="group flex items-center justify-center text-background-100"
+        className="group flex items-center justify-center"
         data-slot="checkbox-indicator"
         keepMounted
       >
-        <CheckIcon
-          className="size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
-          strokeWidth={2.5}
+        {/* !text-on-primary overrides iconMuted descendant selectors from parent rows (Menu, list). */}
+        <Check
+          className="!text-on-primary size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
         />
-        <svg
+        <Minus
           aria-hidden="true"
-          className="hidden size-3 group-data-indeterminate:block"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2.5"
-          viewBox="0 0 24 24"
-        >
-          <path d="M5 12h14" />
-        </svg>
+          className="!text-on-primary hidden size-3 group-data-indeterminate:block"
+        />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );
@@ -66,7 +59,7 @@ export function Checkbox({
   return (
     <label
       className={cn(
-        "inline-flex items-center gap-2 text-copy-14 text-gray-1000",
+        "inline-flex items-center gap-2 text-body-14 text-ink",
         !disabled && "cursor-pointer",
         disabled && "cursor-not-allowed opacity-50",
         wrapperClassName,

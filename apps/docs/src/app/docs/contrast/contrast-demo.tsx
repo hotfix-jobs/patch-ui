@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
-/* WCAG 2.1 contrast math: mirrors packages/react/scripts/check-contrast.ts */
+const emptySubscribe = () => () => {};
 
+import { Check, X } from "@phosphor-icons/react/dist/ssr";
 type Rgb = { r: number; g: number; b: number };
 
 function hexToRgb(hex: string): Rgb | null {
@@ -35,31 +36,63 @@ function contrastRatio(a: string, b: string): number | null {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-const TEXT_TIERS = [
-  { key: "--gray-1000", label: "gray-1000", min: 7, tierLabel: "AAA body" },
-  { key: "--gray-900", label: "gray-900", min: 4.5, tierLabel: "AA body" },
-  { key: "--gray-800", label: "gray-800", min: 4.5, tierLabel: "AA meta" },
-  { key: "--gray-700", label: "gray-700", min: 3, tierLabel: "AA-large / hint" },
-] as const;
+type Tier = {
+  fg: string;
+  label: string;
+  min: number;
+  tierLabel: string;
+  bgs: readonly { key: string; label: string }[];
+};
 
-const SURFACES = [
-  { key: "--background-100", label: "background-100" },
-  { key: "--background-200", label: "background-200" },
-] as const;
+const TEXT_TIERS: readonly Tier[] = [
+  {
+    fg: "--ink",
+    label: "ink",
+    min: 7,
+    tierLabel: "AAA body",
+    bgs: [
+      { key: "--canvas", label: "canvas" },
+      { key: "--surface-1", label: "surface-1" },
+      { key: "--surface-2", label: "surface-2" },
+      { key: "--surface-elevated", label: "surface-elevated" },
+    ],
+  },
+  {
+    fg: "--ink-muted",
+    label: "ink-muted",
+    min: 4.5,
+    tierLabel: "AA secondary",
+    bgs: [
+      { key: "--canvas", label: "canvas" },
+      { key: "--surface-1", label: "surface-1" },
+      { key: "--surface-2", label: "surface-2" },
+    ],
+  },
+  {
+    fg: "--ink-subtle",
+    label: "ink-subtle",
+    min: 4.5,
+    tierLabel: "AA placeholder",
+    bgs: [{ key: "--canvas", label: "canvas" }],
+  },
+  {
+    fg: "--ink-tertiary",
+    label: "ink-tertiary",
+    min: 3,
+    tierLabel: "AA-large / disabled",
+    bgs: [{ key: "--canvas", label: "canvas" }],
+  },
+];
 
-const ACCENTS = [
-  { key: "--blue-700", label: "blue-700" },
-  { key: "--red-700", label: "red-700" },
-  { key: "--amber-700", label: "amber-700" },
-  { key: "--green-700", label: "green-700" },
-  { key: "--teal-700", label: "teal-700" },
-  { key: "--purple-700", label: "purple-700" },
-  { key: "--pink-700", label: "pink-700" },
+const STATUS = [
+  { fg: "--error-fg", bg: "--error", label: "error-fg on error" },
+  { fg: "--warning-fg", bg: "--warning", label: "warning-fg on warning" },
+  { fg: "--success-fg", bg: "--success", label: "success-fg on success" },
 ] as const;
 
 export function ContrastDemo() {
-  // Re-read tokens whenever the theme class flips on <html>.
-  const [tick, setTick] = useState(0);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const [, setTick] = useState(0);
 
   useEffect(() => {
     const obs = new MutationObserver(() => setTick((t) => t + 1));
@@ -70,22 +103,27 @@ export function ContrastDemo() {
     return () => obs.disconnect();
   }, []);
 
+  if (!mounted) {
+    return (
+      <div className="text-caption-12 text-ink-subtle">Loading contrast matrix…</div>
+    );
+  }
+
   const readVar = (name: string): string => {
-    if (typeof window === "undefined") return "";
     return getComputedStyle(document.documentElement)
       .getPropertyValue(name)
       .trim();
   };
 
   return (
-    <div className="flex flex-col gap-10" data-tick={tick}>
+    <div className="flex flex-col gap-10">
       <section>
         <SectionHeading title="Text on surfaces" />
         <div className="flex flex-col gap-6">
           {TEXT_TIERS.map((tier) => {
-            const fg = readVar(tier.key);
+            const fg = readVar(tier.fg);
             return (
-              <div key={tier.key}>
+              <div key={tier.fg}>
                 <TierHeader
                   label={tier.label}
                   tierLabel={tier.tierLabel}
@@ -93,7 +131,7 @@ export function ContrastDemo() {
                   hex={fg}
                 />
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                  {SURFACES.map((surface) => {
+                  {tier.bgs.map((surface) => {
                     const bg = readVar(surface.key);
                     const ratio =
                       fg && bg ? contrastRatio(fg, bg) : null;
@@ -119,50 +157,14 @@ export function ContrastDemo() {
       </section>
 
       <section>
-        <SectionHeading title="Accent solids on background-100" />
-        <p className="mb-3 text-copy-13 text-gray-800">
-          The `-700` step is the "solid" tier used for saturated badges,
-          focused links, and status pills. Each must clear AA (4.5:1)
-          against the primary canvas.
-        </p>
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {ACCENTS.map((accent) => {
-            const fg = readVar(accent.key);
-            const bg = readVar("--background-100");
-            const ratio = fg && bg ? contrastRatio(fg, bg) : null;
-            const passes = ratio !== null && ratio >= 4.5;
-            return (
-              <SwatchCard
-                key={accent.key}
-                bg={bg}
-                fg={fg}
-                label={accent.label}
-                ratio={ratio}
-                passes={passes}
-                compact
-              >
-                <div
-                  className="text-button-14"
-                  style={{ color: fg || undefined }}
-                >
-                  Solid on canvas
-                </div>
-              </SwatchCard>
-            );
-          })}
-        </div>
-      </section>
-
-      <section>
         <SectionHeading title="Primary button (inverted surface)" />
-        <p className="mb-3 text-copy-13 text-gray-800">
-          The primary Button is `background-100` text on a `gray-1000`
-          fill. Must clear AAA (7:1) so the label stays readable at every
-          weight.
+        <p className="mb-3 text-body-13 text-ink-muted">
+          The primary Button is <code>on-primary</code> text (canvas) on a{" "}
+          <code>primary</code> (ink) fill. Must clear AAA (7:1).
         </p>
         {(() => {
-          const fg = readVar("--background-100");
-          const bg = readVar("--gray-1000");
+          const fg = readVar("--on-primary");
+          const bg = readVar("--primary");
           const ratio = fg && bg ? contrastRatio(fg, bg) : null;
           const passes = ratio !== null && ratio >= 7;
           return (
@@ -170,7 +172,7 @@ export function ContrastDemo() {
               <SwatchCard
                 bg={bg}
                 fg={fg}
-                label="background-100 on gray-1000"
+                label="on-primary on primary"
                 ratio={ratio}
                 passes={passes}
               >
@@ -185,13 +187,46 @@ export function ContrastDemo() {
           );
         })()}
       </section>
+
+      <section>
+        <SectionHeading title="Semantic status" />
+        <p className="mb-3 text-body-13 text-ink-muted">
+          Each status role pairs a fixed-hex fill with an <code>-fg</code>{" "}
+          label that carries the accessible text color. Must clear AA (4.5:1).
+        </p>
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+          {STATUS.map((s) => {
+            const fg = readVar(s.fg);
+            const bg = readVar(s.bg);
+            const ratio = fg && bg ? contrastRatio(fg, bg) : null;
+            const passes = ratio !== null && ratio >= 4.5;
+            return (
+              <SwatchCard
+                key={s.label}
+                bg={bg}
+                fg={fg}
+                label={s.label}
+                ratio={ratio}
+                passes={passes}
+              >
+                <div
+                  className="text-button-14"
+                  style={{ color: fg || undefined }}
+                >
+                  Status label
+                </div>
+              </SwatchCard>
+            );
+          })}
+        </div>
+      </section>
     </div>
   );
 }
 
 function SectionHeading({ title }: { title: string }) {
   return (
-    <h3 className="mb-3 text-button-14 text-gray-1000">{title}</h3>
+    <h3 className="mb-3 text-button-14 text-ink">{title}</h3>
   );
 }
 
@@ -208,14 +243,12 @@ function TierHeader({
 }) {
   return (
     <div className="mb-2 flex flex-wrap items-baseline gap-2">
-      <span className="text-button-14 text-gray-1000">
-        {label}
-      </span>
-      <span className="text-label-12 text-gray-800">
+      <span className="text-button-14 text-ink">{label}</span>
+      <span className="text-caption-12 text-ink-muted">
         {tierLabel}, min {min}:1
       </span>
       {hex && (
-        <span className="ml-auto rounded-full border border-gray-alpha-400 px-2 py-0.5 text-label-11 text-gray-900">
+        <span className="ml-auto rounded-full border border-hairline px-2 py-0.5 text-caption-11 text-ink">
           {hex}
         </span>
       )}
@@ -229,7 +262,6 @@ function SwatchCard({
   label,
   ratio,
   passes,
-  compact,
   children,
 }: {
   bg: string;
@@ -237,34 +269,31 @@ function SwatchCard({
   label: string;
   ratio: number | null;
   passes: boolean;
-  compact?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <div
       style={{ backgroundColor: bg || undefined }}
-      className="rounded-[var(--radius-6)] border-[0.5px] border-gray-alpha-400 p-3"
+      className="rounded-[var(--radius-6)] border border-hairline p-3"
     >
-      <div className={compact ? "" : "space-y-1"}>{children}</div>
+      <div className="space-y-1">{children}</div>
       <div className="mt-3 flex items-center justify-between gap-1">
         <span
-          className="text-label-11"
+          className="text-caption-11"
           style={{ color: fg || undefined, opacity: 0.7 }}
         >
           {label}
         </span>
         <span
-          className={
-            "rounded-full px-1.5 py-0.5 text-button-12 " +
-            (ratio === null
-              ? "bg-gray-100 text-gray-800"
-              : passes
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800")
-          }
+          className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-surface-elevated px-2 py-0.5 text-button-12 text-ink"
         >
-          {ratio !== null ? `${ratio.toFixed(2)}:1` : "n/a"}{" "}
-          {ratio !== null && (passes ? "✓" : "✗")}
+          {ratio !== null &&
+            (passes ? (
+              <Check className="size-3 text-success" aria-hidden />
+            ) : (
+              <X className="size-3 text-error" aria-hidden />
+            ))}
+          {ratio !== null ? `${ratio.toFixed(2)}:1` : "n/a"}
         </span>
       </div>
     </div>
@@ -274,13 +303,13 @@ function SwatchCard({
 function SampleText({ fg }: { fg: string }) {
   return (
     <>
-      <div className="text-label-11" style={{ color: fg || undefined }}>
+      <div className="text-caption-11" style={{ color: fg || undefined }}>
         11px sample text
       </div>
-      <div className="text-copy-13" style={{ color: fg || undefined }}>
+      <div className="text-body-13" style={{ color: fg || undefined }}>
         13px sample text
       </div>
-      <div className="text-copy-16" style={{ color: fg || undefined }}>
+      <div className="text-body-16" style={{ color: fg || undefined }}>
         16px sample text
       </div>
     </>

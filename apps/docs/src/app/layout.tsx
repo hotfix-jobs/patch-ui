@@ -1,7 +1,19 @@
 import type { Metadata } from "next";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { SiteChrome } from "@/components/site-chrome";
+import { SidebarProvider } from "@patchui/react";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-body-loaded",
+  display: "swap",
+});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono-loaded",
+  display: "swap",
+});
 
 const themeScript = `
 (function() {
@@ -14,9 +26,6 @@ const themeScript = `
 })();
 `;
 
-// JSON-LD structured data: describes Patch UI as SoftwareApplication so
-// search engines pick up the library metadata (name, description, category)
-// alongside the standard OpenGraph card.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
@@ -54,10 +63,8 @@ export const metadata: Metadata = {
     "shadcn registry",
     "accessible",
   ],
-  alternates: { canonical: "/" },
-  // Favicons use Next.js App Router's file-based convention:
-  // src/app/favicon.ico + src/app/icon.svg + src/app/apple-icon.png
-  // are auto-detected. No `icons` metadata needed.
+  alternates: { canonical: "/docs" },
+  // Favicons resolved via Next.js file-based convention (favicon.ico + icon.svg + apple-icon.png in src/app), so no `icons` key here.
   openGraph: {
     type: "website",
     title: "Patch UI: accessible React components, copy-in",
@@ -80,7 +87,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+    >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
@@ -89,7 +100,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <SiteChrome>{children}</SiteChrome>
+        <SidebarProvider defaultOpen>{children}</SidebarProvider>
         <Analytics />
       </body>
     </html>
