@@ -434,4 +434,13 @@
     background: var(--hairline-tertiary);
   }
 
+  /* Icon default. Phosphor icons render with width="1em" / height="1em"
+     attributes so they'd inherit the parent's font-size. Set a 1rem
+     default here so an icon in a text-body-14 (14px) label still reads
+     at 16px. Any Tailwind size-* class on the svg wins via selector
+     specificity. */
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
 }
