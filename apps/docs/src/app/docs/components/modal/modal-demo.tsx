@@ -65,7 +65,7 @@ export function ModalDemo() {
           <ModalBody>
             <div className="flex items-center gap-2 rounded-[var(--radius-6)] border border-error bg-error/10 px-3 py-2 text-error">
               <Warning className="size-4 shrink-0" aria-hidden />
-              <p className="text-body-13">
+              <p className="text-small">
                 Removing {PROJECT_NAME} can't be undone.
               </p>
             </div>
@@ -128,15 +128,15 @@ export function ModalDemo() {
             <ModalTitle>Release note</ModalTitle>
           </ModalHeader>
           <ModalBody>
-            <h2 className="text-display-24 text-ink">Templates</h2>
-            <p className="text-body-14 leading-relaxed text-ink">
+            <h2 className="text-title2 text-ink">Templates</h2>
+            <p className="text-small leading-relaxed text-ink">
               Save any layout as a template to reuse across projects.
               Templates carry field defaults, sub-tasks, and labels so you
               can spin up a fresh project in a single click.
             </p>
             <div className="flex flex-col gap-2">
-              <h3 className="text-button-14 text-ink">What's new</h3>
-              <ul className="flex flex-col gap-1.5 text-body-14 text-ink">
+              <h3 className="text-small font-medium text-ink">What's new</h3>
+              <ul className="flex flex-col gap-1.5 text-small text-ink">
                 <li>Share templates with your team from the sidebar</li>
                 <li>Turn any existing project into a template</li>
                 <li>Set field defaults per template</li>

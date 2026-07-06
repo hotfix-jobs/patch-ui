@@ -167,8 +167,8 @@ export function Dropzone({
         className={cn(
           "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-6)] border border-dashed border-hairline-strong px-6 py-10",
           "text-center transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          "hover:border-hairline-tertiary hover:bg-surface-1",
-          "data-[drag-over]:border-primary data-[drag-over]:bg-surface-1",
+          "hover:border-hairline-tertiary hover:bg-layer-hover",
+          "data-[drag-over]:border-primary data-[drag-over]:bg-fill-1",
           disabled && "pointer-events-none opacity-50",
           isUploading && "pointer-events-none",
           focusRing,
@@ -176,16 +176,16 @@ export function Dropzone({
       >
         <div
           aria-hidden
-          className="flex size-10 items-center justify-center rounded-[var(--radius-6)] border border-hairline bg-surface-elevated text-ink"
+          className="flex size-10 items-center justify-center rounded-[var(--radius-6)] border border-hairline bg-layer-1 text-ink"
         >
           <Upload className="size-5" />
         </div>
         <div className="flex flex-col gap-1">
-          <p className="text-button-14 text-ink">
+          <p className="text-small font-medium text-ink">
             {title}
           </p>
           {description && (
-            <p className="text-caption-12 text-ink-muted">
+            <p className="text-mini text-ink-muted">
               {description}
             </p>
           )}
@@ -225,7 +225,7 @@ export function Dropzone({
                 >
                   <File className="size-4 shrink-0 text-ink-muted" />
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
-                    <span className="truncate text-body-13 text-ink">
+                    <span className="truncate text-small text-ink">
                       {f.name}
                     </span>
                     {isUploading ? (
@@ -235,7 +235,7 @@ export function Dropzone({
                         label={`Uploading ${f.name}`}
                       />
                     ) : (
-                      <span className="text-caption-12 text-ink-muted">
+                      <span className="text-mini text-ink-muted">
                         {formatBytes(f.size)}
                       </span>
                     )}
@@ -245,7 +245,7 @@ export function Dropzone({
                       type="button"
                       onClick={() => removeAt(i)}
                       aria-label={`Remove ${f.name}`}
-                      className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-2 hover:text-ink"
+                      className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink"
                     >
                       <X className="size-3.5" aria-hidden />
                     </button>

@@ -16,7 +16,7 @@ export function EmptyStateDemo() {
       >
         <a
           href="#"
-          className="inline-flex items-center gap-1 text-body-14 text-ink-muted hover:text-ink"
+          className="inline-flex items-center gap-1 text-small text-ink-muted hover:text-ink"
         >
           Learn more
           <ArrowSquareOut className="size-3.5" />

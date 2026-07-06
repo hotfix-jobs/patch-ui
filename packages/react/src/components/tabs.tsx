@@ -140,14 +140,17 @@ export function TabsTrigger({
       disabled={disabled}
       data-slot="tabs-trigger"
       className={cn(
-        "relative inline-flex items-center gap-2 text-body-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
+        "relative inline-flex items-center gap-2 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
         focusRing,
         variant === "underline" &&
-          "py-2.5 text-ink-muted hover:text-ink data-[selected]:text-ink",
+          "py-2.5 text-ink-muted hover:text-ink data-[active]:text-ink",
         variant === "pill" && [
           "rounded-full border border-hairline px-3 py-1 text-left text-ink-muted",
-          "hover:bg-surface-1 hover:text-ink",
-          "data-[selected]:bg-surface-elevated data-[selected]:text-ink",
+          "hover:bg-layer-hover hover:text-ink",
+          // Overlay so the selected fill reads on any container (base OR
+          // a layer-1 Card). A solid bg-layer-1 collapses to the container
+          // color when tabs are placed inside a Card, hiding the pill.
+          "data-[active]:bg-layer-selected data-[active]:text-ink",
         ],
         className,
       )}
@@ -162,7 +165,7 @@ export function TabsTrigger({
       {showBadge && (
         <span
           data-slot="tabs-trigger-badge"
-          className="text-caption-12 tabular-nums text-ink-muted"
+          className="text-mini tabular-nums text-ink-muted"
         >
           {badge}
         </span>

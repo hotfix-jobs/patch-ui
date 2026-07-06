@@ -27,7 +27,7 @@ export function Separator({
         data-slot="separator"
         data-orientation="horizontal"
         className={cn(
-          "flex w-full items-center gap-3 text-caption-12 text-ink-muted",
+          "flex w-full items-center gap-3 text-mini text-ink-muted",
           className,
         )}
       >

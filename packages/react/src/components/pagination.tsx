@@ -40,7 +40,7 @@ export function Pagination({
       aria-label="Pagination"
       aria-busy={loading || undefined}
       className={cn(
-        "inline-flex items-stretch overflow-hidden rounded-[var(--radius-6)] border border-hairline text-body-13",
+        "inline-flex items-stretch overflow-hidden rounded-[var(--radius-6)] border border-hairline text-small",
         loading && "opacity-70",
         className,
       )}
@@ -123,10 +123,10 @@ function PageCell({
 }: PageCellProps): React.ReactElement {
   const className = cn(
     // Fixed 32x32 cell + tabular-nums so the bar width stays stable across page counts.
-    "inline-flex size-8 shrink-0 items-center justify-center text-body-13 tabular-nums transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+    "inline-flex size-8 shrink-0 items-center justify-center text-small tabular-nums transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
     current
-      ? "bg-surface-2 text-ink"
-      : "text-ink-muted hover:bg-surface-1 hover:text-ink",
+      ? "bg-fill-2 text-ink"
+      : "text-ink-muted hover:bg-layer-hover hover:text-ink",
     disabled && "pointer-events-none text-ink-tertiary",
     divider === "end" && "border-e border-hairline",
   );

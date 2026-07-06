@@ -41,7 +41,7 @@ export function Skeleton({
       aria-live="polite"
       data-slot="skeleton"
       className={cn(
-        "bg-surface-2",
+        "bg-fill-2",
         shape === "rounded" && "rounded-[var(--radius-6)]",
         shape === "squared" && "rounded-none",
         shape === "pill" && "rounded-full",

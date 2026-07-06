@@ -35,12 +35,12 @@ export function ScrollerDemo() {
           {CARDS.map((c) => (
             <div
               key={c.title}
-              className="w-52 shrink-0 rounded-[var(--radius-12)] border border-hairline-strong bg-canvas p-4"
+              className="w-52 shrink-0 rounded-[var(--radius-12)] border border-hairline-strong bg-base p-4"
             >
-              <p className="text-button-14 text-ink">
+              <p className="text-small font-medium text-ink">
                 {c.title}
               </p>
-              <p className="mt-1 text-body-13 text-ink-muted">{c.meta}</p>
+              <p className="mt-1 text-small text-ink-muted">{c.meta}</p>
             </div>
           ))}
         </Scroller>
@@ -59,7 +59,7 @@ export function ScrollerDemo() {
               <button
                 key={label}
                 type="button"
-                className="shrink-0 rounded-full border border-hairline-strong bg-canvas px-4 py-1.5 text-body-13 text-ink hover:bg-surface-1"
+                className="shrink-0 rounded-full border border-hairline-strong bg-base px-4 py-1.5 text-small text-ink hover:bg-layer-hover"
               >
                 {label}
               </button>
@@ -76,17 +76,17 @@ export function ScrollerDemo() {
           height={280}
           childrenContainerClassName="p-3"
           ariaLabel="Activity feed"
-          className="rounded-[var(--radius-12)] border border-hairline-strong bg-canvas"
+          className="rounded-[var(--radius-12)] border border-hairline-strong bg-base"
         >
           {FEED.map((item) => (
             <div
               key={item.id}
               className="border-b border-hairline-strong py-2 last:border-b-0"
             >
-              <p className="text-button-14 text-ink">
+              <p className="text-small font-medium text-ink">
                 {item.title}
               </p>
-              <p className="mt-0.5 text-body-13 text-ink-muted">{item.body}</p>
+              <p className="mt-0.5 text-small text-ink-muted">{item.body}</p>
             </div>
           ))}
         </Scroller>

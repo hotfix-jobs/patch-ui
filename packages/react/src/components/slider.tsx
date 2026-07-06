@@ -76,7 +76,7 @@ export function Slider({
         data-slot="slider-control"
       >
         <SliderPrimitive.Track
-          className="relative grow select-none rounded-full bg-surface-2 data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full"
+          className="relative grow select-none rounded-full bg-fill-2 data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full"
           data-slot="slider-track"
         >
           <SliderPrimitive.Indicator
@@ -154,7 +154,7 @@ export function SliderValue({
   return (
     <SliderPrimitive.Value
       className={cn(
-        "block text-end text-body-13 tabular-nums text-ink self-end",
+        "block text-end text-small tabular-nums text-ink self-end",
         className,
       )}
       data-slot="slider-value"

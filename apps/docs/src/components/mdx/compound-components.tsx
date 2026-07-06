@@ -41,15 +41,15 @@ export function CompoundComponents({ components }: CompoundComponentsProps) {
         <TableBody>
           {components.map((comp) => (
             <TableRow key={comp.name}>
-              <TableCell className="align-top text-body-13">{comp.name}</TableCell>
+              <TableCell className="align-top text-small">{comp.name}</TableCell>
               {hasElement && (
-                <TableCell className="align-top text-body-13">
+                <TableCell className="align-top text-small">
                   {comp.element ?? (
                     <span className="text-ink-subtle">None</span>
                   )}
                 </TableCell>
               )}
-              <TableCell className="align-top text-body-13">
+              <TableCell className="align-top text-small">
                 {comp.description}
               </TableCell>
             </TableRow>

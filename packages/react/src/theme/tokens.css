@@ -4,20 +4,26 @@
  * Source of truth: packages/react/DESIGN.md.
  *
  * The system is a crisp-minimal, near-flat design language:
- *   - A near-black flat canvas in both themes (#08090A dark, #FBFBFC light).
- *   - A four-step surface ladder that carries hierarchy without shadow.
+ *   - A near-black flat base in both themes (#0F0F13 dark, #FBFBFC light)
+ *     with a subtle cool tint (blue lean, hue ~272) on all neutrals.
+ *   - Two surface families that speak plainly: --layer-* is "lifted
+ *     above base" (Card, Modal, popup, chrome), --fill-* is "tinted
+ *     chip fill" (Toggle track, Badge, code chip). No "elevated" or
+ *     "canvas" special names.
  *   - 1px hairline borders as the load-bearing separator.
  *   - A monochrome primary (consumers override --primary to inject brand).
  *   - Semantic status roles at fixed hex, theme-invariant.
- *   - Three type families: Inter Display (600), Inter (400/500), JetBrains
- *     Mono (400). Compound utility classes bundle size + line-height +
- *     tracking + weight into a single .text-<family>-<size> recipe.
+ *   - Two type families: Inter Variable (all weights) and JetBrains Mono
+ *     for code. Size and weight are separate axes: eight size tokens
+ *     (micro/mini/small/regular/large/title3/title2/title1) composed at
+ *     the call site with five weight tokens (light/normal/medium/
+ *     semibold/bold). Line-height comes from element defaults.
  *   - Motion is fast: 75ms state, 150ms overlay, one easing curve.
  *
  * Layers:
  *   1. Raw runtime custom properties on :root / .dark.
  *   2. @theme inline bridge into Tailwind v4 utilities.
- *   3. @layer utilities compound text classes.
+ *   3. @layer base global element typography defaults.
  *   4. @layer base thin-scrollbar defaults.
  * --------------------------------------------------------------- */
 
@@ -25,55 +31,68 @@
  * Layer 1: Runtime theme values (light mode reference).
  * --------------------------------------------------------------- */
 :root {
-  /* Canvas + 4-step surface ladder. Every surface picks a rung.
-     Canvas is page bg; surface-1 is the default lifted card; surface-2
-     is elevated/hovered; surface-3 is popups (menu, dropdown, select);
-     surface-4 is nested tiles inside a lifted panel. */
-  --canvas:    #FBFBFB;
-  --surface-1: #F5F5F7;
-  --surface-2: #EDEDEE;
-  --surface-3: #E5E5E7;
-  --surface-4: #DEDEE0;
+  /* Base is the page background: everything sits on it. layer-* is the
+     "lifted above base" family (panels, cards, popups, chrome). fill-*
+     is the "tinted chip/toggle fill" family. Neutrals carry a hair of
+     cool chroma (blue lean, hue ~272) to match the reference; the
+     tints are below the perception threshold on the last byte but
+     shape the overall temperature. */
+  --base:      #FBFBFC;
 
-  /* Elevated surface: popups (menu, combobox, command, tooltip) sit on
-     this. In light mode it lifts TOWARD pure white so a floating panel
-     reads brighter than the off-white canvas below. In dark mode it
-     lifts TOWARD lighter gray. Standard crisp-minimal popup treatment. */
-  --surface-elevated:       #FFFFFF;
-  /* Subtle hover tint for elevated surfaces (secondary Button, Card,
-     etc.). Sits between elevated and surface-1 so the hover reads as
-     "same surface, slightly tinted" rather than dropping a full rung. */
-  --surface-elevated-hover: #F7F7F8;
+  /* Lifted rungs. layer-1 is the default panel surface: Card, Modal,
+     Menu popup, Combobox popup, Tooltip, Select popup, Input, Table
+     container, secondary Button chrome. layer-2 is a hover-adjacent
+     step (secondary Button hover, Input hover companion). In light
+     mode layer-1 is pure white so the lift reads against off-white
+     base; in dark mode it lifts one rung above base. */
+  --layer-1:   #FFFFFF;
+  --layer-2:   #F7F7F9;
 
-  /* Hairlines. 1px borders carry every separation the surface ladder
-     can't. hairline-strong is for focused/hovered inputs and elevated
-     card edges; hairline-tertiary is for nested content that already
-     sits on a lifted surface. */
+  /* Tinted chip/fill rungs. Toggle track, Badge neutral, code chip,
+     Switch off-track, striped table hover, Skeleton, active pill Tab.
+     These paint DEEPER than base in light mode: their job is a subtle
+     darkened fill for indication, not a lift. */
+  --fill-1:    #F5F5F8;
+  --fill-2:    #EDEDF0;
+
+  /* Adaptive interaction-state overlays. rgba (not opaque) so they
+     darken whatever surface sits underneath: base, layer-1, fill-1,
+     or a consumer's own background. Every transparent-at-rest control
+     uses these for hover / selected fills so the state never
+     disappears when it lands on a rung that happens to match. */
+  --layer-hover:    rgba(0, 0, 0, 0.04);
+  --layer-selected: rgba(0, 0, 0, 0.08);
+
+  /* Hairlines. 1px borders carry every separation the layer/fill
+     ladders can't. hairline-strong is for focused/hovered inputs and
+     lifted card edges; hairline-tertiary is for nested content that
+     already sits on a lifted surface. */
   --hairline:           rgba(0, 0, 0, 0.04);
   --hairline-strong:    rgba(0, 0, 0, 0.08);
   --hairline-tertiary:  rgba(0, 0, 0, 0.14);
 
-  /* Ink (text) tiers. Neutral gray, no cool bias. Icon color inherits
-     from surrounding text color. */
-  --ink:           #1D1D1F;
-  --ink-muted:     #545458;
-  --ink-subtle:    #6E6E71;
-  --ink-tertiary:  #8E8E93;
+  /* Ink (text) tiers. Same cool lean as the layer/fill ladder for
+     temperature consistency. Icon color inherits from surrounding
+     text color. */
+  --ink:           #1D1D22;
+  --ink-muted:     #545460;
+  --ink-subtle:    #6E6E7C;
+  --ink-tertiary:  #8E8EA0;
 
   /* Primary (monochrome). No chromatic brand hue ships. Consumers
      redefine these four tokens in a downstream layer to inject brand;
      every Button and focus-adjacent primitive inherits for free. */
   --primary:         var(--ink);
-  --on-primary:      var(--canvas);
+  --on-primary:      var(--base);
   /* Hover / active are proportional shifts off --primary via color-mix
      so a consumer's brand override on --primary automatically produces
-     matching hover/active steps. Mixing with --canvas gives a "subtle
+     matching hover/active steps. Mixing with --base gives a "subtle
      move toward the background" that works in both themes: in light
      mode it lightens the dark primary, in dark mode it darkens the
      near-white primary. Avoids ink-muted/subtle which are much lighter
      tiers and would drop the button visibly on hover. */
-  --primary-hover:   color-mix(in srgb, var(--primary), var(--canvas) 15%);
-  --primary-active:  color-mix(in srgb, var(--primary), var(--canvas) 25%);
+  --primary-hover:   color-mix(in srgb, var(--primary), var(--base) 15%);
+  --primary-active:  color-mix(in srgb, var(--primary), var(--base) 25%);
 
   /* Semantic status. Fixed hex, theme-invariant. -fg tokens carry the
      label color so fill and text invert together per theme without a
@@ -134,51 +153,44 @@
   --duration-overlay: 150ms;
   --ease-standard:    cubic-bezier(0.175, 0.885, 0.32, 1.1);
 
-  /* Font families. Consumers ship these through their font pipeline;
-     the docs site loads Inter and JetBrains Mono via next/font, which
-     exposes CSS vars (--font-body-loaded, --font-mono-loaded) picked
-     up first below. When those vars aren't defined the raw family
-     names take over, and finally the system fallback stack. Large-size
-     optical adjustments in Inter Display are lost if unavailable. */
-  --font-display: var(--font-body-loaded), "Inter Display", "Inter", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+  /* Font families. Two families ship: one variable sans for everything
+     that isn't code, one mono for code. Consumers ship the actual font
+     files through their pipeline; the docs site loads Inter via
+     next/font (which is now a variable font at all weights 100-900) and
+     JetBrains Mono for code. --font-body-loaded / --font-mono-loaded
+     come from next/font first; raw family names + system fallbacks
+     follow. --font-display aliases --font-body: there is no separate
+     display cut. Display sizes ride weight and size, not a distinct
+     family or letter-spacing recipe. */
   --font-body:    var(--font-body-loaded), "Inter", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-body);
   --font-mono:    var(--font-mono-loaded), "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
-  /* Display family (Inter Display 600). Aggressive negative tracking
-     tapers linearly from -0.045em at 72px to -0.02em at 20px. */
-  --display-72-size: 72px; --display-72-leading: 1.05; --display-72-tracking: -0.045em; --display-72-weight: 600;
-  --display-64-size: 64px; --display-64-leading: 1.05; --display-64-tracking: -0.04em;  --display-64-weight: 600;
-  --display-56-size: 56px; --display-56-leading: 1.08; --display-56-tracking: -0.04em;  --display-56-weight: 600;
-  --display-48-size: 48px; --display-48-leading: 1.10; --display-48-tracking: -0.035em; --display-48-weight: 600;
-  --display-40-size: 40px; --display-40-leading: 1.15; --display-40-tracking: -0.035em; --display-40-weight: 600;
-  --display-32-size: 32px; --display-32-leading: 1.20; --display-32-tracking: -0.03em;  --display-32-weight: 600;
-  --display-24-size: 24px; --display-24-leading: 1.25; --display-24-tracking: -0.025em; --display-24-weight: 600;
-  --display-20-size: 20px; --display-20-leading: 1.30; --display-20-tracking: -0.02em;  --display-20-weight: 600;
+  /* Font sizes. Eight rem-based sizes cover every use, from the smallest
+     meta label (micro, 11px) up to a page-hero heading (title1, 36px).
+     Default body is regular (15px). Bundled leading, tracking, and
+     weight are gone: line-height comes from element defaults (body 1.5,
+     p 1.7, headings 1.25) and weight is a separate token axis below.
+     Sub-Retina rounds micro up to a whole pixel to avoid subpixel blur
+     on 1x displays. */
+  --font-size-micro:    0.6875rem; /* 11 */
+  --font-size-mini:     0.75rem;   /* 12 */
+  --font-size-small:    0.8125rem; /* 13 */
+  --font-size-regular:  0.9375rem; /* 15 */
+  --font-size-large:    1.125rem;  /* 18 */
+  --font-size-title3:   1.25rem;   /* 20 */
+  --font-size-title2:   1.5rem;    /* 24 */
+  --font-size-title1:   2.25rem;   /* 36 */
 
-  /* Body family (Inter 400). Default running text. */
-  --body-20-size: 20px; --body-20-leading: 1.50; --body-20-tracking: -0.015em; --body-20-weight: 400;
-  --body-18-size: 18px; --body-18-leading: 1.55; --body-18-tracking: -0.013em; --body-18-weight: 400;
-  --body-16-size: 16px; --body-16-leading: 1.55; --body-16-tracking: -0.011em; --body-16-weight: 400;
-  --body-14-size: 14px; --body-14-leading: 1.55; --body-14-tracking: -0.006em; --body-14-weight: 400;
-  --body-13-size: 13px; --body-13-leading: 1.50; --body-13-tracking: -0.005em; --body-13-weight: 400;
-
-  /* Caption family (Inter 400). Positive tracking on caption-11
-     signals "taxonomy marker" without going uppercase. */
-  --caption-12-size: 12px; --caption-12-leading: 1.40; --caption-12-tracking: 0;       --caption-12-weight: 400;
-  --caption-11-size: 11px; --caption-11-leading: 1.35; --caption-11-tracking: 0.005em; --caption-11-weight: 400;
-
-  /* Button family (Inter 500). Tight leading for label-in-control fit. */
-  --button-16-size: 16px; --button-16-leading: 1.20; --button-16-tracking: -0.011em; --button-16-weight: 500;
-  --button-14-size: 14px; --button-14-leading: 1.20; --button-14-tracking: -0.006em; --button-14-weight: 500;
-  --button-12-size: 12px; --button-12-leading: 1.20; --button-12-tracking: 0;        --button-12-weight: 500;
-
-  /* Eyebrow (Inter 500 + positive tracking). Section taxonomy marker. */
-  --eyebrow-size: 13px; --eyebrow-leading: 1.30; --eyebrow-tracking: 0.04em; --eyebrow-weight: 500;
-
-  /* Mono family (JetBrains Mono 400). Code contexts only. */
-  --mono-14-size: 14px; --mono-14-leading: 1.55; --mono-14-tracking: 0; --mono-14-weight: 400;
-  --mono-13-size: 13px; --mono-13-leading: 1.50; --mono-13-tracking: 0; --mono-13-weight: 400;
-  --mono-12-size: 12px; --mono-12-leading: 1.45; --mono-12-tracking: 0; --mono-12-weight: 400;
+  /* Font weights. Body defaults to 450 (only available in variable fonts;
+     non-variable Inter rounds to 400/500). Headings default to 500
+     (medium). Weight is composed at the call site via Tailwind's
+     font-{light,normal,medium,semibold,bold} utilities. */
+  --font-weight-light:     300;
+  --font-weight-normal:    450;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
 
   /* Spacing scale. Base unit 4px, every step a multiple. */
   --space-4:  4px;
@@ -204,25 +216,45 @@
  * carries the same label color because meaning doesn't flip with theme.
  * --------------------------------------------------------------- */
 .dark {
-  --canvas:    #0F0F10;
-  --surface-1: #1B1B1C;
-  --surface-2: #222224;
-  --surface-3: #2A2A2C;
-  --surface-4: #313134;
+  /* Deeper base than the "just off-black" default so the perceptual
+     range between base and layer-1 has room to breathe. Cool chroma
+     is dialed back from earlier values: on a dark ground, even a
+     small B-vs-R gap reads as visibly blue, so we run a much subtler
+     lean here than the light-mode equivalents. */
+  --base:      #0A0A0D;
 
-  /* Elevated surface for popups. Dark mode sits one rung above canvas;
-     the -hover step lifts one nudge toward surface-2. */
-  --surface-elevated:       #1B1B1C;
-  --surface-elevated-hover: #232324;
+  /* layer-1 is the default lifted panel (Card, Modal, Menu popup,
+     Sheet, Tooltip, Input, secondary Button chrome). Sits ~3-4%
+     lightness above base — enough to read as clearly separated but
+     subtle enough that panels feel integrated with the dark ambient.
+     Border and shadow do the rest of the elevation work. layer-2 is
+     a hover step above layer-1. */
+  --layer-1:   #191A1D;
+  --layer-2:   #1F2023;
+
+  /* fill-1 sits between base and layer-1 (subtle deeper tint for
+     Toggle track, Switch off-track). fill-2 sits brighter than
+     layer-1 so components rendered on a layer-1 surface (Table row
+     hover, striped rows, Modal nested tile, Badge chip, Skeleton
+     pulse, menu item highlight) still read distinct — collapsing
+     fill-2 into layer-1 makes those states invisible in dark. */
+  --fill-1:    #131418;
+  --fill-2:    #232327;
+
+  /* Overlays flip to white alpha in dark. Slightly stronger than light
+     because white-on-dark reads more subtle than black-on-light at the
+     same alpha. */
+  --layer-hover:    rgba(255, 255, 255, 0.05);
+  --layer-selected: rgba(255, 255, 255, 0.10);
 
   --hairline:           rgba(255, 255, 255, 0.06);
   --hairline-strong:    rgba(255, 255, 255, 0.11);
   --hairline-tertiary:  rgba(255, 255, 255, 0.18);
 
-  --ink:           #F5F5F5;
-  --ink-muted:     #9D9DA0;
-  --ink-subtle:    #7C7C80;
-  --ink-tertiary:  #6E6E71;
+  --ink:           #F5F5F7;
+  --ink-muted:     #9E9EA4;
+  --ink-subtle:    #7C7C82;
+  --ink-tertiary:  #6E6E74;
 
   /* Primary reinherits the inverted ink/canvas automatically through
      the var chain; the entries above already updated. Consumers that
@@ -279,7 +311,7 @@
  * Layer 2: Tailwind bridge (@theme inline).
  *
  * Exposes runtime tokens as Tailwind utility slots:
- *   - Every color as --color-* (bg-canvas, text-ink, border-hairline)
+ *   - Every color as --color-* (bg-base, bg-layer-1, text-ink, border-hairline)
  *   - Every radius as --radius-*
  *   - Every shadow as --shadow-*
  *   - Motion easing as --ease-*
@@ -293,13 +325,14 @@
  * font-family in one shot.
  * --------------------------------------------------------------- */
 @theme inline {
-  --color-canvas:    var(--canvas);
-  --color-surface-1: var(--surface-1);
-  --color-surface-2: var(--surface-2);
-  --color-surface-3: var(--surface-3);
-  --color-surface-4: var(--surface-4);
-  --color-surface-elevated:       var(--surface-elevated);
-  --color-surface-elevated-hover: var(--surface-elevated-hover);
+  --color-base:    var(--base);
+  --color-layer-1: var(--layer-1);
+  --color-layer-2: var(--layer-2);
+  --color-fill-1:  var(--fill-1);
+  --color-fill-2:  var(--fill-2);
+
+  --color-layer-hover:    var(--layer-hover);
+  --color-layer-selected: var(--layer-selected);
 
   --color-hairline:           var(--hairline);
   --color-hairline-strong:    var(--hairline-strong);
@@ -346,46 +379,75 @@
   --font-display: var(--font-display);
   --font-body:    var(--font-body);
   --font-mono:    var(--font-mono);
+
+  /* Size utilities: text-micro / text-mini / text-small / text-regular /
+     text-large / text-title3 / text-title2 / text-title1. */
+  --text-micro:    var(--font-size-micro);
+  --text-mini:     var(--font-size-mini);
+  --text-small:    var(--font-size-small);
+  --text-regular:  var(--font-size-regular);
+  --text-large:    var(--font-size-large);
+  --text-title3:   var(--font-size-title3);
+  --text-title2:   var(--font-size-title2);
+  --text-title1:   var(--font-size-title1);
+
+  /* Weight utilities: overrides Tailwind's defaults so font-normal is
+     450 (matching the variable-font body default) instead of 400. */
+  --font-weight-light:    var(--font-weight-light);
+  --font-weight-normal:   var(--font-weight-normal);
+  --font-weight-medium:   var(--font-weight-medium);
+  --font-weight-semibold: var(--font-weight-semibold);
+  --font-weight-bold:     var(--font-weight-bold);
 }
 
 /* ---------------------------------------------------------------
- * Layer 3: Compound text utility classes.
+ * Layer 3: Global element defaults for typography.
  *
- * Each .text-<family>-<size> applies size + line-height + tracking +
- * weight + font-family in one recipe. Components use these alone;
- * stacking a font-* weight utility on top is a lint-level error.
- * If a design needs a different weight at a given size, switch
- * families: display for 600, button/eyebrow for 500, body/caption/mono
- * for 400.
+ * Line height and default weight are set on the element, not bundled
+ * into per-size utility classes. body is 1.5, <p> is 1.7, headings are
+ * 1.25. font-family propagates through inheritance from body; form
+ * controls need an explicit override because they reset by default.
  * --------------------------------------------------------------- */
-@layer utilities {
-  .text-display-72 { font-family: var(--font-display); font-size: var(--display-72-size); line-height: var(--display-72-leading); letter-spacing: var(--display-72-tracking); font-weight: var(--display-72-weight); }
-  .text-display-64 { font-family: var(--font-display); font-size: var(--display-64-size); line-height: var(--display-64-leading); letter-spacing: var(--display-64-tracking); font-weight: var(--display-64-weight); }
-  .text-display-56 { font-family: var(--font-display); font-size: var(--display-56-size); line-height: var(--display-56-leading); letter-spacing: var(--display-56-tracking); font-weight: var(--display-56-weight); }
-  .text-display-48 { font-family: var(--font-display); font-size: var(--display-48-size); line-height: var(--display-48-leading); letter-spacing: var(--display-48-tracking); font-weight: var(--display-48-weight); }
-  .text-display-40 { font-family: var(--font-display); font-size: var(--display-40-size); line-height: var(--display-40-leading); letter-spacing: var(--display-40-tracking); font-weight: var(--display-40-weight); }
-  .text-display-32 { font-family: var(--font-display); font-size: var(--display-32-size); line-height: var(--display-32-leading); letter-spacing: var(--display-32-tracking); font-weight: var(--display-32-weight); }
-  .text-display-24 { font-family: var(--font-display); font-size: var(--display-24-size); line-height: var(--display-24-leading); letter-spacing: var(--display-24-tracking); font-weight: var(--display-24-weight); }
-  .text-display-20 { font-family: var(--font-display); font-size: var(--display-20-size); line-height: var(--display-20-leading); letter-spacing: var(--display-20-tracking); font-weight: var(--display-20-weight); }
+@layer base {
+  body {
+    font-family: var(--font-body);
+    font-size: var(--font-size-regular);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body,
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: var(--font-body);
+  }
+  p {
+    line-height: 1.7;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--font-weight-medium);
+    line-height: 1.25;
+  }
+  code, pre, kbd, samp {
+    font-family: var(--font-mono);
+  }
+}
 
-  .text-body-20 { font-family: var(--font-body); font-size: var(--body-20-size); line-height: var(--body-20-leading); letter-spacing: var(--body-20-tracking); font-weight: var(--body-20-weight); }
-  .text-body-18 { font-family: var(--font-body); font-size: var(--body-18-size); line-height: var(--body-18-leading); letter-spacing: var(--body-18-tracking); font-weight: var(--body-18-weight); }
-  .text-body-16 { font-family: var(--font-body); font-size: var(--body-16-size); line-height: var(--body-16-leading); letter-spacing: var(--body-16-tracking); font-weight: var(--body-16-weight); }
-  .text-body-14 { font-family: var(--font-body); font-size: var(--body-14-size); line-height: var(--body-14-leading); letter-spacing: var(--body-14-tracking); font-weight: var(--body-14-weight); }
-  .text-body-13 { font-family: var(--font-body); font-size: var(--body-13-size); line-height: var(--body-13-leading); letter-spacing: var(--body-13-tracking); font-weight: var(--body-13-weight); }
-
-  .text-caption-12 { font-family: var(--font-body); font-size: var(--caption-12-size); line-height: var(--caption-12-leading); letter-spacing: var(--caption-12-tracking); font-weight: var(--caption-12-weight); }
-  .text-caption-11 { font-family: var(--font-body); font-size: var(--caption-11-size); line-height: var(--caption-11-leading); letter-spacing: var(--caption-11-tracking); font-weight: var(--caption-11-weight); }
-
-  .text-button-16 { font-family: var(--font-body); font-size: var(--button-16-size); line-height: var(--button-16-leading); letter-spacing: var(--button-16-tracking); font-weight: var(--button-16-weight); }
-  .text-button-14 { font-family: var(--font-body); font-size: var(--button-14-size); line-height: var(--button-14-leading); letter-spacing: var(--button-14-tracking); font-weight: var(--button-14-weight); }
-  .text-button-12 { font-family: var(--font-body); font-size: var(--button-12-size); line-height: var(--button-12-leading); letter-spacing: var(--button-12-tracking); font-weight: var(--button-12-weight); }
-
-  .text-eyebrow { font-family: var(--font-body); font-size: var(--eyebrow-size); line-height: var(--eyebrow-leading); letter-spacing: var(--eyebrow-tracking); font-weight: var(--eyebrow-weight); }
-
-  .text-mono-14 { font-family: var(--font-mono); font-size: var(--mono-14-size); line-height: var(--mono-14-leading); letter-spacing: var(--mono-14-tracking); font-weight: var(--mono-14-weight); }
-  .text-mono-13 { font-family: var(--font-mono); font-size: var(--mono-13-size); line-height: var(--mono-13-leading); letter-spacing: var(--mono-13-tracking); font-weight: var(--mono-13-weight); }
-  .text-mono-12 { font-family: var(--font-mono); font-size: var(--mono-12-size); line-height: var(--mono-12-leading); letter-spacing: var(--mono-12-tracking); font-weight: var(--mono-12-weight); }
+/* Sub-Retina rounding: on 1x displays the smallest size can land on a
+   fractional pixel and blur. Snap it up to the nearest whole pixel via
+   round(). Guarded on @supports so older engines fall through to the
+   raw rem value. */
+@supports (font-size: round(up, 1rem, 1px)) {
+  @media not all and (-webkit-min-device-pixel-ratio: 2), not all and (min-resolution: 192dpi) {
+    :root {
+      --font-size-micro: round(up, 0.6875rem, 2px);
+    }
+  }
 }
 
 /* Opt an individual scrollable surface out of any scrollbar. Companion
@@ -435,10 +497,10 @@
   }
 
   /* Icon default. Phosphor icons render with width="1em" / height="1em"
-     attributes so they'd inherit the parent's font-size. Set a 1rem
-     default here so an icon in a text-body-14 (14px) label still reads
-     at 16px. Any Tailwind size-* class on the svg wins via selector
-     specificity. */
+     attributes so they'd inherit the parent's font-size. Force a 1rem
+     baseline here so an icon inside a text-small (13px) label still
+     reads at 16px. Any Tailwind size-* class on the svg wins via
+     selector specificity. */
   svg {
     width: 1rem;
     height: 1rem;

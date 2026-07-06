@@ -175,7 +175,7 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
             className={cn(
               "pointer-events-auto absolute w-full select-none",
               "rounded-[var(--radius-12)]",
-              "bg-surface-elevated text-ink",
+              "bg-layer-1 text-ink",
               "border border-hairline shadow-modal",
               "px-3 py-3 pe-10",
               "flex items-start gap-2.5",
@@ -199,11 +199,11 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
             )}
             <div className="min-w-0 flex-1">
               <ToastPrimitive.Title
-                className="text-button-14 leading-tight text-ink"
+                className="text-small font-medium leading-tight text-ink"
                 data-slot="toast-title"
               />
               <ToastPrimitive.Description
-                className="mt-0.5 text-caption-12 leading-snug text-ink-muted data-[empty]:hidden"
+                className="mt-0.5 text-mini leading-snug text-ink-muted data-[empty]:hidden"
                 data-slot="toast-description"
               />
               {action && (
@@ -212,10 +212,10 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
                   className={cn(
                     "mt-2 inline-flex items-center justify-center",
                     "rounded-[var(--radius-6)] border border-hairline",
-                    "bg-surface-elevated px-2.5 py-1",
-                    "text-button-14 text-ink",
+                    "bg-layer-1 px-2.5 py-1",
+                    "text-small font-medium text-ink",
                     "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-                    "hover:bg-surface-elevated-hover",
+                    "hover:bg-layer-2",
                     focusRing,
                   )}
                   data-slot="toast-action"
@@ -232,7 +232,7 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
                 "flex size-7 items-center justify-center",
                 "rounded-full text-ink-muted",
                 "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-                "hover:bg-surface-2 hover:text-ink",
+                "hover:bg-layer-hover hover:text-ink",
                 focusRing,
               )}
             >

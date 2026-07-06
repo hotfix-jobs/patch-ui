@@ -19,7 +19,7 @@ export function BreadcrumbDemo() {
 
       <div className="space-y-3">
         <SectionLabel>Long chain (collapses middle on mobile)</SectionLabel>
-        <p className="mb-2 text-body-13 text-ink-muted">
+        <p className="mb-2 text-small text-ink-muted">
           Resize the viewport below the sm breakpoint to see the middle
           crumbs collapse behind a <code>…</code> toggle.
         </p>

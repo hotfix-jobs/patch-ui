@@ -16,7 +16,11 @@ The scheme is deliberately small: one canvas, a four-step surface ladder plus an
 
 <ColorScales />
 
-**Canvas + surface ladder.** The page sits on `--canvas`. `--surface-1` through `--surface-4` are the successively-lifted rungs (used for hover tints, toggle-group tracks, striped-table fills, skeleton blocks). `--surface-elevated` is the popup + control-chrome rung: it lifts toward pure white in light mode and one step above canvas in dark mode. Every Card, Menu, Combobox, Tooltip, Input, Select, and Table container reads from `--surface-elevated`.
+**Base + layers.** The page sits on `--base`. `--layer-1` is the default lifted panel: Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome. In light it lifts toward pure white so the panel reads brighter than off-white base; in dark it lifts one rung above near-black base. `--layer-2` is a subtle hover step above `--layer-1` (secondary Button hover, Input hover companion).
+
+**Fills.** `--fill-1` and `--fill-2` are tinted chip fills used *deeper than base* in light mode: Toggle track, Badge neutral, code chip, Switch off-track, skeleton block, active pill Tab. In dark mode they collapse to the same values as `--layer-1` / `--layer-2` — the distinction stays semantic so consumers can override one without the other.
+
+**Interaction-state overlays.** `--layer-hover` and `--layer-selected` are alpha overlays (black in light, white in dark) that any transparent-at-rest control reaches for on `hover:`, `focus-visible:`, `data-[popup-open]:`, `data-[pressed]:`, and `active:`. Because they darken whatever surface sits underneath rather than paint over it, the state reads on base, `--layer-1`, `--fill-1`, or a consumer's own background without disappearing. `--layer-selected` is ~2x the hover strength so pressed always reads visibly darker than hover.
 
 **Ink (text).** Four tiers, deliberately narrow. `--ink` is primary text (headings, body). `--ink-muted` is meta text and default icon tone. `--ink-subtle` is placeholder and "missing value" copy. `--ink-tertiary` is disabled and footnote.
 
@@ -24,16 +28,22 @@ The scheme is deliberately small: one canvas, a four-step surface ladder plus an
 
 **Hairlines.** Three tiers, all rgba-alpha, so borders read cleanly on any surface without hard-coded color. `--hairline` (4%) is the default separator. `--hairline-strong` (8%) is for hovered inputs and structural section dividers. `--hairline-tertiary` (14%) is for nested content that sits on top of an already-lifted surface.
 
-**Primary (monochrome).** `--primary` resolves to `--ink` and `--on-primary` to `--canvas`. No chromatic brand ships. `--primary-hover` and `--primary-active` are computed via `color-mix` toward `--canvas`, so a consumer's brand override on `--primary` automatically produces matching hover/active steps.
+**Primary (monochrome).** `--primary` resolves to `--ink` and `--on-primary` to `--base`. No chromatic brand ships. `--primary-hover` and `--primary-active` are computed via `color-mix` toward `--base`, so a consumer's brand override on `--primary` automatically produces matching hover/active steps.
 
 ## Typography
 
-Three families cover every use: **Inter Display** for display sizes, **Inter** for body / buttons / captions, **JetBrains Mono** for code. Each `text-*` class bakes in size, line-height, tracking, and weight, so you never pair it with a `font-*` utility.
+Two families cover every use: **Inter** (variable) for everything that isn't code, **JetBrains Mono** for code. Size and weight are separate axes rather than a compound recipe.
+
+**Size.** Eight tokens: `text-micro` (11), `text-mini` (12), `text-small` (13), `text-regular` (15, default body), `text-large` (18), `text-title3` (20), `text-title2` (24), `text-title1` (36).
+
+**Weight.** Five tokens exposed as Tailwind utilities: `font-light` (300), `font-normal` (450, default body), `font-medium` (500), `font-semibold` (600), `font-bold` (700). Body defaults to 450, headings default to 500, so most call sites don't need an explicit weight.
+
+**Line height.** Set on the element, not on the size utility. Body inherits 1.5, `<p>` uses 1.7, `<h1>–<h6>` use 1.25. A size utility on a `<div>` picks up 1.5 from body; wrapping the same content in `<p>` opens it up to 1.7.
 
 <TypographySamples />
 
 Rules of thumb:
-- Never combine a compound `text-*` class with `font-medium` or `font-semibold`. If you need a different weight at a given size, switch families: `text-heading-*` is 600, `text-button-*` is 500, `text-body-*` and `text-caption-*` are 400.
+- Reach for a size + weight pair (`text-small font-medium`) rather than inventing new compound tokens.
 - Never `text-[Npx]` inline. If a size is missing, add it to the scale.
 - Never `font-mono` for decoration. Reserve for `code`, `pre`, `kbd`, install snippets, and hex values shown as code.
 

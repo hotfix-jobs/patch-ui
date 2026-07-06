@@ -139,7 +139,7 @@ export function SheetContent({
           data-slot="sheet-popup"
           data-side={side}
           className={cn(
-            "fixed flex flex-col overflow-hidden bg-surface-elevated text-ink shadow-modal",
+            "fixed flex flex-col overflow-hidden bg-layer-1 text-ink shadow-modal",
             SIDE_LAYOUT[side],
             "transition-transform duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
             SIDE_ENTER[side],
@@ -202,7 +202,7 @@ export function SheetClose({
       aria-label="Close"
       data-slot="sheet-close"
       className={cn(
-        "inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-surface-2 hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-layer-hover hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         className,
       )}
       {...rest}
@@ -239,10 +239,10 @@ export function SheetHeader({
         )}
         {...props}
       >
-        <div className="flex min-w-0 flex-1 basis-0 items-center gap-2 text-caption-12 text-ink-muted">
+        <div className="flex min-w-0 flex-1 basis-0 items-center gap-2 text-mini text-ink-muted">
           {leading}
         </div>
-        <div className="flex min-w-0 items-center gap-2 text-button-14 text-ink">
+        <div className="flex min-w-0 items-center gap-2 text-small font-medium text-ink">
           {children}
         </div>
         <div className="flex min-w-0 flex-1 basis-0 items-center justify-end gap-2">
@@ -272,7 +272,7 @@ export function SheetTitle({
   return (
     <DrawerPrimitive.Title
       data-slot="sheet-title"
-      className={cn("text-button-16 text-ink", className)}
+      className={cn("text-regular font-medium text-ink", className)}
       {...props}
     />
   );
@@ -285,7 +285,7 @@ export function SheetDescription({
   return (
     <DrawerPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-body-14 text-ink-muted", className)}
+      className={cn("text-small text-ink-muted", className)}
       {...props}
     />
   );

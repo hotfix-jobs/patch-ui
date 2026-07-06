@@ -13,7 +13,7 @@ export function SwitchDemo() {
         <SectionLabel>Controlled</SectionLabel>
         <div className="flex items-center gap-3">
           <Switch checked={checked} onCheckedChange={(c) => setChecked(c)} />
-          <span className="text-body-14 text-ink">{checked ? "On" : "Off"}</span>
+          <span className="text-small text-ink">{checked ? "On" : "Off"}</span>
         </div>
       </div>
 
@@ -47,7 +47,7 @@ export function SwitchDemo() {
               unchecked: <X />,
             }}
           />
-          <span className="text-body-14 text-ink">
+          <span className="text-small text-ink">
             {enabled ? "Enabled" : "Disabled"}
           </span>
         </div>
@@ -58,11 +58,11 @@ export function SwitchDemo() {
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <Switch disabled />
-            <span className="text-body-14 text-ink">Disabled off</span>
+            <span className="text-small text-ink">Disabled off</span>
           </div>
           <div className="flex items-center gap-3">
             <Switch disabled defaultChecked />
-            <span className="text-body-14 text-ink">Disabled on</span>
+            <span className="text-small text-ink">Disabled on</span>
           </div>
         </div>
       </div>

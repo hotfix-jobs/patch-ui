@@ -48,15 +48,15 @@ export function RadioDemo() {
         <SectionLabel>Bare radios (custom layout)</SectionLabel>
         <RadioGroup defaultValue="a">
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-body-14 text-ink">
+            <div className="flex items-center gap-2 text-small text-ink">
               <Radio value="a" aria-label="A" />
               <span>A</span>
             </div>
-            <div className="flex items-center gap-2 text-body-14 text-ink">
+            <div className="flex items-center gap-2 text-small text-ink">
               <Radio value="b" aria-label="B" />
               <span>B</span>
             </div>
-            <div className="flex items-center gap-2 text-body-14 text-ink">
+            <div className="flex items-center gap-2 text-small text-ink">
               <Radio value="c" aria-label="C" />
               <span>C</span>
             </div>

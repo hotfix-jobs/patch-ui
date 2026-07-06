@@ -290,7 +290,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
       data-slot="calendar"
       data-mode={mode}
       className={cn(
-        "w-fit select-none rounded-[var(--radius-12)] border border-hairline bg-surface-elevated p-3 text-ink",
+        "w-fit select-none rounded-[var(--radius-12)] border border-hairline bg-layer-1 p-3 text-ink",
         className,
       )}
     >
@@ -303,7 +303,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
           onClick={() => setViewMonth((m) => addMonths(m, -1))}
           aria-label="Previous month"
         />
-        <div className="text-button-14 tabular-nums text-ink">
+        <div className="text-small font-medium tabular-nums text-ink">
           {monthLabel}
         </div>
         <Button
@@ -320,7 +320,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
         {dayNames.map((d, i) => (
           <div
             key={i}
-            className="text-center text-caption-11 text-ink-muted"
+            className="text-center text-micro text-ink-muted"
           >
             {d}
           </div>
@@ -349,17 +349,17 @@ export function Calendar(props: CalendarProps): React.ReactElement {
               data-selected={selected || undefined}
               data-in-range={inSelectedRange || undefined}
               className={cn(
-                "relative inline-flex size-9 items-center justify-center tabular-nums text-body-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+                "relative inline-flex size-9 items-center justify-center tabular-nums text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
                 "rounded-[var(--radius-6)]",
                 outside && "text-ink-subtle",
                 !outside && !selected && "text-ink",
-                !selected && !disabledDay && "hover:bg-surface-1",
+                !selected && !disabledDay && "hover:bg-layer-hover",
                 isToday &&
                   !selected &&
-                  "text-button-14 ring-1 ring-inset ring-hairline-strong",
+                  "text-small font-medium ring-1 ring-inset ring-hairline-strong",
                 selected &&
-                  "bg-primary text-on-primary text-button-14 hover:bg-primary-hover",
-                inSelectedRange && !selected && "bg-surface-1",
+                  "bg-primary text-on-primary text-small font-medium hover:bg-primary-hover",
+                inSelectedRange && !selected && "bg-fill-1",
                 disabledDay && "pointer-events-none opacity-30",
                 focusRing,
               )}

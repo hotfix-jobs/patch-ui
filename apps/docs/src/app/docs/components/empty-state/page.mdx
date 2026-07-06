@@ -32,7 +32,7 @@ import { ChartBar, ArrowSquareOut } from "@phosphor-icons/react/dist/ssr";
   icon={<BarChart3 />}
   action={<Button variant="secondary">Primary Action</Button>}
 >
-  <a href="#" className="inline-flex items-center gap-1 text-body-14 text-ink hover:text-ink">
+  <a href="#" className="inline-flex items-center gap-1 text-small text-ink hover:text-ink">
     Learn more
     <ExternalLink className="size-3.5" />
   </a>
@@ -84,7 +84,7 @@ import { ChartBar, ArrowSquareOut } from "@phosphor-icons/react/dist/ssr";
 
 <Callout title="Notes">
 - Fades in on mount with a subtle opacity + 8px y-translate via `motion`. Respects `prefers-reduced-motion`.
-- The icon container is a 56px rounded square with a hairline border, filled with `--surface-1`. Icons should be 24px (`size-6`): the wrapper auto-sizes them.
+- The icon container is a 56px rounded square with a hairline border, filled with `--fill-1`. Icons should be 24px (`size-6`): the wrapper auto-sizes them.
 - Cap at one primary CTA in `action`. Use `children` for a secondary link (typical: "Learn more" with an external-link icon) or supporting content.
 - Content guidance: title is Title Case (`No Logs Match Your Filter`); description is sentence case and adds new information, not a rephrasing of the title. CTA labels are Title Case Verb + Noun (`Deploy Project`, `Browse Items`), never `Get Started` or `Continue`.
 - For an async filter change, wrap the region in `aria-live="polite"` so screen readers announce the new state.

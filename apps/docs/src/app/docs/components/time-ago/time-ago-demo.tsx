@@ -39,7 +39,7 @@ export function TimeAgoDemo() {
   const placeholder = <span className="text-ink-subtle">…</span>;
 
   return (
-    <div className="space-y-2 text-body-13">
+    <div className="space-y-2 text-small">
       <div>Just now: {dates ? <TimeAgo dateStr={dates.now} /> : placeholder}</div>
       <div>5 min ago: {dates ? <TimeAgo dateStr={dates.fiveMinAgo} /> : placeholder}</div>
       <div>3 hours ago: {dates ? <TimeAgo dateStr={dates.threeHoursAgo} /> : placeholder}</div>

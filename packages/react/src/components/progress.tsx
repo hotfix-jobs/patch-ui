@@ -70,7 +70,7 @@ export function Progress({
       <ProgressPrimitive.Track
         data-slot="progress-track"
         className={cn(
-          "relative w-full overflow-hidden rounded-full bg-surface-2",
+          "relative w-full overflow-hidden rounded-full bg-fill-2",
           height == null && heightBySize[size],
         )}
         style={trackStyle}

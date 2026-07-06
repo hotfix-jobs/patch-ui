@@ -84,7 +84,7 @@ export function SheetDemo() {
                 <a
                   key={item}
                   href="#"
-                  className="text-body-14 text-ink hover:text-ink"
+                  className="text-small text-ink hover:text-ink"
                 >
                   {item}
                 </a>
@@ -112,7 +112,7 @@ export function SheetDemo() {
                     <Button
                       variant="tertiary"
                       size="lg"
-                      className="w-full justify-start hover:bg-surface-2 active:bg-surface-3"
+                      className="w-full justify-start hover:bg-layer-hover active:bg-fill-2"
                     />
                   }
                 >

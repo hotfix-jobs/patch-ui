@@ -75,7 +75,7 @@ export function AccordionTrigger({
         data-slot="accordion-trigger"
         className={cn(
           "group flex w-full items-center justify-between gap-3 py-3 text-left",
-          "text-button-14 text-ink",
+          "text-small font-medium text-ink",
           iconMuted,
           "data-[panel-open]:[&_svg]:text-ink",
           focusRing,
@@ -114,7 +114,7 @@ export function AccordionPanel({
       )}
       {...props}
     >
-      <div className="pb-3 text-body-14 text-ink-muted">
+      <div className="pb-3 text-small text-ink-muted">
         {children}
       </div>
     </AccordionPrimitive.Panel>

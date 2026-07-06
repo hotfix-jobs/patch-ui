@@ -85,7 +85,7 @@ export function Modal({
           data-slot="modal-popup"
           initialFocus={initialFocusRef}
           className={cn(
-            "fixed z-50 flex w-full min-w-0 min-h-0 flex-col overflow-hidden bg-surface-elevated text-ink border border-hairline shadow-modal",
+            "fixed z-50 flex w-full min-w-0 min-h-0 flex-col overflow-hidden bg-layer-1 text-ink border border-hairline shadow-modal",
             // Positioning: sheet docks to bottom on mobile, centered on tablet+.
             // Centered layout stays centered on all breakpoints.
             mobileLayout === "sheet"
@@ -137,10 +137,10 @@ export function ModalHeader({
         )}
         {...props}
       >
-        <div className="flex min-w-0 flex-1 basis-0 items-center gap-2 text-caption-12 text-ink-muted">
+        <div className="flex min-w-0 flex-1 basis-0 items-center gap-2 text-mini text-ink-muted">
           {leading}
         </div>
-        <div className="flex min-w-0 items-center gap-2 text-button-14 text-ink">
+        <div className="flex min-w-0 items-center gap-2 text-small font-medium text-ink">
           {children}
         </div>
         <div className="flex min-w-0 flex-1 basis-0 items-center justify-end gap-2">
@@ -170,7 +170,7 @@ export function ModalTitle({
   return (
     <DialogPrimitive.Title
       data-slot="modal-title"
-      className={cn("text-button-16 text-ink", className)}
+      className={cn("text-regular font-medium text-ink", className)}
       {...props}
     />
   );
@@ -183,7 +183,7 @@ export function ModalSubtitle({
   return (
     <DialogPrimitive.Description
       data-slot="modal-subtitle"
-      className={cn("text-body-14 text-ink-muted", className)}
+      className={cn("text-small text-ink-muted", className)}
       {...props}
     />
   );
@@ -198,7 +198,7 @@ export function ModalClose({
       aria-label="Close"
       data-slot="modal-close"
       className={cn(
-        "inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-surface-2 hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-layer-hover hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         className,
       )}
       {...props}
@@ -232,7 +232,7 @@ export function ModalInset({
     <div
       data-slot="modal-inset"
       className={cn(
-        "rounded-[var(--radius-6)] border border-hairline bg-surface-2 p-4",
+        "rounded-[var(--radius-6)] border border-hairline bg-fill-2 p-4",
         className,
       )}
       {...props}

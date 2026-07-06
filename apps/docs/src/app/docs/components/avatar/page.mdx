@@ -182,8 +182,8 @@ import {
 
 <Callout title="Notes">
 - Both size APIs coexist. Reach for the enum when a preset lines up (`sm`, `md`, `lg`…). Reach for a number when the layout needs an exact pixel diameter.
-- Inside a group, each avatar picks up a `ring-canvas` hairline. That's what keeps overlapping avatars from bleeding into each other.
-- The overflow chip uses `bg-surface-1` + `text-ink`: visibly different from a real avatar, reads as a counter.
+- Inside a group, each avatar picks up a `ring-base` hairline. That's what keeps overlapping avatars from bleeding into each other.
+- The overflow chip uses `bg-fill-1` + `text-ink`: visibly different from a real avatar, reads as a counter.
 - Pick the `members` prop for lists coming from data, keep children when individual avatars need their own tooltip, click handler, or fallback.
 - `reverse` flips the z-stack. Left-to-right visual order stays the same; what changes is who sits on top when they overlap.
 - The `icon` prop is a small status badge tucked into the bottom-left corner, not a replacement for the avatar body. The main avatar (image/letter/placeholder) still renders behind it.

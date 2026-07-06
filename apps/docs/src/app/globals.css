@@ -11,7 +11,7 @@ html, body {
 }
 
 body {
-  background: var(--canvas);
+  background: var(--base);
   color: var(--ink);
 }
 
@@ -34,7 +34,7 @@ body {
   font-weight: 500;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
   border-bottom: 1px solid var(--hairline-strong);
-  background: var(--surface-1);
+  background: var(--fill-1);
   color: var(--ink);
 }
 
@@ -45,7 +45,7 @@ body {
   overflow-x: auto;
   font-size: 0.875rem;
   line-height: 1.7;
-  background: var(--canvas);
+  background: var(--base);
 }
 
 /* Code element */
@@ -77,6 +77,6 @@ body {
   border-radius: 0.25rem;
   font-size: 0.875em;
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-  background: var(--surface-1);
+  background: var(--fill-1);
   color: var(--ink);
 }

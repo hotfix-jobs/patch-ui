@@ -38,7 +38,7 @@ export function SearchTrigger({ className }: { className?: string }) {
       aria-label="Search docs"
       title="Search docs (⌘K)"
       className={cn(
-        "inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink",
+        "inline-flex size-8 cursor-pointer items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink",
         className,
       )}
     >
@@ -142,7 +142,7 @@ export function SearchPalette() {
               className="justify-between gap-3"
             >
               <span className="truncate">{item.title}</span>
-              <span className="shrink-0 text-caption-12 text-ink-muted">
+              <span className="shrink-0 text-mini text-ink-muted">
                 {item.group}
               </span>
             </CommandItem>

@@ -29,6 +29,19 @@ export interface ComboboxProps {
   value?: string;
   onValueChange?: (next: string) => void;
   placeholder?: string;
+  /**
+   * Auto-highlight behavior on the popup list:
+   *   - `"always"` (default): the first item is always highlighted on open
+   *     and on every input change. Popup opens scrolled to the top and Enter
+   *     picks the first match. Standard typeahead behavior.
+   *   - `true`: only highlight on input change, not on plain open.
+   *   - `false`: never auto-highlight; the popup opens with nothing focused
+   *     and Enter is a no-op until the user arrows to an item. Note that
+   *     this exposes a Base UI quirk where the popup can open scrolled to
+   *     the last item under loop-focus navigation. Use only if you have a
+   *     strong reason to want the "no preselection" behavior.
+   */
+  autoHighlight?: boolean | "always";
   children: React.ReactNode;
 }
 
@@ -41,21 +54,62 @@ export function Combobox({
   value,
   onValueChange,
   placeholder,
+  autoHighlight = "always",
   children,
 }: ComboboxProps): React.ReactElement {
   const shared = useMemo(() => ({ placeholder }), [placeholder]);
+  // Full workaround for Base UI issue #3077: the popup opens with the
+  // last item marked `data-highlighted` AND scrolled into view. Scroll
+  // reset alone doesn't clear the highlight — Base UI's activeIndex
+  // still points to that item and the CSS lights it up.
+  //
+  // The Base UI author's recommendation is to dispatch synthetic
+  // pointer events on the highlighted item: pointerout clears Base UI's
+  // internal active state, and pointermove on the parent re-syncs the
+  // pointer position ref. Then reset scrollTop. Two nested rAFs defer
+  // past Base UI's own rAF-scheduled scrollIntoView.
+  const handleOpenChange = (nextOpen: boolean) => {
+    onOpenChange?.(nextOpen);
+    if (!nextOpen) return;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const popup = document.querySelector<HTMLElement>(
+          '[data-slot="combobox-popup"]',
+        );
+        if (!popup) return;
+        const highlighted = popup.querySelector<HTMLElement>(
+          "[data-highlighted]",
+        );
+        if (highlighted) {
+          highlighted.parentElement?.dispatchEvent(
+            new Event("pointermove", { bubbles: true }),
+          );
+          highlighted.dispatchEvent(
+            new PointerEvent("pointerout", { bubbles: true }),
+          );
+        }
+        const scroller = popup.querySelector<HTMLElement>(
+          '[role="listbox"], [role="grid"]',
+        );
+        if (scroller) scroller.scrollTop = 0;
+      });
+    });
+  };
   return (
     <ComboboxSharedContext.Provider value={shared}>
       <ComboboxPrimitive.Root
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={
-          onOpenChange ? (next) => onOpenChange(next) : undefined
-        }
+        onOpenChange={handleOpenChange}
         inputValue={value}
         onInputValueChange={
           onValueChange ? (next) => onValueChange(next) : undefined
         }
+        // Base UI's ComboboxRoot narrows autoHighlight to boolean in its
+        // public types, but the underlying AriaCombobox accepts 'always'
+        // and forwards it unchanged. Cast so consumers can opt into the
+        // stronger mode without dropping to the primitive.
+        autoHighlight={autoHighlight as boolean}
       >
         {children}
       </ComboboxPrimitive.Root>
@@ -95,9 +149,9 @@ export interface ComboboxInputProps
 }
 
 const heightBySize: Record<InputSize, string> = {
-  sm: "h-6 text-body-13",
-  md: "h-8 text-body-14",
-  lg: "h-10 text-body-16",
+  sm: "h-6 text-small",
+  md: "h-8 text-small",
+  lg: "h-10 text-regular",
 };
 
 const startPadBySize: Record<InputSize, string> = {
@@ -159,7 +213,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
             <ComboboxPrimitive.Clear
               aria-label="Clear"
               onClick={onClear}
-              className="inline-flex size-5 items-center justify-center rounded-full text-ink-muted hover:bg-surface-2 hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[empty]:hidden"
+              className="inline-flex size-5 items-center justify-center rounded-full text-ink-muted hover:bg-layer-hover hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[empty]:hidden"
             >
               <X className="size-3" />
             </ComboboxPrimitive.Clear>
@@ -175,7 +229,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
         className={cn(
           "relative inline-flex w-full items-center overflow-hidden text-ink",
           shape,
-          "bg-surface-elevated border border-hairline",
+          "bg-layer-1 border border-hairline",
           "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "hover:border-hairline-strong",
           "has-focus-visible:border-primary",
@@ -242,7 +296,7 @@ export function ComboboxPopup({
             data-mobile="true"
             className={cn(
               "fixed inset-x-2 bottom-2 z-[80] flex flex-col overflow-hidden outline-none",
-              "rounded-[var(--radius-16)] bg-surface-elevated border border-hairline shadow-modal",
+              "rounded-[var(--radius-16)] bg-layer-1 border border-hairline shadow-modal",
               "max-h-[calc(100dvh-1rem)]",
               "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
               "data-starting-style:opacity-0 data-starting-style:translate-y-8",
@@ -261,7 +315,7 @@ export function ComboboxPopup({
               <ComboboxPrimitive.Input
                 autoComplete="off"
                 placeholder={placeholder}
-                className="h-11 w-full min-w-0 bg-transparent border-none shadow-none outline-none ring-0 placeholder:text-ink-subtle focus:outline-none focus:ring-0 text-body-16"
+                className="h-11 w-full min-w-0 bg-transparent border-none shadow-none outline-none ring-0 placeholder:text-ink-subtle focus:outline-none focus:ring-0 text-regular"
               />
             </ComboboxPrimitive.InputGroup>
             <ComboboxPrimitive.List className="min-h-0 flex-1 overflow-y-auto p-1">
@@ -328,7 +382,7 @@ export function ComboboxItem({
       className={cn(
         itemRow.base,
         itemRow.comfortable,
-        "md:min-h-7 md:px-2 md:py-1.5 md:text-body-13",
+        "md:min-h-7 md:px-2 md:py-1.5 md:text-small",
         "cursor-pointer gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         iconMuted,
         className,
@@ -381,7 +435,7 @@ export function ComboboxCheckboxItem({
       className={cn(
         itemRow.base,
         itemRow.comfortable,
-        "md:min-h-7 md:px-2 md:py-1.5 md:text-body-13",
+        "md:min-h-7 md:px-2 md:py-1.5 md:text-small",
         "cursor-pointer gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         iconMuted,

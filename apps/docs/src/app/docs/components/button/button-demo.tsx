@@ -10,7 +10,7 @@ export function ButtonDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">Variants</p>
+        <p className="mb-3 text-mini text-ink-muted">Variants</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="primary">Primary</Button>
           <Button variant="secondary">Secondary</Button>
@@ -21,7 +21,7 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">Sizes</p>
+        <p className="mb-3 text-mini text-ink-muted">Sizes</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button size="sm">Small</Button>
           <Button size="md">Medium</Button>
@@ -30,7 +30,7 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">Icon Only + Shapes</p>
+        <p className="mb-3 text-mini text-ink-muted">Icon Only + Shapes</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="secondary" aria-label="Add" shape="square" size="sm" icon={<Plus className="h-4 w-4" />} />
           <Button variant="secondary" aria-label="Add" shape="square" icon={<Plus className="h-4 w-4" />} />
@@ -42,7 +42,7 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">With Icons</p>
+        <p className="mb-3 text-mini text-ink-muted">With Icons</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button icon={<Envelope className="h-4 w-4" />}>Send Email</Button>
           <Button icon={<CaretDown className="h-4 w-4" />} iconPosition="right">
@@ -58,7 +58,7 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">Marketing pill shape</p>
+        <p className="mb-3 text-mini text-ink-muted">Marketing pill shape</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button
             shape="pill"
@@ -76,7 +76,7 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">Dismissible filter chip</p>
+        <p className="mb-3 text-mini text-ink-muted">Dismissible filter chip</p>
         <div className="flex min-h-9 flex-wrap items-center gap-2">
           {filters.length === 0 ? (
             <Button
@@ -106,7 +106,7 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">States</p>
+        <p className="mb-3 text-mini text-ink-muted">States</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button loading>Loading</Button>
           <Button disabled>Disabled</Button>

@@ -29,4 +29,4 @@ Green pill = passing, red = failing.
 ## Notes
 
 - Semantic status roles (`error`, `warning`, `success`) are fixed hex and theme-invariant. Their `-fg` variants are chosen to guarantee AA against the fill in both themes.
-- If you override `--primary`, `--on-primary`, `--ink*`, `--canvas`, or `--surface-*` in your own CSS, re-run `check:contrast` before merging. The script parses `packages/react/src/theme/tokens.css` directly, so a downstream override needs to be reflected in that file (or added to the script's target list) for the check to catch it.
+- If you override `--primary`, `--on-primary`, `--ink*`, `--base`, or `--surface-*` in your own CSS, re-run `check:contrast` before merging. The script parses `packages/react/src/theme/tokens.css` directly, so a downstream override needs to be reflected in that file (or added to the script's target list) for the check to catch it.

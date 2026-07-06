@@ -59,7 +59,7 @@ export function Checkbox({
   return (
     <label
       className={cn(
-        "inline-flex items-center gap-2 text-body-14 text-ink",
+        "inline-flex items-center gap-2 text-small text-ink",
         !disabled && "cursor-pointer",
         disabled && "cursor-not-allowed opacity-50",
         wrapperClassName,

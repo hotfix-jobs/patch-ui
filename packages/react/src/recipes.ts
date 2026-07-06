@@ -9,17 +9,21 @@ export const focusRing =
 
 /** Control heights + padding + icon gap + text for sm/md/lg. */
 export const controlSize: Record<"sm" | "md" | "lg", string> = {
-  sm: "h-6 px-2.5 gap-1.5 text-button-12",
-  md: "h-8 px-3.5 gap-2 text-button-14",
-  lg: "h-10 px-4 gap-2 text-button-16",
+  sm: "h-6 px-2.5 gap-1.5 text-mini font-medium",
+  md: "h-8 px-3.5 gap-2 text-small font-medium",
+  lg: "h-10 px-4 gap-2 text-regular font-medium",
 };
 
 /** Interactive fill/border state ramps. */
 export const stateStepping = {
+  /** Solid neutral fill that steps deeper on hover. Its base fill IS the
+   *  control's surface, so hover moves to fill-2 rather than an overlay. */
   neutralFill:
-    "bg-surface-1 hover:bg-surface-2 active:bg-surface-3",
+    "bg-fill-1 hover:bg-fill-2 active:bg-fill-2",
+  /** Transparent at rest, adaptive overlay on hover/active. Use for
+   *  toolbar buttons, tabs, and sidebar links that sit on any surface. */
   neutralGhostFill:
-    "bg-transparent hover:bg-surface-1 active:bg-surface-2",
+    "bg-transparent hover:bg-layer-hover active:bg-layer-selected",
   neutralBorder:
     "border border-hairline hover:border-hairline-strong active:border-hairline-tertiary",
 };
@@ -48,22 +52,22 @@ export const iconMutedSolid =
 
 /** Shared chrome for floating panels (Menu, Combobox, Select, Tooltip). */
 export const popupSurface =
-  "rounded-[var(--radius-12)] bg-surface-elevated border border-hairline shadow-menu outline-none focus:outline-none";
+  "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu outline-none focus:outline-none";
 
 /** Interactive row inside a popup list.
  *  Usage: cn(itemRow.base, density === "compact" ? itemRow.compact : itemRow.comfortable, iconMuted, ...) */
 export const itemRow = {
   base:
     "flex items-center cursor-default select-none rounded-[var(--radius-6)] text-ink outline-none " +
-    "data-[active]:bg-surface-2 data-highlighted:bg-surface-2 " +
+    "data-[active]:bg-fill-2 data-highlighted:bg-fill-2 " +
     "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-  compact: "min-h-7 px-2 py-1.5 text-body-13",
-  comfortable: "min-h-9 px-2.5 py-2 text-body-14",
+  compact: "min-h-7 px-2 py-1.5 text-small",
+  comfortable: "min-h-9 px-2.5 py-2 text-small",
 };
 
 /** Section header inside a popup list. */
 export const itemGroupLabel = {
-  base: "pt-1.5 pb-1 text-caption-11 text-ink-tertiary",
+  base: "pt-1.5 pb-1 text-micro text-ink-tertiary",
   compact: "px-2",
   comfortable: "px-2.5",
 };

@@ -56,7 +56,7 @@ export function Switch({
     <SwitchPrimitive.Root
       className={cn(
         "group inline-flex shrink-0 cursor-pointer items-center rounded-full p-px",
-        "data-unchecked:bg-surface-3 data-unchecked:hover:bg-surface-4 data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "data-unchecked:bg-fill-1 data-unchecked:hover:bg-fill-2 data-disabled:cursor-not-allowed data-disabled:opacity-50",
         trackBySize[size],
         onFillByVariant[variant],
         colorTransition,
@@ -70,8 +70,8 @@ export function Switch({
         className={cn(
           "relative pointer-events-none rounded-full shadow-[var(--shadow-card)]",
           "transition-[translate,background-color,color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          "bg-canvas dark:data-unchecked:bg-ink-tertiary",
-          "[&_svg]:text-ink dark:data-unchecked:[&_svg]:text-canvas",
+          "bg-base dark:data-unchecked:bg-ink-tertiary",
+          "[&_svg]:text-ink dark:data-unchecked:[&_svg]:text-base",
           "data-unchecked:translate-x-0",
           iconSizeBySize[size],
           thumbBySize[size],

@@ -74,13 +74,13 @@ export function Kbd({
   );
 
   const cls = cn(
-    "inline-flex items-center justify-center tabular-nums font-sans text-button-12 text-ink-muted",
-    "rounded-[var(--radius-4)] bg-surface-1 border border-hairline",
+    "inline-flex items-center justify-center tabular-nums font-sans text-mini font-medium text-ink-muted",
+    "rounded-[var(--radius-4)] bg-fill-1 border border-hairline",
     size === "sm" && "h-[18px] min-w-[18px] px-1",
     size === "md" && "h-5 min-w-5 px-1.5",
     mods.length > 0 && "px-1.5 gap-1",
     interactive && [
-      "cursor-pointer hover:bg-surface-2 hover:text-ink",
+      "cursor-pointer hover:bg-layer-hover hover:text-ink",
       focusRing,
       colorTransition,
     ],

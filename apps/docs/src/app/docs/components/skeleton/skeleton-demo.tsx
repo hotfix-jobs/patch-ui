@@ -48,16 +48,16 @@ export function SkeletonDemo() {
         <SectionLabel>Load / reveal (show prop)</SectionLabel>
         <div className="flex items-start gap-4">
           <Skeleton show={loading} shape="pill" width={48} height={48}>
-            <div className="flex size-12 items-center justify-center rounded-full bg-ink text-canvas text-button-14">
+            <div className="flex size-12 items-center justify-center rounded-full bg-ink text-base text-small font-medium">
               A
             </div>
           </Skeleton>
           <div className="flex flex-1 flex-col gap-2">
             <Skeleton show={loading} height={20} width="30%">
-              <p className="text-button-14 text-ink">Ada Lovelace</p>
+              <p className="text-small font-medium text-ink">Ada Lovelace</p>
             </Skeleton>
             <Skeleton show={loading} height={16} width="55%">
-              <p className="text-body-14 text-ink-muted">Programmer, first algorithm</p>
+              <p className="text-small text-ink-muted">Programmer, first algorithm</p>
             </Skeleton>
           </div>
         </div>

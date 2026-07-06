@@ -46,7 +46,7 @@ export function ToggleGroup({
         data-slot="toggle-group"
         data-size={size}
         className={cn(
-          "inline-flex w-fit self-start items-center rounded-[var(--radius-6)] border border-hairline bg-surface-1 p-0.5",
+          "inline-flex w-fit self-start items-center rounded-[var(--radius-6)] border border-hairline bg-fill-1 p-0.5",
           className,
         )}
         {...props}
@@ -76,12 +76,12 @@ export function ToggleGroupItem({
       className={cn(
         "relative inline-flex items-center justify-center rounded-[var(--radius-6)] transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
         "text-ink-muted hover:text-ink data-[pressed]:text-ink",
-        "not-data-[pressed]:hover:bg-surface-elevated-hover",
-        "data-[pressed]:bg-surface-elevated",
+        "not-data-[pressed]:hover:bg-layer-2",
+        "data-[pressed]:bg-layer-1",
         iconMuted,
-        size === "sm" && "h-6 min-w-6 px-1.5 gap-1.5 text-caption-12 [&_svg]:size-3.5",
-        size === "md" && "h-7 min-w-7 px-2 gap-2 text-body-13 [&_svg]:size-4",
-        size === "lg" && "h-9 min-w-9 px-3 gap-2 text-body-14 [&_svg]:size-4",
+        size === "sm" && "h-6 min-w-6 px-1.5 gap-1.5 text-mini [&_svg]:size-3.5",
+        size === "md" && "h-7 min-w-7 px-2 gap-2 text-small [&_svg]:size-4",
+        size === "lg" && "h-9 min-w-9 px-3 gap-2 text-small [&_svg]:size-4",
         focusRing,
         className,
       )}
