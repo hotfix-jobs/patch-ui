@@ -40,6 +40,7 @@ export const navigation: NavGroup[] = [
       { title: "Modal", href: "/docs/components/modal" },
       { title: "NavigationMenu", href: "/docs/components/navigation-menu" },
       { title: "Pagination", href: "/docs/components/pagination" },
+      { title: "Popover", href: "/docs/components/popover" },
       { title: "Progress", href: "/docs/components/progress" },
       { title: "Radio", href: "/docs/components/radio" },
       { title: "Scroller", href: "/docs/components/scroller" },

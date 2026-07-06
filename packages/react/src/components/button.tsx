@@ -95,7 +95,7 @@ export function Button({
   ...props
 }: ButtonProps): React.ReactElement {
   const effectiveSize: NonNullable<ButtonProps["size"]> = size ?? "md";
-  const isIconOnly = icon != null && !children;
+  const isIconOnly = (icon != null && !children) || shape === "circle";
   const iconOnly = isIconOnly ? iconOnlyWidth[effectiveSize] : "";
 
   if (process.env.NODE_ENV !== "production" && isIconOnly && !props["aria-label"]) {

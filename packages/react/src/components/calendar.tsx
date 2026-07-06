@@ -290,7 +290,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
       data-slot="calendar"
       data-mode={mode}
       className={cn(
-        "w-fit select-none rounded-[var(--radius-12)] border border-hairline bg-canvas p-3 text-ink",
+        "w-fit select-none rounded-[var(--radius-12)] border border-hairline bg-surface-elevated p-3 text-ink",
         className,
       )}
     >
