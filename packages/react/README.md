@@ -1,6 +1,6 @@
 # @patchui/react
 
-The source of truth for Patch UI: a React component library built on [Base UI](https://base-ui.com/) primitives with Tailwind CSS v4 and a `--patch-*` design-token system.
+The source of truth for Patch UI: a React component library built on [Base UI](https://base-ui.com/) primitives with Tailwind CSS v4 and a flat design-token system (`--canvas`, `--surface-*`, `--ink*`, `--hairline*`, `--primary`, `--radius-*`, `--text-*`, `--duration-*`).
 
 > This package is **not published**. Patch UI is distributed **copy-in**: components are copied into your own repo with the shadcn CLI, so you own and can edit the code. Docs: **[ui.hotfix.jobs](https://ui.hotfix.jobs)**.
 
@@ -26,7 +26,7 @@ Import the tokens once, through your Tailwind CSS entry file:
 
 ```css
 @import "tailwindcss";
-@import "./styles/patch-tokens.css";
+@import "./styles/patch-ui-tokens.css";
 ```
 
 ### Light / Dark mode
@@ -43,7 +43,7 @@ export default function App() {
     <div className="flex gap-3">
       <Button variant="primary">Save</Button>
       <Button variant="secondary">Cancel</Button>
-      <Button variant="danger">Delete</Button>
+      <Button variant="destructive">Delete</Button>
     </div>
   );
 }
@@ -51,52 +51,29 @@ export default function App() {
 
 ## Components
 
-| Component | Description |
-|-----------|-------------|
-| `Accordion` | Collapsible sections with animated height and rotating chevron |
-| `AppHeader` | App-level header with brand, nav, and right-aligned actions |
-| `Badge` | Status/label badge with semantic variants; optional dismissible clear via `onRemove` |
-| `Button` | Primary, secondary, outline, ghost, danger, link, and uppercase variants with loading state |
-| `Card` | Card container with header, title, description, content, meta, footer |
-| `Dialog` | Modal dialog with header, footer, close |
-| `DisplayHeading` | Large display typography with tracking presets |
-| `EmptyState` | Empty/zero-state layout with icon, title, description, action |
-| `Field` / `Form` | Form field wrapper with label, description, error, validation |
-| `Input` | Text input with Base UI primitives |
-| `Label` | Form label |
-| `Menu` | Dropdown menu with items, checkboxes, radio groups, submenus |
-| `Pagination` | Page navigation control |
-| `SectionLabel` | Small uppercase label for section headers |
-| `Select` | Dropdown select with popup, items, groups |
-| `Sheet` | Slide-out drawer panel (right, left, top, bottom) |
-| `Skeleton` | Loading placeholder |
-| `Slider` | Range slider with value display |
-| `Spinner` | Loading spinner |
-| `Switch` | Toggle switch |
-| `Table` | Composable table primitives (header, body, row, cell) |
-| `Tabs` | Tabs with list, triggers, and panels; underline and pill variants |
-| `Textarea` | Multi-line text input |
-| `ThemeToggle` | Light/dark theme toggle |
-| `TimeAgo` | Relative time display that updates automatically |
-| `Toast` | Toast notifications with position options |
-| `Tooltip` | Hover tooltip |
+Accordion, Avatar, Badge, Breadcrumb, Button, Calendar, Card, Checkbox, Combobox, Command, EmptyState, Field, Form, Input, Label, Menu, Modal, NavigationMenu, Pagination, Progress, Radio, Scroller, SearchInput, Section, SegmentedToggle, Select, Separator, Sheet, Sidebar, Skeleton, Slider, Spinner, Switch, Table, Tabs, Textarea, ThemeToggle, TimeAgo, Toast, Toggle, Tooltip.
 
-## Design Tokens
+**Blocks:** AppHeader, Dropzone.
 
-The library uses CSS custom properties (`--patch-*`) for theming:
+Full API + live demos: [ui.hotfix.jobs/docs](https://ui.hotfix.jobs/docs).
 
-| Token | Light | Dark |
-|-------|-------|------|
-| `--patch-bg` | `#fafafa` | `#09090b` |
-| `--patch-surface` | `#ffffff` | `#111113` |
-| `--patch-text` | `#171717` | `#ededed` |
-| `--patch-text-secondary` | `#525252` | `#a1a1a1` |
-| `--patch-border` | `#e5e5e5` | `rgba(255,255,255,0.06)` |
-| `--patch-error` | `#dc2626` | `#f87171` |
-| `--patch-success` | `#16a34a` | `#4ade80` |
-| `--patch-warning` | `#d97706` | `#fbbf24` |
+## Design tokens
 
-Override any token in your own CSS to customize the theme.
+Tokens live in `src/theme/tokens.css` as plain CSS custom properties. Override any of them in your own CSS after the token import to customize the theme; every component picks up the change at runtime.
+
+| Group | Tokens |
+|-------|--------|
+| Canvas + surfaces | `--canvas`, `--surface-1..4`, `--surface-elevated`, `--surface-elevated-hover` |
+| Ink (text) | `--ink`, `--ink-muted`, `--ink-subtle`, `--ink-tertiary` |
+| Hairlines | `--hairline`, `--hairline-strong`, `--hairline-tertiary` |
+| Primary (monochrome) | `--primary`, `--on-primary`, `--primary-hover`, `--primary-active` |
+| Semantic status | `--error*`, `--warning*`, `--success*` (each with `-hover`, `-active`, `-fg`) |
+| Focus | `--focus-ring-color`, `--focus-ring-width`, `--focus-ring-offset` |
+| Radius | `--radius-4/6/12/16/full` |
+| Shadow | `--shadow-card`, `--shadow-menu`, `--shadow-modal`, `--shadow-tooltip` |
+| Motion | `--duration-state`, `--duration-overlay`, `--ease-standard` |
+
+Full spec: [`DESIGN.md`](./DESIGN.md).
 
 ## License
 
