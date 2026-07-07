@@ -246,7 +246,6 @@
         "@phosphor-icons/react"
       ],
       "registryDependencies": [
-        "https://ui.hotfix.jobs/r/checkbox.json",
         "https://ui.hotfix.jobs/r/input.json",
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",

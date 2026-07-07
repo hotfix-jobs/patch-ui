@@ -1,7 +1,12 @@
 "use client";
 
 import { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox";
-import { CaretDown, MagnifyingGlass, X } from "@phosphor-icons/react/dist/ssr";
+import {
+  CaretDown,
+  Check,
+  MagnifyingGlass,
+  X,
+} from "@phosphor-icons/react/dist/ssr";
 import { createContext, forwardRef, useContext, useMemo } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
@@ -13,7 +18,6 @@ import {
   popupSurface,
 } from "../recipes";
 import type { InputSize } from "./input";
-import { Checkbox } from "./checkbox";
 import {
   MOBILE_MEDIA_QUERY,
   useMediaQuery,
@@ -57,7 +61,10 @@ export interface ComboboxProps {
   children: React.ReactNode;
 }
 
-const ComboboxSharedContext = createContext<{ placeholder?: string }>({});
+const ComboboxSharedContext = createContext<{
+  placeholder?: string;
+  multiple?: boolean;
+}>({});
 
 export function Combobox({
   open,
@@ -72,7 +79,10 @@ export function Combobox({
   autoHighlight = "always",
   children,
 }: ComboboxProps): React.ReactElement {
-  const shared = useMemo(() => ({ placeholder }), [placeholder]);
+  const shared = useMemo(
+    () => ({ placeholder, multiple }),
+    [placeholder, multiple],
+  );
   // Full workaround for Base UI issue #3077: the popup opens with the
   // last item marked `data-highlighted` AND scrolled into view. Scroll
   // reset alone doesn't clear the highlight — Base UI's activeIndex
@@ -430,6 +440,7 @@ export function ComboboxItem({
   removeLabel = "Remove",
   ...props
 }: ComboboxItemProps): React.ReactElement {
+  const { multiple } = useContext(ComboboxSharedContext);
   const resolvedValue =
     value !== undefined ? value : typeof children === "string" ? children : null;
   return (
@@ -438,6 +449,7 @@ export function ComboboxItem({
       disabled={disabled}
       data-slot="combobox-item"
       className={cn(
+        "group",
         itemRow.base,
         itemRow.comfortable,
         "md:min-h-7 md:px-2 md:py-1.5 md:text-small",
@@ -452,6 +464,17 @@ export function ComboboxItem({
       }}
       {...props}
     >
+      {multiple && (
+        <span
+          aria-hidden
+          data-slot="combobox-item-checkbox"
+          className="inline-flex size-4 shrink-0 items-center justify-center rounded-[3px] border border-hairline bg-layer-1 text-transparent transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[selected]:border-primary group-data-[selected]:bg-primary group-data-[selected]:text-on-primary"
+        >
+          <ComboboxPrimitive.ItemIndicator className="inline-flex">
+            <Check className="size-2.5" />
+          </ComboboxPrimitive.ItemIndicator>
+        </span>
+      )}
       {children}
       {onRemove && (
         <span
@@ -470,77 +493,6 @@ export function ComboboxItem({
           <X className="size-3" aria-hidden />
         </span>
       )}
-    </ComboboxPrimitive.Item>
-  );
-}
-
-/* ---------------------------- CheckboxItem ---------------------------- */
-
-export interface ComboboxCheckboxItemProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect" | "prefix"> {
-  checked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
-  onSelect?: (checked: boolean) => void;
-  disabled?: boolean;
-  prefix?: React.ReactNode;
-  suffix?: React.ReactNode;
-  value?: unknown;
-}
-
-export function ComboboxCheckboxItem({
-  className,
-  children,
-  checked = false,
-  onCheckedChange,
-  onSelect,
-  disabled,
-  prefix,
-  suffix,
-  value,
-  onClick,
-  ...props
-}: ComboboxCheckboxItemProps): React.ReactElement {
-  const resolvedValue =
-    value !== undefined ? value : typeof children === "string" ? children : null;
-  return (
-    <ComboboxPrimitive.Item
-      value={resolvedValue}
-      disabled={disabled}
-      data-slot="combobox-checkbox-item"
-      data-state={checked ? "checked" : "unchecked"}
-      aria-checked={checked}
-      className={cn(
-        itemRow.base,
-        itemRow.comfortable,
-        "md:min-h-7 md:px-2 md:py-1.5 md:text-small",
-        "cursor-pointer gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        iconMuted,
-        className,
-      )}
-      onClick={(e: React.MouseEvent<HTMLDivElement> & {
-        preventBaseUIHandler?: () => void;
-      }) => {
-        e.preventBaseUIHandler?.();
-        onClick?.(e);
-        if (e.defaultPrevented) return;
-        if (disabled) return;
-        const next = !checked;
-        onCheckedChange?.(next);
-        onSelect?.(next);
-        e.preventDefault();
-      }}
-      {...props}
-    >
-      <Checkbox
-        checked={checked}
-        tabIndex={-1}
-        aria-hidden
-        className="pointer-events-none"
-      />
-      {prefix}
-      <span className="min-w-0 flex-1 truncate">{children}</span>
-      {suffix && <span className="ms-auto flex items-center">{suffix}</span>}
     </ComboboxPrimitive.Item>
   );
 }
