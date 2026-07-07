@@ -6,22 +6,32 @@ export function BadgeDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-3 text-mini text-ink-muted">Variants (high contrast, default)</p>
+        <p className="mb-3 text-mini text-ink-muted">Solid</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Badge variant="default">Default</Badge>
-          <Badge variant="success">Success</Badge>
-          <Badge variant="warning">Warning</Badge>
-          <Badge variant="error">Error</Badge>
+          <Badge color="default" variant="solid">Default</Badge>
+          <Badge color="success" variant="solid">Success</Badge>
+          <Badge color="warning" variant="solid">Warning</Badge>
+          <Badge color="error" variant="solid">Error</Badge>
         </div>
       </div>
 
       <div>
-        <p className="mb-3 text-mini text-ink-muted">Variants (low contrast)</p>
+        <p className="mb-3 text-mini text-ink-muted">Soft (default)</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Badge variant="default" contrast="low">Default</Badge>
-          <Badge variant="success" contrast="low">Success</Badge>
-          <Badge variant="warning" contrast="low">Warning</Badge>
-          <Badge variant="error" contrast="low">Error</Badge>
+          <Badge color="default">Default</Badge>
+          <Badge color="success">Success</Badge>
+          <Badge color="warning">Warning</Badge>
+          <Badge color="error">Error</Badge>
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-3 text-mini text-ink-muted">Outlined</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge color="default" variant="outlined">Default</Badge>
+          <Badge color="success" variant="outlined">Success</Badge>
+          <Badge color="warning" variant="outlined">Warning</Badge>
+          <Badge color="error" variant="outlined">Error</Badge>
         </div>
       </div>
 
@@ -37,10 +47,10 @@ export function BadgeDemo() {
       <div>
         <p className="mb-3 text-mini text-ink-muted">With icon</p>
         <div className="flex flex-wrap items-center gap-3">
-          <Badge icon={<Shield />} variant="default">Verified</Badge>
-          <Badge icon={<Shield />} variant="default" contrast="low">Verified</Badge>
-          <Badge icon={<Lightning />} variant="warning">Beta</Badge>
-          <Badge icon={<Lightning />} variant="warning" contrast="low">Beta</Badge>
+          <Badge icon={<Shield />}>Verified</Badge>
+          <Badge icon={<Shield />} variant="solid">Verified</Badge>
+          <Badge icon={<Lightning />} color="warning">Beta</Badge>
+          <Badge icon={<Lightning />} color="warning" variant="outlined">Beta</Badge>
         </div>
       </div>
 

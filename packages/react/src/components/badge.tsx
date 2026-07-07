@@ -8,15 +8,15 @@ import { cn } from "../utils";
 
 export const badgeVariants = cva(
   [
-    "relative inline-flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap",
+    "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
   ].join(" "),
   {
     defaultVariants: {
       size: "md",
-      variant: "default",
+      color: "default",
       shape: "pill",
-      contrast: "low",
+      variant: "soft",
     },
     variants: {
       size: {
@@ -24,7 +24,7 @@ export const badgeVariants = cva(
         md: "px-2.5 py-1 text-mini font-medium [&_svg:not([class*='size-'])]:size-3.5",
         lg: "px-3 py-1.5 text-small font-medium [&_svg:not([class*='size-'])]:size-4",
       },
-      variant: {
+      color: {
         default: "",
         success: "",
         warning: "",
@@ -34,49 +34,58 @@ export const badgeVariants = cva(
         rounded: "rounded-[var(--radius-6)]",
         pill: "rounded-full",
       },
-      contrast: {
-        high: "",
-        low: "",
+      variant: {
+        solid: "",
+        soft: "",
+        outlined: "",
       },
     },
     compoundVariants: [
-      // Status variants use semantic role tokens (fixed hex in both
-      // themes); the accent scale inverts in dark mode.
-      { variant: "default", contrast: "high", class: "bg-ink text-base" },
-      { variant: "success", contrast: "high", class: "bg-success text-success-fg" },
-      { variant: "warning", contrast: "high", class: "bg-warning text-warning-fg" },
-      { variant: "error",   contrast: "high", class: "bg-error text-error-fg" },
-      { variant: "default", contrast: "low", class: "bg-fill-2 text-ink-muted" },
-      { variant: "success", contrast: "low", class: "bg-success/10 text-success" },
-      { variant: "warning", contrast: "low", class: "bg-warning/10 text-warning" },
-      { variant: "error",   contrast: "low", class: "bg-error/10 text-error" },
+      // Semantic colors use fixed hex tokens in both themes; the accent
+      // scale inverts in dark mode.
+      { color: "default", variant: "solid", class: "bg-ink text-[color:var(--base)]" },
+      { color: "success", variant: "solid", class: "bg-success text-success-fg" },
+      { color: "warning", variant: "solid", class: "bg-warning text-warning-fg" },
+      { color: "error",   variant: "solid", class: "bg-error text-error-fg" },
+      { color: "default", variant: "soft", class: "bg-fill-2 text-ink-muted" },
+      { color: "success", variant: "soft", class: "bg-success/10 text-success" },
+      { color: "warning", variant: "soft", class: "bg-warning/10 text-warning" },
+      { color: "error",   variant: "soft", class: "bg-error/10 text-error" },
+      // Outlined: no fill, hairline border. Semantic colors use a tinted
+      // border + matching text; default falls back to the shared hairline.
+      { color: "default", variant: "outlined", class: "border border-hairline text-ink-muted" },
+      { color: "success", variant: "outlined", class: "border border-success/40 text-success" },
+      { color: "warning", variant: "outlined", class: "border border-warning/40 text-warning" },
+      { color: "error",   variant: "outlined", class: "border border-error/40 text-error" },
     ],
   },
 );
 
-export interface BadgeProps extends useRender.ComponentProps<"span"> {
-  variant?: VariantProps<typeof badgeVariants>["variant"];
+export interface BadgeProps extends Omit<useRender.ComponentProps<"span">, "color"> {
+  /** Semantic color. Maps to fill / border / text tokens per `variant`. */
+  color?: VariantProps<typeof badgeVariants>["color"];
   size?: VariantProps<typeof badgeVariants>["size"];
   shape?: VariantProps<typeof badgeVariants>["shape"];
-  /** `high` = solid saturated fill (default). `low` = subtle tinted fill for dense surfaces. */
-  contrast?: VariantProps<typeof badgeVariants>["contrast"];
+  /** Visual treatment. `solid` = saturated fill. `soft` (default) =
+   *  tinted fill for dense surfaces. `outlined` = no fill, hairline border. */
+  variant?: VariantProps<typeof badgeVariants>["variant"];
   /** Optional inline icon rendered before the label. */
   icon?: React.ReactNode;
 }
 
 export function Badge({
   className,
-  variant,
+  color,
   size,
   shape,
-  contrast,
+  variant,
   icon,
   render,
   children,
   ...props
 }: BadgeProps): React.ReactElement {
   const defaultProps = {
-    className: cn(badgeVariants({ size, variant, shape, contrast }), className),
+    className: cn(badgeVariants({ size, color, shape, variant }), className),
     "data-slot": "badge",
     children: (
       <>
