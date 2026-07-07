@@ -2,12 +2,10 @@
 
 import { useState, useMemo } from "react";
 import {
-  Badge,
   Combobox,
   ComboboxInput,
   ComboboxPopup,
   ComboboxItem,
-  ComboboxCheckboxItem,
   ComboboxDivider,
   ComboboxSection,
   SectionLabel,
@@ -32,9 +30,6 @@ export function ComboboxDemo() {
   const [query, setQuery] = useState("");
   const [picked, setPicked] = useState<string | null>(null);
   const [query2, setQuery2] = useState("");
-
-  const [multiQuery, setMultiQuery] = useState("");
-  const [selected, setSelected] = useState<string[]>(["React"]);
 
   const [nativeQuery, setNativeQuery] = useState("");
   const [nativeOpen, setNativeOpen] = useState(false);
@@ -71,14 +66,6 @@ export function ComboboxDemo() {
     () => FRAMEWORKS.filter((f) => f.toLowerCase().includes(needle2)),
     [needle2],
   );
-
-  const multiNeedle = multiQuery.trim().toLowerCase();
-  const multiMatches = useMemo(
-    () => FRAMEWORKS.filter((f) => f.toLowerCase().includes(multiNeedle)),
-    [multiNeedle],
-  );
-  const toggle = (f: string) =>
-    setSelected((prev) => (prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]));
 
   return (
     <div className="flex flex-col gap-8">
@@ -180,47 +167,8 @@ export function ComboboxDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Multi-select filter</SectionLabel>
-        <div className="max-w-sm">
-          <Combobox
-            value={multiQuery}
-            onValueChange={setMultiQuery}
-            placeholder="Filter by framework…"
-          >
-            <ComboboxInput prefix={<MagnifyingGlass />} />
-            <ComboboxPopup>
-              {multiMatches.length === 0 ? (
-                <div className="px-2.5 py-4 text-center text-mini text-ink-muted md:px-2">
-                  No matches.
-                </div>
-              ) : (
-                multiMatches.map((f) => (
-                  <ComboboxCheckboxItem
-                    key={f}
-                    checked={selected.includes(f)}
-                    onCheckedChange={() => toggle(f)}
-                  >
-                    {f}
-                  </ComboboxCheckboxItem>
-                ))
-              )}
-            </ComboboxPopup>
-          </Combobox>
-          {selected.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {selected.map((s) => (
-                <Badge key={s} variant="default" contrast="low">
-                  {s}
-                </Badge>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="space-y-3">
         <SectionLabel>
-          Native multi-select (built-in X, summary in input)
+          Multi-select (built-in X, summary in input)
         </SectionLabel>
         <div className="max-w-sm">
           <Combobox
