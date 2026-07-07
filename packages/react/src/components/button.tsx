@@ -30,20 +30,15 @@ export const buttonVariants = cva(
       },
       variant: {
         primary:
-          "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover active:bg-primary-active " +
-          iconMutedSolid,
+          "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover active:bg-primary-active",
         secondary:
-          "bg-layer-1 text-ink border border-hairline hover:bg-layer-2 focus-visible:bg-layer-2 active:bg-layer-selected " +
-          iconMuted,
+          "bg-layer-1 text-ink border border-hairline hover:bg-layer-2 focus-visible:bg-layer-2 active:bg-layer-selected",
         tertiary:
-          "bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-selected " +
-          iconMuted,
+          "bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-selected",
         warning:
-          "bg-warning text-warning-fg hover:bg-warning-hover focus-visible:bg-warning-hover active:bg-warning-active " +
-          iconMutedSolid,
+          "bg-warning text-warning-fg hover:bg-warning-hover focus-visible:bg-warning-hover active:bg-warning-active",
         destructive:
-          "bg-error text-error-fg hover:bg-error-hover focus-visible:bg-error-hover active:bg-error-active " +
-          iconMutedSolid,
+          "bg-error text-error-fg hover:bg-error-hover focus-visible:bg-error-hover active:bg-error-active",
       },
       shape: {
         square: "rounded-[var(--radius-6)]",
@@ -97,6 +92,11 @@ export function Button({
   const effectiveSize: NonNullable<ButtonProps["size"]> = size ?? "md";
   const isIconOnly = (icon != null && !children) || shape === "circle";
   const iconOnly = isIconOnly ? iconOnlyWidth[effectiveSize] : "";
+  const iconOnlyRecipe = isIconOnly
+    ? variant === "secondary" || variant === "tertiary"
+      ? iconMuted
+      : iconMutedSolid
+    : "";
 
   if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production" && isIconOnly && !props["aria-label"]) {
     console.warn(
@@ -150,7 +150,7 @@ export function Button({
     render ? undefined : "button";
 
   const defaultProps = {
-    className: cn(buttonVariants({ size: effectiveSize, variant, shape, shadow }), iconOnly, className),
+    className: cn(buttonVariants({ size: effectiveSize, variant, shape, shadow }), iconOnly, iconOnlyRecipe, className),
     "data-slot": "button",
     type: typeValue,
     disabled: isDisabled || loading,
