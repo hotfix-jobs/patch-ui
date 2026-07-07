@@ -3,7 +3,6 @@
 import { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox";
 import {
   CaretDown,
-  Check,
   MagnifyingGlass,
   X,
 } from "@phosphor-icons/react/dist/ssr";
@@ -17,6 +16,7 @@ import {
   popupDivider,
   popupSurface,
 } from "../recipes";
+import { Checkbox } from "./checkbox";
 import type { InputSize } from "./input";
 import {
   MOBILE_MEDIA_QUERY,
@@ -468,10 +468,21 @@ export function ComboboxItem({
         <span
           aria-hidden
           data-slot="combobox-item-checkbox"
-          className="inline-flex size-4 shrink-0 items-center justify-center rounded-[3px] border border-hairline bg-layer-1 text-transparent transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[selected]:border-primary group-data-[selected]:bg-primary group-data-[selected]:text-on-primary"
+          className="relative inline-flex size-4 shrink-0 items-center justify-center"
         >
-          <ComboboxPrimitive.ItemIndicator className="inline-flex">
-            <Check className="size-2.5" />
+          <Checkbox
+            checked={false}
+            tabIndex={-1}
+            aria-hidden
+            className="pointer-events-none group-data-[selected]:invisible"
+          />
+          <ComboboxPrimitive.ItemIndicator className="absolute inset-0 inline-flex items-center justify-center">
+            <Checkbox
+              checked
+              tabIndex={-1}
+              aria-hidden
+              className="pointer-events-none"
+            />
           </ComboboxPrimitive.ItemIndicator>
         </span>
       )}
