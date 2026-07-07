@@ -6,10 +6,10 @@ export const metadata = { title: "Contrast" };
 
 Every text token has a declared WCAG target against the surfaces it can sit on. The same checks run in CI via `npm run check:contrast -w packages/react`, so a token change that breaks a target fails the build. This page is the visual counterpart: ratios recompute the moment you toggle light or dark mode.
 
-- **`ink`** on any canvas or lifted surface: AAA body (7:1)
-- **`ink-muted`** on canvas / surface-1 / surface-2: AA secondary (4.5:1)
-- **`ink-subtle`** on canvas: AA placeholder (4.5:1)
-- **`ink-tertiary`** on canvas: AA-large / disabled hint (3:1)
+- **`ink`** on `--base` and every lifted surface: AAA body (7:1)
+- **`ink-muted`** on `--base`, `--layer-1`, `--fill-1`: AA secondary (4.5:1)
+- **`ink-subtle`** on `--base`: AA-large / placeholder (3:1)
+- **`ink-tertiary`** on `--base`: AA-large / disabled hint (3:1)
 - **`on-primary`** on **`primary`** (primary Button label): AAA (7:1)
 - **`error-fg`** / **`warning-fg`** / **`success-fg`** on their status fills: AA (4.5:1)
 
@@ -23,10 +23,10 @@ Green pill = passing, red = failing.
 
 - **`ink`** — primary body, headings, anything the user must read precisely.
 - **`ink-muted`** — meta text, secondary labels, table cell secondaries, default icon tone.
-- **`ink-subtle`** — placeholders, "missing value" copy, disabled label on a light surface. AA against canvas only; sitting `ink-subtle` on a lifted card can drop under threshold. Reach for `ink-muted` there instead.
+- **`ink-subtle`** — placeholders, "missing value" copy, disabled label. AA-large against `--base` only; sitting `ink-subtle` on a lifted `--layer-1` or `--fill-*` can drop under threshold. Reach for `ink-muted` there instead.
 - **`ink-tertiary`** — disabled controls, footnotes, timestamps. AA-large only; do not use for content the user actually needs to read.
 
 ## Notes
 
 - Semantic status roles (`error`, `warning`, `success`) are fixed hex and theme-invariant. Their `-fg` variants are chosen to guarantee AA against the fill in both themes.
-- If you override `--primary`, `--on-primary`, `--ink*`, `--base`, or `--surface-*` in your own CSS, re-run `check:contrast` before merging. The script parses `packages/react/src/theme/tokens.css` directly, so a downstream override needs to be reflected in that file (or added to the script's target list) for the check to catch it.
+- If you override `--primary`, `--on-primary`, `--ink*`, `--base`, `--layer-*`, or `--fill-*` in your own CSS, re-run `check:contrast` before merging. The script parses `packages/react/src/theme/tokens.css` directly, so a downstream override needs to be reflected in that file (or added to the script's target list) for the check to catch it.

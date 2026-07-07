@@ -159,7 +159,7 @@ export function ContrastDemo() {
       <section>
         <SectionHeading title="Primary button (inverted surface)" />
         <p className="mb-3 text-small text-ink-muted">
-          The primary Button is <code>on-primary</code> text (canvas) on a{" "}
+          The primary Button is <code>on-primary</code> text (base) on a{" "}
           <code>primary</code> (ink) fill. Must clear AAA (7:1).
         </p>
         {(() => {

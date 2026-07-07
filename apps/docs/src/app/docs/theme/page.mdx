@@ -10,23 +10,23 @@ export const metadata = { title: "Theme" };
 
 A single stylesheet (`tokens.css`) defines every color, size, and motion value in Patch UI. Components read from it through Tailwind utilities. Light and dark switch from one `.dark` class on `<html>`. No JavaScript required.
 
-The scheme is deliberately small: one canvas, a four-step surface ladder plus an elevated rung for popups, four ink tiers, three hairline steps, three fixed semantic status roles, one monochrome primary. Consumers layer their own brand accent by redefining `--primary` in a single downstream layer.
+The scheme is deliberately small: a pure-neutral gray scale (light base `#FFFFFF`, dark base `#0A0A0A`), two surface families (`--layer-*` for lifted panels, `--fill-*` for tinted chips), four ink tiers, three hairline steps, three fixed semantic status roles, one monochrome primary. Consumers layer their own brand accent by redefining `--primary` in a single downstream layer.
 
 ## Colors
 
 <ColorScales />
 
-**Base + layers.** The page sits on `--base`. `--layer-1` is the default lifted panel: Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome. In light it lifts toward pure white so the panel reads brighter than off-white base; in dark it lifts one rung above near-black base. `--layer-2` is a subtle hover step above `--layer-1` (secondary Button hover, Input hover companion).
+**Base + layers.** The page sits on `--base` — pure white in light, deep near-black `#0A0A0A` in dark. `--layer-1` is the default lifted panel: Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome. In light `--layer-1` is *also* `#FFFFFF` — the hairline border alone signals the "lifted panel" state. In dark it steps ~3-5% brighter than base; the hairline sits under the card body rather than competing with it. `--layer-2` is a subtle hover step (secondary Button hover, Input hover companion).
 
-**Fills.** `--fill-1` and `--fill-2` are tinted chip fills used *deeper than base* in light mode: Toggle track, Badge neutral, code chip, Switch off-track, skeleton block, active pill Tab. In dark mode they collapse to the same values as `--layer-1` / `--layer-2` — the distinction stays semantic so consumers can override one without the other.
+**Fills.** `--fill-1` and `--fill-2` are tinted chip fills: Toggle track, Badge neutral, code chip, Switch off-track, skeleton block, striped table hover, active pill Tab, menu item highlight. In light they step deeper than base; in dark they step brighter than base. `--fill-2` sits distinctly above `--layer-1` in both themes so hovers, striped rows, and chips remain visible on top of Card / Popup surfaces.
 
 **Interaction-state overlays.** `--layer-hover` and `--layer-selected` are alpha overlays (black in light, white in dark) that any transparent-at-rest control reaches for on `hover:`, `focus-visible:`, `data-[popup-open]:`, `data-[pressed]:`, and `active:`. Because they darken whatever surface sits underneath rather than paint over it, the state reads on base, `--layer-1`, `--fill-1`, or a consumer's own background without disappearing. `--layer-selected` is ~2x the hover strength so pressed always reads visibly darker than hover.
 
-**Ink (text).** Four tiers, deliberately narrow. `--ink` is primary text (headings, body). `--ink-muted` is meta text and default icon tone. `--ink-subtle` is placeholder and "missing value" copy. `--ink-tertiary` is disabled and footnote.
+**Ink (text).** Four tiers, pure gray, no chroma. `--ink` is primary text (headings, body). `--ink-muted` is meta text and default icon tone. `--ink-subtle` is placeholder and "missing value" copy. `--ink-tertiary` is disabled and footnote.
 
 **Semantic status.** `--error`, `--warning`, `--success` are fixed hex, identical in both themes so a warning always reads as a warning. Each has `-hover`, `-active`, and `-fg` variants; the `-fg` token carries label color so fill and text invert together.
 
-**Hairlines.** Three tiers, all rgba-alpha, so borders read cleanly on any surface without hard-coded color. `--hairline` (4%) is the default separator. `--hairline-strong` (8%) is for hovered inputs and structural section dividers. `--hairline-tertiary` (14%) is for nested content that sits on top of an already-lifted surface.
+**Hairlines.** Three tiers of solid hex, tuned to sit under the card body rather than competing with it. Light: `--hairline` `#EBEBEB`, `--hairline-strong` `#D4D4D4`, `--hairline-tertiary` `#A3A3A3`. Dark: `--hairline` `#262626`, `--hairline-strong` `#333333`, `--hairline-tertiary` `#454545`. Consumers who override `--base` should also override the hairlines to keep the border-vs-base contrast intact.
 
 **Primary (monochrome).** `--primary` resolves to `--ink` and `--on-primary` to `--base`. No chromatic brand ships. `--primary-hover` and `--primary-active` are computed via `color-mix` toward `--base`, so a consumer's brand override on `--primary` automatically produces matching hover/active steps.
 
