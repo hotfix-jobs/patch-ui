@@ -5,7 +5,7 @@ export const metadata = { title: "AppHeader" };
 
 # AppHeader
 
-A complete site-header block. Renders brand slot + primary nav + right-aligned actions on desktop, and below the `md` breakpoint automatically collapses the nav into a morphing menu trigger that opens a full-viewport panel with the same nav items rendered as large muted-to-ink links. Open/close state, focus, escape-to-close, and scroll lock are owned by the block — consumers write the same declarative markup and get responsive behavior for free.
+A complete site-header block. Renders brand slot + primary nav + optional tools + right-aligned actions on desktop, and below the `md` breakpoint automatically collapses the nav into a morphing hamburger trigger. Tapping the trigger drops down a panel below the still-visible sticky header showing the nav items and, if present, the right cluster docked at the bottom as a footer. Open/close state, focus, escape-to-close, and scroll lock are owned by the block.
 
 <Install name="app-header" />
 
@@ -23,6 +23,7 @@ import {
   AppHeaderNavItem,
   AppHeaderNavSection,
   AppHeaderRight,
+  AppHeaderTools,
   Button,
 } from "@patchui/react";
 
@@ -41,6 +42,13 @@ import {
     </AppHeaderNavSection>
   </AppHeaderNav>
 
+  {/* Route-owned inline controls (search, filter chips). Sit between
+      Nav and Right on desktop; render as a bordered sub-row below the
+      top row on mobile so they stay visible without opening the panel. */}
+  <AppHeaderTools>
+    <Input placeholder="Search…" />
+  </AppHeaderTools>
+
   <AppHeaderRight>
     <Button variant="tertiary" size="sm" shape="pill">Sign in</Button>
     <Button variant="primary" size="sm" shape="pill">Get started</Button>
@@ -51,15 +59,17 @@ import {
 ## Mobile behavior
 
 Below `md`:
-- `AppHeaderNav` is hidden.
-- A **morphing hamburger trigger** slides into place at the end of `AppHeaderRight` (patch-ui provides it — you don't render one yourself).
-- Tapping the trigger opens a **full-viewport panel** that includes the same brand + right actions at the top (so the panel reads as an extended header) plus every nav item rendered as a large muted-to-ink link. Tapping a link closes the panel and lets navigation proceed.
+- `AppHeaderNav` is hidden inline; its items render inside the panel instead.
+- `AppHeaderRight` is hidden inline; its items render in the panel's sticky footer instead. Reach for that for a Sign in / primary CTA that stays parked at the bottom of the drawer.
+- `AppHeaderTools` renders as a bordered sub-row directly under the top row — always visible so search / filter controls stay reachable without opening the panel.
+- A **morphing hamburger trigger** replaces the right cluster in the top row. It only renders when `AppHeaderNav` has children.
+- Tapping the trigger drops the panel down **below the sticky header** — the header stays put, the hamburger morphs to X for the close affordance, and the panel occupies `top: var(--header-height, 64px)` to the bottom of the viewport. Set `--header-height` on `:root` when your header height differs from the 64px default (a `ResizeObserver` on the header element is the usual wiring).
 
 ## Styling notes
 
 - **Desktop nav items** default to `text-ink-muted`. On hover they lift to `text-ink` and pick up a subtle `bg-fill-1` pill fill. The `active` prop lands the item at full `text-ink` + `font-medium`: no pill fill so "current page" reads distinctly from "hovered link."
 - **Marketing headers**: reach for `shape="pill"` on Buttons in the right slot. `Button shape="pill"` gives the fully-rounded chip look for "Log in" / "Sign up" CTAs.
-- **Sticky headers**: pass `sticky` to pin the header. Panel `z-50` clears sticky content beneath it.
+- **Sticky headers**: pass `sticky` to pin the header. The panel renders below at `z-40` — the sticky header (`z-50`) stays above it so brand and the hamburger-to-X trigger remain visible.
 - **Escape hatch**: if you need a custom mobile pattern (drawer instead of full-viewport panel), skip this block and compose the primitives (`Sheet` + your own trigger).
 
 ## Props

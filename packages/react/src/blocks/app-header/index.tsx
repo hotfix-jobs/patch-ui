@@ -29,7 +29,6 @@ interface AppHeaderContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
   panelId: string;
-  brand: React.ReactNode;
   right: React.ReactNode;
   navChildren: React.ReactNode;
 }
@@ -50,10 +49,12 @@ function extractSlots(children: React.ReactNode): {
   brand: React.ReactNode;
   nav: React.ReactNode;
   right: React.ReactNode;
+  tools: React.ReactNode;
 } {
   let brand: React.ReactNode = null;
   let nav: React.ReactNode = null;
   let right: React.ReactNode = null;
+  let tools: React.ReactNode = null;
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) return;
     const type = child.type as { displayName?: string };
@@ -63,9 +64,11 @@ function extractSlots(children: React.ReactNode): {
       nav = child;
     } else if (type === AppHeaderRight || type.displayName === "AppHeaderRight") {
       right = child;
+    } else if (type === AppHeaderTools || type.displayName === "AppHeaderTools") {
+      tools = child;
     }
   });
-  return { brand, nav, right };
+  return { brand, nav, right, tools };
 }
 
 /* --------------------------- root --------------------------- */
@@ -88,14 +91,17 @@ export function AppHeader({
   const [open, setOpen] = useState(false);
   const panelId = useId();
 
-  const { brand, nav, right } = useMemo(() => extractSlots(children), [children]);
+  const { brand, nav, right, tools } = useMemo(
+    () => extractSlots(children),
+    [children],
+  );
   const navChildren = useMemo(() => {
     if (!isValidElement(nav)) return null;
     return (nav as React.ReactElement<{ children?: React.ReactNode }>).props
       .children;
   }, [nav]);
 
-  const ctx: AppHeaderContextValue = { open, setOpen, panelId, brand, right, navChildren };
+  const ctx: AppHeaderContextValue = { open, setOpen, panelId, right, navChildren };
 
   const defaultProps = {
     className: cn(
@@ -106,11 +112,29 @@ export function AppHeader({
     ),
     "data-slot": "app-header",
     children: (
-      <div className="flex w-full items-center gap-6 px-4 py-3.5 md:px-6 md:gap-8 md:py-4">
-        {brand}
-        {nav}
-        <AppHeaderRightWithTrigger>{right}</AppHeaderRightWithTrigger>
-      </div>
+      <>
+        <div className="flex w-full items-center gap-4 px-4 py-3.5 md:px-6 md:gap-6 md:py-4">
+          {brand}
+          {nav}
+          {tools && (
+            <div
+              className="hidden min-w-0 flex-1 items-center gap-2 md:flex"
+              data-slot="app-header-tools"
+            >
+              {tools}
+            </div>
+          )}
+          <AppHeaderRightWithTrigger>{right}</AppHeaderRightWithTrigger>
+        </div>
+        {tools && (
+          <div
+            className="flex items-center gap-2 border-t border-hairline px-4 pb-3 pt-2 md:hidden"
+            data-slot="app-header-tools-mobile"
+          >
+            {tools}
+          </div>
+        )}
+      </>
     ),
   };
 
@@ -290,26 +314,44 @@ export function AppHeaderRight({
 }
 AppHeaderRight.displayName = "AppHeaderRight";
 
+/* --------------------------- tools --------------------------- */
+
+export type AppHeaderToolsProps = { children?: React.ReactNode };
+
+/** Route-owned inline controls (search inputs, filter chips, etc.) that
+ *  live between AppHeaderNav and AppHeaderRight on desktop and render
+ *  as a bordered sub-row below the top row on mobile so they stay
+ *  visible without opening the hamburger panel. */
+export function AppHeaderTools({
+  children,
+}: AppHeaderToolsProps): React.ReactElement {
+  return <>{children}</>;
+}
+AppHeaderTools.displayName = "AppHeaderTools";
+
 function AppHeaderRightWithTrigger({
   children,
 }: {
   children: React.ReactNode;
 }): React.ReactElement {
-  const { open, setOpen, panelId } = useAppHeaderContext();
+  const { open, setOpen, panelId, navChildren } = useAppHeaderContext();
+  const hasNav = Children.count(navChildren) > 0;
   return (
     <div className="ms-auto flex items-center gap-2" data-slot="app-header-right">
-      <span className="hidden md:contents">{children}</span>
-      <button
-        type="button"
-        data-slot="app-header-mobile-trigger"
-        aria-label={open ? "Close menu" : "Open menu"}
-        aria-expanded={open}
-        aria-controls={panelId}
-        onClick={() => setOpen(!open)}
-        className="inline-flex md:hidden size-8 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
-      >
-        <MorphingMenuIcon open={open} />
-      </button>
+      <span className={hasNav ? "hidden md:contents" : "contents"}>{children}</span>
+      {hasNav && (
+        <button
+          type="button"
+          data-slot="app-header-mobile-trigger"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls={panelId}
+          onClick={() => setOpen(!open)}
+          className="inline-flex md:hidden size-8 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
+        >
+          <MorphingMenuIcon open={open} />
+        </button>
+      )}
     </div>
   );
 }
@@ -384,7 +426,7 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
 /* --------------------------- internal: mobile panel --------------------------- */
 
 function AppHeaderMobilePanel(): React.ReactPortal | null {
-  const { open, setOpen, panelId, brand, right, navChildren } = useAppHeaderContext();
+  const { open, setOpen, panelId, navChildren, right } = useAppHeaderContext();
   const reduceMotion = useReducedMotion();
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
@@ -399,6 +441,9 @@ function AppHeaderMobilePanel(): React.ReactPortal | null {
 
   if (!mounted) return null;
 
+  // Panel opens BELOW the main header (which stays visible with the
+  // hamburger morphed to X). Consumers set `--header-height` on :root
+  // to control the offset; 64px fallback matches the default header.
   return createPortal(
     <AnimatePresence>
       {open && (
@@ -416,27 +461,20 @@ function AppHeaderMobilePanel(): React.ReactPortal | null {
                 ? { duration: 0 }
                 : { duration: 0.18, ease: [0.22, 1, 0.36, 1] }
             }
-            className="fixed inset-0 z-50 flex flex-col bg-base md:hidden"
+            className="fixed inset-x-0 bottom-0 top-[var(--header-height,64px)] z-40 flex flex-col bg-base md:hidden"
           >
-            <div className="flex items-center gap-2 border-b border-hairline px-4 py-3">
-              {brand}
-              <div className="ms-auto flex items-center gap-2">
-                {right}
-                <button
-                  type="button"
-                  aria-label="Close menu"
-                  onClick={() => setOpen(false)}
-                  className="inline-flex size-8 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
-                >
-                  <MorphingMenuIcon open={true} />
-                </button>
-              </div>
-            </div>
-
             <AppHeaderMobileRenderContext.Provider value={true}>
-              <nav className="flex flex-col gap-4 overflow-y-auto p-3">
+              <nav className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-6">
                 {groupMobileNavChildren(navChildren)}
               </nav>
+              {right && Children.count(right) > 0 && (
+                <div
+                  data-slot="app-header-mobile-footer"
+                  className="flex items-center gap-2 border-t border-hairline p-4 [&>button]:w-full [&>a]:w-full"
+                >
+                  {right}
+                </div>
+              )}
             </AppHeaderMobileRenderContext.Provider>
           </motion.div>
         </RemoveScroll>
