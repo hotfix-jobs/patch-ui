@@ -31,29 +31,28 @@
  * Layer 1: Runtime theme values (light mode reference).
  * --------------------------------------------------------------- */
 :root {
-  /* Base is the page background: everything sits on it. layer-* is the
-     "lifted above base" family (panels, cards, popups, chrome). fill-*
-     is the "tinted chip/toggle fill" family. Neutrals carry a hair of
-     cool chroma (blue lean, hue ~272) to match the reference; the
-     tints are below the perception threshold on the last byte but
-     shape the overall temperature. */
-  --base:      #FBFBFC;
+  /* Pure-neutral gray scale. No warm undertones, no cool tints —
+     true gray from white to black. The pattern mirrors developer-
+     tool style dashboards where cards float on white via border
+     alone; there is no color fill on layer-1 in light. */
+  --base:      #ffffff;
 
-  /* Lifted rungs. layer-1 is the default panel surface: Card, Modal,
-     Menu popup, Combobox popup, Tooltip, Select popup, Input, Table
-     container, secondary Button chrome. layer-2 is a hover-adjacent
-     step (secondary Button hover, Input hover companion). In light
-     mode layer-1 is pure white so the lift reads against off-white
-     base; in dark mode it lifts one rung above base. */
-  --layer-1:   #FFFFFF;
-  --layer-2:   #F7F7F9;
+  /* layer-1 is the default panel surface (Card, Modal, Menu popup,
+     Combobox popup, Tooltip, Select popup, Input, Table container,
+     secondary Button chrome). Same value as base in light — the
+     hairline border alone signals the "lifted panel" state. layer-2
+     is a subtle darker step for hover on secondary Buttons and
+     Input hover companions. */
+  --layer-1:   #ffffff;
+  --layer-2:   #fafafa;
 
-  /* Tinted chip/fill rungs. Toggle track, Badge neutral, code chip,
-     Switch off-track, striped table hover, Skeleton, active pill Tab.
-     These paint DEEPER than base in light mode: their job is a subtle
-     darkened fill for indication, not a lift. */
-  --fill-1:    #F5F5F8;
-  --fill-2:    #EDEDF0;
+  /* Chip/fill rungs. fill-1 is a subtle chip that reads a nudge
+     darker than the white surface (Toggle track, Badge, code chip,
+     Switch off-track). fill-2 is the stronger indication for Toggle
+     pressed, active pill Tab, skeleton block, striped table hover,
+     menu item highlight. */
+  --fill-1:    #fafafa;
+  --fill-2:    #ededed;
 
   /* Adaptive interaction-state overlays. rgba (not opaque) so they
      darken whatever surface sits underneath: base, layer-1, fill-1,
@@ -63,21 +62,22 @@
   --layer-hover:    rgba(0, 0, 0, 0.04);
   --layer-selected: rgba(0, 0, 0, 0.08);
 
-  /* Hairlines. 1px borders carry every separation the layer/fill
-     ladders can't. hairline-strong is for focused/hovered inputs and
-     lifted card edges; hairline-tertiary is for nested content that
-     already sits on a lifted surface. */
-  --hairline:           rgba(0, 0, 0, 0.04);
-  --hairline-strong:    rgba(0, 0, 0, 0.08);
-  --hairline-tertiary:  rgba(0, 0, 0, 0.14);
+  /* Hairlines. Solid hex borders tuned against the white base so
+     cards, inputs, and popups get a legible edge without shadow.
+     Softer than a mid-gray border so the card body reads first and
+     the edge sits under it. Consumers who override --base should
+     also override these to keep the border-vs-base contrast intact. */
+  --hairline:           #ebebeb;
+  --hairline-strong:    #d4d4d4;
+  --hairline-tertiary:  #a3a3a3;
 
-  /* Ink (text) tiers. Same cool lean as the layer/fill ladder for
-     temperature consistency. Icon color inherits from surrounding
-     text color. */
-  --ink:           #1D1D22;
-  --ink-muted:     #545460;
-  --ink-subtle:    #6E6E7C;
-  --ink-tertiary:  #8E8EA0;
+  /* Ink (text) tiers. Pure gray, no chroma. Primary clears AAA on
+     base; muted clears AA; subtle and tertiary are AA-large only
+     (placeholder, disabled, footnote — low-contrast by design). */
+  --ink:           #171717;
+  --ink-muted:     #666666;
+  --ink-subtle:    #8f8f8f;
+  --ink-tertiary:  #909090;
 
   /* Primary (monochrome). No chromatic brand hue ships. Consumers
      redefine these four tokens in a downstream layer to inject brand;
@@ -216,45 +216,32 @@
  * carries the same label color because meaning doesn't flip with theme.
  * --------------------------------------------------------------- */
 .dark {
-  /* Deeper base than the "just off-black" default so the perceptual
-     range between base and layer-1 has room to breathe. Cool chroma
-     is dialed back from earlier values: on a dark ground, even a
-     small B-vs-R gap reads as visibly blue, so we run a much subtler
-     lean here than the light-mode equivalents. */
-  --base:      #0A0A0D;
+  /* Deep near-black base. layer-1 (Card, Popup, Modal) sits only
+     ~3-5% brighter — cards float on the barest lift, softened
+     further by hairlines that stay under the card body rather
+     than competing with it. Pure #000 avoided to prevent banding
+     on 6-bit panels. */
+  --base:      #0a0a0a;
 
-  /* layer-1 is the default lifted panel (Card, Modal, Menu popup,
-     Sheet, Tooltip, Input, secondary Button chrome). Sits ~3-4%
-     lightness above base — enough to read as clearly separated but
-     subtle enough that panels feel integrated with the dark ambient.
-     Border and shadow do the rest of the elevation work. layer-2 is
-     a hover step above layer-1. */
-  --layer-1:   #191A1D;
-  --layer-2:   #1F2023;
+  --layer-1:   #141414;
+  --layer-2:   #1c1c1c;
 
-  /* fill-1 sits between base and layer-1 (subtle deeper tint for
-     Toggle track, Switch off-track). fill-2 sits brighter than
-     layer-1 so components rendered on a layer-1 surface (Table row
-     hover, striped rows, Modal nested tile, Badge chip, Skeleton
-     pulse, menu item highlight) still read distinct — collapsing
-     fill-2 into layer-1 makes those states invisible in dark. */
-  --fill-1:    #131418;
-  --fill-2:    #232327;
+  --fill-1:    #131313;
+  --fill-2:    #262626;
 
-  /* Overlays flip to white alpha in dark. Slightly stronger than light
-     because white-on-dark reads more subtle than black-on-light at the
-     same alpha. */
+  /* Overlays stay rgba so they adapt to any surface underneath,
+     unlike the solid hex hairlines. */
   --layer-hover:    rgba(255, 255, 255, 0.05);
   --layer-selected: rgba(255, 255, 255, 0.10);
 
-  --hairline:           rgba(255, 255, 255, 0.06);
-  --hairline-strong:    rgba(255, 255, 255, 0.11);
-  --hairline-tertiary:  rgba(255, 255, 255, 0.18);
+  --hairline:           #262626;
+  --hairline-strong:    #333333;
+  --hairline-tertiary:  #454545;
 
-  --ink:           #F5F5F7;
-  --ink-muted:     #9E9EA4;
-  --ink-subtle:    #7C7C82;
-  --ink-tertiary:  #6E6E74;
+  --ink:           #ededed;
+  --ink-muted:     #a1a1a1;
+  --ink-subtle:    #737373;
+  --ink-tertiary:  #666666;
 
   /* Primary reinherits the inverted ink/canvas automatically through
      the var chain; the entries above already updated. Consumers that

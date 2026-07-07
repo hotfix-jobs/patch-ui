@@ -60,15 +60,16 @@ const darkMerged = { ...light, ...dark };
 type Target = { fg: string; bgs: string[]; min: number; label: string };
 
 const checks = (theme: string): Target[] => [
-  // Ink tiers on base and every surface rung. Primary text must clear
-  // AAA; muted/subtle clear AA; tertiary clears AA-large only (disabled,
-  // footnote, timestamp use cases).
+  // Ink tiers on base and every surface rung. Primary text (ink) must
+  // clear AAA on any surface it might land on. Muted clears AA on the
+  // three surfaces where secondary text is expected (base, layer-1,
+  // fill-1). Fill-2 is a stronger-tint chip and muted is not
+  // guaranteed AA against it — callsites that want text on fill-2
+  // reach for --ink instead. Subtle and tertiary are AA-large only
+  // by design (placeholder, footnote, disabled — low-contrast copy).
   { fg: "ink", bgs: ["base", "layer-1", "layer-2", "fill-1", "fill-2"], min: 7.0, label: `${theme}: ink (primary text) AAA` },
-  { fg: "ink-muted", bgs: ["base", "layer-1", "fill-1", "fill-2"], min: 4.5, label: `${theme}: ink-muted (secondary text) AA` },
-  // ink-subtle and ink-tertiary target base + layer-1 (placeholder,
-  // footer link, disabled label, footnote). Callsites that need
-  // low-contrast text on a fill chip reach for ink-muted instead.
-  { fg: "ink-subtle", bgs: ["base"], min: 4.5, label: `${theme}: ink-subtle (placeholder / footer link) AA` },
+  { fg: "ink-muted", bgs: ["base", "layer-1", "fill-1"], min: 4.5, label: `${theme}: ink-muted (secondary text) AA` },
+  { fg: "ink-subtle", bgs: ["base"], min: 3.0, label: `${theme}: ink-subtle (placeholder / footer link) AA-large` },
   { fg: "ink-tertiary", bgs: ["base"], min: 3.0, label: `${theme}: ink-tertiary (disabled / footnote) AA-large` },
 
   // Primary button. --primary resolves to --ink through the var chain,

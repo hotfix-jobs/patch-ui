@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Patch-UI-design-system
-description: "A crisp-minimal React component library built on a near-black flat base (light: #FBFBFC, dark: #0A0A0D) with a hair of cool chroma across the neutrals, two honest surface families (--layer-* for lifted panels and popups, --fill-* for tinted chip fills, no 'canvas' or 'elevated' special names), 1px hairline borders as the load-bearing separator, monochrome primary CTAs (near-black on near-white in light, inverted in dark), and semantic status roles at fixed hex. Type is Inter Variable (weight 300-700, default body 450) and JetBrains Mono for code; size and weight are separate axes, composed at the call site (`text-small font-medium`) rather than bundled into per-size recipes. Line-height comes from element defaults (body 1.5, `<p>` 1.7, headings 1.25). The library ships light + dark and is intentionally chromatically neutral: consumers layer their own brand accent through a single --primary override."
+description: "A crisp-minimal React component library built on a pure flat base (light: #FFFFFF, dark: #000000) — a single-direction ladder where every surface steps AWAY from the extreme (darker in light, brighter in dark), with a hair of cool chroma across the neutrals, two honest surface families (--layer-* for lifted panels and popups, --fill-* for tinted chip fills, no 'canvas' or 'elevated' special names), 1px hairline borders as the load-bearing separator, monochrome primary CTAs (near-black on near-white in light, inverted in dark), and semantic status roles at fixed hex. Type is Inter Variable (weight 300-700, default body 450) and JetBrains Mono for code; size and weight are separate axes, composed at the call site (`text-small font-medium`) rather than bundled into per-size recipes. Line-height comes from element defaults (body 1.5, `<p>` 1.7, headings 1.25). The library ships light + dark and is intentionally chromatically neutral: consumers layer their own brand accent through a single --primary override."
 
 colors:
   # Monochrome primary. No chromatic brand hue ships in the library.
@@ -21,7 +21,7 @@ colors:
   # byte, matching the reference's LCH-with-tiny-chroma approach
   # without giving up hex tooling. Light-mode values shown; dark
   # values live in the Colors table below.
-  base: "#FBFBFC"
+  base: "#FFFFFF"
 
   # layer-* is the "lifted above base" family. Card, Modal, Menu popup,
   # Combobox popup, Tooltip, Select popup, Input, Table container, and
@@ -29,8 +29,8 @@ colors:
   # adjacent step above layer-1 (secondary Button hover, Input hover
   # companion). In light layer-1 is pure white; in dark it lifts one
   # rung above base.
-  layer-1: "#FFFFFF"
-  layer-2: "#F7F7F9"
+  layer-1: "#FBFBFC"
+  layer-2: "#F5F5F7"
 
   # fill-* is the "tinted chip fill" family. Toggle track, Badge
   # neutral, code chip, Switch off-track, striped table hover,
@@ -38,8 +38,8 @@ colors:
   # as a subtle darkened indication, not a lift. In dark, fill-* and
   # layer-* land at the same values; the distinction stays semantic
   # so consumers can override one family without the other.
-  fill-1: "#F5F5F8"
-  fill-2: "#EDEDF0"
+  fill-1: "#EEEFF2"
+  fill-2: "#E4E5EA"
 
   # Adaptive interaction-state overlays. rgba, not opaque, so they
   # darken whatever surface sits underneath (base, layer-1, fill-1,
@@ -53,9 +53,9 @@ colors:
   # Hairlines. Three-step: default, strong (input focus, hover borders),
   # tertiary (nested surfaces where the two above compete). Values are
   # soft: default hairlines carry structure through contrast, not weight.
-  hairline: "rgba(0,0,0,0.04)"
-  hairline-strong: "rgba(0,0,0,0.08)"
-  hairline-tertiary: "rgba(0,0,0,0.14)"
+  hairline: "rgba(0,0,0,0.07)"
+  hairline-strong: "rgba(0,0,0,0.11)"
+  hairline-tertiary: "rgba(0,0,0,0.16)"
 
   # Ink (text). Four tiers. Same cool lean as the layer/fill ladder.
   ink: "#1D1D22"
@@ -320,7 +320,7 @@ components:
 
 Patch UI is a crisp-minimal React component library distributed copy-in through the shadcn registry model (`npx shadcn add @patchui/<component>`). The design system is intentionally quiet: a near-black flat base with a hair of cool chroma, two honest surface families (`--layer-*` for lifted panels and popups, `--fill-*` for tinted chip fills), 1px hairline borders as the load-bearing separator, and a monochrome primary. Every deliberate act of restraint in the token layer is what gives downstream consumers room to layer their own brand on top without the library fighting them.
 
-The base in dark mode is `{colors.base}` #0A0A0D, warm near-black; in light mode it's `{colors.base}` #FBFBFC, warm near-white. Every page background sits on `--base`. Two surface families lift off it: `--layer-1` / `--layer-2` for the "lifted panel" family (Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome — plus a hover-adjacent step), and `--fill-1` / `--fill-2` for tinted chip fills (Toggle track, Badge, code chip, Switch off-track, skeleton). In light mode `--layer-*` goes brighter than base while `--fill-*` goes darker; in dark mode both families lift toward lighter rungs above near-black base (and coincide numerically since a "darker fill" and a "lifted panel" are the same direction against a dark ground). Hairlines run from `{colors.hairline}` at 4% opacity up through `{colors.hairline-strong}` (8%) and `{colors.hairline-tertiary}` (14%). Cards, dialogs, popups, and marketing panels all lift by picking a rung plus a hairline; no drop shadow is used until a component reaches true overlay altitude (dialog, menu popup, tooltip, toast).
+The base in dark mode is `{colors.base}` #000000 (pure black); in light mode it's `{colors.base}` #FFFFFF (pure white). Every page background sits on `--base`. All other surfaces step in a single direction AWAY from that extreme: darker in light, brighter in dark. Two families share that direction: `--layer-1` / `--layer-2` for the "lifted panel" family (Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome — plus a hover-adjacent step), and `--fill-1` / `--fill-2` for tinted chip fills that step further from base than `--layer-*` (Toggle track, Badge, code chip, Switch off-track, skeleton, striped table rows, active pill Tab, menu item highlight). Hairlines run from `{colors.hairline}` at 7% up through `{colors.hairline-strong}` (11%) and `{colors.hairline-tertiary}` (16%); dark bumps proportionally to 10/15/22%. Because `--base` is the extreme, the border does most of the "this is a lifted panel" signaling — no drop shadow until true overlay altitude (dialog, menu popup, tooltip, toast).
 
 The library ships **no chromatic brand hue**. `{colors.primary}` resolves to `{colors.ink}` (near-black in light, near-white in dark), and `{colors.on-primary}` resolves to `{colors.base}`. Consumers who want a lavender, cobalt, or any other accent redefine `--primary` and `--primary-hover` in a single downstream layer; every Button and focus-adjacent component inherits their brand for free. The semantic status roles (`{colors.error}`, `{colors.warning}`, `{colors.success}`) remain fixed hex, theme-invariant, and outside the brand system: their meaning is universal and shouldn't shift with a consumer's palette.
 
@@ -351,15 +351,15 @@ Three token families make up the surface story: `--base` is the page background;
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `{colors.base}` | `#FBFBFC` | `#0A0A0D` | Page background, docs shell — everything sits on this |
-| `{colors.layer-1}` | `#FFFFFF` | `#191A1D` | Default lifted panel: Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome |
-| `{colors.layer-2}` | `#F7F7F9` | `#1F2023` | Hover step above `layer-1` (secondary Button hover, Input hover companion) |
-| `{colors.fill-1}` | `#F5F5F8` | `#131418` | Subtle tinted chip fill: Toggle track, Badge neutral, code chip, Switch off-track |
-| `{colors.fill-2}` | `#EDEDF0` | `#232327` | Stronger tinted fill: Toggle pressed, active pill Tab, skeleton block, striped table hover, menu item highlight |
+| `{colors.base}` | `#FFFFFF` | `#000000` | Page background, docs shell — everything sits on this. Pure white in light, pure black in dark |
+| `{colors.layer-1}` | `#FBFBFC` | `#0A0B0E` | Default lifted panel: Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome. Barely off base; the hairline border does the "lifted" work |
+| `{colors.layer-2}` | `#F5F5F7` | `#101116` | Hover step above `layer-1` (secondary Button hover, Input hover companion) |
+| `{colors.fill-1}` | `#EEEFF2` | `#06070A` | Subtle tinted chip fill: Toggle track, Badge neutral, code chip, Switch off-track |
+| `{colors.fill-2}` | `#E4E5EA` | `#16171F` | Stronger tinted fill: Toggle pressed, active pill Tab, skeleton block, striped table hover, menu item highlight |
 | `{colors.layer-hover}` | `rgba(0,0,0,0.04)` | `rgba(255,255,255,0.05)` | Hover / focus-visible / popup-open overlay on transparent-at-rest controls (tertiary Button, Tab, Sidebar link, Toggle, Pagination, icon-only close/clear buttons) |
 | `{colors.layer-selected}` | `rgba(0,0,0,0.08)` | `rgba(255,255,255,0.10)` | Active / pressed / persistent-on overlay on the same controls; ~2x hover strength |
 
-The dark base at `#0A0A0D` is deliberately not pure `#000000`. It keeps the surface warm on OLED and prevents the ladder from banding on cheap panels. Neutrals carry a hair of cool chroma (hue ~272) baked into the last byte of each hex — imperceptible on any single light-mode value but shapes the overall temperature. Dark-mode chroma is dialed back to avoid reading visibly blue on a dark ground: the B-vs-R gap is much smaller than in light because proportionally, the same lean carries more weight against near-black.
+The dark base is deliberately pure `#000000`. On OLED it reads sharp and saves power; on 6-bit panels the darkest layer step may band into base slightly — trade accepted so the mental model is dead simple: dark bg is BLACK, everything above is a subtle gray step up. Light base is pure `#FFFFFF` for the mirror: white page, gray steps down. Layers and fills carry a hair of cool chroma (hue ~272) baked into the last byte of each hex so the ladder has temperature even when base itself is chroma-free.
 
 **`--layer-*` is one direction: always lifted above `--base` toward the viewer.** In light mode `--layer-1` is pure white so a Card or popup reads brighter than off-white base; in dark mode it lifts a subtle rung above near-black base — the numeric jump is smaller than the "obvious" choice so panels feel integrated with the dark ambient rather than shouting. Border and shadow do the rest of the elevation work. `--layer-2` is a hover-adjacent step above `--layer-1`.
 
@@ -375,9 +375,9 @@ Hairlines carry every hierarchical separation that the surface ladder can't. Car
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `{colors.hairline}` | `rgba(0,0,0,0.04)` | `rgba(255,255,255,0.06)` | Default card border, input border, table row divider, tab underline |
-| `{colors.hairline-strong}` | `rgba(0,0,0,0.08)` | `rgba(255,255,255,0.11)` | Hovered input border, structural separators (docs header, table header divider) |
-| `{colors.hairline-tertiary}` | `rgba(0,0,0,0.14)` | `rgba(255,255,255,0.18)` | Radio hover border, dropzone drag hover, nested surfaces where the two above compete |
+| `{colors.hairline}` | `rgba(0,0,0,0.07)` | `rgba(255,255,255,0.10)` | Default card border, input border, table row divider, tab underline |
+| `{colors.hairline-strong}` | `rgba(0,0,0,0.11)` | `rgba(255,255,255,0.15)` | Hovered input border, structural separators (docs header, table header divider) |
+| `{colors.hairline-tertiary}` | `rgba(0,0,0,0.16)` | `rgba(255,255,255,0.22)` | Radio hover border, dropzone drag hover, nested surfaces where the two above compete |
 
 ### Text (Ink)
 

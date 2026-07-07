@@ -2,6 +2,7 @@
 
 import type * as React from "react";
 import { cn } from "../utils";
+import { focusRing } from "../recipes";
 
 import { CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
 export interface PaginationProps {
@@ -18,7 +19,7 @@ export interface PaginationProps {
   className?: string;
 }
 
-/** Grouped bar of page numbers between prev/next arrows. Renders nothing when totalPages <= 1. */
+/** Loose row of page chips flanked by prev/next arrows. Renders nothing when totalPages <= 1. */
 export function Pagination({
   page,
   totalPages,
@@ -40,7 +41,7 @@ export function Pagination({
       aria-label="Pagination"
       aria-busy={loading || undefined}
       className={cn(
-        "inline-flex items-stretch overflow-hidden rounded-[var(--radius-6)] border border-hairline text-small",
+        "inline-flex items-center gap-0.5",
         loading && "opacity-70",
         className,
       )}
@@ -52,20 +53,14 @@ export function Pagination({
         onPageChange={onPageChange}
         ariaLabel="Previous page"
         icon={<CaretLeft className="size-3.5" />}
-        divider="end"
       />
       {items.map((item, i) => {
-        const isLast = i === items.length - 1;
         if (item === "ellipsis") {
           return (
             <span
               key={`ellipsis-${i}`}
               aria-hidden
-              className={cn(
-                // Matches PageCell size-8 so the bar's width stays stable.
-                "inline-flex size-8 shrink-0 items-center justify-center text-ink-tertiary tabular-nums",
-                !isLast && "border-e border-hairline",
-              )}
+              className="inline-flex size-8 shrink-0 items-center justify-center text-ink-tertiary tabular-nums"
               data-slot="pagination-ellipsis"
             >
               …
@@ -82,7 +77,6 @@ export function Pagination({
             onPageChange={onPageChange}
             ariaLabel={`Page ${item}`}
             label={String(item)}
-            divider="end"
           />
         );
       })}
@@ -107,7 +101,6 @@ interface PageCellProps {
   disabled?: boolean;
   href?: (page: number) => string;
   onPageChange?: (page: number) => void;
-  divider?: "end";
 }
 
 function PageCell({
@@ -119,16 +112,15 @@ function PageCell({
   disabled,
   href,
   onPageChange,
-  divider,
 }: PageCellProps): React.ReactElement {
   const className = cn(
-    // Fixed 32x32 cell + tabular-nums so the bar width stays stable across page counts.
-    "inline-flex size-8 shrink-0 items-center justify-center text-small tabular-nums transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+    // Fixed 32x32 chip + tabular-nums so the row width stays stable across page counts.
+    "inline-flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-6)] text-small tabular-nums transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
     current
-      ? "bg-fill-2 text-ink"
+      ? "bg-layer-selected font-medium text-ink"
       : "text-ink-muted hover:bg-layer-hover hover:text-ink",
-    disabled && "pointer-events-none text-ink-tertiary",
-    divider === "end" && "border-e border-hairline",
+    disabled && "pointer-events-none text-ink-tertiary hover:bg-transparent",
+    focusRing,
   );
   const inner = icon ?? label;
 
@@ -158,7 +150,7 @@ function PageCell({
   );
 }
 
-// Produces exactly `siblingCount * 2 + 5` items when ellipses are needed, so the bar
+// Produces exactly `siblingCount * 2 + 5` items when ellipses are needed, so the row
 // width stays stable as `page` changes. Near start/end, one side widens to absorb
 // the slot the missing ellipsis would have taken.
 function getPageItems(
