@@ -36,6 +36,30 @@ export function ComboboxDemo() {
   const [multiQuery, setMultiQuery] = useState("");
   const [selected, setSelected] = useState<string[]>(["React"]);
 
+  const [nativeQuery, setNativeQuery] = useState("");
+  const [nativeOpen, setNativeOpen] = useState(false);
+  const [nativeSelected, setNativeSelected] = useState<string[]>([
+    "React",
+    "Vue",
+  ]);
+  const nativeSummary =
+    nativeSelected.length === 0
+      ? ""
+      : nativeSelected.length === 1
+        ? nativeSelected[0]
+        : `${nativeSelected.length} frameworks`;
+  const nativeDisplayValue = nativeOpen
+    ? nativeQuery
+    : nativeQuery || nativeSummary;
+  const nativeShowHits = nativeQuery.trim().length > 0;
+  const nativeMatches = useMemo(
+    () =>
+      FRAMEWORKS.filter((f) =>
+        f.toLowerCase().includes(nativeQuery.trim().toLowerCase()),
+      ),
+    [nativeQuery],
+  );
+
   const needle = query.trim().toLowerCase();
   const matches = useMemo(
     () => FRAMEWORKS.filter((f) => f.toLowerCase().includes(needle)),
@@ -191,6 +215,73 @@ export function ComboboxDemo() {
               ))}
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>
+          Native multi-select (built-in X, summary in input)
+        </SectionLabel>
+        <div className="max-w-sm">
+          <Combobox
+            multiple
+            selectedValues={nativeSelected}
+            onSelectedValuesChange={(next) =>
+              setNativeSelected(next as string[])
+            }
+            open={nativeOpen}
+            onOpenChange={setNativeOpen}
+            value={nativeDisplayValue}
+            onValueChange={(v) => {
+              if (!nativeOpen && v === nativeSummary) return;
+              setNativeQuery(v);
+            }}
+            placeholder="Frameworks"
+          >
+            <ComboboxInput
+              prefix={<MagnifyingGlass />}
+              clearable
+              onClear={() => {
+                setNativeQuery("");
+                setNativeSelected([]);
+              }}
+            />
+            <ComboboxPopup>
+              {!nativeShowHits && nativeSelected.length > 0 ? (
+                <>
+                  <div className="px-2 pb-1 pt-2 text-mini text-ink-muted">
+                    Selected
+                  </div>
+                  {nativeSelected.map((f) => (
+                    <ComboboxItem
+                      key={`sel-${f}`}
+                      value={f}
+                      onRemove={() =>
+                        setNativeSelected((prev) =>
+                          prev.filter((x) => x !== f),
+                        )
+                      }
+                      removeLabel={`Remove ${f}`}
+                    >
+                      {f}
+                    </ComboboxItem>
+                  ))}
+                </>
+              ) : nativeMatches.length === 0 ? (
+                <div className="px-2.5 py-4 text-center text-mini text-ink-muted md:px-2">
+                  No matches.
+                </div>
+              ) : (
+                nativeMatches
+                  .filter((f) => !nativeSelected.includes(f))
+                  .map((f) => (
+                    <ComboboxItem key={f} value={f}>
+                      {f}
+                    </ComboboxItem>
+                  ))
+              )}
+            </ComboboxPopup>
+          </Combobox>
         </div>
       </div>
     </div>
