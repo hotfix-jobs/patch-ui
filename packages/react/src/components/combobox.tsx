@@ -30,6 +30,18 @@ export interface ComboboxProps {
   onValueChange?: (next: string) => void;
   placeholder?: string;
   /**
+   * Enables Base UI's multi-select mode. When `true`, `selectedValues`
+   * is the source of truth for the picked items and the built-in
+   * ComboboxInput clearable X becomes visible whenever the array is
+   * non-empty. Clicking Clear then wipes both the input value and the
+   * selection array via Base UI's native handler.
+   */
+  multiple?: boolean;
+  /** Selected values in multi-select mode (Base UI's `value` array). */
+  selectedValues?: readonly unknown[];
+  /** Fires when Base UI toggles the selection array in multi mode. */
+  onSelectedValuesChange?: (next: unknown[]) => void;
+  /**
    * Auto-highlight behavior on the popup list:
    *   - `"always"` (default): the first item is always highlighted on open
    *     and on every input change. Popup opens scrolled to the top and Enter
@@ -54,6 +66,9 @@ export function Combobox({
   value,
   onValueChange,
   placeholder,
+  multiple,
+  selectedValues,
+  onSelectedValuesChange,
   autoHighlight = "always",
   children,
 }: ComboboxProps): React.ReactElement {
@@ -95,9 +110,24 @@ export function Combobox({
       });
     });
   };
+  // Base UI's ComboboxRoot is generic over Value + Multiple, and the
+  // shape of `value` depends on both. Cast through `unknown as never` at
+  // the boundary so consumers can pass a `string[]` selection array
+  // without threading generics through our wrapper.
+  const rootProps = multiple
+    ? {
+        multiple: true as const,
+        value: selectedValues as never,
+        onValueChange: onSelectedValuesChange
+          ? (next: unknown) => onSelectedValuesChange((next as unknown[]) ?? [])
+          : undefined,
+      }
+    : {};
+
   return (
     <ComboboxSharedContext.Provider value={shared}>
       <ComboboxPrimitive.Root
+        {...rootProps}
         open={open}
         defaultOpen={defaultOpen}
         onOpenChange={handleOpenChange}
@@ -379,6 +409,14 @@ export interface ComboboxItemProps
   onSelect?: () => void;
   disabled?: boolean;
   value?: unknown;
+  /** When provided, renders a trailing X affordance that calls this
+   *  callback instead of Base UI's select handler on click. Useful in
+   *  multi-select Selected sections where every row already represents
+   *  an active pick and clicking the row still toggles it off, but a
+   *  visible X communicates that intent more clearly. */
+  onRemove?: () => void;
+  /** aria-label for the remove X. Defaults to "Remove". */
+  removeLabel?: string;
 }
 
 export function ComboboxItem({
@@ -388,6 +426,8 @@ export function ComboboxItem({
   disabled,
   value,
   onClick,
+  onRemove,
+  removeLabel = "Remove",
   ...props
 }: ComboboxItemProps): React.ReactElement {
   const resolvedValue =
@@ -413,6 +453,23 @@ export function ComboboxItem({
       {...props}
     >
       {children}
+      {onRemove && (
+        <span
+          role="button"
+          aria-label={removeLabel}
+          tabIndex={-1}
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            onRemove();
+          }}
+          className="ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink"
+          data-slot="combobox-item-remove"
+        >
+          <X className="size-3" aria-hidden />
+        </span>
+      )}
     </ComboboxPrimitive.Item>
   );
 }
