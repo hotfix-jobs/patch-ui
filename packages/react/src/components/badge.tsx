@@ -20,9 +20,9 @@ export const badgeVariants = cva(
     },
     variants: {
       size: {
-        sm: "px-2 py-0.5 text-button-12 [&_svg:not([class*='size-'])]:size-3",
-        md: "px-2.5 py-1 text-button-12 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "px-3 py-1.5 text-button-14 [&_svg:not([class*='size-'])]:size-4",
+        sm: "px-2 py-0.5 text-mini font-medium [&_svg:not([class*='size-'])]:size-3",
+        md: "px-2.5 py-1 text-mini font-medium [&_svg:not([class*='size-'])]:size-3.5",
+        lg: "px-3 py-1.5 text-small font-medium [&_svg:not([class*='size-'])]:size-4",
       },
       variant: {
         default: "",
@@ -42,11 +42,11 @@ export const badgeVariants = cva(
     compoundVariants: [
       // Status variants use semantic role tokens (fixed hex in both
       // themes); the accent scale inverts in dark mode.
-      { variant: "default", contrast: "high", class: "bg-ink text-canvas" },
+      { variant: "default", contrast: "high", class: "bg-ink text-base" },
       { variant: "success", contrast: "high", class: "bg-success text-success-fg" },
       { variant: "warning", contrast: "high", class: "bg-warning text-warning-fg" },
       { variant: "error",   contrast: "high", class: "bg-error text-error-fg" },
-      { variant: "default", contrast: "low", class: "bg-surface-2 text-ink-muted" },
+      { variant: "default", contrast: "low", class: "bg-fill-2 text-ink-muted" },
       { variant: "success", contrast: "low", class: "bg-success/10 text-success" },
       { variant: "warning", contrast: "low", class: "bg-warning/10 text-warning" },
       { variant: "error",   contrast: "low", class: "bg-error/10 text-error" },

@@ -40,9 +40,9 @@ export interface SelectProps
 }
 
 const heightBySize: Record<SelectSize, string> = {
-  sm: "h-6 text-body-13",
-  md: "h-8 text-body-14",
-  lg: "h-10 text-body-16",
+  sm: "h-6 text-small",
+  md: "h-8 text-small",
+  lg: "h-10 text-regular",
 };
 
 const leadingPad: Record<SelectSize, string> = {
@@ -92,7 +92,7 @@ export function Select({
       data-slot="select"
       className={cn(
         "relative inline-flex w-full items-center overflow-hidden text-ink rounded-[var(--radius-6)]",
-        "bg-surface-elevated border border-hairline",
+        "bg-layer-1 border border-hairline",
         "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         "hover:border-hairline-strong",
         "data-[popup-open]:border-primary",
@@ -165,7 +165,7 @@ export function Select({
       {label && (
         <label
           htmlFor={id}
-          className="text-button-14 text-ink"
+          className="text-small font-medium text-ink"
           data-slot="select-label"
         >
           {label}
@@ -177,7 +177,7 @@ export function Select({
         <p
           id={errorId}
           role="alert"
-          className="text-caption-12 text-error"
+          className="text-mini text-error"
           data-slot="select-error"
         >
           {error}
@@ -216,7 +216,7 @@ function SelectPopupSurface({
           data-mobile="true"
           className={cn(
             "fixed inset-x-2 bottom-2 z-[80] flex flex-col overflow-hidden outline-none",
-            "rounded-[var(--radius-16)] bg-surface-elevated border border-hairline shadow-modal",
+            "rounded-[var(--radius-16)] bg-layer-1 border border-hairline shadow-modal",
             "max-h-[calc(100dvh-1rem)] p-1",
             "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
             "data-starting-style:opacity-0 data-starting-style:translate-y-8",
@@ -274,7 +274,7 @@ export function SelectItem({
       className={cn(
         itemRow.base,
         itemRow.comfortable,
-        "md:min-h-7 md:px-2 md:py-1.5 md:text-body-13",
+        "md:min-h-7 md:px-2 md:py-1.5 md:text-small",
         "relative pe-8",
         className,
       )}
@@ -306,7 +306,7 @@ export function SelectGroupLabel({
     <SelectPrimitive.GroupLabel
       data-slot="select-group-label"
       className={cn(
-        "px-2.5 pt-1.5 pb-1 text-caption-11 text-ink-tertiary",
+        "px-2.5 pt-1.5 pb-1 text-micro text-ink-tertiary",
         className,
       )}
       {...props}

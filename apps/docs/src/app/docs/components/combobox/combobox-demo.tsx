@@ -73,7 +73,7 @@ export function ComboboxDemo() {
             />
             <ComboboxPopup>
               {matches.length === 0 ? (
-                <div className="px-3 py-6 text-center text-body-13 text-ink-muted">
+                <div className="px-3 py-6 text-center text-small text-ink-muted">
                   No matches.
                 </div>
               ) : (
@@ -94,7 +94,7 @@ export function ComboboxDemo() {
             </ComboboxPopup>
           </Combobox>
           {picked && (
-            <p className="mt-2 text-caption-12 text-ink-muted">Selected: {picked}</p>
+            <p className="mt-2 text-mini text-ink-muted">Selected: {picked}</p>
           )}
         </div>
       </div>
@@ -115,7 +115,7 @@ export function ComboboxDemo() {
             />
             <ComboboxPopup>
               {/* Banner: matches item padding so text lines up with rows below */}
-              <div className="flex items-center gap-1.5 px-2.5 py-1.5 text-caption-12 text-ink-muted md:px-2">
+              <div className="flex items-center gap-1.5 px-2.5 py-1.5 text-mini text-ink-muted md:px-2">
                 <Info className="size-3.5 shrink-0" aria-hidden />
                 <span>Recents shown first</span>
               </div>
@@ -139,7 +139,7 @@ export function ComboboxDemo() {
 
               <ComboboxSection title="All frameworks">
                 {matches2.length === 0 ? (
-                  <div className="px-2.5 py-4 text-center text-caption-12 text-ink-muted md:px-2">
+                  <div className="px-2.5 py-4 text-center text-mini text-ink-muted md:px-2">
                     No matches.
                   </div>
                 ) : (
@@ -166,7 +166,7 @@ export function ComboboxDemo() {
             <ComboboxInput prefix={<MagnifyingGlass />} />
             <ComboboxPopup>
               {multiMatches.length === 0 ? (
-                <div className="px-2.5 py-4 text-center text-caption-12 text-ink-muted md:px-2">
+                <div className="px-2.5 py-4 text-center text-mini text-ink-muted md:px-2">
                   No matches.
                 </div>
               ) : (

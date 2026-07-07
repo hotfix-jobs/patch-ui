@@ -18,7 +18,7 @@ export function CollapsibleDemo() {
       <div className="space-y-3">
         <SectionLabel>Inline "Show more"</SectionLabel>
         <div className="max-w-lg space-y-2">
-          <p className="text-body-14 text-ink">
+          <p className="text-small text-ink">
             Ada Lovelace joined the team last week as a founding designer. She
             previously led product design at three early-stage companies and
             shipped a hardware product that ran in every household in Britain.
@@ -26,13 +26,13 @@ export function CollapsibleDemo() {
           <Collapsible>
             <CollapsibleTrigger
               render={
-                <button className="text-body-14 text-ink-muted hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[panel-open]:hidden" />
+                <button className="text-small text-ink-muted hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[panel-open]:hidden" />
               }
             >
               Show more
             </CollapsibleTrigger>
             <CollapsibleContent>
-              <p className="pt-2 text-body-14 text-ink">
+              <p className="pt-2 text-small text-ink">
                 She most recently ran design at Grace Hopper's compiler
                 consultancy and mentors early-career designers at Katherine
                 Johnson's foundation. Outside of work, she flies gliders and
@@ -60,8 +60,8 @@ export function CollapsibleDemo() {
               }
             />
             <CollapsibleContent>
-              <div className="mt-3 rounded-[var(--radius-12)] border border-hairline bg-surface-elevated p-4">
-                <p className="text-caption-12 text-ink-muted mb-3">Status</p>
+              <div className="mt-3 rounded-[var(--radius-12)] border border-hairline bg-layer-1 p-4">
+                <p className="text-mini text-ink-muted mb-3">Status</p>
                 <div className="flex flex-col gap-2">
                   <FilterCheck label="Active" defaultChecked />
                   <FilterCheck label="Draft" />
@@ -94,7 +94,7 @@ export function CollapsibleDemo() {
               <textarea
                 placeholder="Describe this project…"
                 rows={3}
-                className="mt-2 w-full rounded-[var(--radius-6)] border border-hairline bg-surface-elevated p-3 text-body-14 text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
+                className="mt-2 w-full rounded-[var(--radius-6)] border border-hairline bg-layer-1 p-3 text-small text-ink placeholder:text-ink-subtle focus:border-primary focus:outline-none"
               />
             </CollapsibleContent>
           </Collapsible>
@@ -118,7 +118,7 @@ function FilterCheck({
         checked={checked}
         onCheckedChange={(next) => setChecked(next === true)}
       />
-      <span className="text-body-14 text-ink">{label}</span>
+      <span className="text-small text-ink">{label}</span>
     </Label>
   );
 }

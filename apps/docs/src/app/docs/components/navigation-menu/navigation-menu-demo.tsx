@@ -37,7 +37,7 @@ const DROPDOWNS = [
 
 function LogoMark() {
   return (
-    <span className="flex size-6 items-center justify-center rounded-[var(--radius-6)] bg-ink text-canvas text-button-14">
+    <span className="flex size-6 items-center justify-center rounded-[var(--radius-6)] bg-ink text-base text-small font-medium">
       P
     </span>
   );
@@ -45,12 +45,12 @@ function LogoMark() {
 
 export function NavigationMenuDemo() {
   return (
-    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-hairline bg-canvas">
+    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-hairline bg-base">
       {/* Header-style row so the dropdown reads in a realistic context.
           NavigationMenu is desktop-only -- on small viewports use a
           Sheet or the AppHeader block's mobile panel instead. */}
       <div className="flex w-full items-center gap-6 px-4 py-3.5 md:px-6 md:gap-8 md:py-4">
-        <div className="flex shrink-0 items-center gap-2 text-button-16 text-ink">
+        <div className="flex shrink-0 items-center gap-2 text-regular font-medium text-ink">
           <LogoMark />
           <span>Patch</span>
         </div>
@@ -67,13 +67,13 @@ export function NavigationMenuDemo() {
                         key={item.eyebrow}
                         href={item.href}
                         onClick={(e) => e.preventDefault()}
-                        className="block rounded-[var(--radius-6)] bg-transparent p-3 hover:bg-surface-2 group"
+                        className="block rounded-[var(--radius-6)] bg-transparent p-3 hover:bg-layer-hover group"
                       >
                         <div className="flex flex-col gap-1">
-                          <span className="text-caption-12 text-ink-muted group-hover:text-ink transition-colors">
+                          <span className="text-mini text-ink-muted group-hover:text-ink transition-colors">
                             {item.eyebrow}
                           </span>
-                          <span className="text-body-14 text-ink">
+                          <span className="text-small text-ink">
                             {item.title}
                           </span>
                         </div>
@@ -87,7 +87,7 @@ export function NavigationMenuDemo() {
               <NavigationMenuLink
                 href="#"
                 onClick={(e) => e.preventDefault()}
-                className="!inline-flex !items-center !rounded-full !px-3 !py-1.5 !text-body-14 !text-ink-muted !bg-transparent hover:!bg-surface-1 hover:!text-ink"
+                className="!inline-flex !items-center !rounded-full !px-3 !py-1.5 !text-small !text-ink-muted !bg-transparent hover:!bg-fill-1 hover:!text-ink"
               >
                 Pricing
               </NavigationMenuLink>

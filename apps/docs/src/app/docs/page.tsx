@@ -8,10 +8,10 @@ export const metadata: Metadata = { title: "Introduction" };
 export default function DocsPage() {
   return (
     <div className="max-w-3xl">
-      <h1 className="text-display-32 text-ink">
+      <h1 className="text-title1 text-ink">
         Patch UI
       </h1>
-      <p className="mt-3 text-body-16 leading-relaxed text-ink">
+      <p className="mt-3 text-regular leading-relaxed text-ink">
         A copy-in React component library with taste. Crisp visual language,
         Base UI accessibility primitives, and a Tailwind v4 token system that
         drives light and dark from a single stylesheet. No npm package to
@@ -47,10 +47,10 @@ export default function DocsPage() {
       </div>
 
       <Card secondary border={false} className="mt-12 p-6">
-        <h2 className="text-button-16 text-ink">
+        <h2 className="text-regular font-medium text-ink">
           What Patch UI is not
         </h2>
-        <ul className="mt-3 space-y-2 text-body-14 leading-relaxed text-ink">
+        <ul className="mt-3 space-y-2 text-small leading-relaxed text-ink">
           <li>
             <strong className="font-medium text-ink">Not a package.</strong>{" "}
             There is no `npm install @patchui/react`. Components are copied
@@ -88,9 +88,9 @@ function IntroCard({
     <Card hoverable className="p-5" render={<Link href={href} />}>
       <div className="flex items-center gap-2 text-ink-muted">
         <span className="inline-flex items-center justify-center">{icon}</span>
-        <span className="text-button-14 text-ink">{title}</span>
+        <span className="text-small font-medium text-ink">{title}</span>
       </div>
-      <p className="mt-2 text-body-13 leading-relaxed text-ink-muted">{body}</p>
+      <p className="mt-2 text-small leading-relaxed text-ink-muted">{body}</p>
     </Card>
   );
 }

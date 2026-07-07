@@ -16,7 +16,7 @@ export function SectionLabel({
   const defaultProps = {
     "data-slot": "section-label",
     className: cn(
-      "text-button-14 text-ink",
+      "text-small font-medium text-ink",
       className,
     ),
   };

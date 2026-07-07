@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsPanel, SectionLabel } from "@patchui/r
 import { Envelope, Gear, Users } from "@phosphor-icons/react/dist/ssr";
 function Body({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-body-14 leading-relaxed text-ink">
+    <div className="text-small leading-relaxed text-ink">
       {children}
     </div>
   );

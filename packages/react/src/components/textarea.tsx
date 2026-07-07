@@ -16,9 +16,9 @@ export type TextareaProps = React.ComponentProps<"textarea"> & {
 };
 
 const paddingBySize: Record<TextareaSize, string> = {
-  sm: "px-2.5 py-1.5 text-body-13",
-  md: "px-3 py-2 text-body-14",
-  lg: "px-3.5 py-2.5 text-body-16",
+  sm: "px-2.5 py-1.5 text-small",
+  md: "px-3 py-2 text-small",
+  lg: "px-3.5 py-2.5 text-regular",
 };
 
 export function Textarea({
@@ -38,7 +38,7 @@ export function Textarea({
     <span
       className={cn(
         "relative inline-flex w-full rounded-[var(--radius-6)]",
-        "bg-surface-elevated border border-hairline text-ink",
+        "bg-layer-1 border border-hairline text-ink",
         "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         "hover:border-hairline-strong",
         "has-focus-visible:border-primary",
@@ -75,7 +75,7 @@ export function Textarea({
       {label && (
         <label
           htmlFor={id}
-          className="text-button-14 text-ink"
+          className="text-small font-medium text-ink"
           data-slot="textarea-label"
         >
           {label}
@@ -86,7 +86,7 @@ export function Textarea({
         <p
           id={errorId}
           role="alert"
-          className="text-caption-12 text-error"
+          className="text-mini text-error"
           data-slot="textarea-error"
         >
           {error}

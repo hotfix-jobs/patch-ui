@@ -32,7 +32,7 @@ import { Card } from "@patchui/react";
 // Elevated (shadow-card)
 <Card shadow className="p-4">Elevated</Card>
 
-// Secondary surface (--surface-1 fill) for nested cards
+// Secondary surface (--fill-1 fill) for nested cards
 <Card secondary className="p-4">Nested surface</Card>
 
 // List container with dividers between direct children
@@ -80,7 +80,7 @@ import { Card } from "@patchui/react";
       name: "secondary",
       type: "boolean",
       default: "false",
-      description: "Use the tonal secondary surface (`--surface-1`) instead of `--surface-elevated`. Good for nested cards.",
+      description: "Use the tonal secondary surface (`--fill-1`) instead of `--layer-1`. Good for nested cards.",
     },
     {
       name: "borderBetween",
@@ -117,10 +117,10 @@ import { Card } from "@patchui/react";
 
 <Callout title="Notes">
 - Card composes with booleans, not variants. Mix `border` + `hoverable` + `shadow` + `secondary` to build the exact surface you need.
-- The default Card (no props) is a rounded surface with `--surface-elevated` fill so it elevates over the page. Add `border` to give it an outline.
+- The default Card (no props) is a rounded surface with `--layer-1` fill so it elevates over the page. Add `border` to give it an outline.
 - `hoverable` makes the card interactive (cursor, hover state, focus ring). Wrap in a `<Link>` or handle `onClick` for actual navigation.
 - `borderBetween` turns Card into a list container: dividers between direct children handle themselves. Combine with `direction="row"` for horizontal splits.
-- Structure your content directly inside Card with divs and text tokens (`text-display-20`, `text-body-14`). For a fully structured settings-page pattern (title, subtitle, footer with status + actions), use `<Section>` instead.
+- Structure your content directly inside Card with divs and text tokens (`text-title3`, `text-small`). For a fully structured settings-page pattern (title, subtitle, footer with status + actions), use `<Section>` instead.
 - **Migration from v1:**
   - `variant="default"` → no prop.
   - `variant="elevated"` → `secondary`.

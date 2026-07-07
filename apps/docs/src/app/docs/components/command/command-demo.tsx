@@ -95,7 +95,7 @@ export function CommandDemo() {
         <Kbd meta>K</Kbd>
       </Button>
       {ran && (
-        <p className="text-caption-12 text-ink-muted">Ran: {ran}</p>
+        <p className="text-mini text-ink-muted">Ran: {ran}</p>
       )}
 
       <CommandDialog

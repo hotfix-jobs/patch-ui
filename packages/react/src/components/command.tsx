@@ -47,7 +47,7 @@ export function CommandInput({
       <AutocompletePrimitive.Input
         data-slot="command-input"
         className={cn(
-          "h-12 w-full flex-1 border-none bg-transparent text-body-14 text-ink placeholder:text-ink-subtle outline-none ring-0 focus:outline-none focus:ring-0",
+          "h-12 w-full flex-1 border-none bg-transparent text-small text-ink placeholder:text-ink-subtle outline-none ring-0 focus:outline-none focus:ring-0",
           prefix ? "ps-0" : "ps-4",
           action ? "pe-2" : "pe-4",
           className,
@@ -56,7 +56,7 @@ export function CommandInput({
       />
       {action && (
         <span
-          className="flex shrink-0 items-center gap-1.5 pe-3 text-caption-12 text-ink-muted"
+          className="flex shrink-0 items-center gap-1.5 pe-3 text-mini text-ink-muted"
           data-slot="command-input-action"
         >
           {action}
@@ -104,7 +104,7 @@ export function CommandEmpty({
     <AutocompletePrimitive.Empty data-slot="command-empty" {...props}>
       <div
         className={cn(
-          "px-3 py-6 text-center text-caption-12 text-ink-muted",
+          "px-3 py-6 text-center text-mini text-ink-muted",
           className,
         )}
       >
@@ -151,7 +151,7 @@ export function CommandItem({
         iconMuted,
         density === "compact"
           ? itemRow.compact
-          : "min-h-11 px-3 py-2.5 text-body-14 [&_svg:not([class*='size-'])]:size-[18px]",
+          : "min-h-11 px-3 py-2.5 text-small [&_svg:not([class*='size-'])]:size-[18px]",
         className,
       )}
       {...props}
@@ -163,7 +163,7 @@ export function CommandItem({
             {children}
             {trailing}
           </span>
-          <span className="mt-0.5 truncate text-caption-12 text-ink-muted">
+          <span className="mt-0.5 truncate text-mini text-ink-muted">
             {description}
           </span>
         </span>

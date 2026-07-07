@@ -32,7 +32,7 @@ export function Sidebar() {
       <SidebarHeader className="h-14 flex-row items-center gap-2 border-b border-hairline px-3">
         <Link
           href="/"
-          className="rounded-[var(--radius-6)] px-2 py-1 text-button-16 text-ink hover:bg-surface-1"
+          className="rounded-[var(--radius-6)] px-2 py-1 text-regular font-medium text-ink hover:bg-layer-hover"
         >
           Patch UI
         </Link>

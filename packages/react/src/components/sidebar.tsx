@@ -162,7 +162,7 @@ export function Sidebar({
         <aside
           data-slot="sidebar"
           className={cn(
-            "fixed inset-y-0 z-30 flex w-[var(--sidebar-width)] flex-col bg-canvas transition-[transform,left,right] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+            "fixed inset-y-0 z-30 flex w-[var(--sidebar-width)] flex-col bg-base transition-[transform,left,right] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
             "top-[var(--sidebar-top)] h-[calc(100svh-var(--sidebar-top))]",
             side === "left"
               ? "left-0 border-r border-hairline"
@@ -205,7 +205,7 @@ export function SidebarInset({
     <main
       data-slot="sidebar-inset"
       className={cn(
-        "relative flex min-h-svh w-full flex-1 flex-col bg-canvas",
+        "relative flex min-h-svh w-full flex-1 flex-col bg-base",
         className,
       )}
       {...props}
@@ -292,7 +292,7 @@ export function SidebarGroupLabel({
   return (
     <div
       data-slot="sidebar-group-label"
-      className={cn("px-2 pt-2 text-button-12 text-primary", className)}
+      className={cn("px-2 pt-2 text-mini font-medium text-primary", className)}
       {...props}
     />
   );
@@ -347,10 +347,10 @@ export function SidebarMenuButton({
     "data-active": active || undefined,
     "aria-current": active ? ("page" as const) : undefined,
     className: cn(
-      "flex w-full items-center gap-2 rounded-[var(--radius-6)] px-2 py-1.5 text-body-13 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+      "flex w-full items-center gap-2 rounded-[var(--radius-6)] px-2 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
       active
-        ? "bg-surface-1 font-medium text-ink"
-        : "text-ink-muted hover:bg-surface-1 hover:text-ink",
+        ? "bg-layer-selected font-medium text-ink"
+        : "text-ink-muted hover:bg-layer-hover hover:text-ink",
       focusRing,
       className,
     ),
@@ -381,7 +381,7 @@ export function SidebarTrigger({
         if (!e.defaultPrevented) toggle();
       }}
       className={cn(
-        "inline-flex size-9 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1",
+        "inline-flex size-9 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover",
         focusRing,
         className,
       )}

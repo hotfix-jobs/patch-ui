@@ -22,7 +22,7 @@ export function Callout({ children, type = "note", title }: CalloutProps) {
     <div
       data-slot="callout"
       data-type={type}
-      className="my-6 flex items-start gap-3 rounded-[var(--radius-12)] border border-hairline bg-surface-1 p-4"
+      className="my-6 flex items-start gap-3 rounded-[var(--radius-12)] border border-hairline bg-fill-1 p-4"
     >
       <Icon
         className={`mt-0.5 size-4 shrink-0 ${iconClass}`}
@@ -31,7 +31,7 @@ export function Callout({ children, type = "note", title }: CalloutProps) {
       <div
         className={
           // `!` overrides beat the mdx-components map's global p/ul margins.
-          "min-w-0 flex-1 text-body-14 text-ink " +
+          "min-w-0 flex-1 text-small text-ink " +
           "[&_p]:!my-0 [&_p:not(:last-child)]:!mb-2 " +
           "[&_ul]:!my-0 [&_ul]:!ml-4 [&_ul:not(:last-child)]:!mb-2 " +
           "[&_ol]:!my-0 [&_ol]:!ml-4 [&_ol:not(:last-child)]:!mb-2 " +

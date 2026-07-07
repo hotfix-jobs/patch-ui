@@ -37,7 +37,7 @@ export function FieldLabel({
   return (
     <FieldPrimitive.Label
       className={cn(
-        "inline-flex items-center gap-1.5 text-button-14 text-ink",
+        "inline-flex items-center gap-1.5 text-small font-medium text-ink",
         className,
       )}
       data-slot="field-label"
@@ -47,7 +47,7 @@ export function FieldLabel({
       {required && (
         <span
           aria-hidden="true"
-          className="text-caption-12 leading-none text-error"
+          className="text-mini leading-none text-error"
           data-slot="field-required"
         >
           *
@@ -56,7 +56,7 @@ export function FieldLabel({
       {optional && !required && (
         <span
           aria-hidden="true"
-          className="text-caption-12 text-ink-muted"
+          className="text-mini text-ink-muted"
           data-slot="field-optional"
         >
           (optional)
@@ -85,7 +85,7 @@ export function FieldDescription({
 }: FieldPrimitive.Description.Props): React.ReactElement {
   return (
     <FieldPrimitive.Description
-      className={cn("text-caption-12 text-ink-subtle", className)}
+      className={cn("text-mini text-ink-subtle", className)}
       data-slot="field-description"
       {...props}
     />
@@ -101,7 +101,7 @@ export function FieldError({
   return (
     <FieldPrimitive.Error
       className={cn(
-        "inline-flex items-center gap-1.5 text-caption-12 text-error before:content-[''] before:size-[5px] before:rounded-full before:bg-error",
+        "inline-flex items-center gap-1.5 text-mini text-error before:content-[''] before:size-[5px] before:rounded-full before:bg-error",
         className,
       )}
       data-slot="field-error"

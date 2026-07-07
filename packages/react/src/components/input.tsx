@@ -41,9 +41,9 @@ export type InputProps = Omit<
 // sm so the label fits comfortably inside 24px; md and lg carry body-14
 // and body-16 respectively.
 const heightBySize: Record<InputSize, string> = {
-  sm: "h-6 text-body-13",
-  md: "h-8 text-body-14",
-  lg: "h-10 text-body-16",
+  sm: "h-6 text-small",
+  md: "h-8 text-small",
+  lg: "h-10 text-regular",
 };
 
 // Padding ramps stored as literal ps-/pe- strings so Tailwind's JIT
@@ -143,7 +143,7 @@ export function Input({
         "relative inline-flex w-full items-center overflow-hidden text-ink",
         shape,
         !unstyled && [
-          "bg-surface-elevated border border-hairline",
+          "bg-layer-1 border border-hairline",
           "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "hover:border-hairline-strong",
           // Focus lifts the border to --primary. No outside ring: the
@@ -182,7 +182,7 @@ export function Input({
       {label && (
         <label
           htmlFor={id}
-          className="text-button-14 text-ink"
+          className="text-small font-medium text-ink"
           data-slot="input-label"
         >
           {label}
@@ -193,7 +193,7 @@ export function Input({
         <p
           id={errorId}
           role="alert"
-          className="text-caption-12 text-error"
+          className="text-mini text-error"
           data-slot="input-error"
         >
           {error}

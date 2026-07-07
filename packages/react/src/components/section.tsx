@@ -13,7 +13,7 @@ export function Section({
 }: useRender.ComponentProps<"section">): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex flex-col rounded-[var(--radius-12)] bg-surface-elevated border border-hairline text-ink",
+      "flex flex-col rounded-[var(--radius-12)] bg-layer-1 border border-hairline text-ink",
       className,
     ),
     "data-slot": "section",
@@ -49,7 +49,7 @@ export function SectionTitle({
   ...props
 }: useRender.ComponentProps<"h3">): React.ReactElement {
   const defaultProps = {
-    className: cn("text-display-20 text-ink", className),
+    className: cn("text-title3 text-ink", className),
     "data-slot": "section-title",
   };
 
@@ -66,7 +66,7 @@ export function SectionSubtitle({
   ...props
 }: useRender.ComponentProps<"p">): React.ReactElement {
   const defaultProps = {
-    className: cn("text-body-14 text-ink", className),
+    className: cn("text-small text-ink", className),
     "data-slot": "section-subtitle",
   };
 
@@ -128,7 +128,7 @@ export function SectionFooterStatus({
   ...props
 }: useRender.ComponentProps<"div">): React.ReactElement {
   const defaultProps = {
-    className: cn("text-body-14 text-ink", className),
+    className: cn("text-small text-ink", className),
     "data-slot": "section-footer-status",
   };
 
@@ -181,9 +181,9 @@ export function SectionRow({
       {...props}
     >
       <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <div className="text-button-14 text-ink">{title}</div>
+        <div className="text-small font-medium text-ink">{title}</div>
         {description != null && (
-          <div className="text-body-13 text-ink-muted">{description}</div>
+          <div className="text-small text-ink-muted">{description}</div>
         )}
       </div>
       {children != null && (

@@ -58,7 +58,7 @@ export function Breadcrumb({
     <nav
       aria-label="Breadcrumb"
       data-slot="breadcrumb"
-      className={cn("text-body-13", className)}
+      className={cn("text-small", className)}
       {...props}
     >
       <ol className="flex items-center gap-2 overflow-x-auto whitespace-nowrap text-ink-muted [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">

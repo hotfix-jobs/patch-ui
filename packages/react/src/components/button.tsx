@@ -24,19 +24,19 @@ export const buttonVariants = cva(
     defaultVariants: { size: "md", variant: "primary", shape: "square", shadow: false },
     variants: {
       size: {
-        sm: "h-6 px-2.5 gap-1.5 text-button-12",
-        md: "h-8 px-3.5 gap-2 text-button-14",
-        lg: "h-10 px-4 gap-2 text-button-16",
+        sm: "h-6 px-2.5 gap-1.5 text-mini font-medium",
+        md: "h-8 px-3.5 gap-2 text-small font-medium",
+        lg: "h-10 px-4 gap-2 text-regular font-medium",
       },
       variant: {
         primary:
           "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover active:bg-primary-active " +
           iconMutedSolid,
         secondary:
-          "bg-surface-elevated text-ink border border-hairline hover:bg-surface-elevated-hover focus-visible:bg-surface-elevated-hover active:bg-surface-1 " +
+          "bg-layer-1 text-ink border border-hairline hover:bg-layer-2 focus-visible:bg-layer-2 active:bg-layer-selected " +
           iconMuted,
         tertiary:
-          "bg-transparent text-ink hover:bg-surface-1 focus-visible:bg-surface-1 active:bg-surface-2 " +
+          "bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-selected " +
           iconMuted,
         warning:
           "bg-warning text-warning-fg hover:bg-warning-hover focus-visible:bg-warning-hover active:bg-warning-active " +
@@ -134,7 +134,7 @@ export function Button({
           }}
           className={cn(
             "-me-1 inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-70",
-            "hover:bg-surface-2 hover:opacity-100",
+            "hover:bg-layer-hover hover:opacity-100",
             focusRing,
             colorTransition,
           )}

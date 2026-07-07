@@ -61,7 +61,7 @@ const MARKETING_DROPDOWNS = [
 
 function LogoMark() {
   return (
-    <span className="flex size-6 items-center justify-center rounded-[var(--radius-6)] bg-ink text-canvas text-button-14">
+    <span className="flex size-6 items-center justify-center rounded-[var(--radius-6)] bg-ink text-base text-small font-medium">
       P
     </span>
   );
@@ -74,7 +74,7 @@ export function AppHeaderDemo() {
     <div className="flex flex-col gap-8">
       <div className="space-y-3">
         <SectionLabel>Dashboard</SectionLabel>
-        <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-hairline bg-canvas">
+        <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-hairline bg-base">
           <AppHeader bordered={false}>
             <AppHeaderBrand>
               <LogoMark />
@@ -107,9 +107,9 @@ export function AppHeaderDemo() {
             </AppHeaderRight>
           </AppHeader>
 
-          <div className="border-t border-hairline bg-surface-1 px-6 py-8">
-            <p className="text-body-14 text-ink">{active}</p>
-            <p className="mt-1 text-body-14 text-ink-muted">
+          <div className="border-t border-hairline bg-fill-1 px-6 py-8">
+            <p className="text-small text-ink">{active}</p>
+            <p className="mt-1 text-small text-ink-muted">
               Content for the selected page renders here.
             </p>
           </div>
@@ -118,7 +118,7 @@ export function AppHeaderDemo() {
 
       <div className="space-y-3">
         <SectionLabel>Marketing (with dropdowns)</SectionLabel>
-        <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-hairline bg-canvas">
+        <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-hairline bg-base">
           <AppHeader bordered={false}>
             <AppHeaderBrand>
               <LogoMark />
@@ -138,13 +138,13 @@ export function AppHeaderDemo() {
                               key={item.eyebrow}
                               href={item.href}
                               onClick={(e) => e.preventDefault()}
-                              className="block rounded-[var(--radius-6)] bg-transparent p-3 hover:bg-surface-2 group"
+                              className="block rounded-[var(--radius-6)] bg-transparent p-3 hover:bg-layer-hover group"
                             >
                               <div className="flex flex-col gap-1">
-                                <span className="text-caption-12 text-ink-muted group-hover:text-ink transition-colors">
+                                <span className="text-mini text-ink-muted group-hover:text-ink transition-colors">
                                   {item.eyebrow}
                                 </span>
-                                <span className="text-body-14 text-ink">
+                                <span className="text-small text-ink">
                                   {item.title}
                                 </span>
                               </div>
@@ -158,7 +158,7 @@ export function AppHeaderDemo() {
                     <NavigationMenuLink
                       href="#"
                       onClick={(e) => e.preventDefault()}
-                      className="!inline-flex !items-center !rounded-full !px-3 !py-1.5 !text-body-14 !text-ink-muted !bg-transparent hover:!bg-surface-1 hover:!text-ink"
+                      className="!inline-flex !items-center !rounded-full !px-3 !py-1.5 !text-small !text-ink-muted !bg-transparent hover:!bg-fill-1 hover:!text-ink"
                     >
                       Pricing
                     </NavigationMenuLink>

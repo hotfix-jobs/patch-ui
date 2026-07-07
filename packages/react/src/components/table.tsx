@@ -24,7 +24,7 @@ export function Table({
       data-variant={variant}
       className={cn(
         // border-separate is required so cells accept border-radius for the interactive/striped pill look.
-        "w-full caption-bottom border-separate border-spacing-0 text-body-14 text-ink",
+        "w-full caption-bottom border-separate border-spacing-0 text-small text-ink",
         "has-[tbody[data-interactive]]:[border-spacing:0_2px] has-[tbody[data-striped]]:[border-spacing:0_2px]",
         className,
       )}
@@ -37,7 +37,7 @@ export function Table({
       <div
         data-slot="table-container"
         className={cn(
-          "relative w-full overflow-hidden rounded-[var(--radius-12)] bg-surface-elevated border border-hairline-strong",
+          "relative w-full overflow-hidden rounded-[var(--radius-12)] bg-layer-1 border border-hairline-strong",
           scrollable && "overflow-x-auto",
         )}
       >
@@ -102,13 +102,13 @@ export function TableBody({
         interactive && [
           "[&_td]:!border-b-0",
           "[&_tr]:cursor-pointer",
-          "[&_tr:hover>td]:bg-surface-2",
+          "[&_tr:hover>td]:bg-fill-2",
           "[&_tr:hover>td:first-child]:rounded-l-[var(--radius-6)]",
           "[&_tr:hover>td:last-child]:rounded-r-[var(--radius-6)]",
         ],
         striped && [
           "[&_td]:!border-b-0",
-          "[&_tr:nth-child(even)>td]:bg-surface-2",
+          "[&_tr:nth-child(even)>td]:bg-fill-2",
           "[&_tr:nth-child(even)>td:first-child]:rounded-l-[var(--radius-6)]",
           "[&_tr:nth-child(even)>td:last-child]:rounded-r-[var(--radius-6)]",
         ],
@@ -166,7 +166,7 @@ export function TableHead({
     <th
       data-slot="table-head"
       className={cn(
-        "h-9 px-3 py-2 text-button-12 text-ink-muted whitespace-nowrap",
+        "h-9 px-3 py-2 text-mini font-medium text-ink-muted whitespace-nowrap",
         "border-b border-hairline",
         align === "right" && "text-right",
         align === "center" && "text-center",
@@ -214,7 +214,7 @@ export function TableCaption({
   return (
     <caption
       data-slot="table-caption"
-      className={cn("mt-3 text-caption-12 text-ink-muted text-left", className)}
+      className={cn("mt-3 text-mini text-ink-muted text-left", className)}
       {...props}
     />
   );

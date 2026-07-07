@@ -29,7 +29,7 @@ export function Install({ name }: { name: string }) {
 
   return (
     <div
-      className="group/install relative my-6 flex items-center gap-2 overflow-x-auto rounded-[var(--radius-6)] border border-hairline bg-canvas ps-4 pe-11 py-2.5 text-mono-13 text-ink"
+      className="group/install relative my-6 flex items-center gap-2 overflow-x-auto rounded-[var(--radius-6)] border border-hairline bg-base ps-4 pe-11 py-2.5 font-mono text-small text-ink"
       data-slot="install"
     >
       <span className="shrink-0 text-ink-muted">$</span>
@@ -37,7 +37,7 @@ export function Install({ name }: { name: string }) {
       <button
         type="button"
         onClick={handleCopy}
-        className={`absolute end-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink ${copied ? "text-success" : "text-ink-muted"}`}
+        className={`absolute end-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink ${copied ? "text-success" : "text-ink-muted"}`}
         aria-label={copied ? "Copied" : "Copy install command"}
         data-slot="install-copy"
       >

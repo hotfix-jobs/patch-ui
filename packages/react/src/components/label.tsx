@@ -14,7 +14,7 @@ export function Label({
     className: cn(
       // Same recipe as FieldLabel so a standalone <Label> and a
       // Field-compound label read at identical weight (button-14 = 500).
-      "inline-flex items-center gap-2 text-button-14 text-ink",
+      "inline-flex items-center gap-2 text-small font-medium text-ink",
       className,
     ),
     "data-slot": "label",

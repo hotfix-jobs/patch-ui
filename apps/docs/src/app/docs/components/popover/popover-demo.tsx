@@ -70,7 +70,7 @@ export function PopoverDemo() {
           <PopoverContent align="end" className="w-[360px] p-0">
             <div className="flex items-center justify-between border-b border-hairline px-4 py-3">
               <div className="flex items-center gap-2">
-                <span className="text-button-14 text-ink">Notifications</span>
+                <span className="text-small font-medium text-ink">Notifications</span>
                 {unreadCount > 0 && (
                   <Badge>{unreadCount}</Badge>
                 )}
@@ -83,7 +83,7 @@ export function PopoverDemo() {
                   )
                 }
                 disabled={unreadCount === 0}
-                className="text-caption-12 text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:text-ink disabled:opacity-40"
+                className="text-mini text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:text-ink disabled:opacity-40"
               >
                 Mark all read
               </button>
@@ -102,11 +102,11 @@ export function PopoverDemo() {
                     }
                   />
                   <div className="min-w-0 flex-1">
-                    <p className="text-button-14 text-ink">{n.title}</p>
-                    <p className="mt-0.5 text-body-13 text-ink-muted">
+                    <p className="text-small font-medium text-ink">{n.title}</p>
+                    <p className="mt-0.5 text-small text-ink-muted">
                       {n.body}
                     </p>
-                    <p className="mt-1 text-caption-12 text-ink-subtle">
+                    <p className="mt-1 text-mini text-ink-subtle">
                       {n.when} ago
                     </p>
                   </div>
@@ -124,8 +124,8 @@ export function PopoverDemo() {
             render={<Button variant="secondary">Set width</Button>}
           />
           <PopoverContent className="w-72 p-4">
-            <p className="text-button-14 text-ink">Dimensions</p>
-            <p className="mt-1 text-body-13 text-ink-muted">
+            <p className="text-small font-medium text-ink">Dimensions</p>
+            <p className="mt-1 text-small text-ink-muted">
               Set a value in pixels.
             </p>
             <div className="mt-3 flex flex-col gap-2">
@@ -161,21 +161,21 @@ export function PopoverDemo() {
             }
           />
           <PopoverContent align="start" className="w-64 p-4">
-            <p className="text-button-14 text-ink">Status</p>
+            <p className="text-small font-medium text-ink">Status</p>
             <div className="mt-3 flex flex-col gap-2">
-              <label className="flex items-center gap-2 text-body-14 text-ink">
+              <label className="flex items-center gap-2 text-small text-ink">
                 <Checkbox defaultChecked />
                 Active
               </label>
-              <label className="flex items-center gap-2 text-body-14 text-ink">
+              <label className="flex items-center gap-2 text-small text-ink">
                 <Checkbox defaultChecked />
                 Draft
               </label>
-              <label className="flex items-center gap-2 text-body-14 text-ink">
+              <label className="flex items-center gap-2 text-small text-ink">
                 <Checkbox />
                 Archived
               </label>
-              <label className="flex items-center gap-2 text-body-14 text-ink">
+              <label className="flex items-center gap-2 text-small text-ink">
                 <Checkbox />
                 Suspended
               </label>

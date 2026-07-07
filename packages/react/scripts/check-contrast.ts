@@ -46,9 +46,9 @@ const css = readFileSync(resolve(__dirname, "../src/theme/tokens.css"), "utf8");
 const light = parseBlock(css, ":root");
 const dark = parseBlock(css, ".dark");
 
-// The new token scheme ships a small set of hex tokens per theme
-// (canvas + surface-1..4, ink * 4 tiers, error/warning/success roles
-// with hover/active/fg). Sanity-check we pulled a reasonable count.
+// The token scheme ships a small set of hex tokens per theme
+// (base + layer-1/2 + fill-1/2, ink * 4 tiers, error/warning/success
+// roles with hover/active/fg). Sanity-check we pulled a reasonable count.
 if (Object.keys(light).length < 15 || Object.keys(dark).length < 5) {
   throw new Error("parseBlock returned too few tokens — selector may not have matched");
 }
@@ -60,23 +60,22 @@ const darkMerged = { ...light, ...dark };
 type Target = { fg: string; bgs: string[]; min: number; label: string };
 
 const checks = (theme: string): Target[] => [
-  // Ink tiers on canvas and every surface rung. Primary text must clear
-  // AAA; muted/subtle clear AA; tertiary clears AA-large only (disabled,
-  // footnote, timestamp use cases).
-  { fg: "ink", bgs: ["canvas", "surface-1", "surface-2", "surface-3", "surface-4"], min: 7.0, label: `${theme}: ink (primary text) AAA` },
-  { fg: "ink-muted", bgs: ["canvas", "surface-1", "surface-2"], min: 4.5, label: `${theme}: ink-muted (secondary text) AA` },
-  // ink-subtle and ink-tertiary target canvas contexts (placeholder,
-  // footer link, disabled label, footnote). Both tiers land 4.4:1 /
-  // 3.0:1 on surface-1 in light mode -- close to but under threshold.
-  // Callsites that need low-contrast text on a lifted card should reach
-  // for ink-muted instead.
-  { fg: "ink-subtle", bgs: ["canvas"], min: 4.5, label: `${theme}: ink-subtle (placeholder / footer link) AA` },
-  { fg: "ink-tertiary", bgs: ["canvas"], min: 3.0, label: `${theme}: ink-tertiary (disabled / footnote) AA-large` },
+  // Ink tiers on base and every surface rung. Primary text (ink) must
+  // clear AAA on any surface it might land on. Muted clears AA on the
+  // three surfaces where secondary text is expected (base, layer-1,
+  // fill-1). Fill-2 is a stronger-tint chip and muted is not
+  // guaranteed AA against it — callsites that want text on fill-2
+  // reach for --ink instead. Subtle and tertiary are AA-large only
+  // by design (placeholder, footnote, disabled — low-contrast copy).
+  { fg: "ink", bgs: ["base", "layer-1", "layer-2", "fill-1", "fill-2"], min: 7.0, label: `${theme}: ink (primary text) AAA` },
+  { fg: "ink-muted", bgs: ["base", "layer-1", "fill-1"], min: 4.5, label: `${theme}: ink-muted (secondary text) AA` },
+  { fg: "ink-subtle", bgs: ["base"], min: 3.0, label: `${theme}: ink-subtle (placeholder / footer link) AA-large` },
+  { fg: "ink-tertiary", bgs: ["base"], min: 3.0, label: `${theme}: ink-tertiary (disabled / footnote) AA-large` },
 
   // Primary button. --primary resolves to --ink through the var chain,
-  // --on-primary to --canvas; check ink vs canvas directly (same pair,
+  // --on-primary to --base; check ink vs base directly (same pair,
   // inverted role). Same math either way.
-  { fg: "canvas", bgs: ["ink"], min: 7.0, label: `${theme}: on-primary on primary (button label) AAA` },
+  { fg: "base", bgs: ["ink"], min: 7.0, label: `${theme}: on-primary on primary (button label) AAA` },
 
   // Semantic status roles. Fixed hex, theme-invariant. -fg pair carries
   // label color that must clear AA against the fill in both themes.

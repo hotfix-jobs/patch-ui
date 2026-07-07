@@ -73,7 +73,7 @@ export function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "group inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-body-14 text-ink-muted hover:bg-surface-1 hover:text-ink data-[popup-open]:bg-surface-1 data-[popup-open]:text-ink outline-none",
+        "group inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink data-[popup-open]:bg-layer-hover data-[popup-open]:text-ink outline-none",
         colorTransition,
         className,
       )}
@@ -116,7 +116,7 @@ export function NavigationMenuLink({
       data-slot="navigation-menu-link"
       closeOnClick={closeOnClick}
       className={cn(
-        "block rounded-[var(--radius-6)] px-3 py-2 text-body-13 text-ink-muted hover:bg-surface-2 hover:text-ink outline-none",
+        "block rounded-[var(--radius-6)] px-3 py-2 text-small text-ink-muted hover:bg-layer-hover hover:text-ink outline-none",
         iconMuted,
         colorTransition,
         className,

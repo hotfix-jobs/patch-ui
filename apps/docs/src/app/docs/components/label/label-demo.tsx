@@ -6,7 +6,7 @@ export function LabelDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">With Input (standalone)</p>
+        <p className="mb-3 text-mini text-ink-muted">With Input (standalone)</p>
         <div className="flex flex-col gap-1.5 max-w-xs">
           <Label htmlFor="demo-email">Email</Label>
           <Input id="demo-email" type="email" placeholder="you@example.com" />
@@ -14,7 +14,7 @@ export function LabelDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">With Switch / Checkbox (wrapping)</p>
+        <p className="mb-3 text-mini text-ink-muted">With Switch / Checkbox (wrapping)</p>
         <div className="flex flex-col gap-3">
           <Label className="cursor-pointer">
             <Switch />
@@ -28,7 +28,7 @@ export function LabelDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-caption-12 text-ink-muted">Standalone</p>
+        <p className="mb-3 text-mini text-ink-muted">Standalone</p>
         <Label>Email address</Label>
       </div>
     </div>

@@ -46,21 +46,21 @@ export function EmptyState({
       {icon && (
         <div
           aria-hidden
-          className="mb-6 flex size-24 items-center justify-center rounded-[var(--radius-12)] bg-surface-1 text-ink-muted [&_svg]:size-8"
+          className="mb-6 flex size-24 items-center justify-center text-ink-muted [&_svg]:size-8"
           data-slot="empty-state-icon"
         >
           {icon}
         </div>
       )}
       <h3
-        className="text-body-16 text-ink-muted"
+        className="text-regular text-ink-muted"
         data-slot="empty-state-title"
       >
         {title}
       </h3>
       {description && (
         <p
-          className="mt-1.5 max-w-md text-body-14 text-ink-subtle"
+          className="mt-1.5 max-w-md text-small text-ink-subtle"
           data-slot="empty-state-description"
         >
           {description}

@@ -99,7 +99,7 @@ export function AppHeader({
 
   const defaultProps = {
     className: cn(
-      "bg-canvas",
+      "bg-base",
       bordered && "border-b border-hairline",
       sticky ? "sticky top-0 z-50" : "relative",
       className,
@@ -137,7 +137,7 @@ export function AppHeaderBrand({
 }: AppHeaderBrandProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex shrink-0 items-center gap-2 text-button-16 text-ink",
+      "flex shrink-0 items-center gap-2 text-regular font-medium text-ink",
       className,
     ),
     "data-slot": "app-header-brand",
@@ -202,14 +202,14 @@ export function AppHeaderNavItem({
 
   const baseClasses = mobile
     ? cn(
-        "flex items-center gap-2.5 rounded-[var(--radius-6)] px-3 py-2.5 text-body-16 text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1 hover:text-ink [&_svg]:size-5",
-        active && "bg-surface-1 font-medium text-ink",
+        "flex items-center gap-2.5 rounded-[var(--radius-6)] px-3 py-2.5 text-regular text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink [&_svg]:size-5",
+        active && "bg-layer-selected font-medium text-ink",
       )
     : cn(
-        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-body-14 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:size-4",
+        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:size-4",
         active
           ? "text-ink font-medium"
-          : "text-ink-muted hover:bg-surface-1 hover:text-ink",
+          : "text-ink-muted hover:bg-layer-hover hover:text-ink",
       );
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -270,7 +270,7 @@ export function AppHeaderNavSection({
       data-slot="app-header-nav-section"
       className="flex flex-col gap-1"
     >
-      <div className="px-3 pb-1 pt-2 text-caption-11 text-ink-tertiary">
+      <div className="px-3 pb-1 pt-2 text-micro text-ink-tertiary">
         {title}
       </div>
       <div className="flex flex-col gap-0.5">{children}</div>
@@ -306,7 +306,7 @@ function AppHeaderRightWithTrigger({
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen(!open)}
-        className="inline-flex md:hidden size-8 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1"
+        className="inline-flex md:hidden size-8 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
       >
         <MorphingMenuIcon open={open} />
       </button>
@@ -416,7 +416,7 @@ function AppHeaderMobilePanel(): React.ReactPortal | null {
                 ? { duration: 0 }
                 : { duration: 0.18, ease: [0.22, 1, 0.36, 1] }
             }
-            className="fixed inset-0 z-50 flex flex-col bg-canvas md:hidden"
+            className="fixed inset-0 z-50 flex flex-col bg-base md:hidden"
           >
             <div className="flex items-center gap-2 border-b border-hairline px-4 py-3">
               {brand}
@@ -426,7 +426,7 @@ function AppHeaderMobilePanel(): React.ReactPortal | null {
                   type="button"
                   aria-label="Close menu"
                   onClick={() => setOpen(false)}
-                  className="inline-flex size-8 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-surface-1"
+                  className="inline-flex size-8 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
                 >
                   <MorphingMenuIcon open={true} />
                 </button>

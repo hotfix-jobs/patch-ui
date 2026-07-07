@@ -8,18 +8,16 @@ import { cn } from "../utils";
 
 import { User } from "@phosphor-icons/react/dist/ssr";
 export const avatarVariants = cva(
-  // Compound text-button-* classes below carry the 500 weight for
-  // monogram initials; no font-* utility here so the recipe wins.
-  "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-ink text-canvas",
+  "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-ink text-base",
   {
     defaultVariants: { size: "md", shape: "circle" },
     variants: {
       size: {
-        xs: "size-6 text-button-12",
-        sm: "size-7 text-button-12",
-        md: "size-9 text-button-14",
-        lg: "size-11 text-button-14",
-        xl: "size-14 text-button-16",
+        xs: "size-6 text-mini font-medium",
+        sm: "size-7 text-mini font-medium",
+        md: "size-9 text-small font-medium",
+        lg: "size-11 text-small font-medium",
+        xl: "size-14 text-regular font-medium",
       },
       shape: {
         circle: "rounded-full",
@@ -49,12 +47,11 @@ function toPx(size: AvatarSize): number {
 }
 
 /** Text size (Tailwind class) that reads well inside an avatar of a given
- *  pixel diameter. Compound text-button-* classes bundle the 500 weight
- *  used for monogram initials, so no separate font-* utility is needed. */
+ *  pixel diameter. Monograms carry the medium (500) weight explicitly. */
 function textClassForPx(px: number): string {
-  if (px <= 28) return "text-button-12";
-  if (px <= 44) return "text-button-14";
-  return "text-button-16";
+  if (px <= 28) return "text-mini font-medium";
+  if (px <= 44) return "text-small font-medium";
+  return "text-regular font-medium";
 }
 
 export interface AvatarProps
@@ -93,8 +90,8 @@ export function Avatar({
   const inlineSize = numericSize ? { width: size, height: size } : undefined;
 
   const fillClass = placeholder
-    ? "bg-surface-1 text-ink-muted"
-    : "bg-ink text-canvas";
+    ? "bg-fill-1 text-ink-muted"
+    : "bg-ink text-base";
 
   const baseClass = numericSize
     ? cn(
@@ -105,7 +102,7 @@ export function Avatar({
       )
     : cn(
         avatarVariants({ size, shape }),
-        placeholder && "!bg-surface-1 !text-ink-muted",
+        placeholder && "!bg-fill-1 !text-ink-muted",
       );
 
   // Main avatar body: children > letter > placeholder icon.
@@ -139,8 +136,8 @@ export function Avatar({
           aria-hidden="true"
           className={cn(
             "absolute -bottom-0.5 -left-0.5 inline-flex items-center justify-center rounded-full",
-            "ring-2 ring-canvas",
-            iconBackground ? "bg-ink text-canvas" : "bg-canvas text-ink-muted",
+            "ring-2 ring-base",
+            iconBackground ? "bg-ink text-base" : "bg-base text-ink-muted",
           )}
           style={{ width: badgePx, height: badgePx }}
         >
@@ -268,7 +265,7 @@ export function AvatarGroup({
             key={m.id ?? i}
             size={size}
             shape={shape}
-            className={cn(ring, "ring-canvas")}
+            className={cn(ring, "ring-base")}
             style={{
               marginInlineStart: i === 0 ? 0 : marginStart,
               zIndex: reverse ? i : shown.length - i,
@@ -301,7 +298,7 @@ export function AvatarGroup({
     return cloneElement(child as React.ReactElement<AvatarProps>, {
       size: childProps.size ?? size,
       shape: childProps.shape ?? shape,
-      className: cn(ring, "ring-canvas", childProps.className),
+      className: cn(ring, "ring-base", childProps.className),
       style: {
         marginInlineStart: i === 0 ? 0 : marginStart,
         zIndex: reverse ? i : shown.length - i,
@@ -335,7 +332,7 @@ export function AvatarGroup({
  *  rather than another face. */
 function overflowTextClass(size: AvatarSize): string {
   const px = toPx(size);
-  const cls = px <= 32 ? "text-caption-12" : px <= 44 ? "text-body-13" : "text-body-14";
+  const cls = px <= 32 ? "text-mini" : px <= 44 ? "text-small" : "text-small";
   return cn("shrink-0 select-none text-ink-muted", cls);
 }
 

@@ -40,12 +40,12 @@ export function Card({
     className: cn(
       "relative flex rounded-[var(--radius-12)] text-ink",
       direction === "column" ? "flex-col" : "flex-row",
-      secondary ? "bg-surface-1" : "bg-surface-elevated",
+      secondary ? "bg-fill-1" : "bg-layer-1",
       border && "border border-hairline",
       shadow && "shadow-card",
       hoverable && [
         "cursor-pointer",
-        secondary ? "hover:bg-surface-1" : "hover:bg-surface-elevated-hover",
+        secondary ? "hover:bg-layer-hover" : "hover:bg-layer-2",
         focusRing,
       ],
       borderBetween &&

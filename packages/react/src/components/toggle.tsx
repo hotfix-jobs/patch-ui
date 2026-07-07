@@ -18,9 +18,9 @@ export const toggleVariants = cva(
     defaultVariants: { size: "md", variant: "tertiary", shape: "square" },
     variants: {
       size: {
-        sm: "h-6 min-w-6 px-2.5 text-button-12 [&_svg:not([class*='size-'])]:size-3.5",
-        md: "h-8 min-w-8 px-3.5 text-button-14 [&_svg:not([class*='size-'])]:size-4",
-        lg: "h-10 min-w-10 px-4 text-button-16 [&_svg:not([class*='size-'])]:size-5",
+        sm: "h-6 min-w-6 px-2.5 text-mini font-medium [&_svg:not([class*='size-'])]:size-3.5",
+        md: "h-8 min-w-8 px-3.5 text-small font-medium [&_svg:not([class*='size-'])]:size-4",
+        lg: "h-10 min-w-10 px-4 text-regular font-medium [&_svg:not([class*='size-'])]:size-5",
       },
       shape: {
         square: "rounded-[var(--radius-6)]",
@@ -29,10 +29,10 @@ export const toggleVariants = cva(
       },
       variant: {
         tertiary:
-          "bg-transparent text-ink-muted hover:bg-surface-1 hover:text-ink data-[pressed]:bg-surface-2 data-[pressed]:text-ink " +
+          "bg-transparent text-ink-muted hover:bg-layer-hover hover:text-ink data-[pressed]:bg-layer-selected data-[pressed]:text-ink " +
           iconMuted,
         secondary:
-          "bg-transparent text-ink-muted border border-hairline hover:bg-surface-1 hover:text-ink hover:border-hairline-strong data-[pressed]:bg-surface-2 data-[pressed]:text-ink data-[pressed]:border-hairline-strong " +
+          "bg-transparent text-ink-muted border border-hairline hover:bg-layer-hover hover:text-ink hover:border-hairline-strong data-[pressed]:bg-layer-selected data-[pressed]:text-ink data-[pressed]:border-hairline-strong " +
           iconMuted,
       },
     },
