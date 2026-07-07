@@ -5,7 +5,7 @@ export const metadata = { title: "Badge" };
 
 # Badge
 
-Short, scannable metadata that sits next to the thing it describes: status, plan tier, environment, or role. Four intent variants × high/low contrast × three sizes.
+Short, scannable metadata that sits next to the thing it describes: status, plan tier, environment, or role. Four semantic colors × three fill variants (solid / soft / outlined) × three sizes.
 
 <Install name="badge" />
 
@@ -21,14 +21,15 @@ import { Badge } from "@patchui/react";
 // Basic
 <Badge>Default</Badge>
 
-// Intent variants
-<Badge variant="success">Active</Badge>
-<Badge variant="warning">Pending</Badge>
-<Badge variant="error">Failed</Badge>
+// Semantic colors
+<Badge color="success">Active</Badge>
+<Badge color="warning">Pending</Badge>
+<Badge color="error">Failed</Badge>
 
-// Contrast: high = solid saturated (default), low = subtle tint for dense surfaces
-<Badge variant="success" contrast="high">Deployed</Badge>
-<Badge variant="success" contrast="low">Deployed</Badge>
+// Fill variants: solid = saturated, soft (default) = tinted, outlined = hairline border
+<Badge color="success" variant="solid">Deployed</Badge>
+<Badge color="success" variant="soft">Deployed</Badge>
+<Badge color="success" variant="outlined">Deployed</Badge>
 
 // Sizes
 <Badge size="sm">Small</Badge>
@@ -36,7 +37,7 @@ import { Badge } from "@patchui/react";
 <Badge size="lg">Large</Badge>
 
 // With inline icon
-<Badge icon={<Shield />} variant="default">Verified</Badge>
+<Badge icon={<Shield />} color="default">Verified</Badge>
 
 // Shape
 <Badge shape="pill">Pill</Badge>       // default
@@ -51,16 +52,16 @@ import { Badge } from "@patchui/react";
 <PropsTable
   props={[
     {
-      name: "variant",
+      name: "color",
       type: '"default" | "success" | "warning" | "error"',
       default: '"default"',
-      description: "Intent variant. `default` = neutral gray, `success` = green, `warning` = amber, `error` = red.",
+      description: "Semantic color. `default` = neutral gray, `success` = green, `warning` = amber, `error` = red.",
     },
     {
-      name: "contrast",
-      type: '"high" | "low"',
-      default: '"high"',
-      description: "`high` = solid saturated fill with light text (bold). `low` = subtle tinted fill with darker text (dense surfaces).",
+      name: "variant",
+      type: '"solid" | "soft" | "outlined"',
+      default: '"soft"',
+      description: "`solid` = saturated fill with contrasting text. `soft` = subtle tinted fill (dense surfaces). `outlined` = no fill, hairline border.",
     },
     {
       name: "size",
@@ -100,7 +101,7 @@ import { Badge } from "@patchui/react";
 - Keep the text tight: one word if you can, two at most (`Active`, `Pending`, `Pro`, `Enterprise Trial`). Use the same wording as the value in your API and logs so labels and data stay in sync.
 - Colors carry the signal: don't double up. A `success` badge doesn't also need a check icon; an `error` badge doesn't need an ×. The color IS the meaning.
 - If a row has two badges, chances are the row wanted a second column.
-- `contrast="high"` is the loud version; `contrast="low"` is the quiet one for dense surfaces (tables, cards packed with metadata).
-- The variant color communicates state, but color alone isn't enough: the text has to make sense on its own. For icon-only or terse badges, set `title` so screen readers can announce it.
+- `variant="solid"` is the loud version; `variant="soft"` is the quiet one for dense surfaces (tables, cards packed with metadata); `variant="outlined"` reads as a data chip when a fill would compete with a neighbor.
+- Color communicates state, but color alone isn't enough: the text has to make sense on its own. For icon-only or terse badges, set `title` so screen readers can announce it.
 - Don't nest a Badge inside a Badge, and don't stack two icons.
 </Callout>
