@@ -36,7 +36,7 @@ const DASHBOARD_NAV: {
   { label: "Home", prefix: <House /> },
   { label: "Projects", prefix: <FolderOpen />, suffix: <Badge>12</Badge> },
   { label: "Insights", prefix: <ChartBar /> },
-  { label: "Team", prefix: <Users />, suffix: <Badge variant="success">New</Badge> },
+  { label: "Team", prefix: <Users />, suffix: <Badge color="success">New</Badge> },
 ];
 
 const MARKETING_DROPDOWNS = [
