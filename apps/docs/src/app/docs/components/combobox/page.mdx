@@ -43,7 +43,7 @@ const matches = items.filter((i) =>
 </Combobox>
 ```
 
-### Multi-select (native)
+### Multi-select
 
 Pass `multiple` on the root with `selectedValues` + `onSelectedValuesChange` and Base UI manages selection state internally. Clicking a `ComboboxItem` toggles it in the array; the built-in `clearable` X on `ComboboxInput` becomes visible whenever `selectedValues` is non-empty and wipes both the input and the picks on click.
 
@@ -130,27 +130,6 @@ const displayValue = open ? query : query || summary;
 ```
 
 When the popup opens the input clears to a raw search field so typing / backspacing behaves normally; when it closes the summary comes back as a display-only status.
-
-### Legacy multi-select (checkbox items)
-
-Before native multi mode, you tracked picks in your own state and rendered `ComboboxCheckboxItem` rows. Prefer the native mode above unless you want the checkbox-in-row visual; it wires up correctly for keyboard, cursors, and the built-in clear X.
-
-```tsx
-<Combobox value={query} onValueChange={setQuery}>
-  <ComboboxInput prefix={<Search />} />
-  <ComboboxPopup>
-    {matches.map((item) => (
-      <ComboboxCheckboxItem
-        key={item.id}
-        checked={selected.has(item.id)}
-        onCheckedChange={() => toggle(item)}
-      >
-        {item.label}
-      </ComboboxCheckboxItem>
-    ))}
-  </ComboboxPopup>
-</Combobox>
-```
 
 The popup accepts arbitrary JSX: only `ComboboxItem` gets keyboard navigation. Mix items with banners, headers, separators, or custom rows freely.
 
@@ -319,7 +298,7 @@ Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `labe
 <Callout title="Notes">
 - **Query state on the root.** Put `value` / `onValueChange` / `placeholder` on `<Combobox>` so the trigger input and the mobile panel's own input share them. The input still accepts `value` / `onChange` / `placeholder` as per-input overrides for advanced cases.
 - **Mobile panel.** Below 768px the popup renders as a bottom-anchored fixed panel with its own search input (real focus, autoFocus) and a close X. Desktop behavior is unchanged.
-- **Multi-select.** Pass `multiple` on the root with `selectedValues` + `onSelectedValuesChange` and Base UI manages the array natively (the built-in clearable X becomes visible when the array is non-empty and clears both the input and the picks on click). For the "list of active picks with individual X to remove" pattern, put `onRemove` on the `ComboboxItem` for each Selected row. The older `ComboboxCheckboxItem` + hand-rolled state pattern still works for surfaces that want the checkbox-in-row visual.
+- **Multi-select.** Pass `multiple` on the root with `selectedValues` + `onSelectedValuesChange` and Base UI manages the array natively (the built-in clearable X becomes visible when the array is non-empty and clears both the input and the picks on click). For the "list of active picks with individual X to remove" pattern, put `onRemove` on the `ComboboxItem` for each Selected row.
 - The input keeps real focus while you type and arrow through options on desktop. Items get `aria-activedescendant` instead of taking focus, which is the proper ARIA combobox pattern: screen readers announce the active option without interrupting typing.
 - Combobox doesn't filter for you. Filter your data based on the current input value and render the matches as `<ComboboxItem>` children. Substring, fuzzy index, async API: any strategy works.
 - Anything inside `ComboboxPopup` renders. Only `<ComboboxItem>` is keyboard-navigable, so you can drop in banners, section headers, and dividers as plain JSX between item groups.
