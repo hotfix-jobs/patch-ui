@@ -217,14 +217,14 @@
  * --------------------------------------------------------------- */
 .dark {
   /* Deep near-black base. layer-1 (Card, Popup, Modal) sits only
-     ~3-5% brighter — cards float on the barest lift, softened
+     ~1% brighter — cards float on the barest lift, softened
      further by hairlines that stay under the card body rather
      than competing with it. Pure #000 avoided to prevent banding
      on 6-bit panels. */
   --base:      #0a0a0a;
 
-  --layer-1:   #141414;
-  --layer-2:   #1c1c1c;
+  --layer-1:   #0d0d0d;
+  --layer-2:   #131313;
 
   --fill-1:    #131313;
   --fill-2:    #262626;

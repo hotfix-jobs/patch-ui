@@ -119,13 +119,20 @@ export function Combobox({
 
 /* -------------------------------- Input -------------------------------- */
 
-function ChevronIndicator(): React.ReactElement {
+function ChevronIndicator({
+  className,
+}: {
+  className?: string;
+}): React.ReactElement {
   return (
     <ComboboxPrimitive.Icon
       render={
         <CaretDown
           aria-hidden
-          className="size-4 shrink-0 text-ink-muted transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]"
+          className={cn(
+            "size-4 shrink-0 text-ink-muted transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+            className,
+          )}
         />
       }
     />
@@ -207,18 +214,27 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
     const shape = rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
     const trailing = (clearable || !hideChevron || suffix) ? (
       <ComboboxAffix side="end">
-        <span className="inline-flex items-center gap-1.5">
+        <span className={cn("inline-flex items-center gap-1.5", clearable && "group")}>
           {suffix}
           {clearable && (
             <ComboboxPrimitive.Clear
               aria-label="Clear"
               onClick={onClear}
-              className="inline-flex size-5 items-center justify-center rounded-full text-ink-muted hover:bg-layer-hover hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[empty]:hidden"
+              data-slot="combobox-input-clear"
+              className="inline-flex size-5 items-center justify-center rounded-full text-ink-muted hover:bg-layer-hover hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[ending-style]:hidden"
             >
               <X className="size-3" />
             </ComboboxPrimitive.Clear>
           )}
-          {!hideChevron && <ChevronIndicator />}
+          {!hideChevron && (
+            <ChevronIndicator
+              className={cn(
+                "group-data-[popup-open]/combobox-input:rotate-180",
+                clearable &&
+                  "group-has-[[data-slot=combobox-input-clear]:not([data-ending-style])]:hidden",
+              )}
+            />
+          )}
         </span>
       </ComboboxAffix>
     ) : null;
@@ -227,7 +243,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
       <ComboboxPrimitive.InputGroup
         data-slot="combobox-input-group"
         className={cn(
-          "relative inline-flex w-full items-center overflow-hidden text-ink",
+          "group/combobox-input relative inline-flex w-full items-center overflow-hidden text-ink",
           shape,
           "bg-layer-1 border border-hairline",
           "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
@@ -374,9 +390,11 @@ export function ComboboxItem({
   onClick,
   ...props
 }: ComboboxItemProps): React.ReactElement {
+  const resolvedValue =
+    value !== undefined ? value : typeof children === "string" ? children : null;
   return (
     <ComboboxPrimitive.Item
-      value={value}
+      value={resolvedValue}
       disabled={disabled}
       data-slot="combobox-item"
       className={cn(
@@ -425,9 +443,11 @@ export function ComboboxCheckboxItem({
   onClick,
   ...props
 }: ComboboxCheckboxItemProps): React.ReactElement {
+  const resolvedValue =
+    value !== undefined ? value : typeof children === "string" ? children : null;
   return (
     <ComboboxPrimitive.Item
-      value={value}
+      value={resolvedValue}
       disabled={disabled}
       data-slot="combobox-checkbox-item"
       data-state={checked ? "checked" : "unchecked"}
@@ -441,7 +461,10 @@ export function ComboboxCheckboxItem({
         iconMuted,
         className,
       )}
-      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+      onClick={(e: React.MouseEvent<HTMLDivElement> & {
+        preventBaseUIHandler?: () => void;
+      }) => {
+        e.preventBaseUIHandler?.();
         onClick?.(e);
         if (e.defaultPrevented) return;
         if (disabled) return;
