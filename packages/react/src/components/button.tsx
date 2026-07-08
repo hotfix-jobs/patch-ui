@@ -21,7 +21,7 @@ export const buttonVariants = cva(
     disabled,
   ].join(" "),
   {
-    defaultVariants: { size: "md", variant: "primary", shape: "square", shadow: false },
+    defaultVariants: { size: "lg", variant: "primary", shape: "square", shadow: false },
     variants: {
       size: {
         sm: "h-6 px-2.5 gap-1.5 text-mini font-medium",
@@ -62,6 +62,14 @@ export interface ButtonProps extends useRender.ComponentProps<"button"> {
   iconPosition?: "left" | "right";
   loading?: boolean;
   disabled?: boolean;
+  /** De-emphasized label + icon chrome layered on top of the variant.
+   *  Idle: `text-ink-subtle` label + `iconMuted` icon color. Hover /
+   *  focus: label + icon lift to `text-ink`. The variant's background
+   *  and border are unchanged — this only touches label/icon. Used by
+   *  filter chips, role-family navigation chips, and link-cluster
+   *  buttons where the row of controls should read as chrome rather
+   *  than as primary CTAs. */
+  muted?: boolean;
   /** Renders a trailing × sub-button; fires without triggering the parent onClick. */
   onRemove?: () => void;
   removeLabel?: string;
@@ -83,6 +91,7 @@ export function Button({
   iconPosition = "left",
   loading,
   disabled: isDisabled,
+  muted,
   onRemove,
   removeLabel = "Remove",
   render,
@@ -149,8 +158,22 @@ export function Button({
   const typeValue: React.ButtonHTMLAttributes<HTMLButtonElement>["type"] =
     render ? undefined : "button";
 
+  // `muted` layers the FilterButton chrome on top of the base variant:
+  // subtle label + iconMuted at rest, lift to text-ink on hover. Only
+  // affects label / icon color — surface (bg + border) still comes
+  // from the base variant so the caller keeps their chosen fill.
+  const mutedRecipe = muted
+    ? cn("gap-1.5 text-ink-subtle hover:text-ink", iconMuted)
+    : "";
+
   const defaultProps = {
-    className: cn(buttonVariants({ size: effectiveSize, variant, shape, shadow }), iconOnly, iconOnlyRecipe, className),
+    className: cn(
+      buttonVariants({ size: effectiveSize, variant, shape, shadow }),
+      iconOnly,
+      iconOnlyRecipe,
+      mutedRecipe,
+      className,
+    ),
     "data-slot": "button",
     type: typeValue,
     disabled: isDisabled || loading,

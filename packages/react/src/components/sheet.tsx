@@ -69,12 +69,12 @@ export function SheetTrigger(props: SheetTriggerProps): React.ReactElement {
 
 const SIDE_LAYOUT: Record<SheetSide, string> = {
   right:
-    "top-0 bottom-0 right-0 w-[85vw] max-w-md border-l border-hairline rounded-l-[var(--radius-12)]",
+    "top-0 bottom-0 right-0 w-[85vw] max-w-md border-l border-hairline rounded-l-[var(--radius-10)]",
   left:
-    "top-0 bottom-0 left-0 w-[85vw] max-w-md border-r border-hairline rounded-r-[var(--radius-12)]",
-  top: "top-0 left-0 right-0 border-b border-hairline rounded-b-[var(--radius-12)]",
+    "top-0 bottom-0 left-0 w-[85vw] max-w-md border-r border-hairline rounded-r-[var(--radius-10)]",
+  top: "top-0 left-0 right-0 border-b border-hairline rounded-b-[var(--radius-10)]",
   bottom:
-    "bottom-0 left-0 right-0 border-t border-hairline rounded-t-[var(--radius-12)]",
+    "bottom-0 left-0 right-0 border-t border-hairline rounded-t-[var(--radius-10)]",
 };
 
 const SIDE_ENTER: Record<SheetSide, string> = {
@@ -95,7 +95,8 @@ export interface SheetContentProps
   /** @deprecated Pass `side` on the parent `<Sheet>` instead. */
   side?: SheetSide;
   /** Auto-render a close X in the top-right corner. Defaults to true
-   *  when there's no `<SheetFooter>` in the tree, false when there is. */
+   *  when there's no `<SheetHeader>` in the tree (the header would host
+   *  its own X in the trailing slot), false when there is. */
   showClose?: boolean;
   children?: React.ReactNode;
 }
@@ -104,10 +105,24 @@ function hasChildOfType(
   children: React.ReactNode,
   Component: React.ComponentType,
 ): boolean {
+  // Match on function identity OR displayName. Identity alone breaks
+  // under HMR — Fast Refresh mints a new function reference for the
+  // parent's captured `Component` on hot-reload, so a SheetHeader in
+  // the tree (with a fresh identity) can slip past === and the auto
+  // corner X double-renders. displayName is stable across reloads.
+  const targetName = Component.displayName ?? Component.name;
   let found = false;
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) return;
-    if (child.type === Component) found = true;
+    if (child.type === Component) {
+      found = true;
+      return;
+    }
+    if (typeof child.type === "function") {
+      const fn = child.type as { displayName?: string; name?: string };
+      const childName = fn.displayName ?? fn.name;
+      if (childName && childName === targetName) found = true;
+    }
   });
   return found;
 }
@@ -122,7 +137,7 @@ export function SheetContent({
   const contextSide = useContext(SheetSideContext);
   const side = sideProp ?? contextSide;
   const resolvedShowClose =
-    showClose ?? !hasChildOfType(children, SheetFooter);
+    showClose ?? !hasChildOfType(children, SheetHeader);
 
   return (
     <DrawerPrimitive.Portal>
@@ -218,17 +233,26 @@ export interface SheetHeaderProps extends React.ComponentProps<"div"> {
   /** Content pinned to the leading edge. When set, switches the header
    *  to a three-slot row layout: leading / children / trailing. */
   leading?: React.ReactNode;
+  /** Content pinned to the trailing edge. Defaults to `<SheetClose />`
+   *  so a SheetHeader-hosting sheet always has a properly-anchored X.
+   *  Pass `null` to opt out, or override with your own actions. */
   trailing?: React.ReactNode;
+  /** Suppress the default trailing SheetClose. Same as `trailing={null}`
+   *  but reads clearer at the call site. */
+  hideClose?: boolean;
 }
 
 export function SheetHeader({
   className,
   leading,
   trailing,
+  hideClose = false,
   children,
   ...props
 }: SheetHeaderProps): React.ReactElement {
-  const isRow = leading != null || trailing != null;
+  const resolvedTrailing =
+    trailing !== undefined ? trailing : hideClose ? null : <SheetClose />;
+  const isRow = leading != null || resolvedTrailing != null;
   if (isRow) {
     return (
       <div
@@ -239,14 +263,14 @@ export function SheetHeader({
         )}
         {...props}
       >
-        <div className="flex min-w-0 flex-1 basis-0 items-center gap-2 text-mini text-ink-muted">
+        <div className="flex min-w-0 items-center gap-2 text-mini text-ink-muted">
           {leading}
         </div>
-        <div className="flex min-w-0 items-center gap-2 text-small font-medium text-ink">
+        <div className="flex min-w-0 flex-1 items-center gap-2 text-small font-medium text-ink">
           {children}
         </div>
-        <div className="flex min-w-0 flex-1 basis-0 items-center justify-end gap-2">
-          {trailing}
+        <div className="flex min-w-0 items-center justify-end gap-2">
+          {resolvedTrailing}
         </div>
       </div>
     );
@@ -272,7 +296,7 @@ export function SheetTitle({
   return (
     <DrawerPrimitive.Title
       data-slot="sheet-title"
-      className={cn("text-regular font-medium text-ink", className)}
+      className={cn("min-w-0 text-regular font-medium text-ink", className)}
       {...props}
     />
   );
@@ -300,6 +324,11 @@ export function SheetBody({
   return (
     <div
       data-slot="sheet-body"
+      // `data-base-ui-swipe-ignore` tells base-ui's drawer to skip
+      // pointer drags starting inside this region, so mouse-drag text
+      // selection doesn't kick off the sheet's swipe-to-dismiss.
+      // Header / footer / edges remain swipeable on touch.
+      data-base-ui-swipe-ignore=""
       className={cn(
         "flex flex-col gap-4 p-5 flex-1 min-h-0 overflow-y-auto",
         className,
@@ -333,5 +362,10 @@ export function SheetFooter({
     />
   );
 }
+
+// Explicit displayName so `hasChildOfType` can fall back on it when
+// Fast Refresh has torn the function identities apart.
+SheetHeader.displayName = "SheetHeader";
+SheetFooter.displayName = "SheetFooter";
 
 export { DrawerPrimitive as SheetPrimitive };

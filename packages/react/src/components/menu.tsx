@@ -20,7 +20,7 @@ import {
 
 type Density = "compact" | "comfortable";
 
-const MenuDensityContext = createContext<Density>("compact");
+const MenuDensityContext = createContext<Density>("comfortable");
 
 /* --------------------------------- Root -------------------------------- */
 
@@ -78,7 +78,7 @@ export interface MenuPopupProps
 }
 
 export function MenuPopup({
-  density = "compact",
+  density = "comfortable",
   side = "bottom",
   align = "start",
   sideOffset = 4,
@@ -105,12 +105,17 @@ export function MenuPopup({
           data-slot="menu-popup"
           data-mobile="true"
           className={cn(
-            "fixed inset-x-2 bottom-2 z-[80] flex flex-col overflow-hidden outline-none",
-            "rounded-[var(--radius-16)] bg-layer-1 border border-hairline shadow-modal",
-            "max-h-[calc(100dvh-1rem)] p-1",
+            // Centered on mobile: fixed at viewport center via
+            // top-1/2 / left-1/2 + translate. Full width minus 8px
+            // gutters left/right.
+            "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
+            "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
+            "max-h-[calc(100dvh-2rem)] p-1",
+            // Fade + slight upward drift on enter. Starts 8px below
+            // final center, animates up. translate-x-1/2 stays put.
             "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-            "data-starting-style:opacity-0 data-starting-style:translate-y-8",
-            "data-ending-style:opacity-0 data-ending-style:translate-y-8",
+            "data-starting-style:opacity-0 data-starting-style:translate-y-[calc(-50%+8px)]",
+            "data-ending-style:opacity-0 data-ending-style:translate-y-[calc(-50%+8px)]",
             className,
           )}
           {...props}
@@ -414,6 +419,7 @@ export function MenuRadioItem({
       value={value}
       disabled={disabled}
       label={label}
+      closeOnClick
       data-slot="menu-radio-item"
       className={cn(
         itemRow.base,

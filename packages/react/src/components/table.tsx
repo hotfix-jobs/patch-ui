@@ -37,7 +37,7 @@ export function Table({
       <div
         data-slot="table-container"
         className={cn(
-          "relative w-full overflow-hidden rounded-[var(--radius-12)] bg-layer-1 border border-hairline-strong",
+          "relative w-full overflow-hidden rounded-[var(--radius-8)] bg-layer-1 border border-hairline-strong",
           scrollable && "overflow-x-auto",
         )}
       >
