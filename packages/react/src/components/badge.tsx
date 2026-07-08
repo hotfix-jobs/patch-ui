@@ -48,9 +48,9 @@ export const badgeVariants = cva(
       { color: "warning", variant: "solid", class: "bg-warning text-warning-fg" },
       { color: "error",   variant: "solid", class: "bg-error text-error-fg" },
       { color: "default", variant: "soft", class: "bg-fill-2 text-ink-muted" },
-      { color: "success", variant: "soft", class: "bg-success/10 text-success" },
-      { color: "warning", variant: "soft", class: "bg-warning/10 text-warning" },
-      { color: "error",   variant: "soft", class: "bg-error/10 text-error" },
+      { color: "success", variant: "soft", class: "bg-success-soft-bg text-success-soft-fg" },
+      { color: "warning", variant: "soft", class: "bg-warning-soft-bg text-warning-soft-fg" },
+      { color: "error",   variant: "soft", class: "bg-error-soft-bg text-error-soft-fg" },
       // Outlined: no fill, hairline border. Semantic colors use a tinted
       // border + matching text; default falls back to the shared hairline.
       { color: "default", variant: "outlined", class: "border border-hairline text-ink-muted" },

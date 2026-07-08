@@ -42,6 +42,9 @@ import { Button } from "@patchui/react";
   Start Free Trial
 </Button>
 
+// Muted (chip / filter chrome). Keeps the variant's surface, mutes the label + icon.
+<Button variant="secondary" muted icon={<Globe />}>Visit site</Button>
+
 // Dismissible filter chip (click focuses, × removes)
 <Button
   size="sm"
@@ -88,6 +91,12 @@ import { Button } from "@patchui/react";
       type: "boolean",
       default: "false",
       description: "Adds a subtle elevation shadow. Typically paired with `shape=\"rounded\"` on marketing pages.",
+    },
+    {
+      name: "muted",
+      type: "boolean",
+      default: "false",
+      description: "Layers de-emphasized label + icon chrome on top of the variant. Idle label is `text-ink-subtle`, icon inherits the `iconMuted` recipe; hover lifts both to `text-ink`. Surface (bg + border) still comes from the base `variant`, so callers keep their chosen fill. Use for filter chips, role-family navigation chips, and link-cluster buttons that should read as chrome rather than as primary CTAs.",
     },
     {
       name: "onRemove",

@@ -58,6 +58,21 @@ export function ButtonDemo() {
       </div>
 
       <div>
+        <p className="mb-3 text-mini text-ink-muted">Muted (chip / filter chrome)</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button variant="secondary" muted icon={<Envelope className="h-4 w-4" />}>
+            Visit site
+          </Button>
+          <Button variant="secondary" muted icon={<Download className="h-4 w-4" />}>
+            Download
+          </Button>
+          <Button variant="tertiary" muted icon={<CaretDown className="h-4 w-4" />} iconPosition="right">
+            Filter
+          </Button>
+        </div>
+      </div>
+
+      <div>
         <p className="mb-3 text-mini text-ink-muted">Marketing pill shape</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button
