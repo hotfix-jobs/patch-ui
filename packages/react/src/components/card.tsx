@@ -38,7 +38,7 @@ export function Card({
 }: CardProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "relative flex rounded-[var(--radius-12)] text-ink",
+      "relative flex rounded-[var(--radius-8)] text-ink",
       direction === "column" ? "flex-col" : "flex-row",
       secondary ? "bg-fill-1" : "bg-layer-1",
       border && "border border-hairline",
@@ -46,6 +46,7 @@ export function Card({
       hoverable && [
         "cursor-pointer",
         secondary ? "hover:bg-layer-hover" : "hover:bg-layer-2",
+        "hover:shadow-card",
         focusRing,
       ],
       borderBetween &&

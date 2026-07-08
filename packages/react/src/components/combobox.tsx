@@ -318,7 +318,15 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
 /* -------------------------------- Popup -------------------------------- */
 
 export interface ComboboxPopupProps {
+  /** Applies to whichever popup renders (desktop or mobile).
+   *  Use for styling that makes sense in both contexts. */
   className?: string;
+  /** Desktop-only overrides. Trigger-anchored width lives here
+   *  (e.g. `w-[var(--anchor-width)]`) — it's meaningless for the
+   *  centered mobile modal, so we drop it on mobile. */
+  desktopClassName?: string;
+  /** Mobile-only overrides for the centered modal layout. */
+  mobileClassName?: string;
   side?: "top" | "bottom" | "left" | "right";
   align?: "start" | "center" | "end";
   sideOffset?: number;
@@ -327,6 +335,8 @@ export interface ComboboxPopupProps {
 
 export function ComboboxPopup({
   className,
+  desktopClassName,
+  mobileClassName,
   side = "bottom",
   align = "start",
   sideOffset = 6,
@@ -351,13 +361,21 @@ export function ComboboxPopup({
             data-slot="combobox-popup"
             data-mobile="true"
             className={cn(
-              "fixed inset-x-2 bottom-2 z-[80] flex flex-col overflow-hidden outline-none",
-              "rounded-[var(--radius-16)] bg-layer-1 border border-hairline shadow-modal",
-              "max-h-[calc(100dvh-1rem)]",
+              // Centered on mobile: fixed at viewport center via
+              // top-1/2 / left-1/2 + translate. Full width minus
+              // 8px gutters left/right.
+              "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
+              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
+              "max-h-[calc(100dvh-2rem)]",
+              // Fade + slight vertical slide from below the center on
+              // enter. `translate-y-[calc(-50%+8px)]` starts 8px below
+              // the final -50% center and animates up. translate-x-1/2
+              // stays put throughout.
               "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-              "data-starting-style:opacity-0 data-starting-style:translate-y-8",
-              "data-ending-style:opacity-0 data-ending-style:translate-y-8",
+              "data-starting-style:opacity-0 data-starting-style:translate-y-[calc(-50%+8px)]",
+              "data-ending-style:opacity-0 data-ending-style:translate-y-[calc(-50%+8px)]",
               className,
+              mobileClassName,
             )}
           >
             <ComboboxPrimitive.InputGroup
@@ -401,6 +419,7 @@ export function ComboboxPopup({
             "data-starting-style:opacity-0 data-starting-style:scale-95",
             "data-ending-style:opacity-0 data-ending-style:scale-95",
             className,
+            desktopClassName,
           )}
         >
           <ComboboxPrimitive.List className="min-h-0 flex-1 overflow-y-auto p-1">
@@ -452,7 +471,6 @@ export function ComboboxItem({
         "group",
         itemRow.base,
         itemRow.comfortable,
-        "md:min-h-7 md:px-2 md:py-1.5 md:text-small",
         "cursor-pointer gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         iconMuted,
         className,
@@ -535,7 +553,6 @@ export function ComboboxGroupLabel({
       className={cn(
         itemGroupLabel.base,
         itemGroupLabel.comfortable,
-        "md:px-2",
         className,
       )}
       {...props}

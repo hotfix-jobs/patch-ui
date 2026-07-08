@@ -216,7 +216,7 @@ function SelectPopupSurface({
           data-mobile="true"
           className={cn(
             "fixed inset-x-2 bottom-2 z-[80] flex flex-col overflow-hidden outline-none",
-            "rounded-[var(--radius-16)] bg-layer-1 border border-hairline shadow-modal",
+            "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
             "max-h-[calc(100dvh-1rem)] p-1",
             "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
             "data-starting-style:opacity-0 data-starting-style:translate-y-8",

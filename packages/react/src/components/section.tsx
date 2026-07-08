@@ -13,7 +13,7 @@ export function Section({
 }: useRender.ComponentProps<"section">): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex flex-col rounded-[var(--radius-12)] bg-layer-1 border border-hairline text-ink",
+      "flex flex-col rounded-[var(--radius-8)] bg-layer-1 border border-hairline text-ink",
       className,
     ),
     "data-slot": "section",
@@ -107,7 +107,7 @@ export function SectionFooter({
 }: SectionFooterProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex flex-wrap items-center justify-between gap-3 px-6 py-3.5 rounded-b-[calc(var(--radius-12)-1px)]",
+      "flex flex-wrap items-center justify-between gap-3 px-6 py-3.5 rounded-b-[calc(var(--radius-8)-1px)]",
       "border-t border-hairline",
       className,
     ),

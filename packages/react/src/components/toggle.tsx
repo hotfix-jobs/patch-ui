@@ -15,7 +15,7 @@ export const toggleVariants = cva(
     colorTransition,
   ].join(" "),
   {
-    defaultVariants: { size: "md", variant: "tertiary", shape: "square" },
+    defaultVariants: { size: "lg", variant: "tertiary", shape: "square" },
     variants: {
       size: {
         sm: "h-6 min-w-6 px-2.5 text-mini font-medium [&_svg:not([class*='size-'])]:size-3.5",
@@ -32,7 +32,7 @@ export const toggleVariants = cva(
           "bg-transparent text-ink-muted hover:bg-layer-hover hover:text-ink data-[pressed]:bg-layer-selected data-[pressed]:text-ink " +
           iconMuted,
         secondary:
-          "bg-transparent text-ink-muted border border-hairline hover:bg-layer-hover hover:text-ink hover:border-hairline-strong data-[pressed]:bg-layer-selected data-[pressed]:text-ink data-[pressed]:border-hairline-strong " +
+          "bg-layer-1 text-ink border border-hairline hover:bg-layer-2 hover:border-hairline-strong data-[pressed]:bg-layer-selected data-[pressed]:text-ink data-[pressed]:border-hairline-strong " +
           iconMuted,
       },
     },

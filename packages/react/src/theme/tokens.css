@@ -35,24 +35,23 @@
      true gray from white to black. The pattern mirrors developer-
      tool style dashboards where cards float on white via border
      alone; there is no color fill on layer-1 in light. */
-  --base:      #ffffff;
+  --base:      #fbfbfc;
 
   /* layer-1 is the default panel surface (Card, Modal, Menu popup,
      Combobox popup, Tooltip, Select popup, Input, Table container,
-     secondary Button chrome). Same value as base in light — the
-     hairline border alone signals the "lifted panel" state. layer-2
-     is a subtle darker step for hover on secondary Buttons and
-     Input hover companions. */
+     secondary Button chrome). Pure white against the subtle off-white
+     base gives cards a real lift. layer-2 is a subtle darker step for
+     hover on secondary Buttons and Input hover companions. */
   --layer-1:   #ffffff;
-  --layer-2:   #fafafa;
+  --layer-2:   #f5f5f7;
 
   /* Chip/fill rungs. fill-1 is a subtle chip that reads a nudge
      darker than the white surface (Toggle track, Badge, code chip,
      Switch off-track). fill-2 is the stronger indication for Toggle
      pressed, active pill Tab, skeleton block, striped table hover,
      menu item highlight. */
-  --fill-1:    #fafafa;
-  --fill-2:    #ededed;
+  --fill-1:    #f0f0f1;
+  --fill-2:    #e6e6e8;
 
   /* Adaptive interaction-state overlays. rgba (not opaque) so they
      darken whatever surface sits underneath: base, layer-1, fill-1,
@@ -105,10 +104,22 @@
   --warning-hover:  #D69800;
   --warning-active: #A97007;
   --warning-fg:     #171717;
-  --success:        #397C3B;
-  --success-hover:  #2D602D;
-  --success-active: #234A23;
+  --success:        #1A7F37;
+  --success-hover:  #166A2E;
+  --success-active: #115523;
   --success-fg:     #FFFFFF;
+
+  /* Semantic soft-variant surfaces. Split per theme so the Badge / chip
+     "soft" treatment stays legible on both #ffffff-ish light bases and
+     #0c0c0c-ish dark bases (a single translucent tint of the -solid
+     color goes near-invisible against near-black). Light tokens ship
+     here as defaults; the .dark block overrides them. */
+  --success-soft-bg: #E6F6EB;
+  --success-soft-fg: #1A7F37;
+  --warning-soft-bg: #FEF3C7;
+  --warning-soft-fg: #78350F;
+  --error-soft-bg:   #FEE2E2;
+  --error-soft-fg:   #7F1D1D;
 
   /* Focus. 2px ring offset 2px outside the element border. The color
      reads --primary so the ring is monochrome ink by default and picks
@@ -221,13 +232,13 @@
      further by hairlines that stay under the card body rather
      than competing with it. Pure #000 avoided to prevent banding
      on 6-bit panels. */
-  --base:      #0a0a0a;
+  --base:      #000000;
 
-  --layer-1:   #0d0d0d;
-  --layer-2:   #131313;
+  --layer-1:   #0c0c0c;
+  --layer-2:   #141414;
 
-  --fill-1:    #131313;
-  --fill-2:    #262626;
+  --fill-1:    #151515;
+  --fill-2:    #232323;
 
   /* Overlays stay rgba so they adapt to any surface underneath,
      unlike the solid hex hairlines. */
@@ -246,6 +257,17 @@
   /* Primary reinherits the inverted ink/canvas automatically through
      the var chain; the entries above already updated. Consumers that
      override --primary in light also override in dark. */
+
+  /* Semantic soft-variant surfaces. Dark tokens are chosen so a soft
+     Badge on `--base` shows a visible tint (unlike a single translucent
+     -solid green which goes near-invisible on near-black). Foreground
+     tokens brighten to stay readable on the dark tint. */
+  --success-soft-bg: #0F2E1A;
+  --success-soft-fg: #4ADE80;
+  --warning-soft-bg: #2E1F00;
+  --warning-soft-fg: #FCD34D;
+  --error-soft-bg:   #3B0F0F;
+  --error-soft-fg:   #FCA5A5;
 
   /* --focus-ring-color inherits var(--primary), which now resolves to
      the dark-mode ink (#EDEDED) automatically -- no explicit dark-mode
@@ -347,6 +369,12 @@
   --color-success-hover:  var(--success-hover);
   --color-success-active: var(--success-active);
   --color-success-fg:     var(--success-fg);
+  --color-success-soft-bg: var(--success-soft-bg);
+  --color-success-soft-fg: var(--success-soft-fg);
+  --color-warning-soft-bg: var(--warning-soft-bg);
+  --color-warning-soft-fg: var(--warning-soft-fg);
+  --color-error-soft-bg:   var(--error-soft-bg);
+  --color-error-soft-fg:   var(--error-soft-fg);
 
   --color-scrim: var(--scrim);
 
