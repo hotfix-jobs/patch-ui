@@ -26,15 +26,7 @@ export function SwitchDemo() {
         </div>
       </div>
 
-      <div className="space-y-3">
-        <SectionLabel>Variants</SectionLabel>
-        <div className="flex items-center gap-4">
-          <Switch defaultChecked />
-          <Switch variant="success" defaultChecked />
-        </div>
-      </div>
-
-      <div className="space-y-3">
+<div className="space-y-3">
         <SectionLabel>With icons in the thumb</SectionLabel>
         <div className="flex items-center gap-3">
           <Switch

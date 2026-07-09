@@ -7,7 +7,7 @@ export const metadata = { title: "Progress" };
 
 Determinate progress bar for work whose total is knowable: file uploads, multi-step setup, build steps. Four intent variants, three preset heights, plus numeric `height`/`width` overrides for full control.
 
-For short indeterminate waits use `Spinner`; for inline copy use `Spinner variant="dots"`.
+For short indeterminate waits reach for `Spinner`.
 
 <Install name="progress" />
 
@@ -103,7 +103,7 @@ import { Progress } from "@patchui/react";
 - Pair the bar with text that names the work and units: `Uploading 12 of 30 files`, `Building · 1.2 GB / 4 GB`. The bar alone doesn't say what's progressing.
 - Pass the real `max` for the ceiling. Hardcoding 100 loses meaning when the ceiling is variable.
 - Once the bar fills, swap to a completion state (toast, success row, redirect). Don't leave the filled bar sitting on screen with "Complete" tacked on.
-- Indeterminate mode animates a sweeping band. Reserve it for waits with no measurable total. Prefer `Spinner` (ring or dots variant) for sub-second waits.
+- Indeterminate mode animates a sweeping band. Reserve it for waits with no measurable total. Prefer `Spinner` for sub-second waits.
 - Throttle rapid `value` updates in code: updating every animation frame will flood screen readers with `aria-valuenow` changes.
 - The fill transitions via CSS `transition-[width]` at overlay duration for a smooth animation without pulling in a motion library.
 </Callout>

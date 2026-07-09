@@ -1,14 +1,14 @@
 "use client";
 
-import { Spinner } from "@patchui/react";
+import { Button, Spinner } from "@patchui/react";
 
-const SIZES = ["xs", "sm", "md", "lg", "xl", "2xl", "3xl", "4xl"] as const;
+const SIZES = ["sm", "md", "lg"] as const;
 
 export function SpinnerDemo() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <p className="mb-3 text-mini text-ink-muted">Sizes (ring)</p>
+        <p className="mb-3 text-mini text-ink-muted">Sizes</p>
         <div className="flex flex-wrap items-center gap-6">
           {SIZES.map((size) => (
             <div key={size} className="flex flex-col items-center gap-2">
@@ -20,41 +20,19 @@ export function SpinnerDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-mini text-ink-muted">
-          Dots variant: inline for copy waits
-        </p>
-        <div className="flex flex-col gap-3 text-small text-ink">
-          <p className="inline-flex items-center gap-1.5">
-            Saving <Spinner variant="dots" size="sm" />
-          </p>
-          <p className="inline-flex items-center gap-1.5">
-            Deploying <Spinner variant="dots" />
-          </p>
-          <p className="inline-flex items-center gap-1.5">
-            Building <Spinner variant="dots" size="lg" />
-          </p>
+        <p className="mb-3 text-mini text-ink-muted">Inside a Button (via `loading`)</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button loading size="sm">Saving</Button>
+          <Button loading>Saving</Button>
+          <Button loading size="lg" variant="secondary">Saving</Button>
         </div>
       </div>
 
       <div>
-        <p className="mb-3 text-mini text-ink-muted">Color inheritance</p>
-        <div className="flex flex-wrap items-center gap-6 text-small">
-          <div className="flex items-center gap-2 text-ink">
-            <Spinner />
-            <span>Default</span>
-          </div>
-          <div className="flex items-center gap-2 text-ink-muted">
-            <Spinner />
-            <span>Muted</span>
-          </div>
-          <div className="flex items-center gap-2 text-[var(--error)]">
-            <Spinner />
-            <span>Error</span>
-          </div>
-          <div className="flex items-center gap-2 text-[var(--success)]">
-            <Spinner />
-            <span>Success</span>
-          </div>
+        <p className="mb-3 text-mini text-ink-muted">Inline with text</p>
+        <div className="flex items-center gap-2 text-small text-ink-muted">
+          <Spinner size="sm" />
+          <span>Loading recent activity</span>
         </div>
       </div>
     </div>
