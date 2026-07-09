@@ -28,3 +28,7 @@ coverage/
 tmp/
 .superpowers/
 /registry/
+
+# AI tool metadata (kept out of the public repo)
+CLAUDE.md
+AGENTS.md
