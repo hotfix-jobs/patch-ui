@@ -23,7 +23,7 @@ export const toggleVariants = cva(
         lg: "h-10 min-w-10 px-4 text-regular font-medium [&_svg:not([class*='size-'])]:size-5",
       },
       shape: {
-        square: "rounded-[var(--radius-6)]",
+        square: "rounded-[var(--radius-8)]",
         pill: "rounded-full",
         circle: "rounded-full aspect-square !px-0",
       },

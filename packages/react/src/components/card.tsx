@@ -7,53 +7,53 @@ import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
 export interface CardProps extends useRender.ComponentProps<"div"> {
-  /** Show a visible border. */
-  border?: boolean;
-  /** Add a subtle hover state (bg shift + optional border darken). */
+  /** Card treatment.
+   *  `flat` (default) — transparent frame with hairline border. The quiet default for search/list/content surfaces.
+   *  `elevated` — bg-layer-1 with soft edge. Opt-in for auth cards, marketing lifts, or any surface that should read as a distinct object. */
+  variant?: "flat" | "elevated";
+  /** Add interactive cursor/focus treatment plus a quiet border emphasis. */
   hoverable?: boolean;
-  /** Add an elevation shadow. */
+  /** Render `shadow-card` in light mode (dark stays flat). Defaults to
+   *  `true` for `elevated`, `false` for `flat`. Set explicitly to override. */
   shadow?: boolean;
-  /** Sit on the next surface step up. Use for cards nested inside another card. */
-  secondary?: boolean;
   /** Render hairline dividers between direct children (list container). */
   borderBetween?: boolean;
   /** Layout direction. */
   direction?: "column" | "row";
-  /** Border adopts `--primary` and sets `aria-selected` for definitive selected state. */
+  /** Marks the card as selected: primary border in both themes, aria-selected. */
   selected?: boolean;
 }
 
-/** Surface primitive. For structured header/content/footer layouts, use `Section`. */
+/** Surface primitive. For labeled settings panels with rows, use `Section`. */
 export function Card({
   className,
-  border = true,
+  variant = "flat",
   hoverable,
   shadow,
-  secondary,
   borderBetween,
   direction = "column",
   selected,
   render,
   ...props
 }: CardProps): React.ReactElement {
+  const resolvedShadow = shadow ?? variant === "elevated";
   const defaultProps = {
     className: cn(
       "relative flex rounded-[var(--radius-8)] text-ink",
       direction === "column" ? "flex-col" : "flex-row",
-      secondary ? "bg-fill-1" : "bg-layer-1",
-      border && "border border-hairline",
-      shadow && "shadow-card",
+      variant === "flat" && "border border-hairline",
+      variant === "elevated" && "bg-layer-1 border border-hairline-soft",
+      resolvedShadow && "shadow-card dark:shadow-none",
       hoverable && [
         "cursor-pointer",
-        secondary ? "hover:bg-layer-hover" : "hover:bg-layer-2",
-        "hover:shadow-card",
+        "hover:border-hairline-tertiary",
         focusRing,
       ],
       borderBetween &&
         (direction === "column"
           ? "[&>*+*]:border-t [&>*+*]:border-hairline"
           : "[&>*+*]:border-l [&>*+*]:border-hairline"),
-      selected && "!border-primary",
+      selected && "border border-primary",
       colorTransition,
       className,
     ),

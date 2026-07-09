@@ -6,6 +6,7 @@ import {
   MagnifyingGlass,
   X,
 } from "@phosphor-icons/react/dist/ssr";
+import { RemoveScroll } from "react-remove-scroll";
 import { createContext, forwardRef, useContext, useMemo } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
@@ -129,7 +130,8 @@ export function Combobox({
         multiple: true as const,
         value: selectedValues as never,
         onValueChange: onSelectedValuesChange
-          ? (next: unknown) => onSelectedValuesChange((next as unknown[]) ?? [])
+          ? (next: unknown) =>
+              onSelectedValuesChange((next as unknown[]) ?? [])
           : undefined,
       }
     : {};
@@ -182,6 +184,9 @@ function ChevronIndicator({
 export interface ComboboxInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "prefix"> {
   size?: InputSize;
+  /** Visual treatment. `control` matches Button secondary; `soft`
+   *  is a quieter fill-only treatment for dense embedded pickers. */
+  variant?: "control" | "soft";
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   /** Hide the trailing chevron. */
@@ -238,6 +243,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
   function ComboboxInput(
     {
       size = "md",
+      variant = "control",
       prefix,
       suffix,
       hideChevron,
@@ -251,7 +257,11 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
     },
     forwardedRef,
   ) {
-    const shape = rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
+    const shape = rounded ? "rounded-full" : "rounded-[var(--radius-8)]";
+    const chrome =
+      variant === "soft"
+        ? "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-fill-2"
+        : "border border-hairline bg-layer-1 hover:border-hairline-strong hover:bg-layer-2 has-focus-visible:border-primary";
     const trailing = (clearable || !hideChevron || suffix) ? (
       <ComboboxAffix side="end">
         <span className={cn("inline-flex items-center gap-1.5", clearable && "group")}>
@@ -285,10 +295,8 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
         className={cn(
           "group/combobox-input relative inline-flex w-full items-center overflow-hidden text-ink",
           shape,
-          "bg-layer-1 border border-hairline",
+          chrome,
           "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          "hover:border-hairline-strong",
-          "has-focus-visible:border-primary",
           "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
           error && "!border-error",
           className,
@@ -348,6 +356,7 @@ export function ComboboxPopup({
   if (isMobile) {
     return (
       <ComboboxPrimitive.Portal>
+        <RemoveScroll>
         <ComboboxPrimitive.Backdrop
           data-slot="combobox-backdrop"
           className={cn(
@@ -397,6 +406,7 @@ export function ComboboxPopup({
             </ComboboxPrimitive.List>
           </ComboboxPrimitive.Popup>
         </ComboboxPrimitive.Positioner>
+        </RemoveScroll>
       </ComboboxPrimitive.Portal>
     );
   }

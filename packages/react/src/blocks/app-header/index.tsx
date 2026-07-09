@@ -50,11 +50,13 @@ function extractSlots(children: React.ReactNode): {
   nav: React.ReactNode;
   right: React.ReactNode;
   tools: React.ReactNode;
+  mobileTop: React.ReactNode;
 } {
   let brand: React.ReactNode = null;
   let nav: React.ReactNode = null;
   let right: React.ReactNode = null;
   let tools: React.ReactNode = null;
+  let mobileTop: React.ReactNode = null;
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) return;
     const type = child.type as { displayName?: string };
@@ -66,9 +68,14 @@ function extractSlots(children: React.ReactNode): {
       right = child;
     } else if (type === AppHeaderTools || type.displayName === "AppHeaderTools") {
       tools = child;
+    } else if (
+      type === AppHeaderMobileTop ||
+      type.displayName === "AppHeaderMobileTop"
+    ) {
+      mobileTop = child;
     }
   });
-  return { brand, nav, right, tools };
+  return { brand, nav, right, tools, mobileTop };
 }
 
 /* --------------------------- root --------------------------- */
@@ -78,12 +85,18 @@ export interface AppHeaderProps extends useRender.ComponentProps<"header"> {
   bordered?: boolean;
   /** Pin the header to the top of its scroll container. Default false. */
   sticky?: boolean;
+  /** Optional third sub-row rendered below the top row (and mobile
+   *  tools sub-row). Used by list pages to bring their filter toolbar
+   *  into the header shell so a single motion collapses everything
+   *  together on scroll. */
+  filterToolbar?: React.ReactNode;
 }
 
 export function AppHeader({
   className,
   bordered = true,
   sticky = false,
+  filterToolbar,
   render,
   children,
   ...props
@@ -91,7 +104,7 @@ export function AppHeader({
   const [open, setOpen] = useState(false);
   const panelId = useId();
 
-  const { brand, nav, right, tools } = useMemo(
+  const { brand, nav, right, tools, mobileTop } = useMemo(
     () => extractSlots(children),
     [children],
   );
@@ -124,14 +137,32 @@ export function AppHeader({
               {tools}
             </div>
           )}
-          <AppHeaderRightWithTrigger>{right}</AppHeaderRightWithTrigger>
+          <AppHeaderRightWithTrigger mobileTop={mobileTop}>{right}</AppHeaderRightWithTrigger>
         </div>
         {tools && (
           <div
-            className="flex items-center gap-2 border-t border-hairline px-4 pb-3 pt-2 md:hidden"
+            className={cn(
+              "flex items-center gap-2 px-4 pb-3 pt-2 md:hidden",
+              // Row divider is tied to the same `bordered` state as
+              // the shell's bottom border so header chrome shows /
+              // hides its edges together (e.g., borderless at
+              // scroll-top, all borders on once the user starts
+              // scrolling).
+              bordered && "border-t border-hairline",
+            )}
             data-slot="app-header-tools-mobile"
           >
             {tools}
+          </div>
+        )}
+        {filterToolbar && (
+          <div
+            className={cn(
+              bordered && "border-t border-hairline",
+            )}
+            data-slot="app-header-filter-toolbar"
+          >
+            {filterToolbar}
           </div>
         )}
       </>
@@ -329,16 +360,36 @@ export function AppHeaderTools({
 }
 AppHeaderTools.displayName = "AppHeaderTools";
 
-function AppHeaderRightWithTrigger({
+/** Content pinned into the mobile top bar just before the hamburger
+ *  trigger. Hidden on desktop and never rendered in the mobile panel
+ *  footer. Meant for one-tap actions (e.g. notification bell) that
+ *  should stay reachable without opening the panel. */
+export function AppHeaderMobileTop({
   children,
 }: {
+  children?: React.ReactNode;
+}): React.ReactElement {
+  return <>{children}</>;
+}
+AppHeaderMobileTop.displayName = "AppHeaderMobileTop";
+
+function AppHeaderRightWithTrigger({
+  children,
+  mobileTop,
+}: {
   children: React.ReactNode;
+  mobileTop?: React.ReactNode;
 }): React.ReactElement {
   const { open, setOpen, panelId, navChildren } = useAppHeaderContext();
   const hasNav = Children.count(navChildren) > 0;
   return (
     <div className="ms-auto flex items-center gap-2" data-slot="app-header-right">
       <span className={hasNav ? "hidden md:contents" : "contents"}>{children}</span>
+      {hasNav && mobileTop && (
+        <span className="md:hidden contents" data-slot="app-header-mobile-top">
+          {mobileTop}
+        </span>
+      )}
       {hasNav && (
         <button
           type="button"
@@ -398,7 +449,7 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
     ? { duration: 0 }
     : { duration: 0.22, ease: [0.22, 1, 0.36, 1] as const };
   const bar =
-    "absolute left-1/2 top-1/2 h-[1.5px] w-[16px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-current";
+    "absolute left-1/2 top-1/2 h-px w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-current";
 
   return (
     <span
@@ -441,9 +492,6 @@ function AppHeaderMobilePanel(): React.ReactPortal | null {
 
   if (!mounted) return null;
 
-  // Panel opens BELOW the main header (which stays visible with the
-  // hamburger morphed to X). Consumers set `--header-height` on :root
-  // to control the offset; 64px fallback matches the default header.
   return createPortal(
     <AnimatePresence>
       {open && (

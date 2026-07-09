@@ -1,6 +1,6 @@
 # @patchui/react
 
-The source of truth for Patch UI: a React component library built on [Base UI](https://base-ui.com/) primitives with Tailwind CSS v4 and a flat design-token system (`--base`, `--layer-*`, `--fill-*`, `--ink*`, `--hairline*`, `--primary`, `--radius-*`, `--duration-*`; type as separate `--font-size-*` + `--font-weight-*` axes).
+The source of truth for Patch UI: a React component library built on [Base UI](https://base-ui.com/) primitives with Tailwind CSS v4 and a near-flat design-token system (`--base`, `--layer-*`, `--fill-*`, `--ink*`, `--hairline-soft` / `--hairline` / `--hairline-strong` / `--hairline-tertiary` (all alpha), `--primary`, `--radius-4/6/8/10/12/16/full`, `--duration-*`; type as separate `--font-size-*` + `--font-weight-*` axes). Neutral scale is Radix Colors Gray (Phase 1 preview).
 
 > This package is **not published**. Patch UI is distributed **copy-in**: components are copied into your own repo with the shadcn CLI, so you own and can edit the code. Docs: **[ui.hotfix.jobs](https://ui.hotfix.jobs)**.
 
@@ -68,12 +68,12 @@ Tokens live in `src/theme/tokens.css` as plain CSS custom properties. Override a
 | Fills (tinted chip fills) | `--fill-1`, `--fill-2` |
 | Interaction overlays | `--layer-hover`, `--layer-selected` |
 | Ink (text) | `--ink`, `--ink-muted`, `--ink-subtle`, `--ink-tertiary` |
-| Hairlines | `--hairline`, `--hairline-strong`, `--hairline-tertiary` |
+| Hairlines (all alpha, Radix grayA 3/6/7/8) | `--hairline-soft` (whisper edge for elevated Card), `--hairline` (default), `--hairline-strong`, `--hairline-tertiary` |
 | Primary (monochrome) | `--primary`, `--on-primary`, `--primary-hover`, `--primary-active` |
-| Semantic status | `--error*`, `--warning*`, `--success*` (each with `-hover`, `-active`, `-fg`) |
-| Focus | `--focus-ring-color`, `--focus-ring-width`, `--focus-ring-offset` |
-| Radius | `--radius-4/6/12/16/full` |
-| Shadow | `--shadow-card`, `--shadow-menu`, `--shadow-modal`, `--shadow-tooltip` |
+| Semantic status | `--error*`, `--warning*`, `--success*` (each with `-hover`, `-active`, `-fg`, plus `-soft-bg` / `-soft-fg` theme-adaptive pair for the soft Badge variant) |
+| Focus | `--focus-ring-color` (defaults to `var(--primary)`), `--focus-ring-width`, `--focus-ring-offset` |
+| Radius | `--radius-4/6/8/10/12/16/full` |
+| Shadow | `--shadow-card` (soft two-stack in light), `--shadow-menu`, `--shadow-modal`, `--shadow-tooltip` |
 | Motion | `--duration-state`, `--duration-overlay`, `--ease-standard` |
 | Type | `--font-size-{micro,mini,small,regular,large,title3,title2,title1}`, `--font-weight-{light,normal,medium,semibold,bold}` |
 

@@ -7,40 +7,31 @@ export function CardDemo() {
   return (
     <div className="flex w-full flex-col gap-8">
       <div className="space-y-3">
-        <SectionLabel>Default (border on)</SectionLabel>
+        <SectionLabel>Flat (default)</SectionLabel>
         <Card className="p-4 max-w-sm">
-          <p className="text-small text-ink">A simple bordered card.</p>
+          <p className="text-small text-ink">
+            Transparent frame with a hairline border. Quiet default for
+            search/list/content surfaces.
+          </p>
         </Card>
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Bare (border={"{false}"})</SectionLabel>
-        <Card border={false} className="p-4 max-w-sm">
-          <p className="text-small text-ink">Subtle bg only, no border.</p>
+        <SectionLabel>Elevated</SectionLabel>
+        <Card variant="elevated" className="p-4 max-w-sm">
+          <p className="text-small text-ink">
+            Fills with <code>bg-layer-1</code>, soft edge, and a light lift
+            shadow (light only). Opt-in for auth cards, marketing lifts, or any
+            surface that should read as a distinct object.
+          </p>
         </Card>
       </div>
 
       <div className="space-y-3">
         <SectionLabel>Hoverable</SectionLabel>
         <Card hoverable className="p-4 max-w-sm">
-          <p className="text-small text-ink">Hover to see the bg and border shift.</p>
-        </Card>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>With shadow</SectionLabel>
-        <Card shadow className="p-4 max-w-sm">
-          <p className="text-small text-ink">Elevated with shadow-card.</p>
-        </Card>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Secondary surface</SectionLabel>
-        <Card secondary className="p-4 max-w-sm">
           <p className="text-small text-ink">
-            Nested surface: uses <code>--fill-1</code> instead of{" "}
-            <code>--layer-1</code>, so it reads as a tinted chip inside a
-            parent panel.
+            Hover to see the border emphasis (quiet — no bg shift).
           </p>
         </Card>
       </div>

@@ -57,8 +57,9 @@ import { Button } from "@patchui/react";
 Wraps a trigger (usually a `Button`) that dismisses the popover on click. Compose via `render`.
 
 <Callout title="Notes">
-- The default `align="center"` is right for a triggerbelow-header. For an icon button in the top-right of a header (bell icon), pass `align="end"` so the popover doesn't overflow.
-- Set width on `PopoverContent` via className (`w-72`, `w-[360px]`). Default `min-w-[220px]` keeps small popovers legible.
+- The default `align="center"` is right for a trigger below a header. For an icon button in the top-right of a header (bell icon), pass `align="end"` so the popover doesn't overflow.
+- Set width on `PopoverContent` via className (`w-72`, `w-[360px]`). Default `min-w-[220px]` keeps small popovers legible. Prefix with `md:` for a desktop-only width so the mobile centered treatment fills the viewport width.
 - The popover content region has no built-in padding. Pass `p-4` (for a form) or `p-0` (for a list that carries its own row padding).
+- **Mobile:** below `md`, `PopoverContent` automatically switches to a centered-modal presentation with a backdrop and `RemoveScroll` body lock — the anchored `side`/`align`/`sideOffset` props are ignored and the popover fills `w-[calc(100vw-1rem)]` centered at the viewport. Consumers don't need to opt in.
 - Popovers don't trap focus by default. Set `modal` on `<Popover>` if you want the surrounding page inert while the popover is open.
 </Callout>

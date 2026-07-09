@@ -69,12 +69,12 @@ export function SheetTrigger(props: SheetTriggerProps): React.ReactElement {
 
 const SIDE_LAYOUT: Record<SheetSide, string> = {
   right:
-    "top-0 bottom-0 right-0 w-[85vw] max-w-md border-l border-hairline rounded-l-[var(--radius-10)]",
+    "top-0 bottom-0 right-0 w-[85vw] max-w-md border-l border-hairline rounded-l-[var(--radius-12)]",
   left:
-    "top-0 bottom-0 left-0 w-[85vw] max-w-md border-r border-hairline rounded-r-[var(--radius-10)]",
-  top: "top-0 left-0 right-0 border-b border-hairline rounded-b-[var(--radius-10)]",
+    "top-0 bottom-0 left-0 w-[85vw] max-w-md border-r border-hairline rounded-r-[var(--radius-12)]",
+  top: "top-0 left-0 right-0 border-b border-hairline rounded-b-[var(--radius-12)]",
   bottom:
-    "bottom-0 left-0 right-0 border-t border-hairline rounded-t-[var(--radius-10)]",
+    "bottom-0 left-0 right-0 border-t border-hairline rounded-t-[var(--radius-12)]",
 };
 
 const SIDE_ENTER: Record<SheetSide, string> = {
@@ -250,10 +250,15 @@ export function SheetHeader({
   children,
   ...props
 }: SheetHeaderProps): React.ReactElement {
-  const resolvedTrailing =
-    trailing !== undefined ? trailing : hideClose ? null : <SheetClose />;
-  const isRow = leading != null || resolvedTrailing != null;
+  // Row layout is reserved for breadcrumb-y headers where the caller
+  // passes leading content (nav crumb, back button, section label).
+  // Everything else uses the stacked title + description layout, and
+  // the auto SheetClose sits absolute in the top-right so it doesn't
+  // force the header into row mode.
+  const isRow = leading != null || trailing !== undefined;
   if (isRow) {
+    const resolvedTrailing =
+      trailing !== undefined ? trailing : hideClose ? null : <SheetClose />;
     return (
       <div
         data-slot="sheet-header"
@@ -279,12 +284,13 @@ export function SheetHeader({
     <div
       data-slot="sheet-header"
       className={cn(
-        "flex flex-col gap-1 border-b border-hairline px-5 py-4",
+        "relative flex flex-col gap-1 border-b border-hairline px-5 py-4",
         className,
       )}
       {...props}
     >
       {children}
+      {!hideClose && <SheetClose className="absolute top-2 end-2" />}
     </div>
   );
 }

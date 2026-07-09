@@ -76,7 +76,32 @@ import {
 
 ## Props
 
-### Section, SectionHeader, SectionTitle, SectionSubtitle, SectionContent, SectionFooterStatus, SectionFooterActions
+### Section
+
+<PropsTable
+  props={[
+    {
+      name: "variant",
+      type: '"flat" | "elevated"',
+      default: '"flat"',
+      description: "`flat` (default) is a transparent frame with a hairline border — inherits whatever the container surface is. Use for settings pages sitting on `bg-base`. `elevated` fills with `--layer-1` for surfaces that need to define themselves against a busier background (nested inside a Card, on a colored panel).",
+    },
+    {
+      name: "className",
+      type: "string",
+      default: "-",
+      description: "Additional CSS classes.",
+    },
+    {
+      name: "render",
+      type: "RenderProp<'section'>",
+      default: "-",
+      description: "Polymorphic render prop.",
+    },
+  ]}
+/>
+
+### SectionHeader, SectionTitle, SectionSubtitle, SectionContent, SectionFooterStatus, SectionFooterActions
 
 Each accepts `className` for overrides and `render` for polymorphic rendering (change the underlying element while keeping the styling).
 
@@ -103,5 +128,5 @@ Each accepts `className` for overrides and `render` for polymorphic rendering (c
 - Section is opinionated on layout: `SectionFooter` uses `justify-between`, so status stretches left and actions stretch right. Skip either side and the other aligns naturally.
 - When only actions are present (no status text), the buttons will right-align: no need to add a spacer.
 - Section is a `<section>` element; `SectionTitle` renders as `<h3>` by default. If the parent already has an `<h2>`, that keeps the outline clean. Adjust with `render={<h2 />}` if the heading level needs to shift.
-- For general-purpose surfaces (nested cards, hoverable rows, dashed drop zones), reach for `<Card>`: it composes with `border` / `hoverable` / `shadow` / `secondary` / `borderBetween` boolean props.
+- For general-purpose surfaces (nested cards, hoverable rows, dashed drop zones), reach for `<Card>`: it exposes the same `variant: "flat" | "elevated"` axis plus `hoverable` / `borderBetween`.
 </Callout>

@@ -15,7 +15,7 @@ export const badgeVariants = cva(
     defaultVariants: {
       size: "md",
       color: "default",
-      shape: "pill",
+      shape: "rounded",
       variant: "soft",
     },
     variants: {

@@ -50,7 +50,7 @@ export function SearchInput({
             type="button"
             onClick={handleClear}
             aria-label="Clear search"
-            className="inline-flex items-center justify-center rounded-[var(--radius-6)] text-ink-muted hover:text-ink outline-none focus-visible:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]"
+            className="inline-flex items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:text-ink outline-none focus-visible:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]"
             data-slot="search-input-clear"
           >
             <X className="size-3.5" />

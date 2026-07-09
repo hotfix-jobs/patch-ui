@@ -211,11 +211,11 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
                   onClick={action.onClick}
                   className={cn(
                     "mt-2 inline-flex items-center justify-center",
-                    "rounded-[var(--radius-6)] border border-hairline",
+                    "rounded-[var(--radius-8)] border border-hairline",
                     "bg-layer-1 px-2.5 py-1",
                     "text-small font-medium text-ink",
                     "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-                    "hover:bg-layer-2",
+                    "hover:bg-layer-2 hover:border-hairline-strong",
                     focusRing,
                   )}
                   data-slot="toast-action"

@@ -1,6 +1,6 @@
 # Patch UI
 
-A React component library built on [Base UI](https://base-ui.com/) primitives and Tailwind CSS v4, with a crisp-minimal design language: a near-black flat `--base` with a hair of cool chroma, two honest surface families (`--layer-*` for lifted panels + popups + control chrome, `--fill-*` for tinted chip fills), softer hairline borders, and a monochrome primary that consumers override for brand.
+A React component library built on [Base UI](https://base-ui.com/) primitives and Tailwind CSS v4, with a crisp-minimal design language: a Radix-Gray neutral scale (`--base` #fcfcfc light / #0a0a0a dark), two surface families (`--layer-*` for lifted panels + popups + control chrome, `--fill-*` for tinted chip fills), alpha hairline borders (whisper-weight `--hairline-soft` for elevated Cards, standard `--hairline` for inputs and menus), and a monochrome primary that consumers override for brand.
 
 Patch UI is **copy-in**: you add a component and its source lands in your own repo, fully yours to edit. There is no npm package to install, no version to bump, no Tailwind purge config to maintain.
 

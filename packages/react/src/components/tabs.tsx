@@ -7,12 +7,12 @@ import { cn } from "../utils";
 import { focusRing } from "../recipes";
 import { Tooltip } from "./tooltip";
 
-/** Tabs compound component with underline or pill variants. */
+/** Folder-tabs: active tab has a rounded top with hairline top+sides,
+ *  and pulls -1px below the container line so its fill covers the line
+ *  under it (the classic "manila folder" merge with the panel). */
 
-type TabsVariant = "underline" | "pill";
 type TabsOrientation = "horizontal" | "vertical";
 
-const TabsVariantContext = createContext<TabsVariant>("underline");
 const TabsOrientationContext = createContext<TabsOrientation>("horizontal");
 
 /* ---------------------------------- Root --------------------------------- */
@@ -25,7 +25,6 @@ export interface TabsProps
   value?: string;
   defaultValue?: string;
   onValueChange?: (value: string) => void;
-  variant?: TabsVariant;
   orientation?: TabsOrientation;
 }
 
@@ -33,31 +32,30 @@ export function Tabs({
   value,
   defaultValue,
   onValueChange,
-  variant = "underline",
   orientation = "horizontal",
   className,
   children,
   ...props
 }: TabsProps): React.ReactElement {
   return (
-    <TabsVariantContext.Provider value={variant}>
-      <TabsOrientationContext.Provider value={orientation}>
-        <TabsPrimitive.Root
-          value={value}
-          defaultValue={defaultValue}
-          onValueChange={
-            onValueChange ? (next) => onValueChange(String(next)) : undefined
-          }
-          orientation={orientation}
-          data-slot="tabs"
-          data-variant={variant}
-          className={className}
-          {...props}
-        >
-          {children}
-        </TabsPrimitive.Root>
-      </TabsOrientationContext.Provider>
-    </TabsVariantContext.Provider>
+    <TabsOrientationContext.Provider value={orientation}>
+      <TabsPrimitive.Root
+        value={value}
+        defaultValue={defaultValue}
+        onValueChange={
+          onValueChange ? (next) => onValueChange(String(next)) : undefined
+        }
+        orientation={orientation}
+        data-slot="tabs"
+        className={cn(
+          orientation === "vertical" && "flex gap-0",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </TabsPrimitive.Root>
+    </TabsOrientationContext.Provider>
   );
 }
 
@@ -70,7 +68,6 @@ export function TabsList({
   children,
   ...props
 }: TabsListProps): React.ReactElement {
-  const variant = useContext(TabsVariantContext);
   const orientation = useContext(TabsOrientationContext);
 
   return (
@@ -79,30 +76,13 @@ export function TabsList({
       data-orientation={orientation}
       className={cn(
         "relative flex",
-        variant === "underline" && [
-          orientation === "horizontal"
-            ? "items-center gap-6 border-b border-hairline-strong"
-            : "flex-col items-stretch gap-4 border-l border-hairline-strong",
-        ],
-        variant === "pill" && [
-          "gap-1",
-          orientation === "vertical" && "flex-col items-stretch",
-        ],
+        orientation === "horizontal"
+          ? "items-end gap-1 border-b border-hairline"
+          : "flex-col items-stretch gap-1 border-r border-hairline",
         className,
       )}
       {...props}
     >
-      {variant === "underline" && (
-        <TabsPrimitive.Indicator
-          data-slot="tabs-indicator"
-          className={cn(
-            "absolute bg-ink transition-[left,top,width,height] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-            orientation === "horizontal"
-              ? "-bottom-px h-[2px] left-[var(--active-tab-left)] w-[var(--active-tab-width)]"
-              : "-left-px w-[2px] top-[var(--active-tab-top)] h-[var(--active-tab-height)]",
-          )}
-        />
-      )}
       {children}
     </TabsPrimitive.List>
   );
@@ -131,7 +111,7 @@ export function TabsTrigger({
   tooltip,
   ...props
 }: TabsTriggerProps): React.ReactElement {
-  const variant = useContext(TabsVariantContext);
+  const orientation = useContext(TabsOrientationContext);
   const showBadge = badge != null && (typeof badge !== "number" || badge > 0);
 
   const trigger = (
@@ -142,16 +122,21 @@ export function TabsTrigger({
       className={cn(
         "relative inline-flex items-center gap-2 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
         focusRing,
-        variant === "underline" &&
-          "py-2.5 text-ink-muted hover:text-ink data-[active]:text-ink",
-        variant === "pill" && [
-          "rounded-full border border-hairline px-3 py-1 text-left text-ink-muted",
-          "hover:bg-layer-hover hover:text-ink",
-          // Overlay so the selected fill reads on any container (base OR
-          // a layer-1 Card). A solid bg-layer-1 collapses to the container
-          // color when tabs are placed inside a Card, hiding the pill.
-          "data-[active]:bg-layer-selected data-[active]:text-ink",
-        ],
+        "px-4 py-2.5 text-ink-muted hover:text-ink",
+        // Reserved transparent border keeps the tab the same size in
+        // active vs. inactive so nothing shifts on selection.
+        "border border-transparent",
+        orientation === "horizontal"
+          ? [
+              "rounded-t-[var(--radius-6)] -mb-px",
+              "data-[active]:border-hairline data-[active]:border-b-transparent",
+              "data-[active]:bg-base data-[active]:text-ink data-[active]:font-medium",
+            ]
+          : [
+              "rounded-l-[var(--radius-6)] -mr-px",
+              "data-[active]:border-hairline data-[active]:border-r-transparent",
+              "data-[active]:bg-base data-[active]:text-ink data-[active]:font-medium",
+            ],
         className,
       )}
       {...props}
@@ -195,12 +180,17 @@ export function TabsPanel({
   children,
   ...props
 }: TabsPanelProps): React.ReactElement {
+  const orientation = useContext(TabsOrientationContext);
   return (
     <TabsPrimitive.Panel
       value={value}
       keepMounted={keepMounted}
       data-slot="tabs-panel"
-      className={cn("pt-6 focus-visible:outline-none", className)}
+      className={cn(
+        orientation === "horizontal" ? "pt-6" : "pl-6 flex-1 min-w-0",
+        "focus-visible:outline-none",
+        className,
+      )}
       {...props}
     >
       {children}

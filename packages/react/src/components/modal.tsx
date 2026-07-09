@@ -232,7 +232,7 @@ export function ModalInset({
     <div
       data-slot="modal-inset"
       className={cn(
-        "rounded-[var(--radius-6)] border border-hairline bg-fill-2 p-4",
+        "rounded-[var(--radius-8)] border border-hairline-soft bg-layer-1 p-4",
         className,
       )}
       {...props}

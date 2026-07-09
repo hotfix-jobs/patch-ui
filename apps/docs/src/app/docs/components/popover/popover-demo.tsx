@@ -67,7 +67,7 @@ export function PopoverDemo() {
               </Button>
             }
           />
-          <PopoverContent align="end" className="w-[360px] p-0">
+          <PopoverContent align="end" className="md:w-[360px] p-0">
             <div className="flex items-center justify-between border-b border-hairline px-4 py-3">
               <div className="flex items-center gap-2">
                 <span className="text-small font-medium text-ink">Notifications</span>
@@ -123,7 +123,7 @@ export function PopoverDemo() {
           <PopoverTrigger
             render={<Button variant="secondary">Set width</Button>}
           />
-          <PopoverContent className="w-72 p-4">
+          <PopoverContent className="md:w-72 p-4">
             <p className="text-small font-medium text-ink">Dimensions</p>
             <p className="mt-1 text-small text-ink-muted">
               Set a value in pixels.
@@ -160,7 +160,7 @@ export function PopoverDemo() {
               </Button>
             }
           />
-          <PopoverContent align="start" className="w-64 p-4">
+          <PopoverContent align="start" className="md:w-64 p-4">
             <p className="text-small font-medium text-ink">Status</p>
             <div className="mt-3 flex flex-col gap-2">
               <label className="flex items-center gap-2 text-small text-ink">

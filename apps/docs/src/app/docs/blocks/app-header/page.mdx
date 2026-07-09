@@ -5,7 +5,7 @@ export const metadata = { title: "AppHeader" };
 
 # AppHeader
 
-A complete site-header block. Renders brand slot + primary nav + optional tools + right-aligned actions on desktop, and below the `md` breakpoint automatically collapses the nav into a morphing hamburger trigger. Tapping the trigger drops down a panel below the still-visible sticky header showing the nav items and, if present, the right cluster docked at the bottom as a footer. Open/close state, focus, escape-to-close, and scroll lock are owned by the block.
+A complete site-header block. Renders brand slot + primary nav + optional tools + right-aligned actions on desktop, and below the `md` viewport breakpoint automatically collapses the nav into a morphing hamburger trigger. Tapping the trigger drops down a panel below the still-visible sticky header showing the nav items and, if present, the right cluster docked at the bottom as a footer. Open/close state, focus, escape-to-close, and scroll lock are owned by the block.
 
 <Install name="app-header" />
 
@@ -19,6 +19,7 @@ A complete site-header block. Renders brand slot + primary nav + optional tools 
 import {
   AppHeader,
   AppHeaderBrand,
+  AppHeaderMobileTop,
   AppHeaderNav,
   AppHeaderNavItem,
   AppHeaderNavSection,
@@ -49,11 +50,23 @@ import {
     <Input placeholder="Search…" />
   </AppHeaderTools>
 
+  {/* Pinned into the mobile top bar just before the hamburger. Hidden
+      on desktop and never rendered in the mobile panel footer — for
+      one-tap actions (notification bell, avatar) that stay reachable
+      without opening the panel. */}
+  <AppHeaderMobileTop>
+    <NotificationBell />
+  </AppHeaderMobileTop>
+
   <AppHeaderRight>
     <Button variant="tertiary" size="sm" shape="pill">Sign in</Button>
     <Button variant="primary" size="sm" shape="pill">Get started</Button>
   </AppHeaderRight>
 </AppHeader>
+
+// List-page pattern: bring a filter toolbar into the shell as a third
+// sub-row so a single sticky-scroll motion collapses everything together.
+<AppHeader sticky filterToolbar={<JobsFilterToolbar />}>...</AppHeader>
 ```
 
 ## Mobile behavior
@@ -61,9 +74,11 @@ import {
 Below `md`:
 - `AppHeaderNav` is hidden inline; its items render inside the panel instead.
 - `AppHeaderRight` is hidden inline; its items render in the panel's sticky footer instead. Reach for that for a Sign in / primary CTA that stays parked at the bottom of the drawer.
-- `AppHeaderTools` renders as a bordered sub-row directly under the top row — always visible so search / filter controls stay reachable without opening the panel.
+- `AppHeaderMobileTop` renders inline just before the hamburger — visible on mobile top bar, never rendered in the panel footer. Use for one-tap actions that shouldn't require opening the panel (notification bell, avatar).
+- `AppHeaderTools` renders as a sub-row directly under the top row — always visible so search / filter controls stay reachable without opening the panel. Row divider tied to the shell's `bordered` state.
+- `filterToolbar` (prop) renders as a third sub-row below the tools row, also tied to `bordered`. Use for list-page filter chips that should collapse under the same sticky-scroll motion as the header.
 - A **morphing hamburger trigger** replaces the right cluster in the top row. It only renders when `AppHeaderNav` has children.
-- Tapping the trigger drops the panel down **below the sticky header** — the header stays put, the hamburger morphs to X for the close affordance, and the panel occupies `top: var(--header-height, 64px)` to the bottom of the viewport. Set `--header-height` on `:root` when your header height differs from the 64px default (a `ResizeObserver` on the header element is the usual wiring).
+- Tapping the trigger drops the panel down — the hamburger morphs to X for the close affordance, and the panel occupies `top: var(--header-height, 64px)` to the bottom of the viewport. Set `--header-height` on `:root` when your header height differs from the 64px default (a `ResizeObserver` on the header element is the usual wiring).
 
 ## Styling notes
 
@@ -91,10 +106,29 @@ Below `md`:
       description: "Pins the header to the top of its scroll container via sticky top-0 z-50.",
     },
     {
+      name: "filterToolbar",
+      type: "ReactNode",
+      default: "-",
+      description: "Optional third sub-row rendered below the top row (and the mobile tools sub-row). Used by list pages to bring their filter toolbar into the header shell so a single motion collapses everything together on scroll. Row divider tied to `bordered`.",
+    },
+    {
       name: "render",
       type: "RenderProp<'header'>",
       default: "-",
       description: "Polymorphic render prop.",
+    },
+  ]}
+/>
+
+### AppHeaderMobileTop
+
+<PropsTable
+  props={[
+    {
+      name: "children",
+      type: "ReactNode",
+      default: "-",
+      description: "Content pinned into the mobile top bar just before the hamburger trigger. Hidden on desktop; never rendered in the mobile panel footer. Meant for one-tap actions (notification bell, avatar) that should stay reachable without opening the panel.",
     },
   ]}
 />

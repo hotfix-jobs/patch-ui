@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Patch-UI-design-system
-description: "A crisp-minimal React component library built on a pure-neutral gray scale (light base #FFFFFF, dark base #0A0A0A — deep near-black, avoids OLED banding). No warm undertones, no cool tints. Two honest surface families (--layer-* for lifted panels and popups, --fill-* for tinted chip fills, no 'canvas' or 'elevated' special names), 1px hairline borders as the load-bearing separator, monochrome primary CTAs (near-black on near-white in light, inverted in dark), and semantic status roles at fixed hex. Type is Inter Variable (weight 300-700, default body 450) and JetBrains Mono for code; size and weight are separate axes, composed at the call site (`text-small font-medium`) rather than bundled into per-size recipes. Line-height comes from element defaults (body 1.5, `<p>` 1.7, headings 1.25). The library ships light + dark and is intentionally chromatically neutral: consumers layer their own brand accent through a single --primary override."
+description: "A crisp-minimal React component library built on a pure-neutral gray scale (Radix Colors Gray in preview; light base #fcfcfc, dark base #0a0a0a — deep near-black, avoids OLED banding). No warm undertones, no cool tints. Two honest surface families (--layer-* for lifted panels and popups, --fill-* for tinted chip fills, no 'canvas' or 'elevated' special names), 1px alpha-hairline borders as the load-bearing separator (`--hairline-soft` whisper for Cards, `--hairline` standard for inputs/menus/dividers), monochrome primary CTAs (near-black on near-white in light, inverted in dark), and semantic status roles at fixed hex. Type is Inter Variable (weight 300-700, default body 450) and JetBrains Mono for code; size and weight are separate axes, composed at the call site (`text-small font-medium`) rather than bundled into per-size recipes. Line-height comes from element defaults (body 1.5, `<p>` 1.7, headings 1.25). The library ships light + dark and is intentionally chromatically neutral: consumers layer their own brand accent through a single --primary override."
 
 colors:
   # Monochrome primary. No chromatic brand hue ships in the library.
@@ -17,49 +17,59 @@ colors:
   primary-active: "color-mix(in srgb, {colors.primary}, {colors.base} 25%)"
 
   # Base is the page background: everything sits on it. Pure-neutral
-  # gray scale, no chroma. Light-mode values shown; dark values live
-  # in the Colors table below.
-  base: "#FFFFFF"
+  # gray scale (Radix Gray, MIT), no chroma. Light-mode values shown;
+  # dark values live in the Colors table below. Direction is Radix-
+  # native: base is the app canvas; lifted rungs step DARKER in light
+  # and BRIGHTER in dark. In light this is a flip from the previous
+  # "white card on off-white base" pattern -- surface hierarchy now
+  # matches the dark ladder.
+  base: "#fcfcfc"
 
-  # layer-* is the "lifted above base" family. Card, Modal, Menu popup,
-  # Combobox popup, Tooltip, Select popup, Input, Table container, and
-  # secondary Button chrome all sit on layer-1. layer-2 is a hover-
-  # adjacent step above layer-1 (secondary Button hover, Input hover
-  # companion). In light layer-1 is pure white; in dark it lifts one
-  # rung above base.
-  layer-1: "#FFFFFF"
-  layer-2: "#FAFAFA"
+  # layer-* is the "lifted above base" family. Card (elevated variant),
+  # Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input,
+  # Table container, and secondary Button chrome all sit on layer-1.
+  # layer-2 is the row/button-rest step above layer-1 (secondary Button
+  # hover, Input hover companion, active-row highlight).
+  layer-1: "#f9f9f9"
+  layer-2: "#f0f0f0"
 
   # fill-* is the "tinted chip fill" family. Toggle track, Badge
   # neutral, code chip, Switch off-track, striped table hover,
-  # Skeleton, active pill Tab. Deeper than base in light so it reads
-  # as a subtle darkened indication, not a lift. In dark, fill-* and
-  # layer-* land at the same values; the distinction stays semantic
-  # so consumers can override one family without the other.
-  fill-1: "#FAFAFA"
-  fill-2: "#EDEDED"
+  # Skeleton, active pill Tab. Note (Phase 1 preview): fill-1 now
+  # resolves to the same rung as layer-2 -- the intentional collision
+  # surfaces which callsites can collapse in Phase 2. fill-2 stays a
+  # stronger active-state indication.
+  fill-1: "#f0f0f0"
+  fill-2: "#e8e8e8"
 
-  # Adaptive interaction-state overlays. rgba, not opaque, so they
-  # darken whatever surface sits underneath (base, layer-1, fill-1,
-  # or a consumer's own background). Every transparent-at-rest control
-  # uses these for hover / selected fills so states never disappear
-  # when they land on a rung the state would otherwise match.
+  # Adaptive interaction-state overlays. rgba (Radix grayA 3 / grayA 5),
+  # not opaque, so they darken whatever surface sits underneath (base,
+  # layer-1, fill-1, or a consumer's own background). Every transparent-
+  # at-rest control uses these for hover / selected fills so states never
+  # disappear when they land on a rung the state would otherwise match.
   # layer-selected is ~2x layer-hover so pressed always reads darker.
-  layer-hover: "rgba(0,0,0,0.04)"
-  layer-selected: "rgba(0,0,0,0.08)"
+  layer-hover: "rgba(0,0,0,0.059)"
+  layer-selected: "rgba(0,0,0,0.122)"
 
-  # Hairlines. Three-step: default, strong (input focus, hover borders),
-  # tertiary (nested surfaces where the two above compete). Values are
-  # soft: default hairlines carry structure through contrast, not weight.
-  hairline: "#EBEBEB"
-  hairline-strong: "#D4D4D4"
-  hairline-tertiary: "#A3A3A3"
+  # Hairlines. Four-step, all alpha (Radix grayA 3 / 6 / 7 / 8) so a
+  # border on a nested card reads the same perceived weight as one on
+  # base -- solid borders compound when they land on darker surfaces.
+  # hairline-soft is the whisper edge (~6% alpha) for Card / elevated
+  # surfaces where the border should be present but recede. hairline
+  # is the standard input/menu/divider weight.
+  hairline-soft: "rgba(0,0,0,0.059)"
+  hairline: "rgba(0,0,0,0.149)"
+  hairline-strong: "rgba(0,0,0,0.192)"
+  hairline-tertiary: "rgba(0,0,0,0.267)"
 
-  # Ink (text). Four tiers. Pure gray, no chroma.
-  ink: "#171717"
-  ink-muted: "#666666"
-  ink-subtle: "#8F8F8F"
-  ink-tertiary: "#909090"
+  # Ink (text). Four tiers, Radix Gray 12 / 11 / 10 / 10. In the preview
+  # ink-subtle collapses onto the same rung as ink-tertiary (both gray 10);
+  # the token name stays alive so callsites keep resolving, but they
+  # render identically.
+  ink: "#202020"
+  ink-muted: "#646464"
+  ink-subtle: "#838383"
+  ink-tertiary: "#838383"
 
   # Semantic status. Fixed hex, theme-invariant. Paired -fg tokens carry
   # label color so fill and text invert together per theme without a
@@ -72,9 +82,9 @@ colors:
   warning-hover: "#D69800"
   warning-active: "#A97007"
   warning-fg: "#171717"
-  success: "#397C3B"
-  success-hover: "#2D602D"
-  success-active: "#234A23"
+  success: "#1A7F37"
+  success-hover: "#166A2E"
+  success-active: "#115523"
   success-fg: "#FFFFFF"
 
   # Focus. 2px ring, 2px offset outside the element border. Color reads
@@ -90,12 +100,12 @@ colors:
 # Size and weight are separate axes. Line-height comes from element
 # defaults (body 1.5, <p> 1.7, headings 1.25) rather than the size
 # token. Compose at the call site: `text-small font-medium` for a
-# 13px medium label; `text-regular` alone for default 15px body.
+# 14px medium label; `text-regular` alone for default 16px body.
 fontSize:
   micro: 0.6875rem   # 11px, meta label, table column header
   mini: 0.75rem      # 12px, caption, hint, badge
-  small: 0.8125rem   # 13px, dense UI copy, sidebar item, button-md label
-  regular: 0.9375rem # 15px, default body, button-lg label
+  small: 0.875rem    # 14px, dense UI copy, sidebar item, button-md label (editorial bump; was 13)
+  regular: 1rem      # 16px, default body, button-lg label (editorial bump; was 15)
   large: 1.125rem    # 18px, lead paragraph
   title3: 1.25rem    # 20px, panel title, section headline
   title2: 1.5rem     # 24px, page section headline
@@ -150,11 +160,17 @@ typography:
     fontSize: "{fontSize.small}"
     fontWeight: "{fontWeight.normal}"
 
+# Radius scale. Named seats map to Tailwind utilities exposed as
+# rounded-[var(--radius-N)]. control/surface/panel/full are the
+# semantic seats; the raw numeric ladder (4/6/8/10/12/16) is what
+# gets referenced in code, with 8 and 10 added this cycle as the
+# in-between steps between control (6) and surface (12).
 rounded:
-  control: 6px
-  surface: 12px
-  panel: 16px
-  full: 9999px
+  control-sm: 4px   # very small controls (checkbox, radio thumb)
+  control: 8px      # buttons, inputs, section, tooltip, modal-inset -- was 6, bumped 6→8
+  surface: 12px     # popupSurface (Menu, Combobox, Select, Popover, Command), Sheet
+  panel: 16px       # marketing panels
+  full: 9999px      # badges (default `rounded` shape now 6, `pill` shape 9999), avatars, pills
 
 spacing:
   space-4: 4px
@@ -168,6 +184,10 @@ spacing:
   space-96: 96px
 
 components:
+  # All Button variants share: typography {typography.control-md},
+  # square shape rounded to 8px (was 6), padding 8px 14px, height 32px
+  # on md. Pressed / active fills use {colors.layer-selected} across the
+  # non-solid variants.
   button-primary:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.on-primary}"
@@ -177,14 +197,8 @@ components:
     height: 32px
   button-primary-hover:
     backgroundColor: "{colors.primary-hover}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.control-md}"
-    rounded: "{rounded.control}"
   button-primary-active:
     backgroundColor: "{colors.primary-active}"
-    textColor: "{colors.on-primary}"
-    typography: "{typography.control-md}"
-    rounded: "{rounded.control}"
   button-secondary:
     backgroundColor: "{colors.layer-1}"
     textColor: "{colors.ink}"
@@ -195,6 +209,20 @@ components:
     height: 32px
   button-secondary-hover:
     backgroundColor: "{colors.layer-2}"
+    borderColor: "{colors.hairline-strong}"
+  button-secondary-active:
+    backgroundColor: "{colors.layer-selected}"
+  button-soft:
+    backgroundColor: "{colors.fill-1}"
+    textColor: "{colors.ink}"
+    typography: "{typography.control-md}"
+    rounded: "{rounded.control}"
+    padding: 8px 14px
+    height: 32px
+  button-soft-hover:
+    backgroundColor: "{colors.fill-2}"
+  button-soft-active:
+    backgroundColor: "{colors.layer-selected}"
   button-tertiary:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
@@ -202,6 +230,10 @@ components:
     rounded: "{rounded.control}"
     padding: 8px 14px
     height: 32px
+  button-tertiary-hover:
+    backgroundColor: "{colors.layer-hover}"
+  button-tertiary-active:
+    backgroundColor: "{colors.layer-selected}"
   button-destructive:
     backgroundColor: "{colors.error}"
     textColor: "{colors.error-fg}"
@@ -209,6 +241,7 @@ components:
     rounded: "{rounded.control}"
     padding: 8px 14px
     height: 32px
+  # Inputs. Rounded 8 (was 6) so trigger chrome matches Button square.
   input:
     backgroundColor: "{colors.layer-1}"
     textColor: "{colors.ink}"
@@ -226,16 +259,31 @@ components:
     borderColor: "{colors.primary}"
   input-invalid:
     borderColor: "{colors.error}"
+  # Card variants. `flat` (default) is transparent + hairline: a quiet
+  # frame that inherits the container surface. `elevated` fills layer-1
+  # with a whisper `hairline-soft` edge and turns on shadow-card in
+  # light. Both rounded to 8 (was 12) so the corner reads editorial,
+  # not marketing-panel.
   card:
-    backgroundColor: "{colors.layer-1}"
+    backgroundColor: "transparent"
     borderColor: "{colors.hairline}"
-    rounded: "{rounded.surface}"
+    rounded: "{rounded.control}"
     padding: 24px
   card-elevated:
     backgroundColor: "{colors.layer-1}"
-    borderColor: "{colors.hairline-strong}"
-    rounded: "{rounded.surface}"
+    borderColor: "{colors.hairline-soft}"
+    rounded: "{rounded.control}"
     padding: 24px
+    shadow: shadow-card
+  # Section mirrors Card. Same variant vocabulary, same 8px radius.
+  section:
+    backgroundColor: "transparent"
+    borderColor: "{colors.hairline}"
+    rounded: "{rounded.control}"
+  section-elevated:
+    backgroundColor: "{colors.layer-1}"
+    borderColor: "{colors.hairline}"
+    rounded: "{rounded.control}"
   panel:
     backgroundColor: "{colors.fill-1}"
     borderColor: "{colors.hairline}"
@@ -247,12 +295,16 @@ components:
     rounded: "{rounded.surface}"
     padding: 24px
     shadow: shadow-modal
+  # menu-popup uses the popupSurface recipe (rounded 12). Menu row uses
+  # itemRow with data-[active]:bg-layer-hover / data-highlighted:bg-layer-hover
+  # (alpha overlay, not solid fill-2) so highlights read on any rung.
   menu-popup:
     backgroundColor: "{colors.layer-1}"
     borderColor: "{colors.hairline}"
     rounded: "{rounded.surface}"
     padding: 4px
     shadow: shadow-menu
+  # Tooltip uses radius 8 (was 6) so its corner matches Button square.
   tooltip:
     backgroundColor: "{colors.layer-1}"
     borderColor: "{colors.hairline}"
@@ -261,42 +313,49 @@ components:
     padding: 6px 10px
     typography: "{typography.mini}"
     shadow: shadow-tooltip
+  # Badges: default shape is `rounded` (radius-6), not `pill`. Consumers
+  # opt into pill via shape="pill". Default variant is `soft`.
   badge-neutral:
     backgroundColor: "{colors.fill-2}"
     textColor: "{colors.ink-muted}"
     typography: "{typography.mini}"
-    rounded: "{rounded.full}"
+    rounded: 6px
     padding: 2px 8px
   badge-status-success:
     backgroundColor: "{colors.success}"
     textColor: "{colors.success-fg}"
     typography: "{typography.mini}"
-    rounded: "{rounded.full}"
+    rounded: 6px
     padding: 2px 8px
   badge-status-warning:
     backgroundColor: "{colors.warning}"
     textColor: "{colors.warning-fg}"
     typography: "{typography.mini}"
-    rounded: "{rounded.full}"
+    rounded: 6px
     padding: 2px 8px
   badge-status-error:
     backgroundColor: "{colors.error}"
     textColor: "{colors.error-fg}"
     typography: "{typography.mini}"
-    rounded: "{rounded.full}"
+    rounded: 6px
     padding: 2px 8px
+  # Tabs are folder-shaped now. Active tab: rounded-t on top corners
+  # (radius-6), hairline border on top + sides, transparent bottom border,
+  # bg-base fill that merges into the panel body via a -1px overlap of
+  # the container line. There's no separate `underline` or `pill` variant.
   tab-default:
     backgroundColor: "transparent"
-    textColor: "{colors.ink-subtle}"
-    typography: "{typography.control-md}"
-    rounded: "{rounded.control}"
-    padding: 6px 12px
+    textColor: "{colors.ink-muted}"
+    typography: "{typography.small}"
+    padding: 10px 16px
   tab-selected:
-    backgroundColor: "{colors.fill-2}"
+    backgroundColor: "{colors.base}"
+    borderColor: "{colors.hairline}"     # top + sides only; -mb-px cuts into panel line
     textColor: "{colors.ink}"
-    typography: "{typography.control-md}"
-    rounded: "{rounded.control}"
-    padding: 6px 12px
+    typography: "{typography.small}"
+    weight: "{fontWeight.medium}"
+    padding: 10px 16px
+    rounded-top: 6px
   section-eyebrow:
     textColor: "{colors.ink-muted}"
     typography: "{typography.control-sm}"
@@ -318,7 +377,7 @@ components:
 
 Patch UI is a crisp-minimal React component library distributed copy-in through the shadcn registry model (`npx shadcn add @patchui/<component>`). The design system is intentionally quiet: a pure-neutral gray scale from white to black, two honest surface families (`--layer-*` for lifted panels and popups, `--fill-*` for tinted chip fills), 1px hairline borders as the load-bearing separator, and a monochrome primary. Every deliberate act of restraint in the token layer is what gives downstream consumers room to layer their own brand on top without the library fighting them.
 
-The base in dark mode is `{colors.base}` #000000 (pure black); in light mode it's `{colors.base}` #FFFFFF (pure white). Every page background sits on `--base`. All other surfaces step in a single direction AWAY from that extreme: darker in light, brighter in dark. Two families share that direction: `--layer-1` / `--layer-2` for the "lifted panel" family (Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome — plus a hover-adjacent step), and `--fill-1` / `--fill-2` for tinted chip fills that step further from base than `--layer-*` (Toggle track, Badge, code chip, Switch off-track, skeleton, striped table rows, active pill Tab, menu item highlight). Hairlines run from `{colors.hairline}` at 7% up through `{colors.hairline-strong}` (11%) and `{colors.hairline-tertiary}` (16%); dark bumps proportionally to 10/15/22%. Because `--base` is the extreme, the border does most of the "this is a lifted panel" signaling — no drop shadow until true overlay altitude (dialog, menu popup, tooltip, toast).
+The neutral scale is Radix Colors Gray (Phase 1 preview). Light `--base` is #fcfcfc (gray 1); dark `--base` is #0a0a0a (below gray 1, editorial-dark canvas). Every page background sits on `--base`. All other surfaces step in a single direction AWAY from that extreme: darker in light, brighter in dark. Two families share that direction: `--layer-1` / `--layer-2` for the "lifted panel" family (Card elevated variant, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome — plus a hover-adjacent step), and `--fill-1` / `--fill-2` for tinted chip fills (Toggle track, Badge, code chip, Switch off-track, skeleton, striped table rows, menu item highlight). In the preview, `--fill-1` resolves to the same rung as `--layer-2` (both gray 3); the intentional collision surfaces which callsites can collapse in Phase 2. Hairlines are alpha now — Radix grayA 3 / 6 / 7 / 8 — so a border on a nested card reads the same perceived weight as one on base; solid hex compounds when stacked and this fixes it. `--hairline-soft` (grayA 3, ~6% alpha) is a new whisper-weight edge for Card and elevated surfaces where the border should be present but recede.
 
 The library ships **no chromatic brand hue**. `{colors.primary}` resolves to `{colors.ink}` (near-black in light, near-white in dark), and `{colors.on-primary}` resolves to `{colors.base}`. Consumers who want a lavender, cobalt, or any other accent redefine `--primary` and `--primary-hover` in a single downstream layer; every Button and focus-adjacent component inherits their brand for free. The semantic status roles (`{colors.error}`, `{colors.warning}`, `{colors.success}`) remain fixed hex, theme-invariant, and outside the brand system: their meaning is universal and shouldn't shift with a consumer's palette.
 
@@ -328,15 +387,16 @@ The marketing surface for `ui.hotfix.jobs` reuses the same ladder and type scale
 
 **Key characteristics:**
 
-- **Deep near-black flat base** (`#0A0A0A`) in dark, pure white (`#FFFFFF`) in light. Both shipped as first-class themes, both pixel-verified. Pure-neutral gray scale — no warm undertones, no cool tints.
-- **Two surface families:** `--layer-1` / `--layer-2` for lifted panels + popups + control chrome, `--fill-1` / `--fill-2` for tinted chip fills. No `canvas` or `elevated` special names — direction is honest per family.
+- **Deep near-black flat base** (`#0a0a0a`) in dark, near-white (`#fcfcfc`) in light. Both shipped as first-class themes, both pixel-verified. Pure-neutral gray scale (Radix Gray) — no warm undertones, no cool tints.
+- **Two surface families:** `--layer-1` / `--layer-2` for lifted panels + popups + control chrome, `--fill-1` / `--fill-2` for tinted chip fills. In the Phase 1 preview `--fill-1` and `--layer-2` collapse onto the same rung; the token names stay live so callsites keep resolving.
+- **Alpha hairlines.** Four steps (`--hairline-soft` / `--hairline` / `--hairline-strong` / `--hairline-tertiary`) on Radix grayA 3 / 6 / 7 / 8. `--hairline-soft` (~6% alpha) is the whisper edge for Card and elevated surfaces; `--hairline` is the standard input / menu / divider weight.
 - **Monochrome primary.** No brand hue in the shipped tokens. Consumer overrides `--primary` to inject brand.
-- **Two type families:** Inter Variable + JetBrains Mono. Size and weight are separate Tailwind utilities (`text-small font-medium`), not bundled into per-size recipes.
+- **Two type families:** Inter Variable + JetBrains Mono. Size and weight are separate Tailwind utilities (`text-small font-medium`), not bundled into per-size recipes. Body defaults 14/16 (was 13/15).
 - **Line-height on the element, not the size class.** `body` inherits 1.5, `<p>` uses 1.7, `<h1>`-`<h6>` use 1.25. A size utility on a `<div>` picks up body's 1.5.
 - **Semantic status colors are fixed hex.** Error/warning/success read identically in both themes; paired `-fg` tokens flip the label color per theme.
-- **Radius is disciplined:** 6px for controls, 12px for cards and surfaces, 16px for marketing panels, `9999px` for pills and avatars. Nothing else.
-- **Focus is a 2px ring** offset by 2px outside the element border. Color reads `{colors.primary}` so a consumer's brand override colors every focused primitive automatically. Border stays at rest on focus; the ring alone signals it. Inputs are the intentional exception: on focus their border shifts to `{colors.primary}` instead of stacking an outside ring, so the input's own edge carries the state.
-- **Flat elevation.** Shadows only exist on true overlays (dialog, menu popup, select popup, tooltip, toast). Cards and panels are flat.
+- **Radius is disciplined:** `--radius-4/6/8/10/12/16/full`. Controls (Button square, Input, Section, Card, Tooltip, ModalInset) sit at radius-8; popup surfaces (Menu, Combobox, Select, Popover, Command) and Sheet sit at radius-12; marketing panels at radius-16; badges default to radius-6, opt into `pill` for `full`. Nothing else.
+- **Focus is a 2px ring** offset by 2px outside the element border. Color reads `{colors.primary}` (monochrome ink by default; a consumer's brand override colors every focused primitive automatically). Border stays at rest on focus; the ring alone signals it. Inputs are the intentional exception: on focus their border shifts to `{colors.primary}` instead of stacking an outside ring, so the input's own edge carries the state.
+- **Cards float on a soft two-stack shadow in light.** `--shadow-card` now stacks `0 1px 2px + 0 4px 12px rgba(3,17,38,0.05)` — an editorial lift rather than a flat plate. Dark mode still resolves to a subtle single-drop; overlays (menu popup, tooltip, modal, toast) keep the triple-stack.
 - **Motion is fast and short.** `duration-state` 75ms for state changes, `duration-overlay` 150ms for overlays. One easing keyword (`ease-standard`) with a subtle spring bounce.
 
 ## Colors
@@ -349,19 +409,19 @@ Three token families make up the surface story: `--base` is the page background;
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `{colors.base}` | `#FFFFFF` | `#000000` | Page background, docs shell — everything sits on this. Pure white in light, pure black in dark |
-| `{colors.layer-1}` | `#FFFFFF` | `#141414` | Default lifted panel: Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome. Barely off base; the hairline border does the "lifted" work |
-| `{colors.layer-2}` | `#FAFAFA` | `#1C1C1C` | Hover step above `layer-1` (secondary Button hover, Input hover companion) |
-| `{colors.fill-1}` | `#FAFAFA` | `#131313` | Subtle tinted chip fill: Toggle track, Badge neutral, code chip, Switch off-track |
-| `{colors.fill-2}` | `#EDEDED` | `#262626` | Stronger tinted fill: Toggle pressed, active pill Tab, skeleton block, striped table hover, menu item highlight |
-| `{colors.layer-hover}` | `rgba(0,0,0,0.04)` | `rgba(255,255,255,0.05)` | Hover / focus-visible / popup-open overlay on transparent-at-rest controls (tertiary Button, Tab, Sidebar link, Toggle, Pagination, icon-only close/clear buttons) |
-| `{colors.layer-selected}` | `rgba(0,0,0,0.08)` | `rgba(255,255,255,0.10)` | Active / pressed / persistent-on overlay on the same controls; ~2x hover strength |
+| `{colors.base}` | `#fcfcfc` (gray 1) | `#0a0a0a` (below gray 1) | Page background, docs shell — everything sits on this |
+| `{colors.layer-1}` | `#f9f9f9` (gray 2) | `#101010` | Default lifted panel: elevated Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome |
+| `{colors.layer-2}` | `#f0f0f0` (gray 3) | `#1c1c1c` | Row/button-rest step above `layer-1` (secondary Button hover, Input hover companion, active-row highlight) |
+| `{colors.fill-1}` | `#f0f0f0` (gray 3, same rung as `layer-2`) | `#1c1c1c` (same rung as `layer-2`) | Soft chip fill: Toggle track, Badge neutral, code chip, Switch off-track, `Button variant="soft"` background |
+| `{colors.fill-2}` | `#e8e8e8` (gray 4) | `#242424` | Stronger active-state indication: Toggle pressed, skeleton block, striped table, `Button variant="soft"` hover |
+| `{colors.layer-hover}` | `rgba(0,0,0,0.059)` (grayA 3) | `rgba(255,255,255,0.071)` (grayA 3) | Hover / focus-visible / popup-open overlay on transparent-at-rest controls (tertiary Button, Tab, Sidebar link, Toggle, Pagination, icon-only close/clear buttons, list-row itemRow highlight) |
+| `{colors.layer-selected}` | `rgba(0,0,0,0.122)` (grayA 5) | `rgba(255,255,255,0.133)` (grayA 5) | Active / pressed / persistent-on overlay on the same controls; ~2x hover strength |
 
-The dark base is deep near-black `#0A0A0A` — not pure `#000000`, to avoid banding on 6-bit panels and give the darkest layer step room to breathe. Light base is pure `#FFFFFF`. In light, `--layer-1` is also `#FFFFFF` — the hairline border alone signals "lifted panel," no color fill lift. In dark, `--layer-1` steps only ~3-5% brighter than base; the hairline sits under the card body rather than competing with it. Pure-neutral grays throughout — no cool or warm cast.
+The dark base is deep near-black `#0a0a0a` — below Radix gray 1, editorial-dark canvas — to avoid banding on 6-bit panels and give the darkest layer step room to breathe. Light base is `#fcfcfc` (Radix gray 1), a whisper off pure white. The direction is Radix-native and matches dark: in light, `--layer-1` is a subtly darker card rung, `--layer-2` the row/button-rest step above that. This is a flip from the previous "white card on off-white base" pattern — surface hierarchy now matches the dark ladder.
 
-**`--layer-*` is one direction: always lifted above `--base` toward the viewer.** In light mode `--layer-1` is pure white so a Card or popup reads brighter than off-white base; in dark mode it lifts a subtle rung above near-black base — the numeric jump is smaller than the "obvious" choice so panels feel integrated with the dark ambient rather than shouting. Border and shadow do the rest of the elevation work. `--layer-2` is a hover-adjacent step above `--layer-1`.
+**`--layer-*` steps AWAY from `--base` toward the viewer's attention.** In light `--layer-1` reads slightly darker than base; in dark it lifts a subtle rung above near-black base. In both themes the numeric jump is small so panels feel integrated with the ambient rather than shouting; border and shadow do the rest of the elevation work.
 
-**`--fill-*` runs deeper than `--base` in light, and straddles `--layer-1` in dark.** Toggle tracks, Badge chips, code chips, Switch off-tracks want to read as *indication* rather than lift. `--fill-1` sits below `--layer-1` in both themes (subtle deeper tint); `--fill-2` sits above `--layer-1` in dark so components that use it on top of a `layer-1` surface (Table row hover, striped rows, Modal nested tile, menu item highlight) stay visible — collapsing `--fill-2` into `--layer-1` would erase every one of those states in dark mode. In light mode the direction still works because `--layer-1` is pure white, so a deeper `--fill-2` reads as a distinct chip. Consumers can override one family without touching the other.
+**`--fill-*` runs the same direction and further.** In the Phase 1 preview `--fill-1` collapses onto `--layer-2` (both gray 3 in light, both `#1c1c1c` in dark). Toggle tracks, Badge chips, code chips, Switch off-tracks and `Button variant="soft"` all use `fill-1` for rest and `fill-2` for hover; the intentional collision between `fill-1` and `layer-2` surfaces which callsites can collapse in Phase 2. Consumers can still override one family without touching the other.
 
 `--layer-hover` and `--layer-selected` are alpha overlays rather than rungs on either ladder. Any transparent-at-rest control (tertiary Button, Tab, Sidebar link, Toggle, Pagination, icon-only close and clear buttons, NavigationMenu link, Calendar day) uses them for `hover:`, `focus-visible:`, `data-[popup-open]:`, `data-[pressed]:`, and `active:` fills. Because they darken whatever surface sits underneath rather than paint over it, the state is visible on any background: base, `--layer-1`, `--fill-1`, or a consumer's own content color. `--layer-selected` sits at ~2x hover strength so pressed always reads visibly darker than hover.
 
@@ -369,13 +429,14 @@ The intentional exception is the `neutralFill` recipe in `recipes.ts` (`bg-fill-
 
 ### Hairlines
 
-Hairlines carry every hierarchical separation that the surface ladder can't. Cards, panels, dropdowns, and inputs all wear a 1px hairline; the strong step is for hovered/focused inputs and the tertiary step is for nested content that already sits on a lifted surface.
+Hairlines carry every hierarchical separation that the surface ladder can't. Four steps, all alpha (Radix grayA 3 / 6 / 7 / 8) so a border on a nested card reads the same perceived weight as one on base — solid hex compounds when it lands on darker surfaces, and the alpha migration fixes it. `--hairline-soft` is the whisper edge for Card and elevated surfaces where the border should be present but recede; `--hairline` is the standard input / menu / divider weight.
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `{colors.hairline}` | `rgba(0,0,0,0.07)` | `rgba(255,255,255,0.10)` | Default card border, input border, table row divider, tab underline |
-| `{colors.hairline-strong}` | `rgba(0,0,0,0.11)` | `rgba(255,255,255,0.15)` | Hovered input border, structural separators (docs header, table header divider) |
-| `{colors.hairline-tertiary}` | `rgba(0,0,0,0.16)` | `rgba(255,255,255,0.22)` | Radio hover border, dropzone drag hover, nested surfaces where the two above compete |
+| `{colors.hairline-soft}` | `rgba(0,0,0,0.059)` (grayA 3) | `rgba(255,255,255,0.071)` (grayA 3) | Card (elevated variant), ModalInset, Calendar outer chrome — whisper edge that reads present without competing |
+| `{colors.hairline}` | `rgba(0,0,0,0.149)` (grayA 6) | `rgba(255,255,255,0.172)` (grayA 6) | Default input/menu border, Card (flat variant), Section, tab-list divider, table row divider |
+| `{colors.hairline-strong}` | `rgba(0,0,0,0.192)` (grayA 7) | `rgba(255,255,255,0.231)` (grayA 7) | Hovered input/secondary-Button border, structural separators (docs header, table header divider) |
+| `{colors.hairline-tertiary}` | `rgba(0,0,0,0.267)` (grayA 8) | `rgba(255,255,255,0.333)` (grayA 8) | Card hoverable hover state, Radio hover border, dropzone drag hover |
 
 ### Text (Ink)
 
@@ -383,10 +444,12 @@ Four tiers. The naming is deliberate: `ink` is not called `foreground` because t
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `{colors.ink}` | `#171717` | `#EDEDED` | Body text, headlines, emphasized labels |
-| `{colors.ink-muted}` | `#666666` | `#A1A1A1` | Meta text, table cell secondary, muted icon rest state |
-| `{colors.ink-subtle}` | `#8F8F8F` | `#737373` | Placeholder, missing/None cell values, deselected tab |
-| `{colors.ink-tertiary}` | `#909090` | `#666666` | Disabled label, dark-mode switch off-thumb, footnote |
+| `{colors.ink}` | `#202020` (gray 12) | `#eeeeee` (gray 12) | Body text, headlines, emphasized labels |
+| `{colors.ink-muted}` | `#646464` (gray 11) | `#b4b4b4` (gray 11) | Meta text, table cell secondary, muted icon rest state |
+| `{colors.ink-subtle}` | `#838383` (gray 10) | `#7b7b7b` (gray 10) | Placeholder, missing/None cell values, deselected tab |
+| `{colors.ink-tertiary}` | `#838383` (gray 10, same rung as subtle) | `#7b7b7b` (gray 10, same rung as subtle) | Disabled label, footnote |
+
+In the Phase 1 preview `ink-subtle` and `ink-tertiary` collapse onto the same rung (both gray 10). The token names stay live so callsites keep resolving, but they render identically until Phase 2 collapses one of them.
 
 ### Primary (Monochrome)
 
@@ -394,8 +457,8 @@ The library ships no chromatic brand hue. `{colors.primary}` resolves to `{color
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `{colors.primary}` | `#171717` | `#EDEDED` | Primary button fill, active pill fill, slider indicator + thumb, switch on-track |
-| `{colors.on-primary}` | `#FFFFFF` | `#0A0A0A` | Text on primary fill, switch thumb (contrast) |
+| `{colors.primary}` | `#202020` (inherits `--ink`) | `#eeeeee` (inherits `--ink`) | Primary button fill, focus-ring color, slider indicator + thumb, switch on-track |
+| `{colors.on-primary}` | `#fcfcfc` (inherits `--base`) | `#0a0a0a` (inherits `--base`) | Text on primary fill, switch thumb (contrast) |
 | `{colors.primary-hover}` | `color-mix(primary, base 15%)` | same | Hovered primary button |
 | `{colors.primary-active}` | `color-mix(primary, base 25%)` | same | Pressed primary button |
 
@@ -411,7 +474,7 @@ The three status roles are theme-invariant fixed hex. Meaning is universal; a wa
 |---|---|---|---|---|
 | `{colors.error}` | `#DC2626` | `#FFFFFF` | `#FFFFFF` | Destructive buttons, error badges, form validation |
 | `{colors.warning}` | `#FDB203` | `#171717` | `#171717` | Warning badges, caution indicators |
-| `{colors.success}` | `#397C3B` | `#FFFFFF` | `#FFFFFF` | Success badges, completed states, positive deltas |
+| `{colors.success}` | `#1A7F37` | `#FFFFFF` | `#FFFFFF` | Success badges, completed states, positive deltas |
 
 Hover and active steps (`error-hover`, `success-active`, etc.) exist for each role but never shift hue, only lightness.
 
@@ -445,14 +508,14 @@ The display and text families are variants of the same superfamily. The system t
 
 ### Size Scale
 
-Eight sizes. `regular` (15px) is the default body size; everything else steps out from there.
+Eight sizes. `regular` (16px) is the default body size; everything else steps out from there. Small and regular took an editorial bump this cycle (small 13→14, regular 15→16); every existing `text-small`/`text-regular` utility picks it up automatically.
 
 | Utility | Size | Use |
 |---|---|---|
 | `text-micro` | 11px | Meta label, table column header, footer link |
 | `text-mini` | 12px | Caption, badge, hint text |
-| `text-small` | 13px | Dense UI copy, sidebar item, form label, table cell, default button label |
-| `text-regular` | 15px | Default body copy, large button label |
+| `text-small` | 14px | Dense UI copy, sidebar item, form label, table cell, default button label |
+| `text-regular` | 16px | Default body copy, large button label |
 | `text-large` | 18px | Lead paragraph |
 | `text-title3` | 20px | Panel title, section headline |
 | `text-title2` | 24px | Card title, page section headline |
@@ -487,18 +550,18 @@ A size utility on a `<div>` inherits body's 1.5. Wrap the same content in `<p>` 
 ### Composition
 
 ```html
-<!-- Default body: 15px, weight 450, line-height 1.5. No utilities needed. -->
+<!-- Default body: 16px, weight 450, line-height 1.5. No utilities needed. -->
 <div>A crisp-minimal component library.</div>
 
 <!-- Heading: h1 defaults to weight 500 and line-height 1.25 via element style.
      Size utility carries the 36px. -->
 <h1 class="text-title1">Ship it.</h1>
 
-<!-- Button label: 13px medium. Weight is explicit because <button> doesn't
+<!-- Button label: 14px medium. Weight is explicit because <button> doesn't
      inherit heading semantics. -->
 <button class="text-small font-medium">Get started</button>
 
-<!-- Dense list item on a card: 13px, weight inherited from body. -->
+<!-- Dense list item on a card: 14px, weight inherited from body. -->
 <li class="text-small">Owner</li>
 ```
 
@@ -553,16 +616,17 @@ The canvas is the whitespace. Sections are separated by 96px of canvas between b
 | Level | Treatment | Use |
 |---|---|---|
 | 0 (flat) | No shadow, no border | Body copy, hero headlines, footer text |
-| 1 (canvas surfaces) | `{colors.base}` bg + 1px `{colors.hairline}` | Docs shell backdrop, page background |
-| 2 (elevated chrome) | `{colors.layer-1}` bg + 1px `{colors.hairline}` | Secondary Button, Card, Input, Select, Table container, active pill Tab |
-| 3 (popup) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-menu` | Menu popup, Combobox, Select popup, Command palette |
+| 1 (canvas surfaces) | `{colors.base}` bg | Docs shell backdrop, page background |
+| 2 (elevated chrome, flat Card) | 1px `{colors.hairline}` on the container surface | Secondary Button, flat Card, Input, Select, Table container, Section flat |
+| 2b (elevated Card) | `{colors.layer-1}` bg + 1px `{colors.hairline-soft}` + `shadow-card` (light only) | Auth cards, marketing lifts, any surface that should read as a distinct object |
+| 3 (popup) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-menu` | Menu popup, Combobox, Select popup, Command palette, Popover |
 | 4 (tooltip) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-tooltip` | Tooltip chip |
 | 5 (modal) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-modal` | Dialog, sheet, toast |
 | 6 (focus) | 2px `{colors.primary}` outline, 2px offset | Focused button, tab, link. Inputs shift their own border to `{colors.primary}` instead. |
 
-**Flat by default.** Cards and panels never wear a drop shadow. The lift onto `fill-1` combined with the hairline is the entire elevation vocabulary at that level. Shadows enter only at popup and modal altitude, where the component is genuinely floating above the page.
+**Card treatment now has two seats.** `variant="flat"` (default) is a transparent frame with a hairline border — inherits the container surface. `variant="elevated"` fills `layer-1` with a whisper `hairline-soft` edge and turns on `shadow-card` in light. Set `shadow={false}` on an elevated Card to opt out, or `shadow={true}` on a flat Card to opt in. Section mirrors Card with the same two-seat API.
 
-**Shadow tokens** (`shadow-menu`, `shadow-modal`, `shadow-tooltip`, `shadow-card`) live in `tokens.css` and use a stacked triple to fake depth: a 1px top edge for hairline crispness, a mid diffusion for the body of the lift, and a long soft drop for the cast. Dark-mode shadows increase alpha to compensate for the reduced contrast against the near-black canvas.
+**Shadow tokens** (`shadow-menu`, `shadow-modal`, `shadow-tooltip`, `shadow-card`) live in `tokens.css`. `shadow-card` in light is a two-stack — `0 1px 2px + 0 4px 12px rgba(3,17,38,0.05)` — for a soft editorial lift; in dark it resolves to a subtle single drop. Overlays (`shadow-menu` / `shadow-modal` / `shadow-tooltip`) still use the triple-stack: a 1px top edge for hairline crispness, a mid diffusion for the body, and a long soft drop for the cast. Dark-mode shadows increase alpha to compensate for reduced contrast against the near-black canvas.
 
 **No atmospheric depth.** No gradients on marketing surfaces, no spotlight cards, no glow effects, no ambient noise textures. Depth is carried by the surface ladder plus the hairline plus, where necessary, the shadow stack. Nothing else.
 
@@ -574,16 +638,19 @@ Product screenshots and live component demos are the marketing surface's decorat
 
 ### Radius Scale
 
-The library ships four radii. Everything maps to one of them.
+The library ships seven radii. Everything maps to one of them.
 
 | Token | Value | Use |
 |---|---|---|
-| `{rounded.control}` | 6px | Buttons, inputs, selects, checkboxes, menu items, small tags |
-| `{rounded.surface}` | 12px | Cards, dialogs, popups, feature tiles, code blocks |
-| `{rounded.panel}` | 16px | Marketing panels, hero surfaces, product screenshot frames |
-| `{rounded.full}` | `9999px` | Badges, avatars, pills, status chips |
+| `--radius-4` | 4px | Checkbox, radio thumb — where 6px would look proportionally too round |
+| `--radius-6` | 6px | Menu-row highlight, tab folder-tops, small chips (Badge default), kbd, dense chrome |
+| `--radius-8` | 8px | Buttons (`square` shape), Input, Textarea, Select trigger, Combobox trigger, Section, Card, Tooltip, ModalInset, Toggle `square`, Toast action button, SearchInput inner clear |
+| `--radius-10` | 10px | In-between step for surfaces that want more than 8 but less than 12 |
+| `--radius-12` | 12px | `popupSurface` recipe: Menu popup, Combobox popup, Select popup, Popover, Command palette; Sheet (all four sides) |
+| `--radius-16` | 16px | Marketing panels, hero surfaces, product screenshot frames |
+| `--radius-full` | `9999px` | Avatars, pills, status chips; Badge `pill` shape; `full` shape on Button and Toggle |
 
-Intermediate radii (8px, 24px) are intentionally absent. 6px reads slightly tighter on controls without going flat; 16px is the widest radius any surface earns. If a design wants 24px, the pattern is wrong.
+Radius-8 and radius-10 were added this cycle as steps between control-6 and surface-12. Control-shaped chrome bumped from 6 to 8 across Button, Input, Section, Card, Tooltip, Toggle square, ModalInset, and the toast action button. Popup surfaces and Sheet stayed at 12. Radius-24 remains absent by design — if a surface wants more than 16, the pattern is wrong.
 
 ### Icons & Iconography
 
@@ -629,42 +696,52 @@ Each component below is a single paragraph plus a token map. Full API and source
 
 ### Buttons
 
+**Variant vocabulary.** Button ships six variants: `primary` / `secondary` / `soft` / `tertiary` / `warning` / `destructive`. Any component that accepts button-like variants (Toggle, IconButton, LinkButton) reuses these verbatim. The `shadow` prop was dropped this cycle — Button no longer casts a shadow at rest. Pressed / active fills on the non-solid variants now uniformly use `{colors.layer-selected}` for a consistent depressed feel.
+
 **`button-primary`**: Monochrome CTA. Default primary action across the system.
-- Background `{colors.primary}` (resolves to `{colors.ink}`), text `{colors.on-primary}`, type `{typography.control-md}`, radius `{rounded.control}` 6px, padding 8px 14px, height 32px.
+- Background `{colors.primary}` (resolves to `{colors.ink}`), text `{colors.on-primary}`, type `{typography.control-md}`, `square` shape radius `--radius-8` (was 6), padding 8px 14px, height 32px.
 - Hover: background `{colors.primary-hover}`. Active: background `{colors.primary-active}`.
-- Focus: 1px `{colors.focus-ring}` outline, 1px offset. Disabled: opacity 0.5, cursor not-allowed.
 - Sizes: sm (24px height, padding 4px 10px, `{typography.control-sm}`), md (32px height, default), lg (40px height, padding 10px 16px, `{typography.control-lg}`).
 
-**`button-secondary`**: Elevated bordered button. Secondary CTAs and confirmations that aren't primary. Same surface as cards and popups so the button reads as part of the elevated-chrome layer.
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, text `{colors.ink}`, type `{typography.control-md}`, radius `{rounded.control}` 6px, padding 8px 14px.
-- Hover: background `{colors.layer-2}` (a subtle tint on the same rung — the border stays stable so the whole button doesn't shimmer on hover).
+**`button-secondary`**: Bordered button on `layer-1`. Secondary CTAs and confirmations that aren't primary.
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, text `{colors.ink}`, radius `--radius-8`, padding 8px 14px.
+- Hover: background `{colors.layer-2}`, border `{colors.hairline-strong}` (new this cycle — border shifts to strong on hover for a firmer edge).
+- Active: background `{colors.layer-selected}`, border stays strong.
 - Icons composed via the `iconMuted` recipe.
 
+**`button-soft`** (new): Neutral fill button for embedded/secondary chrome that shouldn't wear a border.
+- Background `{colors.fill-1}`, text `{colors.ink}`, radius `--radius-8`, no border.
+- Hover: `{colors.fill-2}`. Active: `{colors.layer-selected}`. Uses the `neutralFill` state ramp — a solid step deeper on hover, overlay-pressed on active.
+
 **`button-tertiary`**: Transparent button. Toolbar actions, icon-only chrome, low-emphasis links styled as buttons.
-- Background transparent, text `{colors.ink}`, type `{typography.control-md}`, radius `{rounded.control}` 6px, padding 8px 14px.
-- Hover: background `{colors.layer-hover}`. Active: `{colors.layer-selected}`. Overlay-based so the state reads on any surface underneath, not just canvas.
+- Background transparent, text `{colors.ink}`, radius `--radius-8`, padding 8px 14px.
+- Hover: background `{colors.layer-hover}`. Active: `{colors.layer-selected}`. Overlay-based so the state reads on any surface underneath.
 - Icons composed via the `iconMuted` recipe.
 
 **`button-destructive`**: Destructive action. Uses the semantic error role at fixed hex.
-- Background `{colors.error}`, text `{colors.error-fg}`, type `{typography.control-md}`, radius `{rounded.control}` 6px, padding 8px 14px.
+- Background `{colors.error}`, text `{colors.error-fg}`, radius `--radius-8`, padding 8px 14px.
 - Hover: `{colors.error-hover}`. Active: `{colors.error-active}`.
 
-**Variant vocabulary.** Any component that accepts button-like variants (Toggle, IconButton, LinkButton) reuses `primary` / `secondary` / `tertiary` / `destructive` verbatim. Per-component inventions like `outline` or `ghost` are forbidden.
+**Shape API.** Button and Toggle share `shape={"square" | "pill" | "circle"}`. `square` (default) → `--radius-8`. `pill` → `--radius-full`. `circle` → aspect-square + `!px-0` for icon-only chips. Do not invent per-component names like `outline` or `ghost`.
 
 ### Inputs & Forms
 
 **`input`**: Single-line text input.
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, text `{colors.ink}`, placeholder `{colors.ink-subtle}`, type `{typography.small}`, radius `{rounded.control}` 6px, padding 8px 12px, height 32px.
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, text `{colors.ink}`, placeholder `{colors.ink-subtle}`, type `{typography.small}`, radius `--radius-8` (was 6), padding 8px 12px, height 32px.
 - Hover: border `{colors.hairline-strong}`.
 - Focused: border `{colors.primary}` (no outside ring — the border-lift is the focus signal).
 - Invalid: border `{colors.error}` at 100% (rare exception to the hairline rule; error state overrides).
 - Sizes: sm (24px height), md (32px, default), lg (40px height).
 
-**`textarea`**: Multi-line. Same tokens as `input`, min-height 96px, resize vertical only.
+**`textarea`**: Multi-line. Same tokens as `input`, radius `--radius-8`, min-height 96px, resize vertical only.
 
-**`select-trigger`**: Trigger button for a Select. Same specs as `input`; adds a 16px chevron icon in `ink-subtle` at the right edge.
+**`select-trigger`**: Trigger button for a Select. Same specs as `input`, radius `--radius-8`; adds a 16px chevron icon in `ink-subtle` at the right edge.
 
-**`checkbox`**: 16px square, radius `{rounded.control}` 6px, border 1px `{colors.hairline-strong}`. Checked: background `{colors.primary}`, checkmark `{colors.on-primary}`.
+**`combobox-input`**: Trigger for a Combobox. Ships two visual treatments via the `variant` prop:
+- `control` (default): bordered layer-1 chrome that matches `button-secondary`. `border border-hairline bg-layer-1`, hover to `hairline-strong` + `layer-2`, focus lifts the border to `--primary`. Radius `--radius-8`.
+- `soft`: quieter fill-only treatment for dense embedded pickers. `bg-fill-1` at rest, `bg-fill-2` on hover / focus, no border.
+
+**`checkbox`**: 16px square, radius `--radius-4`, border 1px `{colors.hairline-strong}`. Checked: background `{colors.primary}`, checkmark `{colors.on-primary}`.
 
 **`radio`**: 16px circle, border 1px `{colors.hairline-strong}`. Selected: 6px inner dot in `{colors.primary}`.
 
@@ -676,75 +753,97 @@ Each component below is a single paragraph plus a token map. Full API and source
 
 ### Cards & Containers
 
-**`card`**: Default lifted content block.
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `{rounded.surface}` 12px, padding `{spacing.space-24}` 24px.
+**`card`**: Content block with two seats. The old `border` / `shadow` / `secondary` booleans were dropped this cycle in favor of a single `variant` prop.
+- `variant="flat"` (default): transparent frame + 1px `{colors.hairline}`, radius `--radius-8` (was 12), no shadow by default. The quiet default for search/list/content surfaces that should read as chrome on the container surface.
+- `variant="elevated"`: `bg-layer-1` + 1px `{colors.hairline-soft}` (whisper edge), radius `--radius-8`, `shadow-card` in light by default. Opt-in for auth cards, marketing lifts, or any surface that should read as a distinct object.
+- `shadow?: boolean` — defaults to `true` when `variant="elevated"`, `false` for `flat`. Explicitly overridable in either direction.
+- `hoverable`: adds `hover:border-hairline-tertiary` (border emphasis only — no bg-shift, no shadow-on-hover) plus focus ring.
+- `selected`: `border border-primary` (was a `!border-primary` important override).
 
-**`card-elevated`**: Hovered or featured card. Same background rung; a stronger hairline carries the "one step lifted" signal instead of a surface-rung change.
-- Background `{colors.layer-1}`, border 1px `{colors.hairline-strong}`, otherwise identical.
+**`section`**: Same two-seat API as Card. `flat` is transparent + hairline; `elevated` is `bg-layer-1` + hairline. Both at `--radius-8`. Section provides an opinionated settings-page-card layout (header, content, two-column footer for status + actions).
 
-**`panel`**: Larger container for marketing hero panels, form containers, docs section wrappers.
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `{rounded.panel}` 16px, padding `{spacing.space-32}` 32px.
+**`panel`**: Marketing hero panels, form containers, docs section wrappers.
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `--radius-16`, padding `{spacing.space-32}` 32px.
 
 ### Overlays
 
 **`dialog`**: Modal dialog.
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `{rounded.surface}` 12px, padding `{spacing.space-24}` 24px, shadow `shadow-modal`.
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `--radius-12`, padding `{spacing.space-24}` 24px, shadow `shadow-modal`.
 - Scrim: `{colors.scrim}` at 45%.
 - Enter/exit: `duration-overlay` 150ms `ease-standard`, opacity + scale-from-98%.
 - Close button: circle icon-only (`size-8 rounded-full`) with lucide `X`; `hover:bg-layer-hover` for tertiary style.
+- `ModalInset`: inset sub-surface inside a dialog uses the elevated-Card language — `bg-layer-1 + border-hairline-soft`, radius `--radius-8`.
 
-**`sheet`**: Side drawer. Slides in from the right or bottom.
-- Same background and border as `dialog`. Radius `{rounded.panel}` 16px on the leading edge only; other edges square.
+**`sheet`**: Side drawer. Slides in from any edge (`side="top" | "right" | "bottom" | "left"`).
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`. All four sides now use radius `--radius-12` (bumped from 10 this cycle for parity with `popupSurface`).
+- `SheetHeader`: stacks title + description by default, with an absolute-positioned close X (`absolute top-2 end-2`). The compact row layout only triggers when `leading` or an explicit `trailing` slot is passed — a plain `SheetTitle + SheetDescription` header no longer collapses into a single row.
 - Single canonical variant, always modal; no `variant="drawer"` or `modal={false}` API.
 - Enter/exit: `duration-overlay` 150ms `ease-standard`, transform-based slide.
 
-**`menu-popup`**: Menu dropdown. Shared recipe with Combobox popup, Select popup, Command palette via the `popupSurface` mixin.
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `{rounded.surface}` 12px, padding `{spacing.space-4}` 4px, shadow `shadow-menu`.
-- Menu row: padding 6px 8px, type `{typography.small}`, radius `{rounded.control}` 6px on hover; icons composed via the `iconMuted` recipe.
-
-**`select-popup`**, **`combobox-popup`**, **`command-palette`**: Same specs as `menu-popup`.
+**`menu-popup`** / **`combobox-popup`** / **`select-popup`** / **`popover`** / **`command-palette`**: Shared via the `popupSurface` recipe.
+- Recipe: `rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu`.
+- Menu / list row (`itemRow.base`): `rounded-[var(--radius-6)]`, `data-[active]:bg-layer-hover data-highlighted:bg-layer-hover` (alpha overlay, was solid `bg-fill-2`); highlights read on any rung underneath.
+- Menu, Combobox, and Popover all wrap the mobile centered panel in `<RemoveScroll>` (react-remove-scroll) to lock body scroll while the sheet-like mobile popup is open. Popover gained a full mobile-centered branch this cycle (Backdrop + centered popup at `w-[calc(100vw-1rem)]` and `max-h-[calc(100dvh-2rem)]`).
 
 **`tooltip`**: Compact tooltip. Uses the same lifted-chrome recipe as menus (no inverted `bg-ink` chip).
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, text `{colors.ink}`, radius `{rounded.control}` 6px, padding 6px 10px, type `{typography.mini}`, shadow `shadow-tooltip`.
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, text `{colors.ink}`, radius `--radius-8` (was 6), padding 6px 10px, type `{typography.mini}`, shadow `shadow-tooltip`.
 - Enter/exit: `duration-state` 75ms `ease-standard`, opacity + scale-from-97%.
 
 **`toast`**: Positioned toast, bottom-right by default.
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `{rounded.surface}` 12px, padding 12px 16px, shadow `shadow-modal`, type `{typography.control-md}` title + `{typography.mini}` description.
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `--radius-12`, padding 12px 16px, shadow `shadow-modal`, type `{typography.control-md}` title + `{typography.mini}` description.
+- Action button: composes Button `secondary` chrome — radius `--radius-8`, `hover:border-hairline-strong`.
 - Close button: circle icon-only (`size-7 rounded-full`), lucide `X`, `hover:bg-layer-hover hover:text-ink`.
 - Status icons: lucide `CircleCheck` / `CircleAlert` / `TriangleAlert` / `Info` in mapped Tailwind classes (`text-success`, `text-error`, `text-warning`, `text-ink-muted`).
 
 ### Badges
 
-Neutral and status variants. Every badge uses `{rounded.full}` and `{typography.mini}`.
+Neutral and status variants. Default shape is `rounded` (radius-6) — the pill-shape default was dropped this cycle; opt into pill via `shape="pill"`. Default variant is `soft`. Every badge uses `{typography.mini}`.
 
-**`badge-neutral`**: Background `{colors.fill-2}`, text `{colors.ink-muted}`, padding 2px 8px.
+**`badge-neutral`**: Background `{colors.fill-2}`, text `{colors.ink-muted}`, radius `--radius-6`, padding 2px 8px.
 
-**`badge-status-*`**: One per semantic role. Success uses `{colors.success}` fill with `{colors.success-fg}` text; warning and error follow the same pattern. Fixed hex, theme-invariant, `-fg` flips per role.
+**`badge-status-*`**: One per semantic role. Soft variant uses the paired `-soft-bg` / `-soft-fg` tokens (theme-adaptive so the tint stays legible on both light and dark bases); solid variant uses the raw semantic fill with `-fg` text. Outlined variant sits on a 40%-alpha border of the semantic color with matching text.
 
 ### Navigation
 
 **`top-nav`**: Sticky top bar with the Patch wordmark left, primary nav links centered, secondary + primary buttons right.
 - Background `{colors.base}`, border-bottom 1px `{colors.hairline}`, text `{colors.ink}`, type `{typography.small}`, height 56px.
 
-**`tabs`**: Two variants.
-- `underline` (default): 2px bar tracks the active tab via motion's `layoutId` sliding between positions. Muted text at rest, ink text active.
-- `pill`: fully-rounded chip with a 1px `{colors.hairline}` border always visible (per-tab, matches secondary-button chrome). Active tab fills with `{colors.layer-1}` via a direct data-attr swap (no sliding indicator — a fill traveling through the gap between bordered pills reads awkwardly). Inactive tabs pick up a `{colors.layer-hover}` overlay tint on hover, like the tertiary button.
+**`tabs`**: Folder-tab shape — the previous `underline` and `pill` variants were dropped this cycle in favor of a single canonical shape.
+- Container (`TabsList`): flex row with `border-b border-hairline` (horizontal) or `border-r border-hairline` (vertical). The container line is what the folder-tab merges into.
+- Trigger (`TabsTrigger`): `px-4 py-2.5 text-small`, muted text at rest. A transparent 1px border is reserved so nothing shifts on activation.
+- Active trigger: `border border-hairline` on top+sides, `border-b-transparent` (or `border-r-transparent` for vertical), `rounded-t-[var(--radius-6)]`, `-mb-px` to overlap the container line so the active fill merges with the panel body — the classic "manila folder" join. Active fill `bg-base` so it matches the page surface, text lifts to `ink` weight-medium.
+- Vertical orientation: `TabsPanel` adds `pl-6 flex-1 min-w-0`; root gets `flex gap-0`.
+- No sliding `TabsPrimitive.Indicator` — the container-line merge does the tracking work.
 
-**`segmented-toggle`**: Compact segmented radio control with a sliding pill.
-- Container: `{colors.fill-1}` fill, 1px `{colors.hairline}` border, padding 0.5px, radius `{rounded.control}` 6px.
-- Active item: `{colors.layer-1}` sliding pill (`layoutId` animation), no border, `{colors.ink}` text.
-- Inactive item: transparent, `{colors.ink-muted}` text, iconMuted icon, `hover:bg-layer-2` for a subtle press feel.
+**`segmented-toggle`**: Compact segmented radio control with a sliding pill. Unchanged from previous cycle.
 
 **`toggle`**: Press-to-toggle button (Bold / Italic / Star / Pin).
-- Vocabulary matches Button: `tertiary` (transparent at rest) / `secondary` (bordered at rest). Shape API also matches Button: `square` (default, 6px radius) / `pill` / `circle` (aspect-square + `!px-0` for icon-only chips).
+- Vocabulary matches Button: `tertiary` (transparent at rest) / `secondary` (bordered at rest). Shape API matches Button: `square` (default, `--radius-8`) / `pill` / `circle` (aspect-square + `!px-0`).
 - Rest: `{colors.ink-muted}` text + iconMuted icon.
 - Hover: `hover:bg-layer-hover hover:text-ink`; secondary adds `hover:border-hairline-strong`.
 - Pressed (`data-[pressed]`): `{colors.layer-selected}` overlay fill, `{colors.ink}` text — reads as depressed, not color-inverted.
-- Container: no border; the press overlay is the entire visual affordance.
 
-**`command`**: Command palette. Full-screen overlay with an input, filtered results, and a keyboard hint bar.
-- Background `{colors.base}`, border 1px `{colors.hairline-strong}`, radius `{rounded.surface}` 12px, shadow `shadow-modal`.
-- Result row: padding 8px 12px, type `{typography.small}`, hover `{colors.layer-hover}`.
+**`toggle-group`**: Row of related toggles with a shared container.
+- Container: `bg-layer-1` (was `fill-1`), 1px `{colors.hairline}` border, `gap-0.5` between items so the container color shows through as a thin separator.
+- Item rest: transparent, muted label.
+- Item hover: `bg-layer-hover` (was `layer-2`).
+- Item pressed: `bg-layer-selected` (was `fill-2`).
+
+**`command`**: Command palette. Uses the shared `popupSurface` recipe.
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `--radius-12`, shadow `shadow-menu`.
+- Result row: padding 8px 12px, type `{typography.small}`, `data-[active]:bg-layer-hover data-highlighted:bg-layer-hover`.
+
+### Blocks
+
+**`app-header`**: Composed application header block (`AppHeader` + `AppHeaderBrand` / `AppHeaderNav` / `AppHeaderNavItem` / `AppHeaderNavSection` / `AppHeaderRight` / `AppHeaderTools` / `AppHeaderMobileTop`). Renders desktop as a single sticky bar with brand left, nav center, right cluster right; renders mobile as a stacked drawer.
+- `AppHeaderMobileTop` (new): content pinned into the mobile top bar just before the hamburger, hidden on desktop, never in the panel footer — reserved for one-tap actions like a notification bell.
+- `filterToolbar` prop (new): third sub-row rendered below the tools row, for list-page filter chips.
+- Mobile tools row divider tied to `bordered` state.
+- Hamburger geometry tightened this cycle: bars are `h-px w-[15px]` (was `h-[1.5px] w-[16px]`).
+
+**`empty-state`**: Empty-state block.
+- Dropped the fixed `size-24` icon wrapper (was pure whitespace); icon now sits directly above the title.
+- Title top margin `mb-6` → `mb-3`.
 
 ### Marketing-Specific
 
@@ -815,10 +914,10 @@ Each component page opens with a live demo (layer-1 panel, 32px padding), follow
 
 ### Do
 
-- Anchor every page on `{colors.base}`. The faint blue tint is intentional and gives the flat surface warmth on OLED.
-- Use the four-step surface ladder for hierarchy; a card lift plus a hairline is the entire elevation vocabulary at that level.
-- Reserve shadows for true overlays: dialog, menu popup, select popup, tooltip, toast. Cards and panels are flat.
-- Keep `{colors.primary}` monochrome by default. Consumers override to inject their brand.
+- Anchor every page on `{colors.base}`. The near-black dark canvas (`#0a0a0a`) is intentional and prevents banding on 6-bit OLED panels.
+- Use the surface ladder + alpha hairlines for hierarchy. A flat Card (transparent + hairline) is enough for most content surfaces; reach for `variant="elevated"` (bg-layer-1 + hairline-soft + shadow-card) only when the surface should read as a distinct object.
+- Reserve overlay shadows (`shadow-menu` / `shadow-modal` / `shadow-tooltip`) for true overlays: dialog, menu popup, select popup, popover, tooltip, toast. `shadow-card` is the softer editorial-lift stack for elevated Cards.
+- Keep `{colors.primary}` monochrome by default. Consumers override to inject their brand. Do NOT ship an `--accent*` token family — Patch UI has no accent slot.
 - Use semantic status roles (`{colors.error}`, `{colors.warning}`, `{colors.success}`) for status fills, never a chromatic step from a color scale.
 - Let element defaults do the weight work: `<body>` gets `normal` (450), `<h1>`–`<h6>` get `medium` (500). Only add a `font-*` utility when the element defaults don't fit the role.
 - Compose size and weight at the call site (`text-small font-medium`); never grow a new compound recipe.
@@ -827,9 +926,9 @@ Each component page opens with a live demo (layer-1 panel, 32px padding), follow
 
 ### Don't
 
-- Don't introduce a chromatic brand hue in the shipped tokens. If a demo needs one, it belongs in the docs consumer layer.
-- Don't use `#000000` true black as the base; `#0F0F13` reads warmer.
-- Don't ship a card with a drop shadow. Cards lift with surface + hairline only.
+- Don't introduce a chromatic brand hue or an `--accent*` token in the shipped tokens. If a demo needs an accent, it belongs in the docs consumer layer.
+- Don't use `#000000` true black as the base; `#0a0a0a` avoids banding on 6-bit OLED panels.
+- Don't ship a flat Card with a drop shadow. If a surface needs a lift, use `variant="elevated"` — it turns on `shadow-card` by default.
 - Don't stack a weight utility on a compound text class.
 - Don't use uppercase small-caps for section labels or eyebrows.
 - Don't apply `font-mono` decoratively.
@@ -875,7 +974,7 @@ Each component page opens with a live demo (layer-1 panel, 32px padding), follow
 
 1. Focus on one component at a time. Reference it by its `components:` token name in the frontmatter.
 2. When introducing a new section on marketing, decide first which surface rung it lives on. Default to `fill-1`; use `fill-2` only for elevated emphasis.
-3. Default body to `{typography.regular}` at weight 400. Reach for `body-20` only for a lede paragraph, `body-14` for card body or dense UI.
+3. Default body to `{typography.regular}` (16px) at weight 450. Reach for `text-large` only for a lede paragraph, `text-small` for card body or dense UI, `text-mini` for meta.
 4. Run `npm run check:contrast -w packages/react` after any color token change. WCAG contrast is a gate.
 5. Regenerate the registry after any component or token change: `npm run registry`.
 6. Add new component variants as separate entries in the `components:` frontmatter map. Never overload an existing entry with a variant switch.
