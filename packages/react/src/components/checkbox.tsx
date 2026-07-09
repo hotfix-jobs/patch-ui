@@ -25,8 +25,11 @@ export function Checkbox({
       disabled={disabled}
       className={cn(
         "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[var(--radius-4)]",
-        "bg-transparent border border-hairline-strong",
-        "hover:border-hairline-tertiary",
+        // Unchecked uses a subtle chip fill (matches Switch off-track) so
+        // the box stays visually distinct against any surface — including
+        // rows that apply a hover overlay.
+        "bg-fill-1 border border-hairline",
+        "hover:bg-fill-2 hover:border-hairline-strong",
         "data-checked:border-primary data-checked:bg-primary data-checked:hover:bg-primary-hover data-checked:hover:border-primary-hover",
         "data-indeterminate:border-primary data-indeterminate:bg-primary",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",

@@ -31,8 +31,6 @@ export function SwitchDemo() {
         <div className="flex items-center gap-4">
           <Switch defaultChecked />
           <Switch variant="success" defaultChecked />
-          <Switch variant="warning" defaultChecked />
-          <Switch variant="error" defaultChecked />
         </div>
       </div>
 

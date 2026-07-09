@@ -5,7 +5,7 @@ export const metadata = { title: "Accordion" };
 
 # Accordion
 
-Collapsible sections built on Base UI's Accordion, with hairline row separators, an animated height transition, and a chevron that rotates on open. Panels stay mounted (`keepMounted`) so their content remains crawlable when collapsed.
+Collapsible sections built on Base UI's Accordion. One primitive covers every disclosure pattern: from a single one-off reveal ("Show more" toggles, optional form fields) to a coordinated FAQ list to a stack of collapsible cards. Panels stay mounted (`keepMounted`) so their content remains crawlable when collapsed.
 
 <Install name="accordion" />
 
@@ -23,12 +23,52 @@ import {
   AccordionPanel,
 } from "@patchui/react";
 
+// Flush (default) — borderless, tight, no chrome
 <Accordion defaultValue={["item-0"]}>
   <AccordionItem value="item-0">
     <AccordionTrigger>Question?</AccordionTrigger>
-    <AccordionPanel>Answer.</AccordionPanel>
+    <AccordionPanel>
+      <p className="pb-3 text-small text-ink-muted">Answer.</p>
+    </AccordionPanel>
   </AccordionItem>
 </Accordion>
+
+// Bordered — hairline row separators between items
+<Accordion variant="bordered">
+  <AccordionItem value="one">
+    <AccordionTrigger>What is Patch UI?</AccordionTrigger>
+    <AccordionPanel>...</AccordionPanel>
+  </AccordionItem>
+</Accordion>
+
+// Card — each item is its own bordered card
+<Accordion variant="card">
+  <AccordionItem value="plan-a">
+    <AccordionTrigger>Team plan</AccordionTrigger>
+    <AccordionPanel>...</AccordionPanel>
+  </AccordionItem>
+</Accordion>
+
+// Single-item reveal — inline "show more"
+<Accordion>
+  <AccordionItem value="details">
+    <AccordionTrigger>Show more details</AccordionTrigger>
+    <AccordionPanel>...</AccordionPanel>
+  </AccordionItem>
+</Accordion>
+
+// Custom caret — pass any node; add group-data-[panel-open]:* classes
+// to react to open state (rotation, color, swap).
+<AccordionTrigger
+  caret={
+    <Plus className="size-4 text-ink-muted group-data-[panel-open]:rotate-45 group-hover:text-ink" />
+  }
+>
+  Plus that rotates into an X
+</AccordionTrigger>
+
+// Hidden caret
+<AccordionTrigger caret={null}>No indicator</AccordionTrigger>
 ```
 
 ## Props
@@ -37,6 +77,12 @@ import {
 
 <PropsTable
   props={[
+    {
+      name: "variant",
+      type: '"flush" | "bordered" | "card"',
+      default: '"flush"',
+      description: "`flush` (default) is borderless and tight — filter panels, inline reveals. `bordered` draws a hairline separator between items — Notion / settings-style FAQs. `card` boxes each item in its own bordered surface with padding — marketing FAQs, dashboard collapsible panels.",
+    },
     {
       name: "defaultValue",
       type: "string[]",
@@ -59,7 +105,7 @@ import {
       name: "openMultiple",
       type: "boolean",
       default: "true",
-      description: "Whether more than one panel can be open at once.",
+      description: "Whether more than one panel can be open at once. Set `false` for one-at-a-time (exclusive open).",
     },
   ]}
 />
@@ -77,8 +123,25 @@ import {
   ]}
 />
 
+### AccordionTrigger
+
+<PropsTable
+  props={[
+    {
+      name: "caret",
+      type: "ReactNode | null",
+      default: "<CaretDown />",
+      description: "Trailing chevron slot. Defaults to a rotating `<CaretDown />`. Pass `null` to hide the caret; pass any node (a plus/minus, arrow, custom SVG) to replace it.",
+    },
+  ]}
+/>
+
 <Callout title="Notes">
-- **Keyboard:** Triggers are focusable and toggle on Enter/Space, with the standard focus outline.
-- **SEO:** Panels render with `keepMounted`, so collapsed content stays in the DOM (height:0) and remains indexable.
-- **Single vs multiple:** Pass a single value (and `openMultiple={false}` if desired) to enforce one-open-at-a-time.
+- **One primitive for every disclosure pattern.** A single-item Accordion with the flush variant covers inline "show more" reveals; a multi-item Accordion with `openMultiple={false}` covers exclusive FAQ lists. No separate primitives to remember.
+- **Hover.** Trigger text is `text-ink-muted` at rest, lifts to `text-ink` on hover and when the panel is open. The default caret follows the same color shift and rotates 180° on open.
+- **Custom carets.** Pass any React node as `caret`. Use `group-data-[panel-open]:*` classes to react to open state (rotate, swap, color-shift); use `group-hover:*` for hover behavior. The Trigger sets the `group` root so both work on any descendant SVG.
+- **Content wrapping.** `AccordionPanel` is a thin height-transition wrapper; add your own inner padding and typography inside it (`<p className="pb-3 text-small text-ink-muted">`) so consumers control the panel's inner spacing per surface.
+- **Keyboard.** Triggers are focusable and toggle on Enter/Space. Base UI ships arrow-key navigation across items, Home/End, and the standard focus outline.
+- **SEO.** Panels render with `keepMounted`, so collapsed content stays in the DOM (height:0) and remains indexable / find-in-page-searchable.
+- **Single vs multiple.** Pass `openMultiple={false}` to enforce one-open-at-a-time.
 </Callout>

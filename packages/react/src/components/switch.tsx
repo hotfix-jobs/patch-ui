@@ -5,11 +5,14 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { focusRing, colorTransition } from "../recipes";
 
-export type SwitchVariant = "default" | "success" | "warning" | "error";
+export type SwitchVariant = "default" | "success";
 export type SwitchSize = "sm" | "md" | "lg";
 
 export interface SwitchProps extends SwitchPrimitive.Root.Props {
-  /** Color of the on-state fill. */
+  /** Color of the on-state fill. `default` = monochrome `--primary`
+   *  (matches every other on-state in the system). `success` = green,
+   *  for enable-toggle patterns where "green means active" reads more
+   *  clearly than the ink default. */
   variant?: SwitchVariant;
   /** Size preset. */
   size?: SwitchSize;
@@ -41,8 +44,6 @@ const iconSizeBySize: Record<SwitchSize, string> = {
 const onFillByVariant: Record<SwitchVariant, string> = {
   default: "data-checked:bg-primary",
   success: "data-checked:bg-success",
-  warning: "data-checked:bg-warning",
-  error: "data-checked:bg-error",
 };
 
 export function Switch({
