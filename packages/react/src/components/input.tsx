@@ -108,7 +108,7 @@ export function Input({
   const hasErrorMessage = typeof error === "string" && error.length > 0;
   const hasError = Boolean(error);
   const unstyled = variant === "unstyled";
-  const shape = unstyled ? "" : rounded ? "rounded-full" : "rounded-[var(--radius-6)]";
+  const shape = unstyled ? "" : rounded ? "rounded-full" : "rounded-[var(--radius-8)]";
   const errorId = id ? `${id}-error` : undefined;
 
   const hasTrailing = Boolean(suffix) || Boolean(trailingSpinner);

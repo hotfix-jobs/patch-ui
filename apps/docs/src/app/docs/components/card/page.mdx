@@ -5,9 +5,9 @@ export const metadata = { title: "Card" };
 
 # Card
 
-A surface primitive. Bordered, rounded, tokenized. Compose with boolean props (`border`, `hoverable`, `shadow`, `secondary`, `borderBetween`, `direction`) to fit the surface you need.
+A surface primitive. Rounded, tokenized, with two visual treatments. Pick `flat` (default) for the quiet frame used across search, list, and content surfaces, or `elevated` when a surface should read as a distinct object.
 
-Card is intentionally content-agnostic. For structured header/content/footer patterns (settings pages, plan pickers), reach for `Section`.
+Card is intentionally content-agnostic. For structured settings-page panels with labeled rows, reach for `Section`.
 
 <Install name="card" />
 
@@ -20,20 +20,16 @@ Card is intentionally content-agnostic. For structured header/content/footer pat
 ```tsx
 import { Card } from "@patchui/react";
 
-// Default — bordered
-<Card className="p-4">A simple bordered card</Card>
+// Default — flat frame with hairline border
+<Card className="p-4">A quiet, transparent card.</Card>
 
-// Bare (opt out of the border)
-<Card border={false} className="p-4">Just a subtle bg</Card>
+// Elevated — bg-layer-1 + soft edge + light-mode shadow
+<Card variant="elevated" className="p-4">
+  A card that reads as a distinct object.
+</Card>
 
-// Hoverable (bg + border shift on hover, focus ring)
+// Hoverable (border emphasis + focus ring)
 <Card hoverable className="p-4">Hover me</Card>
-
-// Elevated (shadow-card)
-<Card shadow className="p-4">Elevated</Card>
-
-// Secondary surface (--fill-1 fill) for nested cards
-<Card secondary className="p-4">Nested surface</Card>
 
 // List container with dividers between direct children
 <Card borderBetween>
@@ -59,28 +55,22 @@ import { Card } from "@patchui/react";
 <PropsTable
   props={[
     {
-      name: "border",
-      type: "boolean",
-      default: "true",
-      description: "Show a visible border. On by default: pass `border={false}` for a bare surface.",
+      name: "variant",
+      type: '"flat" | "elevated"',
+      default: '"flat"',
+      description: "`flat` is a transparent frame with a hairline border — the quiet default. `elevated` fills with `--layer-1`, uses `--hairline-soft`, and adds a light-mode `shadow-card`.",
     },
     {
       name: "hoverable",
       type: "boolean",
       default: "false",
-      description: "Adds a subtle hover state (bg shift and border darken) plus a focus ring. Wrap in a `<Link>` or handle `onClick` for actual navigation.",
+      description: "Adds a cursor, focus ring, and quiet border emphasis on hover. Wrap in a `<Link>` or handle `onClick` for actual navigation.",
     },
     {
       name: "shadow",
       type: "boolean",
-      default: "false",
-      description: "Adds a subtle elevation shadow.",
-    },
-    {
-      name: "secondary",
-      type: "boolean",
-      default: "false",
-      description: "Use the tonal secondary surface (`--fill-1`) instead of `--layer-1`. Good for nested cards.",
+      default: '`true` for `elevated`, `false` for `flat`',
+      description: "Renders `shadow-card` in light mode (dark mode stays flat). Set explicitly to override the variant default — e.g. `shadow={false}` on an elevated Card for a shadowless bg-layer-1 surface, or `shadow` on a flat Card for a lifted transparent frame.",
     },
     {
       name: "borderBetween",
@@ -116,15 +106,13 @@ import { Card } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- Card composes with booleans, not variants. Mix `border` + `hoverable` + `shadow` + `secondary` to build the exact surface you need.
-- The default Card (no props) is a rounded surface with `--layer-1` fill so it elevates over the page. Add `border` to give it an outline.
-- `hoverable` makes the card interactive (cursor, hover state, focus ring). Wrap in a `<Link>` or handle `onClick` for actual navigation.
+- Two treatments only: `flat` and `elevated`. `flat` sits transparent on the page — use it for list rows, search results, filter chips, anything that should read as content, not chrome. `elevated` fills with `--layer-1` and gains `--hairline-soft` + `shadow-card` for auth cards, marketing lifts, and any surface that should distinctly separate from the page.
+- `hoverable` is a quiet treatment: cursor + focus ring + `hover:border-hairline-strong`. No bg shift — keeps content cards from feeling like buttons.
 - `borderBetween` turns Card into a list container: dividers between direct children handle themselves. Combine with `direction="row"` for horizontal splits.
 - Structure your content directly inside Card with divs and text tokens (`text-title3`, `text-small`). For a fully structured settings-page pattern (title, subtitle, footer with status + actions), use `<Section>` instead.
-- **Migration from v1:**
-  - `variant="default"` → no prop.
-  - `variant="elevated"` → `secondary`.
-  - `variant="interactive"` → `hoverable border`.
-  - `variant="ghost"` → drop; use `className` for the specific styling you need.
-  - `CardHeader` / `CardTitle` / `CardDescription` / `CardContent` / `CardFooter` / `CardAction` / `CardMeta` sub-components removed. Migrate to `<Section>` for structured settings-page cards, or hand-roll headers with divs + text tokens for one-off patterns.
+- **Migration from prior API:**
+  - `border={false}` → `variant="flat"` (this is now the default anyway).
+  - `shadow` is still a prop; it just now composes with `variant`. `elevated` implies `shadow` unless you pass `shadow={false}`. Passing `shadow` on a `flat` card lifts the transparent frame.
+  - `secondary` → drop; use `className` for a specific fill if you need it.
+  - The old bg-shift `hoverable` treatment is gone — hover is now border-only.
 </Callout>

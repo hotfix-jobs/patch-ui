@@ -243,7 +243,8 @@
       "title": "Combobox",
       "dependencies": [
         "@base-ui/react",
-        "@phosphor-icons/react"
+        "@phosphor-icons/react",
+        "react-remove-scroll"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/checkbox.json",
@@ -383,7 +384,8 @@
       "title": "Menu",
       "dependencies": [
         "@base-ui/react",
-        "@phosphor-icons/react"
+        "@phosphor-icons/react",
+        "react-remove-scroll"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/checkbox.json",
@@ -467,11 +469,13 @@
       "type": "registry:ui",
       "title": "Popover",
       "dependencies": [
-        "@base-ui/react"
+        "@base-ui/react",
+        "react-remove-scroll"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/use-media-query.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
       "files": [

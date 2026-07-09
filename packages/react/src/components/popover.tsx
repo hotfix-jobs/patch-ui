@@ -1,9 +1,14 @@
 "use client";
 
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
+import { RemoveScroll } from "react-remove-scroll";
 import type * as React from "react";
 import { cn } from "../utils";
 import { popupSurface } from "../recipes";
+import {
+  MOBILE_MEDIA_QUERY,
+  useMediaQuery,
+} from "../hooks/use-media-query";
 
 export type PopoverSide = "top" | "bottom" | "left" | "right";
 export type PopoverAlign = "start" | "center" | "end";
@@ -62,6 +67,48 @@ export function PopoverContent({
   children,
   ...props
 }: PopoverContentProps): React.ReactElement {
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
+
+  if (isMobile) {
+    return (
+      <PopoverPrimitive.Portal>
+        <RemoveScroll>
+        <PopoverPrimitive.Backdrop
+          data-slot="popover-backdrop"
+          className={cn(
+            "fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm",
+            "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+            "data-starting-style:opacity-0 data-ending-style:opacity-0",
+          )}
+        />
+        <PopoverPrimitive.Positioner className="contents">
+          <PopoverPrimitive.Popup
+            data-slot="popover-content"
+            data-mobile="true"
+            className={cn(
+              // Centered on mobile: fixed at viewport center via
+              // top-1/2 / left-1/2 + translate. Full width minus 8px
+              // gutters left/right.
+              "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
+              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
+              "max-h-[calc(100dvh-2rem)]",
+              // Fade + slight upward drift on enter. Starts 8px below
+              // final center, animates up.
+              "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+              "data-starting-style:opacity-0 data-starting-style:translate-y-[calc(-50%+8px)]",
+              "data-ending-style:opacity-0 data-ending-style:translate-y-[calc(-50%+8px)]",
+              className,
+            )}
+            {...props}
+          >
+            {children}
+          </PopoverPrimitive.Popup>
+        </PopoverPrimitive.Positioner>
+        </RemoveScroll>
+      </PopoverPrimitive.Portal>
+    );
+  }
+
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner

@@ -226,6 +226,12 @@ Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `labe
 <PropsTable
   props={[
     {
+      name: "variant",
+      type: '"control" | "soft"',
+      default: '"control"',
+      description: "Visual treatment for the trigger. `control` matches Button secondary (bordered + `--layer-1`) — use for standalone comboboxes. `soft` drops the border and uses `--fill-1` + `--fill-2` on hover — quieter chrome for dense embedded pickers (inline field inside a Card, one of several controls in a row).",
+    },
+    {
       name: "openOnFocus",
       type: "boolean",
       default: "true",

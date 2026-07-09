@@ -2,6 +2,7 @@
 
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
 import { CaretRight, Check } from "@phosphor-icons/react/dist/ssr";
+import { RemoveScroll } from "react-remove-scroll";
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
@@ -92,6 +93,7 @@ export function MenuPopup({
   if (isMobile && !sub) {
     return (
       <MenuPrimitive.Portal>
+        <RemoveScroll>
         <MenuPrimitive.Backdrop
           data-slot="menu-backdrop"
           className={cn(
@@ -127,6 +129,7 @@ export function MenuPopup({
           </div>
         </MenuPrimitive.Popup>
         </MenuPrimitive.Positioner>
+        </RemoveScroll>
       </MenuPrimitive.Portal>
     );
   }

@@ -46,7 +46,7 @@ export function EmptyState({
       {icon && (
         <div
           aria-hidden
-          className="mb-6 flex size-24 items-center justify-center text-ink-muted [&_svg]:size-8"
+          className="mb-3 flex items-center justify-center text-ink-muted [&_svg]:size-8"
           data-slot="empty-state-icon"
         >
           {icon}

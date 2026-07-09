@@ -3,14 +3,24 @@
  *
  * Source of truth: packages/react/DESIGN.md.
  *
+ * PREVIEW (Phase 1): neutral scale re-hexed against Radix Colors
+ * Gray (radix-ui/colors, MIT). Token NAMES unchanged so existing
+ * component callsites (bg-layer-1, border-hairline, text-ink-muted)
+ * keep working. Rename to --bg / --surface / --border / --fg lands
+ * with the codemod in Phase 2.
+ *
  * The system is a crisp-minimal, near-flat design language:
- *   - A near-black flat base in both themes (#0F0F13 dark, #FBFBFC light)
- *     with a subtle cool tint (blue lean, hue ~272) on all neutrals.
- *   - Two surface families that speak plainly: --layer-* is "lifted
- *     above base" (Card, Modal, popup, chrome), --fill-* is "tinted
- *     chip fill" (Toggle track, Badge, code chip). No "elevated" or
- *     "canvas" special names.
- *   - 1px hairline borders as the load-bearing separator.
+ *   - Pure-neutral grays, no undertone. Radix Gray hex under every
+ *     neutral rung; the 12-step ladder gives each semantic role a
+ *     documented seat (step 2 = subtle surface, step 6 = non-
+ *     interactive border, step 11/12 = text with APCA guarantees).
+ *   - Two surface families kept for now: --layer-* is "lifted above
+ *     base" (Card, Modal, popup, chrome), --fill-* is "tinted chip
+ *     fill" (Toggle track, Badge). Note: --fill-1 now resolves to
+ *     the same rung as --layer-2 in preview -- the intentional
+ *     collision surfaces which callsites can collapse in Phase 2.
+ *   - Alpha borders (Radix grayA 6/7/8) so hairlines stay uniform
+ *     in perceived weight when nested on multiple surface rungs.
  *   - A monochrome primary (consumers override --primary to inject brand).
  *   - Semantic status roles at fixed hex, theme-invariant.
  *   - Two type families: Inter Variable (all weights) and JetBrains Mono
@@ -31,52 +41,49 @@
  * Layer 1: Runtime theme values (light mode reference).
  * --------------------------------------------------------------- */
 :root {
-  /* Pure-neutral gray scale. No warm undertones, no cool tints —
-     true gray from white to black. The pattern mirrors developer-
-     tool style dashboards where cards float on white via border
-     alone; there is no color fill on layer-1 in light. */
-  --base:      #fbfbfc;
+  /* Neutral surface ladder = Radix Gray (light). base is the app
+     canvas; layer-1 is a subtly darker card rung, layer-2 the row/
+     button-rest step above that. Direction is Radix-native (card
+     darker than base), a flip from the previous "white card on
+     off-white base" pattern -- surface hierarchy now matches dark. */
+  --base:      #fcfcfc;  /* gray 1 */
+  --layer-1:   #f9f9f9;  /* gray 2 */
+  --layer-2:   #f0f0f0;  /* gray 3 */
 
-  /* layer-1 is the default panel surface (Card, Modal, Menu popup,
-     Combobox popup, Tooltip, Select popup, Input, Table container,
-     secondary Button chrome). Pure white against the subtle off-white
-     base gives cards a real lift. layer-2 is a subtle darker step for
-     hover on secondary Buttons and Input hover companions. */
-  --layer-1:   #ffffff;
-  --layer-2:   #f5f5f7;
+  /* Chip/fill rungs. fill-1 now resolves to the same rung as
+     layer-2 (both gray 3) -- the preview surfaces the intentional
+     collision so we can see which callsites collapse in Phase 2.
+     fill-2 is the stronger active-state indication (toggle pressed,
+     active pill Tab, striped table hover, menu item highlight). */
+  --fill-1:    #f0f0f0;  /* gray 3, same rung as layer-2 (preview) */
+  --fill-2:    #e8e8e8;  /* gray 4 */
 
-  /* Chip/fill rungs. fill-1 is a subtle chip that reads a nudge
-     darker than the white surface (Toggle track, Badge, code chip,
-     Switch off-track). fill-2 is the stronger indication for Toggle
-     pressed, active pill Tab, skeleton block, striped table hover,
-     menu item highlight. */
-  --fill-1:    #f0f0f1;
-  --fill-2:    #e6e6e8;
+  /* Adaptive interaction-state overlays. rgba so they darken any
+     surface underneath uniformly. Radix grayA 3 / grayA 5. */
+  --layer-hover:    rgba(0, 0, 0, 0.059);
+  --layer-selected: rgba(0, 0, 0, 0.122);
 
-  /* Adaptive interaction-state overlays. rgba (not opaque) so they
-     darken whatever surface sits underneath: base, layer-1, fill-1,
-     or a consumer's own background. Every transparent-at-rest control
-     uses these for hover / selected fills so the state never
-     disappears when it lands on a rung that happens to match. */
-  --layer-hover:    rgba(0, 0, 0, 0.04);
-  --layer-selected: rgba(0, 0, 0, 0.08);
+  /* Hairlines are now alpha, not solid. A border on a nested card
+     reads the same perceived weight as one on the base; solid borders
+     compound when they land on darker surfaces. Radix grayA 3 / 6 / 7 / 8.
+     `--hairline-soft` (grayA 3) is Wellfound-weight card chrome -- a
+     whisper edge, ~6% alpha; use for Card, elevated surfaces where the
+     border should be present but recede. `--hairline` (grayA 6) is the
+     standard input/menu/divider weight. */
+  --hairline-soft:      rgba(0, 0, 0, 0.059);  /* grayA 3 */
+  --hairline:           rgba(0, 0, 0, 0.149);  /* grayA 6 */
+  --hairline-strong:    rgba(0, 0, 0, 0.192);  /* grayA 7 */
+  --hairline-tertiary:  rgba(0, 0, 0, 0.267);  /* grayA 8 */
 
-  /* Hairlines. Solid hex borders tuned against the white base so
-     cards, inputs, and popups get a legible edge without shadow.
-     Softer than a mid-gray border so the card body reads first and
-     the edge sits under it. Consumers who override --base should
-     also override these to keep the border-vs-base contrast intact. */
-  --hairline:           #ebebeb;
-  --hairline-strong:    #d4d4d4;
-  --hairline-tertiary:  #a3a3a3;
-
-  /* Ink (text) tiers. Pure gray, no chroma. Primary clears AAA on
-     base; muted clears AA; subtle and tertiary are AA-large only
-     (placeholder, disabled, footnote — low-contrast by design). */
-  --ink:           #171717;
-  --ink-muted:     #666666;
-  --ink-subtle:    #8f8f8f;
-  --ink-tertiary:  #909090;
+  /* Ink (text) tiers. Radix gray 12 / 11 carry published APCA Lc90 /
+     Lc60 contrast on gray 2 (surface). subtle collapses onto the
+     same rung as tertiary in the preview (both gray 10); the token
+     name stays alive so callsites keep resolving, but they render
+     identically. */
+  --ink:           #202020;  /* gray 12 */
+  --ink-muted:     #646464;  /* gray 11 */
+  --ink-subtle:    #838383;  /* gray 10, same rung as tertiary (preview) */
+  --ink-tertiary:  #838383;  /* gray 10 */
 
   /* Primary (monochrome). No chromatic brand hue ships. Consumers
      redefine these four tokens in a downstream layer to inject brand;
@@ -139,16 +146,21 @@
      where 6px would look proportionally too round. */
   --radius-4:    4px;
   --radius-6:    6px;
+  --radius-8:    8px;
+  --radius-10:   10px;
   --radius-12:   12px;
   --radius-16:   16px;
   --radius-full: 9999px;
 
-  /* Shadows. Cards and panels are flat; shadows only appear at true
-     overlay altitude (menu popup, dialog, tooltip, toast). Stacked
-     triple fakes depth: 1px top edge for crispness, mid diffusion for
-     the body of the lift, long soft drop for the cast. */
+  /* Shadows. Cards float on shadow in light (editorial lift, Wellfound-
+     shaped: soft-diffuse, mostly vertical, slight blue-black cast that
+     reads as "object" rather than "system shadow"). Overlay-altitude
+     surfaces (menu popup, dialog, tooltip, toast) stack a triple:
+     1px top edge for crispness, mid diffusion for the body of the lift,
+     long soft drop for the cast. */
   --shadow-card:
-    0 2px 2px rgba(0, 0, 0, 0.04);
+    0 1px 2px rgba(3, 17, 38, 0.05),
+    0 4px 12px rgba(3, 17, 38, 0.05);
   --shadow-menu:
     0 1px 1px rgba(0, 0, 0, 0.02),
     0 4px 8px -4px rgba(0, 0, 0, 0.04),
@@ -186,8 +198,8 @@
      on 1x displays. */
   --font-size-micro:    0.6875rem; /* 11 */
   --font-size-mini:     0.75rem;   /* 12 */
-  --font-size-small:    0.8125rem; /* 13 */
-  --font-size-regular:  0.9375rem; /* 15 */
+  --font-size-small:    0.875rem;  /* 14 (editorial bump; was 13) */
+  --font-size-regular:  1rem;      /* 16 (editorial bump; was 15) */
   --font-size-large:    1.125rem;  /* 18 */
   --font-size-title3:   1.25rem;   /* 20 */
   --font-size-title2:   1.5rem;    /* 24 */
@@ -227,32 +239,35 @@
  * carries the same label color because meaning doesn't flip with theme.
  * --------------------------------------------------------------- */
 .dark {
-  /* Deep near-black base. layer-1 (Card, Popup, Modal) sits only
-     ~1% brighter — cards float on the barest lift, softened
-     further by hairlines that stay under the card body rather
-     than competing with it. Pure #000 avoided to prevent banding
-     on 6-bit panels. */
-  --base:      #000000;
+  /* Neutral surface ladder: Radix Gray spacing shifted ~7pt deeper
+     for an editorial-dark canvas. Radix's dark scale is tuned for
+     productivity chrome (Notion / Linear internal-app register);
+     shifting the whole ladder down puts the canvas in near-black
+     territory while preserving Radix's ~9pt inter-rung deltas.
+     Pure #000 still avoided to prevent banding on 6-bit OLED panels. */
+  --base:      #0a0a0a;  /* below gray 1, editorial-dark canvas */
+  --layer-1:   #101010;  /* whisper lift; cards read almost flush with base */
+  --layer-2:   #1c1c1c;
 
-  --layer-1:   #0c0c0c;
-  --layer-2:   #141414;
+  --fill-1:    #1c1c1c;  /* same rung as layer-2 (preview) */
+  --fill-2:    #242424;
 
-  --fill-1:    #151515;
-  --fill-2:    #232323;
+  /* Overlays: Radix grayA 3 / grayA 5. */
+  --layer-hover:    rgba(255, 255, 255, 0.071);
+  --layer-selected: rgba(255, 255, 255, 0.133);
 
-  /* Overlays stay rgba so they adapt to any surface underneath,
-     unlike the solid hex hairlines. */
-  --layer-hover:    rgba(255, 255, 255, 0.05);
-  --layer-selected: rgba(255, 255, 255, 0.10);
+  /* Alpha borders (Radix grayA 3 / 6 / 7 / 8) replace solid hex.
+     `--hairline-soft` is card-appropriate chrome; the rest are for
+     inputs, menus, dividers. */
+  --hairline-soft:      rgba(255, 255, 255, 0.071);  /* grayA 3 */
+  --hairline:           rgba(255, 255, 255, 0.172);  /* grayA 6 */
+  --hairline-strong:    rgba(255, 255, 255, 0.231);  /* grayA 7 */
+  --hairline-tertiary:  rgba(255, 255, 255, 0.333);  /* grayA 8 */
 
-  --hairline:           #262626;
-  --hairline-strong:    #333333;
-  --hairline-tertiary:  #454545;
-
-  --ink:           #ededed;
-  --ink-muted:     #a1a1a1;
-  --ink-subtle:    #737373;
-  --ink-tertiary:  #666666;
+  --ink:           #eeeeee;  /* gray 12 */
+  --ink-muted:     #b4b4b4;  /* gray 11 */
+  --ink-subtle:    #7b7b7b;  /* gray 10, same rung as tertiary (preview) */
+  --ink-tertiary:  #7b7b7b;  /* gray 10 */
 
   /* Primary reinherits the inverted ink/canvas automatically through
      the var chain; the entries above already updated. Consumers that
@@ -269,9 +284,9 @@
   --error-soft-bg:   #3B0F0F;
   --error-soft-fg:   #FCA5A5;
 
-  /* --focus-ring-color inherits var(--primary), which now resolves to
-     the dark-mode ink (#EDEDED) automatically -- no explicit dark-mode
-     override needed. */
+  /* --focus-ring-color inherits var(--primary), which resolves to the
+     dark-mode ink automatically -- no explicit dark-mode override
+     needed. */
 
   /* Shadows deepen to compensate for reduced contrast on the near-black
      canvas. */
@@ -343,6 +358,7 @@
   --color-layer-hover:    var(--layer-hover);
   --color-layer-selected: var(--layer-selected);
 
+  --color-hairline-soft:      var(--hairline-soft);
   --color-hairline:           var(--hairline);
   --color-hairline-strong:    var(--hairline-strong);
   --color-hairline-tertiary:  var(--hairline-tertiary);
@@ -380,6 +396,8 @@
 
   --radius-4:    var(--radius-4);
   --radius-6:    var(--radius-6);
+  --radius-8:    var(--radius-8);
+  --radius-10:   var(--radius-10);
   --radius-12:   var(--radius-12);
   --radius-16:   var(--radius-16);
   --radius-full: var(--radius-full);

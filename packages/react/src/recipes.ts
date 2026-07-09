@@ -50,7 +50,7 @@ export const iconMutedSolid =
   "[&_svg]:opacity-70 [&_svg]:transition-opacity [&_svg]:duration-[var(--duration-state)] [&_svg]:ease-[var(--ease-standard)] " +
   "hover:[&_svg]:opacity-100 focus-visible:[&_svg]:opacity-100 active:[&_svg]:opacity-100";
 
-/** Shared chrome for floating panels (Menu, Combobox, Select, Tooltip). */
+/** Shared chrome for floating panels (Menu, Combobox, Select, Popover, Command). */
 export const popupSurface =
   "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu outline-none focus:outline-none";
 
@@ -59,7 +59,7 @@ export const popupSurface =
 export const itemRow = {
   base:
     "flex items-center cursor-default select-none rounded-[var(--radius-6)] text-ink outline-none " +
-    "data-[active]:bg-fill-2 data-highlighted:bg-fill-2 " +
+    "data-[active]:bg-layer-hover data-highlighted:bg-layer-hover " +
     "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
   compact: "min-h-7 px-2 py-1.5 text-small",
   comfortable: "min-h-9 px-2.5 py-2 text-small",

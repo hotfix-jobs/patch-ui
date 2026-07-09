@@ -258,7 +258,7 @@ export function SidebarFooter({
     <div
       data-slot="sidebar-footer"
       className={cn(
-        "flex shrink-0 flex-col gap-2 border-t-[0.5px] border-hairline p-3",
+        "flex shrink-0 flex-col gap-2 border-t border-hairline p-3",
         className,
       )}
       {...props}

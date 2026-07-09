@@ -290,7 +290,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
       data-slot="calendar"
       data-mode={mode}
       className={cn(
-        "w-fit select-none rounded-[var(--radius-12)] border border-hairline bg-layer-1 p-3 text-ink",
+        "w-fit select-none rounded-[var(--radius-12)] border border-hairline-soft bg-layer-1 p-3 text-ink",
         className,
       )}
     >
@@ -359,7 +359,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
                   "text-small font-medium ring-1 ring-inset ring-hairline-strong",
                 selected &&
                   "bg-primary text-on-primary text-small font-medium hover:bg-primary-hover",
-                inSelectedRange && !selected && "bg-fill-1",
+                inSelectedRange && !selected && "bg-layer-selected",
                 disabledDay && "pointer-events-none opacity-30",
                 focusRing,
               )}

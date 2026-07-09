@@ -37,8 +37,8 @@ import { Button } from "@patchui/react";
 <Button shape="square" aria-label="Add" icon={<Plus />} />
 <Button shape="circle" aria-label="Add" icon={<Plus />} />
 
-// Marketing pill shape (typically paired with shadow)
-<Button shape="pill" shadow variant="primary" icon={<ArrowRight />} iconPosition="right">
+// Marketing pill shape
+<Button shape="pill" variant="primary" icon={<ArrowRight />} iconPosition="right">
   Start Free Trial
 </Button>
 
@@ -70,9 +70,9 @@ import { Button } from "@patchui/react";
   props={[
     {
       name: "variant",
-      type: '"primary" | "secondary" | "tertiary" | "warning" | "destructive"',
+      type: '"primary" | "secondary" | "tertiary" | "soft" | "warning" | "destructive"',
       default: '"primary"',
-      description: "The visual style. Reserve `primary` for the single most important action on a view; use `destructive` only for irreversible actions.",
+      description: "The visual style. Reserve `primary` for the single most important action on a view; use `destructive` only for irreversible actions. `soft` is a quiet fill (bg-fill-1 → hover:bg-fill-2, no border) for chip/tag-like buttons inside dense chrome.",
     },
     {
       name: "size",
@@ -84,13 +84,7 @@ import { Button } from "@patchui/react";
       name: "shape",
       type: '"square" | "pill" | "circle"',
       default: '"square"',
-      description: "Corner shape. `square` = 6px radius (default control). `pill` = full radius (dismissible chips and marketing CTAs). `circle` = full radius with equal width/height (icon-only).",
-    },
-    {
-      name: "shadow",
-      type: "boolean",
-      default: "false",
-      description: "Adds a subtle elevation shadow. Typically paired with `shape=\"rounded\"` on marketing pages.",
+      description: "Corner shape. `square` = 8px radius (default control). `pill` = full radius (dismissible chips and marketing CTAs). `circle` = full radius with equal width/height (icon-only).",
     },
     {
       name: "muted",

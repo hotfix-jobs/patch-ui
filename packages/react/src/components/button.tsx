@@ -21,7 +21,7 @@ export const buttonVariants = cva(
     disabled,
   ].join(" "),
   {
-    defaultVariants: { size: "lg", variant: "primary", shape: "square", shadow: false },
+    defaultVariants: { size: "lg", variant: "primary", shape: "square" },
     variants: {
       size: {
         sm: "h-6 px-2.5 gap-1.5 text-mini font-medium",
@@ -32,7 +32,9 @@ export const buttonVariants = cva(
         primary:
           "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover active:bg-primary-active",
         secondary:
-          "bg-layer-1 text-ink border border-hairline hover:bg-layer-2 focus-visible:bg-layer-2 active:bg-layer-selected",
+          "border border-hairline bg-layer-1 text-ink hover:border-hairline-strong hover:bg-layer-2 focus-visible:border-hairline-strong focus-visible:bg-layer-2 active:border-hairline-strong active:bg-layer-selected",
+        soft:
+          "bg-fill-1 text-ink hover:bg-fill-2 focus-visible:bg-fill-2 active:bg-layer-selected",
         tertiary:
           "bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-selected",
         warning:
@@ -41,13 +43,9 @@ export const buttonVariants = cva(
           "bg-error text-error-fg hover:bg-error-hover focus-visible:bg-error-hover active:bg-error-active",
       },
       shape: {
-        square: "rounded-[var(--radius-6)]",
+        square: "rounded-[var(--radius-8)]",
         pill: "rounded-full",
         circle: "rounded-full",
-      },
-      shadow: {
-        true: "shadow-card",
-        false: "",
       },
     },
   },
@@ -57,7 +55,6 @@ export interface ButtonProps extends useRender.ComponentProps<"button"> {
   variant?: VariantProps<typeof buttonVariants>["variant"];
   size?: VariantProps<typeof buttonVariants>["size"];
   shape?: VariantProps<typeof buttonVariants>["shape"];
-  shadow?: boolean;
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   loading?: boolean;
@@ -86,7 +83,6 @@ export function Button({
   variant,
   size,
   shape,
-  shadow,
   icon,
   iconPosition = "left",
   loading,
@@ -168,7 +164,7 @@ export function Button({
 
   const defaultProps = {
     className: cn(
-      buttonVariants({ size: effectiveSize, variant, shape, shadow }),
+      buttonVariants({ size: effectiveSize, variant, shape }),
       iconOnly,
       iconOnlyRecipe,
       mutedRecipe,

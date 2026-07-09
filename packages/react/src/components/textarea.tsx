@@ -37,7 +37,7 @@ export function Textarea({
   const control = (
     <span
       className={cn(
-        "relative inline-flex w-full rounded-[var(--radius-6)]",
+        "relative inline-flex w-full rounded-[var(--radius-8)]",
         "bg-layer-1 border border-hairline text-ink",
         "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         "hover:border-hairline-strong",

@@ -46,7 +46,7 @@ export function ToggleGroup({
         data-slot="toggle-group"
         data-size={size}
         className={cn(
-          "inline-flex w-fit self-start items-center rounded-[var(--radius-6)] border border-hairline bg-fill-1 p-0.5",
+          "inline-flex w-fit self-start items-center gap-0.5 rounded-[var(--radius-6)] border border-hairline bg-layer-1 p-0.5",
           className,
         )}
         {...props}
@@ -76,8 +76,8 @@ export function ToggleGroupItem({
       className={cn(
         "relative inline-flex items-center justify-center rounded-[var(--radius-6)] transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
         "text-ink-muted hover:text-ink data-[pressed]:text-ink",
-        "not-data-[pressed]:hover:bg-layer-2",
-        "data-[pressed]:bg-layer-1",
+        "not-data-[pressed]:hover:bg-layer-hover",
+        "data-[pressed]:bg-layer-selected",
         iconMuted,
         size === "sm" && "h-6 min-w-6 px-1.5 gap-1.5 text-mini [&_svg]:size-3.5",
         size === "md" && "h-7 min-w-7 px-2 gap-2 text-small [&_svg]:size-4",

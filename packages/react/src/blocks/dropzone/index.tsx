@@ -165,7 +165,7 @@ export function Dropzone({
           }
         }}
         className={cn(
-          "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-6)] border border-dashed border-hairline-strong px-6 py-10",
+          "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-6)] border border-dashed border-hairline px-6 py-10",
           "text-center transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "hover:border-hairline-tertiary hover:bg-layer-hover",
           "data-[drag-over]:border-primary data-[drag-over]:bg-fill-1",
@@ -174,12 +174,7 @@ export function Dropzone({
           focusRing,
         )}
       >
-        <div
-          aria-hidden
-          className="flex size-10 items-center justify-center rounded-[var(--radius-6)] border border-hairline bg-layer-1 text-ink"
-        >
-          <Upload className="size-5" />
-        </div>
+        <Upload aria-hidden className="size-6 text-ink-muted" />
         <div className="flex flex-col gap-1">
           <p className="text-small font-medium text-ink">
             {title}
@@ -221,7 +216,7 @@ export function Dropzone({
               >
                 <Card
                   direction="row"
-                  className="items-center gap-3 px-3 py-2 !rounded-[var(--radius-6)]"
+                  className="items-center gap-3 px-3 py-2"
                 >
                   <File className="size-4 shrink-0 text-ink-muted" />
                   <div className="flex min-w-0 flex-1 flex-col gap-1">

@@ -64,7 +64,7 @@ const [starred, setStarred] = useState(false);
       name: "variant",
       type: '"tertiary" | "secondary"',
       default: '"tertiary"',
-      description: "tertiary = transparent at rest, accent fill on hover; secondary = hairline border. Vocabulary matches Button.",
+      description: "tertiary = transparent at rest, hover picks up a `bg-layer-hover` overlay and pressed uses `bg-layer-selected`; secondary = hairline border with `bg-layer-1` fill. Vocabulary matches Button.",
     },
     {
       name: "size",

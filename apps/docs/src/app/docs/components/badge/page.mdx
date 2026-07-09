@@ -40,8 +40,8 @@ import { Badge } from "@patchui/react";
 <Badge icon={<Shield />} color="default">Verified</Badge>
 
 // Shape
-<Badge shape="pill">Pill</Badge>       // default
-<Badge shape="rounded">Rounded</Badge> // 6px radius
+<Badge shape="rounded">Rounded</Badge> // default, 6px radius
+<Badge shape="pill">Pill</Badge>       // full radius
 
 // As a link
 <Badge render={<a href="/status" />}>Linked</Badge>
@@ -72,8 +72,8 @@ import { Badge } from "@patchui/react";
     {
       name: "shape",
       type: '"pill" | "rounded"',
-      default: '"pill"',
-      description: "`pill` = fully rounded (default). `rounded` = 6px radius.",
+      default: '"rounded"',
+      description: "`rounded` = 6px radius (default). `pill` = fully rounded — reach for it on marketing surfaces or when the badge sits next to a pill-shaped Button.",
     },
     {
       name: "icon",

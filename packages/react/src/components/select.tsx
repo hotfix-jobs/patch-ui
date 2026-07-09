@@ -91,7 +91,7 @@ export function Select({
       aria-describedby={hasErrorMessage ? errorId : undefined}
       data-slot="select"
       className={cn(
-        "relative inline-flex w-full items-center overflow-hidden text-ink rounded-[var(--radius-6)]",
+        "relative inline-flex w-full items-center overflow-hidden text-ink rounded-[var(--radius-8)]",
         "bg-layer-1 border border-hairline",
         "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         "hover:border-hairline-strong",

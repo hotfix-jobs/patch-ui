@@ -5,15 +5,24 @@ import { useRender } from "@base-ui/react/use-render";
 import type * as React from "react";
 import { cn } from "../utils";
 
+export interface SectionProps extends useRender.ComponentProps<"section"> {
+  /** Section treatment.
+   *  `flat` (default) — transparent frame with hairline border, inherits the container surface. The quiet default for settings pages on `bg-base`.
+   *  `elevated` — `bg-layer-1` fill + hairline. Use when Section sits on a busier surface (inside a Card, or on a colored panel) and needs to define itself. */
+  variant?: "flat" | "elevated";
+}
+
 /** Opinionated settings-page card: header, content, two-column footer (status + actions). */
 export function Section({
   className,
+  variant = "flat",
   render,
   ...props
-}: useRender.ComponentProps<"section">): React.ReactElement {
+}: SectionProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex flex-col rounded-[var(--radius-8)] bg-layer-1 border border-hairline text-ink",
+      "flex flex-col rounded-[var(--radius-8)] border border-hairline text-ink",
+      variant === "elevated" && "bg-layer-1",
       className,
     ),
     "data-slot": "section",

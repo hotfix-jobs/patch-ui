@@ -17,12 +17,12 @@ export function TabsDemo() {
   return (
     <div className="flex w-full flex-col gap-10">
       <div className="space-y-3">
-        <SectionLabel>Underline (default)</SectionLabel>
+        <SectionLabel>Horizontal (default)</SectionLabel>
         <Tabs defaultValue="overview" aria-label="Project sections">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="activity">Activity</TabsTrigger>
-            <TabsTrigger value="settings">Gear</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
           <TabsPanel value="overview">
             <Body>A high-level summary lives here.</Body>
@@ -31,7 +31,7 @@ export function TabsDemo() {
             <Body>Recent activity lives here.</Body>
           </TabsPanel>
           <TabsPanel value="settings">
-            <Body>Gear live here.</Body>
+            <Body>Settings live here.</Body>
           </TabsPanel>
         </Tabs>
       </div>
@@ -47,7 +47,7 @@ export function TabsDemo() {
               Invites
             </TabsTrigger>
             <TabsTrigger value="settings" icon={<Gear />}>
-              Gear
+              Settings
             </TabsTrigger>
           </TabsList>
           <TabsPanel value="members">
@@ -96,37 +96,22 @@ export function TabsDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Pill (horizontal)</SectionLabel>
-        <Tabs variant="pill" defaultValue="all" aria-label="Status filter">
-          <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="active">Active</TabsTrigger>
-            <TabsTrigger value="draft">Draft</TabsTrigger>
-            <TabsTrigger value="archived">Archived</TabsTrigger>
-          </TabsList>
-          <TabsPanel value="all">
-            <Body>Showing every item.</Body>
-          </TabsPanel>
-          <TabsPanel value="active">
-            <Body>Showing active items only.</Body>
-          </TabsPanel>
-          <TabsPanel value="draft">
-            <Body>Showing drafts only.</Body>
-          </TabsPanel>
-          <TabsPanel value="archived">
-            <Body>Showing archived items only.</Body>
-          </TabsPanel>
-        </Tabs>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Pill (vertical)</SectionLabel>
-        <Tabs variant="pill" orientation="vertical" defaultValue="profile">
+        <SectionLabel>Vertical</SectionLabel>
+        <Tabs orientation="vertical" defaultValue="profile" aria-label="Account">
           <TabsList className="w-44">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="billing">Billing</TabsTrigger>
             <TabsTrigger value="team">Team</TabsTrigger>
           </TabsList>
+          <TabsPanel value="profile">
+            <Body>Name, avatar, and contact details.</Body>
+          </TabsPanel>
+          <TabsPanel value="billing">
+            <Body>Payment method and invoice history.</Body>
+          </TabsPanel>
+          <TabsPanel value="team">
+            <Body>Members, invites, and role settings.</Body>
+          </TabsPanel>
         </Tabs>
       </div>
     </div>

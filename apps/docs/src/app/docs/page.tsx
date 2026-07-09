@@ -46,7 +46,7 @@ export default function DocsPage() {
         />
       </div>
 
-      <Card secondary border={false} className="mt-12 p-6">
+      <Card variant="elevated" className="mt-12 p-6">
         <h2 className="text-regular font-medium text-ink">
           What Patch UI is not
         </h2>
