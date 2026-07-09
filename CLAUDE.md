@@ -1,6 +1,90 @@
 # CLAUDE.md
 
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+
+## 1. Think Before Coding
+
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+## 2. Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+## 3. Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+## 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
+
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
+
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+## 5. Flag Better Approaches
+
+**If you see a clearly better approach, say so before implementing.**
+
+- Explain the tradeoff in 2-4 bullets.
+- If the current request is still reasonable, proceed unless the alternative avoids serious risk or wasted work.
+- Don't silently substitute your preferred design for what was asked.
+
+---
+
+# Project specifics
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Sibling repos
+
+Patch UI is consumed downstream by the Hotfix web app; changes here often need to be sanity-checked or back-ported alongside that repo.
+
+| Repo | Path | Relationship |
+|------|------|--------------|
+| `patch-ui` (this repo) | `/Users/caseyferrara/patch-ui` | Source of truth for the design system. |
+| `hotfix-jobs` | `/Users/caseyferrara/hotfix-jobs` | Primary consumer. Installs Patch UI via the shadcn registry; component files under `src/components/ui/` are owned copies. Diffs between this repo's `packages/react/src/components/` and hotfix's `src/components/ui/` are the alignment surface. |
+
+For sibling repos not in the session, use `gh` CLI to read files from GitHub.
 
 ## Repository Overview
 
