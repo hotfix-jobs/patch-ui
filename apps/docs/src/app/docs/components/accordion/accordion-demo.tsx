@@ -5,78 +5,142 @@ import {
   AccordionItem,
   AccordionTrigger,
   AccordionPanel,
+  SectionLabel,
 } from "@patchui/react";
-import { SectionLabel } from "@patchui/react";
+import { Plus } from "@phosphor-icons/react/dist/ssr";
 
 export function AccordionDemo() {
   return (
     <div className="flex flex-col gap-10">
-      {/* Bordered: the common case */}
+      {/* Flush (default): borderless, tight, no chrome */}
       <div className="w-full max-w-md space-y-3">
-        <SectionLabel>Bordered (hairline row pattern)</SectionLabel>
-        <Accordion bordered defaultValue={["item-0"]}>
+        <SectionLabel>Flush (default)</SectionLabel>
+        <Accordion defaultValue={["item-0"]}>
           <AccordionItem value="item-0">
             <AccordionTrigger>What is Patch UI?</AccordionTrigger>
             <AccordionPanel>
-              A React component library built on Base UI primitives with
-              Tailwind CSS v4 and a design-token system.
+              <p className="pb-3 text-small text-ink-muted">
+                A React component library built on Base UI primitives with
+                Tailwind CSS v4 and a design-token system.
+              </p>
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem value="item-1">
             <AccordionTrigger>Does it support dark mode?</AccordionTrigger>
             <AccordionPanel>
-              Yes. Tokens are defined for both light and dark via the `dark`
-              class, with no JavaScript theme switching required.
+              <p className="pb-3 text-small text-ink-muted">
+                Yes. Tokens are defined for both light and dark via the `dark`
+                class, with no JavaScript theme switching required.
+              </p>
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </div>
+
+      {/* Bordered: hairline row separators */}
+      <div className="w-full max-w-md space-y-3">
+        <SectionLabel>Bordered (hairline row pattern)</SectionLabel>
+        <Accordion variant="bordered" defaultValue={["item-0"]}>
+          <AccordionItem value="item-0">
+            <AccordionTrigger>What is Patch UI?</AccordionTrigger>
+            <AccordionPanel>
+              <p className="pb-3 text-small text-ink-muted">
+                A React component library built on Base UI primitives with
+                Tailwind CSS v4 and a design-token system.
+              </p>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem value="item-1">
+            <AccordionTrigger>Can I open multiple panels?</AccordionTrigger>
+            <AccordionPanel>
+              <p className="pb-3 text-small text-ink-muted">
+                Pass `openMultiple` to allow more than one item open at once.
+              </p>
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem value="item-2">
-            <AccordionTrigger>Can I open multiple panels?</AccordionTrigger>
+            <AccordionTrigger>Are components accessible?</AccordionTrigger>
             <AccordionPanel>
-              Yes. Pass `multiple` to allow more than one item open at once,
-              matching Vercel Geist's CollapseGroup.multiple behavior.
+              <p className="pb-3 text-small text-ink-muted">
+                Base UI ships the WAI-ARIA accordion pattern; roving focus,
+                arrow-key navigation, Home / End, and Space / Enter are handled.
+              </p>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
       </div>
 
-      {/* Multiple open */}
+      {/* Card: each item is its own bordered card */}
       <div className="w-full max-w-md space-y-3">
-        <SectionLabel>Multiple panels open at once</SectionLabel>
-        <Accordion bordered multiple defaultValue={["a", "b"]}>
+        <SectionLabel>Card (each item is its own surface)</SectionLabel>
+        <Accordion variant="card" defaultValue={["a"]}>
           <AccordionItem value="a">
-            <AccordionTrigger>Panel A</AccordionTrigger>
-            <AccordionPanel>Both panels are open by default.</AccordionPanel>
+            <AccordionTrigger>Team plan</AccordionTrigger>
+            <AccordionPanel>
+              <p className="pb-3 text-small text-ink-muted">
+                Ideal for teams of 5 to 50. Includes shared workspaces, admin
+                controls, and priority support.
+              </p>
+            </AccordionPanel>
           </AccordionItem>
           <AccordionItem value="b">
-            <AccordionTrigger>Panel B</AccordionTrigger>
+            <AccordionTrigger>Enterprise plan</AccordionTrigger>
             <AccordionPanel>
-              Toggle each independently; they don't collapse each other.
+              <p className="pb-3 text-small text-ink-muted">
+                Custom seats, SSO, audit logs, dedicated support, and an
+                enterprise SLA. Contact sales for pricing.
+              </p>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>
       </div>
 
-      {/* Unstyled: consumer supplies chrome */}
+      {/* Single item = show more reveal */}
       <div className="w-full max-w-md space-y-3">
-        <SectionLabel>Unstyled (compose your own chrome)</SectionLabel>
+        <SectionLabel>Single-item reveal</SectionLabel>
         <Accordion>
-          <AccordionItem
-            value="q-1"
-            className="rounded-[var(--radius-12)] border border-hairline-strong mb-2 px-4"
-          >
-            <AccordionTrigger>Card-styled item</AccordionTrigger>
+          <AccordionItem value="details">
+            <AccordionTrigger>Show more details</AccordionTrigger>
             <AccordionPanel>
-              Skip `bordered` on the root and give each item its own chrome for
-              a card look.
+              <p className="pb-3 text-small text-ink-muted">
+                One item with the flush variant covers any inline "show
+                more" pattern.
+              </p>
             </AccordionPanel>
           </AccordionItem>
-          <AccordionItem
-            value="q-2"
-            className="rounded-[var(--radius-12)] border border-hairline-strong mb-2 px-4"
-          >
-            <AccordionTrigger>Second card</AccordionTrigger>
+        </Accordion>
+      </div>
+
+      {/* Custom caret + no caret */}
+      <div className="w-full max-w-md space-y-3">
+        <SectionLabel>Custom caret and no caret</SectionLabel>
+        <Accordion variant="bordered">
+          <AccordionItem value="q-1">
+            <AccordionTrigger
+              caret={
+                <Plus
+                  aria-hidden
+                  className="size-4 shrink-0 text-ink-muted transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[panel-open]:rotate-45 group-data-[panel-open]:text-ink group-hover:text-ink"
+                />
+              }
+            >
+              Plus icon that rotates into an X
+            </AccordionTrigger>
             <AccordionPanel>
-              Each item is its own contained card in this layout.
+              <p className="pb-3 text-small text-ink-muted">
+                Pass any node as `caret`. Use `group-data-[panel-open]:*`
+                classes to react to the open state (rotation, color, swap).
+              </p>
+            </AccordionPanel>
+          </AccordionItem>
+          <AccordionItem value="q-2">
+            <AccordionTrigger caret={null}>
+              Trigger without any chevron
+            </AccordionTrigger>
+            <AccordionPanel>
+              <p className="pb-3 text-small text-ink-muted">
+                Pass `caret={"{null}"}` to hide the indicator entirely.
+              </p>
             </AccordionPanel>
           </AccordionItem>
         </Accordion>

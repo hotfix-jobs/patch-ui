@@ -5,7 +5,7 @@ export const metadata = { title: "Table" };
 
 # Table
 
-A set of composable table primitives - thin, styled wrappers around native table elements with hairline dividers, a surface background, and restrained typography. Mirrors the familiar shadcn table API so the parts compose the way you expect.
+Composable table primitives — thin, styled wrappers around native table elements with hairline dividers, restrained typography, and row/column state opinions moved to the root so the API reads at a glance.
 
 <Install name="table" />
 
@@ -25,8 +25,10 @@ import {
   TableHead,
   TableCell,
   TableCaption,
+  TableEmpty,
 } from "@patchui/react";
 
+// Flat (default) — transparent frame, hairline dividers, no outer box
 <Table>
   <TableHeader>
     <TableRow>
@@ -42,10 +44,32 @@ import {
   </TableBody>
 </Table>
 
-// Flat variant — no radius, no outer bg, Bloomberg / NYT data-table feel
-<Table variant="flat">
-  ...
-</Table>
+// Elevated — bg-layer-1 + hairline-soft + radius-8 (matches Card)
+<Table variant="elevated">...</Table>
+
+// Row-state opinions on the root
+<Table striped>...</Table>
+<Table interactive>...</Table>
+<Table bordered>...</Table>
+
+// Density
+<Table size="sm">...</Table>
+
+// Selected row
+<TableRow selected onClick={...}>...</TableRow>
+
+// Sortable column head
+<TableHead sortable direction="asc" onSort={...}>Name</TableHead>
+
+// Sticky header inside a fixed-height scroll container
+<div className="h-64 overflow-y-auto">
+  <Table scrollable={false} stickyHeader>...</Table>
+</div>
+
+// Empty state
+<TableBody>
+  <TableEmpty colSpan={4}>No results.</TableEmpty>
+</TableBody>
 ```
 
 ## Props
@@ -56,51 +80,63 @@ import {
   props={[
     {
       name: "variant",
-      type: '"default" | "flat"',
-      default: '"default"',
-      description: "default = 12px rounded outer with surface background and hairline border (dashboard / data-card feel). flat = no radius, no outer bg, no border (NYT / Bloomberg-style data tables); row + header backgrounds and hairlines still render.",
+      type: '"flat" | "elevated"',
+      default: '"flat"',
+      description: "`flat` (default) is a transparent frame with hairline dividers — sheds the outer chrome and lets the grid carry the structure (Bloomberg / NYT data-table feel). `elevated` fills with `bg-layer-1`, wraps in `border-hairline-soft` + `radius-8` — matches Card.",
     },
     {
-      name: "scrollable",
-      type: "boolean",
-      default: "true",
-      description: "Wrap the table in a horizontally-scrollable container so wide tables stay usable on narrow viewports.",
+      name: "size",
+      type: '"sm" | "md"',
+      default: '"md"',
+      description: "Row density. `md` (default) uses standard header height (`h-9`) and cell padding (`py-2.5`). `sm` tightens both (`h-7`, `py-1.5`) for dense grids.",
     },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes applied to the table element.",
-    },
-  ]}
-/>
-
-### TableBody
-
-<PropsTable
-  props={[
     {
       name: "striped",
       type: "boolean",
       default: "false",
-      description: "Alternating row backgrounds (--fill-1 on even rows) with the same rounded-inset pill treatment as interactive.",
-    },
-    {
-      name: "bordered",
-      type: "boolean",
-      default: "false",
-      description: "Vertical cell borders (border-l between adjacent cells).",
+      description: "Alternating row backgrounds (`bg-fill-2` on even rows) with rounded-inset pill treatment.",
     },
     {
       name: "interactive",
       type: "boolean",
       default: "false",
-      description: "Opt-in row hover + cursor-pointer. Hover fills the row with an inset --fill-1 pill (rounded on first / last cell); drops per-row hairlines since the pill is the row indicator.",
+      description: "Row hover + cursor-pointer. Hover fills the row with a `bg-layer-hover` alpha overlay (rounded on first / last cell). Drops per-row hairlines since the pill is the row indicator.",
+    },
+    {
+      name: "bordered",
+      type: "boolean",
+      default: "false",
+      description: "Vertical cell borders (`border-l` between adjacent cells).",
+    },
+    {
+      name: "scrollable",
+      type: "boolean",
+      default: "true",
+      description: "Wrap the table in a horizontally-scrollable container so wide tables stay usable on narrow viewports. Set `false` if you're managing scroll yourself (e.g. inside a fixed-height sticky-header container).",
+    },
+    {
+      name: "stickyHeader",
+      type: "boolean",
+      default: "false",
+      description: "Pin the header row to the top of its scroll container. Consumer must give the container a fixed height for the sticky to have room to work.",
     },
   ]}
 />
 
-### TableHead / TableCell
+### TableRow
+
+<PropsTable
+  props={[
+    {
+      name: "selected",
+      type: "boolean",
+      default: "false",
+      description: "Marks the row as selected. Applies `bg-layer-selected` + a 2px primary left border on the first cell and sets `aria-selected`.",
+    },
+  ]}
+/>
+
+### TableHead
 
 <PropsTable
   props={[
@@ -108,24 +144,62 @@ import {
       name: "align",
       type: '"left" | "center" | "right"',
       default: '"left"',
-      description: "Text alignment for the cell. Right-aligned TableCells also apply tabular-nums for column-aligned numerals.",
+      description: "Text alignment for the cell.",
     },
     {
-      name: "className",
-      type: "string",
+      name: "sortable",
+      type: "boolean",
+      default: "false",
+      description: "Renders the head as a clickable sort trigger with a chevron indicator. Pair with `direction` and `onSort`.",
+    },
+    {
+      name: "direction",
+      type: '"asc" | "desc" | "none"',
+      default: '"none"',
+      description: "Current sort direction for this column. Drives the chevron icon: up for asc, down for desc, up-down (neutral) when none. Also sets `aria-sort`.",
+    },
+    {
+      name: "onSort",
+      type: "() => void",
       default: "-",
-      description: "Additional CSS classes applied to the cell.",
+      description: "Fired when a sortable head is clicked. Cycle your own state (typically none → asc → desc → none).",
+    },
+  ]}
+/>
+
+### TableCell
+
+<PropsTable
+  props={[
+    {
+      name: "align",
+      type: '"left" | "center" | "right"',
+      default: '"left"',
+      description: "Text alignment. Right-aligned cells also apply `tabular-nums` for column-aligned numerals.",
+    },
+  ]}
+/>
+
+### TableEmpty
+
+<PropsTable
+  props={[
+    {
+      name: "colSpan",
+      type: "number",
+      default: "-",
+      description: "Number of columns to span across so the empty cell fills the full table width. Required.",
     },
   ]}
 />
 
 <Callout title="Notes">
-- **Composition:** `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, and `TableCaption` map directly to the native table elements, so standard HTML attributes pass through.
-- **Default vs flat:** Pick `default` for dashboard / data-card surfaces (rounded, surface bg, contained). Pick `flat` when the table is the primary content of a longform layout: it sheds the outer chrome and lets the hairline grid + typography carry the table's structure.
-- **Numerals:** Use `align="right"` on numeric `TableCell`s to right-align and enable tabular figures for clean column alignment.
-- **Interactive rows:** Pass `interactive` to `TableBody` to add hover + cursor-pointer to every row. Hover fills the row with a `--fill-1` inset pill (rounded on the first/last cell) matching Menu item highlights, and drops the per-row hairlines since the pill is the row indicator.
-- **Striped / bordered:** Opt in via `TableBody`: `striped` alternates even rows to `--fill-1` (also rounded inset), `bordered` adds vertical cell dividers.
-- **Numerals:** Use `align="right"` on numeric `TableCell`s to right-align and enable tabular figures for clean column alignment.
-- **TableHead typography:** Small caption tier (`text-micro text-ink-muted`) for column headers, matching the caption pattern used in Command sections.
-- **Key/value pairs:** For simple two-column key/value data, a two-cell `TableRow` per pair works well; reserve the header row for true tabular data.
+- **State opinions live on the root.** `striped` / `interactive` / `bordered` moved from `TableBody` to `Table` this pass — one place to set them, propagated via context. `TableBody` is now a semantic passthrough.
+- **Variant naming matches Card / Section.** `flat` vs `elevated` are the same visual axis across every surface primitive, so an elevated Table sits next to an elevated Card without any tuning.
+- **Composition:** Every sub-component maps to a native table element, so standard HTML attributes pass through.
+- **Numerals:** Use `align="right"` on numeric `TableCell`s for right-align + tabular figures.
+- **Sortable heads:** Wire your own sort state. The head cycles the icon and sets `aria-sort` for you; the cycle logic is left to the consumer (three-state or two-state).
+- **Selected rows:** Combine with `interactive` on the root for the row-clickable pattern shown in the demo.
+- **Sticky header:** Requires a fixed-height scroll container. Pass `scrollable={false}` so the internal horizontal-scroll wrapper doesn't fight your vertical-scroll parent.
+- **Empty state:** Wrap `<EmptyState>` inside `<TableEmpty>` for the fullest treatment (icon + title + description + action). For a one-line placeholder, pass a string directly (`<TableEmpty colSpan={4}>No results.</TableEmpty>`).
 </Callout>

@@ -29,7 +29,6 @@ export const navigation: NavGroup[] = [
       { title: "Calendar", href: "/docs/components/calendar" },
       { title: "Card", href: "/docs/components/card" },
       { title: "Checkbox", href: "/docs/components/checkbox" },
-      { title: "Collapsible", href: "/docs/components/collapsible" },
       { title: "Combobox", href: "/docs/components/combobox" },
       { title: "Command", href: "/docs/components/command" },
       { title: "EmptyState", href: "/docs/components/empty-state" },

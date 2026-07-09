@@ -12,15 +12,6 @@ export {
   type AccordionPanelProps,
 } from "./components/accordion";
 export { Button, buttonVariants, type ButtonProps } from "./components/button";
-export {
-  Collapsible,
-  CollapsibleTrigger,
-  CollapsibleContent,
-  CollapsiblePrimitive,
-  type CollapsibleProps,
-  type CollapsibleTriggerProps,
-  type CollapsibleContentProps,
-} from "./components/collapsible";
 export { Input, InputPrimitive, type InputProps } from "./components/input";
 export { SearchInput, type SearchInputProps } from "./components/search-input";
 export { Textarea, type TextareaProps } from "./components/textarea";
@@ -298,11 +289,12 @@ export {
   TableRow,
   TableCell,
   TableCaption,
+  TableEmpty,
   type TableProps,
   type TableSectionProps,
-  type TableBodyProps,
   type TableRowProps,
   type TableHeadProps,
   type TableCellProps,
   type TableCaptionProps,
+  type TableEmptyProps,
 } from "./components/table";

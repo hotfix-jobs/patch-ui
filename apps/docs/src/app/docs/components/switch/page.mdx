@@ -30,9 +30,8 @@ const [checked, setChecked] = useState(false);
 <Switch size="lg" />
 
 // Variants (on-state fill color)
-<Switch variant="success" defaultChecked />
-<Switch variant="warning" defaultChecked />
-<Switch variant="error" defaultChecked />
+<Switch defaultChecked />                     // default — monochrome primary
+<Switch variant="success" defaultChecked />   // green — enable-toggle pattern
 
 // Icons inside the thumb, one per state
 <Switch
@@ -68,9 +67,9 @@ const [checked, setChecked] = useState(false);
     },
     {
       name: "variant",
-      type: '"default" | "success" | "warning" | "error"',
+      type: '"default" | "success"',
       default: '"default"',
-      description: "Fill color when checked. `default` = `--primary`; success/warning/error use the matching semantic status token.",
+      description: "On-state fill color. `default` matches every other on-state in the system (monochrome `--primary`). `success` swaps to `--success` (green) for enable-toggle patterns where 'green means active' reads more clearly than the ink default.",
     },
     {
       name: "size",
@@ -119,7 +118,7 @@ const [checked, setChecked] = useState(false);
 
 <Callout title="Notes">
 - Reach for Switch when the state is a setting that saves the moment the user flips it: `Dark mode`, `Enable notifications`. Use `Checkbox` when the value only commits with a form submit.
-- The on-state color signals what happens: default gray for a plain toggle, warning/error when turning it on has consequence (`Enable public access`).
+- The on-state color signals what happens: `default` (monochrome ink) for a plain toggle, `success` (green) for enable-toggle patterns where "green means active" reads more clearly. Warning / destructive semantics don't belong on a switch — reach for a Modal confirm flow if the action has consequences.
 - Icons inside the thumb make the state readable without a label: a lock/unlock pair, sun/moon, on/off. Icons inherit `text-ink` and size to ~60% of the thumb.
 - Rendered as a `<button role="switch">` on top of a hidden `<input type="checkbox">`, so both keyboard users and native forms work as expected.
 - For the toolbar press-button pattern (Bold / Italic / Star), reach for `Toggle`: it's a different behavior with `aria-pressed` state instead of a slider.

@@ -218,26 +218,6 @@
       ]
     },
     {
-      "name": "collapsible",
-      "type": "registry:ui",
-      "title": "Collapsible",
-      "dependencies": [
-        "@base-ui/react"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/recipes.json",
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/collapsible.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/collapsible.tsx"
-        }
-      ]
-    },
-    {
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
@@ -763,7 +743,11 @@
       "name": "table",
       "type": "registry:ui",
       "title": "Table",
+      "dependencies": [
+        "@phosphor-icons/react"
+      ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -992,7 +976,6 @@
         "https://ui.hotfix.jobs/r/calendar.json",
         "https://ui.hotfix.jobs/r/card.json",
         "https://ui.hotfix.jobs/r/checkbox.json",
-        "https://ui.hotfix.jobs/r/collapsible.json",
         "https://ui.hotfix.jobs/r/combobox.json",
         "https://ui.hotfix.jobs/r/command.json",
         "https://ui.hotfix.jobs/r/dropzone.json",

@@ -1,14 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import {
+  Button,
+  EmptyState,
   Table,
   TableHeader,
   TableBody,
   TableRow,
   TableHead,
   TableCell,
+  TableEmpty,
+  SectionLabel,
 } from "@patchui/react";
-import { SectionLabel } from "@patchui/react";
+import { Users } from "@phosphor-icons/react/dist/ssr";
 
 const MEMBERS = [
   { name: "Ada Lovelace", role: "Owner", status: "Active", lastActive: "2m ago" },
@@ -29,10 +34,21 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export function TableDemo() {
+  const [selected, setSelected] = useState("Ada Lovelace");
+  const [sortDir, setSortDir] = useState<"asc" | "desc" | "none">("none");
+  const sortedMembers =
+    sortDir === "none"
+      ? MEMBERS
+      : [...MEMBERS].sort((a, b) =>
+          sortDir === "asc"
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name),
+        );
+
   return (
     <div className="flex flex-col gap-10">
       <div className="space-y-3">
-        <SectionLabel>Default</SectionLabel>
+        <SectionLabel>Flat (default)</SectionLabel>
         <Table>
           <TableHeader>
             <TableRow>
@@ -58,8 +74,30 @@ export function TableDemo() {
       </div>
 
       <div className="space-y-3">
+        <SectionLabel>Elevated (bg-layer-1 + hairline-soft)</SectionLabel>
+        <Table variant="elevated">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead align="right">Last active</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {MEMBERS.slice(0, 3).map((m) => (
+              <TableRow key={m.name}>
+                <TableCell>{m.name}</TableCell>
+                <TableCell>{m.role}</TableCell>
+                <TableCell align="right">{m.lastActive}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="space-y-3">
         <SectionLabel>Interactive rows (opt-in hover)</SectionLabel>
-        <Table>
+        <Table interactive>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -68,7 +106,7 @@ export function TableDemo() {
               <TableHead align="right">Last active</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody interactive>
+          <TableBody>
             {MEMBERS.slice(0, 4).map((m) => (
               <TableRow key={m.name}>
                 <TableCell>{m.name}</TableCell>
@@ -85,7 +123,7 @@ export function TableDemo() {
 
       <div className="space-y-3">
         <SectionLabel>Striped rows</SectionLabel>
-        <Table>
+        <Table striped>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -93,7 +131,7 @@ export function TableDemo() {
               <TableHead align="right">Last active</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody striped>
+          <TableBody>
             {MEMBERS.map((m) => (
               <TableRow key={m.name}>
                 <TableCell>{m.name}</TableCell>
@@ -107,29 +145,7 @@ export function TableDemo() {
 
       <div className="space-y-3">
         <SectionLabel>Bordered cells</SectionLabel>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead align="right">Last active</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody bordered>
-            {MEMBERS.slice(0, 3).map((m) => (
-              <TableRow key={m.name}>
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Flat variant (no outer chrome)</SectionLabel>
-        <Table variant="flat">
+        <Table bordered>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -150,8 +166,34 @@ export function TableDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Missing values</SectionLabel>
-        <Table>
+        <SectionLabel>Dense (size="sm")</SectionLabel>
+        <Table size="sm" variant="elevated">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead align="right">Last active</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {MEMBERS.map((m) => (
+              <TableRow key={m.name}>
+                <TableCell>{m.name}</TableCell>
+                <TableCell>{m.role}</TableCell>
+                <TableCell>
+                  <StatusBadge status={m.status} />
+                </TableCell>
+                <TableCell align="right">{m.lastActive}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Selected row</SectionLabel>
+        <Table interactive>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -160,20 +202,100 @@ export function TableDemo() {
             </TableRow>
           </TableHeader>
           <TableBody>
+            {MEMBERS.slice(0, 4).map((m) => (
+              <TableRow
+                key={m.name}
+                selected={selected === m.name}
+                onClick={() => setSelected(m.name)}
+              >
+                <TableCell>{m.name}</TableCell>
+                <TableCell>{m.role}</TableCell>
+                <TableCell align="right">{m.lastActive}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Sortable column</SectionLabel>
+        <Table variant="elevated">
+          <TableHeader>
             <TableRow>
-              <TableCell>Ada Lovelace</TableCell>
-              <TableCell>Owner</TableCell>
-              <TableCell align="right">2m ago</TableCell>
+              <TableHead
+                sortable
+                direction={sortDir}
+                onSort={() =>
+                  setSortDir(
+                    sortDir === "none"
+                      ? "asc"
+                      : sortDir === "asc"
+                      ? "desc"
+                      : "none",
+                  )
+                }
+              >
+                Name
+              </TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead align="right">Last active</TableHead>
             </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sortedMembers.map((m) => (
+              <TableRow key={m.name}>
+                <TableCell>{m.name}</TableCell>
+                <TableCell>{m.role}</TableCell>
+                <TableCell align="right">{m.lastActive}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Sticky header (scroll inside container)</SectionLabel>
+        <div className="h-56 overflow-y-auto rounded-[var(--radius-8)] border border-hairline-soft bg-layer-1">
+          <Table variant="flat" scrollable={false} stickyHeader>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead align="right">Last active</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[...MEMBERS, ...MEMBERS, ...MEMBERS].map((m, i) => (
+                <TableRow key={`${m.name}-${i}`}>
+                  <TableCell>{m.name}</TableCell>
+                  <TableCell>{m.role}</TableCell>
+                  <TableCell align="right">{m.lastActive}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Empty state</SectionLabel>
+        <Table variant="elevated">
+          <TableHeader>
             <TableRow>
-              <TableCell>Pending invite</TableCell>
-              <TableCell>
-                <span className="text-ink-subtle">None</span>
-              </TableCell>
-              <TableCell align="right">
-                <span className="text-ink-subtle">None</span>
-              </TableCell>
+              <TableHead>Name</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead align="right">Last active</TableHead>
             </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableEmpty colSpan={3}>
+              <EmptyState
+                icon={<Users />}
+                title="No members yet"
+                description="Invite teammates to get started."
+                action={<Button size="md">Invite members</Button>}
+              />
+            </TableEmpty>
           </TableBody>
         </Table>
       </div>
