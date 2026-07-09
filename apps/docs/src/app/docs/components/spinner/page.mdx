@@ -5,7 +5,7 @@ export const metadata = { title: "Spinner" };
 
 # Spinner
 
-A single loading indicator. 12 tick marks arranged radially, each fading in sequence: a restrained rotating "clock hand" feel. Uses `currentColor`.
+A single loading indicator. Rotating stroke arc on a low-opacity track. One variant, one silhouette, three sizes — the loading language stays consistent across every surface. Uses `currentColor` so it inherits the surrounding text tone.
 
 <Install name="spinner" />
 
@@ -21,15 +21,10 @@ import { Spinner } from "@patchui/react";
 // Default (md)
 <Spinner />
 
-// Sizes
-<Spinner size="xs" />
+// Sizes — match the sm/md/lg vocabulary used across the system
 <Spinner size="sm" />
 <Spinner size="md" />
 <Spinner size="lg" />
-<Spinner size="xl" />
-<Spinner size="2xl" />
-<Spinner size="3xl" />
-<Spinner size="4xl" />
 
 // Inherits text color
 <div className="text-error">
@@ -39,6 +34,9 @@ import { Spinner } from "@patchui/react";
 // Custom a11y label for context
 <Spinner label="Saving" />
 <Spinner label="Uploading 3 of 12" />
+
+// Larger loaders (page or empty-state) — override via className
+<Spinner className="size-12" label="Loading dashboard" />
 ```
 
 ## Props
@@ -47,15 +45,15 @@ import { Spinner } from "@patchui/react";
   props={[
     {
       name: "size",
-      type: '"xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl"',
+      type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "The size of the spinner. Larger sizes (2xl-4xl) are for empty-state and full-page loading indicators.",
+      description: "16 / 20 / 24 px. Matches the `sm / md / lg` size vocabulary across Button, Toggle, Input, etc., so Spinner pairs cleanly inside any control. For a larger loader (empty state, full page), override with `className=\"size-N\"`.",
     },
     {
       name: "label",
       type: "string",
       default: '"Loading"',
-      description: 'Accessible label announced by screen readers. Use to communicate context: "Saving", "Uploading 3 of 12", "Processing payment": instead of the generic default.',
+      description: 'Accessible label announced by screen readers. Use to communicate context: "Saving", "Uploading 3 of 12", "Processing payment" — instead of the generic default.',
     },
     {
       name: "className",
@@ -67,10 +65,10 @@ import { Spinner } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- One loading indicator across the system. Same silhouette everywhere so the loading language is consistent.
-- Use `<Button loading>`: don't drop a Spinner inside a button label yourself. The Button wires the sizing and busy state for you.
-- Use `variant="dots"` when the wait sits inline in copy ("Saving…"). Reach for `Skeleton` when async data will fill a known layout. Reach for `Progress` when total work is measurable.
-- Colors inherit from `currentColor`. Wrap in a colored container to tint.
-- Pure CSS animation, no JavaScript timer. Honors `prefers-reduced-motion` via the shared tokens.
-- Set `label` to name the work in flight (`Verifying`, `Uploading 3 of 12`) so screen readers announce more than "Loading".
+- **One indicator, no variants.** Every loading state in the system uses the same rotating arc — no dots / bars / pulse variants — so the loading language stays consistent across surfaces.
+- **Use `<Button loading>`.** Don't drop a Spinner inside a button label yourself. The Button wires the sizing and busy state for you.
+- **Reach for other primitives when appropriate:** `Skeleton` when async data will fill a known layout, `Progress` when total work is measurable, `Spinner` for indeterminate short waits.
+- **Colors inherit from `currentColor`.** Wrap in a colored container to tint.
+- **Pure CSS animation, no JavaScript timer.** Honors `prefers-reduced-motion` via the shared tokens.
+- **Set `label`** to name the work in flight (`Verifying`, `Uploading 3 of 12`) so screen readers announce more than "Loading".
 </Callout>
