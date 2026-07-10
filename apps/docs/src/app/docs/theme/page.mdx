@@ -20,7 +20,7 @@ The scheme is deliberately small: a pure-neutral gray scale re-hexed against Rad
 
 **Fills.** `--fill-1` and `--fill-2` are tinted chip fills: Toggle track, Badge neutral, Switch off-track, skeleton block, striped table rows, active pill Tab, menu item highlight. In the Phase 1 preview `--fill-1` collapses onto the same rung as `--layer-2` (both gray 3); the token names stay live so callsites keep resolving. `--fill-2` is the stronger active-state indication.
 
-**Interaction-state overlays.** `--layer-hover` and `--layer-selected` are alpha overlays (Radix grayA 3 / grayA 5) that any transparent-at-rest control reaches for on `hover:`, `focus-visible:`, `data-[popup-open]:`, `data-[pressed]:`, and `active:`. Because they darken whatever surface sits underneath rather than paint over it, the state reads on base, `--layer-1`, `--fill-1`, or a consumer's own background without disappearing. `--layer-selected` (~12%) is ~2x the hover strength (~6%) so pressed always reads visibly darker than hover.
+**Interaction-state overlays.** `--layer-hover` and `--layer-selected` are alpha overlays (Radix grayA 3 / grayA 5) that any transparent-at-rest control reaches for: `--layer-hover` on `hover:` and `focus-visible:`, `--layer-selected` on transient press (`active:`) and selected rows / nav items. Held states — an open popup's trigger (`data-[popup-open]:`) and a Toggle switched on (`data-[pressed]:`) — use `bg-hairline-strong` instead: the fill takes the hover border color and bordered variants drop to `border-transparent` (alpha would double-stack where border overlaps fill), so the control reads as one solid chip while it's held. Because they darken whatever surface sits underneath rather than paint over it, the state reads on base, `--layer-1`, `--fill-1`, or a consumer's own background without disappearing. `--layer-selected` (~12%) is ~2x the hover strength (~6%) so pressed always reads visibly darker than hover.
 
 **Ink (text).** Four tiers, pure gray, no chroma. `--ink` is primary text (headings, body) at Radix gray 12. `--ink-muted` is meta text and default icon tone at gray 11. `--ink-subtle` is placeholder and "missing value" copy. `--ink-tertiary` is disabled and footnote. In the Phase 1 preview `--ink-subtle` and `--ink-tertiary` both resolve to gray 10 (`#838383` / `#7b7b7b`); the token names stay alive but they render identically.
 
@@ -59,7 +59,7 @@ Rules of thumb:
 
 **Motion.** One easing (`--ease-standard`), two durations: `--duration-state` (75ms, for hover/active transitions) and `--duration-overlay` (150ms, for open/close). Under `prefers-reduced-motion: reduce`, both collapse to `0ms` automatically.
 
-**Focus.** A 2px outline offset 2px outside the element border, colored `--primary` so it inherits any consumer brand override. Delivered through the `focusRing` recipe. Inputs are the intentional exception: on focus their border shifts to `--primary` instead of stacking an outside ring, so the input's own edge carries the state.
+**Focus.** A 2px outline offset 2px outside the element border, colored `--primary` so it inherits any consumer brand override. Delivered through the `focusRing` recipe. Inputs are the intentional exception: text fields match `:focus-visible` on every click, so instead of the outside ring their border shifts to `--primary` plus a soft low-alpha halo hugging it (`--focus-halo`, 3px at 18% alpha, also `--primary`-derived).
 
 ## Customizing
 

@@ -29,10 +29,10 @@ export const toggleVariants = cva(
       },
       variant: {
         tertiary:
-          "bg-transparent text-ink-muted hover:bg-layer-hover hover:text-ink data-[pressed]:bg-layer-selected data-[pressed]:text-ink " +
+          "bg-transparent text-ink-muted hover:bg-layer-hover hover:text-ink data-[pressed]:bg-hairline-strong data-[pressed]:text-ink " +
           iconMuted,
         secondary:
-          "bg-layer-1 text-ink border border-hairline hover:bg-layer-2 hover:border-hairline-strong data-[pressed]:bg-layer-selected data-[pressed]:text-ink data-[pressed]:border-hairline-strong " +
+          "bg-layer-1 text-ink border border-hairline hover:bg-layer-2 hover:border-hairline-strong data-[pressed]:bg-hairline-strong data-[pressed]:text-ink data-[pressed]:border-transparent " +
           iconMuted,
       },
     },

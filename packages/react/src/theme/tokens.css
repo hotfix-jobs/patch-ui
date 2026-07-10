@@ -138,6 +138,12 @@
   --focus-ring-width:  2px;
   --focus-ring-offset: 2px;
 
+  /* Input focus halo. Inputs show focus on every mouse click (text
+     fields always match :focus-visible), so instead of the outside
+     ring they get a soft low-alpha bloom hugging the primary border.
+     Reads --primary so a brand override tints it for free. */
+  --focus-halo: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+
   /* Overlay scrim (dialog / drawer backdrop). */
   --scrim: rgba(0, 0, 0, 0.45);
 

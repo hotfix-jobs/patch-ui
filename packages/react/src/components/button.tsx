@@ -32,11 +32,11 @@ export const buttonVariants = cva(
         primary:
           "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover active:bg-primary-active",
         secondary:
-          "border border-hairline bg-layer-1 text-ink hover:border-hairline-strong hover:bg-layer-2 focus-visible:border-hairline-strong focus-visible:bg-layer-2 active:border-hairline-strong active:bg-layer-selected",
+          "border border-hairline bg-layer-1 text-ink hover:border-hairline-strong hover:bg-layer-2 focus-visible:border-hairline-strong focus-visible:bg-layer-2 data-[popup-open]:border-transparent data-[popup-open]:bg-hairline-strong active:border-hairline-strong active:bg-layer-selected active:bg-clip-padding",
         soft:
-          "bg-fill-1 text-ink hover:bg-fill-2 focus-visible:bg-fill-2 active:bg-layer-selected",
+          "bg-fill-1 text-ink hover:bg-fill-2 focus-visible:bg-fill-2 data-[popup-open]:bg-hairline-strong active:bg-layer-selected",
         tertiary:
-          "bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-selected",
+          "bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover data-[popup-open]:bg-hairline-strong active:bg-layer-selected",
         warning:
           "bg-warning text-warning-fg hover:bg-warning-hover focus-visible:bg-warning-hover active:bg-warning-active",
         destructive:
@@ -159,7 +159,7 @@ export function Button({
   // affects label / icon color — surface (bg + border) still comes
   // from the base variant so the caller keeps their chosen fill.
   const mutedRecipe = muted
-    ? cn("gap-1.5 text-ink-subtle hover:text-ink", iconMuted)
+    ? cn("gap-1.5 text-ink-subtle hover:text-ink data-[popup-open]:text-ink", iconMuted)
     : "";
 
   const defaultProps = {

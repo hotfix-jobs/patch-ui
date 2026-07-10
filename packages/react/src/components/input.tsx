@@ -144,13 +144,14 @@ export function Input({
         shape,
         !unstyled && [
           "bg-layer-1 border border-hairline",
-          "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "hover:border-hairline-strong",
-          // Focus lifts the border to --primary. No outside ring: the
-          // component's own edge does the work. Solid ink by default
-          // and brand-colored automatically when a consumer overrides
-          // --primary.
-          "has-focus-visible:border-primary",
+          // Focus lifts the border to --primary plus the low-alpha
+          // halo hugging it. No outside ring: text fields match
+          // :focus-visible on every click, so the treatment stays
+          // quieter than the button ring. Brand-colored automatically
+          // when a consumer overrides --primary.
+          "has-focus-visible:border-primary has-focus-visible:shadow-[var(--focus-halo)]",
         ],
         "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
         // Error state: the border stays solid error even at rest so

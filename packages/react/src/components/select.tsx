@@ -93,9 +93,9 @@ export function Select({
       className={cn(
         "relative inline-flex w-full items-center overflow-hidden text-ink rounded-[var(--radius-8)]",
         "bg-layer-1 border border-hairline",
-        "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         "hover:border-hairline-strong",
-        "data-[popup-open]:border-primary",
+        "data-[popup-open]:border-primary data-[popup-open]:shadow-[var(--focus-halo)]",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         heightBySize[size],
         prefix ? "ps-0" : leadingPad[size],
