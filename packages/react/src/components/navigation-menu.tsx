@@ -73,7 +73,7 @@ export function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "group inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink data-[popup-open]:bg-layer-hover data-[popup-open]:text-ink outline-none",
+        "group inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink data-[popup-open]:bg-hairline-strong data-[popup-open]:text-ink outline-none",
         colorTransition,
         className,
       )}

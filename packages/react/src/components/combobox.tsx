@@ -261,7 +261,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
     const chrome =
       variant === "soft"
         ? "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-fill-2"
-        : "border border-hairline bg-layer-1 hover:border-hairline-strong hover:bg-layer-2 has-focus-visible:border-primary";
+        : "border border-hairline bg-layer-1 hover:border-hairline-strong hover:bg-layer-2 has-focus-visible:border-primary has-focus-visible:shadow-[var(--focus-halo)]";
     const trailing = (clearable || !hideChevron || suffix) ? (
       <ComboboxAffix side="end">
         <span className={cn("inline-flex items-center gap-1.5", clearable && "group")}>
@@ -296,7 +296,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
           "group/combobox-input relative inline-flex w-full items-center overflow-hidden text-ink",
           shape,
           chrome,
-          "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
           error && "!border-error",
           className,

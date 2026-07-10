@@ -588,7 +588,8 @@
       "title": "Select",
       "dependencies": [
         "@base-ui/react",
-        "@phosphor-icons/react"
+        "@phosphor-icons/react",
+        "react-remove-scroll"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/recipes.json",

@@ -39,9 +39,9 @@ export function Textarea({
       className={cn(
         "relative inline-flex w-full rounded-[var(--radius-8)]",
         "bg-layer-1 border border-hairline text-ink",
-        "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         "hover:border-hairline-strong",
-        "has-focus-visible:border-primary",
+        "has-focus-visible:border-primary has-focus-visible:shadow-[var(--focus-halo)]",
         "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
         hasError && "!border-error",
         !label && !hasErrorMessage && className,
