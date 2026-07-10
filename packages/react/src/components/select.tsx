@@ -3,6 +3,7 @@
 import { Select as SelectPrimitive } from "@base-ui/react/select";
 import { CaretDown, Check } from "@phosphor-icons/react/dist/ssr";
 import type * as React from "react";
+import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
 import { focusRing, itemRow, popupSurface } from "../recipes";
 import {
@@ -37,6 +38,12 @@ export interface SelectProps
   className?: string;
   /** Class name applied to the trigger element. */
   triggerClassName?: string;
+  /** Renders the trigger's selected-value display. Base UI's `Select.Value`
+   *  defaults to showing the raw `value` string, which surfaces ugly ids
+   *  (uuids, slugs) when the option label doesn't match the value. Pass a
+   *  mapper so consumers control the display without rebuilding the
+   *  trigger. Return `null` to fall through to the placeholder. */
+  renderValue?: (value: string) => React.ReactNode;
 }
 
 const heightBySize: Record<SelectSize, string> = {
@@ -76,6 +83,7 @@ export function Select({
   required,
   className,
   triggerClassName,
+  renderValue,
   children,
   ...props
 }: SelectProps): React.ReactElement {
@@ -117,7 +125,16 @@ export function Select({
         placeholder={placeholder}
         className="flex-1 truncate text-left"
         data-slot="select-value"
-      />
+      >
+        {renderValue
+          ? (v: string) => {
+              const rendered = renderValue(v);
+              return rendered != null && rendered !== ""
+                ? rendered
+                : placeholder;
+            }
+          : undefined}
+      </SelectPrimitive.Value>
       {suffix && (
         <span
           className="pointer-events-none inline-flex shrink-0 items-center ps-1.5 pe-1.5 text-ink-muted [&_svg]:size-4"
@@ -197,35 +214,40 @@ function SelectPopupSurface({
   const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
 
   if (isMobile) {
+    // Matches Menu's mobile treatment: centered dialog + RemoveScroll +
+    // fade/upward-drift enter. Keeps Select and Menu visually identical
+    // as pickers on phones.
     return (
       <SelectPrimitive.Portal>
-        <SelectPrimitive.Backdrop
-          data-slot="select-backdrop"
-          className={cn(
-            "fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm",
-            "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-            "data-starting-style:opacity-0 data-ending-style:opacity-0",
-          )}
-        />
-        <SelectPrimitive.Positioner
-          alignItemWithTrigger={false}
-          className="contents"
-        >
-        <SelectPrimitive.Popup
-          data-slot="select-popup"
-          data-mobile="true"
-          className={cn(
-            "fixed inset-x-2 bottom-2 z-[80] flex flex-col overflow-hidden outline-none",
-            "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
-            "max-h-[calc(100dvh-1rem)] p-1",
-            "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-            "data-starting-style:opacity-0 data-starting-style:translate-y-8",
-            "data-ending-style:opacity-0 data-ending-style:translate-y-8",
-          )}
-        >
-          <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
-        </SelectPrimitive.Popup>
-        </SelectPrimitive.Positioner>
+        <RemoveScroll>
+          <SelectPrimitive.Backdrop
+            data-slot="select-backdrop"
+            className={cn(
+              "fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm",
+              "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+              "data-starting-style:opacity-0 data-ending-style:opacity-0",
+            )}
+          />
+          <SelectPrimitive.Positioner
+            alignItemWithTrigger={false}
+            className="contents"
+          >
+            <SelectPrimitive.Popup
+              data-slot="select-popup"
+              data-mobile="true"
+              className={cn(
+                "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
+                "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
+                "max-h-[calc(100dvh-2rem)] p-1",
+                "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+                "data-starting-style:opacity-0 data-starting-style:translate-y-[calc(-50%+8px)]",
+                "data-ending-style:opacity-0 data-ending-style:translate-y-[calc(-50%+8px)]",
+              )}
+            >
+              <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
+            </SelectPrimitive.Popup>
+          </SelectPrimitive.Positioner>
+        </RemoveScroll>
       </SelectPrimitive.Portal>
     );
   }
