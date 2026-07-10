@@ -51,7 +51,6 @@ export function Textarea({
       <FieldPrimitive.Control
         render={(defaultProps: React.ComponentProps<"textarea">) => (
           <textarea
-            id={id}
             className={cn(
               "field-sizing-content min-h-24 w-full rounded-[inherit] bg-transparent outline-none resize-y",
               "placeholder:text-ink-subtle",
@@ -61,7 +60,7 @@ export function Textarea({
             rows={rows}
             aria-invalid={hasError || undefined}
             aria-describedby={hasErrorMessage ? errorId : props["aria-describedby"]}
-            {...mergeProps(defaultProps, props)}
+            {...mergeProps(defaultProps, props, id ? { id } : {})}
           />
         )}
       />
