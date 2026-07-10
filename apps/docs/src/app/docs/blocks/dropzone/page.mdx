@@ -114,6 +114,12 @@ const [files, setFiles] = useState<File[]>([]);
       description: "Custom render function for each file row. Receives the file, its index, and a callback to remove it.",
     },
     {
+      name: "size",
+      type: '"sm" | "md"',
+      default: '"md"',
+      description: "Visual size. `md` is the spacious default for standalone upload surfaces; `sm` shrinks the drop area padding + icon for inline use inside forms or sheets alongside other fields.",
+    },
+    {
       name: "showFileList",
       type: "boolean",
       default: "true",

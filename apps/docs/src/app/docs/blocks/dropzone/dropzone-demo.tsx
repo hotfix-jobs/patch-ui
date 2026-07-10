@@ -31,6 +31,19 @@ export function DropzoneDemo() {
           maxSize={2 * 1024 * 1024}
         />
       </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Compact (size=&quot;sm&quot;)</SectionLabel>
+        <Dropzone
+          size="sm"
+          multiple={false}
+          showFileList={false}
+          title="Drop resume here"
+          description="PDF, up to 5 MB"
+          accept="application/pdf"
+          maxSize={5 * 1024 * 1024}
+        />
+      </div>
     </div>
   );
 }
