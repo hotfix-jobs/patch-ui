@@ -47,7 +47,20 @@ export interface DropzoneProps
   description?: React.ReactNode;
   /** Uploading state: number 0-100 for determinate, `null` for indeterminate. */
   progress?: number | null;
+  /** Visual size. `md` (default) — spacious drop area for standalone
+   *  upload surfaces. `sm` — tighter padding and icon for inline use
+   *  inside forms/sheets alongside other fields. */
+  size?: "sm" | "md";
 }
+
+const DROP_AREA_SIZE: Record<"sm" | "md", string> = {
+  sm: "px-4 py-5 gap-2",
+  md: "px-6 py-10 gap-3",
+};
+const DROP_ICON_SIZE: Record<"sm" | "md", string> = {
+  sm: "size-5",
+  md: "size-6",
+};
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -73,6 +86,7 @@ export function Dropzone({
   title = "Drop files here or click to browse",
   description,
   progress,
+  size = "md",
   className,
   ...props
 }: DropzoneProps): React.ReactElement {
@@ -165,7 +179,8 @@ export function Dropzone({
           }
         }}
         className={cn(
-          "relative flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-[var(--radius-6)] border border-dashed border-hairline px-6 py-10",
+          "relative flex w-full cursor-pointer flex-col items-center justify-center rounded-[var(--radius-6)] border border-dashed border-hairline",
+          DROP_AREA_SIZE[size],
           "text-center transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "hover:border-hairline-tertiary hover:bg-layer-hover",
           "data-[drag-over]:border-primary data-[drag-over]:bg-fill-1",
@@ -174,7 +189,7 @@ export function Dropzone({
           focusRing,
         )}
       >
-        <Upload aria-hidden className="size-6 text-ink-muted" />
+        <Upload aria-hidden className={cn(DROP_ICON_SIZE[size], "text-ink-muted")} />
         <div className="flex flex-col gap-1">
           <p className="text-small font-medium text-ink">
             {title}
