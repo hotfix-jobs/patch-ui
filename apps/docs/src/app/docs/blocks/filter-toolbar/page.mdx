@@ -1,0 +1,52 @@
+import { FilterToolbarDemo } from "./filter-toolbar-demo";
+
+export const metadata = { title: "FilterToolbar" };
+
+# FilterToolbar
+
+A responsive filter rail composed from Patch UI controls. It standardizes overflow, wrapping, clear-all placement, result metadata, pinned actions, and restrained motion while consumers own filter state and popup content.
+
+<Install name="filter-toolbar" />
+
+<ComponentPreview label="FilterToolbar">
+  <FilterToolbarDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { FilterToolbar } from "@patchui/react/blocks/filter-toolbar";
+
+<FilterToolbar
+  activeCount={activeCount}
+  onClearAll={clearFilters}
+  count="128 results"
+  trailing={<SortMenu />}
+>
+  <StatusFilter />
+  <CategoryFilter />
+  <OwnerFilter />
+</FilterToolbar>
+```
+
+## Props
+
+<PropsTable
+  props={[
+    { name: "overflow", type: '"scroll" | "wrap"', default: '"scroll"', description: "Scroll keeps one horizontal rail. Wrap allows filters to flow onto additional rows." },
+    { name: "activeCount", type: "number", default: "0", description: "Controls whether the clear-all action is visible." },
+    { name: "onClearAll", type: "() => void", default: "-", description: "Clears active filters. The action appears inside the filter sequence." },
+    { name: "clearLabel", type: "string", default: '"Clear all"', description: "Accessible and visible label for the clear action." },
+    { name: "count", type: "ReactNode", default: "-", description: "Preformatted result count or quiet metadata pinned to the trailing region." },
+    { name: "trailing", type: "ReactNode", default: "-", description: "Pinned controls such as sorting or view selection." },
+    { name: "ariaLabel", type: "string", default: '"Filters"', description: "Accessible name for the filter region." },
+  ]}
+/>
+
+<Callout title="Notes">
+- FilterToolbar does not know filter values, options, URLs, or data-fetching behavior. Pass Button, Toggle, Menu, and Popover compositions as children.
+- The toolbar is transparent. Each filter control owns its neutral fill and interaction states.
+- The clear action stays in the filter sequence so trailing actions remain stable on narrow screens.
+- `scroll` is the default for headers and mobile layouts. Use `wrap` on spacious directory or management pages.
+- Sticky positioning and page-width padding belong to the containing application shell.
+</Callout>
