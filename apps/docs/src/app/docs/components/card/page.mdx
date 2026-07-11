@@ -31,7 +31,7 @@ import { Card } from "@patchui/react";
   A card that reads as a distinct object.
 </Card>
 
-// Interactive (elevation + focus ring)
+// Interactive (state fills + compact keyboard focus)
 <Card interactive className="p-4">Hover me</Card>
 
 // Selected state (multi-pick galleries, plan comparison)
@@ -54,7 +54,7 @@ import { Card } from "@patchui/react";
       name: "interactive",
       type: "boolean",
       default: "false",
-      description: "Adds focus treatment and quiet hover elevation. Wrap in a `<Link>` or handle `onClick` for actual navigation.",
+      description: "Adds hover, pressed, and compact keyboard-focus states. Wrap in a `<Link>` or handle `onClick` for actual navigation.",
     },
     {
       name: "selected",
@@ -79,7 +79,7 @@ import { Card } from "@patchui/react";
 
 <Callout title="Notes">
 - The three variants express surface intent: standard content, explicit boundary, or elevation.
-- `interactive` adds focus treatment and hover elevation without decorative border chrome.
+- `interactive` adds quiet state fills and compact keyboard focus without decorative border chrome.
 - Card does not own layout or dividers. Compose those with `flex`, `grid`, and border utilities at the call site.
 - Structure content directly inside Card with divs and text tokens (`text-title3`, `text-small`). Use `<Section>` when the content needs named structural header, content, or footer slots.
 - **Migration from prior API:** `flat` becomes `surface`, `hoverable` becomes `interactive`, and layout or divider props move to caller composition.

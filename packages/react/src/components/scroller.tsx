@@ -10,7 +10,7 @@ import {
 } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { selectionFocus } from "../recipes";
 
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -157,7 +157,7 @@ export function Scroller({
         data-slot="scroller-viewport"
         className={cn(
           "size-full [-webkit-overflow-scrolling:touch]",
-          focusRing,
+          selectionFocus,
         )}
         style={maskStyle}
       >

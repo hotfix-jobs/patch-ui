@@ -3,7 +3,7 @@
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
+import { selectionFocus, colorTransition } from "../recipes";
 
 import { Check, Minus } from "@phosphor-icons/react/dist/ssr";
 export interface CheckboxProps extends CheckboxPrimitive.Root.Props {
@@ -30,7 +30,7 @@ export function Checkbox({
         "data-indeterminate:bg-ink",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
-        focusRing,
+        selectionFocus,
         className,
       )}
       data-slot="checkbox"

@@ -141,7 +141,7 @@ import {
 - **Hover.** Trigger text is `text-ink-muted` at rest, lifts to `text-ink` on hover and when the panel is open. The default caret follows the same color shift and rotates 180° on open.
 - **Custom carets.** Pass any React node as `caret`. Use `group-data-[panel-open]:*` classes to react to open state (rotate, swap, color-shift); use `group-hover:*` for hover behavior. The Trigger sets the `group` root so both work on any descendant SVG.
 - **Content wrapping.** `AccordionPanel` is a thin height-transition wrapper; add your own inner padding and typography inside it (`<p className="pb-3 text-small text-ink-muted">`) so consumers control the panel's inner spacing per surface.
-- **Keyboard.** Triggers are focusable and toggle on Enter/Space. Base UI ships arrow-key navigation across items, Home/End, and the standard focus outline.
+- **Keyboard.** Triggers are focusable and toggle on Enter/Space. Base UI ships arrow-key navigation across items and Home/End; triggers use the compact non-editable focus indicator.
 - **SEO.** Panels render with `keepMounted`, so collapsed content stays in the DOM (height:0) and remains indexable / find-in-page-searchable.
 - **Single vs multiple.** Pass `openMultiple={false}` to enforce one-open-at-a-time.
 </Callout>

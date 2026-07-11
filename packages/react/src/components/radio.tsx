@@ -4,7 +4,7 @@ import { Radio as RadioPrimitive } from "@base-ui/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
+import { selectionFocus, colorTransition } from "../recipes";
 
 export function RadioGroup({
   className,
@@ -41,7 +41,7 @@ export function Radio({
         "bg-fill-2 hover:bg-hairline-strong",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
-        focusRing,
+        selectionFocus,
         className,
       )}
       data-slot="radio"

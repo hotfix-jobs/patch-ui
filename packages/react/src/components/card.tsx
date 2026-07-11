@@ -4,12 +4,12 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { selectionFocus } from "../recipes";
 
 export interface CardProps extends useRender.ComponentProps<"div"> {
   /** Visual treatment for the content surface. */
   variant?: "surface" | "outlined" | "elevated";
-  /** Add focus treatment and hover elevation. */
+  /** Add interaction states and keyboard focus treatment. */
   interactive?: boolean;
   /** Marks the card as selected with the grouped-content surface. */
   selected?: boolean;
@@ -31,13 +31,12 @@ export function Card({
       variant === "outlined" && "border border-hairline bg-transparent",
       variant === "elevated" && "bg-layer-1 shadow-card",
       interactive && [
-        "hover:shadow-card",
-        "active:bg-layer-2",
+        "hover:bg-layer-hover active:bg-layer-selected",
         "aria-disabled:pointer-events-none aria-disabled:opacity-50",
-        focusRing,
+        selectionFocus,
       ],
       selected && "bg-layer-2",
-      "transition-[background-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+      "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
       className,
     ),
     "data-slot": "card",

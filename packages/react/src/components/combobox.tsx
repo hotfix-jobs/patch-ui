@@ -261,7 +261,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
               aria-label="Clear"
               onClick={onClear}
               data-slot="combobox-input-clear"
-              className="inline-flex size-5 items-center justify-center rounded-full text-ink-muted hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[ending-style]:hidden"
+              className="inline-flex size-5 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[ending-style]:hidden"
             >
               <X className="size-3" />
             </ComboboxPrimitive.Clear>
@@ -369,7 +369,7 @@ export function ComboboxPopup({
               // top-1/2 / left-1/2 + translate. Full width minus
               // 8px gutters left/right.
               "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
-              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
+              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu",
               "max-h-[calc(100dvh-2rem)]",
               // Fade + slight vertical slide from below the center on
               // enter. `translate-y-[calc(-50%+8px)]` starts 8px below
@@ -521,7 +521,7 @@ export function ComboboxItem({
             e.preventDefault();
             onRemove();
           }}
-          className="ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:text-ink"
+          className="ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-selected"
           data-slot="combobox-item-remove"
         >
           <X className="size-3" aria-hidden />

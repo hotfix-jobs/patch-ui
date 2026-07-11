@@ -754,7 +754,7 @@ Each component below is a single paragraph plus a token map. Full API and source
 - `variant="surface"` (default): borderless `bg-layer-1`, radius `--radius-12`.
 - `variant="outlined"`: transparent surface with a hairline boundary for dense or administrative layouts.
 - `variant="elevated"`: `bg-layer-1`, radius `--radius-12`, and `shadow-card`.
-- `interactive`: adds hover elevation plus focus ring.
+- `interactive`: adds quiet hover and pressed fills plus compact keyboard focus.
 - `selected`: switches the surface to `layer-2`.
 - Layout, direction, dividers, and custom shadows belong to caller composition.
 
@@ -786,6 +786,7 @@ Each component below is a single paragraph plus a token map. Full API and source
 
 **`menu-popup`** / **`combobox-popup`** / **`select-popup`** / **`popover`** / **`command-palette`**: Shared via the `popupSurface` recipe.
 - Recipe: `rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu`.
+- Centered mobile branches use the same menu-level elevation rather than modal elevation.
 - Non-editable triggers use `bg-fill-2` for keyboard focus and while open, without the editable-field outline. Input, Textarea, and Combobox input retain the crisp neutral focus outline.
 - Menu / list row (`itemRow.base`): `rounded-[var(--radius-6)]`; active or highlighted navigation uses `bg-layer-hover`, while selected, checked, or `aria-selected` rows use `bg-layer-selected`, including when highlighted.
 - Menu, Combobox, and Popover all wrap the mobile centered panel in `<RemoveScroll>` (react-remove-scroll) to lock body scroll while the sheet-like mobile popup is open. Popover gained a full mobile-centered branch this cycle (Backdrop + centered popup at `w-[calc(100vw-1rem)]` and `max-h-[calc(100dvh-2rem)]`).

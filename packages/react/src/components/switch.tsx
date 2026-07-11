@@ -3,7 +3,7 @@
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
+import { selectionFocus, colorTransition } from "../recipes";
 
 export type SwitchSize = "sm" | "md" | "lg";
 
@@ -49,7 +49,7 @@ export function Switch({
         "data-checked:bg-ink data-checked:hover:bg-ink",
         trackBySize[size],
         colorTransition,
-        focusRing,
+        selectionFocus,
         className,
       )}
       data-slot="switch"

@@ -5,7 +5,7 @@ import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { selectionFocus } from "../recipes";
 
 /** One primitive for every disclosure pattern.
  *
@@ -105,7 +105,7 @@ export function AccordionTrigger({
           "text-small font-medium text-ink-muted",
           "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "hover:text-ink data-[panel-open]:text-ink",
-          focusRing,
+          selectionFocus,
           className,
         )}
         {...props}

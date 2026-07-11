@@ -22,7 +22,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 
 const variants = [
-  { key: "A", name: "Hotfix shell, softer surfaces" },
+  { key: "A", name: "List and detail, softer surfaces" },
   { key: "B", name: "Editorial feed" },
   { key: "C", name: "Focused search" },
 ] as const;
@@ -74,7 +74,7 @@ const jobs = [
 
 function Logo() {
   return (
-    <div className="grid size-8 place-items-center text-title3 font-bold tracking-[-0.12em]" aria-label="Hotfix">
+    <div className="grid size-8 place-items-center text-title3 font-bold tracking-[-0.12em]" aria-label="Job board">
       H
     </div>
   );
@@ -174,7 +174,7 @@ function JobRow({ job, selected = false, roomy = false }: { job: (typeof jobs)[n
               <h2 className={cn("font-semibold tracking-[-0.01em]", roomy ? "text-large" : "text-regular")}>{job.title}</h2>
               <p className="mt-0.5 text-small text-ink-muted">{job.company}</p>
             </div>
-            <button aria-label={`Save ${job.title}`} className="rounded-full p-2 text-ink-subtle hover:bg-layer-2 hover:text-ink">
+            <button aria-label={`Save ${job.title}`} className="rounded-[var(--radius-8)] p-2 text-ink-subtle hover:bg-layer-hover hover:text-ink active:bg-layer-selected">
               <BookmarkSimple className="size-5" />
             </button>
           </div>
