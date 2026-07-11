@@ -100,7 +100,7 @@ Size and weight are separate axes. Compose `text-small font-medium`; do not add 
 - `--shadow-tooltip`: Tooltip.
 - `--shadow-modal`: Modal and Sheet.
 
-Actionable Cards change fill; they do not gain a shadow on hover.
+Actionable Cards emphasize their existing boundary; they do not change fill or gain a shadow on hover.
 
 ## Focus
 

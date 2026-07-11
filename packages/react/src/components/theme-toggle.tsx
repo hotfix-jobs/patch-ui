@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   useCallback,
   useEffect,
@@ -45,11 +44,6 @@ function ThemeIcon({
   mounted: boolean;
   className?: string;
 }): React.ReactElement {
-  const reduceMotion = useReducedMotion();
-  const spring = reduceMotion
-    ? { duration: 0 }
-    : { type: "spring" as const, stiffness: 300, damping: 22, mass: 0.6 };
-
   if (!mounted) {
     return <span className={cn("inline-block", className)} />;
   }
@@ -61,39 +55,22 @@ function ThemeIcon({
         className,
       )}
     >
-      <AnimatePresence initial={false}>
-        {isDark ? (
-          <motion.span
-            key="sun"
-            className="absolute inset-0 flex items-center justify-center"
-            initial={
-              reduceMotion ? false : { rotate: -90, scale: 0, opacity: 0 }
-            }
-            animate={{ rotate: 0, scale: 1, opacity: 1 }}
-            exit={
-              reduceMotion ? undefined : { rotate: 90, scale: 0, opacity: 0 }
-            }
-            transition={spring}
-          >
-            <Sun className="size-full" aria-hidden />
-          </motion.span>
-        ) : (
-          <motion.span
-            key="moon"
-            className="absolute inset-0 flex items-center justify-center"
-            initial={
-              reduceMotion ? false : { rotate: 90, scale: 0, opacity: 0 }
-            }
-            animate={{ rotate: 0, scale: 1, opacity: 1 }}
-            exit={
-              reduceMotion ? undefined : { rotate: -90, scale: 0, opacity: 0 }
-            }
-            transition={spring}
-          >
-            <Moon className="size-full" aria-hidden />
-          </motion.span>
+      <span
+        className={cn(
+          "absolute inset-0 flex items-center justify-center transition-[opacity,transform] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          isDark ? "scale-100 rotate-0 opacity-100" : "scale-0 rotate-90 opacity-0",
         )}
-      </AnimatePresence>
+      >
+        <Sun className="size-full" aria-hidden />
+      </span>
+      <span
+        className={cn(
+          "absolute inset-0 flex items-center justify-center transition-[opacity,transform] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          isDark ? "scale-0 -rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100",
+        )}
+      >
+        <Moon className="size-full" aria-hidden />
+      </span>
     </span>
   );
 }

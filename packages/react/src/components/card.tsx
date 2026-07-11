@@ -31,7 +31,7 @@ export function Card({
       variant === "outlined" && "border border-hairline bg-layer-1",
       variant === "elevated" && "border border-hairline-soft bg-layer-1 shadow-card",
       actionable && [
-        "hover:bg-layer-hover active:bg-layer-hover",
+        "hover:border-hairline-tertiary active:border-hairline-tertiary",
         "aria-disabled:pointer-events-none aria-disabled:opacity-50",
         selectionFocus,
       ],

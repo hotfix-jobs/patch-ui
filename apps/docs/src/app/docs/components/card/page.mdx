@@ -76,7 +76,7 @@ import {
       name: "actionable",
       type: "boolean",
       default: "false",
-      description: "Adds hover, pressed, and keyboard-focus styling. Render Card as a semantic link or button when enabled.",
+      description: "Emphasizes the existing boundary on hover and press, with keyboard-focus styling. Render Card as a semantic link or button when enabled.",
     },
     {
       name: "selected",
@@ -113,6 +113,7 @@ import {
 
 <Callout title="Notes">
 - `outlined` is the default because application cards usually benefit from a clear object boundary.
+- `actionable` emphasizes the existing border instead of filling the complete surface. Pair it with `outlined` or `elevated` so the pointer state has a visible boundary to strengthen.
 - Structural parts are independent render-prop primitives. They share no context and can be omitted or reordered.
 - `actionable` is visual behavior, not semantics. Pair it with `render={<Link />}` or `render={<button />}`.
 - `selected` does not emit `aria-selected`. Add the ARIA state required by the surrounding listbox, grid, or selection control.

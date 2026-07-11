@@ -5,7 +5,7 @@ export const metadata = { title: "ThemeToggle" };
 
 # ThemeToggle
 
-A light/dark mode toggle button with animated sun/moon icons. Works uncontrolled with localStorage persistence, or controlled via props. Applies the `.dark` class to `<html>` by default.
+A light/dark mode toggle button with CSS-transitioned sun/moon icons. Works uncontrolled with localStorage persistence, or controlled via props. Applies the `.dark` class to `<html>` by default.
 
 <Install name="theme-toggle" />
 
@@ -100,7 +100,7 @@ Add this inline script to your `<head>` to prevent a flash of wrong theme on pag
 - Uncontrolled mode is the common path: ThemeToggle reads from localStorage on mount, applies the `.dark` class to `<html>`, and persists on every toggle. No provider needed.
 - For controlled mode (usually alongside `next-themes`), pass `theme` and `onThemeChange`, then set `applyClass={false}` and `storageKey={false}` so ThemeToggle doesn't double-write.
 - SSR-safe via `useSyncExternalStore`: the button renders a blank placeholder before hydration so the first client render matches the server.
-- The sun/moon icons crossfade with a spring rotation on toggle. Reduced motion swaps them instantly.
+- The sun/moon icons crossfade and rotate with token-based CSS transitions. Reduced motion swaps them instantly.
 - The icon-only control inherits Button's default rounded shape so it aligns with header and toolbar utilities.
 - If you need a 3-option picker (Light / System / Dark) with System as a first-class option, compose one with `ToggleGroup` and three icons.
 </Callout>

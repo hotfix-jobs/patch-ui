@@ -243,5 +243,5 @@ import {
 - `FieldItem` groups checkbox / radio rows inside a Field so the group label ties to every child.
 - `validationMode` on Field wins over `<Form>`'s mode: `"onSubmit"` (default), `"onBlur"`, or `"onChange"`. Use `validationDebounceTime` to throttle onChange validation.
 - The required `*` and optional `(optional)` label markers are `aria-hidden`. The `required` attribute on the underlying input is what actually enforces the constraint.
-- Error message animates in with a small fade + 2px slide; unmount is instant so users see errors dismiss the moment they fix the field. Reduced-motion respected.
+- Error messages enter with a token-based CSS fade and 2px shift. Unmount is instant, and reduced motion resolves the animation immediately.
 </Callout>

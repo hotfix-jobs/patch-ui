@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { MagnifyingGlass, X } from "@phosphor-icons/react/dist/ssr";
 import { useId, useMemo, useRef, useState } from "react";
 import type * as React from "react";
@@ -157,7 +156,6 @@ export function SearchSuggestions({
   }
 
   return (
-    <MotionConfig reducedMotion="user">
       <Popover
         open={open}
         triggerId={triggerId}
@@ -181,21 +179,17 @@ export function SearchSuggestions({
           className={cn("relative w-full", className)}
           {...props}
         >
-          <div className="relative flex flex-col gap-1 rounded-[var(--radius-12)] bg-fill-1 p-1 sm:flex-row sm:items-center">
+          <div className="relative flex flex-col gap-1 rounded-[var(--radius-12)] bg-layer-1 p-1 sm:flex-row sm:items-center">
             {fields.map((field) => {
               const active = field.id === activeField.id;
               return (
                 <div
                   key={field.id}
                   data-slot="search-suggestions-field"
-                  className="relative min-w-0 flex-1"
+                  className="group relative min-w-0 flex-1"
                 >
                   {active && (
-                    <motion.div
-                      layoutId={`${generatedId}-active-field`}
-                      className="absolute inset-0 rounded-[var(--radius-8)] bg-layer-1"
-                      transition={{ type: "spring", stiffness: 500, damping: 42 }}
-                    />
+                    <div className="absolute inset-0 rounded-[var(--radius-8)] bg-fill-1 outline-none group-has-[:focus-visible]:[outline-style:solid] group-has-[:focus-visible]:outline-[length:var(--focus-ring-width)] group-has-[:focus-visible]:outline-[var(--focus-ring-color)] group-has-[:focus-visible]:outline-offset-0" />
                   )}
                   <div className="relative block min-w-0">
                     <span className="sr-only">{field.label}</span>
@@ -312,7 +306,6 @@ export function SearchSuggestions({
           />
         </PopoverContent>
       </Popover>
-    </MotionConfig>
   );
 }
 
@@ -336,14 +329,8 @@ function SearchSuggestionsResults({
   );
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
+      <div
         key={field.id}
-        layout="size"
-        initial={{ opacity: 0, y: 4 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -4 }}
-        transition={{ type: "spring", stiffness: 600, damping: 48 }}
         className="min-h-0 overflow-y-auto p-1"
         style={{ maxHeight: "min(360px, 55dvh)" }}
       >
@@ -419,7 +406,6 @@ function SearchSuggestionsResults({
             {field.emptyContent ?? "No suggestions found."}
           </div>
         )}
-      </motion.div>
-    </AnimatePresence>
+      </div>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { CaretDown, Check } from "@phosphor-icons/react/dist/ssr";
 import { useId, useMemo, useRef, useState } from "react";
 import type * as React from "react";
@@ -55,106 +54,85 @@ export function FilterToolbar({
   trailingClassName,
   ...props
 }: FilterToolbarProps): React.ReactElement {
-  const clearAction = (
-    <AnimatePresence initial={false}>
-      {activeCount > 0 && onClearAll && (
-        <motion.div
-          key="clear"
-          layout
-          initial={{ opacity: 0, width: 0 }}
-          animate={{ opacity: 1, width: "auto" }}
-          exit={{ opacity: 0, width: 0 }}
-          transition={{ type: "spring", stiffness: 600, damping: 48 }}
-          className="shrink-0 overflow-hidden"
+  const clearAction =
+    activeCount > 0 && onClearAll ? (
+      <div className="shrink-0">
+        <Button
+          variant="tertiary"
+          size="md"
+          className="text-ink-muted"
+          onClick={onClearAll}
         >
-          <Button
-            variant="tertiary"
-            size="md"
-            className="text-ink-muted"
-            onClick={onClearAll}
-          >
-            {clearLabel}
-          </Button>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
+          {clearLabel}
+        </Button>
+      </div>
+    ) : null;
 
   return (
-    <MotionConfig reducedMotion="user">
+    <div
+      data-slot="filter-toolbar"
+      data-overflow={overflow}
+      className={cn(
+        "flex w-full min-w-0 items-center gap-2",
+        className,
+      )}
+      {...props}
+    >
       <div
-        data-slot="filter-toolbar"
-        data-overflow={overflow}
-        className={cn(
-          "flex w-full min-w-0 items-center gap-2",
-          className,
-        )}
-        {...props}
+        data-slot="filter-toolbar-filters"
+        className="min-w-0 flex-1"
       >
-        <motion.div
-          layout="size"
-          data-slot="filter-toolbar-filters"
-          className="min-w-0 flex-1"
-        >
-          {overflow === "scroll" ? (
-            <Scroller
-              overflow="x"
-              ariaLabel={ariaLabel}
-              childrenContainerClassName={cn(
-                "items-center gap-1 pe-1 [&>*]:shrink-0",
-                filtersClassName,
-              )}
-            >
-              {children}
-              {clearAction}
-            </Scroller>
-          ) : (
-            <div
-              role="group"
-              aria-label={ariaLabel}
-              className={cn(
-                "flex flex-wrap items-center gap-1",
-                filtersClassName,
-              )}
-            >
-              {children}
-              {clearAction}
-            </div>
-          )}
-        </motion.div>
-
-        {(count != null || trailing != null) && (
-          <div
-            data-slot="filter-toolbar-trailing"
-            className={cn(
-              "flex shrink-0 items-center gap-2 sm:gap-3",
-              trailingClassName,
+        {overflow === "scroll" ? (
+          <Scroller
+            overflow="x"
+            ariaLabel={ariaLabel}
+            childrenContainerClassName={cn(
+              "items-center gap-1 pe-1 [&>*]:shrink-0",
+              filtersClassName,
             )}
           >
-            <AnimatePresence mode="popLayout" initial={false}>
-              {count != null && (
-                <motion.span
-                  key={String(count)}
-                  initial={{ opacity: 0, y: 3 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -3 }}
-                  transition={{ type: "spring", stiffness: 600, damping: 48 }}
-                  aria-live="polite"
-                  aria-atomic="true"
-                  className={cn(
-                    "whitespace-nowrap text-mini font-medium tabular-nums text-ink-muted",
-                    countVisibility === "responsive" && "hidden sm:inline",
-                  )}
-                >
-                  {count}
-                </motion.span>
-              )}
-            </AnimatePresence>
-            {trailing}
+            {children}
+            {clearAction}
+          </Scroller>
+        ) : (
+          <div
+            role="group"
+            aria-label={ariaLabel}
+            className={cn(
+              "flex flex-wrap items-center gap-1",
+              filtersClassName,
+            )}
+          >
+            {children}
+            {clearAction}
           </div>
         )}
       </div>
-    </MotionConfig>
+
+      {(count != null || trailing != null) && (
+        <div
+          data-slot="filter-toolbar-trailing"
+          className={cn(
+            "flex shrink-0 items-center gap-2 sm:gap-3",
+            trailingClassName,
+          )}
+        >
+          {count != null && (
+            <span
+              aria-live="polite"
+              aria-atomic="true"
+              className={cn(
+                "whitespace-nowrap text-mini font-medium tabular-nums text-ink-muted",
+                countVisibility === "responsive" && "hidden sm:inline",
+              )}
+            >
+              {count}
+            </span>
+          )}
+          {trailing}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -276,6 +254,18 @@ export function FilterToolbarPicker({
     () => sections.flatMap((section) => section.options),
     [sections],
   );
+  const sectionOffsets = useMemo(
+    () =>
+      sections.map((_, sectionIndex) =>
+        sections
+          .slice(0, sectionIndex)
+          .reduce(
+            (total, section) => total + section.options.length,
+            0,
+          ),
+      ),
+    [sections],
+  );
   const listboxId = `${generatedId}-listbox`;
 
   const updateActiveIndex = (index: number) => {
@@ -338,7 +328,6 @@ export function FilterToolbarPicker({
     }
   };
 
-  let optionIndex = -1;
   const hasOptions = options.length > 0;
 
   return (
@@ -387,7 +376,7 @@ export function FilterToolbarPicker({
         <div className="max-h-[min(360px,55dvh)] overflow-y-auto p-1">
           {hasOptions ? (
             <div id={listboxId} role="listbox" aria-label={label} aria-multiselectable="true">
-              {sections.map((section) => (
+              {sections.map((section, sectionIndex) => (
                 <div key={section.id} data-slot="filter-toolbar-picker-section">
                   {section.label && (
                     <div
@@ -399,9 +388,8 @@ export function FilterToolbarPicker({
                       {section.label}
                     </div>
                   )}
-                  {section.options.map((option) => {
-                    optionIndex += 1;
-                    const index = optionIndex;
+                  {section.options.map((option, optionIndex) => {
+                    const index = sectionOffsets[sectionIndex] + optionIndex;
                     const active = index === activeIndex;
                     const checked = selected.includes(option.value);
                     return (

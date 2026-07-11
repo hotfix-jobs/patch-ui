@@ -283,8 +283,7 @@
       "type": "registry:ui",
       "title": "Field",
       "dependencies": [
-        "@base-ui/react",
-        "motion"
+        "@base-ui/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -803,8 +802,7 @@
       "type": "registry:ui",
       "title": "Theme Toggle",
       "dependencies": [
-        "@phosphor-icons/react",
-        "motion"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
@@ -923,7 +921,6 @@
       "title": "App Header",
       "dependencies": [
         "@base-ui/react",
-        "motion",
         "react-remove-scroll"
       ],
       "registryDependencies": [
@@ -965,8 +962,7 @@
       "type": "registry:block",
       "title": "Filter Toolbar",
       "dependencies": [
-        "@phosphor-icons/react",
-        "motion"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
@@ -991,8 +987,7 @@
       "type": "registry:block",
       "title": "Search Suggestions",
       "dependencies": [
-        "@phosphor-icons/react",
-        "motion"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
