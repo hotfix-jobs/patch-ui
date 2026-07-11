@@ -29,7 +29,7 @@ export function Install({ name }: { name: string }) {
 
   return (
     <div
-      className="group/install relative my-6 flex items-center gap-2 overflow-x-auto rounded-[var(--radius-8)] border border-hairline bg-base ps-4 pe-11 py-2.5 font-mono text-small text-ink"
+      className="group/install relative my-6 flex items-center gap-2 overflow-x-auto rounded-[var(--radius-8)] bg-fill-1 ps-4 pe-11 py-2.5 font-mono text-small text-ink"
       data-slot="install"
     >
       <span className="shrink-0 text-ink-muted">$</span>
