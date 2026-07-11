@@ -109,7 +109,6 @@ export function Button({
     className: cn(
       buttonVariants({ size: effectiveSize, variant, shape }),
       iconOnly,
-      isIconOnly && "rounded-full",
       iconOnlyRecipe,
       className,
     ),

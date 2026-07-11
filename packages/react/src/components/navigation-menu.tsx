@@ -110,14 +110,22 @@ export function NavigationMenuContent({
 export function NavigationMenuLink({
   className,
   closeOnClick = true,
+  variant = "item",
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Link>): React.ReactElement {
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Link> & {
+  variant?: "item" | "trigger";
+}): React.ReactElement {
   return (
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
+      data-variant={variant}
       closeOnClick={closeOnClick}
       className={cn(
-        "block rounded-[var(--radius-6)] px-3 py-2 text-small text-ink-muted hover:bg-layer-hover hover:text-ink outline-none",
+        variant === "item" &&
+          "block rounded-[var(--radius-6)] px-3 py-2 text-small text-ink-muted hover:bg-layer-hover hover:text-ink",
+        variant === "trigger" &&
+          "inline-flex items-center rounded-[var(--radius-8)] px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected",
+        selectionFocus,
         iconMuted,
         colorTransition,
         className,

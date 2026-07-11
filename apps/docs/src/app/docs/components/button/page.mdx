@@ -5,7 +5,7 @@ export const metadata = { title: "Button" };
 
 # Button
 
-A polymorphic button with intent-based variants, three sizes, rounded or pill shapes, icon support, and a loading state. Icon-only controls infer a circle.
+A polymorphic button with intent-based variants, three sizes, rounded or pill shapes, icon support, and a loading state. Icon-only controls keep the selected shape.
 
 <Install name="button" />
 
@@ -33,8 +33,11 @@ import { Button } from "@patchui/react";
 <Button size="md">Medium</Button>
 <Button size="lg">Large</Button>
 
-// Icon-only Buttons infer circular geometry (aria-label required)
+// Icon-only Buttons keep the default rounded shape (aria-label required)
 <Button aria-label="Add" icon={<Plus />} />
+
+// Opt into a circular icon button
+<Button aria-label="Add" shape="pill" icon={<Plus />} />
 
 // Pill is opt-in for friendly CTAs and filter actions
 <Button shape="pill">Browse Items</Button>
@@ -66,7 +69,7 @@ import { Button } from "@patchui/react";
       name: "shape",
       type: '"rounded" | "pill"',
       default: '"rounded"',
-      description: "Rounded uses radius-8. Pill uses full radius. Icon-only Buttons remain circular.",
+      description: "Rounded uses radius-8. Pill uses full radius. The selected shape also applies to icon-only Buttons.",
     },
     {
       name: "icon",
@@ -117,7 +120,7 @@ import { Button } from "@patchui/react";
 - Each variant maps to a specific token: `primary` reads the `--primary` / `--on-primary` chain, `secondary` uses the neutral fill ladder, `soft` uses `--primary-soft`, `tertiary` is transparent with a hover tint, and semantic actions use their fixed role colors.
 - Reserve `primary` for the one hero action on a view. Reserve `destructive` for actions the user cannot undo without work.
 - Brand override: redefine `--primary`, `--on-primary`, `--primary-hover`, and `--primary-active` in a consumer stylesheet after the token import to swap the monochrome default for a chromatic brand color. Every primary Button picks it up without callsite edits.
-- Icon-only buttons: pass `icon` with no `children`. The Button infers equal width and height plus circular geometry. `aria-label` is required; a dev-time warning fires when it's missing.
+- Icon-only buttons: pass `icon` with no `children`. Button infers equal width and height while respecting `shape`; use `shape="pill"` when a circle is intentional. `aria-label` is required, and a development warning fires when it is missing.
 - Use `shape="pill"` selectively for friendly CTAs and filter actions. Standard form, toolbar, and settings actions should stay rounded.
 - Polymorphism: pass `render={<a href="…" />}` (or a `<Link>`) to render as an anchor with the button's styling and behavior.
 - `loading` swaps the content for a spinner and disables interaction so a double-tap can't fire twice.

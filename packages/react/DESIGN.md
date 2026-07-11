@@ -721,7 +721,7 @@ Each component below is a single paragraph plus a token map. Full API and source
 - Background `{colors.error}`, text `{colors.error-fg}`, radius `--radius-8`, padding 8px 14px.
 - Hover: `{colors.error-hover}`. Active: `{colors.error-active}`.
 
-**Shape API.** Button and Badge expose only `rounded` and `pill`, both defaulting to rounded. Button rounded is radius-8; Badge rounded is radius-6. Icon-only Buttons always infer circular geometry. Toggle has no shape prop. Switch retains its pill track because that shape communicates movement. Do not invent per-module variant names like `outline` or `ghost`.
+**Shape API.** Button and Badge expose only `rounded` and `pill`, both defaulting to rounded. Button rounded is radius-8; Badge rounded is radius-6. Icon-only Buttons infer equal width and height but still respect `shape`; consumers opt into `pill` when a circle is intentional. Toggle has no shape prop. Switch retains its pill track because that shape communicates movement. Do not invent per-module variant names like `outline` or `ghost`.
 
 ### Inputs & Forms
 

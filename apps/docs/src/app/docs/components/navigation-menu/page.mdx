@@ -37,7 +37,7 @@ import {
       </NavigationMenuContent>
     </NavigationMenuItem>
     <NavigationMenuItem>
-      <NavigationMenuLink href="/docs">Docs</NavigationMenuLink>
+      <NavigationMenuLink href="/docs" variant="trigger">Docs</NavigationMenuLink>
     </NavigationMenuItem>
   </NavigationMenuList>
 </NavigationMenu>
@@ -52,11 +52,12 @@ Use the `render` prop on `NavigationMenuLink` to integrate your router (e.g. a N
 - `NavigationMenuItem` - a single item (a link, or a trigger plus content)
 - `NavigationMenuTrigger` - opens a dropdown panel; includes a chevron that rotates on open
 - `NavigationMenuContent` - the panel for an item; rendered into the shared morphing popup
-- `NavigationMenuLink` - a navigable link, in the bar or inside content
+- `NavigationMenuLink` - a navigable link with `item` and `trigger` treatments
 
 <Callout title="Notes">
 - **Fits AppHeader:** drop `NavigationMenu` between `AppHeaderBrand` and `AppHeaderRight` for a product-style header.
 - **Morphing popup:** all `NavigationMenuContent` panels share one radius-12 popup with a 1px hairline boundary and `--shadow-menu` elevation. It animates size and position between items with a direction-aware slide.
-- **Hover tokens:** Triggers and links use `--fill-1` for hover and open states, matching Menu item hover styling.
+- **Interaction tokens:** triggers and top-level links use `--layer-hover` for hover, `--layer-selected` for press, and the held trigger fill while a popup is open.
 - **Keyboard + a11y:** Base UI handles roving focus, arrow-key navigation, and the ARIA wiring. Triggers use the compact non-editable focus indicator.
+- **Top-level links:** use `NavigationMenuLink variant="trigger"` beside dropdown triggers. The default `item` treatment remains for links inside popup content.
 </Callout>

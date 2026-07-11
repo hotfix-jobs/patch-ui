@@ -87,7 +87,7 @@ export function NavigationMenuDemo() {
               <NavigationMenuLink
                 href="#"
                 onClick={(e) => e.preventDefault()}
-                className="!inline-flex !items-center !rounded-[var(--radius-8)] !px-3 !py-1.5 !text-small !text-ink-muted !bg-transparent hover:!bg-layer-hover hover:!text-ink active:!bg-layer-selected"
+                variant="trigger"
               >
                 Pricing
               </NavigationMenuLink>
