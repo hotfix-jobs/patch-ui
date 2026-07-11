@@ -22,7 +22,7 @@ export function NavigationMenu({
       <NavigationMenuPrimitive.Portal>
         <NavigationMenuPrimitive.Positioner
           data-slot="navigation-menu-positioner"
-          className="z-[80] box-border h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)] transition-[top,left,right,bottom] duration-[var(--duration-state)] ease-[var(--ease-standard)]"
+          className="z-[80] box-border h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)] transition-[top,left,right,bottom] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]"
           sideOffset={8}
           collisionPadding={12}
         >
@@ -31,7 +31,7 @@ export function NavigationMenu({
             className={cn(
               popupSurface,
               "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden text-ink",
-              "transition-[opacity,transform,width,height] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+              "transition-[opacity,transform,width,height] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
               "data-[starting-style]:opacity-0 data-[starting-style]:scale-[0.97] data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.97]",
             )}
           >
@@ -73,7 +73,7 @@ export function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "group inline-flex items-center gap-1.5 rounded-[var(--radius-8)] px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected data-[popup-open]:bg-hairline-strong data-[popup-open]:text-ink",
+        "group inline-flex items-center gap-1.5 rounded-[var(--radius-8)] px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected data-[popup-open]:bg-layer-selected data-[popup-open]:text-ink",
         colorTransition,
         selectionFocus,
         className,
@@ -96,7 +96,7 @@ export function NavigationMenuContent({
     <NavigationMenuPrimitive.Content
       data-slot="navigation-menu-content"
       className={cn(
-        "w-max p-2 transition-[opacity,transform] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "w-max p-2 transition-[opacity,transform] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
         "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
         "data-[activation-direction=left]:data-[starting-style]:translate-x-3",
         "data-[activation-direction=right]:data-[starting-style]:-translate-x-3",

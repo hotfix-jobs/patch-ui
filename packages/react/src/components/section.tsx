@@ -6,22 +6,21 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export interface SectionProps extends useRender.ComponentProps<"section"> {
-  /** Structural surface treatment. */
-  variant?: "surface" | "outlined" | "elevated";
+  /** Draw separators between direct children. */
+  dividers?: boolean;
 }
 
 /** Structural surface with optional header, content, and footer slots. */
 export function Section({
   className,
-  variant = "surface",
+  dividers = false,
   render,
   ...props
 }: SectionProps): React.ReactElement {
   const defaultProps = {
     className: cn(
       "flex flex-col rounded-[var(--radius-12)] bg-layer-1 text-ink",
-      variant === "outlined" && "border border-hairline",
-      variant === "elevated" && "shadow-card",
+      dividers && "[&>*+*]:border-t [&>*+*]:border-hairline",
       className,
     ),
     "data-slot": "section",

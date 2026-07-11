@@ -8,7 +8,7 @@ An `Input` paired with a floating popup that shows arbitrary filterable content:
 
 Use Combobox when you need an input-driven dropdown with custom row shapes (recents with chips, sign-in nudges, mode-specific banners). For simple command palettes, use [Command](/docs/components/command). For trigger-button dropdowns, use [Menu](/docs/components/menu).
 
-Query state (`value` / `onValueChange` / `placeholder`) lives on the `<Combobox>` root so the trigger input and the mobile panel's own search input can share it. On viewports below the `md` breakpoint the popup automatically switches to a bottom-anchored panel with its own search input.
+Query state (`value` / `onValueChange` / `placeholder`) lives on the `<Combobox>` root so the trigger input and the mobile panel's own search input can share it. On viewports below the `md` breakpoint the popup automatically switches to a centered, near-full-width panel with its own search input.
 
 <Install name="combobox" />
 
@@ -303,7 +303,7 @@ Accepts native input props plus `prefix`, `suffix`, and `size`. `value`, `onChan
 
 <Callout title="Notes">
 - **Query state on the root.** Put `value` / `onValueChange` / `placeholder` on `<Combobox>` so the trigger input and the mobile panel's own input share them. The input still accepts `value` / `onChange` / `placeholder` as per-input overrides for advanced cases.
-- **Mobile panel.** Below 768px the popup renders as a bottom-anchored fixed panel with its own search input (real focus, autoFocus) and a close X. Desktop behavior is unchanged.
+- **Mobile panel.** Below 768px the popup renders as a centered fixed panel with narrow viewport gutters, its own search input (real focus, autoFocus), and a close X. Desktop behavior is unchanged.
 - **Multi-select.** Pass `multiple` on the root with `selectedValues` + `onSelectedValuesChange` and Base UI manages the array natively (the built-in clearable X becomes visible when the array is non-empty and clears both the input and the picks on click). For the "list of active picks with individual X to remove" pattern, put `onRemove` on the `ComboboxItem` for each Selected row.
 - **State consistency.** The open input uses the same stronger fill as Select and Menu triggers, while retaining its editable-field focus outline. Highlighted rows are subtle; selected rows keep the stronger selected fill.
 - The input keeps real focus while you type and arrow through options on desktop. Items get `aria-activedescendant` instead of taking focus, which is the proper ARIA combobox pattern: screen readers announce the active option without interrupting typing.

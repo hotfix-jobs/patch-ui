@@ -5,7 +5,7 @@ export const metadata = { title: "Section" };
 
 # Section
 
-A structural surface with optional header, content, and footer slots. It is borderless by default and does not add automatic spacing, layout, or separators.
+A structural card surface with optional header, content, and footer slots. It is borderless and shadowless by default. Add `dividers` when direct children need quiet internal separation.
 
 Different from `Card`, which represents a discrete content object. Reach for Section when several controls or settings belong to one named area.
 
@@ -30,7 +30,7 @@ import {
 } from "@patchui/react";
 
 // Simple settings row (header + footer, no body)
-<Section>
+<Section dividers>
   <SectionHeader className="px-6 pb-4 pt-5">
     <SectionTitle>Account Settings</SectionTitle>
     <SectionSubtitle>Manage your account preferences and settings.</SectionSubtitle>
@@ -44,7 +44,7 @@ import {
 </Section>
 
 // With a content body (e.g. an input to edit)
-<Section>
+<Section dividers>
   <SectionHeader className="px-6 pb-4 pt-5">
     <SectionTitle>Project Name</SectionTitle>
     <SectionSubtitle>The display name for your project.</SectionSubtitle>
@@ -77,10 +77,10 @@ import {
 <PropsTable
   props={[
     {
-      name: "variant",
-      type: '"surface" | "outlined" | "elevated"',
-      default: '"surface"',
-      description: "Surface is the borderless default. Outlined adds a hairline boundary. Elevated adds the card shadow.",
+      name: "dividers",
+      type: "boolean",
+      default: "false",
+      description: "Adds a hairline between each pair of direct children.",
     },
     {
       name: "className",
@@ -104,6 +104,6 @@ Each accepts `className` for overrides and `render` for polymorphic rendering (c
 <Callout title="Notes">
 - Section slots are unstyled structural hooks. Callers own their padding, gaps, alignment, and responsive behavior through `className`.
 - Section is a `<section>` element; `SectionTitle` renders as `<h3>` by default. If the parent already has an `<h2>`, that keeps the outline clean. Adjust with `render={<h2 />}` if the heading level needs to shift.
-- Section does not insert row or footer separators. Add a Separator explicitly when the information architecture requires one.
-- **Migration:** `flat` becomes `surface`. `SectionRow`, `SectionFooterStatus`, `SectionFooterActions`, footer `secondary`, and automatic hairlines were removed. Compose spacing, rows, status, actions, and separators at the call site.
+- Section has one card treatment: `bg-layer-1`, radius 12, no outer border, and no shadow. Use Card when an object needs outlined or elevated variants.
+- `dividers` adds internal hairlines between direct children. Leave it off when spacing alone makes the grouping clear.
 </Callout>

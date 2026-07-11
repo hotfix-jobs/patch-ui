@@ -266,9 +266,6 @@
       "name": "empty-state",
       "type": "registry:ui",
       "title": "Empty State",
-      "dependencies": [
-        "motion"
-      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"

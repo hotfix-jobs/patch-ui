@@ -53,7 +53,7 @@ export function SectionDemo() {
     <div className="flex flex-col gap-12">
       <div className="space-y-4">
         <SectionLabel>General</SectionLabel>
-        <Section variant="outlined">
+        <Section dividers>
           <SettingRow
             title="Language"
             description="The language used for the interface"
@@ -89,7 +89,7 @@ export function SectionDemo() {
 
       <div className="space-y-4">
         <SectionLabel>Notifications</SectionLabel>
-        <Section variant="elevated">
+        <Section dividers>
           <SettingRow
             title="Email digests"
             description="Get a summary of activity in your inbox each week"
@@ -115,17 +115,17 @@ export function SectionDemo() {
 
       <div className="space-y-4">
         <SectionLabel>Header + form + footer</SectionLabel>
-        <Section>
-          <SectionHeader className="px-6 pb-4 pt-5">
+        <Section dividers>
+          <SectionHeader className="px-6 py-5">
             <SectionTitle>Project name</SectionTitle>
             <SectionSubtitle>
               The display name shown in navigation and search results.
             </SectionSubtitle>
           </SectionHeader>
-          <SectionContent className="px-6 pb-6">
+          <SectionContent className="px-6 py-5">
             <Input defaultValue="patch-ui" placeholder="my-project" />
           </SectionContent>
-          <SectionFooter className="flex flex-wrap items-center justify-between gap-3 px-6 pb-5">
+          <SectionFooter className="flex flex-wrap items-center justify-between gap-3 px-6 py-4">
             <div className="text-small text-ink-muted">
               Please use 32 characters at maximum.
             </div>

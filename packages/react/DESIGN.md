@@ -123,13 +123,9 @@ Button variants are `primary`, `secondary`, `soft`, `tertiary`, `warning`, and `
 
 ### Card and Section
 
-Both expose `surface`, `outlined`, and `elevated`.
+Card exposes `surface`, `outlined`, and `elevated`. Interactive Card uses hover and pressed fills plus compact keyboard focus.
 
-- `surface`: borderless layer-1.
-- `outlined`: explicit hairline boundary.
-- `elevated`: layer-1 with `shadow-card`.
-
-Interactive Card uses hover and pressed fills plus compact keyboard focus. Card represents a discrete object. Section provides structural slots. Callers own padding, row layout, and dividers.
+Section has one borderless, shadowless layer-1 card treatment and structural slots. Its optional `dividers` prop separates direct children. Callers own padding and row layout.
 
 ### Fields
 
@@ -147,7 +143,7 @@ Tooltip is tighter: radius 6, compact padding, hairline, tooltip shadow.
 
 ### Modal, Sheet, and Toast
 
-Modal and Sheet use radius 12, one outer boundary, modal elevation, and borderless internal header/footer regions. Their close controls use radius 8 and compact focus.
+Modal and Sheet use radius 12, one outer boundary, modal elevation, and borderless internal header/footer regions. Modal remains vertically centered with narrow gutters on mobile. Their close controls use radius 8 and compact focus.
 
 Toast uses radius 12, one outer boundary, menu-level elevation, a borderless filled action, and a radius-8 close control.
 
