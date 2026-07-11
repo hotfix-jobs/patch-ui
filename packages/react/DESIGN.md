@@ -34,8 +34,7 @@ The source is `src/theme/tokens.css`. Raw custom properties are bridged to Tailw
 
 ### Interaction
 
-- `--layer-hover` is the light alpha overlay for transparent-at-rest controls and rows.
-- `--layer-selected` is the stronger overlay for press, selection, and current navigation.
+- `--layer-hover` is the single alpha overlay for hover, press, selection, and current navigation.
 - Filled controls step from `fill-1` to `fill-2` rather than placing an overlay on top.
 - Popup triggers and persisted toggles use their shared held-state recipe.
 
@@ -137,7 +136,7 @@ Checkbox is a radius-4 square. Radio, Switch, Slider, and Progress retain circul
 
 Menu, Select, Combobox, Popover, NavigationMenu, and Command share radius-12 layer-1 surfaces with a hairline boundary and menu shadow. Mobile centered branches keep menu-level elevation and lock body scroll where appropriate.
 
-Popup rows use radius 6. Highlight uses layer-hover; selected or checked state uses layer-selected and keeps priority while highlighted.
+Popup rows use radius 6. Highlighted, selected, and checked states all use layer-hover. Checks, labels, and semantics distinguish persistent selection.
 
 Tooltip is tighter: radius 6, compact padding, hairline, tooltip shadow.
 
@@ -149,7 +148,7 @@ Toast uses radius 12, one outer boundary, menu-level elevation, a borderless fil
 
 ### Navigation
 
-- Tabs: borderless radius-8 items, layer-hover on hover, layer-selected when active.
+- Tabs: borderless radius-8 items, layer-hover on hover, layer-hover when active.
 - Sidebar and Pagination: the same radius-8 navigation state vocabulary.
 - Sidebar: borderless layer-1 by default, optional `rounded` and `bordered` surface treatments.
 - Breadcrumb: borderless text trail with compact keyboard focus; its mobile overflow control uses radius 8.
@@ -157,7 +156,7 @@ Toast uses radius 12, one outer boundary, menu-level elevation, a borderless fil
 
 ### Table
 
-Table defaults to `surface`; `outlined` adds a radius-12 layer-1 wrapper and hairline boundary. The header keeps one structural divider. Body rows and cells have no automatic hairlines. Interactive rows use layer-hover; selected rows use layer-selected without an accent stripe. Sortable headers make the full header cell actionable.
+Table defaults to `surface`; `outlined` adds a radius-12 layer-1 wrapper and hairline boundary. The header keeps one structural divider. Body rows and cells have no automatic hairlines. Interactive rows use layer-hover; selected rows use layer-hover without an accent stripe. Sortable headers make the full header cell actionable.
 
 ### Overlays and utility controls
 

@@ -261,7 +261,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
               aria-label="Clear"
               onClick={onClear}
               data-slot="combobox-input-clear"
-              className="inline-flex size-5 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[ending-style]:hidden"
+              className="inline-flex size-5 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[ending-style]:hidden"
             >
               <X className="size-3" />
             </ComboboxPrimitive.Clear>
@@ -521,7 +521,7 @@ export function ComboboxItem({
             e.preventDefault();
             onRemove();
           }}
-          className="ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-selected"
+          className="ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover"
           data-slot="combobox-item-remove"
         >
           <X className="size-3" aria-hidden />

@@ -37,7 +37,7 @@ export function Install({ name }: { name: string }) {
       <button
         type="button"
         onClick={handleCopy}
-        className={`absolute end-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-[var(--radius-8)] outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-selected focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)] ${copied ? "text-success" : "text-ink-muted"}`}
+        className={`absolute end-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-[var(--radius-8)] outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)] ${copied ? "text-success" : "text-ink-muted"}`}
         aria-label={copied ? "Copied" : "Copy install command"}
         data-slot="install-copy"
       >

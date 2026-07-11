@@ -136,14 +136,14 @@ export function TableBody({
         interactive && [
           "[&_td]:!border-b-0",
           "[&_tr:hover>td]:bg-layer-hover",
-          "[&_tr[data-selected]:hover>td]:bg-layer-selected",
+          "[&_tr[data-selected]:hover>td]:bg-layer-hover",
           "[&_tr:hover>td:first-child]:rounded-l-[var(--radius-6)]",
           "[&_tr:hover>td:last-child]:rounded-r-[var(--radius-6)]",
         ],
         striped && [
           "[&_td]:!border-b-0",
           "[&_tr:nth-child(even)>td]:bg-fill-2",
-          "[&_tr[data-selected]:nth-child(even)>td]:bg-layer-selected",
+          "[&_tr[data-selected]:nth-child(even)>td]:bg-layer-hover",
           "[&_tr:nth-child(even)>td:first-child]:rounded-l-[var(--radius-6)]",
           "[&_tr:nth-child(even)>td:last-child]:rounded-r-[var(--radius-6)]",
         ],
@@ -189,7 +189,7 @@ export function TableRow({
       aria-selected={selected || undefined}
       className={cn(
         selected && [
-          "[&>td]:bg-layer-selected",
+          "[&>td]:bg-layer-hover",
           "[&>td:first-child]:rounded-l-[var(--radius-6)] [&>td:last-child]:rounded-r-[var(--radius-6)]",
         ],
         className,
@@ -265,7 +265,7 @@ export function TableHead({
           type="button"
           onClick={onSort}
           className={cn(
-            "flex h-full w-full items-center gap-1 px-3 select-none text-mini font-medium text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+            "flex h-full w-full items-center gap-1 px-3 select-none text-mini font-medium text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
             align === "right" && "justify-end",
             align === "center" && "justify-center",
             align === "left" && "justify-start",

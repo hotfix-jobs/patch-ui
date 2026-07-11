@@ -359,7 +359,7 @@ export function Calendar(props: CalendarProps): React.ReactElement {
                   "text-small font-medium ring-1 ring-inset ring-hairline-strong",
                 selected &&
                   "bg-primary text-on-primary text-small font-medium hover:bg-primary-hover",
-                inSelectedRange && !selected && "bg-layer-selected",
+                inSelectedRange && !selected && "bg-layer-hover",
                 disabledDay && "pointer-events-none opacity-30",
                 selectionFocus,
               )}

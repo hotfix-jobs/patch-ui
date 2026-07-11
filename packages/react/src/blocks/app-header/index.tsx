@@ -258,7 +258,7 @@ export function AppHeaderNavItem({
   const baseClasses = mobile
     ? cn(
         "flex items-center gap-2.5 rounded-[var(--radius-6)] px-3 py-2.5 text-regular text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink [&_svg]:size-5",
-        active && "bg-layer-selected font-medium text-ink",
+        active && "bg-layer-hover font-medium text-ink",
       )
     : cn(
         "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:size-4",

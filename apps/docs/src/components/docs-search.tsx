@@ -38,7 +38,7 @@ export function SearchTrigger({ className }: { className?: string }) {
       aria-label="Search docs"
       title="Search docs (⌘K)"
       className={cn(
-        "inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink-muted outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-selected focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]",
+        "inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink-muted outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]",
         className,
       )}
     >

@@ -174,7 +174,7 @@ function JobRow({ job, selected = false, roomy = false }: { job: (typeof jobs)[n
               <h2 className={cn("font-semibold tracking-[-0.01em]", roomy ? "text-large" : "text-regular")}>{job.title}</h2>
               <p className="mt-0.5 text-small text-ink-muted">{job.company}</p>
             </div>
-            <button aria-label={`Save ${job.title}`} className="rounded-[var(--radius-8)] p-2 text-ink-subtle hover:bg-layer-hover hover:text-ink active:bg-layer-selected">
+            <button aria-label={`Save ${job.title}`} className="rounded-[var(--radius-8)] p-2 text-ink-subtle hover:bg-layer-hover hover:text-ink active:bg-layer-hover">
               <BookmarkSimple className="size-5" />
             </button>
           </div>

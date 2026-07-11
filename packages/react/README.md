@@ -66,7 +66,7 @@ Tokens live in `src/theme/tokens.css` as plain CSS custom properties. Override a
 | Base | `--base` (page background — everything sits on this) |
 | Layers (lifted panels + popups + chrome) | `--layer-1`, `--layer-2` |
 | Fills (tinted chip fills) | `--fill-1`, `--fill-2` |
-| Interaction overlays | `--layer-hover`, `--layer-selected` |
+| Interaction overlay | `--layer-hover` |
 | Ink (text) | `--ink`, `--ink-muted`, `--ink-subtle`, `--ink-tertiary` |
 | Hairlines (all alpha, Radix grayA 3/6/7/8) | `--hairline-soft` (whisper edge for elevated Card), `--hairline` (default), `--hairline-strong`, `--hairline-tertiary` |
 | Primary (monochrome) | `--primary`, `--on-primary`, `--primary-hover`, `--primary-active` |

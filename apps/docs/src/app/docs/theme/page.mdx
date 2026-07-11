@@ -20,7 +20,7 @@ The system stays deliberately small: a neutral gray scale, two surface families,
 
 **Fills.** `--fill-1` and `--fill-2` are neutral control and metadata fills. Input, Textarea, Select, secondary Button, Badge, Toggle, Kbd, and embedded actions start on a fill and step once on interaction. `--fill-1` intentionally shares a value with `--layer-2`, but the separate name preserves intent at the call site.
 
-**Interaction overlays.** `--layer-hover` and `--layer-selected` are alpha overlays for transparent controls and rows. Hover uses the lighter overlay; press and selection use the stronger one. Popup triggers and pressed toggles use the held fill defined by their shared recipes. Alpha overlays remain visible on base, layers, fills, and consumer backgrounds without adding another solid surface rung.
+**Interaction overlay.** `--layer-hover` is the single alpha overlay for hover, press, selection, and current navigation. Persistent state is distinguished through checks, labels, weight, and semantics instead of another background color. Held popup triggers may still use their filled-control treatment. The alpha overlay remains visible on base, layers, fills, and consumer backgrounds without adding another solid surface rung.
 
 **Ink.** `--ink` is primary text, `--ink-muted` is secondary text and the default icon tone, `--ink-subtle` is placeholder or missing-value copy, and `--ink-tertiary` is disabled or footnote text. Subtle and tertiary currently share a gray value, but their names preserve different semantic roles.
 

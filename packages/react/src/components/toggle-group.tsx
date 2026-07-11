@@ -77,7 +77,7 @@ export function ToggleGroupItem({
         "relative inline-flex items-center justify-center rounded-[var(--radius-8)] transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
         "text-ink-muted hover:text-ink data-[pressed]:text-ink",
         "not-data-[pressed]:hover:bg-layer-hover",
-        "data-[pressed]:bg-layer-selected",
+        "data-[pressed]:bg-layer-hover",
         iconMuted,
         size === "sm" && "h-6 min-w-6 px-1.5 gap-1.5 text-mini [&_svg]:size-3.5",
         size === "md" && "h-8 min-w-8 px-2.5 gap-2 text-small [&_svg]:size-4",

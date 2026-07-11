@@ -140,7 +140,7 @@ export function Breadcrumb({
                     onClick={() => setExpanded(true)}
                     aria-expanded={expanded}
                     aria-label="Show hidden breadcrumbs"
-                    className="inline-flex size-6 items-center justify-center rounded-[var(--radius-8)] text-ink-muted outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-selected focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]"
+                    className="inline-flex size-6 items-center justify-center rounded-[var(--radius-8)] text-ink-muted outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]"
                   >
                     <DotsThree className="size-4" aria-hidden />
                   </button>

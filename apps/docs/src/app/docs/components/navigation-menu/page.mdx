@@ -57,7 +57,7 @@ Use the `render` prop on `NavigationMenuLink` to integrate your router (e.g. a N
 <Callout title="Notes">
 - **Fits AppHeader:** drop `NavigationMenu` between `AppHeaderBrand` and `AppHeaderRight` for a product-style header.
 - **Morphing popup:** all `NavigationMenuContent` panels share one radius-12 popup with a 1px hairline boundary and `--shadow-menu` elevation. It animates size and position between items with a direction-aware slide.
-- **Interaction tokens:** triggers and top-level links use `--layer-hover` for hover, `--layer-selected` for press, and the held trigger fill while a popup is open.
+- **Interaction tokens:** triggers and top-level links use `--layer-hover` for hover and press, plus the same overlay while a popup is open.
 - **Keyboard + a11y:** Base UI handles roving focus, arrow-key navigation, and the ARIA wiring. Triggers use the compact non-editable focus indicator.
 - **Top-level links:** use `NavigationMenuLink variant="trigger"` beside dropdown triggers. The default `item` treatment remains for links inside popup content.
 </Callout>

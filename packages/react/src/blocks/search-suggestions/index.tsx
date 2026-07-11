@@ -231,7 +231,7 @@ export function SearchSuggestions({
                             type="button"
                             aria-label={`Clear ${field.label}`}
                             className={cn(
-                              "inline-flex size-6 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected",
+                              "inline-flex size-6 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover",
                               selectionFocus,
                             )}
                             onClick={() => {

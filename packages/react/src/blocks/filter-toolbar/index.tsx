@@ -189,7 +189,7 @@ export function FilterToolbarTrigger({
       className={cn(
         "group",
         active &&
-          "bg-layer-selected hover:bg-layer-selected focus-visible:bg-layer-selected data-[popup-open]:bg-layer-selected",
+          "bg-layer-hover hover:bg-layer-hover focus-visible:bg-layer-hover data-[popup-open]:bg-layer-hover",
         className,
       )}
       {...props}

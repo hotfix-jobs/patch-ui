@@ -5,7 +5,7 @@ export const metadata = { title: "Tabs" };
 
 # Tabs
 
-A quiet selected-navigation control built on Base UI Tabs. Triggers are borderless, use a subtle hover overlay, and keep a stronger selected fill. Horizontal and vertical orientations share the same state treatment.
+A quiet selected-navigation control built on Base UI Tabs. Triggers are borderless and use the shared interaction overlay for hover and selection. Horizontal and vertical orientations share the same state treatment.
 
 <Install name="tabs" />
 
@@ -80,6 +80,6 @@ import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
 - `TabsPanel` - matched panel for a trigger value; horizontally adds `pt-6`, vertically becomes the flex-1 column beside the list
 
 <Callout title="Notes">
-- **States:** Hover uses `layer-hover`; the stored selection uses the stronger `layer-selected` overlay.
+- **States:** Hover and stored selection use `layer-hover`. Text weight and ARIA state distinguish the selected tab.
 - **Keyboard:** Base UI provides roving tabindex, arrow-key navigation, and Home / End. Keyboard focus uses the compact neutral indicator shared by non-editable controls.
 </Callout>

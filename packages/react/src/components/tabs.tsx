@@ -118,7 +118,7 @@ export function TabsTrigger({
         "relative inline-flex items-center gap-2 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
         selectionFocus,
         "rounded-[var(--radius-8)] px-3 py-2 text-ink-muted hover:bg-layer-hover hover:text-ink",
-        "data-[active]:bg-layer-selected data-[active]:text-ink data-[active]:font-medium",
+        "data-[active]:bg-layer-hover data-[active]:text-ink data-[active]:font-medium",
         className,
       )}
       {...props}

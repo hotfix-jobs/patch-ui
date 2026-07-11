@@ -218,7 +218,7 @@ export function SheetClose({
       aria-label="Close"
       data-slot="sheet-close"
       className={cn(
-        "inline-flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "inline-flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         selectionFocus,
         className,
       )}

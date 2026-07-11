@@ -105,7 +105,7 @@ The `p === 1` special-case keeps the canonical URL for the first page as the bar
 <Callout title="Notes">
 - **First and last always visible:** Even in long ranges, page 1 and the final page always render. Ellipsis fills gaps in between. This is deliberate for crawler discovery: with `href`, every enumerated page URL becomes a real anchor Googlebot can follow.
 - **Tabular numerals:** Page numbers use tabular figures so digits stay column-aligned regardless of width.
-- **Active semantics:** The active page cell gets `aria-current="page"` and uses the same stronger `layer-selected` fill as Tabs and Sidebar navigation.
+- **Active semantics:** The active page cell gets `aria-current="page"` and uses the shared `layer-hover` fill plus stronger label weight.
 - **Focus:** Keyboard focus uses the compact neutral indicator shared by non-editable controls.
 - **Loading state:** When `loading={true}`, every control is disabled, the nav fades, and `aria-busy="true"` signals to assistive tech that a transition is in progress.
 - **Keyboard:** All controls are Tab-focusable. Use Tab + Enter or Space to navigate; arrow keys are intentionally unbound so the control composes inside horizontal scroll containers.

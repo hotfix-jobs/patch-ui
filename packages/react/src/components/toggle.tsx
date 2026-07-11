@@ -25,10 +25,10 @@ export const toggleVariants = cva(
       },
       variant: {
         tertiary:
-          "bg-transparent text-ink-muted hover:bg-layer-hover hover:text-ink data-[pressed]:bg-layer-selected data-[pressed]:text-ink " +
+          "bg-transparent text-ink-muted hover:bg-layer-hover hover:text-ink data-[pressed]:bg-layer-hover data-[pressed]:text-ink " +
           iconMuted,
         secondary:
-          "bg-fill-1 text-ink hover:bg-fill-2 data-[pressed]:bg-layer-selected data-[pressed]:text-ink " +
+          "bg-fill-1 text-ink hover:bg-fill-2 data-[pressed]:bg-layer-hover data-[pressed]:text-ink " +
           iconMuted,
       },
     },

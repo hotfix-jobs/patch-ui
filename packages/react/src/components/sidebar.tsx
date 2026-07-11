@@ -355,9 +355,9 @@ export function SidebarMenuButton({
     className: cn(
       "flex w-full items-center gap-2 rounded-[var(--radius-8)] px-2 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
       active
-        ? "bg-layer-selected font-medium text-ink"
+        ? "bg-layer-hover font-medium text-ink"
         : "text-ink-muted hover:bg-layer-hover hover:text-ink",
-      "active:bg-layer-selected disabled:pointer-events-none disabled:opacity-50",
+      "active:bg-layer-hover disabled:pointer-events-none disabled:opacity-50",
       selectionFocus,
       className,
     ),
@@ -388,7 +388,7 @@ export function SidebarTrigger({
         if (!e.defaultPrevented) toggle();
       }}
       className={cn(
-        "inline-flex size-9 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover active:bg-layer-selected disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex size-9 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover active:bg-layer-hover disabled:pointer-events-none disabled:opacity-50",
         selectionFocus,
         className,
       )}

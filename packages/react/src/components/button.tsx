@@ -34,11 +34,11 @@ export const buttonVariants = cva(
         primary:
           "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover focus-visible:shadow-[inset_0_-2px_0_var(--on-primary)] data-[popup-open]:bg-primary-hover active:bg-primary-active",
         secondary:
-          cn("bg-fill-1 text-ink hover:bg-fill-2 focus-visible:bg-fill-2 active:bg-layer-selected", popupTriggerOpen, selectionFocus),
+          cn("bg-fill-1 text-ink hover:bg-fill-2 focus-visible:bg-fill-2 active:bg-layer-hover", popupTriggerOpen, selectionFocus),
         soft:
           cn("bg-primary-soft text-on-primary-soft hover:bg-primary-soft-hover focus-visible:bg-primary-soft-hover data-[popup-open]:bg-primary-soft-hover active:bg-primary-soft-active", selectionFocus),
         tertiary:
-          cn("bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-selected", popupTriggerOpen, selectionFocus),
+          cn("bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-hover", popupTriggerOpen, selectionFocus),
         warning:
           "bg-warning text-warning-fg hover:bg-warning-hover focus-visible:bg-warning-hover focus-visible:shadow-[inset_0_-2px_0_var(--warning-fg)] data-[popup-open]:bg-warning-hover active:bg-warning-active",
         destructive:

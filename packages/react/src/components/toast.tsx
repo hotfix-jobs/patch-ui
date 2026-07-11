@@ -214,7 +214,7 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
                     "rounded-[var(--radius-8)] bg-fill-1 px-2.5 py-1",
                     "text-small font-medium text-ink",
                     "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-                    "hover:bg-fill-2 active:bg-layer-selected",
+                    "hover:bg-fill-2 active:bg-layer-hover",
                     selectionFocus,
                   )}
                   data-slot="toast-action"
@@ -231,7 +231,7 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
                 "flex size-7 items-center justify-center",
                 "rounded-[var(--radius-8)] text-ink-muted",
                 "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-                "hover:bg-layer-hover hover:text-ink active:bg-layer-selected",
+                "hover:bg-layer-hover hover:text-ink active:bg-layer-hover",
                 selectionFocus,
               )}
             >

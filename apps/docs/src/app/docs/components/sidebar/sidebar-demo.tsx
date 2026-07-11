@@ -35,7 +35,7 @@ export function SidebarDemo() {
                     <button
                       type="button"
                       aria-current={item.active ? "page" : undefined}
-                      className={`flex w-full items-center gap-2 rounded-[var(--radius-8)] px-2 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] ${item.active ? "bg-layer-selected font-medium text-ink" : "text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected"}`}
+                      className={`flex w-full items-center gap-2 rounded-[var(--radius-8)] px-2 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] ${item.active ? "bg-layer-hover font-medium text-ink" : "text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover"}`}
                     >
                       <Icon className="size-4 shrink-0" aria-hidden />
                       {item.label}
@@ -54,7 +54,7 @@ export function SidebarDemo() {
             type="button"
             onClick={() => setCollapsed((v) => !v)}
             aria-label="Toggle sidebar"
-            className="inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-selected"
+            className="inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover"
           >
             <SidebarSimple className="size-4" aria-hidden />
           </button>

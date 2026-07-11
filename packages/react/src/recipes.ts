@@ -27,7 +27,7 @@ export const stateStepping = {
   /** Transparent at rest, adaptive overlay on hover/active. Use for
    *  toolbar buttons, tabs, and sidebar links that sit on any surface. */
   neutralGhostFill:
-    "bg-transparent hover:bg-layer-hover active:bg-layer-selected",
+    "bg-transparent hover:bg-layer-hover active:bg-layer-hover",
   neutralBorder:
     "border border-hairline hover:border-hairline-strong active:border-hairline-tertiary",
 };
@@ -67,8 +67,8 @@ export const itemRow = {
   base:
     "my-0.5 first:mt-0 last:mb-0 flex items-center cursor-default select-none rounded-[var(--radius-6)] text-ink outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] " +
     "data-[active]:bg-layer-hover data-highlighted:bg-layer-hover " +
-    "data-[selected]:bg-layer-selected data-[checked]:bg-layer-selected aria-selected:bg-layer-selected " +
-    "data-highlighted:data-[selected]:bg-layer-selected data-highlighted:data-[checked]:bg-layer-selected data-highlighted:aria-selected:bg-layer-selected " +
+    "data-[selected]:bg-layer-hover data-[checked]:bg-layer-hover aria-selected:bg-layer-hover " +
+    "data-highlighted:data-[selected]:bg-layer-hover data-highlighted:data-[checked]:bg-layer-hover data-highlighted:aria-selected:bg-layer-hover " +
     "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
   compact: "min-h-7 px-2 py-1.5 text-small",
   comfortable: "min-h-9 px-2.5 py-2 text-small",

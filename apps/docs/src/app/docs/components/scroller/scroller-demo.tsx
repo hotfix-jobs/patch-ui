@@ -59,7 +59,7 @@ export function ScrollerDemo() {
               <button
                 key={label}
                 type="button"
-                className="shrink-0 rounded-full bg-fill-1 px-4 py-1.5 text-small text-ink hover:bg-fill-2 active:bg-layer-selected"
+                className="shrink-0 rounded-full bg-fill-1 px-4 py-1.5 text-small text-ink hover:bg-fill-2 active:bg-layer-hover"
               >
                 {label}
               </button>
