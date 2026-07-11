@@ -19,14 +19,15 @@ import {
 import {
   Button,
   Menu,
+  MenuDivider,
   MenuItem,
   MenuPopup,
   MenuTrigger,
   Toggle,
 } from "@patchui/react";
 
-const statusOptions = ["Any status", "Active", "Paused"];
-const ownerOptions = ["Anyone", "Ada Lovelace", "Alan Turing"];
+const statusOptions = ["Active", "Paused"];
+const ownerOptions = ["Ada Lovelace", "Alan Turing"];
 const sortOptions = ["Recently updated", "Name", "Created date"];
 const categoryOptions: FilterToolbarPickerOption[] = [
   { id: "design", value: "design", label: "Design", description: "8 items", icon: <SquaresFour /> },
@@ -36,8 +37,8 @@ const categoryOptions: FilterToolbarPickerOption[] = [
 ];
 
 export function FilterToolbarDemo() {
-  const [status, setStatus] = useState("Any status");
-  const [owner, setOwner] = useState("Anyone");
+  const [status, setStatus] = useState<string | null>(null);
+  const [owner, setOwner] = useState<string | null>(null);
   const [tagged, setTagged] = useState(false);
   const [visible, setVisible] = useState(false);
   const [sort, setSort] = useState("Recently updated");
@@ -50,8 +51,8 @@ export function FilterToolbarDemo() {
 
   const activeCount = useMemo(
     () =>
-      Number(status !== "Any status") +
-      Number(owner !== "Anyone") +
+      Number(status != null) +
+      Number(owner != null) +
       Number(categories.length > 0) +
       Number(tagged) +
       Number(visible),
@@ -59,8 +60,8 @@ export function FilterToolbarDemo() {
   );
 
   const clearAll = () => {
-    setStatus("Any status");
-    setOwner("Anyone");
+    setStatus(null);
+    setOwner(null);
     setCategories([]);
     setTagged(false);
     setVisible(false);
@@ -77,7 +78,6 @@ export function FilterToolbarDemo() {
         <FilterMenu
           label="Status"
           value={status}
-          defaultValue="Any status"
           icon={<Check />}
           options={statusOptions}
           onChange={setStatus}
@@ -85,7 +85,6 @@ export function FilterToolbarDemo() {
         <FilterMenu
           label="Owner"
           value={owner}
-          defaultValue="Anyone"
           icon={<User />}
           options={ownerOptions}
           onChange={setOwner}
@@ -134,14 +133,12 @@ export function FilterToolbarDemo() {
         <FilterMenu
           label="Status"
           value={status}
-          defaultValue="Any status"
           options={statusOptions}
           onChange={setStatus}
         />
         <FilterMenu
           label="Owner"
           value={owner}
-          defaultValue="Anyone"
           options={ownerOptions}
           onChange={setOwner}
         />
@@ -169,19 +166,17 @@ export function FilterToolbarDemo() {
 function FilterMenu({
   label,
   value,
-  defaultValue,
   icon,
   options,
   onChange,
 }: {
   label: string;
-  value: string;
-  defaultValue: string;
+  value: string | null;
   icon?: React.ReactNode;
   options: string[];
-  onChange: (value: string) => void;
+  onChange: (value: string | null) => void;
 }) {
-  const active = value !== defaultValue;
+  const active = value != null;
 
   return (
     <Menu>
@@ -204,6 +199,12 @@ function FilterMenu({
             {option}
           </MenuItem>
         ))}
+        {active && (
+          <>
+            <MenuDivider />
+            <MenuItem onClick={() => onChange(null)}>Clear filter</MenuItem>
+          </>
+        )}
       </MenuPopup>
     </Menu>
   );

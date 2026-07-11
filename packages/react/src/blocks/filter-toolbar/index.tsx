@@ -189,7 +189,7 @@ export function FilterToolbarTrigger({
       className={cn(
         "group",
         active &&
-          "bg-layer-hover hover:bg-layer-hover focus-visible:bg-layer-hover data-[popup-open]:bg-layer-hover",
+          "bg-layer-hover hover:shadow-[inset_0_0_0_9999px_var(--layer-hover)] focus-visible:shadow-[inset_0_0_0_9999px_var(--layer-hover)] data-[popup-open]:shadow-[inset_0_0_0_9999px_var(--layer-hover)] transition-[color,background-color,box-shadow]",
         className,
       )}
       {...props}
@@ -198,7 +198,7 @@ export function FilterToolbarTrigger({
         {label}
         {active && value != null && (
           <>
-            <span aria-hidden className="text-ink-muted">: </span>
+            <span className="text-ink-muted">: </span>
             {value}
           </>
         )}
