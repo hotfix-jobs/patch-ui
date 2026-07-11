@@ -4,13 +4,17 @@ import { useMemo, useState } from "react";
 import {
   Check,
   Eye,
+  Folder,
   SortAscending,
+  SquaresFour,
   Tag,
   User,
 } from "@phosphor-icons/react/dist/ssr";
 import {
   FilterToolbar,
+  FilterToolbarPicker,
   FilterToolbarTrigger,
+  type FilterToolbarPickerOption,
 } from "@patchui/react/blocks/filter-toolbar";
 import {
   Button,
@@ -24,6 +28,12 @@ import {
 const statusOptions = ["Any status", "Active", "Paused"];
 const ownerOptions = ["Anyone", "Ada Lovelace", "Alan Turing"];
 const sortOptions = ["Recently updated", "Name", "Created date"];
+const categoryOptions: FilterToolbarPickerOption[] = [
+  { id: "design", value: "design", label: "Design", description: "8 items", icon: <SquaresFour /> },
+  { id: "engineering", value: "engineering", label: "Engineering", description: "12 items", icon: <Folder /> },
+  { id: "research", value: "research", label: "Research", description: "5 items", icon: <SquaresFour /> },
+  { id: "operations", value: "operations", label: "Operations", description: "7 items", icon: <Folder /> },
+];
 
 export function FilterToolbarDemo() {
   const [status, setStatus] = useState("Any status");
@@ -31,19 +41,27 @@ export function FilterToolbarDemo() {
   const [tagged, setTagged] = useState(false);
   const [visible, setVisible] = useState(false);
   const [sort, setSort] = useState("Recently updated");
+  const [categories, setCategories] = useState<string[]>([]);
+  const [categoryQuery, setCategoryQuery] = useState("");
+
+  const visibleCategories = categoryOptions.filter((option) =>
+    String(option.label).toLowerCase().includes(categoryQuery.toLowerCase()),
+  );
 
   const activeCount = useMemo(
     () =>
       Number(status !== "Any status") +
       Number(owner !== "Anyone") +
+      Number(categories.length > 0) +
       Number(tagged) +
       Number(visible),
-    [status, owner, tagged, visible],
+    [status, owner, categories, tagged, visible],
   );
 
   const clearAll = () => {
     setStatus("Any status");
     setOwner("Anyone");
+    setCategories([]);
     setTagged(false);
     setVisible(false);
   };
@@ -71,6 +89,21 @@ export function FilterToolbarDemo() {
           icon={<User />}
           options={ownerOptions}
           onChange={setOwner}
+        />
+        <FilterToolbarPicker
+          label="Category"
+          icon={<SquaresFour />}
+          selected={categories}
+          onSelectionChange={setCategories}
+          query={categoryQuery}
+          onQueryChange={setCategoryQuery}
+          sections={[
+            {
+              id: "categories",
+              label: categoryQuery ? "Results" : "Categories",
+              options: visibleCategories,
+            },
+          ]}
         />
         <Toggle
           variant="secondary"
@@ -111,6 +144,14 @@ export function FilterToolbarDemo() {
           defaultValue="Anyone"
           options={ownerOptions}
           onChange={setOwner}
+        />
+        <FilterToolbarPicker
+          label="Category"
+          selected={categories}
+          onSelectionChange={setCategories}
+          query={categoryQuery}
+          onQueryChange={setCategoryQuery}
+          sections={[{ id: "categories", options: visibleCategories }]}
         />
         <Toggle
           variant="secondary"

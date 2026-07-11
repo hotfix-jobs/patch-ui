@@ -970,7 +970,11 @@
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
+        "https://ui.hotfix.jobs/r/input.json",
+        "https://ui.hotfix.jobs/r/popover.json",
+        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/scroller.json",
+        "https://ui.hotfix.jobs/r/spinner.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],

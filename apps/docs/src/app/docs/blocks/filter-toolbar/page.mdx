@@ -17,6 +17,7 @@ A responsive filter rail composed from Patch UI controls. It standardizes overfl
 ```tsx
 import {
   FilterToolbar,
+  FilterToolbarPicker,
   FilterToolbarTrigger,
 } from "@patchui/react/blocks/filter-toolbar";
 
@@ -32,6 +33,14 @@ import {
     />
     <MenuPopup>...</MenuPopup>
   </Menu>
+  <FilterToolbarPicker
+    label="Category"
+    selected={categories}
+    onSelectionChange={setCategories}
+    query={query}
+    onQueryChange={setQuery}
+    sections={categorySections}
+  />
   <CategoryFilter />
   <OwnerFilter />
 </FilterToolbar>
@@ -63,10 +72,27 @@ import {
   ]}
 />
 
+### FilterToolbarPicker
+
+<PropsTable
+  props={[
+    { name: "label", type: "string", default: "-", description: "Filter category shown in the toolbar trigger." },
+    { name: "selected", type: "string[]", default: "[]", description: "Controlled selected option values." },
+    { name: "onSelectionChange", type: "(selected: string[]) => void", default: "-", description: "Called whenever an option is toggled or the filter is cleared." },
+    { name: "query", type: "string", default: '""', description: "Controlled search query." },
+    { name: "onQueryChange", type: "(query: string) => void", default: "-", description: "Updates local filtering or drives an async request." },
+    { name: "sections", type: "FilterToolbarPickerSection[]", default: "[]", description: "Grouped options. Rows support label, description, icon, suffix, and disabled state." },
+    { name: "summary", type: "ReactNode", default: "auto", description: "Optional active summary. Defaults to the single option label or selection count." },
+    { name: "loading", type: "boolean", default: "false", description: "Shows an inline search spinner without replacing existing options." },
+    { name: "emptyContent", type: "ReactNode", default: '"No matches found."', description: "Content shown when no options are available." },
+  ]}
+/>
+
 <Callout title="Notes">
 - FilterToolbar does not know filter values, options, URLs, or data-fetching behavior. Pass Button, Toggle, Menu, and Popover compositions as children.
 - The toolbar is transparent. Each filter control owns its neutral fill and interaction states.
 - FilterToolbarTrigger keeps the category label visible, adds a concise active value, and uses the shared selected fill. Clear one filter from its popup; use Clear all for the complete toolbar.
+- FilterToolbarPicker is the searchable multi-select pattern for high-cardinality filters. Selection stays open, search resets on close, and the consumer owns local or async filtering.
 - The clear action stays in the filter sequence so trailing actions remain stable on narrow screens.
 - `scroll` is the default for headers and mobile layouts. Use `wrap` on spacious directory or management pages.
 - Sticky positioning and page-width padding belong to the containing application shell.
