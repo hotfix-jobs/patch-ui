@@ -49,15 +49,10 @@ export interface ComboboxProps {
   onSelectedValuesChange?: (next: unknown[]) => void;
   /**
    * Auto-highlight behavior on the popup list:
-   *   - `"always"` (default): the first item is always highlighted on open
-   *     and on every input change. Popup opens scrolled to the top and Enter
-   *     picks the first match. Standard typeahead behavior.
+   *   - `false` (default): open with no highlighted item. Arrow keys move to
+   *     an option before Enter can select it.
    *   - `true`: only highlight on input change, not on plain open.
-   *   - `false`: never auto-highlight; the popup opens with nothing focused
-   *     and Enter is a no-op until the user arrows to an item. Note that
-   *     this exposes a Base UI quirk where the popup can open scrolled to
-   *     the last item under loop-focus navigation. Use only if you have a
-   *     strong reason to want the "no preselection" behavior.
+   *   - `"always"`: highlight the first item on open and input change.
    */
   autoHighlight?: boolean | "always";
   children: React.ReactNode;
@@ -78,50 +73,13 @@ export function Combobox({
   multiple,
   selectedValues,
   onSelectedValuesChange,
-  autoHighlight = "always",
+  autoHighlight = false,
   children,
 }: ComboboxProps): React.ReactElement {
   const shared = useMemo(
     () => ({ placeholder, multiple }),
     [placeholder, multiple],
   );
-  // Full workaround for Base UI issue #3077: the popup opens with the
-  // last item marked `data-highlighted` AND scrolled into view. Scroll
-  // reset alone doesn't clear the highlight — Base UI's activeIndex
-  // still points to that item and the CSS lights it up.
-  //
-  // The Base UI author's recommendation is to dispatch synthetic
-  // pointer events on the highlighted item: pointerout clears Base UI's
-  // internal active state, and pointermove on the parent re-syncs the
-  // pointer position ref. Then reset scrollTop. Two nested rAFs defer
-  // past Base UI's own rAF-scheduled scrollIntoView.
-  const handleOpenChange = (nextOpen: boolean) => {
-    onOpenChange?.(nextOpen);
-    if (!nextOpen) return;
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const popup = document.querySelector<HTMLElement>(
-          '[data-slot="combobox-popup"]',
-        );
-        if (!popup) return;
-        const highlighted = popup.querySelector<HTMLElement>(
-          "[data-highlighted]",
-        );
-        if (highlighted) {
-          highlighted.parentElement?.dispatchEvent(
-            new Event("pointermove", { bubbles: true }),
-          );
-          highlighted.dispatchEvent(
-            new PointerEvent("pointerout", { bubbles: true }),
-          );
-        }
-        const scroller = popup.querySelector<HTMLElement>(
-          '[role="listbox"], [role="grid"]',
-        );
-        if (scroller) scroller.scrollTop = 0;
-      });
-    });
-  };
   // Base UI's ComboboxRoot is generic over Value + Multiple, and the
   // shape of `value` depends on both. Cast through `unknown as never` at
   // the boundary so consumers can pass a `string[]` selection array
@@ -143,7 +101,7 @@ export function Combobox({
         {...rootProps}
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={handleOpenChange}
+        onOpenChange={onOpenChange}
         inputValue={value}
         onInputValueChange={
           onValueChange ? (next) => onValueChange(next) : undefined

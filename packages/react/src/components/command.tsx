@@ -18,7 +18,14 @@ const CommandCloseContext = createContext<(() => void) | null>(null);
 export function Command(
   props: React.ComponentProps<typeof AutocompletePrimitive.Root>,
 ): React.ReactElement {
-  return <AutocompletePrimitive.Root data-slot="command" inline {...props} />;
+  return (
+    <AutocompletePrimitive.Root
+      data-slot="command"
+      inline
+      autoHighlight={false}
+      {...props}
+    />
+  );
 }
 
 export interface CommandInputProps
