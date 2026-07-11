@@ -8,69 +8,69 @@ export const metadata = { title: "Theme" };
 
 # Theme & Design Tokens
 
-A single stylesheet (`tokens.css`) defines every color, size, and motion value in Patch UI. Components read from it through Tailwind utilities. Light and dark switch from one `.dark` class on `<html>`. No JavaScript required.
+One stylesheet defines Patch UI's color, type, radius, elevation, and motion values. Components consume those values through Tailwind utilities. A `.dark` class on `<html>` switches the runtime values without changing component code.
 
-The scheme is deliberately small: a pure-neutral gray scale re-hexed against Radix Colors Gray (light base `#fcfcfc`, dark base `#0a0a0a`), two surface families (`--layer-*` for lifted panels, `--fill-*` for tinted chips), four ink tiers, four hairline steps (alpha), three fixed semantic status roles, one monochrome primary. Consumers layer their own brand by redefining `--primary` in a single downstream layer — no separate accent slot ships.
+The system stays deliberately small: a neutral gray scale, two surface families, four ink tiers, four alpha hairlines, three semantic status roles, and one monochrome primary. Consumers add brand by redefining `--primary`; no accent family ships.
 
 ## Colors
 
 <ColorScales />
 
-**Base + layers.** The page sits on `--base` — `#fcfcfc` in light, deep near-black `#0a0a0a` in dark (below Radix gray 1 to avoid banding on 6-bit OLED panels). `--layer-1` is the default lifted panel: elevated Card, Modal, Menu popup, Combobox popup, Tooltip, Select popup, Input, Table container, secondary Button chrome. Direction is Radix-native: in light `--layer-1` (`#f9f9f9`, gray 2) is a subtly darker card rung; in dark it lifts a subtle rung above near-black base. `--layer-2` (`#f0f0f0` / `#1c1c1c`) is a row/button-rest step above that.
+**Base and layers.** `--base` is the application canvas (`#f5f5f5` light, `#101010` dark). `--layer-1` is the primary content and floating surface (`#ffffff` / `#191919`). `--layer-2` is grouped or selected content (`#f0f0f0` / `#242424`). Cards, previews, popups, Modal, Sheet, Tooltip, and Toast use this hierarchy. Form controls use fills instead.
 
-**Fills.** `--fill-1` and `--fill-2` are tinted chip fills: Toggle track, Badge neutral, Switch off-track, skeleton block, striped table rows, active pill Tab, menu item highlight. In the Phase 1 preview `--fill-1` collapses onto the same rung as `--layer-2` (both gray 3); the token names stay live so callsites keep resolving. `--fill-2` is the stronger active-state indication.
+**Fills.** `--fill-1` and `--fill-2` are neutral control and metadata fills. Input, Textarea, Select, secondary Button, Badge, Toggle, Kbd, and embedded actions start on a fill and step once on interaction. `--fill-1` intentionally shares a value with `--layer-2`, but the separate name preserves intent at the call site.
 
-**Interaction-state overlays.** `--layer-hover` and `--layer-selected` are alpha overlays (Radix grayA 3 / grayA 5) that any transparent-at-rest control reaches for: `--layer-hover` on `hover:` and `focus-visible:`, `--layer-selected` on transient press (`active:`) and selected rows / nav items. Held states — an open popup's trigger (`data-[popup-open]:`) and a Toggle switched on (`data-[pressed]:`) — use `bg-hairline-strong` instead: the fill takes the hover border color and bordered variants drop to `border-transparent` (alpha would double-stack where border overlaps fill), so the control reads as one solid chip while it's held. Because they darken whatever surface sits underneath rather than paint over it, the state reads on base, `--layer-1`, `--fill-1`, or a consumer's own background without disappearing. `--layer-selected` (~12%) is ~2x the hover strength (~6%) so pressed always reads visibly darker than hover.
+**Interaction overlays.** `--layer-hover` and `--layer-selected` are alpha overlays for transparent controls and rows. Hover uses the lighter overlay; press and selection use the stronger one. Popup triggers and pressed toggles use the held fill defined by their shared recipes. Alpha overlays remain visible on base, layers, fills, and consumer backgrounds without adding another solid surface rung.
 
-**Ink (text).** Four tiers, pure gray, no chroma. `--ink` is primary text (headings, body) at Radix gray 12. `--ink-muted` is meta text and default icon tone at gray 11. `--ink-subtle` is placeholder and "missing value" copy. `--ink-tertiary` is disabled and footnote. In the Phase 1 preview `--ink-subtle` and `--ink-tertiary` both resolve to gray 10 (`#838383` / `#7b7b7b`); the token names stay alive but they render identically.
+**Ink.** `--ink` is primary text, `--ink-muted` is secondary text and the default icon tone, `--ink-subtle` is placeholder or missing-value copy, and `--ink-tertiary` is disabled or footnote text. Subtle and tertiary currently share a gray value, but their names preserve different semantic roles.
 
-**Semantic status.** `--error`, `--warning`, `--success` are fixed hex, identical in both themes so a warning always reads as a warning. Each has `-hover`, `-active`, and `-fg` variants; the `-fg` token carries label color so fill and text invert together.
+**Semantic status.** `--error`, `--warning`, and `--success` use fixed theme-invariant fills. Each role includes hover, active, foreground, and soft-treatment tokens.
 
-**Hairlines.** Four tiers of alpha (Radix grayA 3 / 6 / 7 / 8) so a border on a nested card reads the same perceived weight as one on base — solid hex compounds when stacked, alpha doesn't. `--hairline-soft` (grayA 3, ~6% alpha) is a whisper-weight edge for Card `elevated` and other surfaces where the border should be present but recede. `--hairline` (grayA 6) is the standard input/menu/divider weight. `--hairline-strong` (grayA 7) and `--hairline-tertiary` (grayA 8) are hover-state emphases.
+**Hairlines.** Four alpha tiers keep boundaries consistent across surfaces. `--hairline-soft` is a whisper edge for quiet containment. `--hairline` is the standard floating boundary and divider. Stronger tiers provide structural or interactive emphasis. Most content surfaces and controls are borderless; hairlines are reserved for boundaries that clarify structure.
 
-**Primary (monochrome).** `--primary` resolves to `--ink` and `--on-primary` to `--base`. No chromatic brand ships. `--primary-hover` and `--primary-active` are computed via `color-mix` toward `--base`, so a consumer's brand override on `--primary` automatically produces matching hover/active steps.
+**Primary.** `--primary` resolves to `--ink` and `--on-primary` to `--base`. Hover and active values derive from `--primary`, so a consumer brand override produces matching interaction states. Focus remains independently monochrome.
 
 ## Typography
 
-Two families cover every use: **Inter** (variable) for everything that isn't code, **JetBrains Mono** for code. Size and weight are separate axes rather than a compound recipe.
+Inter is the body and display family. JetBrains Mono is reserved for code. Size and weight are separate axes.
 
-**Size.** Eight tokens: `text-micro` (11), `text-mini` (12), `text-small` (14), `text-regular` (16, default body), `text-large` (18), `text-title3` (20), `text-title2` (24), `text-title1` (36).
+**Size.** Eight utilities cover the system: `text-micro` (11), `text-mini` (12), `text-small` (14), `text-regular` (16), `text-large` (18), `text-title3` (20), `text-title2` (24), and `text-title1` (36).
 
-**Weight.** Five tokens exposed as Tailwind utilities: `font-light` (300), `font-normal` (450, default body), `font-medium` (500), `font-semibold` (600), `font-bold` (700). Body defaults to 450, headings default to 500, so most call sites don't need an explicit weight.
+**Weight.** Five utilities are available: `font-light` (300), `font-normal` (450), `font-medium` (500), `font-semibold` (600), and `font-bold` (700). Body defaults to 450 and headings default to 500.
 
-**Line height.** Set on the element, not on the size utility. Body inherits 1.5, `<p>` uses 1.7, `<h1>–<h6>` use 1.25. A size utility on a `<div>` picks up 1.5 from body; wrapping the same content in `<p>` opens it up to 1.7.
+**Line height.** Element defaults own line height. Body uses 1.5, paragraphs use 1.7, and headings use 1.25.
 
 <TypographySamples />
 
 Rules of thumb:
-- Reach for a size + weight pair (`text-small font-medium`) rather than inventing new compound tokens.
-- Never `text-[Npx]` inline. If a size is missing, add it to the scale.
-- Never `font-mono` for decoration. Reserve for `code`, `pre`, `kbd`, install snippets, and hex values shown as code.
+
+- Compose a size and weight, such as `text-small font-medium`.
+- Do not add raw pixel type utilities. Extend the scale when a real role is missing.
+- Reserve `font-mono` for code, terminal output, keyboard shortcuts, and values shown as code.
 
 ## Sizing and motion
 
-**Radius.** Seven values: `--radius-4/6/8/10/12/16/full`.
+**Radius.** Seven values are available: `--radius-4/6/8/10/12/16/full`.
 
 <RadiusSamples />
 
-`radius-4` is reserved for very small controls such as Checkbox and radio thumbs. `radius-6` is for badges and metadata. `radius-8` is for controls. `radius-12` is for Cards and floating panels. `radius-16` is for large marketing chrome. `radius-full` is reserved for intrinsically circular geometry.
+Use radius 4 for very small controls, radius 6 for metadata, radius 8 for controls, radius 12 for content and floating surfaces, and radius 16 for large marketing chrome. Full radius is explicit and reserved for pills or intrinsically circular geometry.
 
-**Shadows.** Elevation is intentional and sparing. `--shadow-card` supports elevated Card and slider/switch thumbs, `--shadow-menu` supports lightweight popups and Toast, `--shadow-tooltip` supports Tooltip, and `--shadow-modal` is reserved for Modal and Sheet. Card `variant="elevated"` applies `shadow-card`.
+**Shadows.** `--shadow-card` supports elevated Card and slider/switch thumbs. `--shadow-menu` supports lightweight popups and Toast. `--shadow-tooltip` supports Tooltip. `--shadow-modal` is reserved for Modal and Sheet.
 
-**Motion.** One easing (`--ease-standard`), two durations: `--duration-state` (75ms, for hover/active transitions) and `--duration-overlay` (150ms, for open/close). Under `prefers-reduced-motion: reduce`, both collapse to `0ms` automatically.
+**Motion.** `--duration-state` handles hover and press transitions. `--duration-overlay` handles opening and closing. Both use `--ease-standard` and collapse to zero under reduced motion.
 
-**Focus.** A crisp neutral-gray treatment colored by `--focus-ring-color`, which resolves to `--ink-muted` independently from `--primary` and the near-black/white `--ink`. Editable fields draw the solid outline directly at the control edge. Non-editable controls use a compact keyboard-focus indicator and stronger fill instead of the input-style ring.
+**Focus.** `--focus-ring-color` is independent from `--primary`. Editable fields draw a crisp outline at the control edge. Non-editable controls use a compact keyboard-focus indicator and an appropriate state fill.
 
 ## Customizing
 
-Every token is a plain CSS variable. Override in your own CSS after importing the tokens and every component picks up the change at runtime, no rebuild required:
+Override tokens after importing the stylesheet. Components update at runtime without a rebuild. Adjust the import path to the location of your CSS entry file:
 
 ```css
 /* app/globals.css */
 @import "tailwindcss";
-@import "./styles/patch-ui-tokens.css";
+@import "../styles/patch-ui-tokens.css";
 
-/* Ship a lavender brand for actions. Semantic focus stays monochrome. */
 :root {
   --primary: #8b5cf6;
   --on-primary: #ffffff;
@@ -82,4 +82,4 @@ Every token is a plain CSS variable. Override in your own CSS after importing th
 }
 ```
 
-If you edit tokens that affect readable text, run `npm run check:contrast -w packages/react` to verify the [contrast contract](/docs/contrast) still holds.
+When overrides affect readable text or filled labels, run the [contrast checks](/docs/contrast) before shipping.

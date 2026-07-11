@@ -55,6 +55,7 @@ const TEXT_TIERS: readonly Tier[] = [
       { key: "--fill-1", label: "fill-1" },
       { key: "--fill-2", label: "fill-2" },
       { key: "--layer-1", label: "layer-1" },
+      { key: "--layer-2", label: "layer-2" },
     ],
   },
   {
@@ -64,15 +65,15 @@ const TEXT_TIERS: readonly Tier[] = [
     tierLabel: "AA secondary",
     bgs: [
       { key: "--base", label: "base" },
+      { key: "--layer-1", label: "layer-1" },
       { key: "--fill-1", label: "fill-1" },
-      { key: "--fill-2", label: "fill-2" },
     ],
   },
   {
     fg: "--ink-subtle",
     label: "ink-subtle",
-    min: 4.5,
-    tierLabel: "AA placeholder",
+    min: 3,
+    tierLabel: "AA-large / placeholder",
     bgs: [{ key: "--base", label: "base" }],
   },
   {
@@ -163,8 +164,10 @@ export function ContrastDemo() {
           <code>primary</code> (ink) fill. Must clear AAA (7:1).
         </p>
         {(() => {
-          const fg = readVar("--on-primary");
-          const bg = readVar("--primary");
+          // The shipped aliases resolve on-primary to base and primary to ink.
+          // Reading the concrete tokens avoids displaying `n/a` for var() aliases.
+          const fg = readVar("--base");
+          const bg = readVar("--ink");
           const ratio = fg && bg ? contrastRatio(fg, bg) : null;
           const passes = ratio !== null && ratio >= 7;
           return (
@@ -248,7 +251,7 @@ function TierHeader({
         {tierLabel}, min {min}:1
       </span>
       {hex && (
-        <span className="ml-auto rounded-full border border-hairline px-2 py-0.5 text-micro text-ink">
+        <span className="ml-auto rounded-[var(--radius-6)] bg-fill-1 px-2 py-0.5 font-mono text-micro text-ink">
           {hex}
         </span>
       )}
@@ -274,7 +277,7 @@ function SwatchCard({
   return (
     <div
       style={{ backgroundColor: bg || undefined }}
-      className="rounded-[var(--radius-6)] border border-hairline p-3"
+      className="rounded-[var(--radius-8)] border border-hairline p-3"
     >
       <div className="space-y-1">{children}</div>
       <div className="mt-3 flex items-center justify-between gap-1">
@@ -285,7 +288,7 @@ function SwatchCard({
           {label}
         </span>
         <span
-          className="inline-flex items-center gap-1.5 rounded-full border border-hairline bg-layer-1 px-2 py-0.5 text-mini font-medium text-ink"
+          className="inline-flex items-center gap-1.5 rounded-[var(--radius-6)] bg-fill-1 px-2 py-0.5 text-mini font-medium text-ink"
         >
           {ratio !== null &&
             (passes ? (
@@ -307,7 +310,7 @@ function SampleText({ fg }: { fg: string }) {
         11px sample text
       </div>
       <div className="text-small" style={{ color: fg || undefined }}>
-        13px sample text
+        14px sample text
       </div>
       <div className="text-regular" style={{ color: fg || undefined }}>
         16px sample text
