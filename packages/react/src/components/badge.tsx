@@ -8,7 +8,7 @@ import { cn } from "../utils";
 
 export const badgeVariants = cva(
   [
-    "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-[var(--radius-6)]",
+    "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
   ].join(" "),
   {
@@ -16,12 +16,17 @@ export const badgeVariants = cva(
       size: "md",
       color: "default",
       variant: "soft",
+      shape: "rounded",
     },
     variants: {
       size: {
         sm: "px-2 py-0.5 text-mini font-medium [&_svg:not([class*='size-'])]:size-3",
         md: "px-2.5 py-1 text-mini font-medium [&_svg:not([class*='size-'])]:size-3.5",
         lg: "px-3 py-1.5 text-small font-medium [&_svg:not([class*='size-'])]:size-4",
+      },
+      shape: {
+        rounded: "rounded-[var(--radius-6)]",
+        pill: "rounded-full",
       },
       color: {
         default: "",
@@ -60,6 +65,7 @@ export interface BadgeProps extends Omit<useRender.ComponentProps<"span">, "colo
   /** Semantic color. Maps to fill / border / text tokens per `variant`. */
   color?: VariantProps<typeof badgeVariants>["color"];
   size?: VariantProps<typeof badgeVariants>["size"];
+  shape?: VariantProps<typeof badgeVariants>["shape"];
   /** Visual treatment. `solid` = saturated fill. `soft` (default) =
    *  tinted fill for dense surfaces. `outlined` = no fill, hairline border. */
   variant?: VariantProps<typeof badgeVariants>["variant"];
@@ -71,6 +77,7 @@ export function Badge({
   className,
   color,
   size,
+  shape,
   variant,
   icon,
   render,
@@ -78,7 +85,7 @@ export function Badge({
   ...props
 }: BadgeProps): React.ReactElement {
   const defaultProps = {
-    className: cn(badgeVariants({ size, color, variant }), className),
+    className: cn(badgeVariants({ size, color, variant, shape }), className),
     "data-slot": "badge",
     children: (
       <>

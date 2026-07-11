@@ -5,7 +5,7 @@ export const metadata = { title: "Badge" };
 
 # Badge
 
-Short, scannable metadata that sits next to the thing it describes: status, plan tier, environment, or role. Four semantic colors × three fill variants (solid / soft / outlined) × three sizes.
+Short, scannable metadata that sits next to the thing it describes: status, plan tier, environment, or role. Supports rounded and pill shapes.
 
 <Install name="badge" />
 
@@ -39,8 +39,11 @@ import { Badge } from "@patchui/react";
 // With inline icon
 <Badge icon={<Shield />} color="default">Verified</Badge>
 
-// As a link
-<Badge render={<a href="/status" />}>Linked</Badge>
+// Pill for tags and compact metadata
+<Badge shape="pill">Remote</Badge>
+
+// Change the semantic tag while remaining display-only
+<Badge render={<strong />}>Verified</Badge>
 ```
 
 ## Props
@@ -66,6 +69,12 @@ import { Badge } from "@patchui/react";
       description: "Badge size.",
     },
     {
+      name: "shape",
+      type: '"rounded" | "pill"',
+      default: '"rounded"',
+      description: "Rounded uses radius-6. Pill uses full radius.",
+    },
+    {
       name: "icon",
       type: "ReactNode",
       default: "-",
@@ -75,7 +84,7 @@ import { Badge } from "@patchui/react";
       name: "render",
       type: "RenderProp<'span'>",
       default: "-",
-      description: "Polymorphic render prop. Pass a different element (e.g. `<a>`) to change the rendered tag while keeping badge styles. For clickable pills, use `<Pill>` instead.",
+      description: "Polymorphic render prop for changing the display-only semantic element, such as `<strong>`.",
     },
     {
       name: "className",
@@ -87,7 +96,7 @@ import { Badge } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- Badge is display-only and always uses radius 6. If the value is clickable, removable, opens a menu, or follows a link, use an interactive control.
+- Badge is display-only. Use rounded for status and compact metadata; use pill selectively for tags and categories. Interactive values need an interactive control.
 - Keep the text tight: one word if you can, two at most (`Active`, `Pending`, `Pro`, `Enterprise Trial`). Use the same wording as the value in your API and logs so labels and data stay in sync.
 - Colors carry the signal: don't double up. A `success` badge doesn't also need a check icon; an `error` badge doesn't need an ×. The color IS the meaning.
 - If a row has two badges, chances are the row wanted a second column.

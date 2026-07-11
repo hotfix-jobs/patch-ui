@@ -311,8 +311,8 @@ components:
     padding: 6px 10px
     typography: "{typography.mini}"
     shadow: shadow-tooltip
-  # Badges use radius-6 metadata geometry. The pill shape remains only
-  # for compatibility with existing consumers.
+  # Badges default to radius-6 metadata geometry; pill is an explicit
+  # option for tags and categories.
   badge-neutral:
     backgroundColor: "{colors.fill-1}"
     textColor: "{colors.ink-muted}"
@@ -721,7 +721,7 @@ Each component below is a single paragraph plus a token map. Full API and source
 - Background `{colors.error}`, text `{colors.error-fg}`, radius `--radius-8`, padding 8px 14px.
 - Hover: `{colors.error-hover}`. Active: `{colors.error-active}`.
 
-**Shape API.** Button and Toggle expose no shape prop. Labeled controls use radius-8; Button infers circular geometry only when passed an icon without children. Switch retains its pill track because that shape communicates movement. Do not invent per-module variant names like `outline` or `ghost`.
+**Shape API.** Button and Badge expose only `rounded` and `pill`, both defaulting to rounded. Button rounded is radius-8; Badge rounded is radius-6. Icon-only Buttons always infer circular geometry. Toggle has no shape prop. Switch retains its pill track because that shape communicates movement. Do not invent per-module variant names like `outline` or `ghost`.
 
 ### Inputs & Forms
 

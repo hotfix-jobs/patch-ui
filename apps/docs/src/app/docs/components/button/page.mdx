@@ -5,7 +5,7 @@ export const metadata = { title: "Button" };
 
 # Button
 
-A polymorphic button with intent-based variants, three sizes, icon support, and a loading state. Standard controls use radius 8; icon-only controls can opt into a circle.
+A polymorphic button with intent-based variants, three sizes, rounded or pill shapes, icon support, and a loading state. Icon-only controls infer a circle.
 
 <Install name="button" />
 
@@ -36,6 +36,9 @@ import { Button } from "@patchui/react";
 // Icon-only Buttons infer circular geometry (aria-label required)
 <Button aria-label="Add" icon={<Plus />} />
 
+// Pill is opt-in for friendly CTAs and filter actions
+<Button shape="pill">Browse Jobs</Button>
+
 // Loading state
 <Button loading>Saving…</Button>
 
@@ -58,6 +61,12 @@ import { Button } from "@patchui/react";
       type: '"sm" | "md" | "lg"',
       default: '"md"',
       description: "Height: 24 / 32 / 40 px.",
+    },
+    {
+      name: "shape",
+      type: '"rounded" | "pill"',
+      default: '"rounded"',
+      description: "Rounded uses radius-8. Pill uses full radius. Icon-only Buttons remain circular.",
     },
     {
       name: "icon",
@@ -109,7 +118,7 @@ import { Button } from "@patchui/react";
 - Reserve `primary` for the one hero action on a view. Reserve `destructive` for actions the user cannot undo without work.
 - Brand override: redefine `--primary`, `--on-primary`, `--primary-hover`, and `--primary-active` in a consumer stylesheet after the token import to swap the monochrome default for a chromatic brand color. Every primary Button picks it up without callsite edits.
 - Icon-only buttons: pass `icon` with no `children`. The Button infers equal width and height plus circular geometry. `aria-label` is required; a dev-time warning fires when it's missing.
-- Full radius is reserved for intrinsically circular controls.
+- Use `shape="pill"` selectively for friendly CTAs and filter actions. Standard form, toolbar, and settings actions should stay rounded.
 - Polymorphism: pass `render={<a href="…" />}` (or a `<Link>`) to render as an anchor with the button's styling and behavior.
 - `loading` swaps the content for a spinner and disables interaction so a double-tap can't fire twice.
 - Every size ships a hidden 44×44 touch target underneath, so the tap area works on coarse pointers even for a small button.

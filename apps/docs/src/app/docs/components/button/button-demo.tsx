@@ -27,11 +27,20 @@ export function ButtonDemo() {
       </div>
 
       <div>
-        <p className="mb-3 text-mini text-ink-muted">Icon Only + Shapes</p>
+        <p className="mb-3 text-mini text-ink-muted">Icon only</p>
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="secondary" aria-label="Add" size="sm" icon={<Plus className="h-4 w-4" />} />
           <Button variant="secondary" aria-label="Add" icon={<Plus className="h-4 w-4" />} />
           <Button variant="secondary" aria-label="Add" size="lg" icon={<Plus className="h-5 w-5" />} />
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-3 text-mini text-ink-muted">Shapes</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button shape="rounded">Rounded</Button>
+          <Button shape="pill">Pill</Button>
+          <Button shape="pill" variant="secondary">Filter jobs</Button>
         </div>
       </div>
 

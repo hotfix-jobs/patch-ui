@@ -10,7 +10,6 @@ import { disabled, colorTransition, iconMuted, iconMutedSolid, popupTriggerOpen,
 export const buttonVariants = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",
-    "rounded-[var(--radius-8)]",
     "cursor-pointer",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
     // Extend tap target to 44px on coarse pointers without changing visual size.
@@ -21,12 +20,16 @@ export const buttonVariants = cva(
     disabled,
   ].join(" "),
   {
-    defaultVariants: { size: "lg", variant: "primary" },
+    defaultVariants: { size: "md", variant: "primary", shape: "rounded" },
     variants: {
       size: {
         sm: "h-6 px-2.5 gap-1.5 text-mini font-medium",
         md: "h-8 px-3.5 gap-2 text-small font-medium",
         lg: "h-10 px-4 gap-2 text-regular font-medium",
+      },
+      shape: {
+        rounded: "rounded-[var(--radius-8)]",
+        pill: "rounded-full",
       },
       variant: {
         primary:
@@ -49,6 +52,7 @@ export const buttonVariants = cva(
 export interface ButtonProps extends useRender.ComponentProps<"button"> {
   variant?: VariantProps<typeof buttonVariants>["variant"];
   size?: VariantProps<typeof buttonVariants>["size"];
+  shape?: VariantProps<typeof buttonVariants>["shape"];
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   loading?: boolean;
@@ -65,6 +69,7 @@ export function Button({
   className,
   variant,
   size,
+  shape,
   icon,
   iconPosition = "left",
   loading,
@@ -103,7 +108,7 @@ export function Button({
 
   const defaultProps = {
     className: cn(
-      buttonVariants({ size: effectiveSize, variant }),
+      buttonVariants({ size: effectiveSize, variant, shape }),
       iconOnly,
       isIconOnly && "rounded-full",
       iconOnlyRecipe,

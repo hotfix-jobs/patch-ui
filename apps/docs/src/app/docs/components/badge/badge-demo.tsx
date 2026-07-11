@@ -45,6 +45,15 @@ export function BadgeDemo() {
       </div>
 
       <div>
+        <p className="mb-3 text-mini text-ink-muted">Shapes</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge shape="rounded">Rounded</Badge>
+          <Badge shape="pill">Pill</Badge>
+          <Badge shape="pill" color="success">Remote</Badge>
+        </div>
+      </div>
+
+      <div>
         <p className="mb-3 text-mini text-ink-muted">With icon</p>
         <div className="flex flex-wrap items-center gap-3">
           <Badge icon={<Shield />}>Verified</Badge>
