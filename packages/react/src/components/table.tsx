@@ -115,7 +115,7 @@ export function TableHeader({
   return (
     <thead
       data-slot="table-header"
-      className={cn("border-b border-hairline", className)}
+      className={cn(className)}
       {...props}
     />
   );
@@ -251,7 +251,8 @@ export function TableHead({
       aria-sort={ariaSort}
       className={cn(
         headHeightBySize[size],
-        "px-3 text-mini font-medium text-ink-muted whitespace-nowrap",
+        "border-b border-hairline text-mini font-medium text-ink-muted whitespace-nowrap",
+        sortable ? "p-0" : "px-3",
         align === "right" && "text-right",
         align === "center" && "text-center",
         align === "left" && "text-left",
@@ -264,7 +265,10 @@ export function TableHead({
           type="button"
           onClick={onSort}
           className={cn(
-            "inline-flex items-center gap-1 select-none text-mini font-medium text-ink-muted hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+            "flex h-full w-full items-center gap-1 px-3 select-none text-mini font-medium text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+            align === "right" && "justify-end",
+            align === "center" && "justify-center",
+            align === "left" && "justify-start",
             direction !== "none" && "text-ink",
             selectionFocus,
           )}

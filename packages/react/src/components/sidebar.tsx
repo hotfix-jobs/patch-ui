@@ -120,6 +120,8 @@ export interface SidebarProps extends useRender.ComponentProps<"aside"> {
   collapsible?: "offcanvas" | "none";
   /** Round the desktop sidebar surface. */
   rounded?: boolean;
+  /** Add a hairline boundary around the desktop sidebar surface. */
+  bordered?: boolean;
   /** Fixed pixel width. */
   width?: number;
   /** Offset from top of viewport, in pixels. */
@@ -130,6 +132,7 @@ export interface SidebarProps extends useRender.ComponentProps<"aside"> {
 export function Sidebar({
   collapsible = "offcanvas",
   rounded = false,
+  bordered = false,
   width = 256,
   topOffset = 0,
   className,
@@ -169,6 +172,7 @@ export function Sidebar({
             "top-[var(--sidebar-top)] h-[calc(100svh-var(--sidebar-top))]",
             side === "left" ? "left-0" : "right-0",
             rounded && "overflow-hidden rounded-[var(--radius-12)]",
+            bordered && "border border-hairline",
             collapsed &&
               (side === "left" ? "-translate-x-full" : "translate-x-full"),
             className,

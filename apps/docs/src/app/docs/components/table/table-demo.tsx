@@ -204,13 +204,7 @@ export function TableDemo() {
                 sortable
                 direction={sortDir}
                 onSort={() =>
-                  setSortDir(
-                    sortDir === "none"
-                      ? "asc"
-                      : sortDir === "asc"
-                      ? "desc"
-                      : "none",
-                  )
+                  setSortDir(sortDir === "asc" ? "desc" : "asc")
                 }
               >
                 Name

@@ -28,7 +28,7 @@ export function Sidebar() {
   }, [pathname, setOpenMobile]);
 
   return (
-    <SidebarRoot>
+    <SidebarRoot rounded>
       <SidebarHeader className="h-14 flex-row items-center gap-2 px-3">
         <Link
           href="/"

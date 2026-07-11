@@ -820,7 +820,7 @@ Neutral and status variants always use radius-6 metadata geometry. Default varia
 
 **`sidebar`** / **`pagination`**: Borderless navigation using the same state vocabulary as Tabs.
 - Items use radius-8, `layer-hover` on hover, `layer-selected` for the current item, and `selectionFocus` for keyboard focus.
-- Sidebar uses a `layer-1` surface without side or footer hairlines. The optional `rounded` treatment supports inset layouts.
+- Sidebar uses a `layer-1` surface without side or footer hairlines. The optional `rounded` treatment supports inset layouts, and `bordered` adds an explicit boundary when needed.
 
 **`table`**: Borderless data surface by default.
 - `surface` is borderless; `outlined` adds a radius-12 layer-1 wrapper with a hairline boundary.
