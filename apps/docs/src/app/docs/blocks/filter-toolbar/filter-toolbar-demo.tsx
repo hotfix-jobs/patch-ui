@@ -2,14 +2,16 @@
 
 import { useMemo, useState } from "react";
 import {
-  CaretDown,
   Check,
   Eye,
   SortAscending,
   Tag,
   User,
 } from "@phosphor-icons/react/dist/ssr";
-import { FilterToolbar } from "@patchui/react/blocks/filter-toolbar";
+import {
+  FilterToolbar,
+  FilterToolbarTrigger,
+} from "@patchui/react/blocks/filter-toolbar";
 import {
   Button,
   Menu,
@@ -142,11 +144,15 @@ function FilterMenu({
 
   return (
     <Menu>
-      <MenuTrigger render={<Button variant="secondary" size="md" />}>
-        {icon}
-        {active ? `${label}: ${value}` : label}
-        <CaretDown aria-hidden />
-      </MenuTrigger>
+      <MenuTrigger
+        render={
+          <FilterToolbarTrigger
+            label={label}
+            value={active ? value : undefined}
+            icon={icon}
+          />
+        }
+      />
       <MenuPopup>
         {options.map((option) => (
           <MenuItem

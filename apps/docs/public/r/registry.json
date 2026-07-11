@@ -965,6 +965,7 @@
       "type": "registry:block",
       "title": "Filter Toolbar",
       "dependencies": [
+        "@phosphor-icons/react",
         "motion"
       ],
       "registryDependencies": [

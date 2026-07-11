@@ -1,12 +1,14 @@
 "use client";
 
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
+import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 import type * as React from "react";
 import { cn } from "../../utils";
-import { Button } from "../../components/button";
+import { Button, type ButtonProps } from "../../components/button";
 import { Scroller } from "../../components/scroller";
 
 export type FilterToolbarOverflow = "scroll" | "wrap";
+export type FilterToolbarCountVisibility = "always" | "responsive";
 
 export interface FilterToolbarProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
@@ -19,6 +21,8 @@ export interface FilterToolbarProps
   clearLabel?: string;
   /** Preformatted result count or other quiet metadata. */
   count?: React.ReactNode;
+  /** Responsive hides count below the sm breakpoint. */
+  countVisibility?: FilterToolbarCountVisibility;
   /** Pinned controls such as sorting or view selection. */
   trailing?: React.ReactNode;
   ariaLabel?: string;
@@ -34,6 +38,7 @@ export function FilterToolbar({
   onClearAll,
   clearLabel = "Clear all",
   count,
+  countVisibility = "responsive",
   trailing,
   ariaLabel = "Filters",
   className,
@@ -125,7 +130,12 @@ export function FilterToolbar({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -3 }}
                   transition={{ type: "spring", stiffness: 600, damping: 48 }}
-                  className="whitespace-nowrap text-mini font-medium tabular-nums text-ink-muted"
+                  aria-live="polite"
+                  aria-atomic="true"
+                  className={cn(
+                    "whitespace-nowrap text-mini font-medium tabular-nums text-ink-muted",
+                    countVisibility === "responsive" && "hidden sm:inline",
+                  )}
                 >
                   {count}
                 </motion.span>
@@ -136,5 +146,58 @@ export function FilterToolbar({
         )}
       </div>
     </MotionConfig>
+  );
+}
+
+export interface FilterToolbarTriggerProps
+  extends Omit<
+    ButtonProps,
+    "children" | "icon" | "variant" | "size" | "value"
+  > {
+  label: string;
+  value?: React.ReactNode;
+  active?: boolean;
+  icon?: React.ReactNode;
+}
+
+/** Standard filter trigger with a persistent category label and active summary. */
+export function FilterToolbarTrigger({
+  label,
+  value,
+  active: activeProp,
+  icon,
+  className,
+  ...props
+}: FilterToolbarTriggerProps): React.ReactElement {
+  const active = activeProp ?? value != null;
+
+  return (
+    <Button
+      variant="secondary"
+      size="md"
+      icon={icon}
+      data-active={active || undefined}
+      className={cn(
+        "group",
+        active &&
+          "bg-layer-selected hover:bg-layer-selected focus-visible:bg-layer-selected data-[popup-open]:bg-layer-selected",
+        className,
+      )}
+      {...props}
+    >
+      <span className="whitespace-nowrap">
+        {label}
+        {active && value != null && (
+          <>
+            <span aria-hidden className="text-ink-muted">: </span>
+            {value}
+          </>
+        )}
+      </span>
+      <CaretDown
+        aria-hidden
+        className="size-3.5 transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)] group-data-[popup-open]:rotate-180"
+      />
+    </Button>
   );
 }

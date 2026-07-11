@@ -15,7 +15,10 @@ A responsive filter rail composed from Patch UI controls. It standardizes overfl
 ## Usage
 
 ```tsx
-import { FilterToolbar } from "@patchui/react/blocks/filter-toolbar";
+import {
+  FilterToolbar,
+  FilterToolbarTrigger,
+} from "@patchui/react/blocks/filter-toolbar";
 
 <FilterToolbar
   activeCount={activeCount}
@@ -23,7 +26,12 @@ import { FilterToolbar } from "@patchui/react/blocks/filter-toolbar";
   count="128 results"
   trailing={<SortMenu />}
 >
-  <StatusFilter />
+  <Menu>
+    <MenuTrigger
+      render={<FilterToolbarTrigger label="Status" value="Active" />}
+    />
+    <MenuPopup>...</MenuPopup>
+  </Menu>
   <CategoryFilter />
   <OwnerFilter />
 </FilterToolbar>
@@ -38,14 +46,27 @@ import { FilterToolbar } from "@patchui/react/blocks/filter-toolbar";
     { name: "onClearAll", type: "() => void", default: "-", description: "Clears active filters. The action appears inside the filter sequence." },
     { name: "clearLabel", type: "string", default: '"Clear all"', description: "Accessible and visible label for the clear action." },
     { name: "count", type: "ReactNode", default: "-", description: "Preformatted result count or quiet metadata pinned to the trailing region." },
+    { name: "countVisibility", type: '"always" | "responsive"', default: '"responsive"', description: "Responsive hides the pinned count below the sm breakpoint to preserve filter-rail width." },
     { name: "trailing", type: "ReactNode", default: "-", description: "Pinned controls such as sorting or view selection." },
     { name: "ariaLabel", type: "string", default: '"Filters"', description: "Accessible name for the filter region." },
+  ]}
+/>
+
+### FilterToolbarTrigger
+
+<PropsTable
+  props={[
+    { name: "label", type: "string", default: "-", description: "Persistent filter category label." },
+    { name: "value", type: "ReactNode", default: "-", description: "Active summary rendered after the label. Providing a value also activates the selected fill." },
+    { name: "active", type: "boolean", default: "auto", description: "Explicit active state for filters whose value is not displayed directly." },
+    { name: "icon", type: "ReactNode", default: "-", description: "Optional leading icon." },
   ]}
 />
 
 <Callout title="Notes">
 - FilterToolbar does not know filter values, options, URLs, or data-fetching behavior. Pass Button, Toggle, Menu, and Popover compositions as children.
 - The toolbar is transparent. Each filter control owns its neutral fill and interaction states.
+- FilterToolbarTrigger keeps the category label visible, adds a concise active value, and uses the shared selected fill. Clear one filter from its popup; use Clear all for the complete toolbar.
 - The clear action stays in the filter sequence so trailing actions remain stable on narrow screens.
 - `scroll` is the default for headers and mobile layouts. Use `wrap` on spacious directory or management pages.
 - Sticky positioning and page-width padding belong to the containing application shell.
