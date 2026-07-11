@@ -257,6 +257,9 @@ components:
     outlineColor: "{colors.primary}"
   input-invalid:
     outlineColor: "{colors.error}"
+  # Textarea, Select trigger, and Combobox input use this same surface,
+  # hover, focus, invalid, sizing, and radius contract. Their labels,
+  # descriptions, and validation messages are composed with Field.
   # Card variants share a borderless layer-1 surface. `elevated` adds
   # shadow-card when the object needs additional separation.
   card:

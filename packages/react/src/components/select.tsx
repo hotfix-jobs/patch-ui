@@ -5,13 +5,14 @@ import { CaretDown, Check } from "@phosphor-icons/react/dist/ssr";
 import type * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
-import { focusRing, itemRow, popupSurface } from "../recipes";
+import { itemRow, popupSurface } from "../recipes";
 import {
   MOBILE_MEDIA_QUERY,
   useMediaQuery,
 } from "../hooks/use-media-query";
 
 export type SelectSize = "sm" | "md" | "lg";
+export type SelectVariant = "default" | "unstyled";
 
 export interface SelectProps
   extends Omit<
@@ -22,22 +23,22 @@ export interface SelectProps
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   size?: SelectSize;
+  /** Removes trigger chrome when embedded in a composite surface. */
+  variant?: SelectVariant;
   /** Content rendered at the start (icon, unit symbol). */
   prefix?: React.ReactNode;
   /** Content rendered at the end (before the chevron). */
   suffix?: React.ReactNode;
-  /** Renders a `<label>` above the select. */
-  label?: string;
-  /** `id` required when passing a string `label`. */
+  /** Associates the trigger with a label. */
   id?: string;
-  /** Visual error state or inline error message. */
-  error?: boolean | string;
+  /** IDs of elements that describe the trigger. */
+  "aria-describedby"?: string;
+  /** Marks the trigger invalid. Pair with FieldError for its message. */
+  invalid?: boolean;
   /** Placeholder text shown when no value is selected. */
   placeholder?: string;
-  /** Class name applied to the outer field wrapper. */
+  /** Class name applied to the trigger. */
   className?: string;
-  /** Class name applied to the trigger element. */
-  triggerClassName?: string;
   /** Renders the trigger's selected-value display. Base UI's `Select.Value`
    *  defaults to showing the raw `value` string, which surfaces ugly ids
    *  (uuids, slugs) when the option label doesn't match the value. Pass a
@@ -73,44 +74,43 @@ export function Select({
   defaultValue,
   onValueChange,
   size = "md",
+  variant = "default",
   prefix,
   suffix,
-  label,
   id,
-  error,
+  "aria-describedby": ariaDescribedBy,
+  invalid,
   placeholder,
   disabled,
   required,
   className,
-  triggerClassName,
   renderValue,
   children,
   ...props
 }: SelectProps): React.ReactElement {
-  const hasErrorMessage = typeof error === "string" && error.length > 0;
-  const hasError = Boolean(error);
-  const errorId = id ? `${id}-error` : undefined;
-
+  const unstyled = variant === "unstyled";
   const trigger = (
     <SelectPrimitive.Trigger
       id={id}
       disabled={disabled}
-      aria-invalid={hasError || undefined}
-      aria-describedby={hasErrorMessage ? errorId : undefined}
+      aria-invalid={invalid || undefined}
+      aria-describedby={ariaDescribedBy}
       data-slot="select"
       className={cn(
-        "relative inline-flex w-full items-center overflow-hidden text-ink rounded-[var(--radius-8)]",
-        "bg-layer-1 border border-hairline",
-        "transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        "hover:border-hairline-strong",
-        "data-[popup-open]:border-primary data-[popup-open]:shadow-[var(--focus-halo)]",
+        "relative inline-flex w-full items-center overflow-hidden text-ink",
+        !unstyled && "rounded-[var(--radius-8)]",
+        !unstyled && [
+          "bg-fill-1 hover:bg-fill-2 focus-visible:bg-layer-1 data-[popup-open]:bg-hairline-strong",
+          "outline-none focus-visible:[outline-style:solid] focus-visible:outline-[length:var(--focus-ring-width)] focus-visible:outline-[var(--focus-ring-color)] focus-visible:outline-offset-0",
+          "transition-[color,background-color,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        ],
+        "group-data-[invalid]/field:[outline-style:solid] group-data-[invalid]/field:outline-[length:1px] group-data-[invalid]/field:outline-error",
+        "aria-invalid:[outline-style:solid] aria-invalid:outline-[length:1px] aria-invalid:outline-error",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         heightBySize[size],
         prefix ? "ps-0" : leadingPad[size],
         trailingPad[size],
-        focusRing,
-        hasError && "!border-error",
-        triggerClassName,
+        className,
       )}
     >
       {prefix && (
@@ -154,7 +154,7 @@ export function Select({
     </SelectPrimitive.Trigger>
   );
 
-  const control = (
+  return (
     <SelectPrimitive.Root
       value={value}
       defaultValue={defaultValue}
@@ -168,39 +168,6 @@ export function Select({
       {trigger}
       <SelectPopupSurface>{children}</SelectPopupSurface>
     </SelectPrimitive.Root>
-  );
-
-  if (!label && !hasErrorMessage) {
-    return <div className={className}>{control}</div>;
-  }
-
-  return (
-    <div
-      className={cn("flex flex-col gap-2 w-full", className)}
-      data-slot="select-field"
-    >
-      {label && (
-        <label
-          htmlFor={id}
-          className="text-small font-medium text-ink"
-          data-slot="select-label"
-        >
-          {label}
-          {required && <span className="ms-0.5 text-error">*</span>}
-        </label>
-      )}
-      {control}
-      {hasErrorMessage && (
-        <p
-          id={errorId}
-          role="alert"
-          className="text-mini text-error"
-          data-slot="select-error"
-        >
-          {error}
-        </p>
-      )}
-    </div>
   );
 }
 

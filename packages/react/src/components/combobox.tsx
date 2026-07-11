@@ -184,9 +184,8 @@ function ChevronIndicator({
 export interface ComboboxInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "prefix"> {
   size?: InputSize;
-  /** Visual treatment. `control` matches Button secondary; `soft`
-   *  is a quieter fill-only treatment for dense embedded pickers. */
-  variant?: "control" | "soft";
+  /** Removes control chrome when embedded in a composite surface. */
+  variant?: "default" | "unstyled";
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   /** Hide the trailing chevron. */
@@ -194,10 +193,6 @@ export interface ComboboxInputProps
   /** Show a trailing X to clear the input. */
   clearable?: boolean;
   onClear?: () => void;
-  /** Renders a full-radius (pill-shaped) input. */
-  rounded?: boolean;
-  /** Visual error state. */
-  error?: boolean;
 }
 
 const heightBySize: Record<InputSize, string> = {
@@ -243,25 +238,19 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
   function ComboboxInput(
     {
       size = "md",
-      variant = "control",
+      variant = "default",
       prefix,
       suffix,
       hideChevron,
       clearable,
       onClear,
-      rounded,
-      error,
       disabled,
       className,
       ...props
     },
     forwardedRef,
   ) {
-    const shape = rounded ? "rounded-full" : "rounded-[var(--radius-8)]";
-    const chrome =
-      variant === "soft"
-        ? "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-fill-2"
-        : "border border-hairline bg-layer-1 hover:border-hairline-strong hover:bg-layer-2 has-focus-visible:border-primary has-focus-visible:shadow-[var(--focus-halo)]";
+    const unstyled = variant === "unstyled";
     const trailing = (clearable || !hideChevron || suffix) ? (
       <ComboboxAffix side="end">
         <span className={cn("inline-flex items-center gap-1.5", clearable && "group")}>
@@ -294,11 +283,15 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
         data-slot="combobox-input-group"
         className={cn(
           "group/combobox-input relative inline-flex w-full items-center overflow-hidden text-ink",
-          shape,
-          chrome,
-          "transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          !unstyled && "rounded-[var(--radius-8)]",
+          !unstyled && [
+            "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-layer-1",
+            "outline-none has-focus-visible:[outline-style:solid] has-focus-visible:outline-[length:var(--focus-ring-width)] has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-0",
+            "transition-[color,background-color,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          ],
           "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
-          error && "!border-error",
+          "group-data-[invalid]/field:[outline-style:solid] group-data-[invalid]/field:outline-[length:1px] group-data-[invalid]/field:outline-error",
+          "has-[[aria-invalid=true]]:[outline-style:solid] has-[[aria-invalid=true]]:outline-[length:1px] has-[[aria-invalid=true]]:outline-error",
           className,
         )}
       >

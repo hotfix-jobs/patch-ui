@@ -16,21 +16,19 @@ A rich single-select with a styled popup. Use `SelectItem` children; group with 
 ## Usage
 
 ```tsx
-import { Select, SelectItem, SelectGroup, SelectGroupLabel } from "@patchui/react";
+import { Field, FieldError, FieldLabel, Select, SelectItem, SelectGroup, SelectGroupLabel } from "@patchui/react";
 
-<Select
-  id="framework"
-  label="Framework"
-  value={framework}
-  onValueChange={setFramework}
->
-  <SelectItem value="react">React</SelectItem>
-  <SelectItem value="vue">Vue</SelectItem>
-  <SelectItem value="svelte">Svelte</SelectItem>
-</Select>
+<Field>
+  <FieldLabel htmlFor="framework">Framework</FieldLabel>
+  <Select id="framework" value={framework} onValueChange={setFramework}>
+    <SelectItem value="react">React</SelectItem>
+    <SelectItem value="vue">Vue</SelectItem>
+    <SelectItem value="svelte">Svelte</SelectItem>
+  </Select>
+</Field>
 
 // Grouped options
-<Select id="assignee" label="Assignee" defaultValue="ana">
+<Select id="assignee" defaultValue="ana">
   <SelectGroup>
     <SelectGroupLabel>Design</SelectGroupLabel>
     <SelectItem value="ana">Ana</SelectItem>
@@ -44,16 +42,20 @@ import { Select, SelectItem, SelectGroup, SelectGroupLabel } from "@patchui/reac
 </Select>
 
 // Placeholder + validation
-<Select
-  id="plan"
-  label="Plan"
-  required
-  error="Please select a plan."
-  placeholder="Select a plan…"
->
-  <SelectItem value="hobby">Hobby</SelectItem>
-  <SelectItem value="pro">Pro</SelectItem>
-</Select>
+<Field invalid>
+  <FieldLabel htmlFor="plan" required>Plan</FieldLabel>
+  <Select
+    id="plan"
+    aria-describedby="plan-error"
+    required
+    invalid
+    placeholder="Select a plan…"
+  >
+    <SelectItem value="hobby">Hobby</SelectItem>
+    <SelectItem value="pro">Pro</SelectItem>
+  </Select>
+  <FieldError id="plan-error" match>Please select a plan.</FieldError>
+</Field>
 ```
 
 ## Props
@@ -85,22 +87,22 @@ import { Select, SelectItem, SelectGroup, SelectGroupLabel } from "@patchui/reac
       description: "Controls the height and typography of the trigger.",
     },
     {
+      name: "variant",
+      type: '"default" | "unstyled"',
+      default: '"default"',
+      description: "Use unstyled only when another component owns the trigger surface.",
+    },
+    {
       name: "placeholder",
       type: "string",
       default: "-",
       description: "Shown in the trigger when no value is selected.",
     },
     {
-      name: "label",
-      type: "string",
-      default: "-",
-      description: "Renders a <label> above the trigger. Requires `id` for accessibility.",
-    },
-    {
       name: "id",
       type: "string",
       default: "-",
-      description: "Required when passing a string `label` so the label associates correctly.",
+      description: "Trigger id. Match it from FieldLabel with `htmlFor`.",
     },
     {
       name: "prefix",
@@ -115,10 +117,10 @@ import { Select, SelectItem, SelectGroup, SelectGroupLabel } from "@patchui/reac
       description: "Content rendered at the end, before the chevron.",
     },
     {
-      name: "error",
-      type: "boolean | string",
-      default: "-",
-      description: "`true` for red-border state; a string renders the message below the field.",
+      name: "invalid",
+      type: "boolean",
+      default: "false",
+      description: "Shows the invalid outline. Pair with FieldError for the message.",
     },
     {
       name: "disabled",
@@ -130,7 +132,7 @@ import { Select, SelectItem, SelectGroup, SelectGroupLabel } from "@patchui/reac
       name: "required",
       type: "boolean",
       default: "false",
-      description: "Marks the field as required and appends a red asterisk to the label.",
+      description: "Marks the select as required for form validation.",
     },
   ]}
 />
@@ -141,4 +143,5 @@ import { Select, SelectItem, SelectGroup, SelectGroupLabel } from "@patchui/reac
 - **Searchable list:** For 20+ items or fuzzy matching, reach for `Combobox` instead.
 - **Accessibility:** Base UI Select ships proper roving tabindex, ARIA, and type-ahead out of the box.
 - **Form integration:** Pass `name` and the selected value posts as a hidden input. `required` blocks submission when empty.
+- **Field composition:** Field owns the label, description, and error message. Pass `invalid` when validation fails.
 </Callout>

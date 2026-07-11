@@ -221,15 +221,15 @@ The popup accepts arbitrary JSX: only `ComboboxItem` gets keyboard navigation. M
 
 ### ComboboxInput
 
-Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `label`, etc.) and adds the props below. `value`, `onChange`, and `placeholder` read from the `<Combobox>` root by default; pass them directly on this input only when you need a per-input override.
+Accepts native input props plus `prefix`, `suffix`, and `size`. `value`, `onChange`, and `placeholder` read from the `<Combobox>` root by default; pass them directly on this input only when you need a per-input override.
 
 <PropsTable
   props={[
     {
       name: "variant",
-      type: '"control" | "soft"',
-      default: '"control"',
-      description: "Visual treatment for the trigger. `control` matches Button secondary (bordered + `--layer-1`) — use for standalone comboboxes. `soft` drops the border and uses `--fill-1` + `--fill-2` on hover — quieter chrome for dense embedded pickers (inline field inside a Card, one of several controls in a row).",
+      type: '"default" | "unstyled"',
+      default: '"default"',
+      description: "Use unstyled only when another component owns the control surface.",
     },
     {
       name: "openOnFocus",
