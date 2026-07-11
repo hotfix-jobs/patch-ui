@@ -5,7 +5,7 @@ export const metadata = { title: "Section" };
 
 # Section
 
-A structural card surface with optional header, content, and footer slots. It is borderless and shadowless by default. Add `dividers` when direct children need quiet internal separation.
+A structural grouping with optional header, content, and footer slots. It is plain by default and can opt into a borderless, shadowless card surface. Add `dividers` when direct children need quiet internal separation.
 
 Different from `Card`, which represents a discrete content object. Reach for Section when several controls or settings belong to one named area.
 
@@ -30,7 +30,7 @@ import {
 } from "@patchui/react";
 
 // Simple settings row (header + footer, no body)
-<Section dividers>
+<Section variant="card" dividers>
   <SectionHeader className="px-6 pb-4 pt-5">
     <SectionTitle>Account Settings</SectionTitle>
     <SectionSubtitle>Manage your account preferences and settings.</SectionSubtitle>
@@ -77,6 +77,12 @@ import {
 <PropsTable
   props={[
     {
+      name: "variant",
+      type: '"plain" | "card"',
+      default: '"plain"',
+      description: "Plain adds no surface treatment. Card adds a layer background and radius without a border or shadow.",
+    },
+    {
       name: "dividers",
       type: "boolean",
       default: "false",
@@ -104,6 +110,6 @@ Each accepts `className` for overrides and `render` for polymorphic rendering (c
 <Callout title="Notes">
 - Section slots are unstyled structural hooks. Callers own their padding, gaps, alignment, and responsive behavior through `className`.
 - Section is a `<section>` element; `SectionTitle` renders as `<h3>` by default. If the parent already has an `<h2>`, that keeps the outline clean. Adjust with `render={<h2 />}` if the heading level needs to shift.
-- Section has one card treatment: `bg-layer-1`, radius 12, no outer border, and no shadow. Use Card when an object needs outlined or elevated variants.
+- Section is plain by default. `variant="card"` adds `bg-layer-1` and radius 12 with no outer border or shadow. Use Card when an object needs outlined, elevated, hoverable, or selected treatments.
 - `dividers` adds internal hairlines between direct children. Leave it off when spacing alone makes the grouping clear.
 </Callout>

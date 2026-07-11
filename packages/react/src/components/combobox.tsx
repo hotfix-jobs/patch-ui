@@ -384,7 +384,7 @@ export function ComboboxPopup({
           >
             <ComboboxPrimitive.InputGroup
               data-slot="combobox-mobile-input"
-              className="flex-none flex w-full items-center gap-2 border-b border-hairline px-3 text-ink"
+              className="flex-none flex w-full items-center gap-2 px-3 text-ink"
             >
               <MagnifyingGlass
                 aria-hidden

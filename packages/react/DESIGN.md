@@ -125,7 +125,7 @@ Button variants are `primary`, `secondary`, `soft`, `tertiary`, `warning`, and `
 
 Card exposes `surface`, `outlined`, and `elevated`. Interactive Card uses hover and pressed fills plus compact keyboard focus.
 
-Section has one borderless, shadowless layer-1 card treatment and structural slots. Its optional `dividers` prop separates direct children. Callers own padding and row layout.
+Section is a plain structural grouping by default. Its optional `card` variant adds a borderless, shadowless layer-1 surface, while `dividers` independently separates direct children. Callers own padding and row layout.
 
 ### Fields
 

@@ -53,7 +53,7 @@ export function SectionDemo() {
     <div className="flex flex-col gap-12">
       <div className="space-y-4">
         <SectionLabel>General</SectionLabel>
-        <Section dividers>
+        <Section variant="card" dividers>
           <SettingRow
             title="Language"
             description="The language used for the interface"
@@ -89,7 +89,7 @@ export function SectionDemo() {
 
       <div className="space-y-4">
         <SectionLabel>Notifications</SectionLabel>
-        <Section dividers>
+        <Section variant="card" dividers>
           <SettingRow
             title="Email digests"
             description="Get a summary of activity in your inbox each week"
@@ -115,7 +115,7 @@ export function SectionDemo() {
 
       <div className="space-y-4">
         <SectionLabel>Header + form + footer</SectionLabel>
-        <Section dividers>
+        <Section variant="card" dividers>
           <SectionHeader className="px-6 py-5">
             <SectionTitle>Project name</SectionTitle>
             <SectionSubtitle>

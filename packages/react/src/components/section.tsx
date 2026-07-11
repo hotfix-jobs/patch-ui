@@ -6,6 +6,8 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export interface SectionProps extends useRender.ComponentProps<"section"> {
+  /** Optional card surface. Plain remains structural only. */
+  variant?: "plain" | "card";
   /** Draw separators between direct children. */
   dividers?: boolean;
 }
@@ -13,13 +15,15 @@ export interface SectionProps extends useRender.ComponentProps<"section"> {
 /** Structural surface with optional header, content, and footer slots. */
 export function Section({
   className,
+  variant = "plain",
   dividers = false,
   render,
   ...props
 }: SectionProps): React.ReactElement {
   const defaultProps = {
     className: cn(
-      "flex flex-col rounded-[var(--radius-12)] bg-layer-1 text-ink",
+      "flex flex-col text-ink",
+      variant === "card" && "rounded-[var(--radius-12)] bg-layer-1",
       dividers && "[&>*+*]:border-t [&>*+*]:border-hairline",
       className,
     ),
