@@ -9,7 +9,7 @@ export const focusRing =
 
 /** Compact keyboard-focus indicator for non-editable controls. */
 export const selectionFocus =
-  "focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]";
+  "outline-none focus-visible:outline-none focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]";
 
 /** Control heights + padding + icon gap + text for sm/md/lg. */
 export const controlSize: Record<"sm" | "md" | "lg", string> = {

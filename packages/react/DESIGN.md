@@ -452,8 +452,8 @@ The library ships no chromatic brand hue. `{colors.primary}` resolves to `{color
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `{colors.primary}` | `#202020` (inherits `--ink`) | `#eeeeee` (inherits `--ink`) | Primary button fill, slider indicator + thumb, switch on-track |
-| `{colors.on-primary}` | `#f5f5f5` (inherits `--base`) | `#101010` (inherits `--base`) | Text on primary fill, switch thumb (contrast) |
+| `{colors.primary}` | `#202020` (inherits `--ink`) | `#eeeeee` (inherits `--ink`) | Primary button fill, slider indicator + thumb |
+| `{colors.on-primary}` | `#f5f5f5` (inherits `--base`) | `#101010` (inherits `--base`) | Text on primary fill |
 | `{colors.primary-hover}` | `color-mix(primary, base 15%)` | same | Hovered primary button |
 | `{colors.primary-active}` | `color-mix(primary, base 25%)` | same | Pressed primary button |
 | `{colors.primary-soft}` | `color-mix(primary 8%, layer-1)` | same | Soft highlighted or selected content |
@@ -643,13 +643,13 @@ The library ships seven radii. Everything maps to one of them.
 |---|---|---|
 | `--radius-4` | 4px | Checkbox, radio thumb — where 6px would look proportionally too round |
 | `--radius-6` | 6px | Menu-row highlight, tab folder-tops, small chips (Badge default), kbd, dense chrome |
-| `--radius-8` | 8px | Labeled Buttons, Input, Textarea, Select trigger, Combobox trigger, Section, Tooltip, ModalInset, Toggle `square`, and Toast actions |
+| `--radius-8` | 8px | Labeled Buttons, Input, Textarea, Select trigger, Combobox trigger, Section, Tooltip, ModalInset, Toggle, ToggleGroup, and Toast actions |
 | `--radius-10` | 10px | In-between step for surfaces that want more than 8 but less than 12 |
 | `--radius-12` | 12px | `popupSurface` recipe: Menu popup, Combobox popup, Select popup, Popover, Command palette; Sheet (all four sides) |
 | `--radius-16` | 16px | Marketing panels, hero surfaces, product screenshot frames |
 | `--radius-full` | `9999px` | Avatars, circular icon controls, radio, switch, slider, and progress geometry |
 
-Radius-8 and radius-10 were added this cycle as steps between control-6 and surface-12. Control-shaped chrome bumped from 6 to 8 across Button, Input, Section, Card, Tooltip, Toggle square, ModalInset, and the toast action button. Popup surfaces and Sheet stayed at 12. Radius-24 remains absent by design — if a surface wants more than 16, the pattern is wrong.
+Radius-8 and radius-10 were added this cycle as steps between control-6 and surface-12. Control-shaped chrome uses 8 across Button, Input, Section, Card, Tooltip, Toggle, ToggleGroup, ModalInset, and toast actions. Popup surfaces and Sheet stay at 12. Radius-24 remains absent by design; if a surface wants more than 16, the pattern is wrong.
 
 ### Icons & Iconography
 
@@ -695,7 +695,7 @@ Each component below is a single paragraph plus a token map. Full API and source
 
 ### Buttons
 
-**Variant vocabulary.** Button ships six variants: `primary` / `secondary` / `soft` / `tertiary` / `warning` / `destructive`. Any component that accepts button-like variants (Toggle, IconButton, LinkButton) reuses these verbatim. The `shadow` prop was dropped this cycle — Button no longer casts a shadow at rest. Pressed / active fills on the non-solid variants now uniformly use `{colors.layer-selected}` for a consistent depressed feel.
+**Variant vocabulary.** Button ships six variants: `primary` / `secondary` / `soft` / `tertiary` / `warning` / `destructive`. Components reuse the matching subset of this vocabulary when their roles overlap; Toggle keeps only `secondary` and `tertiary`. The `shadow` prop was dropped this cycle, so Button no longer casts a shadow at rest. Pressed and active fills on non-solid variants use `{colors.layer-selected}` for a consistent depressed feel.
 
 **`button-primary`**: Monochrome CTA. Default primary action across the system.
 - Background `{colors.primary}` (resolves to `{colors.ink}`), text `{colors.on-primary}`, type `{typography.control-md}`, `square` shape radius `--radius-8` (was 6), padding 8px 14px, height 32px.
@@ -721,7 +721,7 @@ Each component below is a single paragraph plus a token map. Full API and source
 - Background `{colors.error}`, text `{colors.error-fg}`, radius `--radius-8`, padding 8px 14px.
 - Hover: `{colors.error-hover}`. Active: `{colors.error-active}`.
 
-**Shape API.** Button exposes no shape prop. Labeled Buttons use radius-8; passing an icon without children infers equal-width circular geometry. Toggle retains its state-control shapes independently. Do not invent per-module variant names like `outline` or `ghost`.
+**Shape API.** Button and Toggle expose no shape prop. Labeled controls use radius-8; Button infers circular geometry only when passed an icon without children. Switch retains its pill track because that shape communicates movement. Do not invent per-module variant names like `outline` or `ghost`.
 
 ### Inputs & Forms
 
@@ -738,11 +738,11 @@ Each component below is a single paragraph plus a token map. Full API and source
 
 **`combobox-input`**: Editable filled, borderless control at radius `--radius-8`. Default uses `fill-1` at rest and `fill-2` on hover/open, with the crisp neutral editable-field outline on focus. `unstyled` removes chrome for composite surfaces.
 
-**`checkbox`**: 16px square, radius `--radius-4`, border 1px `{colors.hairline-strong}`. Checked: background `{colors.primary}`, checkmark `{colors.on-primary}`.
+**`checkbox`**: 16px square, radius `--radius-4`, borderless `{colors.fill-2}` at rest. Checked: background `{colors.ink}`, checkmark `{colors.base}`.
 
-**`radio`**: 16px circle, border 1px `{colors.hairline-strong}`. Selected: 6px inner dot in `{colors.primary}`.
+**`radio`**: 16px borderless circle in `{colors.fill-2}`. Selected: 6px inner dot in `{colors.ink}`.
 
-**`switch`**: 32px wide × 20px tall pill (`{rounded.full}`), background `{colors.fill-2}` off / `{colors.primary}` on, thumb 16px circle in `{colors.base}` on both states.
+**`switch`**: 32px wide × 20px tall pill (`{rounded.full}`), background `{colors.fill-2}` off / `{colors.ink}` on, thumb 16px circle in `{colors.base}` on both states.
 
 **`slider`**: 4px track in `{colors.fill-2}`, fill in `{colors.primary}`, thumb 16px circle in `{colors.base}` with 1px `{colors.hairline-strong}` border.
 
@@ -814,16 +814,14 @@ Neutral and status variants always use radius-6 metadata geometry. Default varia
 - Vertical orientation: `TabsPanel` adds `pl-6 flex-1 min-w-0`; root gets `flex gap-0`.
 - No sliding `TabsPrimitive.Indicator` — the container-line merge does the tracking work.
 
-**`segmented-toggle`**: Compact segmented radio control with a sliding pill. Unchanged from previous cycle.
-
 **`toggle`**: Press-to-toggle button (Bold / Italic / Star / Pin).
-- Vocabulary matches Button: `tertiary` (transparent at rest) / `secondary` (filled at rest). Toggle keeps its own `square` / `pill` / `circle` state-control geometry.
+- Vocabulary matches Button: `tertiary` (transparent at rest) / `secondary` (filled at rest). Both use `layer-selected` for the persisted pressed state and the compact non-editable focus indicator.
 - Rest: `{colors.ink-muted}` text + iconMuted icon.
-- Hover: `hover:bg-layer-hover hover:text-ink`; secondary adds `hover:border-hairline-strong`.
+- Hover: tertiary uses `bg-layer-hover`; secondary steps from `fill-1` to `fill-2`.
 - Pressed (`data-[pressed]`): `{colors.layer-selected}` overlay fill, `{colors.ink}` text — reads as depressed, not color-inverted.
 
 **`toggle-group`**: Row of related toggles with a shared container.
-- Container: `bg-layer-1` (was `fill-1`), 1px `{colors.hairline}` border, `gap-0.5` between items so the container color shows through as a thin separator.
+- Container: borderless `bg-fill-1`, radius-8, `gap-0.5` between items.
 - Item rest: transparent, muted label.
 - Item hover: `bg-layer-hover` (was `layer-2`).
 - Item pressed: `bg-layer-selected` (was `fill-2`).

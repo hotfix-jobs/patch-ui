@@ -38,9 +38,7 @@ export function Radio({
       disabled={disabled}
       className={cn(
         "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full",
-        "bg-transparent border border-hairline-strong",
-        "hover:border-hairline-tertiary",
-        "data-checked:border-primary",
+        "bg-fill-2 hover:bg-hairline-strong",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
         focusRing,
@@ -55,7 +53,7 @@ export function Radio({
       >
         <span
           aria-hidden="true"
-          className="!bg-primary size-1.5 rounded-full"
+          className="!bg-ink size-1.5 rounded-full"
         />
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>

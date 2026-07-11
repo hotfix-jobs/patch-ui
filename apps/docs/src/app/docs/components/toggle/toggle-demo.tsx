@@ -8,9 +8,8 @@ export function ToggleDemo() {
 
   return (
     <div className="flex flex-col gap-6">
-      <Stack label="Icon-only press-to-toggle (circle)">
+      <Stack label="Icon-only press-to-toggle">
         <Toggle
-          shape="circle"
           pressed={starred}
           onPressedChange={setStarred}
           aria-label="Star"
@@ -18,7 +17,6 @@ export function ToggleDemo() {
           <Star className={starred ? "fill-current" : ""} />
         </Toggle>
         <Toggle
-          shape="circle"
           pressed={pinned}
           onPressedChange={setPinned}
           aria-label="Pin"
@@ -27,7 +25,7 @@ export function ToggleDemo() {
         </Toggle>
       </Stack>
 
-      <Stack label="Secondary variant (bordered)">
+      <Stack label="Secondary variant (filled)">
         <Toggle variant="secondary" defaultPressed aria-label="Bold">
           <TextB />
         </Toggle>
@@ -43,16 +41,6 @@ export function ToggleDemo() {
         <Toggle defaultPressed>Public</Toggle>
         <Toggle>Private</Toggle>
         <Toggle variant="secondary">Beta</Toggle>
-      </Stack>
-
-      <Stack label="Shapes">
-        <Toggle defaultPressed shape="square" aria-label="Square shape">
-          <TextB />
-        </Toggle>
-        <Toggle defaultPressed shape="pill">Pill</Toggle>
-        <Toggle defaultPressed shape="circle" aria-label="Circle shape">
-          <Star />
-        </Toggle>
       </Stack>
 
       <Stack label="Sizes">
