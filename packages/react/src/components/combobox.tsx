@@ -589,5 +589,6 @@ export function ComboboxSection({
   );
 }
 
-export { MagnifyingGlass as ComboboxSearchIcon };
-export { ComboboxPrimitive };
+export const ComboboxSearchIcon = MagnifyingGlass;
+const ComboboxPrimitiveExport = ComboboxPrimitive;
+export { ComboboxPrimitiveExport as ComboboxPrimitive };

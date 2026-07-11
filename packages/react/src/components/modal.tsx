@@ -274,4 +274,4 @@ export function ModalAction({
   );
 }
 
-export { DialogPrimitive as ModalPrimitive };
+export const ModalPrimitive = DialogPrimitive;

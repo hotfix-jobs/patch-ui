@@ -244,4 +244,5 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
   );
 }
 
-export { ToastPrimitive };
+const ToastPrimitiveExport = ToastPrimitive;
+export { ToastPrimitiveExport as ToastPrimitive };
