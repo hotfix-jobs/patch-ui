@@ -92,7 +92,7 @@ import {
 - FilterToolbar does not know filter values, options, URLs, or data-fetching behavior. Pass Button, Toggle, Menu, and Popover compositions as children.
 - The toolbar is transparent. Each filter control owns its neutral fill and interaction states.
 - FilterToolbarTrigger keeps the category label visible, adds a concise active value, and uses the shared selected fill. Clear one filter from its popup; use Clear all for the complete toolbar.
-- Active triggers stack the same `layer-hover` overlay on hover, focus, and open states so interaction remains visible without introducing another state color.
+- Active triggers keep the secondary button's `fill-2` hover background at rest, on focus, and while open.
 - Do not add placeholder options such as "Any" or "All". Use a distinct Clear filter action when the filter is active.
 - FilterToolbarPicker is the searchable multi-select pattern for high-cardinality filters. Selection stays open, search resets on close, and the consumer owns local or async filtering.
 - The clear action stays in the filter sequence so trailing actions remain stable on narrow screens.

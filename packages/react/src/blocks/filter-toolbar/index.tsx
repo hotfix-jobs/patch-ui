@@ -189,7 +189,7 @@ export function FilterToolbarTrigger({
       className={cn(
         "group",
         active &&
-          "bg-layer-hover hover:shadow-[inset_0_0_0_9999px_var(--layer-hover),inset_0_0_0_9999px_var(--layer-hover)] focus-visible:shadow-[inset_0_0_0_9999px_var(--layer-hover),inset_0_0_0_9999px_var(--layer-hover)] data-[popup-open]:shadow-[inset_0_0_0_9999px_var(--layer-hover),inset_0_0_0_9999px_var(--layer-hover)] transition-[color,background-color,box-shadow]",
+          "bg-fill-2 hover:bg-fill-2 focus-visible:bg-fill-2 data-[popup-open]:bg-fill-2",
         className,
       )}
       {...props}
