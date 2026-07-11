@@ -11,6 +11,7 @@ export function ButtonDemo() {
         <div className="flex flex-wrap items-center gap-3">
           <Button variant="primary">Primary</Button>
           <Button variant="secondary">Secondary</Button>
+          <Button variant="outlined">Outlined</Button>
           <Button variant="tertiary">Tertiary</Button>
           <Button variant="warning">Warning</Button>
           <Button variant="destructive">Destructive</Button>

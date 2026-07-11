@@ -118,7 +118,7 @@ Compose the recipes from `src/recipes.ts`. Do not reimplement focus classes in l
 
 Button and Badge expose `shape="rounded" | "pill"` and default to rounded. Icon-only Button infers equal width and height but still respects `shape`. Use `shape="pill"` when a circle is intentional.
 
-Button variants are `primary`, `secondary`, `soft`, `tertiary`, `warning`, and `destructive`. Do not create aliases such as outline or ghost.
+Button variants are `primary`, `secondary`, `outlined`, `soft`, `tertiary`, `warning`, and `destructive`. `outlined` is the explicit boundary treatment; do not create aliases such as outline or ghost.
 
 ### Card and Section
 

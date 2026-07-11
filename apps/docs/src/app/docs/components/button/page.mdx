@@ -25,6 +25,7 @@ import { Button } from "@patchui/react";
 <Button variant="primary">Primary</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="tertiary">Tertiary</Button>
+<Button variant="outlined">Outlined</Button>
 <Button variant="warning">Warning</Button>
 <Button variant="destructive">Destructive</Button>
 
@@ -55,9 +56,9 @@ import { Button } from "@patchui/react";
   props={[
     {
       name: "variant",
-      type: '"primary" | "secondary" | "tertiary" | "soft" | "warning" | "destructive"',
+      type: '"primary" | "secondary" | "outlined" | "tertiary" | "soft" | "warning" | "destructive"',
       default: '"primary"',
-      description: "The visual style. `secondary` is a neutral filled control with no border. Reserve `primary` for the most important action on a view; use `destructive` only for irreversible actions. `soft` uses the primary-soft highlight surface.",
+      description: "The visual style. `secondary` is a neutral filled control, while `outlined` provides an explicit hairline boundary on a transparent surface. Reserve `primary` for the most important action on a view; use `destructive` only for irreversible actions. `soft` uses the primary-soft highlight surface.",
     },
     {
       name: "size",
@@ -117,7 +118,7 @@ import { Button } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- Each variant maps to a specific token: `primary` reads the `--primary` / `--on-primary` chain, `secondary` uses the neutral fill ladder, `soft` uses `--primary-soft`, `tertiary` is transparent with a hover tint, and semantic actions use their fixed role colors.
+- Each variant maps to a specific treatment: `primary` reads the `--primary` / `--on-primary` chain, `secondary` uses the neutral fill ladder, `outlined` uses a transparent surface with a hairline boundary, `soft` uses `--primary-soft`, `tertiary` is borderless with a hover tint, and semantic actions use their fixed role colors.
 - Reserve `primary` for the one hero action on a view. Reserve `destructive` for actions the user cannot undo without work.
 - Brand override: redefine `--primary`, `--on-primary`, `--primary-hover`, and `--primary-active` in a consumer stylesheet after the token import to swap the monochrome default for a chromatic brand color. Every primary Button picks it up without callsite edits.
 - Icon-only buttons: pass `icon` with no `children`. Button infers equal width and height while respecting `shape`; use `shape="pill"` when a circle is intentional. `aria-label` is required, and a development warning fires when it is missing.
