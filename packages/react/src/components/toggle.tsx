@@ -19,9 +19,9 @@ export const toggleVariants = cva(
     defaultVariants: { size: "md", variant: "tertiary" },
     variants: {
       size: {
-        sm: "h-6 min-w-6 px-2.5 text-mini font-medium [&_svg:not([class*='size-'])]:size-3.5",
-        md: "h-8 min-w-8 px-3.5 text-small font-medium [&_svg:not([class*='size-'])]:size-4",
-        lg: "h-10 min-w-10 px-4 text-regular font-medium [&_svg:not([class*='size-'])]:size-5",
+        sm: "h-6 min-w-6 gap-1.5 px-2.5 text-mini font-medium [&_svg:not([class*='size-'])]:size-3.5",
+        md: "h-8 min-w-8 gap-2 px-3.5 text-small font-medium [&_svg:not([class*='size-'])]:size-4",
+        lg: "h-10 min-w-10 gap-2 px-4 text-regular font-medium [&_svg:not([class*='size-'])]:size-5",
       },
       variant: {
         tertiary:

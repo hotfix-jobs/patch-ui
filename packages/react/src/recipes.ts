@@ -65,7 +65,7 @@ export const popupTriggerOpen = "data-[popup-open]:bg-fill-2";
  *  Usage: cn(itemRow.base, density === "compact" ? itemRow.compact : itemRow.comfortable, iconMuted, ...) */
 export const itemRow = {
   base:
-    "flex items-center cursor-default select-none rounded-[var(--radius-6)] text-ink outline-none " +
+    "flex items-center cursor-default select-none rounded-[var(--radius-6)] text-ink outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] " +
     "data-[active]:bg-layer-hover data-highlighted:bg-layer-hover " +
     "data-[selected]:bg-layer-selected data-[checked]:bg-layer-selected aria-selected:bg-layer-selected " +
     "data-highlighted:data-[selected]:bg-layer-selected data-highlighted:data-[checked]:bg-layer-selected data-highlighted:aria-selected:bg-layer-selected " +

@@ -44,9 +44,9 @@
   --fill-2:    #e8e8e8;
 
   /* Adaptive interaction-state overlays. rgba so they darken any
-     surface underneath uniformly. Radix grayA 3 / grayA 5. */
+     surface underneath uniformly. Radix grayA 3 / grayA 6. */
   --layer-hover:    rgba(0, 0, 0, 0.059);
-  --layer-selected: rgba(0, 0, 0, 0.122);
+  --layer-selected: rgba(0, 0, 0, 0.149);
 
   /* Hairlines are now alpha, not solid. A border on a nested card
      reads the same perceived weight as one on the base; solid borders
@@ -237,9 +237,9 @@
   --fill-1:    #242424;
   --fill-2:    #2e2e2e;
 
-  /* Overlays: Radix grayA 3 / grayA 5. */
+  /* Overlays: Radix grayA 3 / grayA 6. */
   --layer-hover:    rgba(255, 255, 255, 0.071);
-  --layer-selected: rgba(255, 255, 255, 0.133);
+  --layer-selected: rgba(255, 255, 255, 0.172);
 
   /* Alpha borders (Radix grayA 3 / 6 / 7 / 8) replace solid hex.
      `--hairline-soft` is card-appropriate chrome; the rest are for
