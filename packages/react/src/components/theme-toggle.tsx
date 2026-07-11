@@ -164,7 +164,7 @@ export function ThemeToggle({
       variant="tertiary"
       size={size}
       onClick={toggle}
-      className={cn("overflow-hidden", className)}
+      className={cn("overflow-hidden rounded-[var(--radius-8)]", className)}
       data-slot="theme-toggle"
       data-theme={mounted ? resolved : undefined}
       aria-label={

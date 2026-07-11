@@ -88,7 +88,8 @@ export function Breadcrumb({
               <span className={cn(isLast && "truncate")}>{item.name}</span>
             );
 
-          const inlineClass = "inline-flex items-center gap-1 rounded-[var(--radius-6)]";
+          const inlineClass =
+            "inline-flex items-center gap-1 rounded-[var(--radius-6)] outline-none focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]";
 
           const crumb =
             item.href && !isLast ? (
@@ -139,7 +140,7 @@ export function Breadcrumb({
                     onClick={() => setExpanded(true)}
                     aria-expanded={expanded}
                     aria-label="Show hidden breadcrumbs"
-                    className="inline-flex items-center rounded-[var(--radius-6)] px-0.5 text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:text-ink"
+                    className="inline-flex size-6 items-center justify-center rounded-[var(--radius-8)] text-ink-muted outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-selected focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]"
                   >
                     <DotsThree className="size-4" aria-hidden />
                   </button>

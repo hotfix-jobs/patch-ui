@@ -17,7 +17,7 @@ Ancestor trail leading to the current page. The Home crumb renders as an icon so
 ```tsx
 import { Breadcrumb } from "@patchui/react";
 
-// Basic — the Home crumb (href="/" + name="Home") renders as an icon.
+// Basic: the Home crumb (href="/" + name="Home") renders as an icon.
 <Breadcrumb
   items={[
     { name: "Home", href: "/" },
@@ -101,5 +101,6 @@ import { Folder } from "@phosphor-icons/react/dist/ssr";
 - **Long chains:** when `items.length > 3`, middle crumbs are hidden behind a `…` toggle below the `sm:` breakpoint. Tap the toggle to expand them inline. Desktop always shows the full chain.
 - **Overflow:** the trail scrolls horizontally with the scrollbar hidden, so a very long final crumb never wraps.
 - **Current page:** the last item has `aria-current="page"` and is not rendered as a link.
+- **Focus:** linked crumbs stay visually text-like and use the compact keyboard-focus indicator. The collapsed-middle control adds the shared hover and pressed fills.
 - **JSON-LD:** every crumb stays in the DOM (mobile-hidden ones are just `display: none`), so a `BreadcrumbList` structured-data emitter can still walk the array.
 </Callout>
