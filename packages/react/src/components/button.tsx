@@ -139,7 +139,7 @@ export function Button({
           }}
           className={cn(
             "-me-1 inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-70",
-            "hover:bg-layer-hover hover:opacity-100",
+            "hover:opacity-100",
             focusRing,
             colorTransition,
           )}
