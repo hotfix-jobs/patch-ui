@@ -44,11 +44,7 @@ export {
   SectionSubtitle,
   SectionContent,
   SectionFooter,
-  SectionFooterStatus,
-  SectionFooterActions,
-  SectionRow,
   type SectionFooterProps,
-  type SectionRowProps,
 } from "./components/section";
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge";
 export {

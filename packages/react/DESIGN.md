@@ -270,15 +270,18 @@ components:
     rounded: "{rounded.surface}"
     padding: 24px
     shadow: shadow-card
-  # Section mirrors Card. Same variant vocabulary, same 8px radius.
+  # Section mirrors Card's surface vocabulary at radius 12.
   section:
-    backgroundColor: "transparent"
-    borderColor: "{colors.hairline}"
-    rounded: "{rounded.control}"
-  section-elevated:
+    backgroundColor: "{colors.layer-1}"
+    rounded: "{rounded.surface}"
+  section-outlined:
     backgroundColor: "{colors.layer-1}"
     borderColor: "{colors.hairline}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.surface}"
+  section-elevated:
+    backgroundColor: "{colors.layer-1}"
+    rounded: "{rounded.surface}"
+    shadow: shadow-card
   panel:
     backgroundColor: "{colors.fill-1}"
     borderColor: "{colors.hairline}"
@@ -334,23 +337,20 @@ components:
     typography: "{typography.mini}"
     rounded: 6px
     padding: 2px 8px
-  # Tabs are folder-shaped now. Active tab: rounded-t on top corners
-  # (radius-6), hairline border on top + sides, transparent bottom border,
-  # bg-base fill that merges into the panel body via a -1px overlap of
-  # the container line. There's no separate `underline` or `pill` variant.
+  # Tabs use one borderless radius-8 treatment in both orientations.
   tab-default:
     backgroundColor: "transparent"
     textColor: "{colors.ink-muted}"
     typography: "{typography.small}"
-    padding: 10px 16px
+    padding: 8px 12px
+    rounded: "{rounded.control}"
   tab-selected:
-    backgroundColor: "{colors.base}"
-    borderColor: "{colors.hairline}"     # top + sides only; -mb-px cuts into panel line
+    backgroundColor: "{colors.layer-selected}"
     textColor: "{colors.ink}"
     typography: "{typography.small}"
     weight: "{fontWeight.medium}"
-    padding: 10px 16px
-    rounded-top: 6px
+    padding: 8px 12px
+    rounded: "{rounded.control}"
   section-eyebrow:
     textColor: "{colors.ink-muted}"
     typography: "{typography.control-sm}"
@@ -429,7 +429,7 @@ Hairlines carry every hierarchical separation that the surface ladder can't. Fou
 | Token | Light | Dark | Use |
 |---|---|---|---|
 | `{colors.hairline-soft}` | `rgba(0,0,0,0.059)` (grayA 3) | `rgba(255,255,255,0.071)` (grayA 3) | Card (elevated variant), ModalInset, Calendar outer chrome — whisper edge that reads present without competing |
-| `{colors.hairline}` | `rgba(0,0,0,0.149)` (grayA 6) | `rgba(255,255,255,0.172)` (grayA 6) | Menu border, outlined surfaces, Section, tab-list divider, table row divider |
+| `{colors.hairline}` | `rgba(0,0,0,0.149)` (grayA 6) | `rgba(255,255,255,0.172)` (grayA 6) | Menu border, outlined surfaces, explicit dividers, table row divider |
 | `{colors.hairline-strong}` | `rgba(0,0,0,0.192)` (grayA 7) | `rgba(255,255,255,0.231)` (grayA 7) | Structural separators and stronger outlined-control hover states |
 | `{colors.hairline-tertiary}` | `rgba(0,0,0,0.267)` (grayA 8) | `rgba(255,255,255,0.333)` (grayA 8) | Radio hover border and dropzone drag hover |
 
@@ -642,8 +642,8 @@ The library ships seven radii. Everything maps to one of them.
 | Token | Value | Use |
 |---|---|---|
 | `--radius-4` | 4px | Checkbox, radio thumb — where 6px would look proportionally too round |
-| `--radius-6` | 6px | Menu-row highlight, tab folder-tops, small chips (Badge default), kbd, dense chrome |
-| `--radius-8` | 8px | Labeled Buttons, Input, Textarea, Select trigger, Combobox trigger, Section, Tooltip, ModalInset, Toggle, ToggleGroup, and Toast actions |
+| `--radius-6` | 6px | Menu-row highlight, small chips (Badge default), kbd, dense chrome |
+| `--radius-8` | 8px | Labeled Buttons, Input, Textarea, Select trigger, Combobox trigger, Tabs, Tooltip, ModalInset, Toggle, ToggleGroup, and Toast actions |
 | `--radius-10` | 10px | In-between step for surfaces that want more than 8 but less than 12 |
 | `--radius-12` | 12px | `popupSurface` recipe: Menu popup, Combobox popup, Select popup, Popover, Command palette; Sheet (all four sides) |
 | `--radius-16` | 16px | Marketing panels, hero surfaces, product screenshot frames |
@@ -758,7 +758,11 @@ Each component below is a single paragraph plus a token map. Full API and source
 - `selected`: switches the surface to `layer-2`.
 - Layout, direction, dividers, and custom shadows belong to caller composition.
 
-**`section`**: Retains its existing two-seat settings-panel treatment in this slice. `flat` is transparent + hairline; `elevated` is `bg-layer-1` + hairline. Both remain at `--radius-8` until the container-family migration.
+**`section`**: Structural surface with optional header, content, and footer slots.
+- `variant="surface"` (default): borderless `bg-layer-1`, radius `--radius-12`.
+- `variant="outlined"`: adds a hairline boundary.
+- `variant="elevated"`: adds `shadow-card`.
+- Header, content, and footer are unstyled structural slots. Callers own padding, gaps, alignment, rows, and separators.
 
 **`panel`**: Marketing hero panels, form containers, docs section wrappers.
 - Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `--radius-16`, padding `{spacing.space-32}` 32px.
@@ -807,12 +811,12 @@ Neutral and status variants always use radius-6 metadata geometry. Default varia
 **`top-nav`**: Sticky top bar with the Patch wordmark left, primary nav links centered, secondary + primary buttons right.
 - Background `{colors.base}`, border-bottom 1px `{colors.hairline}`, text `{colors.ink}`, type `{typography.small}`, height 56px.
 
-**`tabs`**: Folder-tab shape — the previous `underline` and `pill` variants were dropped this cycle in favor of a single canonical shape.
-- Container (`TabsList`): flex row with `border-b border-hairline` (horizontal) or `border-r border-hairline` (vertical). The container line is what the folder-tab merges into.
-- Trigger (`TabsTrigger`): `px-4 py-2.5 text-small`, muted text at rest. A transparent 1px border is reserved so nothing shifts on activation.
-- Active trigger: `border border-hairline` on top+sides, `border-b-transparent` (or `border-r-transparent` for vertical), `rounded-t-[var(--radius-6)]`, `-mb-px` to overlap the container line so the active fill merges with the panel body — the classic "manila folder" join. Active fill `bg-base` so it matches the page surface, text lifts to `ink` weight-medium.
+**`tabs`**: One borderless radius-8 navigation treatment.
+- Container (`TabsList`): borderless row or column with a 4px gap.
+- Trigger (`TabsTrigger`): `px-3 py-2 text-small`, muted text at rest, `layer-hover` on hover.
+- Active trigger: `bg-layer-selected`, `text-ink`, weight medium.
 - Vertical orientation: `TabsPanel` adds `pl-6 flex-1 min-w-0`; root gets `flex gap-0`.
-- No sliding `TabsPrimitive.Indicator` — the container-line merge does the tracking work.
+- Keyboard focus uses `selectionFocus`.
 
 **`toggle`**: Press-to-toggle button (Bold / Italic / Star / Pin).
 - Vocabulary matches Button: `tertiary` (transparent at rest) / `secondary` (filled at rest). Both use `layer-selected` for the persisted pressed state and the compact non-editable focus indicator.

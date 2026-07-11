@@ -5,7 +5,7 @@ export const metadata = { title: "Tabs" };
 
 # Tabs
 
-Compound component built on Base UI Tabs. Uses a folder-tab shape: each active tab has a hairline top and sides with rounded top corners, and pulls -1px into the container line so its fill covers the line underneath — the classic manila-folder merge with the panel. Works in both horizontal and vertical orientations; the layout switches automatically so one component can render a top strip on wide screens and a side rail on narrow ones.
+A quiet selected-navigation control built on Base UI Tabs. Triggers are borderless, use a subtle hover overlay, and keep a stronger selected fill. Horizontal and vertical orientations share the same state treatment.
 
 <Install name="tabs" />
 
@@ -28,7 +28,7 @@ import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
   <TabsPanel value="settings">...</TabsPanel>
 </Tabs>
 
-// Vertical — list on the left, panel on the right
+// Vertical: list on the left, panel on the right
 <Tabs orientation="vertical" defaultValue="profile">
   <TabsList className="w-44">
     <TabsTrigger value="profile">Profile</TabsTrigger>
@@ -75,12 +75,11 @@ import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
 ## Components
 
 - `Tabs` - root; accepts `orientation`, `defaultValue` or controlled `value`/`onValueChange`
-- `TabsList` - container for triggers; carries the container hairline the active tab cuts into
+- `TabsList` - borderless container for triggers
 - `TabsTrigger` - individual tab; accepts `icon`, `badge` (numeric badges hide at 0), `tooltip` (for disabled), and carries `data-[active]` for active-state styling
 - `TabsPanel` - matched panel for a trigger value; horizontally adds `pt-6`, vertically becomes the flex-1 column beside the list
 
 <Callout title="Notes">
-- **Surface match:** The active tab fills with `bg-base` so it matches the page surface. When placing Tabs inside a Card or other elevated surface, override the trigger's `data-[active]:bg-*` via `className` so the tab fills against that surface instead.
-- **No shift on select:** Every tab reserves a `border border-transparent` so the active hairline border doesn't shift adjacent tabs when selection changes.
-- **Keyboard:** Base UI ships proper roving tabindex + arrow-key navigation, Home / End, and standard focus outline.
+- **States:** Hover uses `layer-hover`; the stored selection uses the stronger `layer-selected` overlay.
+- **Keyboard:** Base UI provides roving tabindex, arrow-key navigation, and Home / End. Keyboard focus uses the compact neutral indicator shared by non-editable controls.
 </Callout>
