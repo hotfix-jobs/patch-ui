@@ -62,7 +62,7 @@ export function Tooltip({
           >
             <TooltipPrimitive.Popup
               className={cn(
-                "rounded-[var(--radius-8)] bg-layer-1 border border-hairline px-2.5 py-1.5 text-mini text-ink shadow-tooltip transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+                "rounded-[var(--radius-6)] bg-layer-1 border border-hairline px-2 py-1 text-mini text-ink shadow-tooltip transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
                 className,
               )}
               data-slot="tooltip-content"
@@ -102,7 +102,7 @@ export function TooltipContent({
       >
         <TooltipPrimitive.Popup
           className={cn(
-            "rounded-[var(--radius-8)] bg-layer-1 border border-hairline px-2.5 py-1.5 text-mini text-ink shadow-tooltip transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
+            "rounded-[var(--radius-6)] bg-layer-1 border border-hairline px-2 py-1 text-mini text-ink shadow-tooltip transition-[opacity,scale] duration-[var(--duration-state)] ease-[var(--ease-standard)] data-ending-style:scale-[0.97] data-ending-style:opacity-0 data-starting-style:scale-[0.97] data-starting-style:opacity-0",
             className,
           )}
           data-slot="tooltip-content"

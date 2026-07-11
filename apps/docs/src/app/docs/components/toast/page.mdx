@@ -56,11 +56,11 @@ toast.dismiss(id);
 
 ## Chrome
 
-- **radius-12** rounded corners, **1px** hairline border, `shadow-modal` drop shadow: matches Modal / Sheet / Menu chrome.
+- **radius-12** rounded corners, a **1px** hairline border, and `shadow-menu` elevation keep the notification distinct without making it as heavy as a modal.
 - **Semantic icon color** signals the variant: `--success` for success, `--error` for error, `--warning` for warning. No background flood on the toast itself.
 - **Compact padding** matching Menu density.
 - **Typography**: title is `text-small font-medium`, description is `text-mini text-ink-muted`.
-- **Action button** renders as a bordered secondary button inside the toast.
+- **Action button** uses a quiet borderless fill, with the same interaction states as other embedded controls.
 
 ## Props
 

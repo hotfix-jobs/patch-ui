@@ -302,13 +302,13 @@ components:
     rounded: "{rounded.surface}"
     padding: 4px
     shadow: shadow-menu
-  # Tooltip uses radius 8 (was 6) so its corner matches Button square.
+  # Tooltip stays tighter than content-bearing overlays.
   tooltip:
     backgroundColor: "{colors.layer-1}"
     borderColor: "{colors.hairline}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
-    padding: 6px 10px
+    rounded: 6px
+    padding: 4px 8px
     typography: "{typography.mini}"
     shadow: shadow-tooltip
   # Badges default to radius-6 metadata geometry; pill is an explicit
@@ -618,9 +618,9 @@ The canvas is the whitespace. Sections are separated by 96px of canvas between b
 | 1 (canvas surfaces) | `{colors.base}` bg | Docs shell backdrop, page background |
 | 2 (content surface) | `{colors.layer-1}` bg, no border | Flat Card and content groupings |
 | 2b (elevated Card) | `{colors.layer-1}` bg + `shadow-card` | Auth cards, marketing lifts, any surface that should read as a distinct object |
-| 3 (popup) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-menu` | Menu popup, Combobox, Select popup, Command palette, Popover |
+| 3 (popup) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-menu` | Menu popup, Combobox, Select popup, Command palette, Popover, Toast |
 | 4 (tooltip) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-tooltip` | Tooltip chip |
-| 5 (modal) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-modal` | Dialog, sheet, toast |
+| 5 (modal) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-modal` | Dialog, sheet |
 | 6 (focus) | 2px `{colors.focus-ring-color}` outline | Focused editable controls and compact keyboard-focus indicators. |
 
 **Card treatment is intent-based.** `surface` is the default content surface, `outlined` adds an explicit structural boundary, and `elevated` adds `shadow-card`. The caller owns layout and dividers.
@@ -643,7 +643,7 @@ The library ships seven radii. Everything maps to one of them.
 |---|---|---|
 | `--radius-4` | 4px | Checkbox, radio thumb — where 6px would look proportionally too round |
 | `--radius-6` | 6px | Menu-row highlight, small chips (Badge default), kbd, dense chrome |
-| `--radius-8` | 8px | Labeled Buttons, Input, Textarea, Select trigger, Combobox trigger, Tabs, Tooltip, ModalInset, Toggle, ToggleGroup, and Toast actions |
+| `--radius-8` | 8px | Labeled Buttons, Input, Textarea, Select trigger, Combobox trigger, Tabs, ModalInset, Toggle, ToggleGroup, and Toast actions |
 | `--radius-10` | 10px | In-between step for surfaces that want more than 8 but less than 12 |
 | `--radius-12` | 12px | `popupSurface` recipe: Menu popup, Combobox popup, Select popup, Popover, Command palette; Sheet (all four sides) |
 | `--radius-16` | 16px | Marketing panels, hero surfaces, product screenshot frames |
@@ -790,14 +790,14 @@ Each component below is a single paragraph plus a token map. Full API and source
 - Menu / list row (`itemRow.base`): `rounded-[var(--radius-6)]`; active or highlighted navigation uses `bg-layer-hover`, while selected, checked, or `aria-selected` rows use `bg-layer-selected`, including when highlighted.
 - Menu, Combobox, and Popover all wrap the mobile centered panel in `<RemoveScroll>` (react-remove-scroll) to lock body scroll while the sheet-like mobile popup is open. Popover gained a full mobile-centered branch this cycle (Backdrop + centered popup at `w-[calc(100vw-1rem)]` and `max-h-[calc(100dvh-2rem)]`).
 
-**`tooltip`**: Compact tooltip. Uses the same lifted-chrome recipe as menus (no inverted `bg-ink` chip).
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, text `{colors.ink}`, radius `--radius-8` (was 6), padding 6px 10px, type `{typography.mini}`, shadow `shadow-tooltip`.
+**`tooltip`**: Compact tooltip. Uses a tighter treatment than content-bearing overlays.
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, text `{colors.ink}`, radius `--radius-6`, padding 4px 8px, type `{typography.mini}`, shadow `shadow-tooltip`.
 - Enter/exit: `duration-state` 75ms `ease-standard`, opacity + scale-from-97%.
 
 **`toast`**: Positioned toast, bottom-right by default.
-- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `--radius-12`, padding 12px 16px, shadow `shadow-modal`, type `{typography.control-md}` title + `{typography.mini}` description.
-- Action button: composes Button `secondary` chrome — radius `--radius-8`, `hover:border-hairline-strong`.
-- Close button: circle icon-only (`size-7 rounded-full`), lucide `X`, `hover:bg-layer-hover hover:text-ink`.
+- Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `--radius-12`, padding 12px 16px, shadow `shadow-menu`, type `{typography.control-md}` title + `{typography.mini}` description.
+- Action button: borderless `bg-fill-1` at radius `--radius-8`, with shared embedded-control states.
+- Close button: compact radius-8 icon-only control with shared selection focus and interaction states.
 - Status icons: lucide `CircleCheck` / `CircleAlert` / `TriangleAlert` / `Info` in mapped Tailwind classes (`text-success`, `text-error`, `text-warning`, `text-ink-muted`).
 
 ### Badges

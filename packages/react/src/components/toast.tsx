@@ -10,7 +10,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { selectionFocus } from "../recipes";
 import { Spinner } from "./spinner";
 
 /* ----------------------------- types ----------------------------- */
@@ -176,7 +176,7 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
               "pointer-events-auto absolute w-full select-none",
               "rounded-[var(--radius-12)]",
               "bg-layer-1 text-ink",
-              "border border-hairline shadow-modal",
+              "border border-hairline shadow-menu",
               "px-3 py-3 pe-10",
               "flex items-start gap-2.5",
               // Stacking + transitions via Base UI CSS variables
@@ -211,12 +211,11 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
                   onClick={action.onClick}
                   className={cn(
                     "mt-2 inline-flex items-center justify-center",
-                    "rounded-[var(--radius-8)] border border-hairline",
-                    "bg-layer-1 px-2.5 py-1",
+                    "rounded-[var(--radius-8)] bg-fill-1 px-2.5 py-1",
                     "text-small font-medium text-ink",
                     "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-                    "hover:bg-layer-2 hover:border-hairline-strong",
-                    focusRing,
+                    "hover:bg-fill-2 active:bg-layer-selected",
+                    selectionFocus,
                   )}
                   data-slot="toast-action"
                 >
@@ -230,10 +229,10 @@ function ToastList({ position }: { position: ToastPosition }): React.ReactElemen
               className={cn(
                 "absolute top-1/2 -translate-y-1/2 end-2",
                 "flex size-7 items-center justify-center",
-                "rounded-full text-ink-muted",
+                "rounded-[var(--radius-8)] text-ink-muted",
                 "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-                "hover:bg-layer-hover hover:text-ink",
-                focusRing,
+                "hover:bg-layer-hover hover:text-ink active:bg-layer-selected",
+                selectionFocus,
               )}
             >
               <X className="size-3.5" aria-hidden />

@@ -90,7 +90,7 @@ export function PopoverContent({
               // top-1/2 / left-1/2 + translate. Full width minus 8px
               // gutters left/right.
               "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
-              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
+              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu",
               "max-h-[calc(100dvh-2rem)]",
               // Fade + slight upward drift on enter. Starts 8px below
               // final center, animates up.

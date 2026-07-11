@@ -69,7 +69,7 @@ export function PopoverDemo() {
             }
           />
           <PopoverContent align="end" className="md:w-[360px] p-0">
-            <div className="flex items-center justify-between border-b border-hairline px-4 py-3">
+            <div className="flex items-center justify-between px-4 pt-4 pb-2">
               <div className="flex items-center gap-2">
                 <span className="text-small font-medium text-ink">Notifications</span>
                 {unreadCount > 0 && (
@@ -93,7 +93,7 @@ export function PopoverDemo() {
               {notifications.map((n) => (
                 <li
                   key={n.id}
-                  className="flex gap-3 border-b border-hairline px-4 py-3 last:border-b-0"
+                  className="flex gap-3 rounded-[var(--radius-8)] px-4 py-3 hover:bg-layer-hover"
                 >
                   <span
                     aria-hidden
@@ -183,7 +183,7 @@ export function PopoverDemo() {
                 Suspended
               </label>
             </div>
-            <div className="mt-4 flex justify-between border-t border-hairline pt-3">
+            <div className="mt-4 flex justify-between pt-1">
               <PopoverClose render={<Button variant="tertiary" size="sm" />}>
                 Reset
               </PopoverClose>
