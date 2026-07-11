@@ -6,11 +6,11 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Spinner } from "./spinner";
 import type * as React from "react";
 import { cn } from "../utils";
-import { disabled, colorTransition, focusRing, iconMuted, iconMutedSolid } from "../recipes";
-import { X } from "@phosphor-icons/react/dist/ssr";
+import { disabled, colorTransition, iconMuted, iconMutedSolid } from "../recipes";
 export const buttonVariants = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",
+    "rounded-[var(--radius-8)]",
     "cursor-pointer",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
     // Extend tap target to 44px on coarse pointers without changing visual size.
@@ -21,7 +21,7 @@ export const buttonVariants = cva(
     disabled,
   ].join(" "),
   {
-    defaultVariants: { size: "lg", variant: "primary", shape: "square" },
+    defaultVariants: { size: "lg", variant: "primary" },
     variants: {
       size: {
         sm: "h-6 px-2.5 gap-1.5 text-mini font-medium",
@@ -32,20 +32,15 @@ export const buttonVariants = cva(
         primary:
           "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover active:bg-primary-active",
         secondary:
-          "border border-hairline bg-layer-1 text-ink hover:border-hairline-strong hover:bg-layer-2 focus-visible:border-hairline-strong focus-visible:bg-layer-2 data-[popup-open]:border-transparent data-[popup-open]:bg-hairline-strong active:border-hairline-strong active:bg-layer-selected active:bg-clip-padding",
+          "bg-fill-1 text-ink hover:bg-fill-2 focus-visible:bg-fill-2 data-[popup-open]:bg-fill-2 active:bg-layer-selected",
         soft:
-          "bg-fill-1 text-ink hover:bg-fill-2 focus-visible:bg-fill-2 data-[popup-open]:bg-hairline-strong active:bg-layer-selected",
+          "bg-primary-soft text-on-primary-soft hover:bg-primary-soft-hover focus-visible:bg-primary-soft-hover data-[popup-open]:bg-primary-soft-hover active:bg-primary-soft-active",
         tertiary:
           "bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover data-[popup-open]:bg-hairline-strong active:bg-layer-selected",
         warning:
           "bg-warning text-warning-fg hover:bg-warning-hover focus-visible:bg-warning-hover active:bg-warning-active",
         destructive:
           "bg-error text-error-fg hover:bg-error-hover focus-visible:bg-error-hover active:bg-error-active",
-      },
-      shape: {
-        square: "rounded-[var(--radius-8)]",
-        pill: "rounded-full",
-        circle: "rounded-full",
       },
     },
   },
@@ -54,22 +49,10 @@ export const buttonVariants = cva(
 export interface ButtonProps extends useRender.ComponentProps<"button"> {
   variant?: VariantProps<typeof buttonVariants>["variant"];
   size?: VariantProps<typeof buttonVariants>["size"];
-  shape?: VariantProps<typeof buttonVariants>["shape"];
   icon?: React.ReactNode;
   iconPosition?: "left" | "right";
   loading?: boolean;
   disabled?: boolean;
-  /** De-emphasized label + icon chrome layered on top of the variant.
-   *  Idle: `text-ink-subtle` label + `iconMuted` icon color. Hover /
-   *  focus: label + icon lift to `text-ink`. The variant's background
-   *  and border are unchanged — this only touches label/icon. Used by
-   *  filter chips, role-family navigation chips, and link-cluster
-   *  buttons where the row of controls should read as chrome rather
-   *  than as primary CTAs. */
-  muted?: boolean;
-  /** Renders a trailing × sub-button; fires without triggering the parent onClick. */
-  onRemove?: () => void;
-  removeLabel?: string;
 }
 
 const iconOnlyWidth: Record<NonNullable<ButtonProps["size"]>, string> = {
@@ -82,20 +65,16 @@ export function Button({
   className,
   variant,
   size,
-  shape,
   icon,
   iconPosition = "left",
   loading,
   disabled: isDisabled,
-  muted,
-  onRemove,
-  removeLabel = "Remove",
   render,
   children,
   ...props
 }: ButtonProps): React.ReactElement {
   const effectiveSize: NonNullable<ButtonProps["size"]> = size ?? "md";
-  const isIconOnly = (icon != null && !children) || shape === "circle";
+  const isIconOnly = icon != null && !children;
   const iconOnly = isIconOnly ? iconOnlyWidth[effectiveSize] : "";
   const iconOnlyRecipe = isIconOnly
     ? variant === "secondary" || variant === "tertiary"
@@ -116,58 +95,18 @@ export function Button({
       {icon && iconPosition === "left" && icon}
       {children}
       {icon && iconPosition === "right" && icon}
-      {onRemove && (
-        <span
-          role="button"
-          tabIndex={0}
-          aria-label={removeLabel}
-          // Stop mousedown so a parent trigger (Base UI opens on mousedown by
-          // default) doesn't fire when the user clicks the X; onClick alone
-          // runs too late.
-          onMouseDown={(e) => e.stopPropagation()}
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={(e) => {
-            e.stopPropagation();
-            onRemove();
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              e.stopPropagation();
-              onRemove();
-            }
-          }}
-          className={cn(
-            "-me-1 inline-flex size-4 shrink-0 items-center justify-center rounded-full opacity-70",
-            "hover:opacity-100",
-            focusRing,
-            colorTransition,
-          )}
-          data-slot="button-remove"
-        >
-          <X className="size-2.5" />
-        </span>
-      )}
     </>
   );
 
   const typeValue: React.ButtonHTMLAttributes<HTMLButtonElement>["type"] =
     render ? undefined : "button";
 
-  // `muted` layers the FilterButton chrome on top of the base variant:
-  // subtle label + iconMuted at rest, lift to text-ink on hover. Only
-  // affects label / icon color — surface (bg + border) still comes
-  // from the base variant so the caller keeps their chosen fill.
-  const mutedRecipe = muted
-    ? cn("gap-1.5 text-ink-subtle hover:text-ink data-[popup-open]:text-ink", iconMuted)
-    : "";
-
   const defaultProps = {
     className: cn(
-      buttonVariants({ size: effectiveSize, variant, shape }),
+      buttonVariants({ size: effectiveSize, variant }),
       iconOnly,
+      isIconOnly && "rounded-full",
       iconOnlyRecipe,
-      mutedRecipe,
       className,
     ),
     "data-slot": "button",

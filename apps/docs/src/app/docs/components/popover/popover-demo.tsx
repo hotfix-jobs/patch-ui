@@ -5,6 +5,8 @@ import {
   Badge,
   Button,
   Checkbox,
+  Field,
+  FieldLabel,
   Input,
   Popover,
   PopoverClose,
@@ -52,7 +54,6 @@ export function PopoverDemo() {
             render={
               <Button
                 variant="tertiary"
-                shape="circle"
                 aria-label="Notifications"
               >
                 <span className="relative flex items-center justify-center">
@@ -129,12 +130,14 @@ export function PopoverDemo() {
               Set a value in pixels.
             </p>
             <div className="mt-3 flex flex-col gap-2">
-              <Input
-                id="popover-width"
-                label="Width"
-                value={width}
-                onChange={(e) => setWidth(e.target.value)}
-              />
+              <Field>
+                <FieldLabel>Width</FieldLabel>
+                <Input
+                  id="popover-width"
+                  value={width}
+                  onChange={(e) => setWidth(e.target.value)}
+                />
+              </Field>
             </div>
             <div className="mt-4 flex justify-end gap-2">
               <PopoverClose render={<Button variant="tertiary" size="sm" />}>

@@ -85,7 +85,7 @@ function IntroCard({
   href: string;
 }) {
   return (
-    <Card hoverable className="p-5" render={<Link href={href} />}>
+    <Card interactive className="p-5" render={<Link href={href} />}>
       <div className="flex items-center gap-2 text-ink-muted">
         <span className="inline-flex items-center justify-center">{icon}</span>
         <span className="text-small font-medium text-ink">{title}</span>

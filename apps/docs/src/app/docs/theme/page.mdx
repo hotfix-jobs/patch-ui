@@ -53,13 +53,13 @@ Rules of thumb:
 
 <RadiusSamples />
 
-`radius-4` is reserved for very small controls (Checkbox, radio thumb) where 6px reads too round. `radius-6` for badges/tags and small chip-scale elements. `radius-8` for controls (Button `square`, Input, Select, Textarea, Toggle `square`, Tooltip, ModalInset). `radius-12` for floating panels (Menu popup, Combobox popup, Select popup, Popover, Command, Sheet, Modal, Calendar). `radius-16` for marketing chrome (hero panels). `radius-full` for pill Buttons, Avatars, and circular icon buttons.
+`radius-4` is reserved for very small controls such as Checkbox and radio thumbs. `radius-6` is for badges and metadata. `radius-8` is for controls. `radius-12` is for Cards and floating panels. `radius-16` is for large marketing chrome. `radius-full` is reserved for intrinsically circular geometry.
 
 **Shadows.** Elevation is intentional and sparing. `--shadow-card` (elevated Card + slider/switch thumbs), `--shadow-menu` (Menu / Combobox / Select popup), `--shadow-tooltip` (Tooltip), `--shadow-modal` (Modal / Sheet / Toast). Card `variant="elevated"` applies `shadow-card` in light and `dark:shadow-none` — the token has a dark value for slider/switch thumbs that need to remain visible against their track.
 
 **Motion.** One easing (`--ease-standard`), two durations: `--duration-state` (75ms, for hover/active transitions) and `--duration-overlay` (150ms, for open/close). Under `prefers-reduced-motion: reduce`, both collapse to `0ms` automatically.
 
-**Focus.** A 2px outline offset 2px outside the element border, colored `--primary` so it inherits any consumer brand override. Delivered through the `focusRing` recipe. Inputs are the intentional exception: text fields match `:focus-visible` on every click, so instead of the outside ring their border shifts to `--primary` plus a soft low-alpha halo hugging it (`--focus-halo`, 3px at 18% alpha, also `--primary`-derived).
+**Focus.** A crisp 2px outline colored `--primary`, so it inherits any consumer brand override. The `focusRing` recipe offsets it 2px outside interactive controls. Filled Inputs draw the same solid outline directly at the control edge and return to `--layer-1` while focused.
 
 ## Customizing
 

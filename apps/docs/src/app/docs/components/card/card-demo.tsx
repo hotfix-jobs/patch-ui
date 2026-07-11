@@ -7,11 +7,19 @@ export function CardDemo() {
   return (
     <div className="flex w-full flex-col gap-8">
       <div className="space-y-3">
-        <SectionLabel>Flat (default)</SectionLabel>
+        <SectionLabel>Surface (default)</SectionLabel>
         <Card className="p-4 max-w-sm">
           <p className="text-small text-ink">
-            Transparent frame with a hairline border. Quiet default for
-            search/list/content surfaces.
+            A clear content surface without decorative border chrome.
+          </p>
+        </Card>
+      </div>
+
+      <div className="space-y-3">
+        <SectionLabel>Outlined</SectionLabel>
+        <Card variant="outlined" className="p-4 max-w-sm">
+          <p className="text-small text-ink">
+            An explicit boundary for dense or administrative layouts.
           </p>
         </Card>
       </div>
@@ -20,44 +28,25 @@ export function CardDemo() {
         <SectionLabel>Elevated</SectionLabel>
         <Card variant="elevated" className="p-4 max-w-sm">
           <p className="text-small text-ink">
-            Fills with <code>bg-layer-1</code>, soft edge, and a light lift
-            shadow (light only). Opt-in for auth cards, marketing lifts, or any
-            surface that should read as a distinct object.
+            Uses the same surface with a quiet shadow when the object needs
+            additional separation.
           </p>
         </Card>
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Hoverable</SectionLabel>
-        <Card hoverable className="p-4 max-w-sm">
+        <SectionLabel>Interactive</SectionLabel>
+        <Card interactive className="p-4 max-w-sm">
           <p className="text-small text-ink">
-            Hover to see the border emphasis (quiet — no bg shift).
+            Hover to see the surface lift without adding a border.
           </p>
-        </Card>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Border between children (list container)</SectionLabel>
-        <Card borderBetween className="max-w-sm">
-          <div className="p-4"><p className="text-small text-ink">Option 1</p></div>
-          <div className="p-4"><p className="text-small text-ink">Option 2</p></div>
-          <div className="p-4"><p className="text-small text-ink">Option 3</p></div>
-        </Card>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Row direction with dividers</SectionLabel>
-        <Card borderBetween direction="row" className="max-w-md">
-          <div className="p-4 flex-1"><p className="text-small text-ink">Left</p></div>
-          <div className="p-4 flex-1"><p className="text-small text-ink">Middle</p></div>
-          <div className="p-4 flex-1"><p className="text-small text-ink">Right</p></div>
         </Card>
       </div>
 
       <div className="space-y-3">
         <SectionLabel>Selected (multi-pick highlight)</SectionLabel>
         <Card selected className="p-4 max-w-sm">
-          <p className="text-small text-ink">Selected plan: border stands out.</p>
+          <p className="text-small text-ink">Selected plan: grouped surface fill.</p>
         </Card>
       </div>
     </div>

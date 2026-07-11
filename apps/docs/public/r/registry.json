@@ -138,7 +138,6 @@
       "title": "Button",
       "dependencies": [
         "@base-ui/react",
-        "@phosphor-icons/react",
         "class-variance-authority"
       ],
       "registryDependencies": [

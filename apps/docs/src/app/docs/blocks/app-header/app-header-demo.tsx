@@ -112,7 +112,7 @@ export function AppHeaderDemo() {
             </AppHeaderNav>
 
             <AppHeaderRight>
-              <Button variant="tertiary" size="md" shape="pill">
+              <Button variant="tertiary" size="md">
                 Send feedback
               </Button>
               <Avatar size="sm" letter="A" />
@@ -188,7 +188,6 @@ export function AppHeaderDemo() {
               <Button
                 variant="tertiary"
                 size="md"
-                shape="circle"
                 aria-label="Notifications"
                 icon={<Bell />}
               />
@@ -198,7 +197,6 @@ export function AppHeaderDemo() {
               <Button
                 variant="tertiary"
                 size="md"
-                shape="circle"
                 aria-label="Notifications"
                 icon={<Bell />}
               />
@@ -301,10 +299,10 @@ export function AppHeaderDemo() {
             </AppHeaderNav>
 
             <AppHeaderRight>
-              <Button variant="tertiary" size="md" shape="pill">
+              <Button variant="tertiary" size="md">
                 Sign in
               </Button>
-              <Button variant="primary" size="md" shape="pill">
+              <Button variant="primary" size="md">
                 Get started
               </Button>
             </AppHeaderRight>

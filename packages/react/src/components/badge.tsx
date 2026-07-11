@@ -8,14 +8,13 @@ import { cn } from "../utils";
 
 export const badgeVariants = cva(
   [
-    "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap",
+    "relative inline-flex shrink-0 items-center justify-center gap-1 whitespace-nowrap rounded-[var(--radius-6)]",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
   ].join(" "),
   {
     defaultVariants: {
       size: "md",
       color: "default",
-      shape: "rounded",
       variant: "soft",
     },
     variants: {
@@ -30,10 +29,6 @@ export const badgeVariants = cva(
         warning: "",
         error: "",
       },
-      shape: {
-        rounded: "rounded-[var(--radius-6)]",
-        pill: "rounded-full",
-      },
       variant: {
         solid: "",
         soft: "",
@@ -47,7 +42,7 @@ export const badgeVariants = cva(
       { color: "success", variant: "solid", class: "bg-success text-success-fg" },
       { color: "warning", variant: "solid", class: "bg-warning text-warning-fg" },
       { color: "error",   variant: "solid", class: "bg-error text-error-fg" },
-      { color: "default", variant: "soft", class: "bg-fill-2 text-ink-muted" },
+      { color: "default", variant: "soft", class: "bg-fill-1 text-ink-muted" },
       { color: "success", variant: "soft", class: "bg-success-soft-bg text-success-soft-fg" },
       { color: "warning", variant: "soft", class: "bg-warning-soft-bg text-warning-soft-fg" },
       { color: "error",   variant: "soft", class: "bg-error-soft-bg text-error-soft-fg" },
@@ -65,7 +60,6 @@ export interface BadgeProps extends Omit<useRender.ComponentProps<"span">, "colo
   /** Semantic color. Maps to fill / border / text tokens per `variant`. */
   color?: VariantProps<typeof badgeVariants>["color"];
   size?: VariantProps<typeof badgeVariants>["size"];
-  shape?: VariantProps<typeof badgeVariants>["shape"];
   /** Visual treatment. `solid` = saturated fill. `soft` (default) =
    *  tinted fill for dense surfaces. `outlined` = no fill, hairline border. */
   variant?: VariantProps<typeof badgeVariants>["variant"];
@@ -77,7 +71,6 @@ export function Badge({
   className,
   color,
   size,
-  shape,
   variant,
   icon,
   render,
@@ -85,7 +78,7 @@ export function Badge({
   ...props
 }: BadgeProps): React.ReactElement {
   const defaultProps = {
-    className: cn(badgeVariants({ size, color, shape, variant }), className),
+    className: cn(badgeVariants({ size, color, variant }), className),
     "data-slot": "badge",
     children: (
       <>

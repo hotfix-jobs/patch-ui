@@ -39,10 +39,6 @@ import { Badge } from "@patchui/react";
 // With inline icon
 <Badge icon={<Shield />} color="default">Verified</Badge>
 
-// Shape
-<Badge shape="rounded">Rounded</Badge> // default, 6px radius
-<Badge shape="pill">Pill</Badge>       // full radius
-
 // As a link
 <Badge render={<a href="/status" />}>Linked</Badge>
 ```
@@ -70,12 +66,6 @@ import { Badge } from "@patchui/react";
       description: "Badge size.",
     },
     {
-      name: "shape",
-      type: '"pill" | "rounded"',
-      default: '"rounded"',
-      description: "`rounded` = 6px radius (default). `pill` = fully rounded — reach for it on marketing surfaces or when the badge sits next to a pill-shaped Button.",
-    },
-    {
       name: "icon",
       type: "ReactNode",
       default: "-",
@@ -97,7 +87,7 @@ import { Badge } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- Badge is display-only. If the value is clickable: remove it, open a menu, follow a link: reach for `<Button>` (with `shape="pill"` for the same silhouette).
+- Badge is display-only and always uses radius 6. If the value is clickable, removable, opens a menu, or follows a link, use an interactive control.
 - Keep the text tight: one word if you can, two at most (`Active`, `Pending`, `Pro`, `Enterprise Trial`). Use the same wording as the value in your API and logs so labels and data stay in sync.
 - Colors carry the signal: don't double up. A `success` badge doesn't also need a check icon; an `error` badge doesn't need an ×. The color IS the meaning.
 - If a row has two badges, chances are the row wanted a second column.

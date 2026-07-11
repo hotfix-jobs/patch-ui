@@ -54,14 +54,6 @@ export function BadgeDemo() {
         </div>
       </div>
 
-      <div>
-        <p className="mb-3 text-mini text-ink-muted">Shape</p>
-        <div className="flex flex-wrap items-center gap-3">
-          <Badge shape="pill">Pill</Badge>
-          <Badge shape="rounded">Rounded</Badge>
-        </div>
-      </div>
-
     </div>
   );
 }

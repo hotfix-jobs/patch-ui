@@ -96,10 +96,10 @@ export function NavigationMenuDemo() {
         </NavigationMenu>
 
         <div className="ms-auto flex items-center gap-2">
-          <Button variant="tertiary" size="md" shape="pill">
+          <Button variant="tertiary" size="md">
             Sign in
           </Button>
-          <Button variant="primary" size="md" shape="pill">
+          <Button variant="primary" size="md">
             Get started
           </Button>
         </div>

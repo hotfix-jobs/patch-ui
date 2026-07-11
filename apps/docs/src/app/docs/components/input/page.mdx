@@ -4,7 +4,7 @@ export const metadata = { title: "Input" };
 
 # Input
 
-A text input with three sizes, styled/unstyled `prefix` + `suffix` slots, built-in `label` and `error` message, and a `rounded` (pill) variant. Uses `--layer-1` fill so it lifts over the page, with translucent borders that step through hover/focus.
+A focused text-control primitive with three sizes and optional `prefix` and `suffix` slots. It uses a neutral fill, no resting border, radius 8, and a crisp solid focus outline. Compose labels, descriptions, and errors with `Field`.
 
 <Install name="input" />
 
@@ -15,7 +15,7 @@ A text input with three sizes, styled/unstyled `prefix` + `suffix` slots, built-
 ## Usage
 
 ```tsx
-import { Input } from "@patchui/react";
+import { Field, FieldError, FieldLabel, Input } from "@patchui/react";
 import { MagnifyingGlass, Envelope, ArrowCircleUp } from "@phosphor-icons/react/dist/ssr";
 // Basic
 <Input placeholder="Enter text" />
@@ -30,12 +30,12 @@ import { MagnifyingGlass, Envelope, ArrowCircleUp } from "@phosphor-icons/react/
 <Input suffix={<ArrowUpCircle />} placeholder="Icon suffix" />
 <Input prefix="https://" suffix=".com" placeholder="Text prefix and suffix" />
 
-// Inline label and error message
-<Input id="domain" label="Domain" placeholder="example.com" />
-<Input id="email" label="Email" error="Enter a valid email address." />
-
-// Rounded (pill-shaped)
-<Input rounded prefix={<Search />} placeholder="Search" />
+// Label and error composition
+<Field invalid>
+  <FieldLabel>Email</FieldLabel>
+  <Input id="email" type="email" />
+  <FieldError match>Enter a valid email address.</FieldError>
+</Field>
 
 // Loading: disables input, shows a spinner
 <Input loading value={value} />
@@ -71,30 +71,6 @@ import { MagnifyingGlass, Envelope, ArrowCircleUp } from "@phosphor-icons/react/
       description: "Content rendered at the end (icon, unit label, or text like `.com`). Rendered inline in muted color. Hidden while loading.",
     },
     {
-      name: "label",
-      type: "string",
-      default: "-",
-      description: "Renders a `<label>` above the input. When set, requires `id`.",
-    },
-    {
-      name: "id",
-      type: "string",
-      default: "-",
-      description: "Required when `label` is a string. Wires up `htmlFor` and `aria-describedby`.",
-    },
-    {
-      name: "error",
-      type: "boolean | string",
-      default: "false",
-      description: "Visual error state. Pass a string to render an inline error message below the input.",
-    },
-    {
-      name: "rounded",
-      type: "boolean",
-      default: "false",
-      description: "Renders a full-radius (pill-shaped) input.",
-    },
-    {
       name: "loading",
       type: "boolean",
       default: "false",
@@ -110,16 +86,16 @@ import { MagnifyingGlass, Envelope, ArrowCircleUp } from "@phosphor-icons/react/
       name: "className",
       type: "string",
       default: "-",
-      description: "Additional CSS classes applied to the outer wrapper (or the fieldset when `label`/`error` is set).",
+      description: "Additional CSS classes applied to the control wrapper.",
     },
   ]}
 />
 
 <Callout title="Notes">
-- The `error` prop takes a boolean (just the visual state) or a string (renders the message inline with `role="alert"`). Prefer strings.
+- Compose label, description, invalid state, and error messaging with `Field`.
 - Whitespace-trim the value at submit time so a stray space doesn't slip past a required check.
 - Placeholders should look like a real value the user would type: `example.com`, `my-project`. Skip the "Enter your…" instructions; the label already does that job.
 - Prefix and suffix render inline in muted color. Good for icons (`<Search />`, `<Mail />`), short text (`https://`, `.com`, currency symbols), and Kbd hints (`Esc`).
-- For an action button that sits inside an input row, use `<Button shape="circle">` with `aria-label`, not a naked icon.
+- For an action button that sits inside an input row, pass an icon-only Button with `aria-label`, not a naked icon.
 - Use `<SearchInput>` for search boxes: the trailing X button appears once the field has a value and clears it on click.
 </Callout>

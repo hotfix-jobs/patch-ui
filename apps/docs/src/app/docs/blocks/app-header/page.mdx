@@ -59,8 +59,8 @@ import {
   </AppHeaderMobileTop>
 
   <AppHeaderRight>
-    <Button variant="tertiary" size="sm" shape="pill">Sign in</Button>
-    <Button variant="primary" size="sm" shape="pill">Get started</Button>
+    <Button variant="tertiary" size="sm">Sign in</Button>
+    <Button variant="primary" size="sm">Get started</Button>
   </AppHeaderRight>
 </AppHeader>
 
@@ -83,7 +83,7 @@ Below `md`:
 ## Styling notes
 
 - **Desktop nav items** default to `text-ink-muted`. On hover they lift to `text-ink` and pick up a subtle `bg-fill-1` pill fill. The `active` prop lands the item at full `text-ink` + `font-medium`: no pill fill so "current page" reads distinctly from "hovered link."
-- **Marketing headers**: reach for `shape="pill"` on Buttons in the right slot. `Button shape="pill"` gives the fully-rounded chip look for "Log in" / "Sign up" CTAs.
+- **Header actions**: use the standard radius-8 Button shape so marketing and product controls share one vocabulary.
 - **Sticky headers**: pass `sticky` to pin the header. The panel renders below at `z-40` — the sticky header (`z-50`) stays above it so brand and the hamburger-to-X trigger remain visible.
 - **Escape hatch**: if you need a custom mobile pattern (drawer instead of full-viewport panel), skip this block and compose the primitives (`Sheet` + your own trigger).
 

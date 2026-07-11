@@ -7,11 +7,7 @@ export const metadata = { title: "Field" };
 
 A compound component for form fields that integrate with `<Form>` validation. Wraps Base UI's Field primitive with our styling.
 
-**When to use Field vs `<Input label="…" error="…" />`**
-
-- **Reach for `Input.label` / `Input.error`** when it's a single input, standalone or inside a hand-rolled form. It's one prop instead of five elements.
-- **Reach for Field** when the form uses `<Form>` for native validation on submit: Field automatically wires validity state, and `FieldError` shows / hides based on that state without you managing `useState` per input.
-- **Also Field** when a single label covers a group of controls (a RadioGroup, a Checkbox multi-select): the label describes the group, not any single control.
+Use Field whenever a control needs a label, description, required or optional marker, or error message. Input owns only the text control; Field owns the surrounding form semantics and message stack.
 
 For structured settings-page cards (title + subtitle + footer with status and actions), reach for `Section` instead: it's a different primitive for that specific layout.
 
@@ -57,7 +53,7 @@ import {
 <Field invalid>
   <FieldLabel>Password</FieldLabel>
   <Input type="password" />
-  <FieldError>Password must be at least 8 characters.</FieldError>
+  <FieldError match>Password must be at least 8 characters.</FieldError>
 </Field>
 ```
 

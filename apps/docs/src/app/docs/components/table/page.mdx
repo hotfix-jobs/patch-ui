@@ -195,7 +195,7 @@ import {
 
 <Callout title="Notes">
 - **State opinions live on the root.** `striped` / `interactive` / `bordered` moved from `TableBody` to `Table` this pass — one place to set them, propagated via context. `TableBody` is now a semantic passthrough.
-- **Variant naming matches Card / Section.** `flat` vs `elevated` are the same visual axis across every surface primitive, so an elevated Table sits next to an elevated Card without any tuning.
+- **Table retains its data-surface variants.** Its `flat` and `elevated` treatments are independent from Card's content-surface interface.
 - **Composition:** Every sub-component maps to a native table element, so standard HTML attributes pass through.
 - **Numerals:** Use `align="right"` on numeric `TableCell`s for right-align + tabular figures.
 - **Sortable heads:** Wire your own sort state. The head cycles the icon and sets `aria-sort` for you; the cycle logic is left to the consumer (three-state or two-state).

@@ -128,5 +128,5 @@ Each accepts `className` for overrides and `render` for polymorphic rendering (c
 - Section is opinionated on layout: `SectionFooter` uses `justify-between`, so status stretches left and actions stretch right. Skip either side and the other aligns naturally.
 - When only actions are present (no status text), the buttons will right-align: no need to add a spacer.
 - Section is a `<section>` element; `SectionTitle` renders as `<h3>` by default. If the parent already has an `<h2>`, that keeps the outline clean. Adjust with `render={<h2 />}` if the heading level needs to shift.
-- For general-purpose surfaces (nested cards, hoverable rows, dashed drop zones), reach for `<Card>`: it exposes the same `variant: "flat" | "elevated"` axis plus `hoverable` / `borderBetween`.
+- For general-purpose surfaces, reach for `<Card>` with `surface`, `outlined`, or `elevated` intent. Card layout and dividers are composed at the call site.
 </Callout>
