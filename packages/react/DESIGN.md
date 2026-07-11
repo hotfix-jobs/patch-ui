@@ -937,6 +937,7 @@ Each component page opens with a live demo (layer-1 panel, 32px padding), follow
 - Don't use em dashes in written content.
 - Don't hardcode ms durations or inline cubic-beziers.
 - Don't use `transition-all`.
+- Don't add `cursor-pointer`; interactive components use native platform cursor behavior.
 
 ## Responsive Behavior
 

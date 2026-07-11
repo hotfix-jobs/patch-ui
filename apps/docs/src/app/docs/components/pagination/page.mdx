@@ -40,18 +40,18 @@ const [page, setPage] = useState(1);
 
 ## SEO-friendly server-rendered pages
 
-For indexable content (jobs boards, listings, blog archives), pass an `href` builder. Every control renders as a real `<a href>` — no JavaScript required, crawlable by search engines, right-clickable, works with SSR / RSC.
+For indexable content (product catalogs, directories, blog archives), pass an `href` builder. Every control renders as a real `<a href>` with no JavaScript required, so it remains crawlable and works with SSR or RSC.
 
 ```tsx
 // Server component
 <Pagination
   page={currentPage}
   totalPages={totalPages}
-  href={(p) => (p === 1 ? "/jobs" : `/jobs?page=${p}`)}
+  href={(p) => (p === 1 ? "/products" : `/products?page=${p}`)}
 />
 ```
 
-The `p === 1` special-case keeps the canonical URL for the first page as the bare route (`/jobs` not `/jobs?page=1`), so the same page doesn't get indexed under two URLs.
+The `p === 1` special-case keeps the canonical URL for the first page as the bare route (`/products` rather than `/products?page=1`), so the same page is not indexed under two URLs.
 
 ## Props
 

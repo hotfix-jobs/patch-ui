@@ -20,7 +20,7 @@ export function ProgressDemo() {
           <div className="flex items-center gap-2">
             <FileText className="size-4 text-ink-muted" aria-hidden />
             <span className="flex-1 text-small text-ink">
-              resume-final.pdf
+              project-brief.pdf
             </span>
             <span className="tabular-nums text-mini text-ink-muted">
               {upload}%

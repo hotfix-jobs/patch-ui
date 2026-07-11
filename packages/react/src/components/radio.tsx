@@ -37,7 +37,7 @@ export function Radio({
     <RadioPrimitive.Root
       disabled={disabled}
       className={cn(
-        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full",
+        "inline-flex size-4 shrink-0 items-center justify-center rounded-full",
         "bg-fill-2 hover:bg-hairline-strong",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
@@ -65,7 +65,6 @@ export function Radio({
     <label
       className={cn(
         "inline-flex items-center gap-2 text-small text-ink",
-        !disabled && "cursor-pointer",
         disabled && "cursor-not-allowed opacity-50",
         wrapperClassName,
       )}

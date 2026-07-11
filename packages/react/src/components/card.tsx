@@ -9,7 +9,7 @@ import { focusRing } from "../recipes";
 export interface CardProps extends useRender.ComponentProps<"div"> {
   /** Visual treatment for the content surface. */
   variant?: "surface" | "outlined" | "elevated";
-  /** Add cursor, focus treatment, and hover elevation. */
+  /** Add focus treatment and hover elevation. */
   interactive?: boolean;
   /** Marks the card as selected with the grouped-content surface. */
   selected?: boolean;
@@ -31,7 +31,6 @@ export function Card({
       variant === "outlined" && "border border-hairline bg-transparent",
       variant === "elevated" && "bg-layer-1 shadow-card",
       interactive && [
-        "cursor-pointer",
         "hover:shadow-card",
         "active:bg-layer-2",
         "aria-disabled:pointer-events-none aria-disabled:opacity-50",

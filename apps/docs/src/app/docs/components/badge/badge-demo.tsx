@@ -49,7 +49,7 @@ export function BadgeDemo() {
         <div className="flex flex-wrap items-center gap-3">
           <Badge shape="rounded">Rounded</Badge>
           <Badge shape="pill">Pill</Badge>
-          <Badge shape="pill" color="success">Remote</Badge>
+          <Badge shape="pill" color="success">Featured</Badge>
         </div>
       </div>
 

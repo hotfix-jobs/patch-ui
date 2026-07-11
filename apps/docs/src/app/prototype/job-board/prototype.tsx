@@ -162,7 +162,7 @@ function CompanyMark({ job, size = "md" }: { job: (typeof jobs)[number]; size?: 
 function JobRow({ job, selected = false, roomy = false }: { job: (typeof jobs)[number]; selected?: boolean; roomy?: boolean }) {
   return (
     <article className={cn(
-      "group cursor-pointer rounded-[var(--radius-12)] bg-layer-1 transition-[background-color,box-shadow,transform] duration-[var(--duration-state)]",
+      "group rounded-[var(--radius-12)] bg-layer-1 transition-[background-color,box-shadow,transform] duration-[var(--duration-state)]",
       roomy ? "p-6" : "p-4",
       selected ? "bg-layer-2" : "hover:shadow-[var(--shadow-card)]",
     )}>
@@ -297,7 +297,7 @@ function VariantC() {
         <section className="mt-12">
           <div className="flex items-end justify-between"><div><h2 className="text-title2 font-semibold">Fresh matches</h2><p className="mt-1 text-small text-ink-muted">Updated just now</p></div><button className="text-small font-medium text-ink">View all 248</button></div>
           <div className="mt-5 divide-y divide-hairline-soft">{jobs.map((job) => (
-            <article key={job.title} className="group flex cursor-pointer gap-4 py-6 first:pt-0">
+            <article key={job.title} className="group flex gap-4 py-6 first:pt-0">
               <CompanyMark job={job} />
               <div className="min-w-0 flex-1 sm:grid sm:grid-cols-[1fr_auto] sm:gap-8">
                 <div><h3 className="text-large font-semibold group-hover:text-ink-muted">{job.title}</h3><p className="mt-1 text-small text-ink-muted">{job.company} · {job.location}</p><div className="mt-3 flex gap-2">{job.tags.map((tag) => <span key={tag} className="text-mini text-ink-subtle">{tag}</span>)}</div></div>

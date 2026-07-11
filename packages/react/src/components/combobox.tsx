@@ -476,7 +476,7 @@ export function ComboboxItem({
         "group",
         itemRow.base,
         itemRow.comfortable,
-        "cursor-pointer gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         iconMuted,
         className,
       )}

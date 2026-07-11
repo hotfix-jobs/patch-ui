@@ -24,7 +24,7 @@ export function Checkbox({
     <CheckboxPrimitive.Root
       disabled={disabled}
       className={cn(
-        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[var(--radius-4)]",
+        "inline-flex size-4 shrink-0 items-center justify-center rounded-[var(--radius-4)]",
         "bg-fill-2 hover:bg-hairline-strong",
         "data-checked:bg-ink data-checked:hover:bg-ink",
         "data-indeterminate:bg-ink",
@@ -59,7 +59,6 @@ export function Checkbox({
     <label
       className={cn(
         "inline-flex items-center gap-2 text-small text-ink",
-        !disabled && "cursor-pointer",
         disabled && "cursor-not-allowed opacity-50",
         wrapperClassName,
       )}

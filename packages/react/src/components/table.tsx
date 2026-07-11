@@ -142,7 +142,6 @@ export function TableBody({
         "[&_tr:last-child>td]:border-b-0",
         interactive && [
           "[&_td]:!border-b-0",
-          "[&_tr]:cursor-pointer",
           "[&_tr:hover>td]:bg-layer-hover",
           "[&_tr:hover>td:first-child]:rounded-l-[var(--radius-6)]",
           "[&_tr:hover>td:last-child]:rounded-r-[var(--radius-6)]",

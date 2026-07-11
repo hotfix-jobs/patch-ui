@@ -10,7 +10,6 @@ import { disabled, colorTransition, iconMuted, iconMutedSolid, popupTriggerOpen,
 export const buttonVariants = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",
-    "cursor-pointer",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
     // Extend tap target to 44px on coarse pointers without changing visual size.
     "pointer-coarse:after:absolute pointer-coarse:after:size-full pointer-coarse:after:min-h-11 pointer-coarse:after:min-w-11",

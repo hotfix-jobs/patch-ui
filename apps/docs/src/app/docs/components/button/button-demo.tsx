@@ -40,7 +40,7 @@ export function ButtonDemo() {
         <div className="flex flex-wrap items-center gap-3">
           <Button shape="rounded">Rounded</Button>
           <Button shape="pill">Pill</Button>
-          <Button shape="pill" variant="secondary">Filter jobs</Button>
+          <Button shape="pill" variant="secondary">Filter items</Button>
         </div>
       </div>
 

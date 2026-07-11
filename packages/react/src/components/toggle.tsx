@@ -8,7 +8,7 @@ import { colorTransition, iconMuted, selectionFocus } from "../recipes";
 
 export const toggleVariants = cva(
   [
-    "relative inline-flex shrink-0 cursor-pointer items-center justify-center whitespace-nowrap",
+    "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",
     "rounded-[var(--radius-8)]",
     "disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",

@@ -179,7 +179,7 @@ export function Dropzone({
           }
         }}
         className={cn(
-          "relative flex w-full cursor-pointer flex-col items-center justify-center rounded-[var(--radius-6)] border border-dashed border-hairline",
+          "relative flex w-full flex-col items-center justify-center rounded-[var(--radius-6)] border border-dashed border-hairline",
           DROP_AREA_SIZE[size],
           "text-center transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "hover:border-hairline-tertiary hover:bg-layer-hover",
