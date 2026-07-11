@@ -193,7 +193,7 @@ function JobRow({ job, selected = false, roomy = false }: { job: (typeof jobs)[n
   );
 }
 
-function JobDetail() {
+function _JobDetail() {
   const job = jobs[0];
   return (
     <article className="rounded-[var(--radius-12)] bg-layer-1 p-6 shadow-[var(--shadow-card)] lg:p-8">

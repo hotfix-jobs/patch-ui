@@ -331,7 +331,6 @@ function SearchSuggestionsResults({
   onActiveIndexChange: (index: number) => void;
   onSelect: (suggestion: SearchSuggestion) => void;
 }): React.ReactElement {
-  let optionIndex = -1;
   const hasSuggestions = field.sections.some(
     (section) => section.suggestions.length > 0,
   );
@@ -355,16 +354,21 @@ function SearchSuggestionsResults({
           </div>
         ) : hasSuggestions ? (
           <div id={listboxId} role="listbox" aria-label={field.label}>
-            {field.sections.map((section) => (
+            {field.sections.map((section, sectionIndex) => (
               <div key={section.id} data-slot="search-suggestions-section">
                 {section.label && (
                   <div className={cn(itemGroupLabel.base, itemGroupLabel.comfortable)}>
                     {section.label}
                   </div>
                 )}
-                {section.suggestions.map((suggestion) => {
-                  optionIndex += 1;
-                  const index = optionIndex;
+                {section.suggestions.map((suggestion, suggestionIndex) => {
+                  const index =
+                    field.sections
+                      .slice(0, sectionIndex)
+                      .reduce(
+                        (count, current) => count + current.suggestions.length,
+                        0,
+                      ) + suggestionIndex;
                   const active = index === activeIndex;
                   return (
                     <button
