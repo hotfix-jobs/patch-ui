@@ -5,7 +5,7 @@ export const metadata = { title: "Table" };
 
 # Table
 
-Composable native table primitives with restrained typography, borderless rows, and shared hover and selected-state fills.
+Composable native table primitives with clear horizontal dividers, restrained typography, and compact sorting controls.
 
 <Install name="table" />
 
@@ -23,12 +23,13 @@ import {
   TableFooter,
   TableRow,
   TableHead,
+  TableSortButton,
   TableCell,
   TableCaption,
   TableEmpty,
 } from "@patchui/react";
 
-// Surface (default): borderless
+// Default: open table with horizontal row dividers
 <Table>
   <TableHeader>
     <TableRow>
@@ -44,11 +45,10 @@ import {
   </TableBody>
 </Table>
 
-// Explicit boundary
-<Table variant="outlined">...</Table>
+// Optional outer boundary
+<Table bordered>...</Table>
 
-// Row-state opinions on the root
-<Table striped>...</Table>
+// Hover for actionable rows
 <Table interactive>...</Table>
 
 // Density
@@ -57,8 +57,10 @@ import {
 // Selected row
 <TableRow selected onClick={...}>...</TableRow>
 
-// Sortable column head
-<TableHead sortable direction="asc" onSort={...}>Name</TableHead>
+// Compact sort control
+<TableHead aria-sort="ascending">
+  <TableSortButton direction="asc" onClick={...}>Name</TableSortButton>
+</TableHead>
 
 // Sticky header inside a fixed-height scroll container
 <div className="h-64 overflow-y-auto">
@@ -78,10 +80,10 @@ import {
 <PropsTable
   props={[
     {
-      name: "variant",
-      type: '"surface" | "outlined"',
-      default: '"surface"',
-      description: "Surface is borderless. Outlined adds a layer-1 container with a hairline boundary and radius-12.",
+      name: "bordered",
+      type: "boolean",
+      default: "false",
+      description: "Adds a layer-1 container with a hairline boundary and radius-12. Horizontal row dividers remain in both modes.",
     },
     {
       name: "size",
@@ -90,16 +92,10 @@ import {
       description: "Row density. `md` (default) uses standard header height (`h-9`) and cell padding (`py-2.5`). `sm` tightens both (`h-7`, `py-1.5`) for dense grids.",
     },
     {
-      name: "striped",
-      type: "boolean",
-      default: "false",
-      description: "Alternating row backgrounds (`bg-fill-2` on even rows) with rounded-inset pill treatment.",
-    },
-    {
       name: "interactive",
       type: "boolean",
       default: "false",
-      description: "Row hover fills the row with a `bg-layer-hover` alpha overlay. The fill is the row indicator.",
+      description: "Adds a shared hover background to actionable rows without removing their dividers.",
     },
     {
       name: "scrollable",
@@ -139,23 +135,18 @@ import {
       default: '"left"',
       description: "Text alignment for the cell.",
     },
-    {
-      name: "sortable",
-      type: "boolean",
-      default: "false",
-      description: "Renders the head as a clickable sort trigger with a chevron indicator. Pair with `direction` and `onSort`.",
-    },
+  ]}
+/>
+
+### TableSortButton
+
+<PropsTable
+  props={[
     {
       name: "direction",
       type: '"asc" | "desc" | "none"',
       default: '"none"',
-      description: "Current sort direction for this column. Drives the chevron icon: up for asc, down for desc, up-down (neutral) when none. Also sets `aria-sort`.",
-    },
-    {
-      name: "onSort",
-      type: "() => void",
-      default: "-",
-      description: "Fired when the full header cell is clicked. Toggle between ascending and descending after the initial unsorted state.",
+      description: "Controls the compact direction icon. Set `aria-sort` on the containing TableHead.",
     },
   ]}
 />
@@ -187,12 +178,11 @@ import {
 />
 
 <Callout title="Notes">
-- **State opinions live on the root.** `striped` and `interactive` are set once on Table and propagated through context.
-- **Header hierarchy:** The header keeps one structural divider. Body rows remain borderless.
-- **Migration:** `flat` becomes `surface`; `elevated` becomes `outlined`; `bordered` and automatic row hairlines were removed.
+- **Dividers are structural.** The header uses a stronger divider and every body row uses a soft divider. The last row drops its bottom divider.
+- **Outer border is optional.** `bordered` adds a contained surface without changing row structure.
 - **Composition:** Every sub-component maps to a native table element, so standard HTML attributes pass through.
 - **Numerals:** Use `align="right"` on numeric `TableCell`s for right-align + tabular figures.
-- **Sortable heads:** Wire your own sort state. The head cycles the icon and sets `aria-sort` for you; the cycle logic is left to the consumer (three-state or two-state).
+- **Sortable heads:** Compose `TableSortButton` inside `TableHead`, keep `aria-sort` on the header cell, and own the two-state or three-state cycle in your application.
 - **Selected rows:** Combine with `interactive` on the root for the row-clickable pattern shown in the demo.
 - **Sticky header:** Requires a fixed-height scroll container. Pass `scrollable={false}` so the internal horizontal-scroll wrapper doesn't fight your vertical-scroll parent.
 - **Empty state:** Wrap `<EmptyState>` inside `<TableEmpty>` for the fullest treatment (icon + title + description + action). For a one-line placeholder, pass a string directly (`<TableEmpty colSpan={4}>No results.</TableEmpty>`).

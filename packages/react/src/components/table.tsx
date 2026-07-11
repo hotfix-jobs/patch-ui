@@ -6,39 +6,25 @@ import type * as React from "react";
 import { cn } from "../utils";
 import { selectionFocus } from "../recipes";
 
-/** Semantic HTML table with consistent chrome.
- *
- *  `variant` mirrors structural surfaces: `surface` is borderless and
- *  `outlined` adds an explicit boundary.
- *
- *  Row state opinions live on the root: `striped` and `interactive`.
- *  Density lives on `size` (`sm` | `md`). Sticky headers use
- *  `stickyHeader` when the container has a fixed scroll height. */
-
-type TableVariant = "surface" | "outlined";
+/** Semantic HTML table with horizontal row dividers by default. */
 type TableSize = "sm" | "md";
 
 interface TableContextValue {
   size: TableSize;
-  striped: boolean;
   interactive: boolean;
 }
 
 const TableContext = createContext<TableContextValue>({
   size: "md",
-  striped: false,
   interactive: false,
 });
 
 export interface TableProps
   extends React.TableHTMLAttributes<HTMLTableElement> {
-  /** Table treatment.
-   *  `surface` (default) is borderless. `outlined` adds a boundary. */
-  variant?: TableVariant;
+  /** Adds a layer background, rounded corners, and an outer hairline. */
+  bordered?: boolean;
   /** Row density. `md` default; `sm` tightens for dense grids. */
   size?: TableSize;
-  /** Alternating row background colors. */
-  striped?: boolean;
   /** Row hover effect (opt in for actionable rows). */
   interactive?: boolean;
   /** Wrap in a horizontally-scrollable container. Default true. */
@@ -51,26 +37,22 @@ export interface TableProps
 
 export function Table({
   className,
-  variant = "surface",
+  bordered = false,
   size = "md",
-  striped = false,
   interactive = false,
   scrollable = true,
   stickyHeader = false,
   ...props
 }: TableProps): React.ReactElement {
-  const ctx: TableContextValue = { size, striped, interactive };
-  const rowSpacing = striped || interactive ? "border-spacing-0 [border-spacing:0_2px]" : "border-spacing-0";
+  const ctx: TableContextValue = { size, interactive };
   const tableEl = (
     <TableContext.Provider value={ctx}>
       <table
         data-slot="table"
-        data-variant={variant}
+        data-bordered={bordered || undefined}
         data-size={size}
         className={cn(
-          // border-separate is required so cells accept border-radius for the interactive/striped pill look.
-          "w-full caption-bottom border-separate text-small text-ink",
-          rowSpacing,
+          "w-full caption-bottom border-separate border-spacing-0 text-small text-ink",
           stickyHeader && "[&_thead>tr>th]:sticky [&_thead>tr>th]:top-0 [&_thead>tr>th]:z-10 [&_thead>tr>th]:bg-layer-1",
           className,
         )}
@@ -79,7 +61,7 @@ export function Table({
     </TableContext.Provider>
   );
 
-  if (variant === "outlined") {
+  if (bordered) {
     return (
       <div
         data-slot="table-container"
@@ -125,27 +107,16 @@ export function TableBody({
   className,
   ...props
 }: TableSectionProps): React.ReactElement {
-  const { striped, interactive } = useContext(TableContext);
+  const { interactive } = useContext(TableContext);
   return (
     <tbody
       data-slot="table-body"
-      data-striped={striped ? "" : undefined}
       data-interactive={interactive ? "" : undefined}
       className={cn(
-        "[&_tr:last-child>td]:border-b-0",
+        "[&_td]:border-b [&_td]:border-hairline-soft [&_tr:last-child>td]:border-b-0",
         interactive && [
-          "[&_td]:!border-b-0",
           "[&_tr:hover>td]:bg-layer-hover",
           "[&_tr[data-selected]:hover>td]:bg-layer-hover",
-          "[&_tr:hover>td:first-child]:rounded-l-[var(--radius-6)]",
-          "[&_tr:hover>td:last-child]:rounded-r-[var(--radius-6)]",
-        ],
-        striped && [
-          "[&_td]:!border-b-0",
-          "[&_tr:nth-child(even)>td]:bg-fill-2",
-          "[&_tr[data-selected]:nth-child(even)>td]:bg-layer-hover",
-          "[&_tr:nth-child(even)>td:first-child]:rounded-l-[var(--radius-6)]",
-          "[&_tr:nth-child(even)>td:last-child]:rounded-r-[var(--radius-6)]",
         ],
         className,
       )}
@@ -188,10 +159,7 @@ export function TableRow({
       data-selected={selected || undefined}
       aria-selected={selected || undefined}
       className={cn(
-        selected && [
-          "[&>td]:bg-layer-hover",
-          "[&>td:first-child]:rounded-l-[var(--radius-6)] [&>td:last-child]:rounded-r-[var(--radius-6)]",
-        ],
+        selected && "[&>td]:bg-layer-hover",
         className,
       )}
       {...props}
@@ -213,80 +181,68 @@ const cellPadBySize: Record<TableSize, string> = {
 
 type SortDirection = "asc" | "desc" | "none";
 
-export interface TableHeadProps
-  extends React.ThHTMLAttributes<HTMLTableCellElement> {
+export interface TableHeadProps extends React.ThHTMLAttributes<HTMLTableCellElement> {
   /** Text alignment for the header cell content. */
   align?: "left" | "center" | "right";
-  /** Marks this column as sortable — renders a chevron indicator and
-   *  clickable affordance. Pair with `direction` and `onSort`. */
-  sortable?: boolean;
-  /** Current sort direction for this column. */
-  direction?: SortDirection;
-  /** Fired when a sortable header is clicked. */
-  onSort?: () => void;
 }
 
 export function TableHead({
   className,
   align = "left",
-  sortable,
-  direction = "none",
-  onSort,
-  children,
   ...props
 }: TableHeadProps): React.ReactElement {
   const { size } = useContext(TableContext);
-  const ariaSort =
-    !sortable || direction === "none"
-      ? undefined
-      : direction === "asc"
-      ? "ascending"
-      : "descending";
 
   return (
     <th
       data-slot="table-head"
-      data-sortable={sortable ? "" : undefined}
-      data-direction={sortable ? direction : undefined}
-      aria-sort={ariaSort}
       className={cn(
         headHeightBySize[size],
-        "border-b border-hairline text-mini font-medium text-ink-muted whitespace-nowrap",
-        sortable ? "p-0" : "px-3",
+        "border-b border-hairline-strong px-3 text-mini font-medium text-ink-muted whitespace-nowrap",
         align === "right" && "text-right",
         align === "center" && "text-center",
         align === "left" && "text-left",
         className,
       )}
       {...props}
-    >
-      {sortable ? (
-        <button
-          type="button"
-          onClick={onSort}
-          className={cn(
-            "flex h-full w-full items-center gap-1 px-3 select-none text-mini font-medium text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-            align === "right" && "justify-end",
-            align === "center" && "justify-center",
-            align === "left" && "justify-start",
-            direction !== "none" && "text-ink",
-            selectionFocus,
-          )}
-          data-slot="table-head-sort-trigger"
-        >
-          {children}
-          {direction === "asc" ? (
-            <CaretUp aria-hidden className="size-3 shrink-0" />
-          ) : direction === "desc" ? (
-            <CaretDown aria-hidden className="size-3 shrink-0" />
-          ) : (
-            <CaretUpDown aria-hidden className="size-3 shrink-0 opacity-60" />
-          )}
-        </button>
-      ) : (
-        children
+    />
+  );
+}
+
+export interface TableSortButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  direction?: SortDirection;
+}
+
+/** Compact sort control composed inside a TableHead. */
+export function TableSortButton({
+  className,
+  direction = "none",
+  children,
+  ...props
+}: TableSortButtonProps): React.ReactElement {
+  return (
+    <button
+      type="button"
+      data-slot="table-sort-button"
+      data-direction={direction}
+      className={cn(
+        "-mx-1 inline-flex h-7 items-center gap-1 rounded-[var(--radius-6)] px-1 text-mini font-medium text-ink-muted hover:bg-layer-hover hover:text-ink focus-visible:bg-layer-hover active:bg-layer-hover transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        direction !== "none" && "text-ink",
+        selectionFocus,
+        className,
       )}
-    </th>
+      {...props}
+    >
+      {children}
+      {direction === "asc" ? (
+        <CaretUp aria-hidden className="size-3 shrink-0" />
+      ) : direction === "desc" ? (
+        <CaretDown aria-hidden className="size-3 shrink-0" />
+      ) : (
+        <CaretUpDown aria-hidden className="size-3 shrink-0 opacity-60" />
+      )}
+    </button>
   );
 }
 
