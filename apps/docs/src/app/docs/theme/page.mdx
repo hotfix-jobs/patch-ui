@@ -55,7 +55,7 @@ Rules of thumb:
 
 `radius-4` is reserved for very small controls such as Checkbox and radio thumbs. `radius-6` is for badges and metadata. `radius-8` is for controls. `radius-12` is for Cards and floating panels. `radius-16` is for large marketing chrome. `radius-full` is reserved for intrinsically circular geometry.
 
-**Shadows.** Elevation is intentional and sparing. `--shadow-card` (elevated Card + slider/switch thumbs), `--shadow-menu` (Menu / Combobox / Select popup), `--shadow-tooltip` (Tooltip), `--shadow-modal` (Modal / Sheet / Toast). Card `variant="elevated"` applies `shadow-card` in light and `dark:shadow-none` — the token has a dark value for slider/switch thumbs that need to remain visible against their track.
+**Shadows.** Elevation is intentional and sparing. `--shadow-card` supports elevated Card and slider/switch thumbs, `--shadow-menu` supports lightweight popups and Toast, `--shadow-tooltip` supports Tooltip, and `--shadow-modal` is reserved for Modal and Sheet. Card `variant="elevated"` applies `shadow-card`.
 
 **Motion.** One easing (`--ease-standard`), two durations: `--duration-state` (75ms, for hover/active transitions) and `--duration-overlay` (150ms, for open/close). Under `prefers-reduced-motion: reduce`, both collapse to `0ms` automatically.
 

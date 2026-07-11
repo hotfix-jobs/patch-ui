@@ -45,7 +45,7 @@ function LogoMark() {
 
 export function NavigationMenuDemo() {
   return (
-    <div className="w-full overflow-hidden rounded-[var(--radius-12)] border border-hairline bg-base">
+    <div className="w-full overflow-hidden rounded-[var(--radius-12)] bg-base">
       {/* Header-style row so the dropdown reads in a realistic context.
           NavigationMenu is desktop-only -- on small viewports use a
           Sheet or the AppHeader block's mobile panel instead. */}
@@ -87,7 +87,7 @@ export function NavigationMenuDemo() {
               <NavigationMenuLink
                 href="#"
                 onClick={(e) => e.preventDefault()}
-                className="!inline-flex !items-center !rounded-full !px-3 !py-1.5 !text-small !text-ink-muted !bg-transparent hover:!bg-fill-1 hover:!text-ink"
+                className="!inline-flex !items-center !rounded-[var(--radius-8)] !px-3 !py-1.5 !text-small !text-ink-muted !bg-transparent hover:!bg-layer-hover hover:!text-ink active:!bg-layer-selected"
               >
                 Pricing
               </NavigationMenuLink>

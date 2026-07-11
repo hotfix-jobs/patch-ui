@@ -16,7 +16,7 @@ export function ProgressDemo() {
     <div className="flex max-w-md flex-col gap-10">
       <div className="space-y-3">
         <SectionLabel>File upload</SectionLabel>
-        <div className="flex flex-col gap-2 rounded-[var(--radius-6)] border border-hairline p-3">
+        <div className="flex flex-col gap-2 rounded-[var(--radius-8)] bg-fill-1 p-3">
           <div className="flex items-center gap-2">
             <FileText className="size-4 text-ink-muted" aria-hidden />
             <span className="flex-1 text-small text-ink">
@@ -45,7 +45,7 @@ export function ProgressDemo() {
 
       <div className="space-y-3">
         <SectionLabel>Storage quota</SectionLabel>
-        <div className="flex flex-col gap-2 rounded-[var(--radius-6)] border border-hairline p-3">
+        <div className="flex flex-col gap-2 rounded-[var(--radius-8)] bg-fill-1 p-3">
           <div className="flex items-center gap-2">
             <HardDrives className="size-4 text-ink-muted" aria-hidden />
             <span className="flex-1 text-small text-ink">Storage</span>

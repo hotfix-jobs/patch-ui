@@ -35,7 +35,7 @@ export function ScrollerDemo() {
           {CARDS.map((c) => (
             <div
               key={c.title}
-              className="w-52 shrink-0 rounded-[var(--radius-12)] border border-hairline-strong bg-base p-4"
+              className="w-52 shrink-0 rounded-[var(--radius-12)] bg-layer-1 p-4"
             >
               <p className="text-small font-medium text-ink">
                 {c.title}
@@ -59,7 +59,7 @@ export function ScrollerDemo() {
               <button
                 key={label}
                 type="button"
-                className="shrink-0 rounded-full border border-hairline-strong bg-base px-4 py-1.5 text-small text-ink hover:bg-layer-hover"
+                className="shrink-0 rounded-full bg-fill-1 px-4 py-1.5 text-small text-ink hover:bg-fill-2 active:bg-layer-selected"
               >
                 {label}
               </button>
@@ -76,7 +76,7 @@ export function ScrollerDemo() {
           height={280}
           childrenContainerClassName="p-3"
           ariaLabel="Activity feed"
-          className="rounded-[var(--radius-12)] border border-hairline-strong bg-base"
+          className="rounded-[var(--radius-12)] bg-layer-1"
         >
           {FEED.map((item) => (
             <div

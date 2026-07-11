@@ -85,7 +85,7 @@ export function AppHeaderDemo() {
     <div className="flex flex-col gap-8">
       <div className="space-y-3">
         <SectionLabel>Dashboard</SectionLabel>
-        <div className="w-full overflow-x-auto rounded-[var(--radius-12)] border border-hairline bg-base">
+        <div className="w-full overflow-x-auto rounded-[var(--radius-12)] bg-base">
           <div className="min-w-[900px]">
           <AppHeader bordered={false}>
             <AppHeaderBrand>
@@ -119,7 +119,7 @@ export function AppHeaderDemo() {
             </AppHeaderRight>
           </AppHeader>
 
-          <div className="border-t border-hairline bg-fill-1 px-6 py-8">
+          <div className="bg-fill-1 px-6 py-8">
             <p className="text-small text-ink">{active}</p>
             <p className="mt-1 text-small text-ink-muted">
               Content for the selected page renders here.
@@ -131,7 +131,7 @@ export function AppHeaderDemo() {
 
       <div className="space-y-3">
         <SectionLabel>List page (with tools, mobile top slot, and filter toolbar)</SectionLabel>
-        <div className="w-full overflow-x-auto rounded-[var(--radius-12)] border border-hairline bg-base">
+        <div className="w-full overflow-x-auto rounded-[var(--radius-12)] bg-base">
           <div className="min-w-[900px]">
           <AppHeader
             bordered={false}
@@ -207,7 +207,7 @@ export function AppHeaderDemo() {
             </AppHeaderRight>
           </AppHeader>
 
-          <div className="grid grid-cols-1 gap-3 border-t border-hairline bg-fill-1 p-4 sm:grid-cols-2 md:grid-cols-3 md:p-6">
+          <div className="grid grid-cols-1 gap-3 bg-fill-1 p-4 sm:grid-cols-2 md:grid-cols-3 md:p-6">
             {[
               { name: "Homepage redesign", meta: "12 tasks · Due Fri" },
               { name: "Onboarding v2", meta: "8 tasks · P1" },
@@ -218,7 +218,7 @@ export function AppHeaderDemo() {
             ].map((p) => (
               <div
                 key={p.name}
-                className="rounded-[var(--radius-8)] border border-hairline bg-layer-1 p-3"
+                className="rounded-[var(--radius-8)] bg-layer-1 p-3"
               >
                 <p className="text-small font-medium text-ink">{p.name}</p>
                 <p className="mt-1 text-mini text-ink-muted">{p.meta}</p>
@@ -231,7 +231,7 @@ export function AppHeaderDemo() {
 
       <div className="space-y-3">
         <SectionLabel>Marketing (with dropdowns)</SectionLabel>
-        <div className="w-full overflow-x-auto rounded-[var(--radius-12)] border border-hairline bg-base">
+        <div className="w-full overflow-x-auto rounded-[var(--radius-12)] bg-base">
           <div className="min-w-[900px]">
           <AppHeader bordered={false}>
             <AppHeaderBrand>
@@ -272,7 +272,7 @@ export function AppHeaderDemo() {
                     <NavigationMenuLink
                       href="#"
                       onClick={(e) => e.preventDefault()}
-                      className="!inline-flex !items-center !rounded-full !px-3 !py-1.5 !text-small !text-ink-muted !bg-transparent hover:!bg-fill-1 hover:!text-ink"
+                      className="!inline-flex !items-center !rounded-[var(--radius-8)] !px-3 !py-1.5 !text-small !text-ink-muted !bg-transparent hover:!bg-layer-hover hover:!text-ink active:!bg-layer-selected"
                     >
                       Pricing
                     </NavigationMenuLink>
