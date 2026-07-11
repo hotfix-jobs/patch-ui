@@ -28,7 +28,7 @@ export const toggleVariants = cva(
           "bg-transparent text-ink-muted hover:bg-layer-hover hover:text-ink data-[pressed]:bg-layer-hover data-[pressed]:text-ink " +
           iconMuted,
         secondary:
-          "bg-fill-1 text-ink hover:bg-fill-2 data-[pressed]:bg-layer-hover data-[pressed]:text-ink " +
+          "bg-fill-1 text-ink hover:bg-fill-2 data-[pressed]:bg-fill-2 data-[pressed]:text-ink " +
           iconMuted,
       },
     },

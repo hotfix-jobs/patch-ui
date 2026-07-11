@@ -49,13 +49,11 @@ function extractSlots(children: React.ReactNode): {
   brand: React.ReactNode;
   nav: React.ReactNode;
   right: React.ReactNode;
-  tools: React.ReactNode;
   mobileTop: React.ReactNode;
 } {
   let brand: React.ReactNode = null;
   let nav: React.ReactNode = null;
   let right: React.ReactNode = null;
-  let tools: React.ReactNode = null;
   let mobileTop: React.ReactNode = null;
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) return;
@@ -66,8 +64,6 @@ function extractSlots(children: React.ReactNode): {
       nav = child;
     } else if (type === AppHeaderRight || type.displayName === "AppHeaderRight") {
       right = child;
-    } else if (type === AppHeaderTools || type.displayName === "AppHeaderTools") {
-      tools = child;
     } else if (
       type === AppHeaderMobileTop ||
       type.displayName === "AppHeaderMobileTop"
@@ -75,7 +71,7 @@ function extractSlots(children: React.ReactNode): {
       mobileTop = child;
     }
   });
-  return { brand, nav, right, tools, mobileTop };
+  return { brand, nav, right, mobileTop };
 }
 
 /* --------------------------- root --------------------------- */
@@ -85,18 +81,12 @@ export interface AppHeaderProps extends useRender.ComponentProps<"header"> {
   bordered?: boolean;
   /** Pin the header to the top of its scroll container. Default false. */
   sticky?: boolean;
-  /** Optional third sub-row rendered below the top row (and mobile
-   *  tools sub-row). Used by list pages to bring their filter toolbar
-   *  into the header shell so a single motion collapses everything
-   *  together on scroll. */
-  filterToolbar?: React.ReactNode;
 }
 
 export function AppHeader({
   className,
   bordered = true,
   sticky = false,
-  filterToolbar,
   render,
   children,
   ...props
@@ -104,7 +94,7 @@ export function AppHeader({
   const [open, setOpen] = useState(false);
   const panelId = useId();
 
-  const { brand, nav, right, tools, mobileTop } = useMemo(
+  const { brand, nav, right, mobileTop } = useMemo(
     () => extractSlots(children),
     [children],
   );
@@ -129,42 +119,8 @@ export function AppHeader({
         <div className="flex w-full items-center gap-4 px-4 py-3.5 md:px-6 md:gap-6 md:py-4">
           {brand}
           {nav}
-          {tools && (
-            <div
-              className="hidden min-w-0 flex-1 items-center gap-2 md:flex"
-              data-slot="app-header-tools"
-            >
-              {tools}
-            </div>
-          )}
           <AppHeaderRightWithTrigger mobileTop={mobileTop}>{right}</AppHeaderRightWithTrigger>
         </div>
-        {tools && (
-          <div
-            className={cn(
-              "flex items-center gap-2 px-4 pb-3 pt-2 md:hidden",
-              // Row divider is tied to the same `bordered` state as
-              // the shell's bottom border so header chrome shows /
-              // hides its edges together (e.g., borderless at
-              // scroll-top, all borders on once the user starts
-              // scrolling).
-              bordered && "border-t border-hairline",
-            )}
-            data-slot="app-header-tools-mobile"
-          >
-            {tools}
-          </div>
-        )}
-        {filterToolbar && (
-          <div
-            className={cn(
-              bordered && "border-t border-hairline",
-            )}
-            data-slot="app-header-filter-toolbar"
-          >
-            {filterToolbar}
-          </div>
-        )}
       </>
     ),
   };
@@ -257,11 +213,11 @@ export function AppHeaderNavItem({
 
   const baseClasses = mobile
     ? cn(
-        "flex items-center gap-2.5 rounded-[var(--radius-6)] px-3 py-2.5 text-regular text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink [&_svg]:size-5",
+        "flex items-center gap-2.5 rounded-[var(--radius-8)] px-3 py-2.5 text-regular text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink [&_svg]:size-5",
         active && "bg-layer-hover font-medium text-ink",
       )
     : cn(
-        "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:size-4",
+        "inline-flex items-center gap-1.5 rounded-[var(--radius-8)] px-3 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:size-4",
         active
           ? "text-ink font-medium"
           : "text-ink-muted hover:bg-layer-hover hover:text-ink",
@@ -345,21 +301,6 @@ export function AppHeaderRight({
 }
 AppHeaderRight.displayName = "AppHeaderRight";
 
-/* --------------------------- tools --------------------------- */
-
-export type AppHeaderToolsProps = { children?: React.ReactNode };
-
-/** Route-owned inline controls (search inputs, filter chips, etc.) that
- *  live between AppHeaderNav and AppHeaderRight on desktop and render
- *  as a bordered sub-row below the top row on mobile so they stay
- *  visible without opening the hamburger panel. */
-export function AppHeaderTools({
-  children,
-}: AppHeaderToolsProps): React.ReactElement {
-  return <>{children}</>;
-}
-AppHeaderTools.displayName = "AppHeaderTools";
-
 /** Content pinned into the mobile top bar just before the hamburger
  *  trigger. Hidden on desktop and never rendered in the mobile panel
  *  footer. Meant for one-tap actions (e.g. notification bell) that
@@ -398,7 +339,7 @@ function AppHeaderRightWithTrigger({
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen(!open)}
-          className="inline-flex md:hidden size-8 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
+          className="inline-flex md:hidden size-8 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
         >
           <MorphingMenuIcon open={open} />
         </button>
@@ -531,4 +472,3 @@ function AppHeaderMobilePanel(): React.ReactPortal | null {
     document.body,
   );
 }
-
