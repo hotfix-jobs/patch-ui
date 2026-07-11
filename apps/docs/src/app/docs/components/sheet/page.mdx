@@ -5,7 +5,7 @@ export const metadata = { title: "Sheet" };
 
 # Sheet
 
-An edge-anchored panel that slides in from the top, right, bottom, or left. Two variants: `floating` (default) renders a rounded card inset 16px from the viewport edges so the backdrop peeks around it, right for editorial preview / inspector panels; `drawer` sits flush against the anchored edge with a single inward border and inward-facing corners rounded to match the floating card, right for mobile navigation and app-shell drawers. Pass `modal={false}` for a persistent inspector that keeps the page underneath interactive.
+An edge-anchored panel that slides in from the top, right, bottom, or left. It uses one rounded outer boundary and shadow, with borderless internal regions for a quieter surface.
 
 <Install name="sheet" />
 
@@ -35,7 +35,6 @@ import {
     <SheetHeader>
       <SheetTitle>Profile</SheetTitle>
       <SheetDescription>Details for the selected member.</SheetDescription>
-      <SheetClose />
     </SheetHeader>
     <SheetBody>
       {/* form / inspector content */}
@@ -61,16 +60,10 @@ import {
       description: "Which edge the sheet slides in from.",
     },
     {
-      name: "variant",
-      type: '"floating" | "drawer"',
-      default: '"floating"',
-      description: "Layout treatment. `floating`: rounded card inset 16px from every viewport edge, backdrop peeks around it. `drawer`: flush with the anchored edge, single inward-facing border, inward-facing corners rounded (matching floating's radius). Reach for `drawer` when you'd otherwise be piling `!important` overrides to flatten the floating card into an edge-anchored mobile nav.",
-    },
-    {
-      name: "modal",
+      name: "showClose",
       type: "boolean",
-      default: "true",
-      description: "Default: darkens a backdrop and blocks page interaction. Set to false for a persistent inspector where the page underneath stays interactive.",
+      default: "auto",
+      description: "Shows the default close control when no SheetHeader is present.",
     },
     {
       name: "className",
@@ -87,19 +80,18 @@ import {
   components={[
     { name: "Sheet", description: "Root, manages open/close state and portal wiring." },
     { name: "SheetTrigger", description: "Element that opens the sheet on click. `render` prop composes with any element." },
-    { name: "SheetContent", description: "The sliding panel. Owns side, modal, and backdrop." },
-    { name: "SheetHeader", description: "Top region with border-b hairline. Holds title, description, and a close button." },
+    { name: "SheetContent", description: "The sliding panel. Owns the outer boundary, shadow, and backdrop." },
+    { name: "SheetHeader", description: "Borderless top region for title, description, and a close button." },
     { name: "SheetTitle", description: "Primary heading. Wired to aria-labelledby." },
     { name: "SheetDescription", description: "Supporting sentence-case text under the title." },
     { name: "SheetBody", description: "Scrollable middle region." },
-    { name: "SheetFooter", description: "Bottom region with border-t + subtle bg-fill-1 lift. Actions row like Modal." },
+    { name: "SheetFooter", description: "Borderless bottom action row using spacing for separation." },
     { name: "SheetClose", description: "Element that closes the sheet on click. With no render/children, renders a default × button positioned top-right of the header." },
   ]}
 />
 
 <Callout title="Notes">
-- **Two variants.** `floating` is a rounded card inset from every viewport edge (backdrop peeks around all four corners), right for inspectors and preview panels. `drawer` sits flush against the anchored edge, with the inward-facing corners rounded to match floating's radius, right for mobile navigation and app-shell drawers. Default is `floating`.
-- **Modal by default.** Backdrop appears, page underneath is paused. Pass `modal={false}` for a persistent inspector (record detail, help drawer) that keeps the page interactive.
+- **One surface.** The outer panel provides the boundary and elevation. Header, body, and footer remain visually quiet inside it.
 - **Outside-click, Escape, and `<SheetClose>` all dismiss.** For sheets holding unsaved input, wrap Save/Cancel in `SheetClose` and gate the dismiss with a confirmation step upstream.
 - **Side matters.** Right for detail inspectors, left for navigation, bottom for mobile-first pickers. Keep the direction consistent across similar patterns in the app.
 - **Focus return.** Focus returns to the trigger on close.

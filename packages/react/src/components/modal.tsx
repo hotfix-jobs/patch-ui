@@ -9,6 +9,7 @@ import {
 } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
+import { selectionFocus } from "../recipes";
 import { Button, type ButtonProps } from "./button";
 
 export type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
@@ -132,7 +133,7 @@ export function ModalHeader({
       <div
         data-slot="modal-header"
         className={cn(
-          "flex h-11 shrink-0 items-center justify-between gap-3 border-b border-hairline px-4",
+          "flex h-11 shrink-0 items-center justify-between gap-3 px-4",
           className,
         )}
         {...props}
@@ -153,7 +154,7 @@ export function ModalHeader({
     <div
       data-slot="modal-header"
       className={cn(
-        "flex flex-col gap-1 border-b border-hairline px-5 py-4",
+        "flex flex-col gap-1 px-5 pt-5 pb-2",
         className,
       )}
       {...props}
@@ -198,7 +199,8 @@ export function ModalClose({
       aria-label="Close"
       data-slot="modal-close"
       className={cn(
-        "inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-layer-hover hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "inline-flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-selected transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        selectionFocus,
         className,
       )}
       {...props}
@@ -232,7 +234,7 @@ export function ModalInset({
     <div
       data-slot="modal-inset"
       className={cn(
-        "rounded-[var(--radius-8)] border border-hairline-soft bg-layer-1 p-4",
+        "rounded-[var(--radius-8)] bg-fill-1 p-4",
         className,
       )}
       {...props}
@@ -254,7 +256,7 @@ export function ModalActions({
     <div
       data-slot="modal-actions"
       className={cn(
-        "flex gap-2 border-t border-hairline px-5 py-3",
+        "flex gap-2 px-5 pt-2 pb-5",
         stacked ? "flex-col" : "flex-row justify-between",
         className,
       )}

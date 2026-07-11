@@ -773,12 +773,14 @@ Each component below is a single paragraph plus a token map. Full API and source
 - Background `{colors.layer-1}`, border 1px `{colors.hairline}`, radius `--radius-12`, padding `{spacing.space-24}` 24px, shadow `shadow-modal`.
 - Scrim: `{colors.scrim}` at 45%.
 - Enter/exit: `duration-overlay` 150ms `ease-standard`, opacity + scale-from-98%.
-- Close button: circle icon-only (`size-8 rounded-full`) with lucide `X`; `hover:bg-layer-hover` for tertiary style.
-- `ModalInset`: inset sub-surface inside a dialog uses `bg-layer-1 + border-hairline-soft`, radius `--radius-8`.
+- Header and actions use spacing rather than internal divider lines.
+- Close button: compact radius-8 icon-only control with `layer-hover`, `layer-selected`, and `selectionFocus` states.
+- `ModalInset`: quiet borderless `bg-fill-1` sub-surface at radius `--radius-8`.
 
 **`sheet`**: Side drawer. Slides in from any edge (`side="top" | "right" | "bottom" | "left"`).
 - Background `{colors.layer-1}`, border 1px `{colors.hairline}`. All four sides now use radius `--radius-12` (bumped from 10 this cycle for parity with `popupSurface`).
-- `SheetHeader`: stacks title + description by default, with an absolute-positioned close X (`absolute top-2 end-2`). The compact row layout only triggers when `leading` or an explicit `trailing` slot is passed — a plain `SheetTitle + SheetDescription` header no longer collapses into a single row.
+- Header and footer use spacing rather than internal divider lines. The close control matches Modal.
+- `SheetHeader`: stacks title + description by default, with an absolute-positioned close X (`absolute top-2 end-2`). The compact row layout only triggers when `leading` or an explicit `trailing` slot is passed. A plain `SheetTitle + SheetDescription` header no longer collapses into a single row.
 - Single canonical variant, always modal; no `variant="drawer"` or `modal={false}` API.
 - Enter/exit: `duration-overlay` 150ms `ease-standard`, transform-based slide.
 
