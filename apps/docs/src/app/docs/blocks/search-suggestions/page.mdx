@@ -1,0 +1,49 @@
+import { SearchSuggestionsDemo } from "./search-suggestions-demo";
+
+export const metadata = { title: "SearchSuggestions" };
+
+# SearchSuggestions
+
+A reusable multi-field search block composed from Patch UI Input and Popover. It coordinates field focus, suggestions, keyboard navigation, responsive presentation, and motion while consumers own values, data, and submission.
+
+<Install name="search-suggestions" />
+
+<ComponentPreview label="SearchSuggestions">
+  <SearchSuggestionsDemo />
+</ComponentPreview>
+
+## Usage
+
+```tsx
+import { SearchSuggestions } from "@patchui/react/blocks/search-suggestions";
+
+<SearchSuggestions
+  fields={fields}
+  activeField={activeField}
+  onActiveFieldChange={setActiveField}
+  onFieldValueChange={handleFieldValueChange}
+  onSuggestionSelect={handleSuggestionSelect}
+  onSubmit={handleSubmit}
+/>
+```
+
+Each field provides its own value, icon, placeholder, loading state, empty content, and grouped suggestions. The block does not fetch or filter data.
+
+## Interaction
+
+- Focusing a field opens one shared suggestion surface anchored to the complete search control.
+- The active field surface moves between inputs with layout motion while results crossfade in place.
+- Arrow keys move through suggestions. Enter selects the active suggestion or submits the current field values. Escape closes the panel.
+- Desktop uses an anchored Popover. Mobile uses the same centered, near-full-width Popover treatment as the rest of Patch UI.
+- Reduced-motion preferences disable spatial movement through MotionConfig.
+
+## Data types
+
+`SearchSuggestionsField` contains `id`, `label`, `value`, optional presentation properties, and `sections`. Each `SearchSuggestionSection` contains a label and suggestions. A `SearchSuggestion` contains a stable `id`, submitted `value`, visible `label`, and optional description, icon, suffix, and disabled state.
+
+<Callout title="Notes">
+- Keep field counts small. Two fields is the primary layout; three can work when labels and values remain concise.
+- Suggestions should explain where a result leads through a description or suffix instead of decorative badges.
+- The consumer decides whether selection submits immediately or only updates a field.
+- Use generic application data in shared demos. Product-specific language belongs in the consuming app.
+</Callout>

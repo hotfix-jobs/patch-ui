@@ -47,6 +47,7 @@ import { Button } from "@patchui/react";
     { name: "side", type: '"top" | "bottom" | "left" | "right"', default: '"bottom"', description: "Which side of the trigger the popover appears on." },
     { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "Alignment along the trigger's axis. `end` is useful for right-aligned nav triggers so the popover stays inside the viewport." },
     { name: "sideOffset", type: "number", default: "6", description: "Pixel offset from the trigger." },
+    { name: "anchor", type: "Element | RefObject<Element>", default: "trigger", description: "Optional element used for positioning when the popup should align to a larger composite surface." },
     { name: "arrow", type: "boolean", default: "false", description: "Render a subtle arrow pointing at the trigger." },
     { name: "className", type: "string", default: "-", description: "Applied to the popup surface. Set width (`w-72`, `w-[360px]`) and padding here." },
   ]}

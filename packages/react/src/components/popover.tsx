@@ -53,6 +53,8 @@ export interface PopoverContentProps
   side?: PopoverSide;
   align?: PopoverAlign;
   sideOffset?: number;
+  /** Element used to position the popup. Defaults to the Popover trigger. */
+  anchor?: React.ComponentProps<typeof PopoverPrimitive.Positioner>["anchor"];
   /** Optional arrow pointing at the trigger. */
   arrow?: boolean;
   children?: React.ReactNode;
@@ -62,6 +64,7 @@ export function PopoverContent({
   side = "bottom",
   align = "center",
   sideOffset = 6,
+  anchor,
   arrow,
   className,
   children,
@@ -112,6 +115,7 @@ export function PopoverContent({
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Positioner
+        anchor={anchor}
         side={side}
         align={align}
         sideOffset={sideOffset}
