@@ -74,8 +74,8 @@ export function TableDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Elevated (bg-layer-1 + hairline-soft)</SectionLabel>
-        <Table variant="elevated">
+        <SectionLabel>Outlined (layer-1 + hairline)</SectionLabel>
+        <Table variant="outlined">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -144,30 +144,8 @@ export function TableDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Bordered cells</SectionLabel>
-        <Table bordered>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead align="right">Last active</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {MEMBERS.slice(0, 3).map((m) => (
-              <TableRow key={m.name}>
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="space-y-3">
         <SectionLabel>Dense (size="sm")</SectionLabel>
-        <Table size="sm" variant="elevated">
+        <Table size="sm" variant="outlined">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
@@ -219,7 +197,7 @@ export function TableDemo() {
 
       <div className="space-y-3">
         <SectionLabel>Sortable column</SectionLabel>
-        <Table variant="elevated">
+        <Table variant="outlined">
           <TableHeader>
             <TableRow>
               <TableHead
@@ -256,7 +234,7 @@ export function TableDemo() {
       <div className="space-y-3">
         <SectionLabel>Sticky header (scroll inside container)</SectionLabel>
         <div className="h-56 overflow-y-auto rounded-[var(--radius-8)] border border-hairline-soft bg-layer-1">
-          <Table variant="flat" scrollable={false} stickyHeader>
+          <Table variant="surface" scrollable={false} stickyHeader>
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
@@ -279,7 +257,7 @@ export function TableDemo() {
 
       <div className="space-y-3">
         <SectionLabel>Empty state</SectionLabel>
-        <Table variant="elevated">
+        <Table variant="outlined">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>

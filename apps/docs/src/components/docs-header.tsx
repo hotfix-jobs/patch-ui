@@ -45,7 +45,7 @@ export function DocsHeader() {
   return (
     <header
       data-slot="docs-header"
-      className="flex h-14 shrink-0 items-center gap-3 border-b border-hairline bg-base px-4"
+      className="flex h-14 shrink-0 items-center gap-3 bg-base px-4"
     >
       <SidebarTrigger
         title="Toggle sidebar (⌘B)"

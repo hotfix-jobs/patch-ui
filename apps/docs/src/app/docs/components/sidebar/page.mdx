@@ -6,6 +6,8 @@ export const metadata = { title: "Sidebar" };
 
 A compound sidebar primitive for docs and app layouts. `SidebarProvider` owns open/collapsed state and wires a `Cmd+B` / `Ctrl+B` keyboard shortcut by default. On desktop the sidebar is a fixed-position column with a spacer that reserves width in flex flow; on mobile it becomes a `Sheet`-based drawer with focus trap, escape-to-close, and portal rendering.
 
+The desktop surface is borderless `layer-1`. Navigation items use the same hover, selected, and compact keyboard-focus states as Tabs.
+
 Inspired by shadcn/ui's Sidebar block. Ships the same compound API: `SidebarProvider`, `Sidebar`, `SidebarInset`, `SidebarHeader`, `SidebarContent`, `SidebarFooter`, `SidebarGroup`, `SidebarGroupLabel`, `SidebarMenu`, `SidebarMenuItem`, `SidebarMenuButton`, `SidebarTrigger`, and the `useSidebar` hook.
 
 <Install name="sidebar" />
@@ -32,7 +34,7 @@ import {
 } from "@patchui/react";
 
 <SidebarProvider defaultOpen>
-  <Sidebar>
+  <Sidebar rounded>
     <SidebarHeader>{/* brand */}</SidebarHeader>
     <SidebarContent>
       <SidebarGroup>
@@ -56,6 +58,8 @@ import {
 </SidebarProvider>
 ```
 
+Use `rounded` when the sidebar is presented as an inset surface. Leave it off for a flush application edge.
+
 ## SidebarProvider props
 
 <PropsTable
@@ -73,6 +77,7 @@ import {
 <PropsTable
   props={[
     { name: "collapsible", type: '"offcanvas" | "none"', default: '"offcanvas"', description: "Behavior when collapsed. offcanvas slides out of view; none keeps it always visible." },
+    { name: "rounded", type: "boolean", default: "false", description: "Rounds the desktop sidebar surface for inset layouts." },
     { name: "width", type: "number", default: "256", description: "Fixed pixel width." },
     { name: "topOffset", type: "number", default: "0", description: "Offset from the top of the viewport in pixels. Use to sit below a fixed header." },
   ]}

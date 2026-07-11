@@ -5,7 +5,7 @@ export const metadata = { title: "Table" };
 
 # Table
 
-Composable table primitives — thin, styled wrappers around native table elements with hairline dividers, restrained typography, and row/column state opinions moved to the root so the API reads at a glance.
+Composable native table primitives with restrained typography, borderless rows, and shared hover and selected-state fills.
 
 <Install name="table" />
 
@@ -28,7 +28,7 @@ import {
   TableEmpty,
 } from "@patchui/react";
 
-// Flat (default) — transparent frame, hairline dividers, no outer box
+// Surface (default): borderless
 <Table>
   <TableHeader>
     <TableRow>
@@ -44,13 +44,12 @@ import {
   </TableBody>
 </Table>
 
-// Elevated — bg-layer-1 + hairline-soft + radius-8 (matches Card)
-<Table variant="elevated">...</Table>
+// Explicit boundary
+<Table variant="outlined">...</Table>
 
 // Row-state opinions on the root
 <Table striped>...</Table>
 <Table interactive>...</Table>
-<Table bordered>...</Table>
 
 // Density
 <Table size="sm">...</Table>
@@ -80,9 +79,9 @@ import {
   props={[
     {
       name: "variant",
-      type: '"flat" | "elevated"',
-      default: '"flat"',
-      description: "`flat` (default) is a transparent frame with hairline dividers — sheds the outer chrome and lets the grid carry the structure (Bloomberg / NYT data-table feel). `elevated` fills with `bg-layer-1`, wraps in `border-hairline-soft` + `radius-8` — matches Card.",
+      type: '"surface" | "outlined"',
+      default: '"surface"',
+      description: "Surface is borderless. Outlined adds a layer-1 container with a hairline boundary and radius-12.",
     },
     {
       name: "size",
@@ -100,13 +99,7 @@ import {
       name: "interactive",
       type: "boolean",
       default: "false",
-      description: "Row hover fills the row with a `bg-layer-hover` alpha overlay (rounded on first / last cell). Drops per-row hairlines since the fill is the row indicator.",
-    },
-    {
-      name: "bordered",
-      type: "boolean",
-      default: "false",
-      description: "Vertical cell borders (`border-l` between adjacent cells).",
+      description: "Row hover fills the row with a `bg-layer-hover` alpha overlay. The fill is the row indicator.",
     },
     {
       name: "scrollable",
@@ -131,7 +124,7 @@ import {
       name: "selected",
       type: "boolean",
       default: "false",
-      description: "Marks the row as selected. Applies `bg-layer-selected` + a 2px primary left border on the first cell and sets `aria-selected`.",
+      description: "Marks the row as selected. Applies `bg-layer-selected` and sets `aria-selected`.",
     },
   ]}
 />
@@ -194,8 +187,9 @@ import {
 />
 
 <Callout title="Notes">
-- **State opinions live on the root.** `striped` / `interactive` / `bordered` moved from `TableBody` to `Table` this pass — one place to set them, propagated via context. `TableBody` is now a semantic passthrough.
-- **Table retains its data-surface variants.** Its `flat` and `elevated` treatments are independent from Card's content-surface interface.
+- **State opinions live on the root.** `striped` and `interactive` are set once on Table and propagated through context.
+- **Header hierarchy:** The header keeps one structural divider. Body rows remain borderless.
+- **Migration:** `flat` becomes `surface`; `elevated` becomes `outlined`; `bordered` and automatic row hairlines were removed.
 - **Composition:** Every sub-component maps to a native table element, so standard HTML attributes pass through.
 - **Numerals:** Use `align="right"` on numeric `TableCell`s for right-align + tabular figures.
 - **Sortable heads:** Wire your own sort state. The head cycles the icon and sets `aria-sort` for you; the cycle logic is left to the consumer (three-state or two-state).

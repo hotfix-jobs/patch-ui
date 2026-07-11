@@ -29,7 +29,7 @@ export function Sidebar() {
 
   return (
     <SidebarRoot>
-      <SidebarHeader className="h-14 flex-row items-center gap-2 border-b border-hairline px-3">
+      <SidebarHeader className="h-14 flex-row items-center gap-2 px-3">
         <Link
           href="/"
           className="rounded-[var(--radius-6)] px-2 py-1 text-regular font-medium text-ink hover:bg-layer-hover"

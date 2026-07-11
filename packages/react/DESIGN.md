@@ -370,7 +370,7 @@ components:
 
 ## Overview
 
-Patch UI is a crisp-minimal React component library distributed copy-in through the shadcn registry model (`npx shadcn add @patchui/<component>`). The design system uses a quiet canvas, clear content surfaces, filled controls, and a monochrome primary. Backgrounds and spacing carry the primary hierarchy. Hairlines remain available for overlays, tables, and structural dividers.
+Patch UI is a crisp-minimal React component library distributed copy-in through the shadcn registry model (`npx shadcn add @patchui/<component>`). The design system uses a quiet canvas, clear content surfaces, filled controls, and a monochrome primary. Backgrounds and spacing carry the primary hierarchy. Hairlines remain available for overlays, outlined surfaces, and explicit structural dividers.
 
 Light `--base` is #f5f5f5 and `--layer-1` is white, so content cards read clearly without decorative borders. Dark `--base` is #101010 and `--layer-1` is #191919, preserving the same canvas-to-surface hierarchy. `--layer-2` groups or selects content. `--fill-1` and `--fill-2` provide the neutral control and metadata ramp. Hairlines remain alpha so necessary borders maintain consistent perceived weight across surfaces.
 
@@ -429,7 +429,7 @@ Hairlines carry every hierarchical separation that the surface ladder can't. Fou
 | Token | Light | Dark | Use |
 |---|---|---|---|
 | `{colors.hairline-soft}` | `rgba(0,0,0,0.059)` (grayA 3) | `rgba(255,255,255,0.071)` (grayA 3) | Card (elevated variant), ModalInset, Calendar outer chrome — whisper edge that reads present without competing |
-| `{colors.hairline}` | `rgba(0,0,0,0.149)` (grayA 6) | `rgba(255,255,255,0.172)` (grayA 6) | Menu border, outlined surfaces, explicit dividers, table row divider |
+| `{colors.hairline}` | `rgba(0,0,0,0.149)` (grayA 6) | `rgba(255,255,255,0.172)` (grayA 6) | Menu border, outlined surfaces, explicit dividers |
 | `{colors.hairline-strong}` | `rgba(0,0,0,0.192)` (grayA 7) | `rgba(255,255,255,0.231)` (grayA 7) | Structural separators and stronger outlined-control hover states |
 | `{colors.hairline-tertiary}` | `rgba(0,0,0,0.267)` (grayA 8) | `rgba(255,255,255,0.333)` (grayA 8) | Radio hover border and dropzone drag hover |
 
@@ -817,6 +817,15 @@ Neutral and status variants always use radius-6 metadata geometry. Default varia
 - Active trigger: `bg-layer-selected`, `text-ink`, weight medium.
 - Vertical orientation: `TabsPanel` adds `pl-6 flex-1 min-w-0`; root gets `flex gap-0`.
 - Keyboard focus uses `selectionFocus`.
+
+**`sidebar`** / **`pagination`**: Borderless navigation using the same state vocabulary as Tabs.
+- Items use radius-8, `layer-hover` on hover, `layer-selected` for the current item, and `selectionFocus` for keyboard focus.
+- Sidebar uses a `layer-1` surface without side or footer hairlines. The optional `rounded` treatment supports inset layouts.
+
+**`table`**: Borderless data surface by default.
+- `surface` is borderless; `outlined` adds a radius-12 layer-1 wrapper with a hairline boundary.
+- The header keeps one structural hairline. Body rows and cells have no automatic hairlines. Interactive rows use `layer-hover`; selected rows use `layer-selected` without an accent stripe.
+- Size, striping, sticky headers, horizontal scrolling, sortable heads, and native table semantics remain available.
 
 **`toggle`**: Press-to-toggle button (Bold / Italic / Star / Pin).
 - Vocabulary matches Button: `tertiary` (transparent at rest) / `secondary` (filled at rest). Both use `layer-selected` for the persisted pressed state and the compact non-editable focus indicator.
