@@ -4,7 +4,7 @@ export const metadata = { title: "EmptyState" };
 
 # EmptyState
 
-A "no results" / "no data yet" placeholder. Structured as icon → title → description → primary action → optional secondary content. Fades in on mount so the transition from a loading state or list-with-data feels intentional.
+A quiet "no results" or "no data yet" placeholder. It provides structure for an optional icon, title, description, primary action, and supporting content without adding its own card chrome.
 
 <Install name="empty-state" />
 
@@ -59,7 +59,7 @@ import { ChartBar, ArrowSquareOut } from "@phosphor-icons/react/dist/ssr";
       name: "icon",
       type: "ReactNode",
       default: "-",
-      description: "Optional icon rendered in a 56×56 rounded-square container above the title.",
+      description: "Optional muted icon rendered above the title.",
     },
     {
       name: "action",
@@ -83,8 +83,8 @@ import { ChartBar, ArrowSquareOut } from "@phosphor-icons/react/dist/ssr";
 />
 
 <Callout title="Notes">
-- Fades in on mount with a subtle opacity + 8px y-translate via `motion`. Respects `prefers-reduced-motion`.
-- The icon container is a 56px rounded square with a hairline border, filled with `--fill-1`. Icons should be 24px (`size-6`): the wrapper auto-sizes them.
+- EmptyState adds no background, border, shadow, or entrance animation. Its parent owns the surrounding surface.
+- The icon is muted and rendered at 32px. It does not sit inside a decorative container.
 - Cap at one primary CTA in `action`. Use `children` for a secondary link (typical: "Learn more" with an external-link icon) or supporting content.
 - Content guidance: title is Title Case (`No Logs Match Your Filter`); description is sentence case and adds new information, not a rephrasing of the title. CTA labels are Title Case Verb + Noun (`Deploy Project`, `Browse Items`), never `Get Started` or `Continue`.
 - For an async filter change, wrap the region in `aria-live="polite"` so screen readers announce the new state.

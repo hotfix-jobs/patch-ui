@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import type * as React from "react";
 import { Button } from "./button";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { selectionFocus } from "../recipes";
 
 import { CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
 type Mode = "single" | "range" | "multiple";
@@ -359,9 +359,9 @@ export function Calendar(props: CalendarProps): React.ReactElement {
                   "text-small font-medium ring-1 ring-inset ring-hairline-strong",
                 selected &&
                   "bg-primary text-on-primary text-small font-medium hover:bg-primary-hover",
-                inSelectedRange && !selected && "bg-layer-selected",
+                inSelectedRange && !selected && "bg-layer-hover",
                 disabledDay && "pointer-events-none opacity-30",
-                focusRing,
+                selectionFocus,
               )}
             >
               {d.getDate()}

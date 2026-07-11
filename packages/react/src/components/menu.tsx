@@ -111,7 +111,7 @@ export function MenuPopup({
             // top-1/2 / left-1/2 + translate. Full width minus 8px
             // gutters left/right.
             "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
-            "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
+            "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu",
             "max-h-[calc(100dvh-2rem)] p-1",
             // Fade + slight upward drift on enter. Starts 8px below
             // final center, animates up. translate-x-1/2 stays put.
@@ -295,6 +295,7 @@ export function MenuItem({
           />
         }
         data-slot="menu-item"
+        data-selected={selected ? "" : undefined}
         data-type={isError ? "error" : "default"}
         disabled={disabled}
         label={label}
@@ -310,6 +311,7 @@ export function MenuItem({
   return (
     <MenuPrimitive.Item
       data-slot="menu-item"
+      data-selected={selected ? "" : undefined}
       data-type={isError ? "error" : "default"}
       disabled={disabled}
       label={label}
@@ -354,6 +356,7 @@ export function MenuCheckboxItem({
       label={label}
       closeOnClick={false}
       data-slot="menu-checkbox-item"
+      data-selected={checked ? "" : undefined}
       className={cn(
         itemRow.base,
         "gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",

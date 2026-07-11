@@ -28,11 +28,11 @@ export function Sidebar() {
   }, [pathname, setOpenMobile]);
 
   return (
-    <SidebarRoot>
-      <SidebarHeader className="h-14 flex-row items-center gap-2 border-b border-hairline px-3">
+    <SidebarRoot rounded>
+      <SidebarHeader className="h-14 flex-row items-center gap-2 px-3">
         <Link
           href="/"
-          className="rounded-[var(--radius-6)] px-2 py-1 text-regular font-medium text-ink hover:bg-layer-hover"
+          className="rounded-[var(--radius-8)] px-2 py-1 text-regular font-medium text-ink hover:bg-layer-hover active:bg-layer-hover"
         >
           Patch UI
         </Link>
@@ -45,9 +45,7 @@ export function Sidebar() {
         {navigation.map((group, gi) => (
           <SidebarGroup
             key={group.title}
-            className={
-              gi > 0 ? "-mx-3 border-t border-hairline px-3 pt-4 mt-2" : ""
-            }
+            className={gi > 0 ? "pt-4 mt-2" : ""}
           >
             <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
             <SidebarMenu>

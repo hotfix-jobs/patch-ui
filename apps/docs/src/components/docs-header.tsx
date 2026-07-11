@@ -45,7 +45,7 @@ export function DocsHeader() {
   return (
     <header
       data-slot="docs-header"
-      className="flex h-14 shrink-0 items-center gap-3 border-b border-hairline bg-base px-4"
+      className="flex h-14 shrink-0 items-center gap-3 bg-base px-4"
     >
       <SidebarTrigger
         title="Toggle sidebar (⌘B)"
@@ -63,7 +63,7 @@ export function DocsHeader() {
           target="_blank"
           rel="noreferrer"
           aria-label="GitHub"
-          className="inline-flex size-8 items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink"
+          className="inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink-muted outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]"
         >
           <GithubLogo className="size-4" aria-hidden />
         </a>

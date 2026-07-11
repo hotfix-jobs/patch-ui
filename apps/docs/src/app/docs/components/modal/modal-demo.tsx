@@ -3,6 +3,8 @@
 import { useState } from "react";
 import {
   Button,
+  Field,
+  FieldLabel,
   Input,
   Modal,
   ModalBody,
@@ -69,12 +71,14 @@ export function ModalDemo() {
                 Removing {PROJECT_NAME} can't be undone.
               </p>
             </div>
-            <Input
-              id="delete-confirm"
-              label={`To confirm, type the project name "${PROJECT_NAME}"`}
-              value={typed}
-              onChange={(e) => setTyped(e.target.value)}
-            />
+            <Field>
+              <FieldLabel>{`To confirm, type the project name "${PROJECT_NAME}"`}</FieldLabel>
+              <Input
+                id="delete-confirm"
+                value={typed}
+                onChange={(e) => setTyped(e.target.value)}
+              />
+            </Field>
           </ModalBody>
           <ModalActions>
             <ModalAction onClick={() => setDestructive(false)}>

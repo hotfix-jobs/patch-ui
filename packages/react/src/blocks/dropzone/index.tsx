@@ -179,7 +179,7 @@ export function Dropzone({
           }
         }}
         className={cn(
-          "relative flex w-full cursor-pointer flex-col items-center justify-center rounded-[var(--radius-6)] border border-dashed border-hairline",
+          "relative flex w-full flex-col items-center justify-center rounded-[var(--radius-6)] border border-dashed border-hairline",
           DROP_AREA_SIZE[size],
           "text-center transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
           "hover:border-hairline-tertiary hover:bg-layer-hover",
@@ -230,8 +230,7 @@ export function Dropzone({
                 data-state={isUploading ? "uploading" : undefined}
               >
                 <Card
-                  direction="row"
-                  className="items-center gap-3 px-3 py-2"
+                  className="flex items-center gap-3 px-3 py-2"
                 >
                   <File className="size-4 shrink-0 text-ink-muted" />
                   <div className="flex min-w-0 flex-1 flex-col gap-1">

@@ -12,7 +12,7 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { selectionFocus } from "../recipes";
 import { Sheet, SheetContent } from "./sheet";
 
 /* --------------------------- Context / hook --------------------------- */
@@ -118,6 +118,10 @@ export function SidebarProvider({
 
 export interface SidebarProps extends useRender.ComponentProps<"aside"> {
   collapsible?: "offcanvas" | "none";
+  /** Round the desktop sidebar surface. */
+  rounded?: boolean;
+  /** Add a hairline boundary around the desktop sidebar surface. */
+  bordered?: boolean;
   /** Fixed pixel width. */
   width?: number;
   /** Offset from top of viewport, in pixels. */
@@ -127,6 +131,8 @@ export interface SidebarProps extends useRender.ComponentProps<"aside"> {
 /** Fixed-position column on desktop, slide-out drawer on mobile. */
 export function Sidebar({
   collapsible = "offcanvas",
+  rounded = false,
+  bordered = false,
   width = 256,
   topOffset = 0,
   className,
@@ -162,11 +168,11 @@ export function Sidebar({
         <aside
           data-slot="sidebar"
           className={cn(
-            "fixed inset-y-0 z-30 flex w-[var(--sidebar-width)] flex-col bg-base transition-[transform,left,right] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
+            "fixed inset-y-0 z-30 flex w-[var(--sidebar-width)] flex-col bg-layer-1 transition-[transform,left,right] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
             "top-[var(--sidebar-top)] h-[calc(100svh-var(--sidebar-top))]",
-            side === "left"
-              ? "left-0 border-r border-hairline"
-              : "right-0 border-l border-hairline",
+            side === "left" ? "left-0" : "right-0",
+            rounded && "overflow-hidden rounded-[var(--radius-12)]",
+            bordered && "border border-hairline",
             collapsed &&
               (side === "left" ? "-translate-x-full" : "translate-x-full"),
             className,
@@ -258,7 +264,7 @@ export function SidebarFooter({
     <div
       data-slot="sidebar-footer"
       className={cn(
-        "flex shrink-0 flex-col gap-2 border-t border-hairline p-3",
+        "flex shrink-0 flex-col gap-2 p-3",
         className,
       )}
       {...props}
@@ -292,7 +298,7 @@ export function SidebarGroupLabel({
   return (
     <div
       data-slot="sidebar-group-label"
-      className={cn("px-2 pt-2 text-mini font-medium text-primary", className)}
+      className={cn("px-2 pt-2 text-mini font-medium text-ink-muted", className)}
       {...props}
     />
   );
@@ -347,11 +353,12 @@ export function SidebarMenuButton({
     "data-active": active || undefined,
     "aria-current": active ? ("page" as const) : undefined,
     className: cn(
-      "flex w-full items-center gap-2 rounded-[var(--radius-6)] px-2 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+      "flex w-full items-center gap-2 rounded-[var(--radius-8)] px-2 py-1.5 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
       active
-        ? "bg-layer-selected font-medium text-ink"
+        ? "bg-layer-hover font-medium text-ink"
         : "text-ink-muted hover:bg-layer-hover hover:text-ink",
-      focusRing,
+      "active:bg-layer-hover disabled:pointer-events-none disabled:opacity-50",
+      selectionFocus,
       className,
     ),
   };
@@ -381,8 +388,8 @@ export function SidebarTrigger({
         if (!e.defaultPrevented) toggle();
       }}
       className={cn(
-        "inline-flex size-9 items-center justify-center rounded-full text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover",
-        focusRing,
+        "inline-flex size-9 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover active:bg-layer-hover disabled:pointer-events-none disabled:opacity-50",
+        selectionFocus,
         className,
       )}
       {...props}

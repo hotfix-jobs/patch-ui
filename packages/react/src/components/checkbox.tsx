@@ -3,7 +3,7 @@
 import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
+import { selectionFocus, colorTransition } from "../recipes";
 
 import { Check, Minus } from "@phosphor-icons/react/dist/ssr";
 export interface CheckboxProps extends CheckboxPrimitive.Root.Props {
@@ -24,17 +24,13 @@ export function Checkbox({
     <CheckboxPrimitive.Root
       disabled={disabled}
       className={cn(
-        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-[var(--radius-4)]",
-        // Unchecked uses a subtle chip fill (matches Switch off-track) so
-        // the box stays visually distinct against any surface — including
-        // rows that apply a hover overlay.
-        "bg-fill-1 border border-hairline",
-        "hover:bg-fill-2 hover:border-hairline-strong",
-        "data-checked:border-primary data-checked:bg-primary data-checked:hover:bg-primary-hover data-checked:hover:border-primary-hover",
-        "data-indeterminate:border-primary data-indeterminate:bg-primary",
+        "inline-flex size-4 shrink-0 items-center justify-center rounded-[var(--radius-4)]",
+        "bg-fill-2 hover:bg-hairline-strong",
+        "data-checked:bg-ink data-checked:hover:bg-ink",
+        "data-indeterminate:bg-ink",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
-        focusRing,
+        selectionFocus,
         className,
       )}
       data-slot="checkbox"
@@ -45,13 +41,13 @@ export function Checkbox({
         data-slot="checkbox-indicator"
         keepMounted
       >
-        {/* !text-on-primary overrides iconMuted descendant selectors from parent rows (Menu, list). */}
+        {/* Overrides iconMuted descendant selectors from parent rows. */}
         <Check
-          className="!text-on-primary size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
+          className="!text-base size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
         />
         <Minus
           aria-hidden="true"
-          className="!text-on-primary hidden size-3 group-data-indeterminate:block"
+          className="!text-base hidden size-3 group-data-indeterminate:block"
         />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
@@ -63,7 +59,6 @@ export function Checkbox({
     <label
       className={cn(
         "inline-flex items-center gap-2 text-small text-ink",
-        !disabled && "cursor-pointer",
         disabled && "cursor-not-allowed opacity-50",
         wrapperClassName,
       )}

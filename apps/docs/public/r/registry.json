@@ -138,7 +138,6 @@
       "title": "Button",
       "dependencies": [
         "@base-ui/react",
-        "@phosphor-icons/react",
         "class-variance-authority"
       ],
       "registryDependencies": [
@@ -267,9 +266,6 @@
       "name": "empty-state",
       "type": "registry:ui",
       "title": "Empty State",
-      "dependencies": [
-        "motion"
-      ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
@@ -392,6 +388,7 @@
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
+        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -633,6 +630,7 @@
         "@phosphor-icons/react"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],
@@ -963,6 +961,57 @@
       ]
     },
     {
+      "name": "filter-toolbar",
+      "type": "registry:block",
+      "title": "Filter Toolbar",
+      "dependencies": [
+        "@phosphor-icons/react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/button.json",
+        "https://ui.hotfix.jobs/r/input.json",
+        "https://ui.hotfix.jobs/r/popover.json",
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/scroller.json",
+        "https://ui.hotfix.jobs/r/spinner.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/blocks/filter-toolbar/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/filter-toolbar/index.tsx"
+        }
+      ]
+    },
+    {
+      "name": "search-suggestions",
+      "type": "registry:block",
+      "title": "Search Suggestions",
+      "dependencies": [
+        "@phosphor-icons/react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://ui.hotfix.jobs/r/button.json",
+        "https://ui.hotfix.jobs/r/input.json",
+        "https://ui.hotfix.jobs/r/popover.json",
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/spinner.json",
+        "https://ui.hotfix.jobs/r/tokens.json",
+        "https://ui.hotfix.jobs/r/utils.json"
+      ],
+      "files": [
+        {
+          "path": "registry/blocks/search-suggestions/index.tsx",
+          "type": "registry:component",
+          "target": "components/blocks/search-suggestions/index.tsx"
+        }
+      ]
+    },
+    {
       "name": "all",
       "type": "registry:lib",
       "title": "All Patch UI components",
@@ -982,6 +1031,7 @@
         "https://ui.hotfix.jobs/r/dropzone.json",
         "https://ui.hotfix.jobs/r/empty-state.json",
         "https://ui.hotfix.jobs/r/field.json",
+        "https://ui.hotfix.jobs/r/filter-toolbar.json",
         "https://ui.hotfix.jobs/r/input.json",
         "https://ui.hotfix.jobs/r/kbd.json",
         "https://ui.hotfix.jobs/r/label.json",
@@ -994,6 +1044,7 @@
         "https://ui.hotfix.jobs/r/radio.json",
         "https://ui.hotfix.jobs/r/scroller.json",
         "https://ui.hotfix.jobs/r/search-input.json",
+        "https://ui.hotfix.jobs/r/search-suggestions.json",
         "https://ui.hotfix.jobs/r/section.json",
         "https://ui.hotfix.jobs/r/section-label.json",
         "https://ui.hotfix.jobs/r/select.json",

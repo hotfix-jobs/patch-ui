@@ -15,7 +15,7 @@ export default function DocsPage() {
         A copy-in React component library with taste. Crisp visual language,
         Base UI accessibility primitives, and a Tailwind v4 token system that
         drives light and dark from a single stylesheet. No npm package to
-        install, no CLI to learn: it ships through the standard shadcn
+        install and no custom CLI to learn: it ships through the standard shadcn
         registry.
       </p>
 
@@ -46,7 +46,7 @@ export default function DocsPage() {
         />
       </div>
 
-      <Card variant="elevated" className="mt-12 p-6">
+      <Card className="mt-12 bg-fill-1 p-6">
         <h2 className="text-regular font-medium text-ink">
           What Patch UI is not
         </h2>
@@ -58,13 +58,13 @@ export default function DocsPage() {
           </li>
           <li>
             <strong className="font-medium text-ink">Not a framework.</strong>{" "}
-            No providers to wrap, no context to configure. Import a component
-            and use it.
+            There is no library-wide provider. Components that coordinate
+            state expose a local provider or compound root where needed.
           </li>
           <li>
-            <strong className="font-medium text-ink">Not opinionated about your app.</strong>{" "}
+            <strong className="font-medium text-ink">Not a runtime dependency.</strong>{" "}
             Once copied, the source is yours. Rename props, delete variants,
-            restyle. It is your code.
+            or restyle it without waiting on a package release.
           </li>
         </ul>
       </Card>
@@ -85,7 +85,7 @@ function IntroCard({
   href: string;
 }) {
   return (
-    <Card hoverable className="p-5" render={<Link href={href} />}>
+    <Card actionable className="p-5" render={<Link href={href} />}>
       <div className="flex items-center gap-2 text-ink-muted">
         <span className="inline-flex items-center justify-center">{icon}</span>
         <span className="text-small font-medium text-ink">{title}</span>

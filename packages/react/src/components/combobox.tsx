@@ -16,6 +16,7 @@ import {
   itemRow,
   popupDivider,
   popupSurface,
+  popupTriggerOpen,
 } from "../recipes";
 import { Checkbox } from "./checkbox";
 import type { InputSize } from "./input";
@@ -48,15 +49,10 @@ export interface ComboboxProps {
   onSelectedValuesChange?: (next: unknown[]) => void;
   /**
    * Auto-highlight behavior on the popup list:
-   *   - `"always"` (default): the first item is always highlighted on open
-   *     and on every input change. Popup opens scrolled to the top and Enter
-   *     picks the first match. Standard typeahead behavior.
+   *   - `false` (default): open with no highlighted item. Arrow keys move to
+   *     an option before Enter can select it.
    *   - `true`: only highlight on input change, not on plain open.
-   *   - `false`: never auto-highlight; the popup opens with nothing focused
-   *     and Enter is a no-op until the user arrows to an item. Note that
-   *     this exposes a Base UI quirk where the popup can open scrolled to
-   *     the last item under loop-focus navigation. Use only if you have a
-   *     strong reason to want the "no preselection" behavior.
+   *   - `"always"`: highlight the first item on open and input change.
    */
   autoHighlight?: boolean | "always";
   children: React.ReactNode;
@@ -77,50 +73,13 @@ export function Combobox({
   multiple,
   selectedValues,
   onSelectedValuesChange,
-  autoHighlight = "always",
+  autoHighlight = false,
   children,
 }: ComboboxProps): React.ReactElement {
   const shared = useMemo(
     () => ({ placeholder, multiple }),
     [placeholder, multiple],
   );
-  // Full workaround for Base UI issue #3077: the popup opens with the
-  // last item marked `data-highlighted` AND scrolled into view. Scroll
-  // reset alone doesn't clear the highlight — Base UI's activeIndex
-  // still points to that item and the CSS lights it up.
-  //
-  // The Base UI author's recommendation is to dispatch synthetic
-  // pointer events on the highlighted item: pointerout clears Base UI's
-  // internal active state, and pointermove on the parent re-syncs the
-  // pointer position ref. Then reset scrollTop. Two nested rAFs defer
-  // past Base UI's own rAF-scheduled scrollIntoView.
-  const handleOpenChange = (nextOpen: boolean) => {
-    onOpenChange?.(nextOpen);
-    if (!nextOpen) return;
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        const popup = document.querySelector<HTMLElement>(
-          '[data-slot="combobox-popup"]',
-        );
-        if (!popup) return;
-        const highlighted = popup.querySelector<HTMLElement>(
-          "[data-highlighted]",
-        );
-        if (highlighted) {
-          highlighted.parentElement?.dispatchEvent(
-            new Event("pointermove", { bubbles: true }),
-          );
-          highlighted.dispatchEvent(
-            new PointerEvent("pointerout", { bubbles: true }),
-          );
-        }
-        const scroller = popup.querySelector<HTMLElement>(
-          '[role="listbox"], [role="grid"]',
-        );
-        if (scroller) scroller.scrollTop = 0;
-      });
-    });
-  };
   // Base UI's ComboboxRoot is generic over Value + Multiple, and the
   // shape of `value` depends on both. Cast through `unknown as never` at
   // the boundary so consumers can pass a `string[]` selection array
@@ -142,7 +101,7 @@ export function Combobox({
         {...rootProps}
         open={open}
         defaultOpen={defaultOpen}
-        onOpenChange={handleOpenChange}
+        onOpenChange={onOpenChange}
         inputValue={value}
         onInputValueChange={
           onValueChange ? (next) => onValueChange(next) : undefined
@@ -184,9 +143,8 @@ function ChevronIndicator({
 export interface ComboboxInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size" | "prefix"> {
   size?: InputSize;
-  /** Visual treatment. `control` matches Button secondary; `soft`
-   *  is a quieter fill-only treatment for dense embedded pickers. */
-  variant?: "control" | "soft";
+  /** Removes control chrome when embedded in a composite surface. */
+  variant?: "default" | "unstyled";
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   /** Hide the trailing chevron. */
@@ -194,10 +152,6 @@ export interface ComboboxInputProps
   /** Show a trailing X to clear the input. */
   clearable?: boolean;
   onClear?: () => void;
-  /** Renders a full-radius (pill-shaped) input. */
-  rounded?: boolean;
-  /** Visual error state. */
-  error?: boolean;
 }
 
 const heightBySize: Record<InputSize, string> = {
@@ -243,25 +197,19 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
   function ComboboxInput(
     {
       size = "md",
-      variant = "control",
+      variant = "default",
       prefix,
       suffix,
       hideChevron,
       clearable,
       onClear,
-      rounded,
-      error,
       disabled,
       className,
       ...props
     },
     forwardedRef,
   ) {
-    const shape = rounded ? "rounded-full" : "rounded-[var(--radius-8)]";
-    const chrome =
-      variant === "soft"
-        ? "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-fill-2"
-        : "border border-hairline bg-layer-1 hover:border-hairline-strong hover:bg-layer-2 has-focus-visible:border-primary has-focus-visible:shadow-[var(--focus-halo)]";
+    const unstyled = variant === "unstyled";
     const trailing = (clearable || !hideChevron || suffix) ? (
       <ComboboxAffix side="end">
         <span className={cn("inline-flex items-center gap-1.5", clearable && "group")}>
@@ -271,7 +219,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
               aria-label="Clear"
               onClick={onClear}
               data-slot="combobox-input-clear"
-              className="inline-flex size-5 items-center justify-center rounded-full text-ink-muted hover:bg-layer-hover hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[ending-style]:hidden"
+              className="inline-flex size-5 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] data-[ending-style]:hidden"
             >
               <X className="size-3" />
             </ComboboxPrimitive.Clear>
@@ -294,11 +242,16 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
         data-slot="combobox-input-group"
         className={cn(
           "group/combobox-input relative inline-flex w-full items-center overflow-hidden text-ink",
-          shape,
-          chrome,
-          "transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          !unstyled && "rounded-[var(--radius-8)]",
+          !unstyled && [
+            "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-layer-1",
+            popupTriggerOpen,
+            "outline-none has-focus-visible:[outline-style:solid] has-focus-visible:outline-[length:var(--focus-ring-width)] has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-0",
+            "transition-[color,background-color,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          ],
           "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
-          error && "!border-error",
+          "group-data-[invalid]/field:[outline-style:solid] group-data-[invalid]/field:outline-[length:1px] group-data-[invalid]/field:outline-error",
+          "has-[[aria-invalid=true]]:[outline-style:solid] has-[[aria-invalid=true]]:outline-[length:1px] has-[[aria-invalid=true]]:outline-error",
           className,
         )}
       >
@@ -374,7 +327,7 @@ export function ComboboxPopup({
               // top-1/2 / left-1/2 + translate. Full width minus
               // 8px gutters left/right.
               "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
-              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-modal",
+              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu",
               "max-h-[calc(100dvh-2rem)]",
               // Fade + slight vertical slide from below the center on
               // enter. `translate-y-[calc(-50%+8px)]` starts 8px below
@@ -389,7 +342,7 @@ export function ComboboxPopup({
           >
             <ComboboxPrimitive.InputGroup
               data-slot="combobox-mobile-input"
-              className="flex-none flex w-full items-center gap-2 border-b border-hairline px-3 text-ink"
+              className="flex-none flex w-full items-center gap-2 px-3 text-ink"
             >
               <MagnifyingGlass
                 aria-hidden
@@ -481,7 +434,7 @@ export function ComboboxItem({
         "group",
         itemRow.base,
         itemRow.comfortable,
-        "cursor-pointer gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         iconMuted,
         className,
       )}
@@ -526,7 +479,7 @@ export function ComboboxItem({
             e.preventDefault();
             onRemove();
           }}
-          className="ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-full text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink"
+          className="ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-ink-muted transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover"
           data-slot="combobox-item-remove"
         >
           <X className="size-3" aria-hidden />
@@ -594,5 +547,6 @@ export function ComboboxSection({
   );
 }
 
-export { MagnifyingGlass as ComboboxSearchIcon };
-export { ComboboxPrimitive };
+export const ComboboxSearchIcon = MagnifyingGlass;
+const ComboboxPrimitiveExport = ComboboxPrimitive;
+export { ComboboxPrimitiveExport as ComboboxPrimitive };

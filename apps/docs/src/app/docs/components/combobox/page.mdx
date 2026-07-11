@@ -8,7 +8,7 @@ An `Input` paired with a floating popup that shows arbitrary filterable content:
 
 Use Combobox when you need an input-driven dropdown with custom row shapes (recents with chips, sign-in nudges, mode-specific banners). For simple command palettes, use [Command](/docs/components/command). For trigger-button dropdowns, use [Menu](/docs/components/menu).
 
-Query state (`value` / `onValueChange` / `placeholder`) lives on the `<Combobox>` root so the trigger input and the mobile panel's own search input can share it. On viewports below the `md` breakpoint the popup automatically switches to a bottom-anchored panel with its own search input.
+Query state (`value` / `onValueChange` / `placeholder`) lives on the `<Combobox>` root so the trigger input and the mobile panel's own search input can share it. On viewports below the `md` breakpoint the popup automatically switches to a centered, near-full-width panel with its own search input.
 
 <Install name="combobox" />
 
@@ -199,6 +199,12 @@ The popup accepts arbitrary JSX: only `ComboboxItem` gets keyboard navigation. M
       description: "Called when the popup should open or close.",
     },
     {
+      name: "autoHighlight",
+      type: 'boolean | "always"',
+      default: "false",
+      description: "Uses Base UI's native behavior. By default no option is highlighted on open or while typing; arrow to an option before pressing Enter.",
+    },
+    {
       name: "multiple",
       type: "boolean",
       default: "false",
@@ -221,15 +227,15 @@ The popup accepts arbitrary JSX: only `ComboboxItem` gets keyboard navigation. M
 
 ### ComboboxInput
 
-Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `label`, etc.) and adds the props below. `value`, `onChange`, and `placeholder` read from the `<Combobox>` root by default; pass them directly on this input only when you need a per-input override.
+Accepts native input props plus `prefix`, `suffix`, and `size`. `value`, `onChange`, and `placeholder` read from the `<Combobox>` root by default; pass them directly on this input only when you need a per-input override.
 
 <PropsTable
   props={[
     {
       name: "variant",
-      type: '"control" | "soft"',
-      default: '"control"',
-      description: "Visual treatment for the trigger. `control` matches Button secondary (bordered + `--layer-1`) — use for standalone comboboxes. `soft` drops the border and uses `--fill-1` + `--fill-2` on hover — quieter chrome for dense embedded pickers (inline field inside a Card, one of several controls in a row).",
+      type: '"default" | "unstyled"',
+      default: '"default"',
+      description: "Use unstyled only when another component owns the control surface.",
     },
     {
       name: "openOnFocus",
@@ -303,8 +309,10 @@ Extends all `Input` props (`prefix`, `suffix`, `size`, `error`, `loading`, `labe
 
 <Callout title="Notes">
 - **Query state on the root.** Put `value` / `onValueChange` / `placeholder` on `<Combobox>` so the trigger input and the mobile panel's own input share them. The input still accepts `value` / `onChange` / `placeholder` as per-input overrides for advanced cases.
-- **Mobile panel.** Below 768px the popup renders as a bottom-anchored fixed panel with its own search input (real focus, autoFocus) and a close X. Desktop behavior is unchanged.
+- **Mobile panel.** Below 768px the popup renders as a centered fixed panel with narrow viewport gutters, its own search input (real focus, autoFocus), and a close X. Desktop behavior is unchanged.
 - **Multi-select.** Pass `multiple` on the root with `selectedValues` + `onSelectedValuesChange` and Base UI manages the array natively (the built-in clearable X becomes visible when the array is non-empty and clears both the input and the picks on click). For the "list of active picks with individual X to remove" pattern, put `onRemove` on the `ComboboxItem` for each Selected row.
+- **State consistency.** The open input uses the same stronger fill as Select and Menu triggers, while retaining its editable-field focus outline. Highlighted rows are subtle; selected rows keep the stronger selected fill.
+- **No automatic option.** The popup opens with no highlighted item by default. This is Base UI's native `autoHighlight={false}` behavior; arrow navigation establishes the active option.
 - The input keeps real focus while you type and arrow through options on desktop. Items get `aria-activedescendant` instead of taking focus, which is the proper ARIA combobox pattern: screen readers announce the active option without interrupting typing.
 - Combobox doesn't filter for you. Filter your data based on the current input value and render the matches as `<ComboboxItem>` children. Substring, fuzzy index, async API: any strategy works.
 - Anything inside `ComboboxPopup` renders. Only `<ComboboxItem>` is keyboard-navigable, so you can drop in banners, section headers, and dividers as plain JSX between item groups.

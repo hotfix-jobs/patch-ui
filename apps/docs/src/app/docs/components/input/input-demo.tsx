@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Input, SearchInput , SectionLabel } from "@patchui/react";
+import { Field, FieldError, FieldLabel, Input, SearchInput , SectionLabel } from "@patchui/react";
 import { ArrowCircleUp, Envelope, MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
 export function InputDemo() {
   const [searchValue, setSearchValue] = useState("");
@@ -32,22 +32,20 @@ export function InputDemo() {
       <div className="space-y-3">
         <SectionLabel>Label + error message</SectionLabel>
         <div className="flex flex-col gap-3 max-w-xs">
-          <Input id="demo-label" label="Domain" placeholder="example.com" />
-          <Input
-            id="demo-err"
-            label="Email"
-            prefix={<Envelope />}
-            value={emailValue}
-            onChange={(e) => setEmailValue(e.target.value)}
-            error="Enter a valid email address."
-          />
-        </div>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Rounded (pill-shaped)</SectionLabel>
-        <div className="flex flex-col gap-3 max-w-xs">
-          <Input rounded prefix={<MagnifyingGlass />} placeholder="Search" />
+          <Field>
+            <FieldLabel>Domain</FieldLabel>
+            <Input id="demo-label" placeholder="example.com" />
+          </Field>
+          <Field invalid>
+            <FieldLabel>Email</FieldLabel>
+            <Input
+              id="demo-err"
+              prefix={<Envelope />}
+              value={emailValue}
+              onChange={(e) => setEmailValue(e.target.value)}
+            />
+            <FieldError match>Enter a valid email address.</FieldError>
+          </Field>
         </div>
       </div>
 

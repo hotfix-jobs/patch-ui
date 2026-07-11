@@ -11,6 +11,7 @@ import {
 } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
+import { selectionFocus } from "../recipes";
 
 export type SheetSide = "top" | "right" | "bottom" | "left";
 
@@ -217,7 +218,8 @@ export function SheetClose({
       aria-label="Close"
       data-slot="sheet-close"
       className={cn(
-        "inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-layer-hover hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "inline-flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        selectionFocus,
         className,
       )}
       {...rest}
@@ -263,7 +265,7 @@ export function SheetHeader({
       <div
         data-slot="sheet-header"
         className={cn(
-          "flex h-11 shrink-0 items-center justify-between gap-3 border-b border-hairline px-4",
+          "flex h-11 shrink-0 items-center justify-between gap-3 px-4",
           className,
         )}
         {...props}
@@ -284,7 +286,7 @@ export function SheetHeader({
     <div
       data-slot="sheet-header"
       className={cn(
-        "relative flex flex-col gap-1 border-b border-hairline px-5 py-4",
+        "relative flex flex-col gap-1 px-5 pt-5 pb-2",
         className,
       )}
       {...props}
@@ -360,7 +362,7 @@ export function SheetFooter({
     <div
       data-slot="sheet-footer"
       className={cn(
-        "flex gap-2 border-t border-hairline px-5 py-3",
+        "flex gap-2 px-5 pt-2 pb-5",
         stacked ? "flex-col" : "flex-row justify-between",
         className,
       )}

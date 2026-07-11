@@ -6,13 +6,11 @@ import type * as React from "react";
 import { cn } from "../utils";
 
 export type TextareaSize = "sm" | "md" | "lg";
+export type TextareaVariant = "default" | "unstyled";
 
 export type TextareaProps = React.ComponentProps<"textarea"> & {
   size?: TextareaSize;
-  /** Visual error state or inline error message. */
-  error?: boolean | string;
-  /** Renders a `<label>` above the textarea. Requires `id`. */
-  label?: string;
+  variant?: TextareaVariant;
 };
 
 const paddingBySize: Record<TextareaSize, string> = {
@@ -25,26 +23,25 @@ export function Textarea({
   className,
   rows,
   size = "md",
-  error,
-  label,
-  id,
+  variant = "default",
   ...props
 }: TextareaProps): React.ReactElement {
-  const hasErrorMessage = typeof error === "string" && error.length > 0;
-  const hasError = Boolean(error);
-  const errorId = id ? `${id}-error` : undefined;
+  const unstyled = variant === "unstyled";
 
-  const control = (
+  return (
     <span
       className={cn(
-        "relative inline-flex w-full rounded-[var(--radius-8)]",
-        "bg-layer-1 border border-hairline text-ink",
-        "transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        "hover:border-hairline-strong",
-        "has-focus-visible:border-primary has-focus-visible:shadow-[var(--focus-halo)]",
+        "relative inline-flex w-full text-ink",
+        !unstyled && "rounded-[var(--radius-8)]",
+        !unstyled && [
+          "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-layer-1",
+          "outline-none has-focus-visible:[outline-style:solid] has-focus-visible:outline-[length:var(--focus-ring-width)] has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-0",
+          "transition-[color,background-color,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        ],
         "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
-        hasError && "!border-error",
-        !label && !hasErrorMessage && className,
+        "group-data-[invalid]/field:[outline-style:solid] group-data-[invalid]/field:outline-[length:1px] group-data-[invalid]/field:outline-error",
+        "has-[[aria-invalid=true]]:[outline-style:solid] has-[[aria-invalid=true]]:outline-[length:1px] has-[[aria-invalid=true]]:outline-error",
+        className,
       )}
       data-slot="textarea-control"
     >
@@ -58,40 +55,11 @@ export function Textarea({
             )}
             data-slot="textarea"
             rows={rows}
-            aria-invalid={hasError || undefined}
-            aria-describedby={hasErrorMessage ? errorId : props["aria-describedby"]}
-            {...mergeProps(defaultProps, props, id ? { id } : {})}
+            {...mergeProps(defaultProps, props)}
           />
         )}
       />
     </span>
-  );
-
-  if (!label && !hasErrorMessage) return control;
-
-  return (
-    <div className={cn("flex flex-col gap-2 w-full", className)} data-slot="textarea-field">
-      {label && (
-        <label
-          htmlFor={id}
-          className="text-small font-medium text-ink"
-          data-slot="textarea-label"
-        >
-          {label}
-        </label>
-      )}
-      {control}
-      {hasErrorMessage && (
-        <p
-          id={errorId}
-          role="alert"
-          className="text-mini text-error"
-          data-slot="textarea-error"
-        >
-          {error}
-        </p>
-      )}
-    </div>
   );
 }
 

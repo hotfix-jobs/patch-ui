@@ -4,12 +4,8 @@ import { Tabs as TabsPrimitive } from "@base-ui/react/tabs";
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { selectionFocus } from "../recipes";
 import { Tooltip } from "./tooltip";
-
-/** Folder-tabs: active tab has a rounded top with hairline top+sides,
- *  and pulls -1px below the container line so its fill covers the line
- *  under it (the classic "manila folder" merge with the panel). */
 
 type TabsOrientation = "horizontal" | "vertical";
 
@@ -77,8 +73,8 @@ export function TabsList({
       className={cn(
         "relative flex",
         orientation === "horizontal"
-          ? "items-end gap-1 border-b border-hairline"
-          : "flex-col items-stretch gap-1 border-r border-hairline",
+          ? "items-center gap-1"
+          : "flex-col items-stretch gap-1",
         className,
       )}
       {...props}
@@ -111,7 +107,6 @@ export function TabsTrigger({
   tooltip,
   ...props
 }: TabsTriggerProps): React.ReactElement {
-  const orientation = useContext(TabsOrientationContext);
   const showBadge = badge != null && (typeof badge !== "number" || badge > 0);
 
   const trigger = (
@@ -121,22 +116,9 @@ export function TabsTrigger({
       data-slot="tabs-trigger"
       className={cn(
         "relative inline-flex items-center gap-2 text-small transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
-        focusRing,
-        "px-4 py-2.5 text-ink-muted hover:text-ink",
-        // Reserved transparent border keeps the tab the same size in
-        // active vs. inactive so nothing shifts on selection.
-        "border border-transparent",
-        orientation === "horizontal"
-          ? [
-              "rounded-t-[var(--radius-6)] -mb-px",
-              "data-[active]:border-hairline data-[active]:border-b-transparent",
-              "data-[active]:bg-base data-[active]:text-ink data-[active]:font-medium",
-            ]
-          : [
-              "rounded-l-[var(--radius-6)] -mr-px",
-              "data-[active]:border-hairline data-[active]:border-r-transparent",
-              "data-[active]:bg-base data-[active]:text-ink data-[active]:font-medium",
-            ],
+        selectionFocus,
+        "rounded-[var(--radius-8)] px-3 py-2 text-ink-muted hover:bg-layer-hover hover:text-ink",
+        "data-[active]:bg-layer-hover data-[active]:text-ink data-[active]:font-medium",
         className,
       )}
       {...props}

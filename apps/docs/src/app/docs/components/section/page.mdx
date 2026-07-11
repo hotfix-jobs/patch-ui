@@ -5,9 +5,9 @@ export const metadata = { title: "Section" };
 
 # Section
 
-An opinionated settings-page primitive: bordered card with a structured header (title + subtitle), optional content body, and a two-column footer (status text on the left, action buttons on the right).
+A structural grouping with optional header, content, and footer slots. It is plain by default and can opt into a borderless, shadowless card surface. Add `dividers` when direct children need quiet internal separation.
 
-Different from `Card`, which is a general-purpose surface primitive (mix-and-match booleans). Reach for Section when the page reads as "here's a setting, here's how to save it."
+Different from `Card`, which represents a discrete content object. Reach for Section when several controls or settings belong to one named area.
 
 <Install name="section" />
 
@@ -25,54 +25,50 @@ import {
   SectionSubtitle,
   SectionContent,
   SectionFooter,
-  SectionFooterStatus,
-  SectionFooterActions,
   Button,
   Input,
 } from "@patchui/react";
 
 // Simple settings row (header + footer, no body)
-<Section>
-  <SectionHeader>
+<Section variant="card" dividers>
+  <SectionHeader className="px-6 pb-4 pt-5">
     <SectionTitle>Account Settings</SectionTitle>
     <SectionSubtitle>Manage your account preferences and settings.</SectionSubtitle>
   </SectionHeader>
-  <SectionFooter>
-    <SectionFooterStatus>Need help? <a href="#">View documentation</a></SectionFooterStatus>
-    <SectionFooterActions>
+  <SectionFooter className="flex items-center justify-between px-6 pb-5">
+    <div className="text-small text-ink-muted">Need help? <a href="#">View documentation</a></div>
+    <div className="flex items-center gap-2">
       <Button size="sm">Save Changes</Button>
-    </SectionFooterActions>
+    </div>
   </SectionFooter>
 </Section>
 
 // With a content body (e.g. an input to edit)
-<Section>
-  <SectionHeader>
+<Section dividers>
+  <SectionHeader className="px-6 pb-4 pt-5">
     <SectionTitle>Project Name</SectionTitle>
     <SectionSubtitle>The display name for your project.</SectionSubtitle>
   </SectionHeader>
-  <SectionContent>
+  <SectionContent className="px-6 pb-6">
     <Input placeholder="my-awesome-project" />
   </SectionContent>
-  <SectionFooter>
-    <SectionFooterStatus>Please use 32 characters at maximum.</SectionFooterStatus>
-    <SectionFooterActions>
+  <SectionFooter className="flex items-center justify-between px-6 pb-5">
+    <div className="text-small text-ink-muted">Please use 32 characters at maximum.</div>
+    <div className="flex items-center gap-2">
       <Button size="sm">Save</Button>
-    </SectionFooterActions>
+    </div>
   </SectionFooter>
 </Section>
 ```
 
 ## Components
 
-- **`Section`**: the bordered wrapper. Renders as `<section>` by default.
+- **`Section`**: the structural surface. Renders as `<section>` by default.
 - **`SectionHeader`**: the top block: title + subtitle.
 - **`SectionTitle`**: heading (renders as `<h3>` for correct outline).
 - **`SectionSubtitle`**: descriptive text under the title (renders as `<p>`).
 - **`SectionContent`**: optional body between header and footer.
-- **`SectionFooter`**: bordered footer with a two-column layout. Accepts an optional `secondary` prop to use a darker `--fill-1` bg.
-- **`SectionFooterStatus`**: left-aligned status text (help link, last-updated stamp, validation hint).
-- **`SectionFooterActions`**: right-aligned action row (buttons).
+- **`SectionFooter`**: optional unstyled footer slot.
 
 ## Props
 
@@ -82,9 +78,15 @@ import {
   props={[
     {
       name: "variant",
-      type: '"flat" | "elevated"',
-      default: '"flat"',
-      description: "`flat` (default) is a transparent frame with a hairline border — inherits whatever the container surface is. Use for settings pages sitting on `bg-base`. `elevated` fills with `--layer-1` for surfaces that need to define themselves against a busier background (nested inside a Card, on a colored panel).",
+      type: '"plain" | "card"',
+      default: '"plain"',
+      description: "Plain adds no surface treatment. Card adds a layer background and radius without a border or shadow.",
+    },
+    {
+      name: "dividers",
+      type: "boolean",
+      default: "false",
+      description: "Adds a hairline between each pair of direct children.",
     },
     {
       name: "className",
@@ -101,32 +103,13 @@ import {
   ]}
 />
 
-### SectionHeader, SectionTitle, SectionSubtitle, SectionContent, SectionFooterStatus, SectionFooterActions
+### SectionHeader, SectionTitle, SectionSubtitle, SectionContent, SectionFooter
 
 Each accepts `className` for overrides and `render` for polymorphic rendering (change the underlying element while keeping the styling).
 
-### SectionFooter
-
-<PropsTable
-  props={[
-    {
-      name: "secondary",
-      type: "boolean",
-      default: "false",
-      description: "Use the tonal secondary surface (`--fill-1`) as the footer background instead of the elevated rung. Emphasizes the footer against the main content.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
-
 <Callout title="Notes">
-- Section is opinionated on layout: `SectionFooter` uses `justify-between`, so status stretches left and actions stretch right. Skip either side and the other aligns naturally.
-- When only actions are present (no status text), the buttons will right-align: no need to add a spacer.
+- Section slots are unstyled structural hooks. Callers own their padding, gaps, alignment, and responsive behavior through `className`.
 - Section is a `<section>` element; `SectionTitle` renders as `<h3>` by default. If the parent already has an `<h2>`, that keeps the outline clean. Adjust with `render={<h2 />}` if the heading level needs to shift.
-- For general-purpose surfaces (nested cards, hoverable rows, dashed drop zones), reach for `<Card>`: it exposes the same `variant: "flat" | "elevated"` axis plus `hoverable` / `borderBetween`.
+- Section is plain by default. `variant="card"` adds `bg-layer-1` and radius 12 with no outer border or shadow. Use Card when an object needs outlined, elevated, hoverable, or selected treatments.
+- `dividers` adds internal hairlines between direct children. Leave it off when spacing alone makes the grouping clear.
 </Callout>

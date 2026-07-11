@@ -22,7 +22,7 @@ export function Callout({ children, type = "note", title }: CalloutProps) {
     <div
       data-slot="callout"
       data-type={type}
-      className="my-6 flex items-start gap-3 rounded-[var(--radius-12)] border border-hairline bg-fill-1 p-4"
+      className="my-6 flex items-start gap-3 rounded-[var(--radius-12)] bg-fill-1 p-4"
     >
       <Icon
         className={`mt-0.5 size-4 shrink-0 ${iconClass}`}

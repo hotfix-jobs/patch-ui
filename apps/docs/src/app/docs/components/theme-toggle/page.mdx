@@ -101,5 +101,6 @@ Add this inline script to your `<head>` to prevent a flash of wrong theme on pag
 - For controlled mode (usually alongside `next-themes`), pass `theme` and `onThemeChange`, then set `applyClass={false}` and `storageKey={false}` so ThemeToggle doesn't double-write.
 - SSR-safe via `useSyncExternalStore`: the button renders a blank placeholder before hydration so the first client render matches the server.
 - The sun/moon icons crossfade with a spring rotation on toggle. Reduced motion swaps them instantly.
+- The icon-only control inherits Button's default rounded shape so it aligns with header and toolbar utilities.
 - If you need a 3-option picker (Light / System / Dark) with System as a first-class option, compose one with `ToggleGroup` and three icons.
 </Callout>

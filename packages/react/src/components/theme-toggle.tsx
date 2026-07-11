@@ -163,7 +163,6 @@ export function ThemeToggle({
     <Button
       variant="tertiary"
       size={size}
-      shape="circle"
       onClick={toggle}
       className={cn("overflow-hidden", className)}
       data-slot="theme-toggle"

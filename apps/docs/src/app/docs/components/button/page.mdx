@@ -5,7 +5,7 @@ export const metadata = { title: "Button" };
 
 # Button
 
-A polymorphic button component with five variants, three sizes, icon support, four corner shapes, and a loading state.
+A polymorphic button with intent-based variants, three sizes, rounded or pill shapes, icon support, and a loading state. Icon-only controls keep the selected shape.
 
 <Install name="button" />
 
@@ -25,6 +25,7 @@ import { Button } from "@patchui/react";
 <Button variant="primary">Primary</Button>
 <Button variant="secondary">Secondary</Button>
 <Button variant="tertiary">Tertiary</Button>
+<Button variant="outlined">Outlined</Button>
 <Button variant="warning">Warning</Button>
 <Button variant="destructive">Destructive</Button>
 
@@ -33,29 +34,14 @@ import { Button } from "@patchui/react";
 <Button size="md">Medium</Button>
 <Button size="lg">Large</Button>
 
-// Icon-only + shape (aria-label required)
-<Button shape="square" aria-label="Add" icon={<Plus />} />
-<Button shape="circle" aria-label="Add" icon={<Plus />} />
+// Icon-only Buttons keep the default rounded shape (aria-label required)
+<Button aria-label="Add" icon={<Plus />} />
 
-// Marketing pill shape
-<Button shape="pill" variant="primary" icon={<ArrowRight />} iconPosition="right">
-  Start Free Trial
-</Button>
+// Opt into a circular icon button
+<Button aria-label="Add" shape="pill" icon={<Plus />} />
 
-// Muted (chip / filter chrome). Keeps the variant's surface, mutes the label + icon.
-<Button variant="secondary" muted icon={<Globe />}>Visit site</Button>
-
-// Dismissible filter chip (click focuses, × removes)
-<Button
-  size="sm"
-  shape="pill"
-  variant="secondary"
-  icon={<Hash />}
-  onClick={focusFilter}
-  onRemove={removeFilter}
->
-  design
-</Button>
+// Pill is opt-in for friendly CTAs and filter actions
+<Button shape="pill">Browse Items</Button>
 
 // Loading state
 <Button loading>Saving…</Button>
@@ -70,9 +56,9 @@ import { Button } from "@patchui/react";
   props={[
     {
       name: "variant",
-      type: '"primary" | "secondary" | "tertiary" | "soft" | "warning" | "destructive"',
+      type: '"primary" | "secondary" | "outlined" | "tertiary" | "soft" | "warning" | "destructive"',
       default: '"primary"',
-      description: "The visual style. Reserve `primary` for the single most important action on a view; use `destructive` only for irreversible actions. `soft` is a quiet fill (bg-fill-1 → hover:bg-fill-2, no border) for chip/tag-like buttons inside dense chrome.",
+      description: "The visual style. `secondary` is a neutral filled control, while `outlined` provides an explicit hairline boundary on a transparent surface. Reserve `primary` for the most important action on a view; use `destructive` only for irreversible actions. `soft` uses the primary-soft highlight surface.",
     },
     {
       name: "size",
@@ -82,27 +68,9 @@ import { Button } from "@patchui/react";
     },
     {
       name: "shape",
-      type: '"square" | "pill" | "circle"',
-      default: '"square"',
-      description: "Corner shape. `square` = 8px radius (default control). `pill` = full radius (dismissible chips and marketing CTAs). `circle` = full radius with equal width/height (icon-only).",
-    },
-    {
-      name: "muted",
-      type: "boolean",
-      default: "false",
-      description: "Layers de-emphasized label + icon chrome on top of the variant. Idle label is `text-ink-subtle`, icon inherits the `iconMuted` recipe; hover lifts both to `text-ink`. Surface (bg + border) still comes from the base `variant`, so callers keep their chosen fill. Use for filter chips, role-family navigation chips, and link-cluster buttons that should read as chrome rather than as primary CTAs.",
-    },
-    {
-      name: "onRemove",
-      type: "() => void",
-      default: "-",
-      description: "When provided, renders a trailing × sub-button that calls this handler without triggering the parent Button's `onClick`. Use for dismissible chips (applied filters, selected labels, chosen recipients).",
-    },
-    {
-      name: "removeLabel",
-      type: "string",
-      default: '"Remove"',
-      description: "Accessible label for the × sub-button.",
+      type: '"rounded" | "pill"',
+      default: '"rounded"',
+      description: "Rounded uses radius-8. Pill uses full radius. The selected shape also applies to icon-only Buttons.",
     },
     {
       name: "icon",
@@ -150,11 +118,11 @@ import { Button } from "@patchui/react";
 />
 
 <Callout title="Notes">
-- Each variant maps to a specific token: `primary` reads the `--primary` / `--on-primary` chain (monochrome by default, brand-overridable), `secondary` = `surface-1` + `hairline` border (elevates over the page), `tertiary` = transparent + hover tint, `warning` = fixed `--warning` role, `destructive` = fixed `--error` role.
+- Each variant maps to a specific treatment: `primary` reads the `--primary` / `--on-primary` chain, `secondary` uses the neutral fill ladder, `outlined` uses a transparent surface with a hairline boundary, `soft` uses `--primary-soft`, `tertiary` is borderless with a hover tint, and semantic actions use their fixed role colors.
 - Reserve `primary` for the one hero action on a view. Reserve `destructive` for actions the user cannot undo without work.
 - Brand override: redefine `--primary`, `--on-primary`, `--primary-hover`, and `--primary-active` in a consumer stylesheet after the token import to swap the monochrome default for a chromatic brand color. Every primary Button picks it up without callsite edits.
-- Icon-only buttons: pass `icon` with no `children`. The button squares up to match the size. `aria-label` is required; a dev-time warning fires when it's missing.
-- `shape="pill"` alongside `shadow` produces the marketing hero CTA: full-radius pill with a soft elevation shadow. Reserve for hero and closing-CTA rows on landing pages, not general controls.
+- Icon-only buttons: pass `icon` with no `children`. Button infers equal width and height while respecting `shape`; use `shape="pill"` when a circle is intentional. `aria-label` is required, and a development warning fires when it is missing.
+- Use `shape="pill"` selectively for friendly CTAs and filter actions. Standard form, toolbar, and settings actions should stay rounded.
 - Polymorphism: pass `render={<a href="…" />}` (or a `<Link>`) to render as an anchor with the button's styling and behavior.
 - `loading` swaps the content for a spinner and disables interaction so a double-tap can't fire twice.
 - Every size ships a hidden 44×44 touch target underneath, so the tap area works on coarse pointers even for a small button.

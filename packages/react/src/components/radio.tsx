@@ -4,7 +4,7 @@ import { Radio as RadioPrimitive } from "@base-ui/react/radio";
 import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
+import { selectionFocus, colorTransition } from "../recipes";
 
 export function RadioGroup({
   className,
@@ -37,13 +37,11 @@ export function Radio({
     <RadioPrimitive.Root
       disabled={disabled}
       className={cn(
-        "inline-flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full",
-        "bg-transparent border border-hairline-strong",
-        "hover:border-hairline-tertiary",
-        "data-checked:border-primary",
+        "inline-flex size-4 shrink-0 items-center justify-center rounded-full",
+        "bg-fill-2 hover:bg-hairline-strong",
         "data-disabled:cursor-not-allowed data-disabled:opacity-50",
         colorTransition,
-        focusRing,
+        selectionFocus,
         className,
       )}
       data-slot="radio"
@@ -55,7 +53,7 @@ export function Radio({
       >
         <span
           aria-hidden="true"
-          className="!bg-primary size-1.5 rounded-full"
+          className="!bg-ink size-1.5 rounded-full"
         />
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>
@@ -67,7 +65,6 @@ export function Radio({
     <label
       className={cn(
         "inline-flex items-center gap-2 text-small text-ink",
-        !disabled && "cursor-pointer",
         disabled && "cursor-not-allowed opacity-50",
         wrapperClassName,
       )}

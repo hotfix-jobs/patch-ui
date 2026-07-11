@@ -4,29 +4,30 @@ export const metadata = { title: "Contrast" };
 
 # Contrast Contract
 
-Every text token has a declared WCAG target against the surfaces it can sit on. The same checks run in CI via `npm run check:contrast -w packages/react`, so a token change that breaks a target fails the build. This page is the visual counterpart: ratios recompute the moment you toggle light or dark mode.
+Patch UI assigns a WCAG target to each readable token and filled-label pair. `npm run check:contrast -w packages/react` evaluates those pairs in light and dark mode, and CI fails when a token change breaks the contract. The matrix below reads the active CSS variables so it updates when the page theme changes.
 
-- **`ink`** on `--base` and every lifted surface: AAA body (7:1)
-- **`ink-muted`** on `--base`, `--layer-1`, `--fill-1`: AA secondary (4.5:1)
-- **`ink-subtle`** on `--base`: AA-large / placeholder (3:1)
-- **`ink-tertiary`** on `--base`: AA-large / disabled hint (3:1)
-- **`on-primary`** on **`primary`** (primary Button label): AAA (7:1)
-- **`error-fg`** / **`warning-fg`** / **`success-fg`** on their status fills: AA (4.5:1)
+- **`ink`** on base, layers, and fills: AAA body text (7:1)
+- **`ink-muted`** on base, `layer-1`, and `fill-1`: AA secondary text (4.5:1)
+- **`ink-subtle`** on base: AA-large and placeholder treatment (3:1)
+- **`ink-tertiary`** on base: AA-large and disabled hint treatment (3:1)
+- **`on-primary`** on **`primary`**: AAA primary Button label (7:1)
+- **Status foregrounds** on their error, warning, and success fills: AA (4.5:1)
 
-Green pill = passing, red = failing.
+The matrix uses check and X icons for pass or fail. Ratio labels use compact metadata geometry rather than status-colored pills.
 
 <ComponentPreview label="Contrast matrix">
   <ContrastDemo />
 </ComponentPreview>
 
-## When to use each text tier
+## Choosing a text tier
 
-- **`ink`** — primary body, headings, anything the user must read precisely.
-- **`ink-muted`** — meta text, secondary labels, table cell secondaries, default icon tone.
-- **`ink-subtle`** — placeholders, "missing value" copy, disabled label. AA-large against `--base` only; sitting `ink-subtle` on a lifted `--layer-1` or `--fill-*` can drop under threshold. Reach for `ink-muted` there instead.
-- **`ink-tertiary`** — disabled controls, footnotes, timestamps. AA-large only; do not use for content the user actually needs to read.
+- Use **`ink`** for headings, body text, and anything users must read precisely.
+- Use **`ink-muted`** for secondary labels, metadata, and the default icon tone.
+- Use **`ink-subtle`** for placeholders or missing-value copy on base. Use `ink-muted` on lifted or filled surfaces.
+- Use **`ink-tertiary`** for disabled controls, footnotes, and timestamps, not required reading.
 
-## Notes
+## What the check covers
 
-- Semantic status roles (`error`, `warning`, `success`) are fixed hex and theme-invariant. Their `-fg` variants are chosen to guarantee AA against the fill in both themes.
-- If you override `--primary`, `--on-primary`, `--ink*`, `--base`, `--layer-*`, or `--fill-*` in your own CSS, re-run `check:contrast` before merging. The script parses `packages/react/src/theme/tokens.css` directly, so a downstream override needs to be reflected in that file (or added to the script's target list) for the check to catch it.
+The script parses `packages/react/src/theme/tokens.css` and checks the declared light and dark pairs. It covers the shipped token contract, not arbitrary opacity, gradients, images, or downstream CSS overrides.
+
+If a consumer changes `--primary`, `--on-primary`, `--ink*`, `--base`, `--layer-*`, or `--fill-*`, that consumer should run an equivalent contrast check against its final values before shipping.

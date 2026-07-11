@@ -15,8 +15,8 @@ export const badgeVariants = cva(
     defaultVariants: {
       size: "md",
       color: "default",
-      shape: "rounded",
       variant: "soft",
+      shape: "rounded",
     },
     variants: {
       size: {
@@ -24,15 +24,15 @@ export const badgeVariants = cva(
         md: "px-2.5 py-1 text-mini font-medium [&_svg:not([class*='size-'])]:size-3.5",
         lg: "px-3 py-1.5 text-small font-medium [&_svg:not([class*='size-'])]:size-4",
       },
+      shape: {
+        rounded: "rounded-[var(--radius-6)]",
+        pill: "rounded-full",
+      },
       color: {
         default: "",
         success: "",
         warning: "",
         error: "",
-      },
-      shape: {
-        rounded: "rounded-[var(--radius-6)]",
-        pill: "rounded-full",
       },
       variant: {
         solid: "",
@@ -47,7 +47,7 @@ export const badgeVariants = cva(
       { color: "success", variant: "solid", class: "bg-success text-success-fg" },
       { color: "warning", variant: "solid", class: "bg-warning text-warning-fg" },
       { color: "error",   variant: "solid", class: "bg-error text-error-fg" },
-      { color: "default", variant: "soft", class: "bg-fill-2 text-ink-muted" },
+      { color: "default", variant: "soft", class: "bg-fill-1 text-ink-muted" },
       { color: "success", variant: "soft", class: "bg-success-soft-bg text-success-soft-fg" },
       { color: "warning", variant: "soft", class: "bg-warning-soft-bg text-warning-soft-fg" },
       { color: "error",   variant: "soft", class: "bg-error-soft-bg text-error-soft-fg" },
@@ -85,7 +85,7 @@ export function Badge({
   ...props
 }: BadgeProps): React.ReactElement {
   const defaultProps = {
-    className: cn(badgeVariants({ size, color, shape, variant }), className),
+    className: cn(badgeVariants({ size, color, variant, shape }), className),
     "data-slot": "badge",
     children: (
       <>

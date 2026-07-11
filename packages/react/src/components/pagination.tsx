@@ -2,7 +2,7 @@
 
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing } from "../recipes";
+import { selectionFocus } from "../recipes";
 
 import { CaretLeft, CaretRight } from "@phosphor-icons/react/dist/ssr";
 export interface PaginationProps {
@@ -115,12 +115,13 @@ function PageCell({
 }: PageCellProps): React.ReactElement {
   const className = cn(
     // Fixed 32x32 chip + tabular-nums so the row width stays stable across page counts.
-    "inline-flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-6)] text-small tabular-nums transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+    "inline-flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-small tabular-nums transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
     current
-      ? "bg-layer-selected font-medium text-ink"
+      ? "bg-layer-hover font-medium text-ink"
       : "text-ink-muted hover:bg-layer-hover hover:text-ink",
-    disabled && "pointer-events-none text-ink-tertiary hover:bg-transparent",
-    focusRing,
+    "active:bg-layer-hover",
+    disabled && "pointer-events-none opacity-50 text-ink-tertiary hover:bg-transparent active:bg-transparent",
+    selectionFocus,
   );
   const inner = icon ?? label;
 

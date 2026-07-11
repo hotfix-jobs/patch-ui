@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Textarea , SectionLabel } from "@patchui/react";
+import { Field, FieldError, FieldLabel, SectionLabel, Textarea } from "@patchui/react";
 
 const LOREM =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -38,18 +38,20 @@ export function TextareaDemo() {
       <div className="space-y-3">
         <SectionLabel>Label + error message</SectionLabel>
         <div className="flex flex-col gap-3 max-w-sm">
-          <Textarea
-            id="demo-desc"
-            label="Description"
-            placeholder="Describe this project"
-          />
-          <Textarea
-            id="demo-err"
-            label="Release Notes"
-            error="Release notes are required."
-            value={errValue}
-            onChange={(e) => setErrValue(e.target.value)}
-          />
+          <Field>
+            <FieldLabel>Description</FieldLabel>
+            <Textarea id="demo-desc" placeholder="Describe this project" />
+          </Field>
+          <Field invalid>
+            <FieldLabel>Release Notes</FieldLabel>
+            <Textarea
+              id="demo-err"
+              aria-invalid
+              value={errValue}
+              onChange={(e) => setErrValue(e.target.value)}
+            />
+            <FieldError match>Release notes are required.</FieldError>
+          </Field>
         </div>
       </div>
 

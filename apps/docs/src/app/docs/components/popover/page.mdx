@@ -47,6 +47,7 @@ import { Button } from "@patchui/react";
     { name: "side", type: '"top" | "bottom" | "left" | "right"', default: '"bottom"', description: "Which side of the trigger the popover appears on." },
     { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "Alignment along the trigger's axis. `end` is useful for right-aligned nav triggers so the popover stays inside the viewport." },
     { name: "sideOffset", type: "number", default: "6", description: "Pixel offset from the trigger." },
+    { name: "anchor", type: "Element | RefObject<Element>", default: "trigger", description: "Optional element used for positioning when the popup should align to a larger composite surface." },
     { name: "arrow", type: "boolean", default: "false", description: "Render a subtle arrow pointing at the trigger." },
     { name: "className", type: "string", default: "-", description: "Applied to the popup surface. Set width (`w-72`, `w-[360px]`) and padding here." },
   ]}
@@ -60,6 +61,7 @@ Wraps a trigger (usually a `Button`) that dismisses the popover on click. Compos
 - The default `align="center"` is right for a trigger below a header. For an icon button in the top-right of a header (bell icon), pass `align="end"` so the popover doesn't overflow.
 - Set width on `PopoverContent` via className (`w-72`, `w-[360px]`). Default `min-w-[220px]` keeps small popovers legible. Prefix with `md:` for a desktop-only width so the mobile centered treatment fills the viewport width.
 - The popover content region has no built-in padding. Pass `p-4` (for a form) or `p-0` (for a list that carries its own row padding).
+- Popover uses the shared lightweight popup boundary and `shadow-menu` elevation on desktop and mobile.
 - **Mobile:** below `md`, `PopoverContent` automatically switches to a centered-modal presentation with a backdrop and `RemoveScroll` body lock — the anchored `side`/`align`/`sideOffset` props are ignored and the popover fills `w-[calc(100vw-1rem)]` centered at the viewport. Consumers don't need to opt in.
 - Popovers don't trap focus by default. Set `modal` on `<Popover>` if you want the surrounding page inert while the popover is open.
 </Callout>

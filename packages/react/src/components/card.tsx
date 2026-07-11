@@ -4,62 +4,145 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
+import { selectionFocus } from "../recipes";
 
 export interface CardProps extends useRender.ComponentProps<"div"> {
-  /** Card treatment.
-   *  `flat` (default) — transparent frame with hairline border. The quiet default for search/list/content surfaces.
-   *  `elevated` — bg-layer-1 with soft edge. Opt-in for auth cards, marketing lifts, or any surface that should read as a distinct object. */
-  variant?: "flat" | "elevated";
-  /** Add interactive cursor/focus treatment plus a quiet border emphasis. */
-  hoverable?: boolean;
-  /** Render `shadow-card` in light mode (dark stays flat). Defaults to
-   *  `true` for `elevated`, `false` for `flat`. Set explicitly to override. */
-  shadow?: boolean;
-  /** Render hairline dividers between direct children (list container). */
-  borderBetween?: boolean;
-  /** Layout direction. */
-  direction?: "column" | "row";
-  /** Marks the card as selected: primary border in both themes, aria-selected. */
+  /** Visual treatment for the content surface. */
+  variant?: "surface" | "outlined" | "elevated";
+  /** Adds visual states for cards rendered as a link or button. */
+  actionable?: boolean;
+  /** Marks the card visually selected. Consumers own selection semantics. */
   selected?: boolean;
 }
 
-/** Surface primitive. For labeled settings panels with rows, use `Section`. */
+/** Composable content surface. */
 export function Card({
   className,
-  variant = "flat",
-  hoverable,
-  shadow,
-  borderBetween,
-  direction = "column",
+  variant = "outlined",
+  actionable,
   selected,
   render,
   ...props
 }: CardProps): React.ReactElement {
-  const resolvedShadow = shadow ?? variant === "elevated";
   const defaultProps = {
     className: cn(
-      "relative flex rounded-[var(--radius-8)] text-ink",
-      direction === "column" ? "flex-col" : "flex-row",
-      variant === "flat" && "border border-hairline",
-      variant === "elevated" && "bg-layer-1 border border-hairline-soft",
-      resolvedShadow && "shadow-card dark:shadow-none",
-      hoverable && [
-        "cursor-pointer",
-        "hover:border-hairline-tertiary",
-        focusRing,
+      "relative rounded-[var(--radius-12)] text-ink",
+      variant === "surface" && "bg-layer-1",
+      variant === "outlined" && "border border-hairline bg-layer-1",
+      variant === "elevated" && "border border-hairline-soft bg-layer-1 shadow-card",
+      actionable && [
+        "hover:bg-layer-hover active:bg-layer-hover",
+        "aria-disabled:pointer-events-none aria-disabled:opacity-50",
+        selectionFocus,
       ],
-      borderBetween &&
-        (direction === "column"
-          ? "[&>*+*]:border-t [&>*+*]:border-hairline"
-          : "[&>*+*]:border-l [&>*+*]:border-hairline"),
-      selected && "border border-primary",
-      colorTransition,
+      selected && "bg-fill-2",
+      "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
       className,
     ),
     "data-slot": "card",
     "data-selected": selected || undefined,
-    "aria-selected": selected || undefined,
+  };
+
+  return useRender({
+    defaultTagName: "div",
+    props: mergeProps<"div">(defaultProps, props),
+    render,
+  });
+}
+
+export type CardHeaderProps = useRender.ComponentProps<"div">;
+
+export function CardHeader({
+  className,
+  render,
+  ...props
+}: CardHeaderProps): React.ReactElement {
+  const defaultProps = {
+    className: cn("flex items-start justify-between gap-4 p-4 pb-0", className),
+    "data-slot": "card-header",
+  };
+
+  return useRender({
+    defaultTagName: "div",
+    props: mergeProps<"div">(defaultProps, props),
+    render,
+  });
+}
+
+export type CardTitleProps = useRender.ComponentProps<"h3">;
+
+export function CardTitle({
+  className,
+  render,
+  ...props
+}: CardTitleProps): React.ReactElement {
+  const defaultProps = {
+    className: cn("text-regular font-medium text-ink", className),
+    "data-slot": "card-title",
+  };
+
+  return useRender({
+    defaultTagName: "h3",
+    props: mergeProps<"h3">(defaultProps, props),
+    render,
+  });
+}
+
+export type CardDescriptionProps = useRender.ComponentProps<"p">;
+
+export function CardDescription({
+  className,
+  render,
+  ...props
+}: CardDescriptionProps): React.ReactElement {
+  const defaultProps = {
+    className: cn("mt-1 text-small text-ink-muted", className),
+    "data-slot": "card-description",
+  };
+
+  return useRender({
+    defaultTagName: "p",
+    props: mergeProps<"p">(defaultProps, props),
+    render,
+  });
+}
+
+export type CardContentProps = useRender.ComponentProps<"div">;
+
+export function CardContent({
+  className,
+  render,
+  ...props
+}: CardContentProps): React.ReactElement {
+  const defaultProps = {
+    className: cn("p-4", className),
+    "data-slot": "card-content",
+  };
+
+  return useRender({
+    defaultTagName: "div",
+    props: mergeProps<"div">(defaultProps, props),
+    render,
+  });
+}
+
+export interface CardFooterProps extends useRender.ComponentProps<"div"> {
+  divided?: boolean;
+}
+
+export function CardFooter({
+  className,
+  divided = false,
+  render,
+  ...props
+}: CardFooterProps): React.ReactElement {
+  const defaultProps = {
+    className: cn(
+      "flex items-center gap-2 px-4 py-3",
+      divided && "border-t border-hairline-soft",
+      className,
+    ),
+    "data-slot": "card-footer",
   };
 
   return useRender({

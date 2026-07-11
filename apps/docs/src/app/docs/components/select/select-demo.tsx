@@ -7,6 +7,9 @@ import {
   SelectGroup,
   SelectGroupLabel,
   SectionLabel,
+  Field,
+  FieldError,
+  FieldLabel,
 } from "@patchui/react";
 import { Globe } from "@phosphor-icons/react/dist/ssr";
 
@@ -19,18 +22,16 @@ export function SelectDemo() {
       <div className="space-y-3">
         <SectionLabel>Basic</SectionLabel>
         <div className="max-w-sm">
-          <Select
-            id="framework"
-            label="Framework"
-            value={framework}
-            onValueChange={setFramework}
-          >
-            <SelectItem value="react">React</SelectItem>
-            <SelectItem value="vue">Vue</SelectItem>
-            <SelectItem value="svelte">Svelte</SelectItem>
-            <SelectItem value="solid">Solid</SelectItem>
-            <SelectItem value="qwik">Qwik</SelectItem>
-          </Select>
+          <Field>
+            <FieldLabel htmlFor="framework">Framework</FieldLabel>
+            <Select id="framework" value={framework} onValueChange={setFramework}>
+              <SelectItem value="react">React</SelectItem>
+              <SelectItem value="vue">Vue</SelectItem>
+              <SelectItem value="svelte">Svelte</SelectItem>
+              <SelectItem value="solid">Solid</SelectItem>
+              <SelectItem value="qwik">Qwik</SelectItem>
+            </Select>
+          </Field>
         </div>
       </div>
 
@@ -39,7 +40,6 @@ export function SelectDemo() {
         <div className="max-w-sm">
           <Select
             id="region"
-            label="Region"
             value={region}
             onValueChange={setRegion}
           >
@@ -54,15 +54,15 @@ export function SelectDemo() {
       <div className="space-y-3">
         <SectionLabel>Sizes</SectionLabel>
         <div className="flex flex-col gap-3 max-w-sm">
-          <Select id="size-sm" label="Small" size="sm" defaultValue="a">
+          <Select id="size-sm" size="sm" defaultValue="a">
             <SelectItem value="a">One</SelectItem>
             <SelectItem value="b">Two</SelectItem>
           </Select>
-          <Select id="size-md" label="Medium" size="md" defaultValue="a">
+          <Select id="size-md" size="md" defaultValue="a">
             <SelectItem value="a">One</SelectItem>
             <SelectItem value="b">Two</SelectItem>
           </Select>
-          <Select id="size-lg" label="Large" size="lg" defaultValue="a">
+          <Select id="size-lg" size="lg" defaultValue="a">
             <SelectItem value="a">One</SelectItem>
             <SelectItem value="b">Two</SelectItem>
           </Select>
@@ -72,7 +72,7 @@ export function SelectDemo() {
       <div className="space-y-3">
         <SectionLabel>With prefix icon</SectionLabel>
         <div className="max-w-sm">
-          <Select id="locale" label="Locale" prefix={<Globe />} defaultValue="en">
+          <Select id="locale" prefix={<Globe />} defaultValue="en">
             <SelectItem value="en">English</SelectItem>
             <SelectItem value="es">Español</SelectItem>
             <SelectItem value="fr">Français</SelectItem>
@@ -84,7 +84,7 @@ export function SelectDemo() {
       <div className="space-y-3">
         <SectionLabel>Grouped options</SectionLabel>
         <div className="max-w-sm">
-          <Select id="assignee" label="Assignee" defaultValue="ana">
+          <Select id="assignee" defaultValue="ana">
             <SelectGroup>
               <SelectGroupLabel>Design</SelectGroupLabel>
               <SelectItem value="ana">Ana</SelectItem>
@@ -103,7 +103,7 @@ export function SelectDemo() {
       <div className="space-y-3">
         <SectionLabel>Disabled</SectionLabel>
         <div className="max-w-sm">
-          <Select id="disabled" label="Plan" disabled defaultValue="hobby">
+          <Select id="disabled" disabled defaultValue="hobby">
             <SelectItem value="hobby">Hobby</SelectItem>
             <SelectItem value="pro">Pro</SelectItem>
           </Select>
@@ -113,17 +113,21 @@ export function SelectDemo() {
       <div className="space-y-3">
         <SectionLabel>Error state</SectionLabel>
         <div className="max-w-sm">
-          <Select
-            id="plan"
-            label="Plan"
-            required
-            error="Please select a plan."
-            placeholder="Select a plan…"
-          >
-            <SelectItem value="hobby">Hobby</SelectItem>
-            <SelectItem value="pro">Pro</SelectItem>
-            <SelectItem value="enterprise">Enterprise</SelectItem>
-          </Select>
+          <Field invalid>
+            <FieldLabel htmlFor="plan" required>Plan</FieldLabel>
+            <Select
+              id="plan"
+              aria-describedby="plan-error"
+              required
+              invalid
+              placeholder="Select a plan…"
+            >
+              <SelectItem value="hobby">Hobby</SelectItem>
+              <SelectItem value="pro">Pro</SelectItem>
+              <SelectItem value="enterprise">Enterprise</SelectItem>
+            </Select>
+            <FieldError id="plan-error" match>Please select a plan.</FieldError>
+          </Field>
         </div>
       </div>
     </div>

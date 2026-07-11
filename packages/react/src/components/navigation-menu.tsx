@@ -3,7 +3,7 @@
 import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/navigation-menu";
 import type * as React from "react";
 import { cn } from "../utils";
-import { colorTransition, iconMuted, popupSurface } from "../recipes";
+import { colorTransition, iconMuted, popupSurface, selectionFocus } from "../recipes";
 
 import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 /** Horizontal menu bar with morphing dropdown panels sharing one portalled popup. */
@@ -22,7 +22,7 @@ export function NavigationMenu({
       <NavigationMenuPrimitive.Portal>
         <NavigationMenuPrimitive.Positioner
           data-slot="navigation-menu-positioner"
-          className="z-[80] box-border h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)] transition-[top,left,right,bottom] duration-[var(--duration-state)] ease-[var(--ease-standard)]"
+          className="z-[80] box-border h-[var(--positioner-height)] w-[var(--positioner-width)] max-w-[var(--available-width)] transition-[top,left,right,bottom] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]"
           sideOffset={8}
           collisionPadding={12}
         >
@@ -31,7 +31,7 @@ export function NavigationMenu({
             className={cn(
               popupSurface,
               "relative h-[var(--popup-height)] w-[var(--popup-width)] origin-[var(--transform-origin)] overflow-hidden text-ink",
-              "transition-[opacity,transform,width,height] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+              "transition-[opacity,transform,width,height] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
               "data-[starting-style]:opacity-0 data-[starting-style]:scale-[0.97] data-[ending-style]:opacity-0 data-[ending-style]:scale-[0.97]",
             )}
           >
@@ -73,8 +73,9 @@ export function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "group inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink data-[popup-open]:bg-hairline-strong data-[popup-open]:text-ink outline-none",
+        "group inline-flex items-center gap-1.5 rounded-[var(--radius-8)] px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover data-[popup-open]:bg-layer-hover data-[popup-open]:text-ink",
         colorTransition,
+        selectionFocus,
         className,
       )}
       {...props}
@@ -95,7 +96,7 @@ export function NavigationMenuContent({
     <NavigationMenuPrimitive.Content
       data-slot="navigation-menu-content"
       className={cn(
-        "w-max p-2 transition-[opacity,transform] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "w-max p-2 transition-[opacity,transform] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
         "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
         "data-[activation-direction=left]:data-[starting-style]:translate-x-3",
         "data-[activation-direction=right]:data-[starting-style]:-translate-x-3",
@@ -109,14 +110,22 @@ export function NavigationMenuContent({
 export function NavigationMenuLink({
   className,
   closeOnClick = true,
+  variant = "item",
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Link>): React.ReactElement {
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Link> & {
+  variant?: "item" | "trigger";
+}): React.ReactElement {
   return (
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
+      data-variant={variant}
       closeOnClick={closeOnClick}
       className={cn(
-        "block rounded-[var(--radius-6)] px-3 py-2 text-small text-ink-muted hover:bg-layer-hover hover:text-ink outline-none",
+        variant === "item" &&
+          "block rounded-[var(--radius-6)] px-3 py-2 text-small text-ink-muted hover:bg-layer-hover hover:text-ink",
+        variant === "trigger" &&
+          "inline-flex items-center rounded-[var(--radius-8)] px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover",
+        selectionFocus,
         iconMuted,
         colorTransition,
         className,

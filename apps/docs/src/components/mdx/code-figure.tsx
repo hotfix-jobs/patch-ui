@@ -48,7 +48,7 @@ export function CodeFigure({
       <button
         type="button"
         onClick={handleCopy}
-        className={`absolute right-3 top-3 z-10 flex size-8 items-center justify-center rounded-full transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink lg:opacity-0 lg:group-hover/codeblock:opacity-100 ${copied ? "text-success opacity-100" : "text-ink-muted"}`}
+        className={`absolute right-3 top-3 z-10 flex size-8 items-center justify-center rounded-[var(--radius-8)] outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)] lg:opacity-0 lg:group-hover/codeblock:opacity-100 ${copied ? "text-success opacity-100" : "text-ink-muted"}`}
         aria-label={copied ? "Copied" : "Copy code"}
         data-slot="code-block-copy"
       >

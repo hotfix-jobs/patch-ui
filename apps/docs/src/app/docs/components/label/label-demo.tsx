@@ -16,11 +16,11 @@ export function LabelDemo() {
       <div>
         <p className="mb-3 text-mini text-ink-muted">With Switch / Checkbox (wrapping)</p>
         <div className="flex flex-col gap-3">
-          <Label className="cursor-pointer">
+          <Label>
             <Switch />
             <span>Receive weekly digest</span>
           </Label>
-          <Label className="cursor-pointer">
+          <Label>
             <Checkbox />
             <span>I agree to the terms</span>
           </Label>

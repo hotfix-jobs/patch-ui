@@ -45,20 +45,21 @@ export function BadgeDemo() {
       </div>
 
       <div>
+        <p className="mb-3 text-mini text-ink-muted">Shapes</p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge shape="rounded">Rounded</Badge>
+          <Badge shape="pill">Pill</Badge>
+          <Badge shape="pill" color="success">Featured</Badge>
+        </div>
+      </div>
+
+      <div>
         <p className="mb-3 text-mini text-ink-muted">With icon</p>
         <div className="flex flex-wrap items-center gap-3">
           <Badge icon={<Shield />}>Verified</Badge>
           <Badge icon={<Shield />} variant="solid">Verified</Badge>
           <Badge icon={<Lightning />} color="warning">Beta</Badge>
           <Badge icon={<Lightning />} color="warning" variant="outlined">Beta</Badge>
-        </div>
-      </div>
-
-      <div>
-        <p className="mb-3 text-mini text-ink-muted">Shape</p>
-        <div className="flex flex-wrap items-center gap-3">
-          <Badge shape="pill">Pill</Badge>
-          <Badge shape="rounded">Rounded</Badge>
         </div>
       </div>
 

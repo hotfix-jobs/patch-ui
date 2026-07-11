@@ -9,6 +9,7 @@ import {
 } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
+import { selectionFocus } from "../recipes";
 import { Button, type ButtonProps } from "./button";
 
 export type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
@@ -21,16 +22,12 @@ const SIZE_CLASSES: Record<ModalSize, string> = {
   full: "sm:max-w-none",
 };
 
-export type ModalMobileLayout = "sheet" | "centered";
-
 export interface ModalProps {
   active: boolean;
   onClickOutside?: () => void;
   initialFocusRef?: React.RefObject<HTMLElement | null>;
-  /** Max-width on tablet+; mobile is full-width. Default `md`. */
+  /** Max-width on tablet+; mobile uses narrow viewport gutters. Default `md`. */
   size?: ModalSize;
-  /** Mobile positioning: `sheet` docks to the bottom edge, `centered` stays centered. Default `sheet`. */
-  mobileLayout?: ModalMobileLayout;
   /** Auto-render a close X in the top-right corner. Defaults to true when
    *  there are no `<ModalActions>` in the tree, false when there are. */
   showClose?: boolean;
@@ -55,7 +52,6 @@ export function Modal({
   onClickOutside,
   initialFocusRef,
   size = "md",
-  mobileLayout = "sheet",
   showClose,
   className,
   children,
@@ -85,18 +81,10 @@ export function Modal({
           data-slot="modal-popup"
           initialFocus={initialFocusRef}
           className={cn(
-            "fixed z-50 flex w-full min-w-0 min-h-0 flex-col overflow-hidden bg-layer-1 text-ink border border-hairline shadow-modal",
-            // Positioning: sheet docks to bottom on mobile, centered on tablet+.
-            // Centered layout stays centered on all breakpoints.
-            mobileLayout === "sheet"
-              ? "bottom-0 left-0 right-0 rounded-t-[var(--radius-12)] max-h-[85dvh] sm:bottom-auto sm:left-1/2 sm:right-auto sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[var(--radius-12)] sm:max-h-[calc(100vh-2rem)]"
-              : "left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[var(--radius-12)] max-h-[calc(100dvh-2rem)]",
+            "fixed left-1/2 top-1/2 z-50 flex w-[calc(100vw-1rem)] min-w-0 min-h-0 -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-[var(--radius-12)] bg-layer-1 text-ink border border-hairline shadow-modal max-h-[calc(100dvh-2rem)] sm:w-full",
             SIZE_CLASSES[size],
-            // Enter/exit transitions. Sheet slides up; centered fades + scales.
             "transition-[opacity,transform,scale] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-            mobileLayout === "sheet"
-              ? "data-starting-style:translate-y-full data-ending-style:translate-y-full sm:data-starting-style:translate-y-[calc(-50%+8px)] sm:data-ending-style:translate-y-[calc(-50%+8px)] sm:data-starting-style:opacity-0 sm:data-ending-style:opacity-0"
-              : "data-starting-style:scale-97 data-starting-style:opacity-0 data-ending-style:scale-97 data-ending-style:opacity-0",
+            "data-starting-style:scale-97 data-starting-style:opacity-0 data-ending-style:scale-97 data-ending-style:opacity-0",
             className,
           )}
         >
@@ -132,7 +120,7 @@ export function ModalHeader({
       <div
         data-slot="modal-header"
         className={cn(
-          "flex h-11 shrink-0 items-center justify-between gap-3 border-b border-hairline px-4",
+          "flex h-11 shrink-0 items-center justify-between gap-3 px-4",
           className,
         )}
         {...props}
@@ -153,7 +141,7 @@ export function ModalHeader({
     <div
       data-slot="modal-header"
       className={cn(
-        "flex flex-col gap-1 border-b border-hairline px-5 py-4",
+        "flex flex-col gap-1 px-5 pt-5 pb-2",
         className,
       )}
       {...props}
@@ -198,7 +186,8 @@ export function ModalClose({
       aria-label="Close"
       data-slot="modal-close"
       className={cn(
-        "inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted hover:bg-layer-hover hover:text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        "inline-flex size-8 shrink-0 items-center justify-center rounded-[var(--radius-8)] text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+        selectionFocus,
         className,
       )}
       {...props}
@@ -232,7 +221,7 @@ export function ModalInset({
     <div
       data-slot="modal-inset"
       className={cn(
-        "rounded-[var(--radius-8)] border border-hairline-soft bg-layer-1 p-4",
+        "rounded-[var(--radius-8)] bg-fill-1 p-4",
         className,
       )}
       {...props}
@@ -254,7 +243,7 @@ export function ModalActions({
     <div
       data-slot="modal-actions"
       className={cn(
-        "flex gap-2 border-t border-hairline px-5 py-3",
+        "flex gap-2 px-5 pt-2 pb-5",
         stacked ? "flex-col" : "flex-row justify-between",
         className,
       )}
@@ -285,4 +274,4 @@ export function ModalAction({
   );
 }
 
-export { DialogPrimitive as ModalPrimitive };
+export const ModalPrimitive = DialogPrimitive;

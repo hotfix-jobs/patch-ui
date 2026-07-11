@@ -2,7 +2,7 @@
 
 export function ColorScales() {
   return (
-    <div className="flex flex-col gap-6 rounded-[var(--radius-12)] border border-hairline bg-layer-1 p-6">
+    <div className="flex flex-col gap-6 p-2">
       <Row label="Base + layers">
         <Swatch className="bg-base" label="base" />
         <Swatch className="bg-layer-1" label="layer-1" />
@@ -67,15 +67,15 @@ function Hairline({ className, label }: { className: string; label: string }) {
 
 export function TypographySamples() {
   return (
-    <div className="flex flex-col gap-4 rounded-[var(--radius-12)] border border-hairline bg-layer-1 p-6">
-      <Sample cls="text-title1" text="Title 1 — 36px, page hero" />
-      <Sample cls="text-title2" text="Title 2 — 24px, section headline" />
-      <Sample cls="text-title3" text="Title 3 — 20px, panel title" />
-      <Sample cls="text-large" text="Large — 18px, lead paragraph" />
-      <Sample cls="text-regular" text="Regular — 15px, default body" />
-      <Sample cls="text-small" text="Small — 13px, dense UI copy" />
-      <Sample cls="text-mini" text="Mini — 12px, metadata, hint" />
-      <Sample cls="text-micro" text="Micro — 11px, meta label" />
+    <div className="flex flex-col gap-4 p-2">
+      <Sample cls="text-title1" text="Title 1: 36px, page hero" />
+      <Sample cls="text-title2" text="Title 2: 24px, section headline" />
+      <Sample cls="text-title3" text="Title 3: 20px, panel title" />
+      <Sample cls="text-large" text="Large: 18px, lead paragraph" />
+      <Sample cls="text-regular" text="Regular: 16px, default body" />
+      <Sample cls="text-small" text="Small: 14px, dense UI copy" />
+      <Sample cls="text-mini" text="Mini: 12px, metadata, hint" />
+      <Sample cls="text-micro" text="Micro: 11px, meta label" />
     </div>
   );
 }
@@ -91,8 +91,10 @@ function Sample({ cls, text }: { cls: string; text: string }) {
 
 export function RadiusSamples() {
   return (
-    <div className="grid grid-cols-2 gap-4 rounded-[var(--radius-12)] border border-hairline bg-layer-1 p-6 sm:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 p-2 sm:grid-cols-3">
+      <RadiusCell label="radius-4" cls="rounded-[var(--radius-4)]" />
       <RadiusCell label="radius-6" cls="rounded-[var(--radius-6)]" />
+      <RadiusCell label="radius-8" cls="rounded-[var(--radius-8)]" />
       <RadiusCell label="radius-12" cls="rounded-[var(--radius-12)]" />
       <RadiusCell label="radius-16" cls="rounded-[var(--radius-16)]" />
       <RadiusCell label="radius-full" cls="rounded-full" />
@@ -103,7 +105,7 @@ export function RadiusSamples() {
 function RadiusCell({ label, cls }: { label: string; cls: string }) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className={`h-16 w-full border border-hairline bg-fill-1 ${cls}`} />
+      <div className={`h-16 w-full bg-fill-1 ${cls}`} />
       <div className="text-micro text-ink-subtle">{label}</div>
     </div>
   );

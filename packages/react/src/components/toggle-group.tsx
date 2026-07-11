@@ -5,7 +5,7 @@ import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, iconMuted } from "../recipes";
+import { iconMuted, selectionFocus } from "../recipes";
 
 type ToggleGroupSize = "sm" | "md" | "lg";
 
@@ -23,7 +23,7 @@ export interface ToggleGroupProps
   size?: ToggleGroupSize;
 }
 
-/** Compact segmented radio-style control. Single-select toggle group. */
+/** Compact filled single-select control group. */
 export function ToggleGroup({
   value,
   defaultValue,
@@ -46,7 +46,7 @@ export function ToggleGroup({
         data-slot="toggle-group"
         data-size={size}
         className={cn(
-          "inline-flex w-fit self-start items-center gap-0.5 rounded-[var(--radius-6)] border border-hairline bg-layer-1 p-0.5",
+          "inline-flex w-fit self-start items-center gap-0.5 rounded-[var(--radius-8)] bg-fill-1 p-0.5",
           className,
         )}
         {...props}
@@ -74,15 +74,15 @@ export function ToggleGroupItem({
       value={value}
       data-slot="toggle-group-item"
       className={cn(
-        "relative inline-flex items-center justify-center rounded-[var(--radius-6)] transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
+        "relative inline-flex items-center justify-center rounded-[var(--radius-8)] transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] disabled:pointer-events-none disabled:opacity-50",
         "text-ink-muted hover:text-ink data-[pressed]:text-ink",
         "not-data-[pressed]:hover:bg-layer-hover",
-        "data-[pressed]:bg-layer-selected",
+        "data-[pressed]:bg-layer-hover",
         iconMuted,
         size === "sm" && "h-6 min-w-6 px-1.5 gap-1.5 text-mini [&_svg]:size-3.5",
-        size === "md" && "h-7 min-w-7 px-2 gap-2 text-small [&_svg]:size-4",
-        size === "lg" && "h-9 min-w-9 px-3 gap-2 text-small [&_svg]:size-4",
-        focusRing,
+        size === "md" && "h-8 min-w-8 px-2.5 gap-2 text-small [&_svg]:size-4",
+        size === "lg" && "h-10 min-w-10 px-3.5 gap-2 text-regular [&_svg]:size-5",
+        selectionFocus,
         className,
       )}
       {...props}

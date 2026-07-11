@@ -33,7 +33,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
     h2: (props: React.ComponentProps<"h2">) => (
       <h2
-        className="mt-10 mb-4 border-b border-hairline pb-2 text-title2 text-ink first:mt-0"
+        className="mt-10 mb-4 text-title2 text-ink first:mt-0"
         {...props}
       />
     ),

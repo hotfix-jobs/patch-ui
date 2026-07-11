@@ -1,5 +1,5 @@
 
-export const metadata = { title: "Installation" };
+export const metadata = { title: "Getting Started" };
 
 # Getting Started
 
@@ -12,7 +12,13 @@ Patch UI is distributed as **copy-in components**. You add a component and its s
 
 ## 1. Register the Patch UI namespace
 
-If you do not have a `components.json` yet, run `npx shadcn@latest init` once to create one. Then add the Patch UI registry under `registries`:
+If you do not have a `components.json` yet, run `npx shadcn@latest init` once. Then register the namespace:
+
+```bash
+npx shadcn@latest registry add @patchui=https://ui.hotfix.jobs/r/{name}.json
+```
+
+The command writes the equivalent `registries` entry to `components.json`. You can also add it manually:
 
 ```json
 // components.json
@@ -32,7 +38,7 @@ npx shadcn@latest add @patchui/button
 Running `add` for the first time does four things:
 
 1. Copies the component source into your components directory (e.g. `components/ui/button.tsx`).
-2. Pulls in anything the component depends on: the `cn()` helper, the shared recipes (`focusRing`, `controlSize`, `colorTransition`), and the design tokens.
+2. Pulls in anything the component depends on: the `cn()` helper, shared recipes such as `selectionFocus`, `controlSize`, and `colorTransition`, plus the design tokens.
 3. Installs the required npm packages (`@base-ui/react`, `class-variance-authority`, `clsx`, `tailwind-merge`, and `motion` for components with animations).
 4. Copies the design tokens to `styles/patch-ui-tokens.css`.
 
@@ -61,10 +67,10 @@ Import the copied tokens through your Tailwind CSS entry file (not a JS import, 
 ```css
 /* app/globals.css */
 @import "tailwindcss";
-@import "./styles/patch-ui-tokens.css";
+@import "../styles/patch-ui-tokens.css";
 ```
 
-This registers the tokens as utilities (`bg-base`, `text-ink`, `text-small`, `rounded-[var(--radius-8)]`, etc.) and drives light and dark mode simultaneously.
+The registry writes the file to `styles/patch-ui-tokens.css`. Resolve the import relative to your CSS entry file; a project using `src/app/globals.css` will typically use `../../styles/patch-ui-tokens.css` instead. This registers utilities such as `bg-base`, `text-ink`, `text-small`, and `rounded-[var(--radius-8)]` while defining both themes.
 
 ### Light and dark mode
 
@@ -74,7 +80,7 @@ Tokens cover both modes. Add the `dark` class to `<html>` to switch. No JavaScri
 <html class="dark">
 ```
 
-For a UI toggle, install the `theme-toggle` component (`npx shadcn add @patchui/theme-toggle`). It handles system preference detection and persistence for you.
+For a UI toggle, install the `theme-toggle` component (`npx shadcn@latest add @patchui/theme-toggle`). It handles system preference detection and persistence for you.
 
 ## 4. Use it
 
@@ -92,7 +98,7 @@ export default function App() {
 }
 ```
 
-Button ships six variants (`primary`, `secondary`, `tertiary`, `soft`, `warning`, `destructive`), three sizes (`sm`, `md`, `lg`), three shapes (`square`, `pill`, `circle`), icon slots on either side, and a loading state. See the [Button docs](/docs/components/button) for the full API.
+Button ships six intent variants (`primary`, `secondary`, `tertiary`, `soft`, `warning`, `destructive`), three sizes (`sm`, `md`, `lg`), rounded and pill shapes that also apply to icon-only controls, icon slots on either side, and a loading state. See the [Button docs](/docs/components/button) for the full interface.
 
 ## What you own
 

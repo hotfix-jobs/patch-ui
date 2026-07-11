@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
 import type * as React from "react";
 import { cn } from "../utils";
 
@@ -25,23 +24,14 @@ export function EmptyState({
   className,
   ...props
 }: EmptyStateProps): React.ReactElement {
-  const reduceMotion = useReducedMotion();
-
   return (
-    <motion.div
+    <div
       data-slot="empty-state"
-      initial={reduceMotion ? false : { opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={
-        reduceMotion
-          ? { duration: 0 }
-          : { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
-      }
       className={cn(
         "flex flex-col items-center justify-center px-6 py-14 text-center",
         className,
       )}
-      {...(props as React.ComponentProps<typeof motion.div>)}
+      {...props}
     >
       {icon && (
         <div
@@ -76,6 +66,6 @@ export function EmptyState({
           {children}
         </div>
       )}
-    </motion.div>
+    </div>
   );
 }

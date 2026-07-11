@@ -15,7 +15,7 @@ export type InputProps = Omit<
   size?: InputSize;
   /**
    * Visual variant of the input container.
-   * - `default` (unset): bordered, rounded, hover + focus outline.
+   * - `default` (unset): filled, borderless, rounded, hover + focus outline.
    * - `unstyled`: no border, no rounded, no hover, no focus outline.
    *   Use when embedding an Input inside a surface that owns its
    *   own container styling (panels, table cells, composite fields).
@@ -25,16 +25,8 @@ export type InputProps = Omit<
   prefix?: React.ReactNode;
   /** Content rendered at the end (icon, unit label, or text like `.com`). */
   suffix?: React.ReactNode;
-  /** Renders a `<label>` above the input. */
-  label?: string;
-  /** `id` required when passing a string `label`. */
-  id?: string;
-  /** Visual error state or inline error message. */
-  error?: boolean | string;
   /** Disables the input and renders a spinner in the trailing slot. */
   loading?: boolean;
-  /** Renders a full-radius (pill-shaped) input. */
-  rounded?: boolean;
 };
 
 // Heights per DESIGN.md: sm=24, md=32, lg=40. Text drops to body-13 at
@@ -94,28 +86,19 @@ export function Input({
   variant = "default",
   prefix,
   suffix,
-  label,
-  id,
-  error,
   loading,
-  rounded,
   disabled,
   value,
   ...props
 }: InputProps): React.ReactElement {
   const isDisabled = disabled || loading;
   const trailingSpinner = loading ? <Spinner size="sm" /> : null;
-  const hasErrorMessage = typeof error === "string" && error.length > 0;
-  const hasError = Boolean(error);
   const unstyled = variant === "unstyled";
-  const shape = unstyled ? "" : rounded ? "rounded-full" : "rounded-[var(--radius-8)]";
-  const errorId = id ? `${id}-error` : undefined;
 
   const hasTrailing = Boolean(suffix) || Boolean(trailingSpinner);
 
   const inputElement = (
     <InputPrimitive
-      id={id}
       className={cn(
         "w-full min-w-0 bg-transparent border-none shadow-none outline-none ring-0",
         "placeholder:text-ink-subtle focus:outline-none focus:ring-0",
@@ -131,8 +114,6 @@ export function Input({
       data-slot="input"
       disabled={isDisabled}
       value={value}
-      aria-invalid={hasError || undefined}
-      aria-describedby={hasErrorMessage ? errorId : props["aria-describedby"]}
       {...props}
     />
   );
@@ -141,23 +122,16 @@ export function Input({
     <span
       className={cn(
         "relative inline-flex w-full items-center overflow-hidden text-ink",
-        shape,
+        !unstyled && "rounded-[var(--radius-8)]",
         !unstyled && [
-          "bg-layer-1 border border-hairline",
-          "transition-[color,background-color,border-color,box-shadow] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-          "hover:border-hairline-strong",
-          // Focus lifts the border to --primary plus the low-alpha
-          // halo hugging it. No outside ring: text fields match
-          // :focus-visible on every click, so the treatment stays
-          // quieter than the button ring. Brand-colored automatically
-          // when a consumer overrides --primary.
-          "has-focus-visible:border-primary has-focus-visible:shadow-[var(--focus-halo)]",
+          "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-layer-1",
+          "outline-none has-focus-visible:[outline-style:solid] has-focus-visible:outline-[length:var(--focus-ring-width)] has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-0",
+          "transition-[color,background-color,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         ],
         "has-disabled:opacity-50 has-disabled:cursor-not-allowed",
-        // Error state: the border stays solid error even at rest so
-        // the field reads as invalid before the user focuses it back.
-        hasError && "!border-error",
-        !label && !hasErrorMessage && className,
+        "group-data-[invalid]/field:[outline-style:solid] group-data-[invalid]/field:outline-[length:1px] group-data-[invalid]/field:outline-error",
+        "has-[[aria-invalid=true]]:[outline-style:solid] has-[[aria-invalid=true]]:outline-[length:1px] has-[[aria-invalid=true]]:outline-error",
+        className,
       )}
       data-slot="input-control"
     >
@@ -171,37 +145,7 @@ export function Input({
       {suffix && !trailingSpinner && <Affix side="end">{suffix}</Affix>}
     </span>
   );
-
-  // Basic control-only path when no label and no error message
-  if (!label && !hasErrorMessage) return control;
-
-  // Fieldset-style path when label or error message is present.
-  // Label uses button-14 for the weight-500 form-label recipe; error
-  // uses caption-12 in error per DESIGN.md field spec.
-  return (
-    <div className={cn("flex flex-col gap-2 w-full", className)} data-slot="input-field">
-      {label && (
-        <label
-          htmlFor={id}
-          className="text-small font-medium text-ink"
-          data-slot="input-label"
-        >
-          {label}
-        </label>
-      )}
-      {control}
-      {hasErrorMessage && (
-        <p
-          id={errorId}
-          role="alert"
-          className="text-mini text-error"
-          data-slot="input-error"
-        >
-          {error}
-        </p>
-      )}
-    </div>
-  );
+  return control;
 }
 
 export { InputPrimitive };

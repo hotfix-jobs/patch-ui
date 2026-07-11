@@ -4,7 +4,7 @@ export const metadata = { title: "ToggleGroup" };
 
 # ToggleGroup
 
-A compact segmented radio-style control. Use for view-mode toggles (grid / list), sort direction, density, or any small set of mutually-exclusive options.
+A compact filled selection group. Use for view-mode toggles (grid / list), sort direction, density, or any small set of mutually-exclusive options.
 
 <Install name="toggle-group" />
 
@@ -71,7 +71,7 @@ import { SquaresFour, Rows } from "@phosphor-icons/react/dist/ssr";
       name: "size",
       type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "Control density. sm = 24px, md = 28px, lg = 36px.",
+      description: "Control density. sm = 24px, md = 32px, lg = 40px.",
     },
     {
       name: "aria-label",
@@ -112,4 +112,5 @@ import { SquaresFour, Rows } from "@phosphor-icons/react/dist/ssr";
 - Icon-only items need their own `aria-label`: the icon alone doesn't announce the choice.
 - Base UI ToggleGroup ships proper keyboard navigation (arrows / Home / End) and roving tabindex out of the box.
 - For multi-select behavior, reach for a checkbox group instead — ToggleGroup here is intentionally single-select.
+- The group uses a borderless `fill-1` container. Items use the shared subtle hover and stronger selected overlays.
 </Callout>

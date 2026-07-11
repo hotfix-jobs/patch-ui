@@ -3,22 +3,15 @@
  *
  * Source of truth: packages/react/DESIGN.md.
  *
- * PREVIEW (Phase 1): neutral scale re-hexed against Radix Colors
- * Gray (radix-ui/colors, MIT). Token NAMES unchanged so existing
- * component callsites (bg-layer-1, border-hairline, text-ink-muted)
- * keep working. Rename to --bg / --surface / --border / --fg lands
- * with the codemod in Phase 2.
+ * Token names remain stable so existing component callsites
+ * (bg-layer-1, border-hairline, text-ink-muted) keep working while
+ * the surface hierarchy moves to a quieter job-board vocabulary.
  *
- * The system is a crisp-minimal, near-flat design language:
- *   - Pure-neutral grays, no undertone. Radix Gray hex under every
- *     neutral rung; the 12-step ladder gives each semantic role a
- *     documented seat (step 2 = subtle surface, step 6 = non-
- *     interactive border, step 11/12 = text with APCA guarantees).
- *   - Two surface families kept for now: --layer-* is "lifted above
- *     base" (Card, Modal, popup, chrome), --fill-* is "tinted chip
- *     fill" (Toggle track, Badge). Note: --fill-1 now resolves to
- *     the same rung as --layer-2 in preview -- the intentional
- *     collision surfaces which callsites can collapse in Phase 2.
+ * The system is a simple, approachable product language:
+ *   - `--base` is the application canvas, `--layer-1` is the primary
+ *     content surface, and `--layer-2` is grouped or selected content.
+ *   - `--fill-*` is neutral control and metadata chrome. `--fill-1`
+ *     intentionally shares a rung with `--layer-2`.
  *   - Alpha borders (Radix grayA 6/7/8) so hairlines stay uniform
  *     in perceived weight when nested on multiple surface rungs.
  *   - A monochrome primary (consumers override --primary to inject brand).
@@ -41,27 +34,18 @@
  * Layer 1: Runtime theme values (light mode reference).
  * --------------------------------------------------------------- */
 :root {
-  /* Neutral surface ladder = Radix Gray (light). base is the app
-     canvas; layer-1 is a subtly darker card rung, layer-2 the row/
-     button-rest step above that. Direction is Radix-native (card
-     darker than base), a flip from the previous "white card on
-     off-white base" pattern -- surface hierarchy now matches dark. */
-  --base:      #fcfcfc;  /* gray 1 */
-  --layer-1:   #f9f9f9;  /* gray 2 */
-  --layer-2:   #f0f0f0;  /* gray 3 */
+  /* Quiet canvas, clear content surface, and one grouped-content rung. */
+  --base:      #f5f5f5;
+  --layer-1:   #ffffff;
+  --layer-2:   #f0f0f0;
 
-  /* Chip/fill rungs. fill-1 now resolves to the same rung as
-     layer-2 (both gray 3) -- the preview surfaces the intentional
-     collision so we can see which callsites collapse in Phase 2.
-     fill-2 is the stronger active-state indication (toggle pressed,
-     active pill Tab, striped table hover, menu item highlight). */
-  --fill-1:    #f0f0f0;  /* gray 3, same rung as layer-2 (preview) */
-  --fill-2:    #e8e8e8;  /* gray 4 */
+  /* Neutral controls and metadata step once on interaction. */
+  --fill-1:    #f0f0f0;
+  --fill-2:    #e8e8e8;
 
-  /* Adaptive interaction-state overlays. rgba so they darken any
-     surface underneath uniformly. Radix grayA 3 / grayA 5. */
-  --layer-hover:    rgba(0, 0, 0, 0.059);
-  --layer-selected: rgba(0, 0, 0, 0.122);
+  /* Adaptive interaction-state overlay. rgba so it darkens any
+     surface underneath uniformly. Radix grayA 3. */
+  --layer-hover: rgba(0, 0, 0, 0.059);
 
   /* Hairlines are now alpha, not solid. A border on a nested card
      reads the same perceived weight as one on the base; solid borders
@@ -90,6 +74,10 @@
      every Button and focus-adjacent primitive inherits for free. */
   --primary:         var(--ink);
   --on-primary:      var(--base);
+  --primary-soft:    color-mix(in srgb, var(--primary) 8%, var(--layer-1));
+  --primary-soft-hover: color-mix(in srgb, var(--primary) 12%, var(--layer-1));
+  --primary-soft-active: color-mix(in srgb, var(--primary) 16%, var(--layer-1));
+  --on-primary-soft: var(--primary);
   /* Hover / active are proportional shifts off --primary via color-mix
      so a consumer's brand override on --primary automatically produces
      matching hover/active steps. Mixing with --base gives a "subtle
@@ -128,21 +116,16 @@
   --error-soft-bg:   #FEE2E2;
   --error-soft-fg:   #7F1D1D;
 
-  /* Focus. 2px ring offset 2px outside the element border. The color
-     reads --primary so the ring is monochrome ink by default and picks
-     up a consumer's brand color for free when they override --primary
-     -- every focused primitive gets a brand-colored ring without any
-     callsite edits. The 2px + 2px pair sits clearly outside the
-     component border rather than merging into it. */
-  --focus-ring-color:  var(--primary);
+  /* Focus is semantic muted gray, independent from action color.
+     Consumer brand overrides to --primary do not recolor accessibility
+     focus. The 2px + 2px pair sits clearly outside the component border. */
+  --focus-ring-color:  var(--ink-muted);
   --focus-ring-width:  2px;
   --focus-ring-offset: 2px;
 
-  /* Input focus halo. Inputs show focus on every mouse click (text
-     fields always match :focus-visible), so instead of the outside
-     ring they get a soft low-alpha bloom hugging the primary border.
-     Reads --primary so a brand override tints it for free. */
-  --focus-halo: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+  /* Focus halo retained for bordered composite controls such as Select
+     and Combobox until the form-control family migration. */
+  --focus-halo: 0 0 0 3px color-mix(in oklab, var(--focus-ring-color) 18%, transparent);
 
   /* Overlay scrim (dialog / drawer backdrop). */
   --scrim: rgba(0, 0, 0, 0.45);
@@ -245,22 +228,16 @@
  * carries the same label color because meaning doesn't flip with theme.
  * --------------------------------------------------------------- */
 .dark {
-  /* Neutral surface ladder: Radix Gray spacing shifted ~7pt deeper
-     for an editorial-dark canvas. Radix's dark scale is tuned for
-     productivity chrome (Notion / Linear internal-app register);
-     shifting the whole ladder down puts the canvas in near-black
-     territory while preserving Radix's ~9pt inter-rung deltas.
-     Pure #000 still avoided to prevent banding on 6-bit OLED panels. */
-  --base:      #0a0a0a;  /* below gray 1, editorial-dark canvas */
-  --layer-1:   #101010;  /* whisper lift; cards read almost flush with base */
-  --layer-2:   #1c1c1c;
+  /* Dark keeps the same hierarchy: canvas, lifted content, grouped content. */
+  --base:      #101010;
+  --layer-1:   #191919;
+  --layer-2:   #242424;
 
-  --fill-1:    #1c1c1c;  /* same rung as layer-2 (preview) */
-  --fill-2:    #242424;
+  --fill-1:    #242424;
+  --fill-2:    #2e2e2e;
 
-  /* Overlays: Radix grayA 3 / grayA 5. */
-  --layer-hover:    rgba(255, 255, 255, 0.071);
-  --layer-selected: rgba(255, 255, 255, 0.133);
+  /* Interaction overlay: Radix grayA 3. */
+  --layer-hover: rgba(255, 255, 255, 0.071);
 
   /* Alpha borders (Radix grayA 3 / 6 / 7 / 8) replace solid hex.
      `--hairline-soft` is card-appropriate chrome; the rest are for
@@ -290,8 +267,8 @@
   --error-soft-bg:   #3B0F0F;
   --error-soft-fg:   #FCA5A5;
 
-  /* --focus-ring-color inherits var(--primary), which resolves to the
-     dark-mode ink automatically -- no explicit dark-mode override
+  /* --focus-ring-color inherits var(--ink-muted), which resolves to the
+     dark-mode neutral automatically -- no explicit dark-mode override
      needed. */
 
   /* Shadows deepen to compensate for reduced contrast on the near-black
@@ -355,8 +332,7 @@
   --color-fill-1:  var(--fill-1);
   --color-fill-2:  var(--fill-2);
 
-  --color-layer-hover:    var(--layer-hover);
-  --color-layer-selected: var(--layer-selected);
+  --color-layer-hover: var(--layer-hover);
 
   --color-hairline-soft:      var(--hairline-soft);
   --color-hairline:           var(--hairline);
@@ -372,6 +348,10 @@
   --color-primary-hover:  var(--primary-hover);
   --color-primary-active: var(--primary-active);
   --color-on-primary:     var(--on-primary);
+  --color-primary-soft:   var(--primary-soft);
+  --color-primary-soft-hover: var(--primary-soft-hover);
+  --color-primary-soft-active: var(--primary-soft-active);
+  --color-on-primary-soft: var(--on-primary-soft);
 
   --color-error:         var(--error);
   --color-error-hover:   var(--error-hover);

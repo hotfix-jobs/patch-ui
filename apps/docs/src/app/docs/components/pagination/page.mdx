@@ -5,7 +5,7 @@ export const metadata = { title: "Pagination" };
 
 # Pagination
 
-A grouped bar of page numbers between prev/next arrows, enclosed in a single hairline pill. First and last pages are always rendered so crawlers discover the whole series; an ellipsis fills the gaps for long ranges. Renders nothing when there is only one page.
+A borderless row of page numbers between previous and next controls. First and last pages are always rendered so crawlers discover the series; an ellipsis fills gaps in long ranges. Renders nothing when there is only one page.
 
 <Install name="pagination" />
 
@@ -40,18 +40,18 @@ const [page, setPage] = useState(1);
 
 ## SEO-friendly server-rendered pages
 
-For indexable content (jobs boards, listings, blog archives), pass an `href` builder. Every control renders as a real `<a href>` — no JavaScript required, crawlable by search engines, right-clickable, works with SSR / RSC.
+For indexable content (product catalogs, directories, blog archives), pass an `href` builder. Every control renders as a real `<a href>` with no JavaScript required, so it remains crawlable and works with SSR or RSC.
 
 ```tsx
 // Server component
 <Pagination
   page={currentPage}
   totalPages={totalPages}
-  href={(p) => (p === 1 ? "/jobs" : `/jobs?page=${p}`)}
+  href={(p) => (p === 1 ? "/products" : `/products?page=${p}`)}
 />
 ```
 
-The `p === 1` special-case keeps the canonical URL for the first page as the bare route (`/jobs` not `/jobs?page=1`), so the same page doesn't get indexed under two URLs.
+The `p === 1` special-case keeps the canonical URL for the first page as the bare route (`/products` rather than `/products?page=1`), so the same page is not indexed under two URLs.
 
 ## Props
 
@@ -105,7 +105,8 @@ The `p === 1` special-case keeps the canonical URL for the first page as the bar
 <Callout title="Notes">
 - **First and last always visible:** Even in long ranges, page 1 and the final page always render. Ellipsis fills gaps in between. This is deliberate for crawler discovery: with `href`, every enumerated page URL becomes a real anchor Googlebot can follow.
 - **Tabular numerals:** Page numbers use tabular figures so digits stay column-aligned regardless of width.
-- **Active semantics:** The active page cell gets `aria-current="page"` and reads with a subtle `surface-2` lift (matching how Menu and Combobox items highlight their active row), not a shouty solid fill.
+- **Active semantics:** The active page cell gets `aria-current="page"` and uses the shared `layer-hover` fill plus stronger label weight.
+- **Focus:** Keyboard focus uses the compact neutral indicator shared by non-editable controls.
 - **Loading state:** When `loading={true}`, every control is disabled, the nav fades, and `aria-busy="true"` signals to assistive tech that a transition is in progress.
 - **Keyboard:** All controls are Tab-focusable. Use Tab + Enter or Space to navigate; arrow keys are intentionally unbound so the control composes inside horizontal scroll containers.
 </Callout>

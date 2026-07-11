@@ -69,6 +69,8 @@ export const navigation: NavGroup[] = [
     items: [
       { title: "AppHeader", href: "/docs/blocks/app-header" },
       { title: "Dropzone", href: "/docs/blocks/dropzone" },
+      { title: "FilterToolbar", href: "/docs/blocks/filter-toolbar" },
+      { title: "SearchSuggestions", href: "/docs/blocks/search-suggestions" },
     ],
   },
 ];

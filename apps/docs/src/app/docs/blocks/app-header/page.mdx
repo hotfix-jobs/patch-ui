@@ -5,7 +5,7 @@ export const metadata = { title: "AppHeader" };
 
 # AppHeader
 
-A complete site-header block. Renders brand slot + primary nav + optional tools + right-aligned actions on desktop, and below the `md` viewport breakpoint automatically collapses the nav into a morphing hamburger trigger. Tapping the trigger drops down a panel below the still-visible sticky header showing the nav items and, if present, the right cluster docked at the bottom as a footer. Open/close state, focus, escape-to-close, and scroll lock are owned by the block.
+A focused site-header block for brand, primary navigation, and right-aligned actions. Below the `md` viewport breakpoint it automatically collapses navigation into a morphing hamburger trigger. Search, filter, and other route-owned tools remain siblings so applications can control their sticky and scroll behavior.
 
 <Install name="app-header" />
 
@@ -24,9 +24,8 @@ import {
   AppHeaderNavItem,
   AppHeaderNavSection,
   AppHeaderRight,
-  AppHeaderTools,
-  Button,
-} from "@patchui/react";
+} from "@patchui/react/blocks/app-header";
+import { Button } from "@patchui/react";
 
 <AppHeader>
   <AppHeaderBrand render={<a href="/" />}>Patch</AppHeaderBrand>
@@ -43,13 +42,6 @@ import {
     </AppHeaderNavSection>
   </AppHeaderNav>
 
-  {/* Route-owned inline controls (search, filter chips). Sit between
-      Nav and Right on desktop; render as a bordered sub-row below the
-      top row on mobile so they stay visible without opening the panel. */}
-  <AppHeaderTools>
-    <Input placeholder="Search…" />
-  </AppHeaderTools>
-
   {/* Pinned into the mobile top bar just before the hamburger. Hidden
       on desktop and never rendered in the mobile panel footer — for
       one-tap actions (notification bell, avatar) that stay reachable
@@ -59,14 +51,17 @@ import {
   </AppHeaderMobileTop>
 
   <AppHeaderRight>
-    <Button variant="tertiary" size="sm" shape="pill">Sign in</Button>
-    <Button variant="primary" size="sm" shape="pill">Get started</Button>
+    <Button variant="tertiary" size="sm">Sign in</Button>
+    <Button variant="primary" size="sm">Get started</Button>
   </AppHeaderRight>
 </AppHeader>
 
-// List-page pattern: bring a filter toolbar into the shell as a third
-// sub-row so a single sticky-scroll motion collapses everything together.
-<AppHeader sticky filterToolbar={<JobsFilterToolbar />}>...</AppHeader>
+// Applications own compound sticky or collapsing chrome.
+<motion.div animate={{ y: collapsed ? "-100%" : 0 }}>
+  <AppHeader bordered={scrolled} />
+  <SearchSuggestions />
+  <FilterToolbar />
+</motion.div>
 ```
 
 ## Mobile behavior
@@ -75,15 +70,15 @@ Below `md`:
 - `AppHeaderNav` is hidden inline; its items render inside the panel instead.
 - `AppHeaderRight` is hidden inline; its items render in the panel's sticky footer instead. Reach for that for a Sign in / primary CTA that stays parked at the bottom of the drawer.
 - `AppHeaderMobileTop` renders inline just before the hamburger — visible on mobile top bar, never rendered in the panel footer. Use for one-tap actions that shouldn't require opening the panel (notification bell, avatar).
-- `AppHeaderTools` renders as a sub-row directly under the top row — always visible so search / filter controls stay reachable without opening the panel. Row divider tied to the shell's `bordered` state.
-- `filterToolbar` (prop) renders as a third sub-row below the tools row, also tied to `bordered`. Use for list-page filter chips that should collapse under the same sticky-scroll motion as the header.
 - A **morphing hamburger trigger** replaces the right cluster in the top row. It only renders when `AppHeaderNav` has children.
 - Tapping the trigger drops the panel down — the hamburger morphs to X for the close affordance, and the panel occupies `top: var(--header-height, 64px)` to the bottom of the viewport. Set `--header-height` on `:root` when your header height differs from the 64px default (a `ResizeObserver` on the header element is the usual wiring).
 
 ## Styling notes
 
-- **Desktop nav items** default to `text-ink-muted`. On hover they lift to `text-ink` and pick up a subtle `bg-fill-1` pill fill. The `active` prop lands the item at full `text-ink` + `font-medium`: no pill fill so "current page" reads distinctly from "hovered link."
-- **Marketing headers**: reach for `shape="pill"` on Buttons in the right slot. `Button shape="pill"` gives the fully-rounded chip look for "Log in" / "Sign up" CTAs.
+- **Desktop nav items** use radius 8 and the shared `layer-hover` interaction background. The active item keeps full ink and medium weight.
+- **Borders:** `bordered` controls one structural bottom hairline. The dashboard demo shows it on; the marketing demo opts out.
+- **Route tools:** place SearchSuggestions, FilterToolbar, and route actions outside AppHeader. Wrap the complete stack in application-owned sticky or collapsing chrome when those rows need to move together.
+- **Header actions**: use the standard radius-8 Button shape so marketing and product controls share one vocabulary.
 - **Sticky headers**: pass `sticky` to pin the header. The panel renders below at `z-40` — the sticky header (`z-50`) stays above it so brand and the hamburger-to-X trigger remain visible.
 - **Escape hatch**: if you need a custom mobile pattern (drawer instead of full-viewport panel), skip this block and compose the primitives (`Sheet` + your own trigger).
 
@@ -104,12 +99,6 @@ Below `md`:
       type: "boolean",
       default: "false",
       description: "Pins the header to the top of its scroll container via sticky top-0 z-50.",
-    },
-    {
-      name: "filterToolbar",
-      type: "ReactNode",
-      default: "-",
-      description: "Optional third sub-row rendered below the top row (and the mobile tools sub-row). Used by list pages to bring their filter toolbar into the header shell so a single motion collapses everything together on scroll. Row divider tied to `bordered`.",
     },
     {
       name: "render",
@@ -141,7 +130,7 @@ Below `md`:
       name: "active",
       type: "boolean",
       default: "false",
-      description: "Marks the item as the current page — text-ink at full weight, no pill fill on hover so it reads distinct from a hovered inactive link.",
+      description: "Marks the item as the current page with full ink, medium weight, and aria-current.",
     },
     {
       name: "href",
@@ -178,7 +167,7 @@ Below `md`:
 />
 
 <Callout title="Notes">
-- **Composition:** Extract logic runs on `AppHeader`'s children — put `AppHeaderBrand`, `AppHeaderNav`, and `AppHeaderRight` as direct children (order-independent) and the block wires desktop + mobile automatically.
+- **Composition:** Extract logic runs on `AppHeader`'s children. Put `AppHeaderBrand`, `AppHeaderNav`, `AppHeaderMobileTop`, and `AppHeaderRight` as direct children (order-independent) and the block wires desktop + mobile automatically.
 - **Same tree, two layouts:** The nav children you write once serve both the desktop row and the mobile panel. No duplication.
 - **Routing:** Use the `render` prop on `AppHeaderBrand` and `AppHeaderNavItem` to integrate your router's link component.
 - **Block, not primitive:** For full control (custom mobile pattern, custom collapsing rules, drawers), compose your own header from the underlying primitives.

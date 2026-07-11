@@ -3,7 +3,7 @@
 import type * as React from "react";
 import { useSyncExternalStore } from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
+import { selectionFocus, colorTransition } from "../recipes";
 
 export interface KbdProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "onClick"> {
@@ -80,8 +80,8 @@ export function Kbd({
     size === "md" && "h-5 min-w-5 px-1.5",
     mods.length > 0 && "px-1.5 gap-1",
     interactive && [
-      "cursor-pointer hover:bg-fill-2 hover:text-ink",
-      focusRing,
+      "hover:bg-fill-2 hover:text-ink",
+      selectionFocus,
       colorTransition,
     ],
     className,

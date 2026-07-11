@@ -4,296 +4,133 @@ import { useState } from "react";
 import {
   Button,
   EmptyState,
+  SectionLabel,
   Table,
-  TableHeader,
   TableBody,
-  TableRow,
-  TableHead,
   TableCell,
   TableEmpty,
-  SectionLabel,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableSortButton,
 } from "@patchui/react";
 import { Users } from "@phosphor-icons/react/dist/ssr";
 
 const MEMBERS = [
-  { name: "Ada Lovelace", role: "Owner", status: "Active", lastActive: "2m ago" },
-  { name: "Alan Turing", role: "Admin", status: "Active", lastActive: "12m ago" },
-  { name: "Grace Hopper", role: "Member", status: "Invited", lastActive: "1h ago" },
-  { name: "Katherine Johnson", role: "Member", status: "Active", lastActive: "3h ago" },
-  { name: "Linus Torvalds", role: "Member", status: "Suspended", lastActive: "5d ago" },
+  { name: "Ada Lovelace", role: "Owner", status: "Active", updated: "2m ago" },
+  { name: "Alan Turing", role: "Admin", status: "Active", updated: "12m ago" },
+  { name: "Grace Hopper", role: "Member", status: "Invited", updated: "1h ago" },
+  { name: "Katherine Johnson", role: "Member", status: "Active", updated: "3h ago" },
+  { name: "Linus Torvalds", role: "Member", status: "Paused", updated: "5d ago" },
 ];
 
-function StatusBadge({ status }: { status: string }) {
-  const color =
-    status === "Active"
-      ? "text-[var(--success)]"
-      : status === "Suspended"
-        ? "text-[var(--error)]"
-        : "text-ink-muted";
-  return <span className={color}>{status}</span>;
+type SortDirection = "asc" | "desc";
+
+function Status({ value }: { value: string }) {
+  return (
+    <span className={value === "Active" ? "text-ink" : "text-ink-muted"}>
+      {value}
+    </span>
+  );
+}
+
+function MemberRows({ members = MEMBERS }: { members?: typeof MEMBERS }) {
+  return members.map((member) => (
+    <TableRow key={member.name}>
+      <TableCell className="font-medium">{member.name}</TableCell>
+      <TableCell>{member.role}</TableCell>
+      <TableCell><Status value={member.status} /></TableCell>
+      <TableCell align="right" className="text-ink-muted">{member.updated}</TableCell>
+    </TableRow>
+  ));
 }
 
 export function TableDemo() {
-  const [selected, setSelected] = useState("Ada Lovelace");
-  const [sortDir, setSortDir] = useState<"asc" | "desc" | "none">("none");
-  const sortedMembers =
-    sortDir === "none"
-      ? MEMBERS
-      : [...MEMBERS].sort((a, b) =>
-          sortDir === "asc"
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name),
-        );
+  const [direction, setDirection] = useState<SortDirection>("asc");
+  const members = [...MEMBERS].sort((a, b) =>
+    direction === "asc"
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name),
+  );
 
   return (
     <div className="flex flex-col gap-10">
       <div className="space-y-3">
-        <SectionLabel>Flat (default)</SectionLabel>
+        <SectionLabel>Default</SectionLabel>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
+              <TableHead aria-sort={direction === "asc" ? "ascending" : "descending"}>
+                <TableSortButton
+                  direction={direction}
+                  onClick={() => setDirection(direction === "asc" ? "desc" : "asc")}
+                >
+                  Name
+                </TableSortButton>
+              </TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead align="right">Last active</TableHead>
+              <TableHead align="right">Updated</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {MEMBERS.map((m) => (
-              <TableRow key={m.name}>
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell>
-                  <StatusBadge status={m.status} />
-                </TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
+            <MemberRows members={members} />
           </TableBody>
         </Table>
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Elevated (bg-layer-1 + hairline-soft)</SectionLabel>
-        <Table variant="elevated">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead align="right">Last active</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {MEMBERS.slice(0, 3).map((m) => (
-              <TableRow key={m.name}>
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Interactive rows (opt-in hover)</SectionLabel>
-        <Table interactive>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead align="right">Last active</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {MEMBERS.slice(0, 4).map((m) => (
-              <TableRow key={m.name}>
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell>
-                  <StatusBadge status={m.status} />
-                </TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Striped rows</SectionLabel>
-        <Table striped>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead align="right">Last active</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {MEMBERS.map((m) => (
-              <TableRow key={m.name}>
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Bordered cells</SectionLabel>
+        <SectionLabel>Bordered container</SectionLabel>
         <Table bordered>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Role</TableHead>
-              <TableHead align="right">Last active</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead align="right">Updated</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {MEMBERS.slice(0, 3).map((m) => (
-              <TableRow key={m.name}>
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
+            <MemberRows members={MEMBERS.slice(0, 3)} />
           </TableBody>
         </Table>
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Dense (size="sm")</SectionLabel>
-        <Table size="sm" variant="elevated">
+        <SectionLabel>Compact</SectionLabel>
+        <Table size="sm">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Role</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead align="right">Last active</TableHead>
+              <TableHead align="right">Updated</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {MEMBERS.map((m) => (
-              <TableRow key={m.name}>
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell>
-                  <StatusBadge status={m.status} />
-                </TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
+            <MemberRows members={MEMBERS.slice(0, 3)} />
           </TableBody>
         </Table>
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Selected row</SectionLabel>
-        <Table interactive>
+        <SectionLabel>Empty</SectionLabel>
+        <Table bordered>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Role</TableHead>
-              <TableHead align="right">Last active</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead align="right">Updated</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {MEMBERS.slice(0, 4).map((m) => (
-              <TableRow
-                key={m.name}
-                selected={selected === m.name}
-                onClick={() => setSelected(m.name)}
-              >
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Sortable column</SectionLabel>
-        <Table variant="elevated">
-          <TableHeader>
-            <TableRow>
-              <TableHead
-                sortable
-                direction={sortDir}
-                onSort={() =>
-                  setSortDir(
-                    sortDir === "none"
-                      ? "asc"
-                      : sortDir === "asc"
-                      ? "desc"
-                      : "none",
-                  )
-                }
-              >
-                Name
-              </TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead align="right">Last active</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortedMembers.map((m) => (
-              <TableRow key={m.name}>
-                <TableCell>{m.name}</TableCell>
-                <TableCell>{m.role}</TableCell>
-                <TableCell align="right">{m.lastActive}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Sticky header (scroll inside container)</SectionLabel>
-        <div className="h-56 overflow-y-auto rounded-[var(--radius-8)] border border-hairline-soft bg-layer-1">
-          <Table variant="flat" scrollable={false} stickyHeader>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead align="right">Last active</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {[...MEMBERS, ...MEMBERS, ...MEMBERS].map((m, i) => (
-                <TableRow key={`${m.name}-${i}`}>
-                  <TableCell>{m.name}</TableCell>
-                  <TableCell>{m.role}</TableCell>
-                  <TableCell align="right">{m.lastActive}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-
-      <div className="space-y-3">
-        <SectionLabel>Empty state</SectionLabel>
-        <Table variant="elevated">
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead align="right">Last active</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableEmpty colSpan={3}>
+            <TableEmpty colSpan={4}>
               <EmptyState
                 icon={<Users />}
-                title="No members yet"
-                description="Invite teammates to get started."
-                action={<Button size="md">Invite members</Button>}
+                title="No entries yet"
+                description="Add an entry to see it here."
+                action={<Button size="md">Add entry</Button>}
               />
             </TableEmpty>
           </TableBody>

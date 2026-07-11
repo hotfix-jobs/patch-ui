@@ -5,7 +5,7 @@ export const metadata = { title: "Table" };
 
 # Table
 
-Composable table primitives — thin, styled wrappers around native table elements with hairline dividers, restrained typography, and row/column state opinions moved to the root so the API reads at a glance.
+Composable native table primitives with clear horizontal dividers, restrained typography, and compact sorting controls.
 
 <Install name="table" />
 
@@ -23,12 +23,13 @@ import {
   TableFooter,
   TableRow,
   TableHead,
+  TableSortButton,
   TableCell,
   TableCaption,
   TableEmpty,
 } from "@patchui/react";
 
-// Flat (default) — transparent frame, hairline dividers, no outer box
+// Default: open table with horizontal row dividers
 <Table>
   <TableHeader>
     <TableRow>
@@ -44,13 +45,11 @@ import {
   </TableBody>
 </Table>
 
-// Elevated — bg-layer-1 + hairline-soft + radius-8 (matches Card)
-<Table variant="elevated">...</Table>
-
-// Row-state opinions on the root
-<Table striped>...</Table>
-<Table interactive>...</Table>
+// Optional outer boundary
 <Table bordered>...</Table>
+
+// Hover for actionable rows
+<Table interactive>...</Table>
 
 // Density
 <Table size="sm">...</Table>
@@ -58,8 +57,10 @@ import {
 // Selected row
 <TableRow selected onClick={...}>...</TableRow>
 
-// Sortable column head
-<TableHead sortable direction="asc" onSort={...}>Name</TableHead>
+// Compact sort control
+<TableHead aria-sort="ascending">
+  <TableSortButton direction="asc" onClick={...}>Name</TableSortButton>
+</TableHead>
 
 // Sticky header inside a fixed-height scroll container
 <div className="h-64 overflow-y-auto">
@@ -79,10 +80,10 @@ import {
 <PropsTable
   props={[
     {
-      name: "variant",
-      type: '"flat" | "elevated"',
-      default: '"flat"',
-      description: "`flat` (default) is a transparent frame with hairline dividers — sheds the outer chrome and lets the grid carry the structure (Bloomberg / NYT data-table feel). `elevated` fills with `bg-layer-1`, wraps in `border-hairline-soft` + `radius-8` — matches Card.",
+      name: "bordered",
+      type: "boolean",
+      default: "false",
+      description: "Adds a layer-1 container with a hairline boundary and radius-12. Horizontal row dividers remain in both modes.",
     },
     {
       name: "size",
@@ -91,22 +92,10 @@ import {
       description: "Row density. `md` (default) uses standard header height (`h-9`) and cell padding (`py-2.5`). `sm` tightens both (`h-7`, `py-1.5`) for dense grids.",
     },
     {
-      name: "striped",
-      type: "boolean",
-      default: "false",
-      description: "Alternating row backgrounds (`bg-fill-2` on even rows) with rounded-inset pill treatment.",
-    },
-    {
       name: "interactive",
       type: "boolean",
       default: "false",
-      description: "Row hover + cursor-pointer. Hover fills the row with a `bg-layer-hover` alpha overlay (rounded on first / last cell). Drops per-row hairlines since the pill is the row indicator.",
-    },
-    {
-      name: "bordered",
-      type: "boolean",
-      default: "false",
-      description: "Vertical cell borders (`border-l` between adjacent cells).",
+      description: "Adds a shared hover background to actionable rows without removing their dividers.",
     },
     {
       name: "scrollable",
@@ -131,7 +120,7 @@ import {
       name: "selected",
       type: "boolean",
       default: "false",
-      description: "Marks the row as selected. Applies `bg-layer-selected` + a 2px primary left border on the first cell and sets `aria-selected`.",
+      description: "Marks the row as selected. Applies `bg-layer-hover` and sets `aria-selected`.",
     },
   ]}
 />
@@ -146,23 +135,18 @@ import {
       default: '"left"',
       description: "Text alignment for the cell.",
     },
-    {
-      name: "sortable",
-      type: "boolean",
-      default: "false",
-      description: "Renders the head as a clickable sort trigger with a chevron indicator. Pair with `direction` and `onSort`.",
-    },
+  ]}
+/>
+
+### TableSortButton
+
+<PropsTable
+  props={[
     {
       name: "direction",
       type: '"asc" | "desc" | "none"',
       default: '"none"',
-      description: "Current sort direction for this column. Drives the chevron icon: up for asc, down for desc, up-down (neutral) when none. Also sets `aria-sort`.",
-    },
-    {
-      name: "onSort",
-      type: "() => void",
-      default: "-",
-      description: "Fired when a sortable head is clicked. Cycle your own state (typically none → asc → desc → none).",
+      description: "Controls the compact direction icon. Set `aria-sort` on the containing TableHead.",
     },
   ]}
 />
@@ -194,11 +178,11 @@ import {
 />
 
 <Callout title="Notes">
-- **State opinions live on the root.** `striped` / `interactive` / `bordered` moved from `TableBody` to `Table` this pass — one place to set them, propagated via context. `TableBody` is now a semantic passthrough.
-- **Variant naming matches Card / Section.** `flat` vs `elevated` are the same visual axis across every surface primitive, so an elevated Table sits next to an elevated Card without any tuning.
+- **Dividers are structural.** The header uses a stronger divider and every body row uses a soft divider. The last row drops its bottom divider.
+- **Outer border is optional.** `bordered` adds a contained surface without changing row structure.
 - **Composition:** Every sub-component maps to a native table element, so standard HTML attributes pass through.
 - **Numerals:** Use `align="right"` on numeric `TableCell`s for right-align + tabular figures.
-- **Sortable heads:** Wire your own sort state. The head cycles the icon and sets `aria-sort` for you; the cycle logic is left to the consumer (three-state or two-state).
+- **Sortable heads:** Compose `TableSortButton` inside `TableHead`, keep `aria-sort` on the header cell, and own the two-state or three-state cycle in your application.
 - **Selected rows:** Combine with `interactive` on the root for the row-clickable pattern shown in the demo.
 - **Sticky header:** Requires a fixed-height scroll container. Pass `scrollable={false}` so the internal horizontal-scroll wrapper doesn't fight your vertical-scroll parent.
 - **Empty state:** Wrap `<EmptyState>` inside `<TableEmpty>` for the fullest treatment (icon + title + description + action). For a one-line placeholder, pass a string directly (`<TableEmpty colSpan={4}>No results.</TableEmpty>`).

@@ -38,7 +38,7 @@ export function DropzoneDemo() {
           size="sm"
           multiple={false}
           showFileList={false}
-          title="Drop resume here"
+          title="Drop document here"
           description="PDF, up to 5 MB"
           accept="application/pdf"
           maxSize={5 * 1024 * 1024}

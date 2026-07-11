@@ -3,7 +3,7 @@
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 import type * as React from "react";
 import { cn } from "../utils";
-import { focusRing, colorTransition } from "../recipes";
+import { selectionFocus, colorTransition } from "../recipes";
 
 export type SwitchSize = "sm" | "md" | "lg";
 
@@ -44,12 +44,12 @@ export function Switch({
   return (
     <SwitchPrimitive.Root
       className={cn(
-        "group inline-flex shrink-0 cursor-pointer items-center rounded-full p-px",
-        "data-unchecked:bg-fill-1 data-unchecked:hover:bg-fill-2 data-disabled:cursor-not-allowed data-disabled:opacity-50",
-        "data-checked:bg-primary",
+        "group inline-flex shrink-0 items-center rounded-full p-px",
+        "data-unchecked:bg-fill-2 data-unchecked:hover:bg-hairline-strong data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "data-checked:bg-ink data-checked:hover:bg-ink",
         trackBySize[size],
         colorTransition,
-        focusRing,
+        selectionFocus,
         className,
       )}
       data-slot="switch"

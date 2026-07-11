@@ -29,7 +29,7 @@ const [starred, setStarred] = useState(false);
 // With text
 <Toggle>Public</Toggle>
 
-// Secondary variant (bordered resting state)
+// Secondary variant (filled resting state)
 <Toggle variant="secondary" icon={<Bold />} aria-label="Bold" />
 
 // Sizes
@@ -64,13 +64,13 @@ const [starred, setStarred] = useState(false);
       name: "variant",
       type: '"tertiary" | "secondary"',
       default: '"tertiary"',
-      description: "tertiary = transparent at rest, hover picks up a `bg-layer-hover` overlay and pressed uses `bg-layer-selected`; secondary = hairline border with `bg-layer-1` fill. Vocabulary matches Button.",
+      description: "tertiary is transparent and uses the shared interaction overlay. Secondary stays on the fill-1 to fill-2 ramp for hover and pressed states.",
     },
     {
       name: "size",
       type: '"sm" | "md" | "lg"',
       default: '"md"',
-      description: "Same scale as Button (28 / 36 / 44 px).",
+      description: "Same sm / md / lg scale as Button (24 / 32 / 40 px).",
     },
     {
       name: "disabled",
@@ -82,7 +82,9 @@ const [starred, setStarred] = useState(false);
 />
 
 <Callout title="Notes">
-- The pressed state flips the fill to `--primary` with `--on-primary` text: inverted so the pressed button reads as "on" at a glance.
+- **Migration:** Toggle now defaults to `md` (32px), matching Button and the shared control scale. Pass `size="lg"` where the previous larger default was intentional.
+- Tertiary uses `--layer-hover` for hover and pressed states. Secondary uses `fill-2` for both so a pressed filled control never becomes translucent.
+- Toggle has one radius-8 shape. Use Button for one-shot circular icon actions and Switch for pill-shaped binary settings.
 - Rendered as a `<button>` with `aria-pressed`, so screen readers announce "Star, toggle button, pressed" / "not pressed". Provide `aria-label` for icon-only toggles.
 - For a binary on/off setting slider (Dark mode, Enable notifications), reach for `Switch` instead: Switch reads as a noun (a setting), Toggle reads as a verb (an action).
 - Reach for `Toggle` when the state is about the toolbar action (`Star` this item, `Pin` to top). Reach for `Switch` when the state is a setting (`Dark mode`, `Enable Firewall`). Toggle reads as a verb, Switch as a noun.

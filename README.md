@@ -1,61 +1,69 @@
 # Patch UI
 
-A React component library built on [Base UI](https://base-ui.com/) primitives and Tailwind CSS v4, with a crisp-minimal design language: a Radix-Gray neutral scale (`--base` #fcfcfc light / #0a0a0a dark), two surface families (`--layer-*` for lifted panels + popups + control chrome, `--fill-*` for tinted chip fills), alpha hairline borders (whisper-weight `--hairline-soft` for elevated Cards, standard `--hairline` for inputs and menus), and a monochrome primary that consumers override for brand.
+Patch UI is a copy-in React component library built on [Base UI](https://base-ui.com/) and Tailwind CSS v4. It uses a quiet canvas, clear content surfaces, filled controls, restrained boundaries, monochrome actions, and shared light/dark tokens.
 
-Patch UI is **copy-in**: you add a component and its source lands in your own repo, fully yours to edit. There is no npm package to install, no version to bump, no Tailwind purge config to maintain.
+There is no published runtime package. The shadcn CLI copies component source into your project, where you own and can edit it.
 
-**Docs:** [ui.hotfix.jobs](https://ui.hotfix.jobs)
+**Documentation:** [ui.hotfix.jobs](https://ui.hotfix.jobs)
 
-## Quickstart
+## Quick start
 
-Add the `@patchui` registry to your `components.json` (run `npx shadcn@latest init` first if you do not have one):
+Initialize shadcn if the project does not already have `components.json`:
 
-```json
-{
-  "registries": {
-    "@patchui": "https://ui.hotfix.jobs/r/{name}.json"
-  }
-}
+```bash
+npx shadcn@latest init
 ```
 
-Add components one at a time:
+Register Patch UI's namespace:
+
+```bash
+npx shadcn@latest registry add @patchui=https://ui.hotfix.jobs/r/{name}.json
+```
+
+Add one component or the complete registry:
 
 ```bash
 npx shadcn@latest add @patchui/button
-```
-
-Or install the whole library in one shot:
-
-```bash
 npx shadcn@latest add @patchui/all
 ```
 
-Wire the tokens through your Tailwind CSS entry file:
+The registry writes tokens to `styles/patch-ui-tokens.css`. Import that file through the Tailwind CSS entry point, adjusting the relative path to your project structure:
 
 ```css
 @import "tailwindcss";
-@import "./styles/patch-ui-tokens.css";
+@import "../styles/patch-ui-tokens.css";
 ```
 
-Full guide: **[ui.hotfix.jobs/docs/getting-started](https://ui.hotfix.jobs/docs/getting-started)**.
+See the [Getting Started guide](https://ui.hotfix.jobs/docs/getting-started) for setup details.
 
-> The `shadcn` CLI is a generic registry client. It copies **Patch UI's** code into your repo, not shadcn's. Patch UI is its own library, built on Base UI.
+## Design contract
 
-## What is inside
+- `--base` is the canvas; `--layer-1` and `--layer-2` organize content.
+- `--fill-1` and `--fill-2` provide neutral control and metadata chrome.
+- Normal hierarchy comes from backgrounds and spacing, not borders on every object.
+- Hairlines are reserved for floating boundaries, outlined surfaces, and structural dividers.
+- Controls default to radius 8, metadata to radius 6, and content/floating surfaces to radius 12.
+- Button and Badge expose explicit `rounded` and `pill` shapes.
+- Editable fields use a crisp neutral focus outline; non-editable controls use compact keyboard focus.
+- `--primary` is monochrome by default and can be overridden downstream for brand.
 
-**Primitives:** Accordion, Avatar, Badge, Breadcrumb, Button, Calendar, Card, Checkbox, Combobox, Command, EmptyState, Field, Form, Input, Label, Menu, Modal, NavigationMenu, Pagination, Progress, Radio, Scroller, SearchInput, Section, SegmentedToggle, Select, Separator, Sheet, Sidebar, Skeleton, Slider, Spinner, Switch, Table, Tabs, Textarea, ThemeToggle, TimeAgo, Toast, Toggle, Tooltip.
-
-**Blocks:** AppHeader, Dropzone.
-
-**Foundations:** light + dark from a single `.dark` class, no JS theme engine. A `check:contrast` CI gate enforces WCAG minimums so a token change that breaks readability fails the build.
+The detailed source of truth is [packages/react/DESIGN.md](./packages/react/DESIGN.md).
 
 ## Repository
 
-NPM workspaces monorepo:
+- `packages/react`: component source, tokens, recipes, and contrast checks
+- `apps/docs`: Next.js documentation, live demos, and served registry output
+- `registry.json`: generated registry catalog
+- `scripts/build-registry-source.mjs`: source rewrite and registry generation
 
-- `packages/react`: the component source (`@patchui/react`, private; backs the registry and powers the docs demos)
-- `apps/docs`: the [Next.js documentation site](https://ui.hotfix.jobs)
-- `registry.json` + `scripts/build-registry-source.mjs`: the registry generator; `npm run registry` builds `apps/docs/public/r/*.json`
+Verification:
+
+```bash
+npm run build -w packages/react
+npm run check:contrast -w packages/react
+npm run registry
+npx tsc --noEmit -p apps/docs/tsconfig.json
+```
 
 ## License
 

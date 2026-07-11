@@ -18,7 +18,14 @@ const CommandCloseContext = createContext<(() => void) | null>(null);
 export function Command(
   props: React.ComponentProps<typeof AutocompletePrimitive.Root>,
 ): React.ReactElement {
-  return <AutocompletePrimitive.Root data-slot="command" inline {...props} />;
+  return (
+    <AutocompletePrimitive.Root
+      data-slot="command"
+      inline
+      autoHighlight={false}
+      {...props}
+    />
+  );
 }
 
 export interface CommandInputProps
@@ -145,6 +152,7 @@ export function CommandItem({
   return (
     <AutocompletePrimitive.Item
       data-slot="command-item"
+      data-selected={selected ? "" : undefined}
       className={cn(
         itemRow.base,
         "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
@@ -281,7 +289,7 @@ export function CommandDialog({
           data-slot="command-dialog"
           className={cn(
             popupSurface,
-            "fixed left-1/2 top-[15vh] z-[80] flex w-full max-w-xl -translate-x-1/2 flex-col overflow-hidden max-h-[70vh]",
+            "fixed left-1/2 top-1/2 z-[80] flex w-[calc(100vw-1rem)] max-w-xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden max-h-[calc(100dvh-2rem)] sm:max-h-[70vh]",
             "transition-[opacity,scale] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
             "data-starting-style:opacity-0 data-starting-style:scale-97",
             "data-ending-style:opacity-0 data-ending-style:scale-97",

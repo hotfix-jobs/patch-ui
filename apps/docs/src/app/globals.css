@@ -15,10 +15,6 @@ body {
   color: var(--ink);
 }
 
-.dark body {
-  background: #000;
-}
-
 /* ── Code block inner styles (rehype-pretty-code) ── */
 /* The outer wrapper is handled by CodeFigure component */
 
