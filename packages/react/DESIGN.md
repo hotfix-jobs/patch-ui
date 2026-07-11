@@ -100,7 +100,7 @@ Size and weight are separate axes. Compose `text-small font-medium`; do not add 
 - `--shadow-tooltip`: Tooltip.
 - `--shadow-modal`: Modal and Sheet.
 
-Ordinary interactive Cards change fill; they do not gain a shadow on hover.
+Actionable Cards change fill; they do not gain a shadow on hover.
 
 ## Focus
 
@@ -122,7 +122,7 @@ Button variants are `primary`, `secondary`, `soft`, `tertiary`, `warning`, and `
 
 ### Card and Section
 
-Card exposes `surface`, `outlined`, and `elevated`. Interactive Card uses hover and pressed fills plus compact keyboard focus.
+Card exposes `surface`, `outlined`, and `elevated`, with `outlined` as the default. Actionable Card styling must be paired with link or button semantics through `render`.
 
 Section is a plain structural grouping by default. Its optional `card` variant adds a borderless, shadowless layer-1 surface, while `dividers` independently separates direct children. Callers own padding and row layout.
 

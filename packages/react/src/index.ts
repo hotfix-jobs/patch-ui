@@ -36,7 +36,20 @@ export {
   RadioGroupPrimitive,
 } from "./components/radio";
 export { Slider, SliderValue, SliderPrimitive } from "./components/slider";
-export { Card, type CardProps } from "./components/card";
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  type CardProps,
+  type CardHeaderProps,
+  type CardTitleProps,
+  type CardDescriptionProps,
+  type CardContentProps,
+  type CardFooterProps,
+} from "./components/card";
 export {
   Section,
   SectionHeader,

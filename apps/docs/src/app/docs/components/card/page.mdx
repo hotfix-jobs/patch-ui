@@ -1,13 +1,12 @@
 import { CardDemo } from "./card-demo";
 
-
 export const metadata = { title: "Card" };
 
 # Card
 
-A surface primitive for search, list, and content cards. Use the default `surface`, choose `outlined` when a boundary carries meaning, or `elevated` when the object needs shadow separation.
+A composable content surface with a clear outlined default, optional elevation, consistent internal structure, and semantic actionable composition.
 
-Card is intentionally content-agnostic. For structured settings-page panels with labeled rows, reach for `Section`.
+Card remains content-agnostic. Its structural parts only standardize spacing and typography. For settings panels with labeled rows, reach for `Section`.
 
 <Install name="card" />
 
@@ -18,55 +17,78 @@ Card is intentionally content-agnostic. For structured settings-page panels with
 ## Usage
 
 ```tsx
-import { Card } from "@patchui/react";
+import Link from "next/link";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@patchui/react";
 
-// Default content surface
-<Card className="p-4">A clear content card.</Card>
-
-// Explicit boundary
-<Card variant="outlined" className="p-4">Administrative content.</Card>
-
-// Elevated surface
-<Card variant="elevated" className="p-4">
-  A card that reads as a distinct object.
+// Default outlined card
+<Card>
+  <CardHeader>
+    <div>
+      <CardTitle>Activity</CardTitle>
+      <CardDescription>Changes from the last seven days.</CardDescription>
+    </div>
+  </CardHeader>
+  <CardContent>Three updates were published.</CardContent>
+  <CardFooter divided>Updated recently</CardFooter>
 </Card>
 
-// Interactive (state fills + compact keyboard focus)
-<Card interactive className="p-4">Hover me</Card>
+// Quiet surface
+<Card variant="surface">
+  <CardContent>Grouped content.</CardContent>
+</Card>
 
-// Selected state (multi-pick galleries, plan comparison)
-<Card selected className="p-4">
-  Selected plan
+// Elevated object
+<Card variant="elevated">
+  <CardContent>Prominent content.</CardContent>
+</Card>
+
+// Actionable cards require link or button semantics
+<Card actionable render={<Link href="/resources" />}>
+  <CardContent>Browse resources</CardContent>
+</Card>
+
+// Visual selection only. Supply semantics appropriate to the parent widget.
+<Card selected>
+  <CardContent>Selected item</CardContent>
 </Card>
 ```
 
 ## Props
+
+### Card
 
 <PropsTable
   props={[
     {
       name: "variant",
       type: '"surface" | "outlined" | "elevated"',
-      default: '"surface"',
-      description: "`surface` is the borderless `--layer-1` content surface. `outlined` adds an explicit hairline boundary. `elevated` adds `shadow-card`.",
+      default: '"outlined"',
+      description: "Outlined is the recommended application-card default. Surface is a quiet layer and elevated adds a soft boundary and shadow-card.",
     },
     {
-      name: "interactive",
+      name: "actionable",
       type: "boolean",
       default: "false",
-      description: "Adds hover, pressed, and compact keyboard-focus states. Wrap in a `<Link>` or handle `onClick` for actual navigation.",
+      description: "Adds hover, pressed, and keyboard-focus styling. Render Card as a semantic link or button when enabled.",
     },
     {
       name: "selected",
       type: "boolean",
       default: "false",
-      description: "Switches to the grouped-content surface. Sets `aria-selected` and `data-selected`.",
+      description: "Applies the selected fill and data-selected. Selection ARIA belongs to the parent widget and is not emitted automatically.",
     },
     {
       name: "render",
       type: "RenderProp<'div'>",
       default: "-",
-      description: "Polymorphic render prop. Pass a different element to change the rendered tag.",
+      description: "Polymorphic render prop. Pass a semantic element when the complete card is interactive.",
     },
     {
       name: "className",
@@ -77,10 +99,22 @@ import { Card } from "@patchui/react";
   ]}
 />
 
+### Structural parts
+
+<PropsTable
+  props={[
+    { name: "CardHeader", type: "div", default: "-", description: "Top-aligned header layout with consistent padding and space for a trailing action." },
+    { name: "CardTitle", type: "h3", default: "-", description: "Card heading typography. Use render to choose the correct semantic heading level." },
+    { name: "CardDescription", type: "p", default: "-", description: "Muted supporting copy below a title." },
+    { name: "CardContent", type: "div", default: "-", description: "Standard content padding." },
+    { name: "CardFooter", type: "div", default: "-", description: "Footer row with an optional divided top hairline." },
+  ]}
+/>
+
 <Callout title="Notes">
-- The three variants express surface intent: standard content, explicit boundary, or elevation.
-- `interactive` adds quiet state fills and compact keyboard focus without decorative border chrome.
-- Card does not own layout or dividers. Compose those with `flex`, `grid`, and border utilities at the call site.
-- Structure content directly inside Card with divs and text tokens (`text-title3`, `text-small`). Use `<Section>` when the content needs named structural header, content, or footer slots.
-- **Migration from prior API:** `flat` becomes `surface`, `hoverable` becomes `interactive`, and layout or divider props move to caller composition.
+- `outlined` is the default because application cards usually benefit from a clear object boundary.
+- Structural parts are independent render-prop primitives. They share no context and can be omitted or reordered.
+- `actionable` is visual behavior, not semantics. Pair it with `render={<Link />}` or `render={<button />}`.
+- `selected` does not emit `aria-selected`. Add the ARIA state required by the surrounding listbox, grid, or selection control.
+- Use Section when content is primarily a labeled panel or collection of divided rows.
 </Callout>
