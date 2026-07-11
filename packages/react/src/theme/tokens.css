@@ -117,19 +117,16 @@
   --error-soft-bg:   #FEE2E2;
   --error-soft-fg:   #7F1D1D;
 
-  /* Focus. 2px ring offset 2px outside the element border. The color
-     reads --primary so the ring is monochrome ink by default and picks
-     up a consumer's brand color for free when they override --primary
-     -- every focused primitive gets a brand-colored ring without any
-     callsite edits. The 2px + 2px pair sits clearly outside the
-     component border rather than merging into it. */
-  --focus-ring-color:  var(--primary);
+  /* Focus is semantic muted gray, independent from action color.
+     Consumer brand overrides to --primary do not recolor accessibility
+     focus. The 2px + 2px pair sits clearly outside the component border. */
+  --focus-ring-color:  var(--ink-muted);
   --focus-ring-width:  2px;
   --focus-ring-offset: 2px;
 
   /* Focus halo retained for bordered composite controls such as Select
      and Combobox until the form-control family migration. */
-  --focus-halo: 0 0 0 3px color-mix(in oklab, var(--primary) 18%, transparent);
+  --focus-halo: 0 0 0 3px color-mix(in oklab, var(--focus-ring-color) 18%, transparent);
 
   /* Overlay scrim (dialog / drawer backdrop). */
   --scrim: rgba(0, 0, 0, 0.45);
@@ -272,8 +269,8 @@
   --error-soft-bg:   #3B0F0F;
   --error-soft-fg:   #FCA5A5;
 
-  /* --focus-ring-color inherits var(--primary), which resolves to the
-     dark-mode ink automatically -- no explicit dark-mode override
+  /* --focus-ring-color inherits var(--ink-muted), which resolves to the
+     dark-mode neutral automatically -- no explicit dark-mode override
      needed. */
 
   /* Shadows deepen to compensate for reduced contrast on the near-black

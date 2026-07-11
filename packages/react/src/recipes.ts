@@ -1,11 +1,15 @@
 // Shared class recipes composed via cn() from ../utils.
 
-/** 1px focus outline via --focus-ring-color / --focus-ring-offset. */
+/** Focus outline via --focus-ring-color / --focus-ring-width / --focus-ring-offset. */
 export const focusRing =
   "outline-none focus-visible:outline " +
   "focus-visible:outline-[length:var(--focus-ring-width)] " +
   "focus-visible:outline-[var(--focus-ring-color)] " +
   "focus-visible:outline-offset-[var(--focus-ring-offset)]";
+
+/** Compact keyboard-focus indicator for non-editable controls. */
+export const selectionFocus =
+  "focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]";
 
 /** Control heights + padding + icon gap + text for sm/md/lg. */
 export const controlSize: Record<"sm" | "md" | "lg", string> = {
@@ -54,12 +58,17 @@ export const iconMutedSolid =
 export const popupSurface =
   "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu outline-none focus:outline-none";
 
+/** Held state shared by triggers while their popup is open. */
+export const popupTriggerOpen = "data-[popup-open]:bg-fill-2";
+
 /** Interactive row inside a popup list.
  *  Usage: cn(itemRow.base, density === "compact" ? itemRow.compact : itemRow.comfortable, iconMuted, ...) */
 export const itemRow = {
   base:
     "flex items-center cursor-default select-none rounded-[var(--radius-6)] text-ink outline-none " +
     "data-[active]:bg-layer-hover data-highlighted:bg-layer-hover " +
+    "data-[selected]:bg-layer-selected data-[checked]:bg-layer-selected aria-selected:bg-layer-selected " +
+    "data-highlighted:data-[selected]:bg-layer-selected data-highlighted:data-[checked]:bg-layer-selected data-highlighted:aria-selected:bg-layer-selected " +
     "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
   compact: "min-h-7 px-2 py-1.5 text-small",
   comfortable: "min-h-9 px-2.5 py-2 text-small",

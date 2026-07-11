@@ -144,4 +144,5 @@ import { Field, FieldError, FieldLabel, Select, SelectItem, SelectGroup, SelectG
 - **Accessibility:** Base UI Select ships proper roving tabindex, ARIA, and type-ahead out of the box.
 - **Form integration:** Pass `name` and the selected value posts as a hidden input. `required` blocks submission when empty.
 - **Field composition:** Field owns the label, description, and error message. Pass `invalid` when validation fails.
+- **State consistency:** Keyboard focus and the open trigger use the shared stronger fill without an input-style ring. The highlighted option is subtle; the selected option keeps the stronger selected fill.
 </Callout>

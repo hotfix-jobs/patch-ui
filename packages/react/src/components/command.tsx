@@ -145,6 +145,7 @@ export function CommandItem({
   return (
     <AutocompletePrimitive.Item
       data-slot="command-item"
+      data-selected={selected ? "" : undefined}
       className={cn(
         itemRow.base,
         "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",

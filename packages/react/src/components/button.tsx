@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Spinner } from "./spinner";
 import type * as React from "react";
 import { cn } from "../utils";
-import { disabled, colorTransition, iconMuted, iconMutedSolid } from "../recipes";
+import { disabled, colorTransition, iconMuted, iconMutedSolid, popupTriggerOpen, selectionFocus } from "../recipes";
 export const buttonVariants = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",
@@ -30,17 +30,17 @@ export const buttonVariants = cva(
       },
       variant: {
         primary:
-          "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover active:bg-primary-active",
+          "bg-primary text-on-primary hover:bg-primary-hover focus-visible:bg-primary-hover focus-visible:shadow-[inset_0_-2px_0_var(--on-primary)] data-[popup-open]:bg-primary-hover active:bg-primary-active",
         secondary:
-          "bg-fill-1 text-ink hover:bg-fill-2 focus-visible:bg-fill-2 data-[popup-open]:bg-fill-2 active:bg-layer-selected",
+          cn("bg-fill-1 text-ink hover:bg-fill-2 focus-visible:bg-fill-2 active:bg-layer-selected", popupTriggerOpen, selectionFocus),
         soft:
-          "bg-primary-soft text-on-primary-soft hover:bg-primary-soft-hover focus-visible:bg-primary-soft-hover data-[popup-open]:bg-primary-soft-hover active:bg-primary-soft-active",
+          cn("bg-primary-soft text-on-primary-soft hover:bg-primary-soft-hover focus-visible:bg-primary-soft-hover data-[popup-open]:bg-primary-soft-hover active:bg-primary-soft-active", selectionFocus),
         tertiary:
-          "bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover data-[popup-open]:bg-hairline-strong active:bg-layer-selected",
+          cn("bg-transparent text-ink hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-selected", popupTriggerOpen, selectionFocus),
         warning:
-          "bg-warning text-warning-fg hover:bg-warning-hover focus-visible:bg-warning-hover active:bg-warning-active",
+          "bg-warning text-warning-fg hover:bg-warning-hover focus-visible:bg-warning-hover focus-visible:shadow-[inset_0_-2px_0_var(--warning-fg)] data-[popup-open]:bg-warning-hover active:bg-warning-active",
         destructive:
-          "bg-error text-error-fg hover:bg-error-hover focus-visible:bg-error-hover active:bg-error-active",
+          "bg-error text-error-fg hover:bg-error-hover focus-visible:bg-error-hover focus-visible:shadow-[inset_0_-2px_0_var(--error-fg)] data-[popup-open]:bg-error-hover active:bg-error-active",
       },
     },
   },

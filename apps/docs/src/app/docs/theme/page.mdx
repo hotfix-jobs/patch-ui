@@ -59,7 +59,7 @@ Rules of thumb:
 
 **Motion.** One easing (`--ease-standard`), two durations: `--duration-state` (75ms, for hover/active transitions) and `--duration-overlay` (150ms, for open/close). Under `prefers-reduced-motion: reduce`, both collapse to `0ms` automatically.
 
-**Focus.** A crisp 2px outline colored `--primary`, so it inherits any consumer brand override. The `focusRing` recipe offsets it 2px outside interactive controls. Filled Inputs draw the same solid outline directly at the control edge and return to `--layer-1` while focused.
+**Focus.** A crisp neutral-gray treatment colored by `--focus-ring-color`, which resolves to `--ink-muted` independently from `--primary` and the near-black/white `--ink`. Editable fields draw the solid outline directly at the control edge. Non-editable controls use a compact keyboard-focus indicator and stronger fill instead of the input-style ring.
 
 ## Customizing
 
@@ -70,8 +70,7 @@ Every token is a plain CSS variable. Override in your own CSS after importing th
 @import "tailwindcss";
 @import "./styles/patch-ui-tokens.css";
 
-/* Ship a lavender brand: every primary Button, active tab, focus
-   ring, and slider indicator picks it up automatically. */
+/* Ship a lavender brand for actions. Semantic focus stays monochrome. */
 :root {
   --primary: #8b5cf6;
   --on-primary: #ffffff;

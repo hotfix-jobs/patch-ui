@@ -295,6 +295,7 @@ export function MenuItem({
           />
         }
         data-slot="menu-item"
+        data-selected={selected ? "" : undefined}
         data-type={isError ? "error" : "default"}
         disabled={disabled}
         label={label}
@@ -310,6 +311,7 @@ export function MenuItem({
   return (
     <MenuPrimitive.Item
       data-slot="menu-item"
+      data-selected={selected ? "" : undefined}
       data-type={isError ? "error" : "default"}
       disabled={disabled}
       label={label}
@@ -354,6 +356,7 @@ export function MenuCheckboxItem({
       label={label}
       closeOnClick={false}
       data-slot="menu-checkbox-item"
+      data-selected={checked ? "" : undefined}
       className={cn(
         itemRow.base,
         "gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",

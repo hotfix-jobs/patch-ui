@@ -5,7 +5,7 @@ import { CaretDown, Check } from "@phosphor-icons/react/dist/ssr";
 import type * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
-import { itemRow, popupSurface } from "../recipes";
+import { itemRow, popupSurface, popupTriggerOpen, selectionFocus } from "../recipes";
 import {
   MOBILE_MEDIA_QUERY,
   useMediaQuery,
@@ -100,9 +100,11 @@ export function Select({
         "relative inline-flex w-full items-center overflow-hidden text-ink",
         !unstyled && "rounded-[var(--radius-8)]",
         !unstyled && [
-          "bg-fill-1 hover:bg-fill-2 focus-visible:bg-layer-1 data-[popup-open]:bg-hairline-strong",
-          "outline-none focus-visible:[outline-style:solid] focus-visible:outline-[length:var(--focus-ring-width)] focus-visible:outline-[var(--focus-ring-color)] focus-visible:outline-offset-0",
-          "transition-[color,background-color,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
+          "bg-fill-1 hover:bg-fill-2 focus-visible:bg-fill-2",
+          popupTriggerOpen,
+          selectionFocus,
+          "outline-none",
+          "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         ],
         "group-data-[invalid]/field:[outline-style:solid] group-data-[invalid]/field:outline-[length:1px] group-data-[invalid]/field:outline-error",
         "aria-invalid:[outline-style:solid] aria-invalid:outline-[length:1px] aria-invalid:outline-error",

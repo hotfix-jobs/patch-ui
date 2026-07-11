@@ -86,10 +86,9 @@ colors:
   success-active: "#115523"
   success-fg: "#FFFFFF"
 
-  # Focus. 2px ring, 2px offset outside the element border. Color reads
-  # {colors.primary} so the ring inherits any consumer brand override
-  # for free -- monochrome ink by default, brand-colored when swapped.
-  focus-ring: "{colors.primary}"
+  # Focus is semantic neutral gray and stays independent from brand or
+  # action-color overrides to primary.
+  focus-ring: "{colors.ink-muted}"
   focus-width: "2px"
   focus-offset: "2px"
 
@@ -292,8 +291,8 @@ components:
     padding: 24px
     shadow: shadow-modal
   # menu-popup uses the popupSurface recipe (rounded 12). Menu row uses
-  # itemRow with data-[active]:bg-layer-hover / data-highlighted:bg-layer-hover
-  # (alpha overlay, not solid fill-2) so highlights read on any rung.
+  # itemRow uses layer-hover for transient active/highlighted navigation
+  # and layer-selected for stored selected, checked, or aria-selected rows.
   menu-popup:
     backgroundColor: "{colors.layer-1}"
     borderColor: "{colors.hairline}"
@@ -375,7 +374,7 @@ Patch UI is a crisp-minimal React component library distributed copy-in through 
 
 Light `--base` is #f5f5f5 and `--layer-1` is white, so content cards read clearly without decorative borders. Dark `--base` is #101010 and `--layer-1` is #191919, preserving the same canvas-to-surface hierarchy. `--layer-2` groups or selects content. `--fill-1` and `--fill-2` provide the neutral control and metadata ramp. Hairlines remain alpha so necessary borders maintain consistent perceived weight across surfaces.
 
-The library ships **no chromatic brand hue**. `{colors.primary}` resolves to `{colors.ink}` (near-black in light, near-white in dark), and `{colors.on-primary}` resolves to `{colors.base}`. Consumers who want a lavender, cobalt, or any other accent redefine `--primary` and `--primary-hover` in a single downstream layer; every Button and focus-adjacent component inherits their brand for free. The semantic status roles (`{colors.error}`, `{colors.warning}`, `{colors.success}`) remain fixed hex, theme-invariant, and outside the brand system: their meaning is universal and shouldn't shift with a consumer's palette.
+The library ships **no chromatic brand hue**. `{colors.primary}` resolves to `{colors.ink}` (near-black in light, near-white in dark), and `{colors.on-primary}` resolves to `{colors.base}`. Consumers who want a lavender, cobalt, or any other accent redefine `--primary` and `--primary-hover` in a single downstream layer; action components inherit their brand while semantic focus remains monochrome. The semantic status roles (`{colors.error}`, `{colors.warning}`, `{colors.success}`) remain fixed hex, theme-invariant, and outside the brand system: their meaning is universal and shouldn't shift with a consumer's palette.
 
 Type is Inter Variable for everything that isn't code, JetBrains Mono for code. Size and weight are separate axes: eight size tokens (`micro`, `mini`, `small`, `regular`, `large`, `title3`, `title2`, `title1`) composed at the call site with five weight tokens (`light` 300, `normal` 450, `medium` 500, `semibold` 600, `bold` 700). Body defaults to `normal` (450, only rendered at 450 by the variable font — non-variable Inter rounds to 400 or 500). Headings default to `medium` (500) via element defaults. There is no separate Inter Display cut and no letter-spacing tokens.
 
@@ -453,7 +452,7 @@ The library ships no chromatic brand hue. `{colors.primary}` resolves to `{color
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `{colors.primary}` | `#202020` (inherits `--ink`) | `#eeeeee` (inherits `--ink`) | Primary button fill, focus-ring color, slider indicator + thumb, switch on-track |
+| `{colors.primary}` | `#202020` (inherits `--ink`) | `#eeeeee` (inherits `--ink`) | Primary button fill, slider indicator + thumb, switch on-track |
 | `{colors.on-primary}` | `#f5f5f5` (inherits `--base`) | `#101010` (inherits `--base`) | Text on primary fill, switch thumb (contrast) |
 | `{colors.primary-hover}` | `color-mix(primary, base 15%)` | same | Hovered primary button |
 | `{colors.primary-active}` | `color-mix(primary, base 25%)` | same | Pressed primary button |
@@ -464,7 +463,7 @@ The library ships no chromatic brand hue. `{colors.primary}` resolves to `{color
 
 `primary-hover` and `primary-active` are computed via `color-mix` so a consumer's `--primary` override on a downstream layer automatically produces matching hover and active steps. Mixing toward `--base` gives a "subtle move toward the background" that works in both themes: it lightens the near-black primary in light mode and darkens the near-white primary in dark.
 
-**Consumer override.** A downstream project that wants a lavender brand redefines `--primary`, `--on-primary`, `--primary-hover`, and `--primary-active` in a single CSS layer after the token import. Every Button, focus ring on `data-brand-scope`, and link that inherits `--primary` picks up the new brand without any callsite edits.
+**Consumer override.** A downstream project that wants a lavender brand redefines `--primary`, `--on-primary`, `--primary-hover`, and `--primary-active` in a single CSS layer after the token import. Buttons and links pick up the brand without recoloring the semantic monochrome focus treatment.
 
 ### Semantic Status
 
@@ -480,13 +479,13 @@ Hover and active steps (`error-hover`, `success-active`, etc.) exist for each ro
 
 ### Focus
 
-Focus is a single 2px outline offset by 2px outside the element border. The color reads `{colors.primary}` so it inherits any consumer brand override for free: monochrome ink by default, brand-colored when swapped. Border stays at rest on focus; the ring alone signals it.
+Focus is semantic neutral gray, independent from `{colors.primary}` and the near-black/white `{colors.ink}`. Consumer action-color overrides do not recolor accessibility focus.
 
-Inputs are the deliberate exception to the offset: the filled control draws the same solid primary outline directly at its edge and returns from `fill-1` to `layer-1` on focus.
+Editable fields draw the solid focus outline directly at their edge and return from `fill-1` to `layer-1` on focus. Non-editable controls use a compact monochrome indicator rather than borrowing the editable-field ring.
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `{colors.focus-ring-color}` | `{colors.primary}` | `{colors.primary}` | Outline color on all focus-visible states |
+| `{colors.focus-ring-color}` | `{colors.ink-muted}` | `{colors.ink-muted}` | Semantic neutral focus indicator |
 | `{colors.focus-ring-width}` | `2px` | `2px` | Outline width |
 | `{colors.focus-ring-offset}` | `2px` | `2px` | Outline offset |
 
@@ -622,7 +621,7 @@ The canvas is the whitespace. Sections are separated by 96px of canvas between b
 | 3 (popup) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-menu` | Menu popup, Combobox, Select popup, Command palette, Popover |
 | 4 (tooltip) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-tooltip` | Tooltip chip |
 | 5 (modal) | `{colors.layer-1}` bg + 1px `{colors.hairline}` + `shadow-modal` | Dialog, sheet, toast |
-| 6 (focus) | 2px `{colors.primary}` outline | Focused controls. Inputs use zero offset; other controls use the shared outside offset. |
+| 6 (focus) | 2px `{colors.focus-ring-color}` outline | Focused editable controls and compact keyboard-focus indicators. |
 
 **Card treatment is intent-based.** `surface` is the default content surface, `outlined` adds an explicit structural boundary, and `elevated` adds `shadow-card`. The caller owns layout and dividers.
 
@@ -729,17 +728,15 @@ Each component below is a single paragraph plus a token map. Full API and source
 **`input`**: Single-line text input.
 - Background `{colors.fill-1}`, no border, text `{colors.ink}`, placeholder `{colors.ink-subtle}`, type `{typography.small}`, radius `--radius-8`, padding 8px 12px, height 32px.
 - Hover: background `{colors.fill-2}`.
-- Focused: background `{colors.layer-1}` with a 2px `{colors.primary}` outline at zero offset.
+- Focused: background `{colors.layer-1}` with a 2px `{colors.focus-ring-color}` outline at zero offset.
 - Invalid: 1px `{colors.error}` outline supplied by Field state or `aria-invalid`.
 - Sizes: sm (24px height), md (32px, default), lg (40px height).
 
 **`textarea`**: Multi-line. Same tokens as `input`, radius `--radius-8`, min-height 96px, resize vertical only.
 
-**`select-trigger`**: Trigger button for a Select. Same specs as `input`, radius `--radius-8`; adds a 16px chevron icon in `ink-subtle` at the right edge.
+**`select-trigger`**: Filled, borderless trigger at radius `--radius-8`; adds a 16px chevron at the right edge. Keyboard focus and open use `fill-2`; keyboard focus adds the compact monochrome inset indicator rather than the editable-field ring.
 
-**`combobox-input`**: Trigger for a Combobox. Ships two visual treatments via the `variant` prop:
-- `control` (default): bordered layer-1 chrome that matches `button-secondary`. `border border-hairline bg-layer-1`, hover to `hairline-strong` + `layer-2`, focus lifts the border to `--primary`. Radius `--radius-8`.
-- `soft`: quieter fill-only treatment for dense embedded pickers. `bg-fill-1` at rest, `bg-fill-2` on hover / focus, no border.
+**`combobox-input`**: Editable filled, borderless control at radius `--radius-8`. Default uses `fill-1` at rest and `fill-2` on hover/open, with the crisp neutral editable-field outline on focus. `unstyled` removes chrome for composite surfaces.
 
 **`checkbox`**: 16px square, radius `--radius-4`, border 1px `{colors.hairline-strong}`. Checked: background `{colors.primary}`, checkmark `{colors.on-primary}`.
 
@@ -783,7 +780,8 @@ Each component below is a single paragraph plus a token map. Full API and source
 
 **`menu-popup`** / **`combobox-popup`** / **`select-popup`** / **`popover`** / **`command-palette`**: Shared via the `popupSurface` recipe.
 - Recipe: `rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu`.
-- Menu / list row (`itemRow.base`): `rounded-[var(--radius-6)]`, `data-[active]:bg-layer-hover data-highlighted:bg-layer-hover` (alpha overlay, was solid `bg-fill-2`); highlights read on any rung underneath.
+- Non-editable triggers use `bg-fill-2` for keyboard focus and while open, without the editable-field outline. Input, Textarea, and Combobox input retain the crisp neutral focus outline.
+- Menu / list row (`itemRow.base`): `rounded-[var(--radius-6)]`; active or highlighted navigation uses `bg-layer-hover`, while selected, checked, or `aria-selected` rows use `bg-layer-selected`, including when highlighted.
 - Menu, Combobox, and Popover all wrap the mobile centered panel in `<RemoveScroll>` (react-remove-scroll) to lock body scroll while the sheet-like mobile popup is open. Popover gained a full mobile-centered branch this cycle (Backdrop + centered popup at `w-[calc(100vw-1rem)]` and `max-h-[calc(100dvh-2rem)]`).
 
 **`tooltip`**: Compact tooltip. Uses the same lifted-chrome recipe as menus (no inverted `bg-ink` chip).
@@ -923,7 +921,7 @@ Each component page opens with a live demo (layer-1 panel, 32px padding), follow
 - Let element defaults do the weight work: `<body>` gets `normal` (450), `<h1>`–`<h6>` get `medium` (500). Only add a `font-*` utility when the element defaults don't fit the role.
 - Compose size and weight at the call site (`text-small font-medium`); never grow a new compound recipe.
 - Reserve mono for genuine code contexts.
-- Compose focus with the `focusRing` recipe. Never reinvent a focus ring per component.
+- Compose editable or outside-outline focus with `focusRing`; compose compact non-editable focus with `selectionFocus`. Never reinvent focus presentation per component.
 
 ### Don't
 
@@ -981,7 +979,7 @@ Each component page opens with a live demo (layer-1 panel, 32px padding), follow
 6. Add new component variants as separate entries in the `components:` frontmatter map. Never overload an existing entry with a variant switch.
 7. Treat the monochrome primary as a first-class principle. New components that need a fill default to `{colors.primary}`; new components that need chromatic emphasis use a semantic status role or defer the choice to the consumer.
 8. When adding a new size token to the type scale, verify it's not already covered by an existing size within 2px. The scale is intentionally sparse.
-9. Every interactive primitive gets a `focus-visible` state through the `focusRing` recipe. Never bypass it.
+9. Every interactive primitive gets a visible `focus-visible` state through `focusRing` or `selectionFocus`. Never bypass both.
 10. Every animated property names itself; `transition-all` is banned.
 
 ## Known Gaps
