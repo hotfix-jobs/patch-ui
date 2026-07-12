@@ -26,6 +26,14 @@ export interface SearchSuggestion {
   icon?: React.ReactNode;
   suffix?: React.ReactNode;
   disabled?: boolean;
+  /**
+   * When set, the row renders a trailing remove control for dismissable
+   * entries. Rendered as a sibling of the option button, so the option
+   * stays a single valid control, and always visible for touch.
+   */
+  onRemove?: () => void;
+  /** Accessible label for the remove control, e.g. `Remove "<entry>"`. */
+  removeLabel?: string;
 }
 
 export interface SearchSuggestionSection {
@@ -357,7 +365,8 @@ function SearchSuggestionsResults({
                         0,
                       ) + suggestionIndex;
                   const active = index === activeIndex;
-                  return (
+                  const onRemove = suggestion.onRemove;
+                  const option = (
                     <button
                       key={suggestion.id}
                       id={`${generatedId}-option-${index}`}
@@ -370,6 +379,7 @@ function SearchSuggestionsResults({
                         itemRow.base,
                         itemRow.comfortable,
                         "w-full gap-3 text-start",
+                        onRemove && "pe-11",
                       )}
                       onMouseEnter={() => onActiveIndexChange(index)}
                       onMouseDown={(event) => event.preventDefault()}
@@ -396,6 +406,29 @@ function SearchSuggestionsResults({
                         </span>
                       )}
                     </button>
+                  );
+
+                  if (!onRemove) return option;
+
+                  return (
+                    <div key={suggestion.id} className="relative">
+                      {option}
+                      <button
+                        type="button"
+                        aria-label={suggestion.removeLabel ?? "Remove"}
+                        className={cn(
+                          "absolute end-1.5 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-[var(--radius-8)] text-ink-tertiary hover:bg-layer-hover hover:text-ink active:bg-layer-hover",
+                          selectionFocus,
+                        )}
+                        onMouseDown={(event) => event.stopPropagation()}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          onRemove();
+                        }}
+                      >
+                        <X aria-hidden className="size-3.5" />
+                      </button>
+                    </div>
                   );
                 })}
               </div>

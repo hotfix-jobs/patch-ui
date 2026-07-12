@@ -51,9 +51,9 @@ export default function App() {
 
 ## Components
 
-Accordion, Avatar, Badge, Breadcrumb, Button, Calendar, Card, Checkbox, Combobox, Command, EmptyState, Field, Form, Input, Label, Menu, Modal, NavigationMenu, Pagination, Progress, Radio, Scroller, SearchInput, Section, SegmentedToggle, Select, Separator, Sheet, Sidebar, Skeleton, Slider, Spinner, Switch, Table, Tabs, Textarea, ThemeToggle, TimeAgo, Toast, Toggle, Tooltip.
+Accordion, Avatar, Badge, Breadcrumb, Button, Calendar, Card, Checkbox, Combobox, Command, EmptyState, Field, Form, Input, Kbd, Label, Menu, Modal, NavigationMenu, Pagination, Popover, Progress, Radio, Scroller, Section, Select, Separator, Sheet, Sidebar, Skeleton, Slider, Spinner, Switch, Table, Tabs, Textarea, ThemeToggle, TimeAgo, Toast, Toggle, ToggleGroup, Tooltip.
 
-**Blocks:** AppHeader, Dropzone.
+**Blocks:** AppHeader, Dropzone, FilterToolbar, SearchSuggestions.
 
 Full API + live demos: [ui.hotfix.jobs/docs](https://ui.hotfix.jobs/docs).
 
@@ -63,15 +63,15 @@ Tokens live in `src/theme/tokens.css` as plain CSS custom properties. Override a
 
 | Group | Tokens |
 |-------|--------|
-| Base | `--base` (page background — everything sits on this) |
-| Layers (lifted panels + popups + chrome) | `--layer-1`, `--layer-2` |
-| Fills (tinted chip fills) | `--fill-1`, `--fill-2` |
+| Base | `--base` (page background; everything sits on this) |
+| Layers (content organization and floating surfaces) | `--layer-1`, `--layer-2` |
+| Fills (neutral controls and metadata) | `--fill-1`, `--fill-2` |
 | Interaction overlay | `--layer-hover` |
 | Ink (text) | `--ink`, `--ink-muted`, `--ink-subtle`, `--ink-tertiary` |
 | Hairlines (all alpha, Radix grayA 3/6/7/8) | `--hairline-soft` (whisper edge for elevated Card), `--hairline` (default), `--hairline-strong`, `--hairline-tertiary` |
-| Primary (monochrome) | `--primary`, `--on-primary`, `--primary-hover`, `--primary-active` |
+| Primary (monochrome) | `--primary`, `--on-primary`, `--primary-hover`, `--primary-active`, `--primary-soft`, `--primary-soft-hover`, `--primary-soft-active`, `--on-primary-soft` |
 | Semantic status | `--error*`, `--warning*`, `--success*` (each with `-hover`, `-active`, `-fg`, plus `-soft-bg` / `-soft-fg` theme-adaptive pair for the soft Badge variant) |
-| Focus | `--focus-ring-color` (defaults to `var(--primary)`), `--focus-ring-width`, `--focus-ring-offset` |
+| Focus | `--focus-ring-color` (defaults to `var(--ink-muted)`), `--focus-ring-width`, `--focus-ring-offset`, `--focus-halo` |
 | Radius | `--radius-4/6/8/10/12/16/full` |
 | Shadow | `--shadow-card` (soft two-stack in light), `--shadow-menu`, `--shadow-modal`, `--shadow-tooltip` |
 | Motion | `--duration-state`, `--duration-overlay`, `--ease-standard` |
