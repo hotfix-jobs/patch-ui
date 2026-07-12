@@ -1,118 +1,82 @@
 import { TooltipDemo } from "./tooltip-demo";
-
+import { TooltipPlacementDemo } from "./tooltip-placement-demo";
+import { TooltipToolbarDemo } from "./tooltip-toolbar-demo";
 
 export const metadata = { title: "Tooltip" };
 
-# Tooltip
+export const usageCode = `<TooltipProvider>
+  <Tooltip content="Creates a new project">
+    <Button variant="secondary">New project</Button>
+  </Tooltip>
+</TooltipProvider>`;
 
-A popup that displays additional information when hovering over an element. Supports configurable placement and offset.
+<PageHeader
+  title="Tooltip"
+  description="A compact popup that provides a short explanation on hover or keyboard focus."
+/>
 
-<Install name="tooltip" />
+Use Tooltip to clarify an unfamiliar icon, abbreviation, or compact control. Keep essential instructions visible in the interface instead of hiding them in a tooltip.
 
-<ComponentPreview label="Tooltip Examples">
+<ComponentPreview label="Basic tooltip" sourcePath="src/app/docs/components/tooltip/tooltip-demo.tsx">
   <TooltipDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="tooltip" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/tooltip.json). The canonical implementation lives in [packages/react/src/components/tooltip.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/tooltip.tsx).
+
 ## Usage
 
-```tsx
-import { Button, Tooltip, TooltipProvider } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Wrap tooltips in a provider for shared delay behavior
-<TooltipProvider>
-  {/* Basic tooltip */}
-  <Tooltip content="Helpful information">
-    <Button>Hover me</Button>
-  </Tooltip>
+Wrap related tooltips in Tooltip Provider to establish consistent timing. Tooltip uses its child as the interactive trigger, so pass one focusable element.
 
-  {/* Custom side */}
-  <Tooltip content="Save your changes" side="bottom">
-    <Button>Save</Button>
-  </Tooltip>
-</TooltipProvider>
+## Composition
+
+```text
+TooltipProvider
+└── Tooltip
+    └── Trigger element
 ```
 
-## Props
+## Examples
 
-### Tooltip
+### Placement
 
-<PropsTable
-  props={[
-    {
-      name: "content",
-      type: "ReactNode",
-      default: "-",
-      description: "The text or content to display in the tooltip.",
-    },
-    {
-      name: "children",
-      type: "ReactElement",
-      default: "-",
-      description: "The trigger element that activates the tooltip on hover.",
-    },
-    {
-      name: "side",
-      type: '"top" | "bottom" | "left" | "right"',
-      default: '"top"',
-      description: "Which side of the trigger the tooltip appears on.",
-    },
-    {
-      name: "sideOffset",
-      type: "number",
-      default: "4",
-      description: "Distance in pixels between the tooltip and trigger.",
-    },
-    {
-      name: "delay",
-      type: "number",
-      default: "150",
-      description: "Milliseconds to wait before opening. Small default keeps a sweeping mouse from flickering tooltips open.",
-    },
-    {
-      name: "closeDelay",
-      type: "number",
-      default: "0",
-      description: "Milliseconds to wait before closing.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes applied to the tooltip popup.",
-    },
-  ]}
-/>
+Tooltip defaults to the top and can be placed on any side of its trigger. The popup adjusts when the requested side lacks room.
 
-### TooltipProvider
+<ComponentPreview label="Tooltip placement" sourcePath="src/app/docs/components/tooltip/tooltip-placement-demo.tsx">
+  <TooltipPlacementDemo />
+</ComponentPreview>
 
-<PropsTable
-  props={[
-    {
-      name: "delay",
-      type: "number",
-      default: "150",
-      description: "Milliseconds to wait before opening a tooltip.",
-    },
-    {
-      name: "closeDelay",
-      type: "number",
-      default: "0",
-      description: "Milliseconds to wait before closing a tooltip.",
-    },
-    {
-      name: "timeout",
-      type: "number",
-      default: "500",
-      description: "If a tooltip was recently closed, the next one opens instantly within this timeout (ms).",
-    },
-  ]}
-/>
+### Icon toolbar
 
+Tooltips can reinforce accessible names for compact icon controls, but the buttons still need their own labels.
 
-<Callout title="Notes">
-- Wrap a rail of tooltips in `<TooltipProvider>` so moving between adjacent triggers opens each one without the delay firing again. Tune the group delay on the provider.
-- Tooltips open on hover *and* keyboard focus so keyboard users don't miss the hint. Any focusable trigger (Button, link, icon-only button) works.
-- The popup renders through a portal so it's not clipped by nearby `overflow-hidden` containers.
-- The compact radius-6 surface and tight padding keep it visually distinct from Popover and Modal.
-- Keep the content short, a sentence at most. If the tip needs a paragraph, promote it to a `Modal` or `Sheet`.
-</Callout>
+<ComponentPreview label="Tooltips in a toolbar" sourcePath="src/app/docs/components/tooltip/tooltip-toolbar-demo.tsx">
+  <TooltipToolbarDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "content", type: "ReactNode", description: "Provides the short explanatory content." },
+  { name: "side", type: '"top" | "right" | "bottom" | "left"', default: '"top"', description: "Requests a side of the trigger for placement." },
+  { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "Aligns the popup along the selected side." },
+  { name: "sideOffset", type: "number", default: "4", description: "Sets the gap between trigger and popup in pixels." },
+  { name: "delay / closeDelay", type: "number / number", default: "150 / 0", description: "Controls the opening and closing delay in milliseconds." },
+  { name: "TooltipProvider.timeout", type: "number", default: "500", description: "Keeps nearby tooltip interactions within the shared timing window." },
+]} />
+
+Use the exported Tooltip primitives only when the compact `content` API cannot express the required trigger or controlled behavior.
+
+## Accessibility
+
+- Tooltip opens for both pointer hover and keyboard focus.
+- The trigger must remain focusable without relying on Tooltip to add semantics.
+- Icon-only buttons need an accessible name even when the tooltip repeats that text.
+- Keep content to a short phrase or sentence. Use Popover for interactive or longer content.
+
+<PageNavigation />

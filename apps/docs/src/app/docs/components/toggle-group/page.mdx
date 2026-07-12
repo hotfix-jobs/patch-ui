@@ -1,116 +1,89 @@
 import { ToggleGroupDemo } from "./toggle-group-demo";
+import { ToggleGroupLabelsDemo } from "./toggle-group-labels-demo";
+import { ToggleGroupSizesDemo } from "./toggle-group-sizes-demo";
 
-export const metadata = { title: "ToggleGroup" };
+export const metadata = { title: "Toggle Group" };
 
-# ToggleGroup
-
-A compact filled selection group. Use for view-mode toggles (grid / list), sort direction, density, or any small set of mutually-exclusive options.
-
-<Install name="toggle-group" />
-
-<ComponentPreview label="ToggleGroup">
-  <ToggleGroupDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@patchui/react";
-import { SquaresFour, Rows } from "@phosphor-icons/react/dist/ssr";
-
-// Icon-only view toggle
-<ToggleGroup value={view} onValueChange={setView} aria-label="View">
+export const usageCode = `<ToggleGroup value={view} onValueChange={setView} aria-label="Project view">
   <ToggleGroupItem value="grid" aria-label="Grid view">
     <SquaresFour />
   </ToggleGroupItem>
   <ToggleGroupItem value="list" aria-label="List view">
     <Rows />
   </ToggleGroupItem>
-</ToggleGroup>
+</ToggleGroup>`;
 
-// Text labels
-<ToggleGroup value={sort} onValueChange={setSort} aria-label="Sort">
-  <ToggleGroupItem value="newest">Newest</ToggleGroupItem>
-  <ToggleGroupItem value="oldest">Oldest</ToggleGroupItem>
-</ToggleGroup>
+<PageHeader
+  title="Toggle Group"
+  description="A compact single-selection control for switching between closely related options."
+/>
 
-// Small size for tight chrome
-<ToggleGroup size="sm" value={view} onValueChange={setView} aria-label="View">
-  ...
-</ToggleGroup>
+Use Toggle Group for two or three mutually exclusive choices such as grid or list view, sort direction, or content density. Use Tabs when each choice reveals a distinct panel.
+
+<ComponentPreview label="Project view" sourcePath="src/app/docs/components/toggle-group/toggle-group-demo.tsx">
+  <ToggleGroupDemo />
+</ComponentPreview>
+
+## Installation
+
+<Install name="toggle-group" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/toggle-group.json). The canonical implementation lives in [packages/react/src/components/toggle-group.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/toggle-group.tsx).
+
+## Usage
+
+<Usage code={usageCode} />
+
+The group accepts a single string value. Each item needs a unique value, and the group needs an accessible name that describes what the selection controls.
+
+## Composition
+
+```text
+ToggleGroup
+└── ToggleGroupItem
 ```
 
-## Props
+## Examples
 
-### ToggleGroup
+### Text labels
 
-<PropsTable
-  props={[
-    {
-      name: "value",
-      type: "string",
-      default: "-",
-      description: "Selected value (controlled).",
-    },
-    {
-      name: "defaultValue",
-      type: "string",
-      default: "-",
-      description: "Initial value (uncontrolled).",
-    },
-    {
-      name: "onValueChange",
-      type: "(value: string) => void",
-      default: "-",
-      description: "Called when the selection changes.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Control density. sm = 24px, md = 32px, lg = 40px.",
-    },
-    {
-      name: "aria-label",
-      type: "string",
-      default: "-",
-      description: "Required for accessibility: describes what this group controls.",
-    },
-  ]}
-/>
+Prefer visible text when the choices cannot be represented by familiar icons.
 
-### ToggleGroupItem
+<ComponentPreview label="Sort order" sourcePath="src/app/docs/components/toggle-group/toggle-group-labels-demo.tsx">
+  <ToggleGroupLabelsDemo />
+</ComponentPreview>
 
-<PropsTable
-  props={[
-    {
-      name: "value",
-      type: "string",
-      default: "-",
-      description: "Identifier matched against the parent's value.",
-    },
-    {
-      name: "aria-label",
-      type: "string",
-      default: "-",
-      description: "Required for icon-only items so screen readers can announce them.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the option.",
-    },
-  ]}
-/>
+### Sizes
 
-<Callout title="Notes">
-- Reach for ToggleGroup when 2 to 3 options are mutually exclusive and different views of the same surface: `Grid` / `List`, `Source` / `Output`, alignment picker. Past 3 options, use `Tabs` or a `Select`.
-- Icon-only items need their own `aria-label`: the icon alone doesn't announce the choice.
-- Base UI ToggleGroup ships proper keyboard navigation (arrows / Home / End) and roving tabindex out of the box.
-- For multi-select behavior, reach for a checkbox group instead — ToggleGroup here is intentionally single-select.
-- The group uses a borderless `fill-1` container. Items use the shared subtle hover and stronger selected overlays.
-</Callout>
+Match the group to the height and density of adjacent controls.
+
+<ComponentPreview label="Toggle group sizes" sourcePath="src/app/docs/components/toggle-group/toggle-group-sizes-demo.tsx">
+  <ToggleGroupSizesDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "value / onValueChange", type: "string / (value: string) => void", description: "Controls the selected item." },
+  { name: "defaultValue", type: "string", description: "Sets the initial uncontrolled selection." },
+  { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Matches the shared 24, 32, or 40 pixel control height." },
+  { name: "ToggleGroupItem.value", type: "string", description: "Identifies an item within the group." },
+]} />
+
+Toggle Group intentionally supports one selected value. Use Checkbox controls when people may select several independent options.
+
+## Keyboard behavior
+
+- Tab moves focus into the group.
+- Arrow keys move between enabled items.
+- Home and End move to the first and last enabled items.
+- Space activates the focused item.
+
+## Accessibility
+
+- Give the group an `aria-label` or `aria-labelledby` that names the choice.
+- Give every icon-only item its own `aria-label`.
+- Keep the selected option visually distinguishable without relying on icon color alone.
+- Avoid using more than a few choices in this compact control.
+
+<PageNavigation />

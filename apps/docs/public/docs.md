@@ -1,0 +1,17 @@
+# Patch UI
+
+A copy-in React component library with accessible Base UI primitives and a focused Tailwind CSS token system.
+
+Patch UI gives you cohesive application components without adding a library runtime to maintain. Use the standard shadcn registry to copy source directly into your project, then adapt it as your product evolves.
+
+## How it works
+
+The registry copies Button, its shared recipes, utilities, dependencies, and design tokens into your repository. There is no `@patchui/react` package in the consuming application.
+
+## What you own
+
+* **The source.** Components become ordinary files in your repository. Change their behavior and interface when your product needs it.
+* **The design system.** Shared tokens keep copied components visually aligned while remaining easy to override.
+* **The update decision.** Re-run the registry command when you want upstream changes, then review the resulting diff alongside local customizations.
+
+## Start here

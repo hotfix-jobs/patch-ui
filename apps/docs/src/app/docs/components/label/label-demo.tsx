@@ -1,36 +1,16 @@
 "use client";
 
-import { Checkbox, Input, Label, Switch } from "@patchui/react";
+import { Input, Label } from "@patchui/react";
 
 export function LabelDemo() {
   return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <p className="mb-3 text-mini text-ink-muted">With Input (standalone)</p>
-        <div className="flex flex-col gap-1.5 max-w-xs">
-          <Label htmlFor="demo-email">Email</Label>
-          <Input id="demo-email" type="email" placeholder="you@example.com" />
-        </div>
-      </div>
-
-      <div>
-        <p className="mb-3 text-mini text-ink-muted">With Switch / Checkbox (wrapping)</p>
-        <div className="flex flex-col gap-3">
-          <Label>
-            <Switch />
-            <span>Receive weekly digest</span>
-          </Label>
-          <Label>
-            <Checkbox />
-            <span>I agree to the terms</span>
-          </Label>
-        </div>
-      </div>
-
-      <div>
-        <p className="mb-3 text-mini text-ink-muted">Standalone</p>
-        <Label>Email address</Label>
-      </div>
+    <div className="flex w-full max-w-xs flex-col gap-1.5">
+      <Label htmlFor="label-email-preview">Email</Label>
+      <Input
+        id="label-email-preview"
+        type="email"
+        placeholder="ada@example.com"
+      />
     </div>
   );
 }

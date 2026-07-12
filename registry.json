@@ -522,44 +522,6 @@
       ]
     },
     {
-      "name": "search-input",
-      "type": "registry:ui",
-      "title": "Search Input",
-      "dependencies": [
-        "@phosphor-icons/react"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/input.json",
-        "https://ui.hotfix.jobs/r/tokens.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/search-input.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/search-input.tsx"
-        }
-      ]
-    },
-    {
-      "name": "section-label",
-      "type": "registry:ui",
-      "title": "Section Label",
-      "dependencies": [
-        "@base-ui/react"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/section-label.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/section-label.tsx"
-        }
-      ]
-    },
-    {
       "name": "section",
       "type": "registry:ui",
       "title": "Section",
@@ -1038,10 +1000,8 @@
         "https://ui.hotfix.jobs/r/progress.json",
         "https://ui.hotfix.jobs/r/radio.json",
         "https://ui.hotfix.jobs/r/scroller.json",
-        "https://ui.hotfix.jobs/r/search-input.json",
         "https://ui.hotfix.jobs/r/search-suggestions.json",
         "https://ui.hotfix.jobs/r/section.json",
-        "https://ui.hotfix.jobs/r/section-label.json",
         "https://ui.hotfix.jobs/r/select.json",
         "https://ui.hotfix.jobs/r/separator.json",
         "https://ui.hotfix.jobs/r/sheet.json",

@@ -1,147 +1,86 @@
 import { AccordionDemo } from "./accordion-demo";
-
+import { AccordionVariantsDemo } from "./accordion-variants-demo";
+import { AccordionCaretDemo } from "./accordion-caret-demo";
 
 export const metadata = { title: "Accordion" };
 
-# Accordion
+export const usageCode = `<Accordion defaultValue={["item-1"]}>
+  <AccordionItem value="item-1">
+    <AccordionTrigger>Can multiple sections be open?</AccordionTrigger>
+    <AccordionPanel>
+      <p className="pb-3 text-small text-ink-muted">
+        Yes. Accordion allows multiple open items by default.
+      </p>
+    </AccordionPanel>
+  </AccordionItem>
+</Accordion>`;
 
-Collapsible sections built on Base UI's Accordion. One primitive covers every disclosure pattern: from a single one-off reveal ("Show more" toggles, optional form fields) to a coordinated FAQ list to a stack of collapsible cards. Panels stay mounted (`keepMounted`) so their content remains crawlable when collapsed.
+<PageHeader
+  title="Accordion"
+  description="A coordinated set of collapsible sections for progressively revealing content."
+/>
 
-<Install name="accordion" />
+Use Accordion for related disclosures such as product details or frequently asked questions. A single item also supports a compact show-more pattern.
 
-<ComponentPreview label="Accordion Example">
+<ComponentPreview label="Frequently asked questions" sourcePath="src/app/docs/components/accordion/accordion-demo.tsx">
   <AccordionDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="accordion" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/accordion.json). The canonical implementation lives in [packages/react/src/components/accordion.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/accordion.tsx).
+
 ## Usage
 
-```tsx
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionPanel,
-} from "@patchui/react";
+<Usage code={usageCode} />
 
-// Flush (default) — borderless, tight, no chrome
-<Accordion defaultValue={["item-0"]}>
-  <AccordionItem value="item-0">
-    <AccordionTrigger>Question?</AccordionTrigger>
-    <AccordionPanel>
-      <p className="pb-3 text-small text-ink-muted">Answer.</p>
-    </AccordionPanel>
-  </AccordionItem>
-</Accordion>
+Each item needs a unique `value`. Panel content stays mounted while collapsed, which preserves find-in-page behavior.
 
-// Bordered — hairline row separators between items
-<Accordion variant="bordered">
-  <AccordionItem value="one">
-    <AccordionTrigger>What is Patch UI?</AccordionTrigger>
-    <AccordionPanel>...</AccordionPanel>
-  </AccordionItem>
-</Accordion>
+## Composition
 
-// Card — each item is its own bordered card
-<Accordion variant="card">
-  <AccordionItem value="plan-a">
-    <AccordionTrigger>Team plan</AccordionTrigger>
-    <AccordionPanel>...</AccordionPanel>
-  </AccordionItem>
-</Accordion>
-
-// Single-item reveal — inline "show more"
-<Accordion>
-  <AccordionItem value="details">
-    <AccordionTrigger>Show more details</AccordionTrigger>
-    <AccordionPanel>...</AccordionPanel>
-  </AccordionItem>
-</Accordion>
-
-// Custom caret — pass any node; add group-data-[panel-open]:* classes
-// to react to open state (rotation, color, swap).
-<AccordionTrigger
-  caret={
-    <Plus className="size-4 text-ink-muted group-data-[panel-open]:rotate-45 group-hover:text-ink" />
-  }
->
-  Plus that rotates into an X
-</AccordionTrigger>
-
-// Hidden caret
-<AccordionTrigger caret={null}>No indicator</AccordionTrigger>
+```text
+Accordion
+└── AccordionItem
+    ├── AccordionTrigger
+    └── AccordionPanel
 ```
 
-## Props
+## Examples
 
-### Accordion
+### Visual treatments
 
-<PropsTable
-  props={[
-    {
-      name: "variant",
-      type: '"flush" | "bordered" | "card"',
-      default: '"flush"',
-      description: "`flush` (default) is borderless and tight — filter panels, inline reveals. `bordered` draws a hairline separator between items — Notion / settings-style FAQs. `card` boxes each item in its own bordered surface with padding — marketing FAQs, dashboard collapsible panels.",
-    },
-    {
-      name: "defaultValue",
-      type: "string[]",
-      default: "[]",
-      description: "Values of the items expanded by default (uncontrolled).",
-    },
-    {
-      name: "value",
-      type: "string[]",
-      default: "-",
-      description: "Controlled set of expanded item values.",
-    },
-    {
-      name: "onValueChange",
-      type: "(value: string[]) => void",
-      default: "-",
-      description: "Callback fired when the expanded set changes.",
-    },
-    {
-      name: "openMultiple",
-      type: "boolean",
-      default: "true",
-      description: "Whether more than one panel can be open at once. Set `false` for one-at-a-time (exclusive open).",
-    },
-  ]}
-/>
+Use `flush` for content integrated into a page, `bordered` for a divided list, and `card` when each disclosure is a distinct content object.
 
-### AccordionItem
+<ComponentPreview label="Visual treatments" sourcePath="src/app/docs/components/accordion/accordion-variants-demo.tsx">
+  <AccordionVariantsDemo />
+</ComponentPreview>
 
-<PropsTable
-  props={[
-    {
-      name: "value",
-      type: "string",
-      default: "-",
-      description: "Unique identifier for the item, used to track open state.",
-    },
-  ]}
-/>
+### Custom indicator
 
-### AccordionTrigger
+Replace the default caret with any node, or pass `null` when another visual treatment communicates disclosure state.
 
-<PropsTable
-  props={[
-    {
-      name: "caret",
-      type: "ReactNode | null",
-      default: "<CaretDown />",
-      description: "Trailing chevron slot. Defaults to a rotating `<CaretDown />`. Pass `null` to hide the caret; pass any node (a plus/minus, arrow, custom SVG) to replace it.",
-    },
-  ]}
-/>
+<ComponentPreview label="Custom indicator" sourcePath="src/app/docs/components/accordion/accordion-caret-demo.tsx">
+  <AccordionCaretDemo />
+</ComponentPreview>
 
-<Callout title="Notes">
-- **One primitive for every disclosure pattern.** A single-item Accordion with the flush variant covers inline "show more" reveals; a multi-item Accordion with `openMultiple={false}` covers exclusive FAQ lists. No separate primitives to remember.
-- **Hover.** Trigger text is `text-ink-muted` at rest, lifts to `text-ink` on hover and when the panel is open. The default caret follows the same color shift and rotates 180° on open.
-- **Custom carets.** Pass any React node as `caret`. Use `group-data-[panel-open]:*` classes to react to open state (rotate, swap, color-shift); use `group-hover:*` for hover behavior. The Trigger sets the `group` root so both work on any descendant SVG.
-- **Content wrapping.** `AccordionPanel` is a thin height-transition wrapper; add your own inner padding and typography inside it (`<p className="pb-3 text-small text-ink-muted">`) so consumers control the panel's inner spacing per surface.
-- **Keyboard.** Triggers are focusable and toggle on Enter/Space. Base UI ships arrow-key navigation across items and Home/End; triggers use the compact non-editable focus indicator.
-- **SEO.** Panels render with `keepMounted`, so collapsed content stays in the DOM (height:0) and remains indexable / find-in-page-searchable.
-- **Single vs multiple.** Pass `openMultiple={false}` to enforce one-open-at-a-time.
-</Callout>
+## API reference
+
+<PropsTable props={[
+  { name: "variant", type: '"flush" | "bordered" | "card"', default: '"flush"', description: "Selects integrated, divided, or discrete-card presentation." },
+  { name: "defaultValue", type: "string[]", default: "[]", description: "Sets initially expanded items for uncontrolled state." },
+  { name: "value / onValueChange", type: "string[] / (value: string[]) => void", description: "Controls the expanded item values." },
+  { name: "openMultiple", type: "boolean", default: "true", description: "Allows multiple panels to remain open. Set false for exclusive expansion." },
+]} />
+
+Every AccordionItem needs a unique `value`. AccordionTrigger renders a `CaretDown` by default; pass another node to `caret`, or `null` to hide it.
+
+## Accessibility
+
+- Triggers use buttons and expose expanded state through the underlying Base UI primitive.
+- Enter or Space toggles the focused item. Arrow keys move between triggers, while Home and End move to the first or last trigger.
+- Keep trigger labels concise and make panel content understandable when reached directly through find-in-page.
+- Use `openMultiple={false}` only when simultaneous comparison is unnecessary.
+
+<PageNavigation />

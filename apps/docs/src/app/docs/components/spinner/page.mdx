@@ -1,74 +1,49 @@
 import { SpinnerDemo } from "./spinner-demo";
 
-
 export const metadata = { title: "Spinner" };
 
-# Spinner
+export const usageCode = `<div className="flex items-center gap-2">
+  <Spinner size="sm" label="Loading recent activity" />
+  <span className="text-small text-ink-muted">Loading recent activity</span>
+</div>`;
 
-A single loading indicator. Rotating stroke arc on a low-opacity track. One variant, one silhouette, three sizes — the loading language stays consistent across every surface. Uses `currentColor` so it inherits the surrounding text tone.
+<PageHeader
+  title="Spinner"
+  description="A compact indeterminate status indicator that inherits the surrounding text color."
+/>
 
-<Install name="spinner" />
+Use Spinner for a short wait with no measurable total. Use Progress for measurable work and Skeleton when loaded content has a predictable shape.
 
-<ComponentPreview label="Spinner">
+<ComponentPreview label="Loading status" sourcePath="src/app/docs/components/spinner/spinner-demo.tsx">
   <SpinnerDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="spinner" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/spinner.json). The canonical implementation lives in [packages/react/src/components/spinner.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/spinner.tsx).
+
 ## Usage
 
-```tsx
-import { Spinner } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Default (md)
-<Spinner />
+Spinner uses `currentColor`, so its context controls the visual tone. Prefer Button’s `loading` prop instead of manually inserting Spinner into a button.
 
-// Sizes — match the sm/md/lg vocabulary used across the system
-<Spinner size="sm" />
-<Spinner size="md" />
-<Spinner size="lg" />
+## API reference
 
-// Inherits text color
-<div className="text-error">
-  <Spinner />
-</div>
+<PropsTable props={[
+  { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Sets a 16, 20, or 24 pixel indicator." },
+  { name: "label", type: "string", default: '"Loading"', description: "Names the work in progress for assistive technology." },
+]} />
 
-// Custom a11y label for context
-<Spinner label="Saving" />
-<Spinner label="Uploading 3 of 12" />
+Use `className` only when the indicator must align to geometry outside the shared size scale.
 
-// Larger loaders (page or empty-state) — override via className
-<Spinner className="size-12" label="Loading dashboard" />
-```
+## Accessibility
 
-## Props
+- Replace the generic label with specific context such as `Saving project` or `Loading recent activity`.
+- Keep visible status text when people need to understand what is waiting.
+- Spinner uses status semantics, so avoid mounting several indicators for one loading region.
+- Animation stops under reduced-motion preferences while the static indicator remains visible.
 
-<PropsTable
-  props={[
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "16 / 20 / 24 px. Matches the `sm / md / lg` size vocabulary across Button, Toggle, Input, etc., so Spinner pairs cleanly inside any control. For a larger loader (empty state, full page), override with `className=\"size-N\"`.",
-    },
-    {
-      name: "label",
-      type: "string",
-      default: '"Loading"',
-      description: 'Accessible label announced by screen readers. Use to communicate context: "Saving", "Uploading 3 of 12", "Processing payment" — instead of the generic default.',
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
-
-<Callout title="Notes">
-- **One indicator, no variants.** Every loading state in the system uses the same rotating arc — no dots / bars / pulse variants — so the loading language stays consistent across surfaces.
-- **Use `<Button loading>`.** Don't drop a Spinner inside a button label yourself. The Button wires the sizing and busy state for you.
-- **Reach for other primitives when appropriate:** `Skeleton` when async data will fill a known layout, `Progress` when total work is measurable, `Spinner` for indeterminate short waits.
-- **Colors inherit from `currentColor`.** Wrap in a colored container to tint.
-- **Pure CSS animation, no JavaScript timer.** Honors `prefers-reduced-motion` via the shared tokens.
-- **Set `label`** to name the work in flight (`Verifying`, `Uploading 3 of 12`) so screen readers announce more than "Loading".
-</Callout>
+<PageNavigation />

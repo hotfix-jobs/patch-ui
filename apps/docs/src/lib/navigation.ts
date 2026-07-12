@@ -21,6 +21,7 @@ export const navigation: NavGroup[] = [
   {
     title: "Components",
     items: [
+      { title: "Overview", href: "/docs/components" },
       { title: "Accordion", href: "/docs/components/accordion" },
       { title: "Avatar", href: "/docs/components/avatar" },
       { title: "Badge", href: "/docs/components/badge" },

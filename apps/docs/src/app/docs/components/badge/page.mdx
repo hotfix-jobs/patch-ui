@@ -1,106 +1,49 @@
 import { BadgeDemo } from "./badge-demo";
-
+import { BadgeVariantsDemo } from "./badge-variants-demo";
 
 export const metadata = { title: "Badge" };
+export const usageCode = `<Badge color="success">Active</Badge>`;
 
-# Badge
+<PageHeader title="Badge" description="Compact, display-only metadata for status, plan, environment, or category." />
 
-Short, scannable metadata that sits next to the thing it describes: status, plan tier, environment, or role. Supports rounded and pill shapes.
+Use Badge beside the content it describes. Use an interactive control when the value can be changed or removed.
+
+<ComponentPreview label="Status colors" sourcePath="src/app/docs/components/badge/badge-demo.tsx"><BadgeDemo /></ComponentPreview>
+
+## Installation
 
 <Install name="badge" />
 
-<ComponentPreview label="Badge Examples">
-  <BadgeDemo />
-</ComponentPreview>
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/badge.json). The canonical implementation lives in [packages/react/src/components/badge.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/badge.tsx).
 
 ## Usage
 
-```tsx
-import { Badge } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Basic
-<Badge>Default</Badge>
+Keep labels short and meaningful without relying on color alone.
 
-// Semantic colors
-<Badge color="success">Active</Badge>
-<Badge color="warning">Pending</Badge>
-<Badge color="error">Failed</Badge>
+## Examples
 
-// Fill variants: solid = saturated, soft (default) = tinted, outlined = hairline border
-<Badge color="success" variant="solid">Deployed</Badge>
-<Badge color="success" variant="soft">Deployed</Badge>
-<Badge color="success" variant="outlined">Deployed</Badge>
+### Treatment, size, and shape
 
-// Sizes
-<Badge size="sm">Small</Badge>
-<Badge size="md">Medium</Badge>
-<Badge size="lg">Large</Badge>
+Choose emphasis independently from density and shape. Icons should reinforce a text label.
 
-// With inline icon
-<Badge icon={<Shield />} color="default">Verified</Badge>
+<ComponentPreview label="Treatment, size, and shape" sourcePath="src/app/docs/components/badge/badge-variants-demo.tsx"><BadgeVariantsDemo /></ComponentPreview>
 
-// Pill for tags and compact metadata
-<Badge shape="pill">Category</Badge>
+## API reference
 
-// Change the semantic tag while remaining display-only
-<Badge render={<strong />}>Verified</Badge>
-```
+<PropsTable props={[
+  { name: "color", type: "\"default\" | \"success\" | \"warning\" | \"error\"", default: "\"default\"", description: "Selects the neutral or semantic color role." },
+  { name: "variant", type: "\"solid\" | \"soft\" | \"outlined\"", default: "\"soft\"", description: "Selects saturated, tinted, or boundary-only emphasis." },
+  { name: "size", type: "\"sm\" | \"md\" | \"lg\"", default: "\"md\"", description: "Sets the metadata density." },
+  { name: "shape", type: "\"rounded\" | \"pill\"", default: "\"rounded\"", description: "Uses radius-6 or an explicit pill shape." },
+  { name: "render", type: "RenderProp<\"span\">", description: "Changes the display-only semantic element." },
+]} />
 
-## Props
+## Accessibility
 
-<PropsTable
-  props={[
-    {
-      name: "color",
-      type: '"default" | "success" | "warning" | "error"',
-      default: '"default"',
-      description: "Semantic color. `default` = neutral gray, `success` = green, `warning` = amber, `error` = red.",
-    },
-    {
-      name: "variant",
-      type: '"solid" | "soft" | "outlined"',
-      default: '"soft"',
-      description: "`solid` = saturated fill with contrasting text. `soft` = subtle tinted fill (dense surfaces). `outlined` = no fill, hairline border.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Badge size.",
-    },
-    {
-      name: "shape",
-      type: '"rounded" | "pill"',
-      default: '"rounded"',
-      description: "Rounded uses radius-6. Pill uses full radius.",
-    },
-    {
-      name: "icon",
-      type: "ReactNode",
-      default: "-",
-      description: "Optional inline icon rendered before the label.",
-    },
-    {
-      name: "render",
-      type: "RenderProp<'span'>",
-      default: "-",
-      description: "Polymorphic render prop for changing the display-only semantic element, such as `<strong>`.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
+- Badge is display-only and must not look interactive.
+- Text must communicate the state without color.
+- Avoid icon-only badges. If terse content needs clarification, provide an accessible name or nearby explanation.
 
-<Callout title="Notes">
-- Badge is display-only. Use rounded for status and compact metadata; use pill selectively for tags and categories. Interactive values need an interactive control.
-- Keep the text tight: one word if you can, two at most (`Active`, `Pending`, `Pro`, `Enterprise Trial`). Use the same wording as the value in your API and logs so labels and data stay in sync.
-- Colors carry the signal: don't double up. A `success` badge doesn't also need a check icon; an `error` badge doesn't need an ×. The color IS the meaning.
-- If a row has two badges, chances are the row wanted a second column.
-- `variant="solid"` is the loud version; `variant="soft"` is the quiet one for dense surfaces (tables, cards packed with metadata); `variant="outlined"` reads as a data chip when a fill would compete with a neighbor.
-- Color communicates state, but color alone isn't enough: the text has to make sense on its own. For icon-only or terse badges, set `title` so screen readers can announce it.
-- Don't nest a Badge inside a Badge, and don't stack two icons.
-</Callout>
+<PageNavigation />

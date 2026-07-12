@@ -1,48 +1,83 @@
 import { SearchSuggestionsDemo } from "./search-suggestions-demo";
 
-export const metadata = { title: "SearchSuggestions" };
+export const metadata = { title: "Search Suggestions" };
 
-# SearchSuggestions
-
-A reusable multi-field search block composed from Patch UI Input and Popover. It coordinates field focus, suggestions, keyboard navigation, and responsive presentation while consumers own values, data, and submission.
-
-<Install name="search-suggestions" />
-
-<ComponentPreview label="SearchSuggestions">
-  <SearchSuggestionsDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import { SearchSuggestions } from "@patchui/react/blocks/search-suggestions";
-
-<SearchSuggestions
+export const usageCode = `<SearchSuggestions
   fields={fields}
   activeField={activeField}
   onActiveFieldChange={setActiveField}
-  onFieldValueChange={handleFieldValueChange}
-  onSuggestionSelect={handleSuggestionSelect}
-  onSubmit={handleSubmit}
+  onFieldValueChange={updateField}
+  onSuggestionSelect={selectSuggestion}
+  onSubmit={submitSearch}
+/>`;
+
+<PageHeader
+  title="Search Suggestions"
+  description="A responsive multi-field search control with grouped suggestions and coordinated keyboard navigation."
 />
+
+Use Search Suggestions when people search across two or three related dimensions, such as content and workspace. Use Search Input for a single simple query.
+
+<ResponsiveBlockPreview slug="search-suggestions" label="Workspace search" sourcePath="search-suggestions/search-suggestions-demo.tsx" />
+
+## Installation
+
+<Install name="search-suggestions" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/search-suggestions.json). The canonical implementation lives in [packages/react/src/blocks/search-suggestions/index.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/blocks/search-suggestions/index.tsx).
+
+## Usage
+
+<Usage code={usageCode} />
+
+The application owns field values, suggestion data, filtering, and submission. Search Suggestions coordinates focus, one shared results surface, selection, and responsive presentation.
+
+## Data model
+
+```text
+SearchSuggestionsField
+└── SearchSuggestionSection
+    └── SearchSuggestion
 ```
 
-Each field provides its own value, icon, placeholder, loading state, empty content, and grouped suggestions. The block does not fetch or filter data.
+Each field supplies an ID, visible label, current value, and suggestion sections. Suggestions need a stable ID, submitted value, and visible label, with optional description, icon, suffix, and disabled state.
 
-## Interaction
+## Loading and empty states
 
-- Focusing a field opens one shared suggestion surface anchored to the complete search control.
-- The active field and its results update immediately without layout animation.
-- Arrow keys move through suggestions. Enter selects the active suggestion or submits the current field values. Escape closes the panel.
-- Desktop uses an anchored Popover. Mobile uses the same centered, near-full-width Popover treatment as the rest of Patch UI.
+Set `loading` on the active field while its request is pending. Existing suggestions remain visible during a background refresh; the centered loading state appears only when no results are available yet.
 
-## Data types
+Set `emptyContent` per field so an empty result explains the active search dimension. The block does not debounce requests or filter data.
 
-`SearchSuggestionsField` contains `id`, `label`, `value`, optional presentation properties, and `sections`. Each `SearchSuggestionSection` contains a label and suggestions. A `SearchSuggestion` contains a stable `id`, submitted `value`, visible `label`, and optional description, icon, suffix, and disabled state.
+## Responsive behavior
 
-<Callout title="Notes">
-- Keep field counts small. Two fields is the primary layout; three can work when labels and values remain concise.
-- Suggestions should explain where a result leads through a description or suffix instead of decorative badges.
-- The consumer decides whether selection submits immediately or only updates a field.
-- Use generic application data in shared demos. Product-specific language belongs in the consuming app.
-</Callout>
+Desktop anchors one suggestion Popover to the complete search control. Mobile uses the shared centered Popover treatment and places the active field input inside the surface. Keep field counts small so labels and current values remain understandable in both layouts.
+
+## API reference
+
+<PropsTable props={[
+  { name: "fields", type: "SearchSuggestionsField[]", description: "Provides controlled values, presentation, state, and grouped suggestions for every field." },
+  { name: "activeField / onActiveFieldChange", type: "string / (fieldId: string) => void", description: "Controls which field owns the shared results surface." },
+  { name: "open / onOpenChange", type: "boolean / (open: boolean) => void", description: "Controls suggestion-surface visibility when application coordination is needed." },
+  { name: "onFieldValueChange", type: "(fieldId, value) => void", description: "Updates a field as someone types or clears it." },
+  { name: "onSuggestionSelect", type: "(fieldId, suggestion) => void", description: "Handles a selected result without assuming whether selection submits." },
+  { name: "onSubmit", type: "(values: Record<string, string>) => void", description: "Receives the current value of every field." },
+  { name: "submitLabel", type: "string", default: '"Search"', description: "Names the submit button." },
+]} />
+
+The consumer decides whether choosing a suggestion submits immediately or only updates its field.
+
+## Keyboard behavior
+
+- Focusing or activating a field opens its suggestions.
+- Up and Down move through enabled suggestions.
+- Enter selects the active suggestion or submits current field values.
+- Escape closes the suggestion surface.
+
+## Accessibility
+
+- Give each field a concise label that remains meaningful when announced independently.
+- Use descriptions or suffixes to explain where suggestions lead.
+- Keep disabled suggestions rare and make their unavailable state understandable from context.
+- Preserve useful empty text instead of presenting a silent blank surface.
+
+<PageNavigation />

@@ -183,8 +183,8 @@ export function Sidebar({
         </aside>
       </div>
 
-      <Sheet open={openMobile} onOpenChange={setOpenMobile}>
-        <SheetContent side={side} className="w-64 p-0 lg:hidden">
+      <Sheet open={openMobile} onOpenChange={setOpenMobile} side={side}>
+        <SheetContent className="w-64 p-0 lg:hidden">
           <div
             data-slot="sidebar-mobile"
             style={dimensionVars}

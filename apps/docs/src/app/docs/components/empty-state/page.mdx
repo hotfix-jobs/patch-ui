@@ -1,92 +1,70 @@
 import { EmptyStateDemo } from "./empty-state-demo";
+import { EmptyStateCreateDemo } from "./empty-state-create-demo";
 
 export const metadata = { title: "EmptyState" };
 
-# EmptyState
+export const usageCode = `<EmptyState
+  title="No results match your filters"
+  description="Try removing a filter to see more results."
+  icon={<MagnifyingGlassMinus />}
+  action={<Button variant="secondary">Clear Filters</Button>}
+/>`;
 
-A quiet "no results" or "no data yet" placeholder. It provides structure for an optional icon, title, description, primary action, and supporting content without adding its own card chrome.
+<PageHeader
+  title="EmptyState"
+  description="A quiet placeholder that explains missing content and offers an appropriate next step."
+/>
 
-<Install name="empty-state" />
+Use EmptyState when a collection has no data, no filtered results, or no content yet. Its parent owns the surrounding surface.
 
-<ComponentPreview label="EmptyState">
+<ComponentPreview label="No filtered results" sourcePath="src/app/docs/components/empty-state/empty-state-demo.tsx">
   <EmptyStateDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="empty-state" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/empty-state.json). The canonical implementation lives in [packages/react/src/components/empty-state.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/empty-state.tsx).
+
 ## Usage
 
-```tsx
-import { EmptyState, Button } from "@patchui/react";
-import { ChartBar, ArrowSquareOut } from "@phosphor-icons/react/dist/ssr";
-// Basic
-<EmptyState
-  title="No results match your filters"
-  description="Try removing a filter, or clear all to see every result."
-  icon={<BarChart3 />}
-  action={<Button variant="secondary">Clear Filters</Button>}
-/>
+<Usage code={usageCode} />
 
-// With a secondary Learn more link
-<EmptyState
-  title="Title"
-  description="This should detail the actions you can take on this screen, as well as why it's valuable."
-  icon={<BarChart3 />}
-  action={<Button variant="secondary">Primary Action</Button>}
->
-  <a href="#" className="inline-flex items-center gap-1 text-small text-ink hover:text-ink">
-    Learn more
-    <ExternalLink className="size-3.5" />
-  </a>
-</EmptyState>
-```
+Explain why content is absent, then offer the most direct recovery or creation action. Do not restate the title in the description.
 
-## Props
+## Examples
 
-<PropsTable
-  props={[
-    {
-      name: "title",
-      type: "ReactNode",
-      default: "-",
-      description: "Required. Title-case headline describing the empty condition.",
-    },
-    {
-      name: "description",
-      type: "ReactNode",
-      default: "-",
-      description: "Sentence-case helper text expanding on the title. Two lines max reads best.",
-    },
-    {
-      name: "icon",
-      type: "ReactNode",
-      default: "-",
-      description: "Optional muted icon rendered above the title.",
-    },
-    {
-      name: "action",
-      type: "ReactNode",
-      default: "-",
-      description: "Primary CTA. Typically a `<Button>`. For navigation, wrap with your router's Link primitive.",
-    },
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "Additional slots rendered below the primary action. Use for a secondary link (`Learn more`) or supporting content.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
+### First-use state
 
-<Callout title="Notes">
-- EmptyState adds no background, border, shadow, or entrance animation. Its parent owns the surrounding surface.
-- The icon is muted and rendered at 32px. It does not sit inside a decorative container.
-- Cap at one primary CTA in `action`. Use `children` for a secondary link (typical: "Learn more" with an external-link icon) or supporting content.
-- Content guidance: title is Title Case (`No Logs Match Your Filter`); description is sentence case and adds new information, not a rephrasing of the title. CTA labels are Title Case Verb + Noun (`Deploy Project`, `Browse Items`), never `Get Started` or `Continue`.
-- For an async filter change, wrap the region in `aria-live="polite"` so screen readers announce the new state.
-- Wraps well inside a `<Card>` for the settings-page or dashboard empty section look.
-</Callout>
+For an empty collection, describe the value of adding the first item and provide one clear creation action.
+
+<ComponentPreview label="First-use state" sourcePath="src/app/docs/components/empty-state/empty-state-create-demo.tsx">
+  <EmptyStateCreateDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "title", type: "ReactNode", description: "Names the empty condition." },
+  { name: "description", type: "ReactNode", description: "Explains the condition or the next useful step." },
+  { name: "icon", type: "ReactNode", description: "Adds a muted decorative icon above the title." },
+  { name: "action", type: "ReactNode", description: "Adds the primary recovery or creation action." },
+  { name: "children", type: "ReactNode", description: "Adds optional supporting content below the primary action." },
+]} />
+
+## Content guidance
+
+- Describe the state specifically, such as `No results match your filters` or `No projects yet`.
+- Keep the description to one or two short sentences that add information.
+- Prefer one primary action. Use children only for genuinely useful supporting content or a secondary link.
+- Match the action to the state, such as `Clear Filters`, `Create Project`, or `Browse Templates`.
+
+## Accessibility
+
+- EmptyState renders a heading and description but does not add a landmark or live region automatically.
+- When filtering updates the empty state asynchronously, place the changing results region in `aria-live="polite"`.
+- The icon is decorative and hidden from assistive technology. Do not encode unique information in it.
+- Buttons and links supplied through `action` or `children` retain their own semantics and accessible names.
+
+<PageNavigation />

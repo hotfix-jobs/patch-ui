@@ -1,73 +1,70 @@
-import {
-  ColorScales,
-  TypographySamples,
-  RadiusSamples,
-} from "./theme-demo";
+import { ThemeColorsDemo } from "./theme-colors-demo";
+import { ThemeRadiusDemo } from "./theme-radius-demo";
+import { ThemeTypographyDemo } from "./theme-typography-demo";
 
 export const metadata = { title: "Theme" };
 
-# Theme & Design Tokens
+<PageHeader
+  title="Theme"
+  description="The shared color, typography, radius, elevation, motion, and focus tokens used by every Patch UI component."
+/>
 
-One stylesheet defines Patch UI's color, type, radius, elevation, and motion values. Components consume those values through Tailwind utilities. A `.dark` class on `<html>` switches the runtime values without changing component code.
+One copied stylesheet defines both light and dark themes. Components consume semantic tokens, so changing a role updates the complete system without editing individual component classes.
 
-The system stays deliberately small: a neutral gray scale, two surface families, four ink tiers, four alpha hairlines, three semantic status roles, and one monochrome primary. Consumers add brand by redefining `--primary`; no accent family ships.
+## Color model
 
-## Colors
+Think about color by responsibility:
 
-<ColorScales />
+```text
+base canvas
+└── layer surfaces
+    ├── fill controls
+    ├── interaction overlay
+    ├── readable ink
+    └── meaningful boundaries
+```
 
-**Base and layers.** `--base` is the application canvas (`#f5f5f5` light, `#101010` dark). `--layer-1` is the primary content and floating surface (`#ffffff` / `#191919`). `--layer-2` is grouped or selected content (`#f0f0f0` / `#242424`). Cards, previews, popups, Modal, Sheet, Tooltip, and Toast use this hierarchy. Form controls use fills instead.
+<ThemeColorsDemo />
 
-**Fills.** `--fill-1` and `--fill-2` are neutral control and metadata fills. Input, Textarea, Select, secondary Button, Badge, Toggle, Kbd, and embedded actions start on a fill and step once on interaction. `--fill-1` intentionally shares a value with `--layer-2`, but the separate name preserves intent at the call site.
+- **Base and layers** establish the application canvas, primary content surface, and grouped content.
+- **Fills** belong to controls and metadata. `layer-hover` is the shared transparent interaction overlay.
+- **Ink** separates primary text, secondary context, placeholders, and disabled hints.
+- **Status** provides paired error, warning, and success treatments.
+- **Hairlines** range from quiet containment to stronger structural emphasis.
 
-**Interaction overlay.** `--layer-hover` is the single alpha overlay for hover, press, selection, and current navigation. Persistent state is distinguished through checks, labels, weight, and semantics instead of another background color. Held popup triggers may still use their filled-control treatment. The alpha overlay remains visible on base, layers, fills, and consumer backgrounds without adding another solid surface rung.
-
-**Ink.** `--ink` is primary text, `--ink-muted` is secondary text and the default icon tone, `--ink-subtle` is placeholder or missing-value copy, and `--ink-tertiary` is disabled or footnote text. Subtle and tertiary currently share a gray value, but their names preserve different semantic roles.
-
-**Semantic status.** `--error`, `--warning`, and `--success` use fixed theme-invariant fills. Each role includes hover, active, foreground, and soft-treatment tokens.
-
-**Hairlines.** Four alpha tiers keep boundaries consistent across surfaces. `--hairline-soft` is a whisper edge for quiet containment. `--hairline` is the standard floating boundary and divider. Stronger tiers provide structural or interactive emphasis. Most content surfaces and controls are borderless; hairlines are reserved for boundaries that clarify structure.
-
-**Primary.** `--primary` resolves to `--ink` and `--on-primary` to `--base`. Hover and active values derive from `--primary`, so a consumer brand override produces matching interaction states. Focus remains independently monochrome.
+Most product branding should begin by overriding `--primary` and `--on-primary`. Patch UI does not ship a separate accent family.
 
 ## Typography
 
-Inter is the body and display family. JetBrains Mono is reserved for code. Size and weight are separate axes.
+Inter is the body and display family. JetBrains Mono is reserved for code, terminal output, keyboard shortcuts, and values presented as code.
 
-**Size.** Eight utilities cover the system: `text-micro` (11), `text-mini` (12), `text-small` (14), `text-regular` (16), `text-large` (18), `text-title3` (20), `text-title2` (24), and `text-title1` (36).
+<ThemeTypographyDemo />
 
-**Weight.** Five utilities are available: `font-light` (300), `font-normal` (450), `font-medium` (500), `font-semibold` (600), and `font-bold` (700). Body defaults to 450 and headings default to 500.
+Compose size and weight independently, such as `text-small font-medium`. Body defaults to weight 450, headings to 500, and element styles provide line height. Avoid raw pixel type utilities when an existing semantic size fits.
 
-**Line height.** Element defaults own line height. Body uses 1.5, paragraphs use 1.7, and headings use 1.25.
+## Radius
 
-<TypographySamples />
+Radius follows component role rather than personal preference.
 
-Rules of thumb:
+<ThemeRadiusDemo />
 
-- Compose a size and weight, such as `text-small font-medium`.
-- Do not add raw pixel type utilities. Extend the scale when a real role is missing.
-- Reserve `font-mono` for code, terminal output, keyboard shortcuts, and values shown as code.
+Controls use radius 8, content and floating surfaces use radius 12, and metadata commonly uses radius 6. Full radius is explicit for pills and intrinsically circular geometry.
 
-## Sizing and motion
+## Elevation, motion, and focus
 
-**Radius.** Seven values are available: `--radius-4/6/8/10/12/16/full`.
+- `shadow-card` belongs to elevated Card and small raised controls.
+- `shadow-menu`, `shadow-tooltip`, and `shadow-modal` match their overlay weight.
+- `duration-state` handles control feedback, while `duration-overlay` handles opening and closing.
+- `ease-standard` provides the shared timing curve and collapses with durations under reduced motion.
+- Focus remains neutral and independent from the product’s primary color.
 
-<RadiusSamples />
+Editable fields use a crisp outline at the control edge. Other controls combine a compact keyboard-focus indicator with their normal interaction fill.
 
-Use radius 4 for very small controls, radius 6 for metadata, radius 8 for controls, radius 12 for content and floating surfaces, and radius 16 for large marketing chrome. Full radius is explicit and reserved for pills or intrinsically circular geometry.
+## Customize the theme
 
-**Shadows.** `--shadow-card` supports elevated Card and slider/switch thumbs. `--shadow-menu` supports lightweight popups and Toast. `--shadow-tooltip` supports Tooltip. `--shadow-modal` is reserved for Modal and Sheet.
-
-**Motion.** `--duration-state` handles hover and press transitions. `--duration-overlay` handles opening and closing. Both use `--ease-standard` and collapse to zero under reduced motion.
-
-**Focus.** `--focus-ring-color` is independent from `--primary`. Editable fields draw a crisp outline at the control edge. Non-editable controls use a compact keyboard-focus indicator and an appropriate state fill.
-
-## Customizing
-
-Override tokens after importing the stylesheet. Components update at runtime without a rebuild. Adjust the import path to the location of your CSS entry file:
+Override runtime tokens after importing the copied stylesheet. Components update without a rebuild.
 
 ```css
-/* app/globals.css */
 @import "tailwindcss";
 @import "../styles/patch-ui-tokens.css";
 
@@ -82,4 +79,6 @@ Override tokens after importing the stylesheet. Components update at runtime wit
 }
 ```
 
-When overrides affect readable text or filled labels, run the [contrast checks](/docs/contrast) before shipping.
+Changing surfaces or readable text requires more care than changing radius or motion. Run the [Contrast Contract](/docs/contrast) after modifying primary, ink, base, layer, or fill values.
+
+<PageNavigation />

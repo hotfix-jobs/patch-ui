@@ -91,6 +91,28 @@ const STATUS = [
   { fg: "--success-fg", bg: "--success", label: "success-fg on success" },
 ] as const;
 
+export function ContrastSummary() {
+  return (
+    <div className="my-6 grid gap-3 sm:grid-cols-3">
+      <SummaryItem label="Themes" value="Light + dark" />
+      <SummaryItem label="Readable roles" value="AAA + AA" />
+      <SummaryItem label="Enforcement" value="Checked in CI" />
+    </div>
+  );
+}
+
+function SummaryItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-[var(--radius-12)] bg-layer-1 p-4">
+      <div className="flex items-center gap-2 text-mini text-ink-muted">
+        <Check className="size-4 text-success" aria-hidden />
+        {label}
+      </div>
+      <p className="mt-2 text-small font-medium text-ink">{value}</p>
+    </div>
+  );
+}
+
 export function ContrastDemo() {
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const [, setTick] = useState(0);
@@ -117,7 +139,7 @@ export function ContrastDemo() {
   };
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="my-6 flex flex-col gap-10 rounded-[var(--radius-12)] bg-base p-4 sm:p-6">
       <section>
         <SectionHeading title="Text on surfaces" />
         <div className="flex flex-col gap-6">

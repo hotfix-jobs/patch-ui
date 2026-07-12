@@ -36,9 +36,7 @@ export function Skeleton({
 
   return (
     <div
-      role="status"
-      aria-busy="true"
-      aria-live="polite"
+      aria-hidden="true"
       data-slot="skeleton"
       className={cn(
         "bg-fill-2",

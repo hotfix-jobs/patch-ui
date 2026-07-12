@@ -1,99 +1,52 @@
 import { TextareaDemo } from "./textarea-demo";
-
+import { TextareaStatesDemo } from "./textarea-states-demo";
 
 export const metadata = { title: "Textarea" };
+export const usageCode = `<Field>
+  <FieldLabel>Release notes</FieldLabel>
+  <Textarea id="release-notes" />
+</Field>`;
 
-# Textarea
+<PageHeader title="Textarea" description="A multi-line text control that grows with its content and supports three density presets." />
 
-A filled, borderless multi-line input that auto-grows with content by default. Compose it with Field for labels, descriptions, and errors.
+Use Textarea for values that can contain line breaks. Use Input for single-line values.
+
+<ComponentPreview label="Labeled textarea" sourcePath="src/app/docs/components/textarea/textarea-demo.tsx"><TextareaDemo /></ComponentPreview>
+
+## Installation
 
 <Install name="textarea" />
 
-<ComponentPreview label="Textarea Examples">
-  <TextareaDemo />
-</ComponentPreview>
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/textarea.json). The canonical implementation lives in [packages/react/src/components/textarea.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/textarea.tsx).
 
 ## Usage
 
-```tsx
-import { Field, FieldError, FieldLabel, Textarea } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Basic
-<Textarea placeholder="Write something…" />
+Textarea grows through CSS `field-sizing: content`. The `rows` attribute establishes a minimum height.
 
-// Sizes
-<Textarea size="sm" />   // label-12 text
-<Textarea size="md" />   // copy-14 text (default)
-<Textarea size="lg" />   // copy-16 text
+## Examples
 
-// Fixed minimum rows
-<Textarea rows={6} placeholder="Tall" />
+### Size, rows, and states
 
-// Label + error
-<Field invalid>
-  <FieldLabel>Release Notes</FieldLabel>
-  <Textarea id="notes" aria-invalid />
-  <FieldError match>Release notes are required.</FieldError>
-</Field>
+Use `rows` to establish minimum space. Read-only content remains selectable, while disabled content is unavailable.
 
-// Read-only
-<Textarea defaultValue="Locked content" readOnly />
-```
+<ComponentPreview label="Size, rows, and states" sourcePath="src/app/docs/components/textarea/textarea-states-demo.tsx"><TextareaStatesDemo /></ComponentPreview>
 
-## Props
+## API reference
 
-<PropsTable
-  props={[
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Text and padding scale.",
-    },
-    {
-      name: "variant",
-      type: '"default" | "unstyled"',
-      default: '"default"',
-      description: "Use unstyled only when another component owns the control surface.",
-    },
-    {
-      name: "rows",
-      type: "number",
-      default: "-",
-      description: "Minimum visible rows. Uses CSS `field-sizing: content` so it auto-grows; `rows` enforces a minimum height.",
-    },
-    {
-      name: "readOnly",
-      type: "boolean",
-      default: "false",
-      description: "Makes the textarea read-only. Users can still select and copy the value.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the textarea.",
-    },
-    {
-      name: "placeholder",
-      type: "string",
-      default: "-",
-      description: "Placeholder text shown when empty.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes applied to the control wrapper.",
-    },
-  ]}
-/>
+Textarea accepts native textarea attributes. These props select Patch UI presentation.
 
-<Callout title="Notes">
-- Textarea handles anything with line breaks. Anything single-value is an Input.
-- Start with enough `rows` that the field feels finished at load. Growing the field beyond that is fine as long as the CTA doesn't disappear from view.
-- Auto-growing is the default via `field-sizing: content`. Set `rows` when you want a specific minimum height and no more.
-- Field owns labels, descriptions, and validation messages across the form-control family.
-- Read-only is a native attribute; users can still select and copy.
-- For descriptive helper text unrelated to validation, place it on a sibling element with `aria-describedby`.
-</Callout>
+<PropsTable props={[
+  { name: "size", type: "\"sm\" | \"md\" | \"lg\"", default: "\"md\"", description: "Sets text size and padding." },
+  { name: "variant", type: "\"default\" | \"unstyled\"", default: "\"default\"", description: "Removes control chrome when another component owns the surface." },
+  { name: "rows", type: "number", description: "Sets the minimum visible row count while preserving automatic growth." },
+]} />
+
+## Accessibility
+
+- Associate every Textarea with a visible label.
+- Connect helper text and errors with Field or `aria-describedby`.
+- Read-only values remain selectable and copyable; disabled values do not.
+
+<PageNavigation />

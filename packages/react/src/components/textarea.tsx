@@ -34,7 +34,7 @@ export function Textarea({
         "relative inline-flex w-full text-ink",
         !unstyled && "rounded-[var(--radius-8)]",
         !unstyled && [
-          "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-layer-1",
+          "bg-fill-1 hover:bg-fill-2",
           "outline-none has-focus-visible:[outline-style:solid] has-focus-visible:outline-[length:var(--focus-ring-width)] has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-0",
           "transition-[color,background-color,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
         ],

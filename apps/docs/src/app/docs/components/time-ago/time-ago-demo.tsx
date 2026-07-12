@@ -8,7 +8,6 @@ interface DemoDates {
   fiveMinAgo: string;
   threeHoursAgo: string;
   twoDaysAgo: string;
-  lastWeek: string;
 }
 
 // Server snapshot is null so SSR renders placeholders, avoiding a hydration mismatch from server/client timestamp drift.
@@ -32,22 +31,21 @@ export function TimeAgoDemo() {
       fiveMinAgo: iso(5 * 60 * 1000),
       threeHoursAgo: iso(3 * 60 * 60 * 1000),
       twoDaysAgo: iso(2 * 24 * 60 * 60 * 1000),
-      lastWeek: iso(9 * 24 * 60 * 60 * 1000),
     };
   }, [now]);
 
   const placeholder = <span className="text-ink-subtle">…</span>;
 
   return (
-    <div className="space-y-2 text-small">
-      <div>Just now: {dates ? <TimeAgo dateStr={dates.now} /> : placeholder}</div>
-      <div>5 min ago: {dates ? <TimeAgo dateStr={dates.fiveMinAgo} /> : placeholder}</div>
-      <div>3 hours ago: {dates ? <TimeAgo dateStr={dates.threeHoursAgo} /> : placeholder}</div>
-      <div>2 days ago: {dates ? <TimeAgo dateStr={dates.twoDaysAgo} /> : placeholder}</div>
-      <div>Last week: {dates ? <TimeAgo dateStr={dates.lastWeek} /> : placeholder}</div>
-      <div className="pt-3 border-t border-hairline">
-        Sans variant: {dates ? <TimeAgo dateStr={dates.twoDaysAgo} variant="sans" /> : placeholder}
-      </div>
+    <div className="grid grid-cols-[1fr_auto] gap-x-8 gap-y-3 text-small">
+      <span className="text-ink">Status updated</span>
+      {dates ? <TimeAgo dateStr={dates.now} /> : placeholder}
+      <span className="text-ink">Comment added</span>
+      {dates ? <TimeAgo dateStr={dates.fiveMinAgo} /> : placeholder}
+      <span className="text-ink">Build completed</span>
+      {dates ? <TimeAgo dateStr={dates.threeHoursAgo} /> : placeholder}
+      <span className="text-ink">Project created</span>
+      {dates ? <TimeAgo dateStr={dates.twoDaysAgo} /> : placeholder}
     </div>
   );
 }

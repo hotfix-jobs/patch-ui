@@ -57,7 +57,7 @@ export function Spinner({
         aria-hidden="true"
         viewBox="0 0 24 24"
         className={cn(
-          "size-full animate-spin motion-reduce:animate-[spin_1.5s_linear_infinite]",
+          "size-full animate-spin motion-reduce:animate-none",
         )}
       >
         <circle

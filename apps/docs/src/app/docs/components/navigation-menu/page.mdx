@@ -1,63 +1,80 @@
 import { NavigationMenuDemo } from "./navigation-menu-demo";
 
-
 export const metadata = { title: "NavigationMenu" };
 
-# NavigationMenu
-
-A horizontal navigation bar built on Base UI's NavigationMenu. Items are either a plain link or a trigger with a dropdown panel; multiple panels share one popup that morphs (size and position) between them. It is designed to drop straight into a header, including inside `AppHeader`. The popup scaffold (portal, positioner, popup, viewport) is rendered for you, so you only write the list.
-
-<Install name="navigation-menu" />
-
-<ComponentPreview label="NavigationMenu">
-  <NavigationMenuDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink,
-} from "@patchui/react";
-
-<NavigationMenu>
+export const usageCode = `<NavigationMenu>
   <NavigationMenuList>
     <NavigationMenuItem>
-      <NavigationMenuTrigger>Product</NavigationMenuTrigger>
+      <NavigationMenuTrigger>Components</NavigationMenuTrigger>
       <NavigationMenuContent>
-        <div className="grid w-[440px] grid-cols-2 gap-1">
-          <NavigationMenuLink href="/features">Features</NavigationMenuLink>
-          <NavigationMenuLink href="/pricing">Pricing</NavigationMenuLink>
-        </div>
+        <NavigationMenuLink href="/docs/components/button">
+          Button
+        </NavigationMenuLink>
       </NavigationMenuContent>
     </NavigationMenuItem>
     <NavigationMenuItem>
-      <NavigationMenuLink href="/docs" variant="trigger">Docs</NavigationMenuLink>
+      <NavigationMenuLink href="/docs" variant="trigger">
+        Docs
+      </NavigationMenuLink>
     </NavigationMenuItem>
   </NavigationMenuList>
-</NavigationMenu>
+</NavigationMenu>`;
+
+<PageHeader
+  title="NavigationMenu"
+  description="A horizontal site-navigation list with top-level links and shared morphing dropdown panels."
+/>
+
+Use NavigationMenu for primary desktop navigation with a small number of stable categories. Use Menu for contextual actions related to a local trigger.
+
+<ComponentPreview label="Navigation menu" sourcePath="src/app/docs/components/navigation-menu/navigation-menu-demo.tsx">
+  <NavigationMenuDemo />
+</ComponentPreview>
+
+## Installation
+
+<Install name="navigation-menu" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/navigation-menu.json). The canonical implementation lives in [packages/react/src/components/navigation-menu.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/navigation-menu.tsx).
+
+## Usage
+
+<Usage code={usageCode} />
+
+Each NavigationMenuItem contains either a top-level NavigationMenuLink or a NavigationMenuTrigger paired with NavigationMenuContent.
+
+## Composition
+
+```text
+NavigationMenu
+└── NavigationMenuList
+    └── NavigationMenuItem
+        ├── NavigationMenuLink
+        └── NavigationMenuTrigger
+            └── NavigationMenuContent
+                └── NavigationMenuLink
 ```
 
-Use the `render` prop on `NavigationMenuLink` to integrate your router (e.g. a Next.js `<Link>`): `<NavigationMenuLink render={<Link href="/docs" />}>Docs</NavigationMenuLink>`.
+NavigationMenu renders the shared portal, positioner, popup, and viewport internally. Content panels reuse that popup and animate its size and position between triggers.
 
-## Components
+## API reference
 
-- `NavigationMenu` - root; also renders the shared popup (portal, positioner, popup, viewport) automatically
-- `NavigationMenuList` - the horizontal list of items
-- `NavigationMenuItem` - a single item (a link, or a trigger plus content)
-- `NavigationMenuTrigger` - opens a dropdown panel; includes a chevron that rotates on open
-- `NavigationMenuContent` - the panel for an item; rendered into the shared morphing popup
-- `NavigationMenuLink` - a navigable link with `item` and `trigger` treatments
+<PropsTable props={[
+  { name: "NavigationMenuLink.variant", type: '"item" | "trigger"', default: '"item"', description: "Selects an in-panel link or a top-level trigger-aligned link treatment." },
+  { name: "NavigationMenuLink.closeOnClick", type: "boolean", default: "true", description: "Controls whether activating a link closes the open content panel." },
+]} />
 
-<Callout title="Notes">
-- **Fits AppHeader:** drop `NavigationMenu` between `AppHeaderBrand` and `AppHeaderRight` for a product-style header.
-- **Morphing popup:** all `NavigationMenuContent` panels share one radius-12 popup with a 1px hairline boundary and `--shadow-menu` elevation. It animates size and position between items with a direction-aware slide.
-- **Interaction tokens:** triggers and top-level links use `--layer-hover` for hover and press, plus the same overlay while a popup is open.
-- **Keyboard + a11y:** Base UI handles roving focus, arrow-key navigation, and the ARIA wiring. Triggers use the compact non-editable focus indicator.
-- **Top-level links:** use `NavigationMenuLink variant="trigger"` beside dropdown triggers. The default `item` treatment remains for links inside popup content.
-</Callout>
+The remaining parts expose their underlying Base UI Navigation Menu props. Use NavigationMenuLink `render` to integrate a framework router link while preserving menu behavior and styling.
+
+## Keyboard behavior
+
+- Tab moves into and out of the navigation menu.
+- Arrow keys move between top-level items and through links in an open content panel.
+- Enter or Space opens a trigger. Escape closes its panel and restores focus through Base UI.
+- Top-level destinations remain links; do not use a disclosure trigger when activation should navigate directly.
+
+## Responsive behavior
+
+NavigationMenu does not provide a mobile transformation. Hide or replace it at the application breakpoint with a mobile navigation pattern such as Sheet. Keep the same destinations and hierarchy across both versions.
+
+<PageNavigation />

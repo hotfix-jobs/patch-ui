@@ -1,88 +1,71 @@
 import { ScrollerDemo } from "./scroller-demo";
-
+import { ScrollerVerticalDemo } from "./scroller-vertical-demo";
 
 export const metadata = { title: "Scroller" };
 
-# Scroller
+export const usageCode = `<Scroller
+  overflow="x"
+  ariaLabel="Featured projects"
+  childrenContainerClassName="gap-3 p-1"
+>
+  {projects.map((project) => (
+    <Card key={project.id} className="w-52 shrink-0">
+      <CardContent>{project.name}</CardContent>
+    </Card>
+  ))}
+</Scroller>`;
 
-A scroll container for overflowing lists: horizontal rails, long vertical feeds, or free bidirectional canvases. Built on Base UI Scroll Area with an overlay scrollbar in vertical / bidirectional modes, and hidden in horizontal mode where the edge fade masks are the affordance.
+<PageHeader
+  title="Scroller"
+  description="A focusable overflow region for horizontal rails, vertical feeds, and bidirectional canvases."
+/>
 
-Use for card rails (products, categories, cover art), long vertical feeds (activity logs, notifications), and free-scroll canvases (image comparisons, wide diagrams).
+Use Scroller when a bounded collection intentionally extends beyond its visible region. Use Pagination for discrete result pages and a virtualization system for very large feeds.
 
-<Install name="scroller" />
-
-<ComponentPreview label="Scroller Examples">
+<ComponentPreview label="Horizontal rail" sourcePath="src/app/docs/components/scroller/scroller-demo.tsx" previewClassName="bg-base">
   <ScrollerDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="scroller" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/scroller.json). The canonical implementation lives in [packages/react/src/components/scroller.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/scroller.tsx).
+
 ## Usage
 
-```tsx
-import { Scroller } from "@patchui/react";
+<Usage code={usageCode} />
 
-<Scroller overflow="x" childrenContainerClassName="gap-3">
-  {items.map((item) => (
-    <Card key={item.id} className="shrink-0 w-64">
-      {/* … */}
-    </Card>
-  ))}
-</Scroller>
-```
+Horizontal children need a stable width and `shrink-0`. Apply rail gaps and padding through `childrenContainerClassName` so they move with the content.
 
-## Props
+## Examples
 
-<PropsTable
-  props={[
-    {
-      name: "overflow",
-      type: '"x" | "y" | "both"',
-      default: '"x"',
-      description: "Scroll axis. Horizontal rail, vertical feed, or free canvas.",
-    },
-    {
-      name: "height",
-      type: "number | string",
-      default: "-",
-      description: "Container height. Number → px, string → passed through.",
-    },
-    {
-      name: "width",
-      type: "number | string",
-      default: '"100%"',
-      description: "Container width. Number → px, string → passed through.",
-    },
-    {
-      name: "fade",
-      type: "boolean",
-      default: "true",
-      description: "Fade the leading / trailing edge with a mask when there's more content in that direction. Only meaningful for overflow='x' and overflow='y'.",
-    },
-    {
-      name: "fadeWidth",
-      type: "number",
-      default: "32",
-      description: "Fade mask width in pixels.",
-    },
-    {
-      name: "childrenContainerClassName",
-      type: "string",
-      default: "-",
-      description: "Class on the inner content wrapper: apply gap / padding here for rail spacing.",
-    },
-    {
-      name: "ariaLabel",
-      type: "string",
-      default: "-",
-      description: "Aria-label on the scroll region. Set when there's no visible heading above the rail.",
-    },
-  ]}
-/>
+### Vertical feed
 
-<Callout title="Notes">
-- **Consistent item widths.** In horizontal rails, give children a fixed width and `shrink-0` so the rail snaps cleanly.
-- **Edge fade.** When there's more content past an edge, that edge fades to transparent. This is the "more content" affordance in horizontal mode, and a soft cue in vertical mode alongside the scrollbar.
-- **Scrollbar visibility.** Horizontal rails hide the scrollbar entirely; vertical and both-axis rails show an overlay scrollbar that fades in on hover / scroll (Base UI Scroll Area default).
-- **Keyboard.** The viewport is focusable (`tabIndex={0}`) so keyboard users can arrow through the content. Children keep their DOM tab order: Tab moves through items regardless of visual scroll direction.
-- **Trackpad + touch.** Native momentum scrolling; `[-webkit-overflow-scrolling:touch]` is set so iOS scrolls smoothly.
-- **Not for pagination.** Reach for `Pagination` when there are discrete pages of the same dataset, or a virtualization / infinite-scroll library for append-as-you-scroll feeds. Scroller is only for content that overflows one screen.
-</Callout>
+Vertical scrolling requires a bounded height. Its overlay scrollbar appears during hover or scrolling while edge fades indicate additional content.
+
+<ComponentPreview label="Vertical feed" sourcePath="src/app/docs/components/scroller/scroller-vertical-demo.tsx" previewClassName="bg-base">
+  <ScrollerVerticalDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "overflow", type: '"x" | "y" | "both"', default: '"x"', description: "Selects horizontal, vertical, or bidirectional scrolling." },
+  { name: "height / width", type: "number | string", default: '- / "100%"', description: "Sets bounded dimensions using pixels or CSS lengths." },
+  { name: "fade / fadeWidth", type: "boolean / number", default: "true / 32", description: "Controls directional edge masks and their pixel width." },
+  { name: "childrenContainerClassName", type: "string", description: "Styles the moving inner content wrapper." },
+  { name: "ariaLabel", type: "string", description: "Names the focusable scroll region." },
+]} />
+
+Horizontal mode hides its scrollbar and relies on edge fades plus native touch or trackpad movement. Vertical and bidirectional modes render an overlay vertical scrollbar. Fades are not applied in `both` mode.
+
+## Accessibility
+
+- Give every Scroller a concise `ariaLabel`, especially when no visible heading clearly identifies the region.
+- The viewport is focusable. Arrow keys scroll it using native browser behavior.
+- Interactive children retain normal DOM tab order even when some content begins outside the visible region.
+- Do not hide essential actions exclusively beyond an unannounced horizontal edge.
+- Preserve touch targets and enough spacing between interactive rail items.
+
+<PageNavigation />

@@ -64,7 +64,8 @@ export function AccordionItem({
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn(
-        variant === "bordered" && "border-t border-hairline last:border-b",
+        variant === "bordered" &&
+          "[&:not(:first-child)]:border-t [&:not(:first-child)]:border-hairline",
         variant === "card" && "rounded-[var(--radius-8)] border border-hairline px-4",
         className,
       )}

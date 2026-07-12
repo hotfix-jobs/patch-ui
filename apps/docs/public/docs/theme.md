@@ -1,0 +1,69 @@
+# Theme
+
+The shared color, typography, radius, elevation, motion, and focus tokens used by every Patch UI component.
+
+One copied stylesheet defines both light and dark themes. Components consume semantic tokens, so changing a role updates the complete system without editing individual component classes.
+
+## Color model
+
+Think about color by responsibility:
+
+```text
+base canvas
+└── layer surfaces
+    ├── fill controls
+    ├── interaction overlay
+    ├── readable ink
+    └── meaningful boundaries
+```
+
+* **Base and layers** establish the application canvas, primary content surface, and grouped content.
+* **Fills** belong to controls and metadata. `layer-hover` is the shared transparent interaction overlay.
+* **Ink** separates primary text, secondary context, placeholders, and disabled hints.
+* **Status** provides paired error, warning, and success treatments.
+* **Hairlines** range from quiet containment to stronger structural emphasis.
+
+Most product branding should begin by overriding `--primary` and `--on-primary`. Patch UI does not ship a separate accent family.
+
+## Typography
+
+Inter is the body and display family. JetBrains Mono is reserved for code, terminal output, keyboard shortcuts, and values presented as code.
+
+Compose size and weight independently, such as `text-small font-medium`. Body defaults to weight 450, headings to 500, and element styles provide line height. Avoid raw pixel type utilities when an existing semantic size fits.
+
+## Radius
+
+Radius follows component role rather than personal preference.
+
+Controls use radius 8, content and floating surfaces use radius 12, and metadata commonly uses radius 6. Full radius is explicit for pills and intrinsically circular geometry.
+
+## Elevation, motion, and focus
+
+* `shadow-card` belongs to elevated Card and small raised controls.
+* `shadow-menu`, `shadow-tooltip`, and `shadow-modal` match their overlay weight.
+* `duration-state` handles control feedback, while `duration-overlay` handles opening and closing.
+* `ease-standard` provides the shared timing curve and collapses with durations under reduced motion.
+* Focus remains neutral and independent from the product’s primary color.
+
+Editable fields use a crisp outline at the control edge. Other controls combine a compact keyboard-focus indicator with their normal interaction fill.
+
+## Customize the theme
+
+Override runtime tokens after importing the copied stylesheet. Components update without a rebuild.
+
+```css
+@import "tailwindcss";
+@import "../styles/patch-ui-tokens.css";
+
+:root {
+  --primary: #8b5cf6;
+  --on-primary: #ffffff;
+}
+
+.dark {
+  --primary: #a78bfa;
+  --on-primary: #0f0f10;
+}
+```
+
+Changing surfaces or readable text requires more care than changing radius or motion. Run the [Contrast Contract](/docs/contrast) after modifying primary, ink, base, layer, or fill values.

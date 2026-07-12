@@ -13,7 +13,6 @@ export {
 } from "./components/accordion";
 export { Button, buttonVariants, type ButtonProps } from "./components/button";
 export { Input, InputPrimitive, type InputProps } from "./components/input";
-export { SearchInput, type SearchInputProps } from "./components/search-input";
 export { Textarea, type TextareaProps } from "./components/textarea";
 export { Label } from "./components/label";
 export {
@@ -250,10 +249,6 @@ export {
 } from "./components/combobox";
 export { Progress, type ProgressProps } from "./components/progress";
 export { Separator, type SeparatorProps } from "./components/separator";
-export {
-  SectionLabel,
-  type SectionLabelProps,
-} from "./components/section-label";
 export {
   SidebarProvider,
   Sidebar,

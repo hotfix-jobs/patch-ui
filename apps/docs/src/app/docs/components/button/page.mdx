@@ -1,130 +1,81 @@
 import { ButtonDemo } from "./button-demo";
-
+import { ButtonSizingDemo } from "./button-sizing-demo";
+import { ButtonIconsDemo } from "./button-icons-demo";
 
 export const metadata = { title: "Button" };
 
-# Button
+export const usageCode = `<Button>Deploy Project</Button>`;
 
-A polymorphic button with intent-based variants, three sizes, rounded or pill shapes, icon support, and a loading state. Icon-only controls keep the selected shape.
+<PageHeader
+  title="Button"
+  description="An action control with intent-based variants, three sizes, optional icons, and loading behavior."
+/>
 
-<Install name="button" />
+Use Button for actions that change application state. Render it as a link when the interaction navigates to another location.
 
-<ComponentPreview label="Button Examples">
+<ComponentPreview label="Variants" sourcePath="src/app/docs/components/button/button-demo.tsx">
   <ButtonDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="button" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/button.json). The canonical implementation lives in [packages/react/src/components/button.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/button.tsx).
+
 ## Usage
 
-```tsx
-import { Button } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Basic
-<Button variant="primary">Deploy Project</Button>
+Button defaults to `variant="primary"`, `size="md"`, and `shape="rounded"`.
 
-// Variants
-<Button variant="primary">Primary</Button>
-<Button variant="secondary">Secondary</Button>
-<Button variant="tertiary">Tertiary</Button>
-<Button variant="outlined">Outlined</Button>
-<Button variant="warning">Warning</Button>
-<Button variant="destructive">Destructive</Button>
+## Choosing a variant
 
-// Sizes: 24 / 32 / 40 px
-<Button size="sm">Small</Button>
-<Button size="md">Medium</Button>
-<Button size="lg">Large</Button>
+- Use `primary` for the most important action in a view.
+- Use `secondary` for ordinary filled actions and `tertiary` for quiet toolbar or adjacent actions.
+- Use `outlined` when a transparent action needs an explicit boundary.
+- Use `soft` for a lower-emphasis action that still carries the primary color.
+- Reserve `warning` and `destructive` for actions with matching semantic consequences.
 
-// Icon-only Buttons keep the default rounded shape (aria-label required)
-<Button aria-label="Add" icon={<Plus />} />
+## Examples
 
-// Opt into a circular icon button
-<Button aria-label="Add" shape="pill" icon={<Plus />} />
+### Size and shape
 
-// Pill is opt-in for friendly CTAs and filter actions
-<Button shape="pill">Browse Items</Button>
+Use the shared size scale for control density. Pill shape is explicit, including for icon-only buttons that should be circular.
 
-// Loading state
-<Button loading>Saving…</Button>
+<ComponentPreview label="Size and shape" sourcePath="src/app/docs/components/button/button-sizing-demo.tsx">
+  <ButtonSizingDemo />
+</ComponentPreview>
 
-// As a link (polymorphic render prop)
-<Button render={<a href="/dashboard" />}>Go to Dashboard</Button>
-```
+### Icons and states
 
-## Props
+Icons reinforce an action label. Loading and disabled states prevent interaction while preserving the control's footprint.
+
+<ComponentPreview label="Icons and states" sourcePath="src/app/docs/components/button/button-icons-demo.tsx">
+  <ButtonIconsDemo />
+</ComponentPreview>
+
+## API reference
+
+The wrapper accepts native button attributes. The entries below cover behavior added by Patch UI. See the [canonical source](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/button.tsx) for exhaustive TypeScript definitions.
 
 <PropsTable
   props={[
-    {
-      name: "variant",
-      type: '"primary" | "secondary" | "outlined" | "tertiary" | "soft" | "warning" | "destructive"',
-      default: '"primary"',
-      description: "The visual style. `secondary` is a neutral filled control, while `outlined` provides an explicit hairline boundary on a transparent surface. Reserve `primary` for the most important action on a view; use `destructive` only for irreversible actions. `soft` uses the primary-soft highlight surface.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Height: 24 / 32 / 40 px.",
-    },
-    {
-      name: "shape",
-      type: '"rounded" | "pill"',
-      default: '"rounded"',
-      description: "Rounded uses radius-8. Pill uses full radius. The selected shape also applies to icon-only Buttons.",
-    },
-    {
-      name: "icon",
-      type: "ReactNode",
-      default: "-",
-      description: "An icon element rendered alongside the button text. When passed without children, renders as an icon-only button.",
-    },
-    {
-      name: "iconPosition",
-      type: '"left" | "right"',
-      default: '"left"',
-      description: "Which side of the label the icon appears on.",
-    },
-    {
-      name: "loading",
-      type: "boolean",
-      default: "false",
-      description: "Shows a spinner and disables the button.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the button, preventing interaction.",
-    },
-    {
-      name: "render",
-      type: "RenderProp<'button'>",
-      default: "-",
-      description: "Polymorphic render prop. Pass a different element (e.g. `<a>`) to change the rendered tag while keeping button styles.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "The button label content.",
-    },
+    { name: "variant", type: "\"primary\" | \"secondary\" | \"outlined\" | \"soft\" | \"tertiary\" | \"warning\" | \"destructive\"", default: "\"primary\"", description: "Selects the action hierarchy or semantic treatment." },
+    { name: "size", type: "\"sm\" | \"md\" | \"lg\"", default: "\"md\"", description: "Uses the shared 24, 32, or 40 pixel control heights." },
+    { name: "shape", type: "\"rounded\" | \"pill\"", default: "\"rounded\"", description: "Uses radius-8 or a full pill radius. Icon-only buttons respect the selected shape." },
+    { name: "icon / iconPosition", type: "ReactNode / \"left\" | \"right\"", default: "- / \"left\"", description: "Adds an icon beside the label. Passing an icon without children creates an icon-only button." },
+    { name: "loading", type: "boolean", default: "false", description: "Replaces the content with a spinner and disables interaction." },
+    { name: "render", type: "RenderProp<\"button\">", description: "Changes the semantic element while retaining Button styling and behavior." },
   ]}
 />
 
-<Callout title="Notes">
-- Each variant maps to a specific treatment: `primary` reads the `--primary` / `--on-primary` chain, `secondary` uses the neutral fill ladder, `outlined` uses a transparent surface with a hairline boundary, `soft` uses `--primary-soft`, `tertiary` is borderless with a hover tint, and semantic actions use their fixed role colors.
-- Reserve `primary` for the one hero action on a view. Reserve `destructive` for actions the user cannot undo without work.
-- Brand override: redefine `--primary`, `--on-primary`, `--primary-hover`, and `--primary-active` in a consumer stylesheet after the token import to swap the monochrome default for a chromatic brand color. Every primary Button picks it up without callsite edits.
-- Icon-only buttons: pass `icon` with no `children`. Button infers equal width and height while respecting `shape`; use `shape="pill"` when a circle is intentional. `aria-label` is required, and a development warning fires when it is missing.
-- Use `shape="pill"` selectively for friendly CTAs and filter actions. Standard form, toolbar, and settings actions should stay rounded.
-- Polymorphism: pass `render={<a href="…" />}` (or a `<Link>`) to render as an anchor with the button's styling and behavior.
-- `loading` swaps the content for a spinner and disables interaction so a double-tap can't fire twice.
-- Every size ships a hidden 44×44 touch target underneath, so the tap area works on coarse pointers even for a small button.
-- Labels: Title Case, verb + noun (`Deploy Project`, `Delete Member`). A lone `Submit` or `OK` tells the user nothing about what will happen.
-</Callout>
+## Accessibility
+
+- Give every icon-only Button an `aria-label`. Development builds warn when it is missing.
+- Render navigation as an anchor through `render={<a href="..." />}` rather than attaching navigation behavior to a button.
+- Loading buttons are disabled so repeated activation cannot submit an action twice.
+- Small visual sizes retain a 44 by 44 pixel touch target on coarse pointers.
+- Use action labels that describe the outcome, such as `Deploy Project` or `Delete Member`.
+
+<PageNavigation />

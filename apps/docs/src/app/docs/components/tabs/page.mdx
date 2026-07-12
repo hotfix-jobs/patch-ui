@@ -1,85 +1,92 @@
 import { TabsDemo } from "./tabs-demo";
-
+import { TabsIconsDemo } from "./tabs-icons-demo";
+import { TabsVerticalDemo } from "./tabs-vertical-demo";
 
 export const metadata = { title: "Tabs" };
 
-# Tabs
+export const usageCode = `<Tabs defaultValue="overview">
+  <TabsList aria-label="Project sections">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="activity">Activity</TabsTrigger>
+  </TabsList>
+  <TabsPanel value="overview">Project summary</TabsPanel>
+  <TabsPanel value="activity">Recent changes</TabsPanel>
+</Tabs>`;
 
-A quiet selected-navigation control built on Base UI Tabs. Triggers are borderless and use the shared interaction overlay for hover and selection. Horizontal and vertical orientations share the same state treatment.
+<PageHeader
+  title="Tabs"
+  description="A borderless selected-navigation control for switching between related panels in one view."
+/>
 
-<Install name="tabs" />
+Use Tabs when a small set of peer sections shares the same context and switching should not navigate to a new page. Use links when each destination needs its own URL.
 
-<ComponentPreview label="Tabs">
+<ComponentPreview label="Basic tabs" sourcePath="src/app/docs/components/tabs/tabs-demo.tsx">
   <TabsDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="tabs" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/tabs.json). The canonical implementation lives in [packages/react/src/components/tabs.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/tabs.tsx).
+
 ## Usage
 
-```tsx
-import { Tabs, TabsList, TabsTrigger, TabsPanel } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Horizontal (default)
-<Tabs defaultValue="overview">
-  <TabsList>
-    <TabsTrigger value="overview">Overview</TabsTrigger>
-    <TabsTrigger value="settings">Settings</TabsTrigger>
-  </TabsList>
-  <TabsPanel value="overview">...</TabsPanel>
-  <TabsPanel value="settings">...</TabsPanel>
-</Tabs>
+Each TabsTrigger and its TabsPanel share a unique value. Give TabsList an accessible name that describes the section set.
 
-// Vertical: list on the left, panel on the right
-<Tabs orientation="vertical" defaultValue="profile">
-  <TabsList className="w-44">
-    <TabsTrigger value="profile">Profile</TabsTrigger>
-    <TabsTrigger value="billing">Billing</TabsTrigger>
-  </TabsList>
-  <TabsPanel value="profile">...</TabsPanel>
-  <TabsPanel value="billing">...</TabsPanel>
-</Tabs>
+## Composition
+
+```text
+Tabs
+├── TabsList
+│   └── TabsTrigger
+└── TabsPanel
 ```
 
-## Props
+## Examples
 
-### Tabs
+### Icons and badge
 
-<PropsTable
-  props={[
-    {
-      name: "orientation",
-      type: '"horizontal" | "vertical"',
-      default: '"horizontal"',
-      description: "Layout direction. Horizontal puts the list on top; vertical puts the list on the left with the panel to its right.",
-    },
-    {
-      name: "defaultValue",
-      type: "string",
-      default: "-",
-      description: "Initially-selected tab value (uncontrolled).",
-    },
-    {
-      name: "value",
-      type: "string",
-      default: "-",
-      description: "Selected tab value (controlled).",
-    },
-    {
-      name: "onValueChange",
-      type: "(value: string) => void",
-      default: "-",
-      description: "Callback fired when the selected tab changes.",
-    },
-  ]}
-/>
+Use an icon to reinforce a short label and a badge for compact, useful metadata. Keep both supplemental to the text label.
 
-## Components
+<ComponentPreview label="Tabs with icons and a badge" sourcePath="src/app/docs/components/tabs/tabs-icons-demo.tsx">
+  <TabsIconsDemo />
+</ComponentPreview>
 
-- `Tabs` - root; accepts `orientation`, `defaultValue` or controlled `value`/`onValueChange`
-- `TabsList` - borderless container for triggers
-- `TabsTrigger` - individual tab; accepts `icon`, `badge` (numeric badges hide at 0), `tooltip` (for disabled), and carries `data-[active]` for active-state styling
-- `TabsPanel` - matched panel for a trigger value; horizontally adds `pt-6`, vertically becomes the flex-1 column beside the list
+### Vertical tabs
 
-<Callout title="Notes">
-- **States:** Hover and stored selection use `layer-hover`. Text weight and ARIA state distinguish the selected tab.
-- **Keyboard:** Base UI provides roving tabindex, arrow-key navigation, and Home / End. Keyboard focus uses the compact neutral indicator shared by non-editable controls.
-</Callout>
+Vertical orientation places the list beside a flexible panel while preserving the same selection and focus treatment.
+
+<ComponentPreview label="Vertical tabs" sourcePath="src/app/docs/components/tabs/tabs-vertical-demo.tsx">
+  <TabsVerticalDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "value / onValueChange", type: "string / (value: string) => void", description: "Controls the active tab." },
+  { name: "defaultValue", type: "string", description: "Sets the initial uncontrolled tab." },
+  { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Places the list above or beside its panels." },
+  { name: "TabsList.activateOnFocus", type: "boolean", default: "false", description: "Activates tabs immediately as arrow-key focus moves." },
+  { name: "TabsTrigger.icon / badge", type: "ReactNode / ReactNode | number", description: "Adds leading context and trailing metadata; a numeric zero badge is hidden." },
+  { name: "TabsTrigger.tooltip", type: "ReactNode", description: "Explains why a disabled tab is unavailable." },
+  { name: "TabsPanel.keepMounted", type: "boolean", default: "false", description: "Keeps inactive panel content mounted while hidden." },
+]} />
+
+## Keyboard behavior
+
+- Tab enters the active tab and then continues into the active panel.
+- Left and Right move focus in horizontal lists. Up and Down move focus in vertical lists.
+- Home and End move to the first or last enabled tab.
+- By default, Enter or Space activates the focused tab. Set `activateOnFocus` when arrow navigation should also activate immediately.
+- Disabled tabs are skipped during keyboard navigation.
+
+## Accessibility
+
+- Put the accessible name on TabsList with `aria-label` or `aria-labelledby`.
+- Keep labels concise and ensure each panel remains understandable when reached from its tab.
+- Use `keepMounted` only when preserving panel state or expensive content is important; hidden panels must not remain interactable.
+
+<PageNavigation />

@@ -30,7 +30,7 @@ export function CompoundComponents({ components }: CompoundComponentsProps) {
 
   return (
     <div className="my-6">
-      <Table>
+      <Table bordered>
         <TableHeader>
           <TableRow>
             <TableHead>Component</TableHead>

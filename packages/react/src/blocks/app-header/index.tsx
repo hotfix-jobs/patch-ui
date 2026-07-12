@@ -447,7 +447,7 @@ function AppHeaderMobilePanel(): React.ReactPortal | null {
           {right && Children.count(right) > 0 && (
             <div
               data-slot="app-header-mobile-footer"
-              className="flex items-center gap-2 border-t border-hairline p-4 [&>button]:w-full [&>a]:w-full"
+              className="flex items-center gap-2 border-t border-hairline p-4 [&>button]:min-w-0 [&>button]:flex-1 [&>a]:min-w-0 [&>a]:flex-1"
             >
               {right}
             </div>

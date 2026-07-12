@@ -2,43 +2,12 @@ import { SidebarDemo } from "./sidebar-demo";
 
 export const metadata = { title: "Sidebar" };
 
-# Sidebar
-
-A compound sidebar primitive for docs and app layouts. `SidebarProvider` owns open/collapsed state and wires a `Cmd+B` / `Ctrl+B` keyboard shortcut by default. On desktop the sidebar is a fixed-position column with a spacer that reserves width in flex flow; on mobile it becomes a `Sheet`-based drawer with focus trap, escape-to-close, and portal rendering.
-
-The desktop surface is borderless `layer-1`. Navigation items use the same hover, selected, and compact keyboard-focus states as Tabs.
-
-Inspired by shadcn/ui's Sidebar block. Ships the same compound API: `SidebarProvider`, `Sidebar`, `SidebarInset`, `SidebarHeader`, `SidebarContent`, `SidebarFooter`, `SidebarGroup`, `SidebarGroupLabel`, `SidebarMenu`, `SidebarMenuItem`, `SidebarMenuButton`, `SidebarTrigger`, and the `useSidebar` hook.
-
-<Install name="sidebar" />
-
-<ComponentPreview label="Sidebar">
-  <SidebarDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarInset,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@patchui/react";
-
-<SidebarProvider defaultOpen>
+export const usageCode = `<SidebarProvider>
   <Sidebar rounded>
-    <SidebarHeader>{/* brand */}</SidebarHeader>
+    <SidebarHeader>Workspace</SidebarHeader>
     <SidebarContent>
       <SidebarGroup>
-        <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+        <SidebarGroupLabel>Navigation</SidebarGroupLabel>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton active render={<Link href="/" />}>
@@ -50,52 +19,75 @@ import {
     </SidebarContent>
   </Sidebar>
   <SidebarInset>
-    <header>
-      <SidebarTrigger />
-    </header>
-    <main>{children}</main>
+    <SidebarTrigger />
+    {children}
   </SidebarInset>
-</SidebarProvider>
+</SidebarProvider>`;
+
+<PageHeader
+  title="Sidebar"
+  description="A responsive application sidebar with shared desktop, mobile, navigation, and trigger state."
+/>
+
+Use Sidebar for persistent application or documentation navigation. SidebarProvider coordinates desktop collapse, the mobile drawer, triggers, and an optional global keyboard shortcut.
+
+<ComponentPreview label="Navigation structure" sourcePath="src/app/docs/components/sidebar/sidebar-demo.tsx" previewClassName="bg-base">
+  <SidebarDemo />
+</ComponentPreview>
+
+## Installation
+
+<Install name="sidebar" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/sidebar.json). The canonical implementation lives in [packages/react/src/components/sidebar.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/sidebar.tsx).
+
+## Usage
+
+<Usage code={usageCode} />
+
+SidebarProvider must wrap Sidebar, SidebarInset, and every SidebarTrigger or `useSidebar` consumer. The bounded preview above demonstrates the real navigation slots without mounting the fixed Sidebar root inside the docs viewport.
+
+## Composition
+
+```text
+SidebarProvider
+├── Sidebar
+│   ├── SidebarHeader
+│   ├── SidebarContent
+│   │   └── SidebarGroup
+│   │       ├── SidebarGroupLabel
+│   │       └── SidebarMenu
+│   │           └── SidebarMenuItem
+│   │               └── SidebarMenuButton
+│   └── SidebarFooter
+└── SidebarInset
+    └── SidebarTrigger
 ```
 
-Use `rounded` when the sidebar is presented as an inset surface. Leave it off for a flush application edge.
+## API reference
 
-## SidebarProvider props
+<PropsTable props={[
+  { name: "SidebarProvider.open / onOpenChange", type: "boolean / (open: boolean) => void", description: "Controls desktop visibility." },
+  { name: "SidebarProvider.defaultOpen", type: "boolean", default: "true", description: "Sets initial uncontrolled desktop visibility." },
+  { name: "SidebarProvider.side", type: '"left" | "right"', default: '"left"', description: "Selects the desktop edge and mobile drawer side." },
+  { name: "SidebarProvider.shortcut", type: "string | null", default: '"mod+b"', description: "Sets or disables the global toggle shortcut." },
+  { name: "Sidebar.collapsible", type: '"offcanvas" | "none"', default: '"offcanvas"', description: "Slides closed or remains permanently visible on desktop." },
+  { name: "Sidebar.width / topOffset", type: "number / number", default: "256 / 0", description: "Sets desktop width and fixed-header offset in pixels." },
+  { name: "SidebarMenuButton.active", type: "boolean", default: "false", description: "Marks current navigation with aria-current and selected presentation." },
+]} />
 
-<PropsTable
-  props={[
-    { name: "defaultOpen", type: "boolean", default: "true", description: "Initial desktop open state." },
-    { name: "open", type: "boolean", default: "-", description: "Controlled desktop open state." },
-    { name: "onOpenChange", type: "(open: boolean) => void", default: "-", description: "Called when the desktop open state changes." },
-    { name: "side", type: '"left" | "right"', default: '"left"', description: "Which side of the viewport the sidebar occupies." },
-    { name: "shortcut", type: "string | null", default: '"mod+b"', description: "Global keyboard shortcut that toggles the sidebar. Set null to disable." },
-  ]}
-/>
+Use Sidebar `rounded` for an inset surface and `bordered` only when a visible structural boundary is required. SidebarMenuButton `render` composes a router link while preserving navigation styling.
 
-## Sidebar props
+## Responsive behavior
 
-<PropsTable
-  props={[
-    { name: "collapsible", type: '"offcanvas" | "none"', default: '"offcanvas"', description: "Behavior when collapsed. offcanvas slides out of view; none keeps it always visible." },
-    { name: "rounded", type: "boolean", default: "false", description: "Rounds the desktop sidebar surface for inset layouts." },
-    { name: "bordered", type: "boolean", default: "false", description: "Adds a hairline boundary around the desktop sidebar surface." },
-    { name: "width", type: "number", default: "256", description: "Fixed pixel width." },
-    { name: "topOffset", type: "number", default: "0", description: "Offset from the top of the viewport in pixels. Use to sit below a fixed header." },
-  ]}
-/>
+At `lg` and above, Sidebar is fixed while a spacer reserves its width beside SidebarInset. Below `lg`, the same content renders inside a Sheet drawer with separate mobile open state. SidebarTrigger toggles the appropriate state for the current viewport.
 
-## SidebarMenuButton props
+## Accessibility
 
-<PropsTable
-  props={[
-    { name: "active", type: "boolean", default: "false", description: "Marks the current page. Sets aria-current='page' and applies the highlight fill." },
-    { name: "render", type: "ReactElement", default: "<button type='button' />", description: "Base UI render prop for polymorphism. Pair with a Link component for nav." },
-  ]}
-/>
+- Render navigation destinations as links and mark only the current destination `active`.
+- SidebarMenuButton adds `aria-current="page"` for active navigation.
+- SidebarTrigger has an accessible Toggle sidebar name.
+- Mobile focus containment, Escape dismissal, backdrop behavior, and focus return come from Sheet.
+- Avoid shortcut collisions. Set `shortcut={null}` when the application already owns Command B or Control B.
 
-<Callout title="Notes">
-- **Cmd+B shortcut** ships wired by default. Pass `shortcut="mod+i"` to change the key or `shortcut={null}` to disable.
-- **Mobile drawer** delegates to `Sheet`, so it inherits focus trap, escape-to-close, and portal rendering. No manual backdrop wiring.
-- **SidebarInset** is the main content column. It sits alongside the sidebar via a shared flex row provided by `SidebarProvider`. If you use Sidebar without SidebarInset, make sure the sibling main element is a flex-1 block.
-- **Active state** is set with the `active` prop on `SidebarMenuButton`. In routing frameworks, compute active from `pathname === item.href` and pass through.
-</Callout>
+<PageNavigation />

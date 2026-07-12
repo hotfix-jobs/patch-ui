@@ -3,9 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 
 import { Check, Copy } from "@phosphor-icons/react/dist/ssr";
-/** Per-component install command. Usage in MDX: <Install name="button" /> */
-export function Install({ name }: { name: string }) {
-  const command = `npx shadcn add @patchui/${name}`;
+export function CopyCommand({ command }: { command: string }) {
   const [copied, setCopied] = useState(false);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -38,7 +36,7 @@ export function Install({ name }: { name: string }) {
         type="button"
         onClick={handleCopy}
         className={`absolute end-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-[var(--radius-8)] outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)] ${copied ? "text-success" : "text-ink-muted"}`}
-        aria-label={copied ? "Copied" : "Copy install command"}
+        aria-label={copied ? "Copied" : "Copy command"}
         data-slot="install-copy"
       >
         {copied ? (
@@ -49,4 +47,9 @@ export function Install({ name }: { name: string }) {
       </button>
     </div>
   );
+}
+
+/** Per-component install command. Usage in MDX: <Install name="button" /> */
+export function Install({ name }: { name: string }) {
+  return <CopyCommand command={`npx shadcn@latest add @patchui/${name}`} />;
 }

@@ -1,22 +1,59 @@
-"use client";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+import { codeToHtml } from "shiki";
 
-import { type ReactNode } from "react";
+import { ComponentPreviewClient } from "./component-preview-client";
+import { SourceCodeClient } from "./source-code-client";
 
 interface ComponentPreviewProps {
-  children: ReactNode;
+  children: React.ReactNode;
+  label?: string;
+  code?: string;
+  sourcePath?: string;
+  filename?: string;
+  language?: string;
+  previewClassName?: string;
+  resettable?: boolean;
 }
 
-/**
- * Renders a live preview of a React component in a styled container.
- * Used in MDX pages to show interactive component demos.
- */
-export function ComponentPreview({ children }: ComponentPreviewProps) {
+export async function ComponentPreview({
+  children,
+  label,
+  code,
+  sourcePath,
+  filename,
+  language = "tsx",
+  previewClassName,
+  resettable,
+}: ComponentPreviewProps) {
+  const source = sourcePath
+    ? await readFile(resolve(process.cwd(), sourcePath), "utf8")
+    : code;
+  const highlightedCode = source
+    ? await codeToHtml(source, {
+        lang: language,
+        themes: { light: "github-light", dark: "github-dark" },
+      })
+    : undefined;
+
   return (
-    <div
-      className="my-6 overflow-hidden rounded-[var(--radius-12)] bg-layer-1"
-      data-slot="component-preview"
+    <ComponentPreviewClient
+      label={label}
+      code={source}
+      previewClassName={previewClassName}
+      resettable={resettable}
+      codeView={
+        source && highlightedCode ? (
+          <SourceCodeClient
+            code={source}
+            highlightedCode={highlightedCode}
+            filename={filename}
+            embedded
+          />
+        ) : undefined
+      }
     >
-      <div className="w-full min-w-0 overflow-hidden p-6">{children}</div>
-    </div>
+      {children}
+    </ComponentPreviewClient>
   );
 }

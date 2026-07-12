@@ -1,114 +1,50 @@
 import { SwitchDemo } from "./switch-demo";
+import { SwitchStatesDemo } from "./switch-states-demo";
 
 export const metadata = { title: "Switch" };
+export const usageCode = `<Switch aria-label="Enable notifications" />`;
 
-# Switch
+<PageHeader title="Switch" description="A binary setting control for changes that take effect immediately." />
 
-A binary on/off slider for settings that take effect immediately. Three sizes, a monochrome on-state, and optional icons inside the thumb.
+Use Switch for immediate on or off settings. Use Checkbox when values are collected and submitted together.
+
+<ComponentPreview label="Controlled switch" sourcePath="src/app/docs/components/switch/switch-demo.tsx"><SwitchDemo /></ComponentPreview>
+
+## Installation
 
 <Install name="switch" />
 
-<ComponentPreview label="Switch Examples">
-  <SwitchDemo />
-</ComponentPreview>
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/switch.json). The canonical implementation lives in [packages/react/src/components/switch.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/switch.tsx).
 
 ## Usage
 
-```tsx
-import { Switch } from "@patchui/react";
-import { Lock, LockOpen } from "@phosphor-icons/react/dist/ssr";
-// Uncontrolled
-<Switch defaultChecked />
+<Usage code={usageCode} />
 
-// Controlled
-const [checked, setChecked] = useState(false);
-<Switch checked={checked} onCheckedChange={setChecked} />
+The on state uses the monochrome ink token. Use Toggle for toolbar controls represented through `aria-pressed`.
 
-// Sizes
-<Switch size="sm" />
-<Switch size="md" />  // default
-<Switch size="lg" />
+## Examples
 
-// Icons inside the thumb, one per state
-<Switch
-  icon={{ checked: <Lock />, unchecked: <Unlock /> }}
-/>
+### Size, icons, and disabled state
 
-// Disabled
-<Switch disabled />
-```
+Keep the setting label stable while switch semantics communicate whether it is on or off.
 
-## Props
+<ComponentPreview label="Size, icons, and disabled state" sourcePath="src/app/docs/components/switch/switch-states-demo.tsx"><SwitchStatesDemo /></ComponentPreview>
 
-<PropsTable
-  props={[
-    {
-      name: "checked",
-      type: "boolean",
-      default: "-",
-      description: "Controlled active state.",
-    },
-    {
-      name: "defaultChecked",
-      type: "boolean",
-      default: "false",
-      description: "Uncontrolled initial active state.",
-    },
-    {
-      name: "onCheckedChange",
-      type: "(checked: boolean, details) => void",
-      default: "-",
-      description: "Fired when the switch is toggled.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Track size preset.",
-    },
-    {
-      name: "icon",
-      type: "{ checked?: ReactNode; unchecked?: ReactNode }",
-      default: "-",
-      description: "Icons rendered inside the thumb. `checked` shows when on, `unchecked` shows when off. Icons auto-size to ~60% of the thumb.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the switch.",
-    },
-    {
-      name: "readOnly",
-      type: "boolean",
-      default: "false",
-      description: "Prevents the user from toggling.",
-    },
-    {
-      name: "required",
-      type: "boolean",
-      default: "false",
-      description: "Requires the switch to be on before form submission.",
-    },
-    {
-      name: "name",
-      type: "string",
-      default: "-",
-      description: "Field name when submitted as part of a form.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes on the switch root.",
-    },
-  ]}
-/>
+## API reference
 
-<Callout title="Notes">
-- Reach for Switch when the state is a setting that saves the moment the user flips it: `Dark mode`, `Enable notifications`. Use `Checkbox` when the value only commits with a form submit.
-- On-state uses monochrome `--ink`, independent from the brandable `--primary` action token. Semantic colored switches are not supported; use a confirmation flow when changing the setting has serious consequences.
-- Icons inside the thumb make the state readable without a label: a lock/unlock pair, sun/moon, on/off. Icons inherit `text-ink` and size to ~60% of the thumb.
-- Rendered as a `<button role="switch">` on top of a hidden `<input type="checkbox">`, so both keyboard users and native forms work as expected.
-- For the toolbar press-button pattern (Bold / Italic / Star), reach for `Toggle`: it's a different behavior with `aria-pressed` state instead of a slider.
-</Callout>
+Switch accepts the underlying Base UI switch props. These fields add Patch UI behavior.
+
+<PropsTable props={[
+  { name: "checked / onCheckedChange", type: "boolean / (checked: boolean, details) => void", description: "Controls the active state." },
+  { name: "defaultChecked", type: "boolean", default: "false", description: "Sets the initial uncontrolled state." },
+  { name: "size", type: "\"sm\" | \"md\" | \"lg\"", default: "\"md\"", description: "Selects a track and thumb size preset." },
+  { name: "icon", type: "{ checked?: ReactNode; unchecked?: ReactNode }", description: "Adds state-specific icons inside the thumb." },
+]} />
+
+## Accessibility
+
+- Give every Switch a visible label or `aria-label` describing the setting.
+- The label should describe the setting, while switch semantics announce its current state.
+- Do not use Switch for destructive actions that require confirmation.
+
+<PageNavigation />

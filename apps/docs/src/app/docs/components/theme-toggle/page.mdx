@@ -1,106 +1,85 @@
+import { ThemeToggleControlledDemo } from "./theme-toggle-controlled-demo";
 import { ThemeToggleDemo } from "./theme-toggle-demo";
+import { ThemeToggleSizesDemo } from "./theme-toggle-sizes-demo";
 
+export const metadata = { title: "Theme Toggle" };
 
-export const metadata = { title: "ThemeToggle" };
+export const usageCode = `<ThemeToggle />`;
 
-# ThemeToggle
+<PageHeader
+  title="Theme Toggle"
+  description="An icon button that switches between light and dark color themes."
+/>
 
-A light/dark mode toggle button with CSS-transitioned sun/moon icons. Works uncontrolled with localStorage persistence, or controlled via props. Applies the `.dark` class to `<html>` by default.
+Use Theme Toggle for a compact theme control in a header, sidebar, or settings surface. It can manage the document theme itself or integrate with an existing theme provider.
 
-<Install name="theme-toggle" />
-
-<ComponentPreview label="ThemeToggle Examples">
+<ComponentPreview label="Theme toggle" sourcePath="src/app/docs/components/theme-toggle/theme-toggle-demo.tsx">
   <ThemeToggleDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="theme-toggle" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/theme-toggle.json). The canonical implementation lives in [packages/react/src/components/theme-toggle.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/theme-toggle.tsx).
+
 ## Usage
 
-```tsx
-import { ThemeToggle } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Uncontrolled - persists to localStorage, applies .dark class
-<ThemeToggle />
+In uncontrolled mode, Theme Toggle reads the saved theme or system preference, updates the `.dark` class on the document, and persists later changes to local storage.
 
-// Controlled
-const [theme, setTheme] = useState<"light" | "dark">("light");
-<ThemeToggle
-  theme={theme}
-  onThemeChange={setTheme}
-/>
+## Examples
 
-// With next-themes
-import { useTheme } from "next-themes";
+### Controlled
 
-function MyToggle() {
-  const { resolvedTheme, setTheme } = useTheme();
-  return (
-    <ThemeToggle
-      theme={resolvedTheme as "light" | "dark"}
-      onThemeChange={setTheme}
-      applyClass={false}
-      storageKey={false}
-    />
-  );
-}
-```
+Control the theme when an application already owns theme state. Disable class application and storage when a provider handles those responsibilities.
 
-## Flash Prevention
+<ComponentPreview label="Controlled theme" sourcePath="src/app/docs/components/theme-toggle/theme-toggle-controlled-demo.tsx">
+  <ThemeToggleControlledDemo />
+</ComponentPreview>
 
-Add this inline script to your `<head>` to prevent a flash of wrong theme on page load:
+### Sizes
+
+Choose the size that matches the surrounding controls.
+
+<ComponentPreview label="Theme toggle sizes" sourcePath="src/app/docs/components/theme-toggle/theme-toggle-sizes-demo.tsx">
+  <ThemeToggleSizesDemo />
+</ComponentPreview>
+
+## Prevent theme flash
+
+Add a small inline script to the document head so the saved or system theme is applied before the page paints.
 
 ```html
 <script>
-  (function() {
-    var t = localStorage.getItem('patch-ui-theme');
-    if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    if (t === 'dark') document.documentElement.classList.add('dark');
+  (function () {
+    var theme = localStorage.getItem("patch-ui-theme");
+    if (!theme) {
+      theme = matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+    if (theme === "dark") document.documentElement.classList.add("dark");
   })();
 </script>
 ```
 
-## Props
+## API reference
 
-<PropsTable
-  props={[
-    {
-      name: "theme",
-      type: '"light" | "dark" | "system"',
-      default: "-",
-      description: "Controlled theme value. Omit for uncontrolled mode.",
-    },
-    {
-      name: "onThemeChange",
-      type: "(theme: ResolvedTheme) => void",
-      default: "-",
-      description: "Called when the theme changes.",
-    },
-    {
-      name: "storageKey",
-      type: "string | false",
-      default: '"patch-ui-theme"',
-      description: "localStorage key for persistence. Set to false to disable.",
-    },
-    {
-      name: "applyClass",
-      type: "boolean",
-      default: "true",
-      description: "Whether to toggle the .dark class on <html>.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Size of the toggle button.",
-    },
-  ]}
-/>
+<PropsTable props={[
+  { name: "theme", type: '"light" | "dark" | "system"', description: "Controls the requested theme. Omit for uncontrolled behavior." },
+  { name: "onThemeChange", type: "(theme: ResolvedTheme) => void", description: "Runs with the resolved light or dark theme after activation." },
+  { name: "storageKey", type: "string | false", default: '"patch-ui-theme"', description: "Sets the local storage key, or disables persistence." },
+  { name: "applyClass", type: "boolean", default: "true", description: "Controls whether the component updates the document’s dark class." },
+  { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Matches the shared control size scale." },
+]} />
 
+## Accessibility
 
-<Callout title="Notes">
-- Uncontrolled mode is the common path: ThemeToggle reads from localStorage on mount, applies the `.dark` class to `<html>`, and persists on every toggle. No provider needed.
-- For controlled mode (usually alongside `next-themes`), pass `theme` and `onThemeChange`, then set `applyClass={false}` and `storageKey={false}` so ThemeToggle doesn't double-write.
-- SSR-safe via `useSyncExternalStore`: the button renders a blank placeholder before hydration so the first client render matches the server.
-- The sun/moon icons crossfade and rotate with token-based CSS transitions. Reduced motion swaps them instantly.
-- The icon-only control inherits Button's default rounded shape so it aligns with header and toolbar utilities.
-- If you need a 3-option picker (Light / System / Dark) with System as a first-class option, compose one with `ToggleGroup` and three icons.
-</Callout>
+- The button label announces the theme that activation will switch to.
+- The icon is decorative and does not replace the accessible button name.
+- Theme changes should preserve readable contrast in both modes.
+- Icon motion is removed when reduced motion is preferred.
+
+<PageNavigation />

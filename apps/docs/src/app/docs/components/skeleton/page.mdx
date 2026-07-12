@@ -1,55 +1,68 @@
 import { SkeletonDemo } from "./skeleton-demo";
-
+import { SkeletonRevealDemo } from "./skeleton-reveal-demo";
 
 export const metadata = { title: "Skeleton" };
 
-# Skeleton
+export const usageCode = `<div aria-busy="true" aria-label="Loading profile">
+  <div className="flex items-start gap-4">
+    <Skeleton shape="pill" width={40} height={40} />
+    <div className="flex flex-1 flex-col gap-2">
+      <Skeleton height={16} width="35%" />
+      <Skeleton height={16} width="70%" />
+    </div>
+  </div>
+</div>`;
 
-A pulsing placeholder that indicates content is loading. Style with className to match the shape of the content being loaded.
+<PageHeader
+  title="Skeleton"
+  description="A visual placeholder that preserves content shape while asynchronous data is loading."
+/>
 
-<Install name="skeleton" />
+Use Skeleton when loading content has a predictable final layout. Use Spinner when the eventual shape is unknown or the wait is tied to one compact action.
 
-<ComponentPreview label="Skeleton Examples">
+<ComponentPreview label="Profile placeholder" sourcePath="src/app/docs/components/skeleton/skeleton-demo.tsx">
   <SkeletonDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="skeleton" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/skeleton.json). The canonical implementation lives in [packages/react/src/components/skeleton.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/skeleton.tsx).
+
 ## Usage
 
-```tsx
-import { Skeleton } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Text line
-<Skeleton className="h-4 w-full" />
+Match placeholder dimensions closely to the final content so loading does not create avoidable layout shifts.
 
-// Circle (avatar placeholder)
-<Skeleton className="h-12 w-12 rounded-full" />
+## Examples
 
-// Card layout
-<div className="flex items-start gap-4">
-  <Skeleton className="h-10 w-10 rounded-full" />
-  <div className="flex flex-1 flex-col gap-2">
-    <Skeleton className="h-4 w-1/3" />
-    <Skeleton className="h-4 w-full" />
-  </div>
-</div>
-```
+### Reveal content
 
-## Props
+Use `show` when the same component boundary should switch from its placeholder to loaded children.
 
-<PropsTable
-  props={[
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "CSS classes to control size, shape, and border-radius. Required to give the skeleton visible dimensions.",
-    },
-  ]}
-/>
+<ComponentPreview label="Reveal content" sourcePath="src/app/docs/components/skeleton/skeleton-reveal-demo.tsx">
+  <SkeletonRevealDemo />
+</ComponentPreview>
 
+## API reference
 
-<Callout title="Notes">
-- **Shape via className:** Skeleton renders as an empty `div` with a pulse animation and rounded corners. Use Tailwind utilities like `h-4 w-full` for text lines, `h-12 w-12 rounded-full` for avatars, etc.
-- **Animation:** Uses a CSS `pulse` animation to indicate loading. The animation is inherited and cannot be disabled via props.
-- **Composition:** Compose multiple Skeleton elements in a flex layout to represent complex content structures like cards, lists, or profiles.
-</Callout>
+<PropsTable props={[
+  { name: "width / height", type: "number | string", description: "Sets pixel or CSS-length dimensions." },
+  { name: "shape", type: '"rounded" | "pill" | "squared"', default: '"rounded"', description: "Selects radius-6, full-radius, or square geometry." },
+  { name: "animated", type: "boolean", default: "true", description: "Enables the token-based pulse animation." },
+  { name: "show / children", type: "boolean / ReactNode", default: "true / -", description: "Renders the skeleton while true and its children while false." },
+]} />
+
+Classes and inline style can further refine geometry, but explicit width, height, and shape keep common placeholders readable in source.
+
+## Accessibility
+
+- Skeleton is decorative and hidden from assistive technology.
+- Put `aria-busy="true"` on the content region being updated, then remove it when loading completes.
+- Add a concise status message when people need confirmation that loading is in progress; do not create one live region per placeholder.
+- Pulse animation stops under reduced-motion preferences.
+- Preserve the final reading and tab order when content replaces the placeholders.
+
+<PageNavigation />

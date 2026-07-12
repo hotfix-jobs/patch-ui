@@ -1,151 +1,68 @@
 import { SliderDemo } from "./slider-demo";
-
+import { SliderRangeDemo } from "./slider-range-demo";
 
 export const metadata = { title: "Slider" };
 
-# Slider
+export const usageCode = `<div className="flex flex-col gap-2">
+  <span className="text-small font-medium text-ink">Volume</span>
+  <Slider defaultValue={60} ariaLabel="Volume">
+    <SliderValue />
+  </Slider>
+</div>`;
 
-A slider for selecting a single value or a range, with built-in track, thumb rendering, and an optional value display.
+<PageHeader
+  title="Slider"
+  description="A continuous or stepped control for choosing one numeric value or a bounded range."
+/>
 
-<Install name="slider" />
+Use Slider when relative position matters more than exact entry, such as volume, opacity, or a price range. Use Input when precision is the primary task.
 
-<ComponentPreview label="Slider Examples">
+<ComponentPreview label="Volume slider" sourcePath="src/app/docs/components/slider/slider-demo.tsx">
   <SliderDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="slider" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/slider.json). The canonical implementation lives in [packages/react/src/components/slider.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/slider.tsx).
+
 ## Usage
 
-```tsx
-import { Slider, SliderValue } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Single value
-<Slider defaultValue={50} />
+Render SliderValue or nearby text so the current value is visible. Set bounds and step to real product constraints rather than arbitrary percentages.
 
-// With value display
-<Slider defaultValue={50}>
-  <SliderValue />
-</Slider>
+## Examples
 
-// Range (two thumbs)
-<Slider defaultValue={[20, 80]} />
+### Range with numeric inputs
 
-// Custom step
-<Slider defaultValue={50} step={10} min={0} max={100} />
+An array creates one thumb per value. Numeric start and end inputs provide precise entry alongside the range track.
 
-// Controlled
-const [value, setValue] = useState(30);
-<Slider value={value} onValueChange={(v) => setValue(v)} />
+<ComponentPreview label="Range with numeric inputs" sourcePath="src/app/docs/components/slider/slider-range-demo.tsx">
+  <SliderRangeDemo />
+</ComponentPreview>
 
-// Range with numeric inputs on each end (range mode only)
-const [range, setRange] = useState([50, 75]);
-<Slider
-  value={range}
-  onValueChange={setRange}
-  showStartInput
-  showEndInput
-/>
-```
+## API reference
 
-## Props
+<PropsTable props={[
+  { name: "value / onValueChange", type: "number | number[] / (value, details) => void", description: "Controls one value or an array of range values." },
+  { name: "defaultValue", type: "number | number[]", default: "min", description: "Sets the initial uncontrolled value and number of thumbs." },
+  { name: "min / max", type: "number / number", default: "0 / 100", description: "Sets the allowed numeric bounds." },
+  { name: "step", type: "number", default: "1", description: "Sets the increment used by pointer and keyboard interaction." },
+  { name: "onValueCommitted", type: "(value, details) => void", description: "Runs when a drag or keyboard change is committed." },
+  { name: "showStartInput / showEndInput", type: "boolean / boolean", default: "false / false", description: "Adds precise numeric inputs for a two-value range." },
+  { name: "ariaLabel", type: "string | string[]", description: "Names one thumb or each range thumb for assistive technology." },
+]} />
 
-### Slider
+SliderValue is an optional child that formats and displays the current value. The underlying Base UI Slider props remain available for advanced formatting, form integration, and thumb collision behavior.
 
-<PropsTable
-  props={[
-    {
-      name: "defaultValue",
-      type: "number | number[]",
-      default: "[min]",
-      description: "The initial value. Pass an array for a range slider with multiple thumbs.",
-    },
-    {
-      name: "value",
-      type: "number | number[]",
-      default: "-",
-      description: "The controlled value. Use with onValueChange.",
-    },
-    {
-      name: "min",
-      type: "number",
-      default: "0",
-      description: "The minimum allowed value.",
-    },
-    {
-      name: "max",
-      type: "number",
-      default: "100",
-      description: "The maximum allowed value.",
-    },
-    {
-      name: "step",
-      type: "number",
-      default: "1",
-      description: "The step increment. The slider snaps to multiples of this value.",
-    },
-    {
-      name: "orientation",
-      type: '"horizontal" | "vertical"',
-      default: '"horizontal"',
-      description: "The orientation of the slider.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the slider, preventing interaction.",
-    },
-    {
-      name: "onValueChange",
-      type: "(value, details) => void",
-      default: "-",
-      description: "Callback fired while the slider value changes (during drag or keyboard input).",
-    },
-    {
-      name: "onValueCommitted",
-      type: "(value, details) => void",
-      default: "-",
-      description: "Callback fired when the user finishes dragging or releases the slider.",
-    },
-    {
-      name: "showStartInput",
-      type: "boolean",
-      default: "false",
-      description: "Renders a small numeric Input to the left of the track, wired to values[0]. Range mode only.",
-    },
-    {
-      name: "showEndInput",
-      type: "boolean",
-      default: "false",
-      description: "Renders a small numeric Input to the right of the track, wired to values[1]. Range mode only.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes applied to the slider root.",
-    },
-  ]}
-/>
+## Accessibility
 
-### SliderValue
+- Provide `ariaLabel` for one thumb or an ordered label array for every range thumb.
+- Keep a visible label and value near the track; accessible names do not replace visible context.
+- Arrow keys change by `step`. Page Up and Page Down make larger changes, while Home and End move to the bounds.
+- Use `onValueChange` for live preview and `onValueCommitted` for expensive persistence.
+- Pair range sliders with numeric inputs when exact values matter.
 
-<PropsTable
-  props={[
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes applied to the value display.",
-    },
-  ]}
-/>
-
-
-<Callout title="Notes">
-- Reach for a slider when the shape of the value matters more than precision: bandwidth caps, opacity, audio volume, color channels. For exact values (port numbers, memory limits), pair the slider with a numeric `<Input>` so keyboard users can type.
-- Pass a sensible `step` (`1`, `5`, `10%`) so dragging never produces `47.83291`. Clamp `min` and `max` to real product limits.
-- Always render the live value next to the track and label what the number represents (`Sample Rate · 44 kHz`). The track alone doesn't say what's being adjusted.
-- Range mode: pass an array to `defaultValue` or `value` (`[20, 80]`) and the slider renders one thumb per value.
-- `onValueChange` fires continuously: good for live preview. `onValueCommitted` fires on drag-end: good for saving to a database.
-- The native arrow keys, Page Up/Down, and Home/End move the thumb: don't intercept those key handlers.
-</Callout>
+<PageNavigation />

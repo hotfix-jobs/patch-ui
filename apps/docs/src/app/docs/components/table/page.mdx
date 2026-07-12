@@ -1,36 +1,8 @@
 import { TableDemo } from "./table-demo";
 
-
 export const metadata = { title: "Table" };
 
-# Table
-
-Composable native table primitives with clear horizontal dividers, restrained typography, and compact sorting controls.
-
-<Install name="table" />
-
-<ComponentPreview label="Table Example">
-  <TableDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableFooter,
-  TableRow,
-  TableHead,
-  TableSortButton,
-  TableCell,
-  TableCaption,
-  TableEmpty,
-} from "@patchui/react";
-
-// Default: open table with horizontal row dividers
-<Table>
+export const usageCode = `<Table>
   <TableHeader>
     <TableRow>
       <TableHead>Plan</TableHead>
@@ -43,147 +15,65 @@ import {
       <TableCell align="right">$49</TableCell>
     </TableRow>
   </TableBody>
-</Table>
+</Table>`;
 
-// Optional outer boundary
-<Table bordered>...</Table>
+<PageHeader
+  title="Table"
+  description="Native table primitives for structured data, sorting, selection, density, and responsive overflow."
+/>
 
-// Hover for actionable rows
-<Table interactive>...</Table>
+Use Table for data whose row and column relationships are meaningful. Use layout primitives rather than a table when content does not have tabular semantics.
 
-// Density
-<Table size="sm">...</Table>
+<ComponentPreview label="Member table" sourcePath="src/app/docs/components/table/table-demo.tsx">
+  <TableDemo />
+</ComponentPreview>
 
-// Selected row
-<TableRow selected onClick={...}>...</TableRow>
+## Installation
 
-// Compact sort control
-<TableHead aria-sort="ascending">
-  <TableSortButton direction="asc" onClick={...}>Name</TableSortButton>
-</TableHead>
+<Install name="table" />
 
-// Sticky header inside a fixed-height scroll container
-<div className="h-64 overflow-y-auto">
-  <Table scrollable={false} stickyHeader>...</Table>
-</div>
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/table.json). The canonical implementation lives in [packages/react/src/components/table.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/table.tsx).
 
-// Empty state
-<TableBody>
-  <TableEmpty colSpan={4}>No results.</TableEmpty>
-</TableBody>
-```
+## Usage
 
-## Props
+<Usage code={usageCode} />
 
-### Table
+Every part renders its corresponding native table element, so browser table semantics and native attributes are preserved.
+
+## Structural behavior
+
+- The header provides the primary column divider. Body rows use quiet horizontal dividers.
+- Numeric cells should use `align="right"`, which also enables tabular numerals.
+- Sorting state belongs on `aria-sort` on `TableHead`; `TableSortButton` provides the interactive control and direction icon.
+- Selected rows expose `aria-selected`. Use `interactive` on the root when rows are actionable.
+- `TableEmpty` must span the visible columns through `colSpan`.
+
+## API reference
+
+The primitives accept their corresponding native table attributes. The entries below cover behavior added by Patch UI. See the [canonical source](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/table.tsx) for exhaustive TypeScript definitions.
 
 <PropsTable
   props={[
-    {
-      name: "bordered",
-      type: "boolean",
-      default: "false",
-      description: "Adds a layer-1 container with a hairline boundary and radius-12. Horizontal row dividers remain in both modes.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md"',
-      default: '"md"',
-      description: "Row density. `md` (default) uses standard header height (`h-9`) and cell padding (`py-2.5`). `sm` tightens both (`h-7`, `py-1.5`) for dense grids.",
-    },
-    {
-      name: "interactive",
-      type: "boolean",
-      default: "false",
-      description: "Adds a shared hover background to actionable rows without removing their dividers.",
-    },
-    {
-      name: "scrollable",
-      type: "boolean",
-      default: "true",
-      description: "Wrap the table in a horizontally-scrollable container so wide tables stay usable on narrow viewports. Set `false` if you're managing scroll yourself (e.g. inside a fixed-height sticky-header container).",
-    },
-    {
-      name: "stickyHeader",
-      type: "boolean",
-      default: "false",
-      description: "Pin the header row to the top of its scroll container. Consumer must give the container a fixed height for the sticky to have room to work.",
-    },
+    { name: "Table.bordered", type: "boolean", default: "false", description: "Adds a radius-12 layer surface with an outer hairline." },
+    { name: "Table.size", type: "\"sm\" | \"md\"", default: "\"md\"", description: "Selects compact or standard row density." },
+    { name: "Table.interactive", type: "boolean", default: "false", description: "Adds the shared hover treatment to actionable body rows." },
+    { name: "Table.scrollable", type: "boolean", default: "true", description: "Provides horizontal overflow. Disable it when an external container owns scrolling." },
+    { name: "Table.stickyHeader", type: "boolean", default: "false", description: "Pins header cells inside a fixed-height scrolling container." },
+    { name: "TableRow.selected", type: "boolean", default: "false", description: "Applies the selected treatment and sets aria-selected." },
+    { name: "TableSortButton.direction", type: "\"asc\" | \"desc\" | \"none\"", default: "\"none\"", description: "Controls the direction icon. Sorting state remains application-owned." },
   ]}
 />
 
-### TableRow
+## Accessibility
 
-<PropsTable
-  props={[
-    {
-      name: "selected",
-      type: "boolean",
-      default: "false",
-      description: "Marks the row as selected. Applies `bg-layer-hover` and sets `aria-selected`.",
-    },
-  ]}
-/>
+- Keep `TableHead`, `TableBody`, `TableRow`, and cell parts in valid native table order.
+- Add a `TableCaption` when surrounding content does not already identify the table.
+- Put `aria-sort="ascending"` or `aria-sort="descending"` on the sorted `TableHead`, not on the sort button.
+- Do not add row click behavior without an accessible interactive control or an established composite-widget keyboard model.
+- Preserve horizontal scrolling on narrow screens rather than compressing columns until content becomes unreadable.
 
-### TableHead
+## Responsive behavior
 
-<PropsTable
-  props={[
-    {
-      name: "align",
-      type: '"left" | "center" | "right"',
-      default: '"left"',
-      description: "Text alignment for the cell.",
-    },
-  ]}
-/>
+Table scrolls horizontally by default. Set `scrollable={false}` only when a parent owns overflow, such as a fixed-height container used with `stickyHeader`.
 
-### TableSortButton
-
-<PropsTable
-  props={[
-    {
-      name: "direction",
-      type: '"asc" | "desc" | "none"',
-      default: '"none"',
-      description: "Controls the compact direction icon. Set `aria-sort` on the containing TableHead.",
-    },
-  ]}
-/>
-
-### TableCell
-
-<PropsTable
-  props={[
-    {
-      name: "align",
-      type: '"left" | "center" | "right"',
-      default: '"left"',
-      description: "Text alignment. Right-aligned cells also apply `tabular-nums` for column-aligned numerals.",
-    },
-  ]}
-/>
-
-### TableEmpty
-
-<PropsTable
-  props={[
-    {
-      name: "colSpan",
-      type: "number",
-      default: "-",
-      description: "Number of columns to span across so the empty cell fills the full table width. Required.",
-    },
-  ]}
-/>
-
-<Callout title="Notes">
-- **Dividers are structural.** The header uses a stronger divider and every body row uses a soft divider. The last row drops its bottom divider.
-- **Outer border is optional.** `bordered` adds a contained surface without changing row structure.
-- **Composition:** Every sub-component maps to a native table element, so standard HTML attributes pass through.
-- **Numerals:** Use `align="right"` on numeric `TableCell`s for right-align + tabular figures.
-- **Sortable heads:** Compose `TableSortButton` inside `TableHead`, keep `aria-sort` on the header cell, and own the two-state or three-state cycle in your application.
-- **Selected rows:** Combine with `interactive` on the root for the row-clickable pattern shown in the demo.
-- **Sticky header:** Requires a fixed-height scroll container. Pass `scrollable={false}` so the internal horizontal-scroll wrapper doesn't fight your vertical-scroll parent.
-- **Empty state:** Wrap `<EmptyState>` inside `<TableEmpty>` for the fullest treatment (icon + title + description + action). For a one-line placeholder, pass a string directly (`<TableEmpty colSpan={4}>No results.</TableEmpty>`).
-</Callout>
+<PageNavigation />

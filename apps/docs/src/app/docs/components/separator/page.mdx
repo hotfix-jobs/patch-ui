@@ -1,64 +1,56 @@
 import { SeparatorDemo } from "./separator-demo";
-
+import { SeparatorVerticalDemo } from "./separator-vertical-demo";
 
 export const metadata = { title: "Separator" };
 
-# Separator
+export const usageCode = `<Separator />`;
 
-A hairline divider: horizontal or vertical: with an optional inline label for "OR" / "AND" splits.
+<PageHeader
+  title="Separator"
+  description="A horizontal or vertical hairline that separates related content, with an optional inline label."
+/>
 
-<Install name="separator" />
+Use Separator when a visible boundary makes adjacent content groups easier to understand. Prefer spacing alone when the grouping is already clear.
 
-<ComponentPreview label="Separator">
+<ComponentPreview label="Labeled separator" sourcePath="src/app/docs/components/separator/separator-demo.tsx">
   <SeparatorDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="separator" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/separator.json). The canonical implementation lives in [packages/react/src/components/separator.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/separator.tsx).
+
 ## Usage
 
-```tsx
-import { Separator } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Horizontal (default)
-<Separator />
+Horizontal is the default orientation. Add a label only when words such as `or` or `and` clarify the relationship between surrounding choices.
 
-// With label
-<Separator label="or" />
+## Examples
 
-// Vertical (inside a flex row)
-<div className="flex h-8 items-center gap-4">
-  <span>Item A</span>
-  <Separator orientation="vertical" />
-  <span>Item B</span>
-</div>
-```
+### Vertical separator
 
-## Props
+A vertical separator inherits height from its parent, so place it in a row with an explicit or content-defined height.
 
-<PropsTable
-  props={[
-    {
-      name: "orientation",
-      type: '"horizontal" | "vertical"',
-      default: '"horizontal"',
-      description: "Direction. Vertical separators stretch to fill the parent's height: wrap in a flex/grid container with a defined height.",
-    },
-    {
-      name: "label",
-      type: "ReactNode",
-      default: "-",
-      description: "Optional inline label (horizontal only): renders the hairline split around the label for OR / AND patterns.",
-    },
-    {
-      name: "decorative",
-      type: "boolean",
-      default: "false",
-      description: 'When true, role="none" is used so screen readers ignore the separator. Use for purely visual hairlines that don\'t signify meaningful section breaks.',
-    },
-  ]}
-/>
+<ComponentPreview label="Vertical separator" sourcePath="src/app/docs/components/separator/separator-vertical-demo.tsx">
+  <SeparatorVerticalDemo />
+</ComponentPreview>
 
-<Callout title="Notes">
-- Vertical separators inherit their height from the parent: put them inside a `flex` (or `grid`) with a defined height, or they'll collapse.
-- The label variant is horizontal only. It renders the hairline split around your text: good for "or" / "and" between two options.
-- `decorative` is about semantics, not visuals. Turn it on when the divider is just a visual beat between blocks; leave it off when the divider marks a real section break the screen reader should announce.
-</Callout>
+## API reference
+
+<PropsTable props={[
+  { name: "orientation", type: '"horizontal" | "vertical"', default: '"horizontal"', description: "Selects a full-width horizontal or full-height vertical hairline." },
+  { name: "label", type: "ReactNode", description: "Splits a horizontal hairline around inline explanatory text." },
+  { name: "decorative", type: "boolean", default: "false", description: "Removes separator semantics when the boundary is purely visual." },
+]} />
+
+## Accessibility
+
+- Leave `decorative={false}` when the boundary represents a meaningful change between content sections.
+- Set `decorative` when spacing and document structure already communicate the relationship and the line is visual reinforcement only.
+- Do not use a separator as a substitute for a heading, fieldset, list, or other semantic grouping.
+- Labeled separators expose their visible label as content; keep it short and relevant.
+
+<PageNavigation />

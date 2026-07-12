@@ -1,144 +1,94 @@
 import { ModalDemo } from "./modal-demo";
-
+import { ModalAnnouncementDemo } from "./modal-announcement-demo";
 
 export const metadata = { title: "Modal" };
 
-# Modal
+export const usageCode = `const [open, setOpen] = useState(false);
 
-A floating dialog surface for content that requires user attention. Controlled externally via `active` so consumers own state; dismisses on Escape and outside-click by default. Focus is trapped inside while open and returned to the trigger on close. It stays centered at every viewport size and uses narrow mobile gutters.
+<Button onClick={() => setOpen(true)}>Rename Project</Button>
+<Modal active={open} onClickOutside={() => setOpen(false)}>
+  <ModalHeader>
+    <ModalTitle>Rename Project</ModalTitle>
+    <ModalSubtitle>Choose a name that identifies this project.</ModalSubtitle>
+  </ModalHeader>
+  <ModalBody>...</ModalBody>
+  <ModalActions>
+    <ModalAction onClick={() => setOpen(false)}>Cancel</ModalAction>
+    <ModalAction variant="primary">Save Project</ModalAction>
+  </ModalActions>
+</Modal>`;
 
-<Install name="modal" />
+<PageHeader
+  title="Modal"
+  description="A controlled dialog for focused content and decisions that temporarily interrupt the current page."
+/>
 
-<ComponentPreview label="Modal Examples">
+Use Modal when people must review content or complete a short task before returning to the page. Use Sheet when the content benefits from a persistent edge-based workspace.
+
+<ComponentPreview label="Form modal" sourcePath="src/app/docs/components/modal/modal-demo.tsx">
   <ModalDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="modal" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/modal.json). The canonical implementation lives in [packages/react/src/components/modal.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/modal.tsx).
+
 ## Usage
 
-```tsx
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  ModalTitle,
-  ModalSubtitle,
-  ModalActions,
-  ModalAction,
-} from "@patchui/react";
+<Usage code={usageCode} />
 
-const [open, setOpen] = useState(false);
+Modal is controlled through `active`. Wire `onClickOutside` to the same close state used by Cancel because the callback handles both backdrop and Escape dismissal.
 
-<Button onClick={() => setOpen(true)}>Update project</Button>
+## Composition
 
-<Modal active={open} onClickOutside={() => setOpen(false)}>
-  <ModalHeader>
-    <ModalTitle>Update Project</ModalTitle>
-    <ModalSubtitle>Bumping the framework to the latest major.</ModalSubtitle>
-  </ModalHeader>
-  <ModalBody>
-    <p>Continue to apply the update.</p>
-  </ModalBody>
-  <ModalActions>
-    <ModalAction onClick={() => setOpen(false)}>Cancel</ModalAction>
-    <ModalAction variant="primary" onClick={confirm}>
-      Update Project
-    </ModalAction>
-  </ModalActions>
-</Modal>
+```text
+Modal
+├── ModalHeader
+│   ├── ModalTitle
+│   └── ModalSubtitle
+├── ModalBody
+│   └── ModalInset (optional)
+└── ModalActions
+    └── ModalAction
 ```
 
-## Props
+ModalClose can replace or supplement the automatic close control when a custom header layout requires it.
 
-### Modal
+## Examples
 
-<PropsTable
-  props={[
-    {
-      name: "active",
-      type: "boolean",
-      default: "false",
-      description: "Whether the modal is visible. Controlled entirely by the consumer.",
-    },
-    {
-      name: "onClickOutside",
-      type: "() => void",
-      default: "-",
-      description: "Called when the user presses Escape or clicks the backdrop. Wire it to close the modal.",
-    },
-    {
-      name: "initialFocusRef",
-      type: "RefObject<HTMLElement>",
-      default: "-",
-      description: "Element to focus when the modal opens. Defaults to the first focusable element.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg" | "xl" | "full"',
-      default: '"md"',
-      description: "Max-width of the popup.",
-    },
-    {
-      name: "showClose",
-      type: "boolean",
-      default: "auto",
-      description: "Show the default close button. When omitted, it appears when no ModalActions are present.",
-    },
-  ]}
-/>
+### Announcement
 
-### ModalAction
+When ModalActions are absent, Modal displays a close button automatically. This works well for short announcements that do not require a decision.
 
-<PropsTable
-  props={[
-    {
-      name: "variant",
-      type: '"primary" | "secondary" | "soft" | "tertiary" | "warning" | "destructive"',
-      default: '"secondary"',
-      description: "Passed to Button. Primary confirms, secondary cancels, and destructive handles destructive confirmation.",
-    },
-    {
-      name: "fullWidth",
-      type: "boolean",
-      default: "false",
-      description: "Stretch to fill the actions row. Pair with `stacked` on ModalActions for narrow-mobile layouts.",
-    },
-    {
-      name: "onClick",
-      type: "(event: MouseEvent) => void",
-      default: "-",
-      description: "Click handler. Typically closes the modal and runs the action.",
-    },
-    {
-      name: "prefix",
-      type: "ReactNode",
-      default: "-",
-      description: "Leading icon slot (from Button).",
-    },
-  ]}
-/>
+<ComponentPreview label="Announcement modal" sourcePath="src/app/docs/components/modal/modal-announcement-demo.tsx">
+  <ModalAnnouncementDemo />
+</ComponentPreview>
 
-## Compound Components
+## API reference
 
-<CompoundComponents
-  components={[
-    { name: "Modal", description: "Root popup, handles portal, focus trap, backdrop, and dismiss." },
-    { name: "ModalBody", description: "Scrollable content region. Holds the header and main content." },
-    { name: "ModalHeader", description: "Wraps the title and subtitle." },
-    { name: "ModalTitle", description: "Primary heading in Title Case. Wired to aria-labelledby." },
-    { name: "ModalSubtitle", description: "Supporting sentence-case text below the title." },
-    { name: "ModalInset", description: "Visually distinct block inside the body. Use for previews, code, or 'here's what changes' summaries." },
-    { name: "ModalActions", description: "Footer row for action buttons. `stacked` prop stacks them vertically for narrow layouts." },
-    { name: "ModalAction", description: "Button inside ModalActions. Wraps our Button so consumers get consistent sizing and API." },
-  ]}
-/>
+<PropsTable props={[
+  { name: "active", type: "boolean", default: "false", description: "Controls whether the modal is open." },
+  { name: "onClickOutside", type: "() => void", description: "Handles close requests from Escape or backdrop interaction." },
+  { name: "initialFocusRef", type: "RefObject<HTMLElement | null>", description: "Moves initial focus to a specific element when the modal opens." },
+  { name: "size", type: '"sm" | "md" | "lg" | "xl" | "full"', default: '"md"', description: "Sets the maximum popup width above the mobile breakpoint." },
+  { name: "showClose", type: "boolean", default: "automatic", description: "Overrides the close button, which appears by default when ModalActions are absent." },
+  { name: "ModalActions.stacked", type: "boolean", default: "false", description: "Stacks actions vertically instead of using a horizontal row." },
+]} />
 
-<Callout title="Notes">
-- **Controlled only.** No trigger subcomponent: consumers wire `active` and `onClickOutside` themselves. This keeps state ownership obvious and avoids surprises with imperative refs.
-- **Title vs subtitle voice.** Titles are Title Case statements, never questions. Subtitles are sentence case, 1–3 sentences. Primary action button follows a Verb + Noun pattern that mirrors the title ("Delete Project" → "Delete Project").
-- **Destructive flows.** For destructive actions with unsaved input, gate the destructive button behind a confirmation input (see the demo). Keep Cancel literal: screen reader users depend on it.
-- **Fixed header + actions.** The header stays anchored at the top and the actions row stays at the bottom by default; the body scrolls if its content exceeds available height. Order matters: put `ModalHeader`, `ModalBody`, and `ModalActions` as siblings inside `Modal`.
-- **Quiet internal structure.** The popup owns the boundary and shadow. Header and actions use spacing rather than additional divider lines.
-- **Mobile layout.** The modal remains vertically centered and spans the viewport minus 8px gutters on each side. Its height is capped with matching safe space above and below.
-- **Focus return.** After the modal closes, focus returns to whatever was focused when it opened (usually the trigger). No need to wire this manually.
-</Callout>
+ModalAction inherits Button behavior, defaults to `variant="secondary"`, and supports `fullWidth` for stacked layouts. ModalHeader accepts `leading` or `trailing` content when a compact three-slot row is required.
+
+## Accessibility
+
+- ModalTitle and ModalSubtitle provide the dialog’s accessible name and description through Base UI Dialog.
+- Focus is contained while the modal is open and returns to the previously focused element after close.
+- Escape and backdrop interaction request dismissal through `onClickOutside`.
+- Keep Cancel explicit when actions are present, especially for destructive or irreversible decisions.
+- Use `initialFocusRef` when the safest initial action is not the first focusable element.
+
+## Mobile behavior
+
+Modal remains centered with narrow viewport gutters and a capped viewport height. ModalBody is the scrollable region, so headers and actions remain visible around long content.
+
+<PageNavigation />

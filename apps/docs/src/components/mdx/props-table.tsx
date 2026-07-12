@@ -23,7 +23,7 @@ export function PropsTable({ props }: PropsTableProps) {
 
   return (
     <div className="props-table my-6">
-      <Table>
+      <Table bordered>
         <TableHeader>
           <TableRow>
             <TableHead>Prop</TableHead>

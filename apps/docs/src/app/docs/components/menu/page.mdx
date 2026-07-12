@@ -1,190 +1,104 @@
 import { MenuDemo } from "./menu-demo";
-
+import { MenuSelectionDemo } from "./menu-selection-demo";
+import { MenuSubmenuDemo } from "./menu-submenu-demo";
 
 export const metadata = { title: "Menu" };
 
-# Menu
+export const usageCode = `<Menu>
+  <MenuTrigger render={<Button variant="secondary" />}>
+    Actions
+  </MenuTrigger>
+  <MenuPopup>
+    <MenuItem>Duplicate</MenuItem>
+    <MenuItem>Rename</MenuItem>
+    <MenuDivider />
+    <MenuItem type="error">Delete</MenuItem>
+  </MenuPopup>
+</Menu>`;
 
-A dropdown menu with support for items, groups, checkbox items, radio items, sub-menus, keyboard shortcuts, and separators. Built on Base UI Menu: `SubmenuRoot` handles nested submenu coordination and safePolygon hover, roving keyboard navigation and type-ahead ship in the box, and open / close uses CSS-driven `data-starting-style` / `data-ending-style` transitions.
+<PageHeader
+  title="Menu"
+  description="A contextual list of actions and choices with groups, persistent selection, and nested submenus."
+/>
 
-<Install name="menu" />
+Use Menu for actions related to a trigger or nearby object. Use Select when the control’s primary purpose is choosing a form value.
 
-<ComponentPreview label="Menu Examples">
+<ComponentPreview label="Action menu" sourcePath="src/app/docs/components/menu/menu-demo.tsx">
   <MenuDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="menu" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/menu.json). The canonical implementation lives in [packages/react/src/components/menu.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/menu.tsx).
+
 ## Usage
 
-```tsx
-import {
-  Button,
-  Menu,
-  MenuTrigger,
-  MenuPopup,
-  MenuItem,
-  MenuGroup,
-  MenuGroupLabel,
-  MenuSection,
-  MenuCheckboxItem,
-  MenuRadioGroup,
-  MenuRadioItem,
-  MenuSeparator,
-  MenuShortcut,
-  MenuSub,
-  MenuSubTrigger,
-  MenuSubPopup,
-} from "@patchui/react";
+<Usage code={usageCode} />
 
-// Basic menu
-<Menu>
-  <MenuTrigger render={<Button />}>Open Menu</MenuTrigger>
-  <MenuPopup>
-    <MenuItem>Profile</MenuItem>
-    <MenuItem>Settings</MenuItem>
-    <MenuSeparator />
-    <MenuItem variant="destructive">Log out</MenuItem>
-  </MenuPopup>
-</Menu>
+MenuTrigger supplies open-state semantics to the rendered trigger. MenuItem closes the menu by default unless `closeOnClick={false}` is set.
 
-// Single-select with a trailing check
-const [sortBy, setSortBy] = useState("newest");
-<MenuItem selected={sortBy === "newest"} onClick={() => setSortBy("newest")}>
-  Newest first
-</MenuItem>
+## Composition
 
-// Two-line items
-<MenuItem description="Search across the workspace">
-  Search
-  <MenuShortcut>⌘K</MenuShortcut>
-</MenuItem>
-
-// Sections (sugar for MenuGroup + MenuGroupLabel)
-<MenuSection label="Account">
-  <MenuItem>Profile</MenuItem>
-  <MenuItem>Settings</MenuItem>
-</MenuSection>
-
-// Comfortable density (default is compact)
-<MenuPopup density="comfortable">...</MenuPopup>
-
-// With checkbox items
-const [checked, setChecked] = useState(true);
-<MenuCheckboxItem checked={checked} onCheckedChange={setChecked}>
-  Show Sidebar
-</MenuCheckboxItem>
-
-// With radio items
-const [value, setValue] = useState("system");
-<MenuRadioGroup value={value} onValueChange={setValue}>
-  <MenuRadioItem value="light">Light</MenuRadioItem>
-  <MenuRadioItem value="dark">Dark</MenuRadioItem>
-  <MenuRadioItem value="system">System</MenuRadioItem>
-</MenuRadioGroup>
+```text
+Menu
+├── MenuTrigger
+└── MenuPopup
+    ├── MenuSection
+    │   ├── MenuGroupLabel
+    │   └── MenuItem
+    ├── MenuCheckboxItem
+    ├── MenuRadioGroup
+    │   └── MenuRadioItem
+    ├── MenuDivider
+    └── MenuSub
+        ├── MenuSubTrigger
+        └── MenuSubPopup
 ```
 
-## Props
+## Examples
 
-### MenuItem
+### Persistent choices
 
-<PropsTable
-  props={[
-    {
-      name: "variant",
-      type: '"default" | "destructive"',
-      default: '"default"',
-      description: "Visual variant. Use destructive for dangerous actions like delete or log out.",
-    },
-    {
-      name: "selected",
-      type: "boolean",
-      default: "false",
-      description: "Renders a trailing check to indicate the currently chosen item in a single-select list. Distinct from MenuCheckboxItem, which is purpose-built for multi-select toggling with a leading indicator.",
-    },
-    {
-      name: "description",
-      type: "ReactNode",
-      description: "Secondary line shown beneath the title for two-line items. Useful for command palettes or settings menus that benefit from a one-line hint.",
-    },
-    {
-      name: "inset",
-      type: "boolean",
-      default: "false",
-      description: "Adds left padding to align with items that have icons or indicators.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the menu item.",
-    },
-  ]}
-/>
+Use checkbox items for independent toggles and a radio group for one choice from a set. These communicate persistent state rather than temporary pointer or keyboard highlight.
 
-### MenuPopup
+<ComponentPreview label="Persistent choices" sourcePath="src/app/docs/components/menu/menu-selection-demo.tsx">
+  <MenuSelectionDemo />
+</ComponentPreview>
 
-<PropsTable
-  props={[
-    {
-      name: "density",
-      type: '"compact" | "comfortable"',
-      default: '"compact"',
-      description: "Vertical density of contained items. Compact targets dense filter and action menus; comfortable bumps min-height and padding for marketing or settings menus.",
-    },
-    {
-      name: "side",
-      type: '"top" | "bottom" | "left" | "right"',
-      default: '"bottom"',
-      description: "Which side of the trigger the popup appears on.",
-    },
-    {
-      name: "sideOffset",
-      type: "number",
-      default: "4",
-      description: "Distance in pixels between the popup and trigger.",
-    },
-    {
-      name: "align",
-      type: '"start" | "center" | "end"',
-      default: '"center"',
-      description: "Alignment of the popup relative to the trigger.",
-    },
-  ]}
-/>
+### Submenu
 
-## Compound Components
+Use a submenu when a related action set would make the top-level menu difficult to scan. Keep nesting shallow.
 
-<CompoundComponents
-  components={[
-    { name: "Menu", description: "Root component managing open/close state." },
-    { name: "MenuTrigger", description: "Element that opens the menu on click." },
-    { name: "MenuPopup", description: "Portal-rendered popup with positioner." },
-    { name: "MenuItem", description: "A single menu action. Supports variant, selected, description, and inset." },
-    { name: "MenuGroup", description: "Groups related items together." },
-    { name: "MenuGroupLabel", description: "Label for a group. Supports inset." },
-    { name: "MenuSection", description: "Compound section: a labeled group with consistent vertical spacing. Sugar for MenuGroup + MenuGroupLabel." },
-    { name: "MenuCheckboxItem", description: "A togglable item with a check indicator." },
-    { name: "MenuRadioGroup", description: "Container for mutually exclusive radio items." },
-    { name: "MenuRadioItem", description: "A radio option within a group." },
-    { name: "MenuSeparator", description: "A visual divider between sections." },
-    { name: "MenuShortcut", description: "Displays a keyboard shortcut hint, right-aligned." },
-    { name: "MenuSub", description: "Wrapper for a sub-menu." },
-    { name: "MenuSubTrigger", description: "Opens the sub-menu on hover. Supports inset." },
-    { name: "MenuSubPopup", description: "Portal-rendered popup for the sub-menu." },
-  ]}
-/>
+<ComponentPreview label="Submenu" sourcePath="src/app/docs/components/menu/menu-submenu-demo.tsx">
+  <MenuSubmenuDemo />
+</ComponentPreview>
 
+## API reference
 
-<Callout title="Notes">
-- **Trigger open state:** Button-based triggers use a variant-appropriate held fill without borrowing the text-input focus ring.
-- **Keyboard navigation:** Supports arrow keys, type-ahead, Home/End, Enter/Space, and Escape.
-- **Sub-menus:** Nest `MenuSub` > `MenuSubTrigger` + `MenuSubPopup` for cascading menus. Sub-menus open on hover. The sub-popup inherits the parent `MenuPopup`'s density unless overridden.
-- **Portal rendering:** The popup renders outside the DOM tree via a portal, so it appears above all other content.
-- **Mobile:** Below the `md` breakpoint (max-width 767px), a top-level `MenuPopup` renders as a centered card at `top-1/2 left-1/2` with `w-[calc(100vw-1rem)]` and a dimmed backdrop. `RemoveScroll` locks body scroll while open so background gestures don't leak through the backdrop. Sub-menus stay as anchored popovers so they hang off their parent row.
-- **`MenuRadioItem` matches `selected`:** Radio rows render with a trailing check when they're the group's current value (same layout as `MenuItem selected`) and close the menu on click. Consistent affordance across every single-select menu.
-- **Inset alignment:** Use the `inset` prop on `MenuItem`, `MenuGroupLabel`, and `MenuSubTrigger` to align text with items that have icons or check indicators.
-- **Motion:** Open / close driven by Base UI's `data-starting-style` and `data-ending-style` transitions at overlay duration, so both directions animate without a JS animation runtime. Respects `prefers-reduced-motion`.
-- **Foundation:** Built on Base UI Menu — `SubmenuRoot` + `SubmenuTrigger` handle nested submenu coordination and safePolygon hover; roving keyboard navigation, type-ahead, and focus scoping are handled by the primitive.
-- **Opening focus:** Patch UI does not implement custom item focus or synthetic pointer behavior. Base UI keeps pointer-opened menus unselected and manages keyboard-opened menu focus natively.
-- **`selected` vs `MenuCheckboxItem`:** Use `selected` for single-select "currently chosen" UI with a trailing check. Use `MenuCheckboxItem` for multi-select toggles with a leading indicator.
-- **Row states:** Highlighted means temporary keyboard or pointer navigation and uses the subtle hover overlay. Selected and checked rows use the stronger selected overlay.
-</Callout>
+<PropsTable props={[
+  { name: "MenuPopup.density", type: '"compact" | "comfortable"', default: '"comfortable"', description: "Selects dense or larger item rows." },
+  { name: "MenuItem.type", type: '"default" | "error"', default: '"default"', description: "Adds destructive action presentation." },
+  { name: "MenuItem.selected", type: "boolean", default: "false", description: "Displays a trailing check for a current single choice." },
+  { name: "MenuItem.description", type: "ReactNode", description: "Adds a secondary line below the item label." },
+  { name: "MenuItem.href", type: "string", description: "Renders the item as an anchor while preserving menu behavior." },
+  { name: "MenuCheckboxItem.checked / onCheckedChange", type: "boolean / (checked: boolean) => void", description: "Controls an independent persistent choice without closing the menu." },
+  { name: "MenuRadioGroup.value / onValueChange", type: "string / (value: string) => void", description: "Controls one selected value across MenuRadioItem children." },
+]} />
+
+MenuPopup inherits Base UI positioning props and defaults to `side="bottom"`, `align="start"`, and `sideOffset={4}`. MenuSection supplies a labeled group, while `prefix`, `suffix`, and MenuShortcut add supporting content to an item.
+
+## Keyboard behavior
+
+- Arrow keys move through enabled menu items. Home and End move to the first or last item.
+- Enter or Space activates the highlighted item. Typing moves to a matching item.
+- Escape closes the current menu and returns focus through the underlying Base UI behavior.
+- Arrow Right opens a submenu from its trigger; Arrow Left returns to the parent menu.
+- `selected`, checked, and radio state are persistent application state and remain distinct from temporary highlight.
+
+## Mobile behavior
+
+Below the `md` breakpoint, a top-level MenuPopup becomes a centered panel with narrow viewport gutters, a backdrop, comfortable density, and locked body scrolling. Submenus remain anchored to their parent item.
+
+<PageNavigation />
