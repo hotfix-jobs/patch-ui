@@ -41,13 +41,12 @@ export function Checkbox({
         data-slot="checkbox-indicator"
         keepMounted
       >
-        {/* Overrides iconMuted descendant selectors from parent rows. */}
         <Check
-          className="!text-base size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
+          className="text-base size-3 group-data-indeterminate:hidden group-data-unchecked:hidden"
         />
         <Minus
           aria-hidden="true"
-          className="!text-base hidden size-3 group-data-indeterminate:block"
+          className="text-base hidden size-3 group-data-indeterminate:block"
         />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>

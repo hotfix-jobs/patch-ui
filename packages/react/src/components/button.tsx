@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Spinner } from "./spinner";
 import type * as React from "react";
 import { cn } from "../utils";
-import { disabled, colorTransition, iconMuted, iconMutedSolid, popupTriggerOpen, selectionFocus } from "../recipes";
+import { disabled, colorTransition, popupTriggerOpen, selectionFocus } from "../recipes";
 export const buttonVariants = cva(
   [
     "relative inline-flex shrink-0 items-center justify-center whitespace-nowrap",
@@ -82,11 +82,6 @@ export function Button({
   const effectiveSize: NonNullable<ButtonProps["size"]> = size ?? "md";
   const isIconOnly = icon != null && !children;
   const iconOnly = isIconOnly ? iconOnlyWidth[effectiveSize] : "";
-  const iconOnlyRecipe = isIconOnly
-    ? variant === "secondary" || variant === "outlined" || variant === "tertiary"
-      ? iconMuted
-      : iconMutedSolid
-    : "";
 
   if (typeof process !== "undefined" && process.env?.NODE_ENV !== "production" && isIconOnly && !props["aria-label"]) {
     console.warn(
@@ -111,7 +106,6 @@ export function Button({
     className: cn(
       buttonVariants({ size: effectiveSize, variant, shape }),
       iconOnly,
-      iconOnlyRecipe,
       className,
     ),
     "data-slot": "button",

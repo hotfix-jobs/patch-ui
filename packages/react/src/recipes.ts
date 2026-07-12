@@ -40,20 +40,6 @@ export const disabled =
 export const colorTransition =
   "transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]";
 
-/** Muted icons at rest, lift to label color on interaction. Consumer
- *  overrides on the svg itself win over these descendant selectors. */
-export const iconMuted =
-  "[&_svg]:text-ink-muted [&_svg]:transition-colors [&_svg]:duration-[var(--duration-state)] [&_svg]:ease-[var(--ease-standard)] " +
-  "hover:[&_svg]:text-ink focus-visible:[&_svg]:text-ink " +
-  "data-[active]:[&_svg]:text-ink data-[popup-open]:[&_svg]:text-ink data-[state=open]:[&_svg]:text-ink data-[state=on]:[&_svg]:text-ink data-highlighted:[&_svg]:text-ink " +
-  "aria-pressed:[&_svg]:text-ink aria-selected:[&_svg]:text-ink";
-
-/** Opacity variant of iconMuted for solid-fill variants where changing
- *  color would break the fill/text contract. */
-export const iconMutedSolid =
-  "[&_svg]:opacity-70 [&_svg]:transition-opacity [&_svg]:duration-[var(--duration-state)] [&_svg]:ease-[var(--ease-standard)] " +
-  "hover:[&_svg]:opacity-100 focus-visible:[&_svg]:opacity-100 active:[&_svg]:opacity-100";
-
 /** Shared chrome for floating panels (Menu, Combobox, Select, Popover, Command). */
 export const popupSurface =
   "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu outline-none focus:outline-none";
@@ -61,8 +47,7 @@ export const popupSurface =
 /** Held state shared by triggers while their popup is open. */
 export const popupTriggerOpen = "data-[popup-open]:bg-fill-2";
 
-/** Interactive row inside a popup list.
- *  Usage: cn(itemRow.base, density === "compact" ? itemRow.compact : itemRow.comfortable, iconMuted, ...) */
+/** Interactive row inside a popup list. */
 export const itemRow = {
   base:
     "my-0.5 first:mt-0 last:mb-0 flex items-center cursor-default select-none rounded-[var(--radius-6)] text-ink outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] " +

@@ -11,7 +11,6 @@ import { createContext, forwardRef, useContext, useMemo } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 import {
-  iconMuted,
   itemGroupLabel,
   itemRow,
   popupDivider,
@@ -435,7 +434,6 @@ export function ComboboxItem({
         itemRow.base,
         itemRow.comfortable,
         "gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        iconMuted,
         className,
       )}
       onClick={(e: React.MouseEvent<HTMLDivElement>) => {

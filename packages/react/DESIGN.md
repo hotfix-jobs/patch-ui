@@ -166,7 +166,7 @@ Close, clear, copy, search, theme, and similar utility controls use radius 8 by 
 
 Use `@phosphor-icons/react`, importing from `@phosphor-icons/react/dist/ssr` for server-safe tree shaking. Do not hand-roll SVG icons.
 
-Interactive icons use `iconMuted` or `iconMutedSolid`. Default icons are muted and lift to the label color through interaction state.
+Icons inherit their container's text color.
 
 ## Cursor and states
 

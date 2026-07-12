@@ -3,7 +3,7 @@
 import { NavigationMenu as NavigationMenuPrimitive } from "@base-ui/react/navigation-menu";
 import type * as React from "react";
 import { cn } from "../utils";
-import { colorTransition, iconMuted, popupSurface, selectionFocus } from "../recipes";
+import { colorTransition, popupSurface, selectionFocus } from "../recipes";
 
 import { CaretDown } from "@phosphor-icons/react/dist/ssr";
 /** Horizontal menu bar with morphing dropdown panels sharing one portalled popup. */
@@ -126,7 +126,6 @@ export function NavigationMenuLink({
         variant === "trigger" &&
           "inline-flex items-center rounded-[var(--radius-8)] px-3 py-1.5 text-small text-ink-muted hover:bg-layer-hover hover:text-ink active:bg-layer-hover",
         selectionFocus,
-        iconMuted,
         colorTransition,
         className,
       )}

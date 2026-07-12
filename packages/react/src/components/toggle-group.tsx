@@ -5,7 +5,7 @@ import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { iconMuted, selectionFocus } from "../recipes";
+import { selectionFocus } from "../recipes";
 
 type ToggleGroupSize = "sm" | "md" | "lg";
 
@@ -78,7 +78,6 @@ export function ToggleGroupItem({
         "text-ink-muted hover:text-ink data-[pressed]:text-ink",
         "not-data-[pressed]:hover:bg-layer-hover",
         "data-[pressed]:bg-layer-hover",
-        iconMuted,
         size === "sm" && "h-6 min-w-6 px-1.5 gap-1.5 text-mini [&_svg]:size-3.5",
         size === "md" && "h-8 min-w-8 px-2.5 gap-2 text-small [&_svg]:size-4",
         size === "lg" && "h-10 min-w-10 px-3.5 gap-2 text-regular [&_svg]:size-5",

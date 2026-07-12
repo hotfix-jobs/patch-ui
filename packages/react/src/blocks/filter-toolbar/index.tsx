@@ -4,7 +4,7 @@ import { CaretDown, Check } from "@phosphor-icons/react/dist/ssr";
 import { useId, useMemo, useRef, useState } from "react";
 import type * as React from "react";
 import { cn } from "../../utils";
-import { iconMuted, itemGroupLabel, itemRow } from "../../recipes";
+import { itemGroupLabel, itemRow } from "../../recipes";
 import { Button, type ButtonProps } from "../../components/button";
 import { Input } from "../../components/input";
 import {
@@ -405,7 +405,6 @@ export function FilterToolbarPicker({
                         className={cn(
                           itemRow.base,
                           itemRow.comfortable,
-                          iconMuted,
                           "w-full gap-3 text-start",
                         )}
                         onMouseEnter={() => updateActiveIndex(index)}
@@ -413,7 +412,7 @@ export function FilterToolbarPicker({
                         onClick={() => toggleOption(option)}
                       >
                         {option.icon && (
-                          <span className="shrink-0 text-ink-muted [&_svg]:size-4">
+                          <span className="shrink-0 [&_svg]:size-4">
                             {option.icon}
                           </span>
                         )}
@@ -433,7 +432,7 @@ export function FilterToolbarPicker({
                           </span>
                         )}
                         {checked && (
-                          <Check aria-hidden className="size-4 shrink-0 text-ink-muted" />
+                          <Check aria-hidden className="size-4 shrink-0" />
                         )}
                       </button>
                     );
