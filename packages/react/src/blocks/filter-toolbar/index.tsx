@@ -412,7 +412,7 @@ export function FilterToolbarPicker({
                         onClick={() => toggleOption(option)}
                       >
                         {option.icon && (
-                          <span className="shrink-0 [&_svg]:size-4">
+                          <span className="flex shrink-0 items-center [&_svg]:size-4">
                             {option.icon}
                           </span>
                         )}
