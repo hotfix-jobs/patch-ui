@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { join } from "node:path";
 import { codeToHtml } from "shiki";
 
 import { ComponentPreviewClient } from "./component-preview-client";
@@ -26,8 +26,12 @@ export async function ComponentPreview({
   previewClassName,
   resettable,
 }: ComponentPreviewProps) {
-  const source = sourcePath
-    ? await readFile(resolve(process.cwd(), sourcePath), "utf8")
+  const docsSourcePath = sourcePath?.replace(/^src\/app\/docs\//, "");
+  const source = docsSourcePath
+    ? await readFile(
+        join(process.cwd(), "src", "app", "docs", docsSourcePath),
+        "utf8",
+      )
     : code;
   const highlightedCode = source
     ? await codeToHtml(source, {
