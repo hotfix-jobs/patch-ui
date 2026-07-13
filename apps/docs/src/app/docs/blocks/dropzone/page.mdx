@@ -1,155 +1,87 @@
+import { DropzoneCompactDemo } from "./dropzone-compact-demo";
 import { DropzoneDemo } from "./dropzone-demo";
-
+import { DropzoneSingleDemo } from "./dropzone-single-demo";
 
 export const metadata = { title: "Dropzone" };
 
-# Dropzone
-
-Drag-and-drop file upload with a click-to-browse fallback. Renders a preview row per file with a remove × button. Pure UI primitive: consumers wire `onValueChange` to their upload pipeline.
-
-Use for any file-upload UX: avatars, attachments, document uploads, data imports, or batch images.
-
-<Install name="dropzone" />
-
-<ComponentPreview label="Dropzone">
-  <DropzoneDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import { Dropzone } from "@patchui/react";
-
-const [files, setFiles] = useState<File[]>([]);
+export const usageCode = `const [files, setFiles] = useState<File[]>([]);
 
 <Dropzone
   value={files}
   onValueChange={setFiles}
   accept="image/*,application/pdf"
-  maxSize={5 * 1024 * 1024}  // 5 MB per file
-  maxFiles={10}
-  title="Drop files here or click to browse"
-  description="Up to 5 MB, images or PDFs"
+  maxFiles={5}
+  maxSize={5 * 1024 * 1024}
+/>`;
+
+<PageHeader
+  title="Dropzone"
+  description="A file-selection surface with drag and drop, native browsing, validation, and removable file rows."
 />
 
-// Single file (no list)
-<Dropzone multiple={false} showFileList={false} />
+Use Dropzone to collect attachments, images, documents, or imports before handing the selected files to an application-owned upload pipeline.
 
-// Custom validation
-<Dropzone
-  validate={(file, current) => {
-    if (file.size > 2 * 1024 * 1024) return "File too large";
-    if (current.some((f) => f.name === file.name)) return "Duplicate";
-    return true;
-  }}
-/>
+<ComponentPreview label="File attachments" sourcePath="src/app/docs/blocks/dropzone/dropzone-demo.tsx" resettable>
+  <DropzoneDemo />
+</ComponentPreview>
 
-// Custom file row
-<Dropzone
-  renderFile={(file, i, onRemove) => (
-    <div className="my-custom-row">
-      <img src={URL.createObjectURL(file)} />
-      <button onClick={onRemove}>×</button>
-    </div>
-  )}
-/>
-```
+## Installation
 
-## Props
+<Install name="dropzone" />
 
-<PropsTable
-  props={[
-    {
-      name: "value",
-      type: "File[]",
-      default: "-",
-      description: "Controlled file list.",
-    },
-    {
-      name: "defaultValue",
-      type: "File[]",
-      default: "[]",
-      description: "Initial files when uncontrolled.",
-    },
-    {
-      name: "onValueChange",
-      type: "(files: File[]) => void",
-      default: "-",
-      description: "Called when the file list changes (add or remove).",
-    },
-    {
-      name: "accept",
-      type: "string",
-      default: "-",
-      description: 'MIME type filter passed to the file input (e.g. "image/*,application/pdf").',
-    },
-    {
-      name: "multiple",
-      type: "boolean",
-      default: "true",
-      description: "Allow selecting / dropping multiple files at once.",
-    },
-    {
-      name: "maxFiles",
-      type: "number",
-      default: "-",
-      description: "Cap the total file list at this size.",
-    },
-    {
-      name: "maxSize",
-      type: "number",
-      default: "-",
-      description: "Cap individual file size in bytes. Used by the default validate.",
-    },
-    {
-      name: "validate",
-      type: "(file: File, currentFiles: File[]) => boolean | string",
-      default: "size + accept checks",
-      description: "Validate a file before adding it.",
-    },
-    {
-      name: "renderFile",
-      type: "(file, index, onRemove) => ReactNode",
-      default: "-",
-      description: "Custom render function for each file row. Receives the file, its index, and a callback to remove it.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md"',
-      default: '"md"',
-      description: "Visual size. `md` is the spacious default for standalone upload surfaces; `sm` shrinks the drop area padding + icon for inline use inside forms or sheets alongside other fields.",
-    },
-    {
-      name: "showFileList",
-      type: "boolean",
-      default: "true",
-      description: "Render the file list below the drop area.",
-    },
-    {
-      name: "title",
-      type: "ReactNode",
-      default: '"Drop files here or click to browse"',
-      description: "Visual title inside the drop area.",
-    },
-    {
-      name: "description",
-      type: "ReactNode",
-      default: "-",
-      description: "Helper text below the title (good place to call out size / type limits).",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disable interaction.",
-    },
-  ]}
-/>
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/dropzone.json). The canonical implementation lives in [packages/react/src/blocks/dropzone/index.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/blocks/dropzone/index.tsx).
 
-<Callout title="Notes">
-- The drop area is a `<button>`: Enter / Space open the native file picker. The underlying `<input type="file">` is `sr-only`.
-- While files are being dragged over, `data-drag-over` is set on the button. Default styling darkens the border to `--primary` and fills the bg with `--fill-1` so the surface reads as "yes, drop here."
-- Dropzone is UI-only. It collects files into `value` (controlled) or internal state (uncontrolled). Upload logic lives in your `onValueChange` handler: call `fetch`, your storage SDK, whatever your pipeline is.
-- Set `progress` (`number | null`) to shift the whole component into an uploading state: the file rows swap their size text for a `<Progress>` bar, and interaction is disabled until you clear it.
-- Pass a `renderFile` if you need a fully custom row (preview thumbnail, per-file cancel, retry button). Default row shows a file icon, name, size, and an × to remove.
-</Callout>
+## Usage
+
+<Usage code={usageCode} />
+
+Dropzone manages file selection, not network transfer. Start the upload from `onValueChange` or a later form submission, and pass `progress` while a transfer is active.
+
+## Examples
+
+### Single file
+
+Set `multiple={false}` for an avatar, resume, or other field that accepts one file.
+
+<ComponentPreview label="Profile image" sourcePath="src/app/docs/blocks/dropzone/dropzone-single-demo.tsx" resettable>
+  <DropzoneSingleDemo />
+</ComponentPreview>
+
+### Compact
+
+Use the small size when Dropzone sits inside a form, Sheet, or other dense surface. Hide the file list only when the selected file appears elsewhere.
+
+<ComponentPreview label="Compact document upload" sourcePath="src/app/docs/blocks/dropzone/dropzone-compact-demo.tsx">
+  <DropzoneCompactDemo />
+</ComponentPreview>
+
+## Validation and progress
+
+Use `maxFiles` and `maxSize` for common limits. Supply `validate(file, currentFiles)` when acceptance depends on duplicate names, application rules, or other file metadata.
+
+Pass a number from 0 to 100 to `progress` for determinate upload progress, or `null` for an indeterminate transfer. Selection and removal remain disabled until `progress` becomes `undefined`.
+
+## API reference
+
+<PropsTable props={[
+  { name: "value / onValueChange", type: "File[] / (files: File[]) => void", description: "Controls the selected files." },
+  { name: "accept", type: "string", description: "Filters the native file picker using MIME types or extensions." },
+  { name: "multiple", type: "boolean", default: "true", description: "Allows more than one selected file." },
+  { name: "maxFiles / maxSize", type: "number / number", description: "Limits the file count and bytes per file." },
+  { name: "validate", type: "(file, currentFiles) => boolean | string", description: "Accepts or rejects each incoming file." },
+  { name: "progress", type: "number | null", description: "Displays uploading state across selected file rows." },
+  { name: "size", type: '"sm" | "md"', default: '"md"', description: "Selects compact or standalone spacing." },
+  { name: "showFileList", type: "boolean", default: "true", description: "Shows removable rows for selected files." },
+  { name: "renderFile", type: "(file, index, onRemove) => ReactNode", description: "Replaces the default file row." },
+]} />
+
+Title and description accept React nodes so upload requirements can be stated directly in the drop area.
+
+## Accessibility
+
+- The drop area opens the native file picker with Enter or Space.
+- State file limits and supported formats in visible helper text.
+- Every default file row includes a removal button named with its file name.
+- Do not rely on drag and drop as the only selection method.
+
+<PageNavigation />

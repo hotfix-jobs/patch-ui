@@ -1,109 +1,67 @@
 import { ProgressDemo } from "./progress-demo";
-
+import { ProgressStatesDemo } from "./progress-states-demo";
 
 export const metadata = { title: "Progress" };
 
-# Progress
+export const usageCode = `<div className="flex flex-col gap-2">
+  <div className="flex justify-between text-small">
+    <span>Uploading files</span>
+    <span>12 of 20</span>
+  </div>
+  <Progress value={12} max={20} label="Uploading files" />
+</div>`;
 
-Determinate progress bar for work whose total is knowable: file uploads, multi-step setup, build steps. Four intent variants, three preset heights, plus numeric `height`/`width` overrides for full control.
+<PageHeader
+  title="Progress"
+  description="A determinate or indeterminate bar that communicates the status of ongoing work."
+/>
 
-For short indeterminate waits reach for `Spinner`.
+Use Progress when the work has a meaningful duration or measurable total. Use Spinner for short waits where a bar would imply unavailable precision.
 
-<Install name="progress" />
-
-<ComponentPreview label="Progress">
+<ComponentPreview label="Determinate progress" sourcePath="src/app/docs/components/progress/progress-demo.tsx">
   <ProgressDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="progress" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/progress.json). The canonical implementation lives in [packages/react/src/components/progress.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/progress.tsx).
+
 ## Usage
 
-```tsx
-import { Progress } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Basic
-<Progress value={30} />
+Pass the real total through `max`, and pair the visual bar with text that names the work and its current units.
 
-// Custom max
-<Progress value={30} max={40} />
+## Examples
 
-// Intent variants
-<Progress value={40} variant="success" />
-<Progress value={70} variant="warning" />
-<Progress value={90} variant="error" />
+### Status and indeterminate progress
 
-// Preset heights
-<Progress value={60} size="sm" />   // 4px
-<Progress value={60} size="md" />   // 6px (default)
-<Progress value={60} size="lg" />   // 10px
+Semantic variants communicate outcomes or risk. Pass `value={null}` only when the total cannot be measured.
 
-// Exact pixel height and/or width
-<Progress value={60} height={4} width={200} />
-<Progress value={60} height={20} width="50%" />
+<ComponentPreview label="Status and indeterminate progress" sourcePath="src/app/docs/components/progress/progress-states-demo.tsx">
+  <ProgressStatesDemo />
+</ComponentPreview>
 
-// Indeterminate (unknown total)
-<Progress value={null} />
-```
+## API reference
 
-## Props
+<PropsTable props={[
+  { name: "value", type: "number | null", default: "0", description: "Sets current progress, or null for indeterminate progress." },
+  { name: "max", type: "number", default: "100", description: "Sets the upper bound used to calculate completion." },
+  { name: "variant", type: '"default" | "success" | "warning" | "error"', default: '"default"', description: "Selects the semantic fill color." },
+  { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Sets a 4, 6, or 10 pixel track height." },
+  { name: "label", type: "string", default: '"Progress"', description: "Provides the progress bar’s accessible name." },
+]} />
 
-<PropsTable
-  props={[
-    {
-      name: "value",
-      type: "number | null",
-      default: "0",
-      description: "Current value from 0 to `max`. Pass `null` for an indeterminate sweep animation.",
-    },
-    {
-      name: "max",
-      type: "number",
-      default: "100",
-      description: "The upper bound. Pass the real ceiling (`max={files.length}`) rather than hard-coding 100: the percentage is computed from `value / max`.",
-    },
-    {
-      name: "variant",
-      type: '"default" | "success" | "warning" | "error"',
-      default: '"default"',
-      description: "Bar fill color. Default is `--primary`; success/warning/error use the matching semantic status token.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Height preset: `sm` (4px), `md` (6px), `lg` (10px). Ignored when `height` is set.",
-    },
-    {
-      name: "height",
-      type: "number",
-      default: "-",
-      description: "Exact bar height in pixels. Overrides the `size` preset.",
-    },
-    {
-      name: "width",
-      type: "number | string",
-      default: '"100%"',
-      description: "Bar width. Number is px; string is any CSS length (`\"50%\"`, `\"20rem\"`).",
-    },
-    {
-      name: "label",
-      type: "string",
-      default: '"Progress"',
-      description: "Accessible label announced by screen readers alongside the value.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
+Use numeric `height` and numeric or CSS-length `width` only when Progress must align to fixed external geometry. These values override the size preset or default full width.
 
-<Callout title="Notes">
-- Pair the bar with text that names the work and units: `Uploading 12 of 30 files`, `Building · 1.2 GB / 4 GB`. The bar alone doesn't say what's progressing.
-- Pass the real `max` for the ceiling. Hardcoding 100 loses meaning when the ceiling is variable.
-- Once the bar fills, swap to a completion state (toast, success row, redirect). Don't leave the filled bar sitting on screen with "Complete" tacked on.
-- Indeterminate mode animates a sweeping band. Reserve it for waits with no measurable total. Prefer `Spinner` for sub-second waits.
-- Throttle rapid `value` updates in code: updating every animation frame will flood screen readers with `aria-valuenow` changes.
-- The fill transitions via CSS `transition-[width]` at overlay duration for a smooth animation without pulling in a motion library.
-</Callout>
+## Accessibility
+
+- Provide a specific `label`, such as `Uploading files`, rather than relying on the default.
+- Keep visible text near the bar so everyone can identify the task and current units.
+- Use the real `value` and `max`; Base UI exposes the resulting progress semantics to assistive technology.
+- Throttle rapid updates so screen readers are not flooded with changing values.
+- Indeterminate animation stops under reduced-motion preferences.
+
+<PageNavigation />

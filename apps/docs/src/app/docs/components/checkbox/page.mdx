@@ -1,131 +1,51 @@
 import { CheckboxDemo } from "./checkbox-demo";
-
+import { CheckboxStatesDemo } from "./checkbox-states-demo";
 
 export const metadata = { title: "Checkbox" };
+export const usageCode = `<Checkbox>Send weekly digest</Checkbox>`;
 
-# Checkbox
+<PageHeader title="Checkbox" description="A checked, unchecked, or indeterminate control for selection and acknowledgment." />
 
-Two-state control (checked / unchecked) with an indeterminate visual for partial-selection headers. Pass a label as children and the whole label becomes the click target automatically.
+Use Checkbox when people can select zero or more options or affirm a statement. Use Switch for a setting that takes effect immediately.
+
+<ComponentPreview label="Checkbox group" sourcePath="src/app/docs/components/checkbox/checkbox-demo.tsx"><CheckboxDemo /></ComponentPreview>
+
+## Installation
 
 <Install name="checkbox" />
 
-<ComponentPreview label="Checkbox Examples">
-  <CheckboxDemo />
-</ComponentPreview>
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/checkbox.json). The canonical implementation lives in [packages/react/src/components/checkbox.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/checkbox.tsx).
 
 ## Usage
 
-```tsx
-import { Checkbox } from "@patchui/react";
+<Usage code={usageCode} />
 
-// With label as children — the label becomes clickable
-<Checkbox>Send weekly digest</Checkbox>
+Passing children creates a clickable label. Bare checkboxes require an accessible name.
 
-// Controlled
-const [checked, setChecked] = useState(false);
-<Checkbox checked={checked} onCheckedChange={setChecked}>
-  Notify on mentions
-</Checkbox>
+## Examples
 
-// Uncontrolled with initial state
-<Checkbox defaultChecked>Enabled by default</Checkbox>
+### Selection states
 
-// Indeterminate (drive from a parent that knows partial selection)
-<Checkbox indeterminate>3 of 5 selected</Checkbox>
+Indeterminate communicates partial collection selection. Application state still determines what happens on the next change.
 
-// Bare (no label) — for row-select in tables, use aria-label
-<Checkbox aria-label="Select row" />
+<ComponentPreview label="Selection states" sourcePath="src/app/docs/components/checkbox/checkbox-states-demo.tsx"><CheckboxStatesDemo /></ComponentPreview>
 
-// Acknowledgment (full sentence, ends in period)
-<Checkbox required>I agree to the Terms of Service.</Checkbox>
+## API reference
 
-// Disabled
-<Checkbox disabled>Locked option</Checkbox>
-```
+Checkbox accepts the underlying Base UI checkbox props. These fields coordinate Patch UI behavior.
 
-## Props
+<PropsTable props={[
+  { name: "children", type: "ReactNode", description: "Adds a visible label and expands the click target." },
+  { name: "checked / onCheckedChange", type: "boolean / (checked: boolean, details) => void", description: "Controls checked state." },
+  { name: "defaultChecked", type: "boolean", default: "false", description: "Sets the initial uncontrolled state." },
+  { name: "indeterminate", type: "boolean", default: "false", description: "Displays partial selection while application state remains authoritative." },
+  { name: "wrapperClassName", type: "string", description: "Styles the generated label wrapper when children are present." },
+]} />
 
-<PropsTable
-  props={[
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "Optional label. When present, wraps the checkbox in a `<label>` so the label is clickable.",
-    },
-    {
-      name: "checked",
-      type: "boolean",
-      default: "-",
-      description: "Controlled checked state.",
-    },
-    {
-      name: "defaultChecked",
-      type: "boolean",
-      default: "false",
-      description: "Uncontrolled initial checked state.",
-    },
-    {
-      name: "onCheckedChange",
-      type: "(checked: boolean, details) => void",
-      default: "-",
-      description: "Fired when the box is ticked or unticked.",
-    },
-    {
-      name: "indeterminate",
-      type: "boolean",
-      default: "false",
-      description: "Renders the dash instead of a check. Purely visual: the native input still reports unchecked.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the checkbox.",
-    },
-    {
-      name: "readOnly",
-      type: "boolean",
-      default: "false",
-      description: "Prevents the user from toggling.",
-    },
-    {
-      name: "required",
-      type: "boolean",
-      default: "false",
-      description: "Requires the box to be ticked before form submission.",
-    },
-    {
-      name: "name",
-      type: "string",
-      default: "-",
-      description: "Field name when submitted with a form.",
-    },
-    {
-      name: "value",
-      type: "string",
-      default: "-",
-      description: "Value submitted with the form when checked.",
-    },
-    {
-      name: "wrapperClassName",
-      type: "string",
-      default: "-",
-      description: "Extra classes on the outer `<label>` (only used when `children` is provided).",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Extra classes on the checkbox root.",
-    },
-  ]}
-/>
+## Accessibility
 
-<Callout title="Notes">
-- Reach for Checkbox when the user is picking zero or more from a list (opt-in preferences, table row select, filter multi-select) or affirming a specific statement (terms, exports). Reach for `Switch` when a single boolean setting saves immediately.
-- Indeterminate is only visual. Drive it from a parent that tracks partial selection: as soon as every child is either fully on or fully off, clear the indeterminate state.
-- For row-select checkboxes with no visible label, pass `aria-label="Select {row name}"` so the row stays identifiable when the surrounding context is off-screen.
-- Group related checkboxes in a `<fieldset>` with a `<legend>` so screen readers announce the group name before each option.
-- The checkbox is a `<button role="checkbox">` on top of a hidden `<input type="checkbox">`, so it participates in native forms without losing keyboard behavior.
-</Callout>
+- Give every bare Checkbox a specific `aria-label`, such as `Select Ada Lovelace`.
+- Group related checkboxes with `fieldset` and `legend`.
+- Clear indeterminate state when the controlled collection becomes fully selected or unselected.
+
+<PageNavigation />

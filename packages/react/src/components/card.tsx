@@ -28,10 +28,11 @@ export function Card({
     className: cn(
       "relative rounded-[var(--radius-12)] text-ink",
       variant === "surface" && "bg-layer-1",
-      variant === "outlined" && "border border-hairline bg-layer-1",
-      variant === "elevated" && "border border-hairline-soft bg-layer-1 shadow-card",
+      variant === "outlined" && "border border-hairline-soft bg-layer-1",
+      variant === "elevated" &&
+        "bg-layer-1 shadow-card dark:shadow-none",
       actionable && [
-        "hover:bg-layer-hover active:bg-layer-hover",
+        "hover:border-hairline-tertiary active:border-hairline-tertiary",
         "aria-disabled:pointer-events-none aria-disabled:opacity-50",
         selectionFocus,
       ],

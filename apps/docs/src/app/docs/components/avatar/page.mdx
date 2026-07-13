@@ -1,190 +1,93 @@
 import { AvatarDemo } from "./avatar-demo";
-
+import { AvatarSizesDemo } from "./avatar-sizes-demo";
+import { AvatarGroupDemo } from "./avatar-group-demo";
 
 export const metadata = { title: "Avatar" };
 
-# Avatar
+export const usageCode = `<Avatar>
+  <AvatarImage src="/people/ada.jpg" alt="Ada Lovelace" />
+  <AvatarFallback>AL</AvatarFallback>
+</Avatar>`;
 
-A user or team avatar. Built on Base UI's Avatar; falls back gracefully from image → monogram. Sizes accept enum (`xs`–`xl`) or an exact pixel number. `AvatarGroup` takes either a `members` array or nested `<Avatar>` children.
+<PageHeader
+  title="Avatar"
+  description="A visual identity for a person or team with image, monogram, and placeholder fallbacks."
+/>
 
-<Install name="avatar" />
+Use Avatar to reinforce an identity that is already available in nearby text or an accessible image label. Use AvatarGroup for a compact summary of multiple members.
 
-<ComponentPreview label="Avatar">
+<ComponentPreview label="Fallback initials" sourcePath="src/app/docs/components/avatar/avatar-demo.tsx">
   <AvatarDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="avatar" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/avatar.json). The canonical implementation lives in [packages/react/src/components/avatar.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/avatar.tsx).
+
 ## Usage
 
-```tsx
-import {
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-  AvatarGroup,
-} from "@patchui/react";
+<Usage code={usageCode} />
 
-// Single avatar
-<Avatar>
-  <AvatarImage src="/people/ada.jpg" alt="Ada Lovelace" />
-  <AvatarFallback>JD</AvatarFallback>
-</Avatar>
+Always provide fallback initials when an image may fail to load. The `letter` prop creates a deterministic monogram without requiring an image request.
 
-// Sizes: enum
-<Avatar size="xs" />  // 24px
-<Avatar size="sm" />  // 28px
-<Avatar size="md" />  // 36px (default)
-<Avatar size="lg" />  // 44px
-<Avatar size="xl" />  // 56px
+## Composition
 
-// Sizes: numeric (any pixel)
-<Avatar size={32} />
-<Avatar size={64} />
+```text
+Avatar
+├── AvatarImage
+└── AvatarFallback
 
-// Letter shorthand + placeholder fill
-<Avatar letter="SL" placeholder size={32} />
-
-// Placeholder person icon (no image, no letter)
-<Avatar placeholder size={90} />
-
-// Square
-<Avatar shape="square" size={40}>
-  <AvatarImage src="/logo.png" alt="Acme" />
-  <AvatarFallback>A</AvatarFallback>
-</Avatar>
-
-// Group with a members array
-<AvatarGroup
-  size={32}
-  members={[
-    { image: "/people/a.jpg", letter: "AB" },
-    { image: "/people/b.jpg", letter: "CD" },
-    { image: "/people/c.jpg", letter: "EF" },
-  ]}
-/>
-
-// Overflow chip
-<AvatarGroup size={32} limit={4} members={sixMembers} />
-
-// Overlap: auto scales with size; number = exact pixel overlap
-<AvatarGroup size={24} overlap="auto" members={m} />
-<AvatarGroup size={24} overlap={0} members={m} />
-
-// Reverse stacking (last member on top)
-<AvatarGroup size={32} reverse members={m} />
+AvatarGroup
+└── Avatar or members[]
 ```
 
-## Props
+## Examples
+
+### Size and shape
+
+Prefer the named size scale. Numeric pixel sizes are available when Avatar must align to fixed external geometry.
+
+<ComponentPreview label="Size and shape" sourcePath="src/app/docs/components/avatar/avatar-sizes-demo.tsx">
+  <AvatarSizesDemo />
+</ComponentPreview>
+
+### Group and overflow
+
+Pass `members` for data-driven lists. Use children when individual avatars need custom content or behavior.
+
+<ComponentPreview label="Group and overflow" sourcePath="src/app/docs/components/avatar/avatar-group-demo.tsx">
+  <AvatarGroupDemo />
+</ComponentPreview>
+
+## API reference
 
 ### Avatar
 
-<PropsTable
-  props={[
-    {
-      name: "size",
-      type: '"xs" | "sm" | "md" | "lg" | "xl" | number',
-      default: '"md"',
-      description: "Avatar diameter. Enums: 24 / 28 / 36 / 44 / 56px. A number sets exact pixels.",
-    },
-    {
-      name: "shape",
-      type: '"circle" | "square"',
-      default: '"circle"',
-      description: "`circle` (rounded-full) or `square` (6px radius).",
-    },
-    {
-      name: "letter",
-      type: "string",
-      default: "-",
-      description: "Shorthand for a monogram fallback. Equivalent to `<AvatarFallback>letter</AvatarFallback>`.",
-    },
-    {
-      name: "placeholder",
-      type: "boolean",
-      default: "false",
-      description: "Uses a subtle neutral fill instead of the default dark. If no image or letter is provided, renders a generic person icon.",
-    },
-    {
-      name: "icon",
-      type: "ReactNode",
-      default: "-",
-      description: "Render an icon as a small badge overlay in the bottom-left corner. The main avatar (image/letter/placeholder) still renders behind it.",
-    },
-    {
-      name: "iconBackground",
-      type: "boolean",
-      default: "true",
-      description: "When `icon` is set: `true` = dark badge with light icon (default), `false` = light badge with dark icon.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
+<PropsTable props={[
+  { name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl" | number', default: '"md"', description: "Sets a 24, 28, 36, 44, or 56 pixel preset, or an exact pixel size." },
+  { name: "shape", type: '"circle" | "square"', default: '"circle"', description: "Selects a circular or radius-6 container." },
+  { name: "letter", type: "string", description: "Adds a monogram fallback without composing AvatarFallback." },
+  { name: "placeholder", type: "boolean", default: "false", description: "Uses a neutral fill and renders a person icon when no other body is supplied." },
+  { name: "icon / iconBackground", type: "ReactNode / boolean", default: "- / true", description: "Adds a small badge at the lower edge and selects its fill treatment." },
+]} />
 
 ### AvatarGroup
 
-<PropsTable
-  props={[
-    {
-      name: "members",
-      type: "Array<{ image?: string; letter?: string; alt?: string; id?: string | number }>",
-      default: "-",
-      description: "Data-driven mode. Alternative to nested `<Avatar>` children.",
-    },
-    {
-      name: "limit",
-      type: "number",
-      default: "5",
-      description: "Maximum avatars before collapsing to a `+N` chip. Set 0 to disable the cap.",
-    },
-    {
-      name: "size",
-      type: '"xs" | "sm" | "md" | "lg" | "xl" | number',
-      default: '"md"',
-      description: "Size applied to every child and the overflow chip. Individual `<Avatar>` children can override.",
-    },
-    {
-      name: "shape",
-      type: '"circle" | "square"',
-      default: '"circle"',
-      description: "Shape applied to every child and the overflow chip.",
-    },
-    {
-      name: "overlap",
-      type: '"auto" | number',
-      default: '"auto"',
-      description: "How much adjacent avatars overlap. `auto` scales to ~30% of the size; a number sets exact pixel overlap.",
-    },
-    {
-      name: "reverse",
-      type: "boolean",
-      default: "false",
-      description: "Flip the z-stacking so the last member sits on top. Visual left-to-right order is unchanged.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes for the group container.",
-    },
-  ]}
-/>
+<PropsTable props={[
+  { name: "members", type: "AvatarGroupMember[]", description: "Renders a data-driven collection as an alternative to children." },
+  { name: "limit", type: "number", default: "5", description: "Limits visible members and adds a +N summary. Set 0 to disable the limit." },
+  { name: "size / shape", type: "AvatarSize / AvatarShape", default: '"md" / "circle"', description: "Applies shared presentation to members and the overflow summary." },
+  { name: "overlap", type: '"auto" | number', default: '"auto"', description: "Scales overlap with avatar size or uses an exact pixel value." },
+  { name: "reverse", type: "boolean", default: "false", description: "Reverses stacking order without changing visual member order." },
+]} />
 
-## Components
+## Accessibility
 
-- `Avatar`: the container
-- `AvatarImage`: the image; covers the container and hides itself on error
-- `AvatarFallback`: shown while the image loads or on error; typically initials
-- `AvatarGroup`: overlapping row with data-driven or children API, auto-scaling overlap, and `+N` overflow chip
+- Use meaningful `alt` text when the avatar image communicates identity. Use an empty `alt` when adjacent text already names the same person.
+- Do not rely on initials, color, or a status badge as the only source of important information.
+- Avatar is display-only. Wrap it in an appropriately named Button or link when it initiates an action.
+- Preserve stable member order when using AvatarGroup. Visual overlap must not imply a ranking that the data does not have.
 
-<Callout title="Notes">
-- Both size APIs coexist. Reach for the enum when a preset lines up (`sm`, `md`, `lg`…). Reach for a number when the layout needs an exact pixel diameter.
-- Inside a group, each avatar picks up a `ring-base` hairline. That's what keeps overlapping avatars from bleeding into each other.
-- The overflow chip uses `bg-fill-1` + `text-ink`: visibly different from a real avatar, reads as a counter.
-- Pick the `members` prop for lists coming from data, keep children when individual avatars need their own tooltip, click handler, or fallback.
-- `reverse` flips the z-stack. Left-to-right visual order stays the same; what changes is who sits on top when they overlap.
-- The `icon` prop is a small status badge tucked into the bottom-left corner, not a replacement for the avatar body. The main avatar (image/letter/placeholder) still renders behind it.
-</Callout>
+<PageNavigation />

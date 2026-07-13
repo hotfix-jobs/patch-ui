@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "search-index": "node scripts/build-search-index.mjs",
-    "predev": "npm run search-index",
+    "docs-markdown": "node scripts/build-docs-markdown.mjs",
+    "predev": "npm run search-index && npm run docs-markdown",
     "dev": "next dev",
-    "prebuild": "npm run search-index",
+    "prebuild": "npm run search-index && npm run docs-markdown",
     "build": "next build",
     "start": "next start"
   },

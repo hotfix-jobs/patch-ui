@@ -1,98 +1,95 @@
 import { SheetDemo } from "./sheet-demo";
-
+import { SheetBottomDemo } from "./sheet-bottom-demo";
 
 export const metadata = { title: "Sheet" };
 
-# Sheet
-
-An edge-anchored panel that slides in from the top, right, bottom, or left. It uses one rounded outer boundary and shadow, with borderless internal regions for a quieter surface.
-
-<Install name="sheet" />
-
-<ComponentPreview label="Sheet Examples">
-  <SheetDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import {
-  Button,
-  Sheet,
-  SheetTrigger,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetBody,
-  SheetFooter,
-  SheetClose,
-} from "@patchui/react";
-
-<Sheet>
-  <SheetTrigger render={<Button variant="secondary">Open profile</Button>} />
+export const usageCode = `<Sheet side="right">
+  <SheetTrigger render={<Button variant="secondary" />}>
+    Edit Profile
+  </SheetTrigger>
   <SheetContent>
     <SheetHeader>
       <SheetTitle>Profile</SheetTitle>
-      <SheetDescription>Details for the selected member.</SheetDescription>
+      <SheetDescription>Update member details.</SheetDescription>
     </SheetHeader>
-    <SheetBody>
-      {/* form / inspector content */}
-    </SheetBody>
+    <SheetBody>...</SheetBody>
     <SheetFooter>
-      <SheetClose render={<Button variant="secondary">Cancel</Button>} />
-      <SheetClose render={<Button variant="primary">Save</Button>} />
+      <SheetClose render={<Button variant="secondary" />}>Cancel</SheetClose>
+      <SheetClose render={<Button />}>Save Profile</SheetClose>
     </SheetFooter>
   </SheetContent>
-</Sheet>
+</Sheet>`;
+
+<PageHeader
+  title="Sheet"
+  description="An edge-anchored drawer for secondary navigation, inspectors, forms, and mobile-first choices."
+/>
+
+Use Sheet when content should remain spatially connected to an application edge. Use Modal for centered tasks that require focused attention without implying a persistent workspace.
+
+<ComponentPreview label="Profile sheet" sourcePath="src/app/docs/components/sheet/sheet-demo.tsx">
+  <SheetDemo />
+</ComponentPreview>
+
+## Installation
+
+<Install name="sheet" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/sheet.json). The canonical implementation lives in [packages/react/src/components/sheet.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/sheet.tsx).
+
+## Usage
+
+<Usage code={usageCode} />
+
+Set `side` on Sheet so placement and swipe direction remain synchronized. SheetContent owns the outer boundary, backdrop, and elevation.
+
+## Composition
+
+```text
+Sheet
+├── SheetTrigger
+└── SheetContent
+    ├── SheetHeader
+    │   ├── SheetTitle
+    │   └── SheetDescription
+    ├── SheetBody
+    └── SheetFooter
+        └── SheetClose
 ```
 
-## Props
+## Examples
 
-### SheetContent
+### Bottom picker
 
-<PropsTable
-  props={[
-    {
-      name: "side",
-      type: '"top" | "right" | "bottom" | "left"',
-      default: '"right"',
-      description: "Which edge the sheet slides in from.",
-    },
-    {
-      name: "showClose",
-      type: "boolean",
-      default: "auto",
-      description: "Shows the default close control when no SheetHeader is present.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes applied to the panel.",
-    },
-  ]}
-/>
+Bottom sheets work well for a short mobile-first choice list. Each option can close the sheet directly through SheetClose.
 
-## Compound Components
+<ComponentPreview label="Bottom picker" sourcePath="src/app/docs/components/sheet/sheet-bottom-demo.tsx">
+  <SheetBottomDemo />
+</ComponentPreview>
 
-<CompoundComponents
-  components={[
-    { name: "Sheet", description: "Root, manages open/close state and portal wiring." },
-    { name: "SheetTrigger", description: "Element that opens the sheet on click. `render` prop composes with any element." },
-    { name: "SheetContent", description: "The sliding panel. Owns the outer boundary, shadow, and backdrop." },
-    { name: "SheetHeader", description: "Borderless top region for title, description, and a close button." },
-    { name: "SheetTitle", description: "Primary heading. Wired to aria-labelledby." },
-    { name: "SheetDescription", description: "Supporting sentence-case text under the title." },
-    { name: "SheetBody", description: "Scrollable middle region." },
-    { name: "SheetFooter", description: "Borderless bottom action row using spacing for separation." },
-    { name: "SheetClose", description: "Element that closes the sheet on click. With no render/children, renders a default × button positioned top-right of the header." },
-  ]}
-/>
+## API reference
 
-<Callout title="Notes">
-- **One surface.** The outer panel provides the boundary and elevation. Header, body, and footer remain visually quiet inside it.
-- **Outside-click, Escape, and `<SheetClose>` all dismiss.** For sheets holding unsaved input, wrap Save/Cancel in `SheetClose` and gate the dismiss with a confirmation step upstream.
-- **Side matters.** Right for detail inspectors, left for navigation, bottom for mobile-first pickers. Keep the direction consistent across similar patterns in the app.
-- **Focus return.** Focus returns to the trigger on close.
-</Callout>
+<PropsTable props={[
+  { name: "open / onOpenChange", type: "boolean / (open: boolean) => void", description: "Controls the drawer’s open state." },
+  { name: "defaultOpen", type: "boolean", default: "false", description: "Sets the initial uncontrolled open state." },
+  { name: "side", type: '"top" | "right" | "bottom" | "left"', default: '"right"', description: "Selects the anchored edge and matching swipe direction." },
+  { name: "SheetContent.showClose", type: "boolean", default: "automatic", description: "Overrides the close control, which SheetHeader normally supplies." },
+  { name: "SheetHeader.leading / trailing", type: "ReactNode / ReactNode", description: "Switches to a compact three-slot header when edge controls are needed." },
+  { name: "SheetFooter.stacked", type: "boolean", default: "false", description: "Stacks footer actions vertically instead of using a horizontal row." },
+]} />
+
+SheetHeader adds a close control by default; set `hideClose` or provide custom trailing content to override it. SheetClose can render a Button or another semantic control.
+
+## Accessibility
+
+- SheetTitle and SheetDescription provide the drawer’s accessible name and description through Base UI Drawer.
+- Focus is contained while open and returns to the trigger after close.
+- Escape, backdrop interaction, swipe dismissal, and SheetClose all request the same open-state change.
+- Keep Cancel explicit when a sheet contains editable or unsaved state.
+- SheetBody is the scrollable region, preserving access to the header and footer around long content.
+
+## Placement guidance
+
+Use right for inspectors and editing, left for application navigation, bottom for short mobile-first choices, and top only when the relationship to the upper edge is meaningful. Keep placement consistent across similar workflows.
+
+<PageNavigation />

@@ -1,33 +1,49 @@
-import { ContrastDemo } from "./contrast-demo";
+import { ContrastDemo, ContrastSummary } from "./contrast-demo";
 
 export const metadata = { title: "Contrast" };
 
-# Contrast Contract
+<PageHeader
+  title="Contrast"
+  description="The automated readability contract for Patch UI’s text, surfaces, primary action, and semantic status colors."
+/>
 
-Patch UI assigns a WCAG target to each readable token and filled-label pair. `npm run check:contrast -w packages/react` evaluates those pairs in light and dark mode, and CI fails when a token change breaks the contract. The matrix below reads the active CSS variables so it updates when the page theme changes.
+Patch UI assigns a WCAG target to every readable token role and filled-label pair. The repository checks those exact relationships in both themes and fails CI when a token change breaks the contract.
 
-- **`ink`** on base, layers, and fills: AAA body text (7:1)
-- **`ink-muted`** on base, `layer-1`, and `fill-1`: AA secondary text (4.5:1)
-- **`ink-subtle`** on base: AA-large and placeholder treatment (3:1)
-- **`ink-tertiary`** on base: AA-large and disabled hint treatment (3:1)
-- **`on-primary`** on **`primary`**: AAA primary Button label (7:1)
-- **Status foregrounds** on their error, warning, and success fills: AA (4.5:1)
+<ContrastSummary />
 
-The matrix uses check and X icons for pass or fail. Ratio labels use compact metadata geometry rather than status-colored pills.
+## Contract
 
-<ComponentPreview label="Contrast matrix">
-  <ContrastDemo />
-</ComponentPreview>
+- Primary `ink` text clears AAA on the application canvas, layers, and neutral fills.
+- Secondary `ink-muted` text clears AA on its supported surfaces.
+- Placeholder and disabled tiers clear the large-text or nonessential 3:1 target on base.
+- Primary Button labels clear AAA, while semantic status labels clear AA on their paired fills.
+
+Run the same check locally after changing readable color tokens:
+
+<CopyCommand command="npm run check:contrast -w packages/react" />
+
+## Current matrix
+
+The matrix reads active CSS variables from the page, so switching between light and dark mode updates the displayed values and ratios immediately.
+
+<ContrastDemo />
 
 ## Choosing a text tier
 
-- Use **`ink`** for headings, body text, and anything users must read precisely.
-- Use **`ink-muted`** for secondary labels, metadata, and the default icon tone.
-- Use **`ink-subtle`** for placeholders or missing-value copy on base. Use `ink-muted` on lifted or filled surfaces.
-- Use **`ink-tertiary`** for disabled controls, footnotes, and timestamps, not required reading.
+- Use `ink` for headings, body copy, and information people must read precisely.
+- Use `ink-muted` for secondary labels, metadata, and the default icon tone.
+- Use `ink-subtle` for placeholders or missing-value copy on the base canvas.
+- Use `ink-tertiary` for disabled hints and nonessential footnotes, not required instructions.
 
-## What the check covers
+On lifted or filled surfaces, prefer `ink-muted` unless the intended token pair is explicitly covered by the contract.
 
-The script parses `packages/react/src/theme/tokens.css` and checks the declared light and dark pairs. It covers the shipped token contract, not arbitrary opacity, gradients, images, or downstream CSS overrides.
+## After customizing tokens
 
-If a consumer changes `--primary`, `--on-primary`, `--ink*`, `--base`, `--layer-*`, or `--fill-*`, that consumer should run an equivalent contrast check against its final values before shipping.
+1. Change primary, ink, base, layer, or fill values in `patch-ui-tokens.css`.
+2. Run the contrast command.
+3. Review the affected components in both light and dark mode.
+4. Test any additional consumer-defined combinations not represented by the shipped contract.
+
+The checker parses the repository token file. It does not evaluate arbitrary opacity, gradients, imagery, browser extensions, or downstream CSS overrides.
+
+<PageNavigation />

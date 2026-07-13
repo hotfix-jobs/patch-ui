@@ -1,91 +1,59 @@
 import { TimeAgoDemo } from "./time-ago-demo";
+import { TimeAgoFutureDemo } from "./time-ago-future-demo";
 
+export const metadata = { title: "Time Ago" };
 
-export const metadata = { title: "TimeAgo" };
+export const usageCode = `<TimeAgo dateStr={activity.createdAt} />`;
 
-# TimeAgo
+<PageHeader
+  title="Time Ago"
+  description="A hydration-safe time element that turns an absolute date into a compact relative label."
+/>
 
-Relative time display ("3m ago", "2d ago", "in 5h"). Renders an absolute date during SSR / initial hydration and swaps to the relative string after mount: no hydration mismatches. Supports past and future dates, ranges from seconds to years, and refreshes itself on a smart interval so "Just now" doesn't stick around for half an hour.
+Use Time Ago for recent activity, comments, status changes, and scheduled events where the distance from now matters more than the calendar date.
 
-Defaults to mono numerals since timestamps are numeric data and benefit from column alignment in lists.
-
-<Install name="time-ago" />
-
-<ComponentPreview label="TimeAgo">
+<ComponentPreview label="Recent activity" sourcePath="src/app/docs/components/time-ago/time-ago-demo.tsx">
   <TimeAgoDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="time-ago" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/time-ago.json). The canonical implementation lives in [packages/react/src/components/time-ago.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/time-ago.tsx).
+
 ## Usage
 
-```tsx
-import { TimeAgo } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Basic — past date
-<TimeAgo dateStr={post.publishedAt} />
+Pass an ISO date string. The component renders an absolute UTC date during server rendering, then replaces it with relative time after hydration.
 
-// Future date — renders "in 5h", "in 3d", etc.
-<TimeAgo dateStr={event.startsAt} />
+## Examples
 
-// Inherit parent typography (no tabular nums)
-<TimeAgo dateStr={post.publishedAt} variant="sans" />
+### Future time
 
-// Disable live updates if you're rendering many TimeAgos and don't need
-// per-second freshness (e.g. archive lists where age changes slowly).
-<TimeAgo dateStr={post.publishedAt} liveUpdate={false} />
+Future dates use the same scale and render labels such as `Soon`, `in 5m`, or `in 3h`.
 
-// Hover for the absolute date via Tooltip composition
-<Tooltip content={new Date(post.publishedAt).toLocaleString()}>
-  <TimeAgo dateStr={post.publishedAt} />
-</Tooltip>
-```
+<ComponentPreview label="Scheduled event" sourcePath="src/app/docs/components/time-ago/time-ago-future-demo.tsx">
+  <TimeAgoFutureDemo />
+</ComponentPreview>
 
-## Output ranges
+## API reference
 
-| Age | Past | Future |
-|---|---|---|
-| Under 1 minute | `Just now` | `Soon` |
-| Under 1 hour | `Xm ago` | `in Xm` |
-| Under 1 day | `Xh ago` | `in Xh` |
-| Under 1 week | `Xd ago` | `in Xd` |
-| Under 1 month | `Xw ago` | `in Xw` |
-| Under 1 year | `Xmo ago` | `in Xmo` |
-| 1 year+ | `Xy ago` | `in Xy` |
+<PropsTable props={[
+  { name: "dateStr", type: "string", description: "Sets the past or future ISO date represented by the time element." },
+  { name: "fallback", type: "string", default: "absolute UTC date", description: "Overrides the stable label rendered before hydration." },
+  { name: "variant", type: '"mono" | "sans"', default: '"mono"', description: "Uses tabular numerals or inherits the surrounding typography." },
+  { name: "liveUpdate", type: "boolean", default: "true", description: "Keeps recent labels current using age-based refresh intervals." },
+]} />
 
-## Props
+Labels progress from seconds through minutes, hours, days, weeks, months, and years. Set `liveUpdate={false}` for large archives where automatic refreshes are unnecessary.
 
-<PropsTable
-  props={[
-    {
-      name: "dateStr",
-      type: "string",
-      default: "-",
-      description: "Required. ISO date string. Past or future.",
-    },
-    {
-      name: "fallback",
-      type: "string",
-      default: "absolute date",
-      description: "Rendered during SSR / initial hydration. Defaults to a formatted absolute date in UTC.",
-    },
-    {
-      name: "variant",
-      type: '"mono" | "sans"',
-      default: '"mono"',
-      description: "mono applies tabular numerals + tighter tracking for column-aligned timestamps in lists. sans inherits parent typography with no overrides.",
-    },
-    {
-      name: "liveUpdate",
-      type: "boolean",
-      default: "true",
-      description: "Re-render on a smart interval so the label stays accurate without effort. Refresh frequency scales with age (10s under 1m, 30s under 1h, 60s under 1d, 1h under 1w). Above 1 week the label rolls over too slowly to bother: no further refresh scheduled.",
-    },
-  ]}
-/>
+## Accessibility
 
-<Callout title="Notes">
-- Hydration-safe by construction: the server and first-client render emit a stable absolute UTC date. The relative label only takes over once `useSyncExternalStore` confirms hydration. No flash, no React warnings.
-- Live updates are scheduled from the current age. A fresh `0m ago` refreshes 10s later, then every 30s, then every minute, then every hour. Above one week the label rolls over too slowly to bother scheduling: the timer cancels itself.
-- Future dates render as `in Xm`, `in Xh`. A time less than a minute out renders as `Soon`.
-- Months and years use Gregorian averages (30.44 days / 365.25 days) so the rollover thresholds don't drift.
-- For a hover hint with the full absolute date, wrap in `<Tooltip>`, one-line composition.
-</Callout>
+- The rendered `time` element retains the complete ISO value in `dateTime`.
+- Keep enough surrounding text for a relative label to make sense on its own.
+- Add a Tooltip with the localized absolute date when exact time is important.
+- Do not rely on relative time alone for deadlines or other high-consequence dates.
+
+<PageNavigation />

@@ -10,12 +10,16 @@ import {
   SidebarContent,
   SidebarGroup,
   SidebarGroupLabel,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
   useSidebar,
 } from "@patchui/react";
+import { ThemeToggle } from "./theme-toggle";
+import { GithubLogo, SidebarSimple } from "@phosphor-icons/react/dist/ssr";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -39,6 +43,12 @@ export function Sidebar() {
         <div className="ms-auto">
           <SearchTrigger className="hidden lg:inline-flex" />
         </div>
+        <SidebarTrigger
+          title="Collapse sidebar (⌘B)"
+          className="hidden lg:inline-flex"
+        >
+          <SidebarSimple className="size-4" aria-hidden />
+        </SidebarTrigger>
       </SidebarHeader>
 
       <SidebarContent>
@@ -71,6 +81,19 @@ export function Sidebar() {
           </SidebarGroup>
         ))}
       </SidebarContent>
+
+      <SidebarFooter className="flex-row items-center justify-end gap-2 px-3">
+        <a
+          href="https://github.com/hotfix-jobs/patch-ui"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="GitHub"
+          className="inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink-muted outline-none transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover hover:text-ink active:bg-layer-hover focus-visible:shadow-[inset_0_-2px_0_var(--focus-ring-color)]"
+        >
+          <GithubLogo className="size-4" aria-hidden />
+        </a>
+        <ThemeToggle className="hidden lg:inline-flex" />
+      </SidebarFooter>
     </SidebarRoot>
   );
 }

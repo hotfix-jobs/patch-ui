@@ -1,67 +1,84 @@
 import { PopoverDemo } from "./popover-demo";
+import { PopoverPlacementDemo } from "./popover-placement-demo";
 
 export const metadata = { title: "Popover" };
 
-# Popover
+export const usageCode = `<Popover>
+  <PopoverTrigger render={<Button variant="secondary" />}>
+    Edit Width
+  </PopoverTrigger>
+  <PopoverContent className="p-4 md:w-72">
+    <p className="text-small font-medium text-ink">Dimensions</p>
+    <PopoverClose render={<Button size="sm" />}>Done</PopoverClose>
+  </PopoverContent>
+</Popover>`;
 
-A floating panel anchored to a trigger. Use for arbitrary content: notification lists, filter panels, mini-forms, and row action menus. When you want a single list of clickable actions, reach for [Menu](/docs/components/menu); when you want a hover chip for one line of text, reach for [Tooltip](/docs/components/tooltip); when you need a blocking dialog, reach for [Modal](/docs/components/modal).
+<PageHeader
+  title="Popover"
+  description="An anchored floating panel for arbitrary supporting content and compact interactions."
+/>
 
-<Install name="popover" />
+Use Popover for mini-forms, filters, or supporting details related to a trigger. Use Menu for a list of actions, Tooltip for brief non-interactive help, and Modal for blocking tasks.
 
-<ComponentPreview label="Popover examples">
+<ComponentPreview label="Mini form" sourcePath="src/app/docs/components/popover/popover-demo.tsx">
   <PopoverDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="popover" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/popover.json). The canonical implementation lives in [packages/react/src/components/popover.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/popover.tsx).
+
 ## Usage
 
-```tsx
-import { Popover, PopoverTrigger, PopoverContent, PopoverClose } from "@patchui/react";
-import { Button } from "@patchui/react";
+<Usage code={usageCode} />
 
-<Popover>
-  <PopoverTrigger render={<Button variant="secondary">Open</Button>} />
-  <PopoverContent>
-    <p className="text-small text-ink">Anything you want, anchored to the trigger.</p>
-    <PopoverClose render={<Button size="sm">Done</Button>} />
-  </PopoverContent>
-</Popover>
+Popover can be controlled with `open` and `onOpenChange` or initialized with `defaultOpen`. Set `modal` when the surrounding page should become inert while the panel is open.
+
+## Composition
+
+```text
+Popover
+├── PopoverTrigger
+└── PopoverContent
+    └── PopoverClose (optional)
 ```
 
-## Props
+PopoverContent owns the floating surface but no internal padding. Apply spacing appropriate to the content.
 
-### `<Popover>`
+## Examples
 
-<PropsTable
-  props={[
-    { name: "open", type: "boolean", default: "-", description: "Controlled open state." },
-    { name: "defaultOpen", type: "boolean", default: "false", description: "Initial open state when uncontrolled." },
-    { name: "onOpenChange", type: "(open: boolean) => void", default: "-", description: "Called when open state changes." },
-    { name: "modal", type: "boolean", default: "false", description: "Trap focus + block interaction with the rest of the page. Off by default so notification-style popovers stay non-blocking." },
-  ]}
-/>
+### Placement and arrow
 
-### `<PopoverContent>`
+Adjust desktop placement relative to the trigger and add an arrow only when the visual connection needs reinforcement.
 
-<PropsTable
-  props={[
-    { name: "side", type: '"top" | "bottom" | "left" | "right"', default: '"bottom"', description: "Which side of the trigger the popover appears on." },
-    { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "Alignment along the trigger's axis. `end` is useful for right-aligned nav triggers so the popover stays inside the viewport." },
-    { name: "sideOffset", type: "number", default: "6", description: "Pixel offset from the trigger." },
-    { name: "anchor", type: "Element | RefObject<Element>", default: "trigger", description: "Optional element used for positioning when the popup should align to a larger composite surface." },
-    { name: "arrow", type: "boolean", default: "false", description: "Render a subtle arrow pointing at the trigger." },
-    { name: "className", type: "string", default: "-", description: "Applied to the popup surface. Set width (`w-72`, `w-[360px]`) and padding here." },
-  ]}
-/>
+<ComponentPreview label="Placement and arrow" sourcePath="src/app/docs/components/popover/popover-placement-demo.tsx">
+  <PopoverPlacementDemo />
+</ComponentPreview>
 
-### `<PopoverClose>`
+## API reference
 
-Wraps a trigger (usually a `Button`) that dismisses the popover on click. Compose via `render`.
+<PropsTable props={[
+  { name: "side", type: '"top" | "bottom" | "left" | "right"', default: '"bottom"', description: "Selects the preferred desktop side of the trigger." },
+  { name: "align", type: '"start" | "center" | "end"', default: '"center"', description: "Aligns the desktop popup along the trigger axis." },
+  { name: "sideOffset", type: "number", default: "6", description: "Sets the desktop distance from the trigger in pixels." },
+  { name: "anchor", type: "Element | RefObject<Element>", default: "trigger", description: "Positions against another element instead of PopoverTrigger." },
+  { name: "arrow", type: "boolean", default: "false", description: "Adds a desktop arrow pointing toward the anchor." },
+]} />
 
-<Callout title="Notes">
-- The default `align="center"` is right for a trigger below a header. For an icon button in the top-right of a header (bell icon), pass `align="end"` so the popover doesn't overflow.
-- Set width on `PopoverContent` via className (`w-72`, `w-[360px]`). Default `min-w-[220px]` keeps small popovers legible. Prefix with `md:` for a desktop-only width so the mobile centered treatment fills the viewport width.
-- The popover content region has no built-in padding. Pass `p-4` (for a form) or `p-0` (for a list that carries its own row padding).
-- Popover uses the shared lightweight popup boundary and `shadow-menu` elevation on desktop and mobile.
-- **Mobile:** below `md`, `PopoverContent` automatically switches to a centered-modal presentation with a backdrop and `RemoveScroll` body lock — the anchored `side`/`align`/`sideOffset` props are ignored and the popover fills `w-[calc(100vw-1rem)]` centered at the viewport. Consumers don't need to opt in.
-- Popovers don't trap focus by default. Set `modal` on `<Popover>` if you want the surrounding page inert while the popover is open.
-</Callout>
+The root exposes the underlying Base UI Popover state and interaction props. PopoverTrigger and PopoverClose use `render` to compose Patch UI Button or another semantic control.
+
+## Accessibility
+
+- PopoverTrigger exposes the open relationship through Base UI and remains the control used to toggle the panel.
+- Escape closes the panel. PopoverClose provides an explicit in-panel dismissal action when the task needs one.
+- Keep interactive content keyboard reachable in a logical order and give every form control a visible label.
+- Use `modal` only when interaction outside the popover must be blocked.
+- Do not use Popover for critical confirmation that requires an explicit decision.
+
+## Mobile behavior
+
+Below the `md` breakpoint, PopoverContent becomes a centered panel with narrow viewport gutters, a backdrop, and locked body scrolling. Desktop `side`, `align`, `sideOffset`, `anchor`, and arrow presentation do not control the centered mobile layout.
+
+<PageNavigation />

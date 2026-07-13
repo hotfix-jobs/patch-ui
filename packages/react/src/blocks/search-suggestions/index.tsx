@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { MagnifyingGlass, X } from "@phosphor-icons/react/dist/ssr";
 import { useId, useMemo, useRef, useState } from "react";
 import type * as React from "react";
@@ -27,6 +26,14 @@ export interface SearchSuggestion {
   icon?: React.ReactNode;
   suffix?: React.ReactNode;
   disabled?: boolean;
+  /**
+   * When set, the row renders a trailing remove control for dismissable
+   * entries. Rendered as a sibling of the option button, so the option
+   * stays a single valid control, and always visible for touch.
+   */
+  onRemove?: () => void;
+  /** Accessible label for the remove control, e.g. `Remove "<entry>"`. */
+  removeLabel?: string;
 }
 
 export interface SearchSuggestionSection {
@@ -157,7 +164,6 @@ export function SearchSuggestions({
   }
 
   return (
-    <MotionConfig reducedMotion="user">
       <Popover
         open={open}
         triggerId={triggerId}
@@ -181,21 +187,17 @@ export function SearchSuggestions({
           className={cn("relative w-full", className)}
           {...props}
         >
-          <div className="relative flex flex-col gap-1 rounded-[var(--radius-12)] bg-fill-1 p-1 sm:flex-row sm:items-center">
+          <div className="relative flex flex-col gap-1 rounded-[var(--radius-12)] bg-layer-1 p-1 sm:flex-row sm:items-center">
             {fields.map((field) => {
               const active = field.id === activeField.id;
               return (
                 <div
                   key={field.id}
                   data-slot="search-suggestions-field"
-                  className="relative min-w-0 flex-1"
+                  className="group relative min-w-0 flex-1"
                 >
                   {active && (
-                    <motion.div
-                      layoutId={`${generatedId}-active-field`}
-                      className="absolute inset-0 rounded-[var(--radius-8)] bg-layer-1"
-                      transition={{ type: "spring", stiffness: 500, damping: 42 }}
-                    />
+                    <div className="absolute inset-0 rounded-[var(--radius-8)] bg-fill-1 outline-none group-has-[:focus-visible]:[outline-style:solid] group-has-[:focus-visible]:outline-[length:var(--focus-ring-width)] group-has-[:focus-visible]:outline-[var(--focus-ring-color)] group-has-[:focus-visible]:outline-offset-0" />
                   )}
                   <div className="relative block min-w-0">
                     <span className="sr-only">{field.label}</span>
@@ -312,7 +314,6 @@ export function SearchSuggestions({
           />
         </PopoverContent>
       </Popover>
-    </MotionConfig>
   );
 }
 
@@ -336,14 +337,8 @@ function SearchSuggestionsResults({
   );
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
+      <div
         key={field.id}
-        layout="size"
-        initial={{ opacity: 0, y: 4 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -4 }}
-        transition={{ type: "spring", stiffness: 600, damping: 48 }}
         className="min-h-0 overflow-y-auto p-1"
         style={{ maxHeight: "min(360px, 55dvh)" }}
       >
@@ -370,7 +365,8 @@ function SearchSuggestionsResults({
                         0,
                       ) + suggestionIndex;
                   const active = index === activeIndex;
-                  return (
+                  const onRemove = suggestion.onRemove;
+                  const option = (
                     <button
                       key={suggestion.id}
                       id={`${generatedId}-option-${index}`}
@@ -383,6 +379,7 @@ function SearchSuggestionsResults({
                         itemRow.base,
                         itemRow.comfortable,
                         "w-full gap-3 text-start",
+                        onRemove && "pe-11",
                       )}
                       onMouseEnter={() => onActiveIndexChange(index)}
                       onMouseDown={(event) => event.preventDefault()}
@@ -410,6 +407,29 @@ function SearchSuggestionsResults({
                       )}
                     </button>
                   );
+
+                  if (!onRemove) return option;
+
+                  return (
+                    <div key={suggestion.id} className="relative">
+                      {option}
+                      <button
+                        type="button"
+                        aria-label={suggestion.removeLabel ?? "Remove"}
+                        className={cn(
+                          "absolute end-1.5 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-[var(--radius-8)] text-ink-tertiary hover:bg-layer-hover hover:text-ink active:bg-layer-hover",
+                          selectionFocus,
+                        )}
+                        onMouseDown={(event) => event.stopPropagation()}
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          onRemove();
+                        }}
+                      >
+                        <X aria-hidden className="size-3.5" />
+                      </button>
+                    </div>
+                  );
                 })}
               </div>
             ))}
@@ -419,7 +439,6 @@ function SearchSuggestionsResults({
             {field.emptyContent ?? "No suggestions found."}
           </div>
         )}
-      </motion.div>
-    </AnimatePresence>
+      </div>
   );
 }

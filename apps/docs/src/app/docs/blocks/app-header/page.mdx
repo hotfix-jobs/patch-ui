@@ -1,174 +1,83 @@
 import { AppHeaderDemo } from "./app-header-demo";
+import { AppHeaderMarketingDemo } from "./app-header-marketing-demo";
 
+export const metadata = { title: "App Header" };
 
-export const metadata = { title: "AppHeader" };
+export const usageCode = `<AppHeader>
+  <AppHeaderBrand render={<a href="/" />}>Patch</AppHeaderBrand>
+  <AppHeaderNav>
+    <AppHeaderNavItem href="/projects" active>Projects</AppHeaderNavItem>
+    <AppHeaderNavItem href="/team">Team</AppHeaderNavItem>
+  </AppHeaderNav>
+  <AppHeaderRight>
+    <Button variant="primary" size="sm">New project</Button>
+  </AppHeaderRight>
+</AppHeader>`;
 
-# AppHeader
+<PageHeader
+  title="App Header"
+  description="A responsive site header that combines brand, primary navigation, and right-aligned actions."
+/>
 
-A focused site-header block for brand, primary navigation, and right-aligned actions. Below the `md` viewport breakpoint it automatically collapses navigation into a morphing hamburger trigger. Search, filter, and other route-owned tools remain siblings so applications can control their sticky and scroll behavior.
+Use App Header when a product needs one primary navigation row that automatically becomes a full-height mobile menu. Keep route-specific search and filtering controls outside the header.
+
+<ResponsiveBlockPreview slug="app-header" label="Product header" sourcePath="app-header/app-header-demo.tsx" />
+
+## Installation
 
 <Install name="app-header" />
 
-<ComponentPreview label="AppHeader Example">
-  <AppHeaderDemo />
-</ComponentPreview>
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/app-header.json). The canonical implementation lives in [packages/react/src/blocks/app-header/index.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/blocks/app-header/index.tsx).
 
 ## Usage
 
-```tsx
-import {
-  AppHeader,
-  AppHeaderBrand,
-  AppHeaderMobileTop,
-  AppHeaderNav,
-  AppHeaderNavItem,
-  AppHeaderNavSection,
-  AppHeaderRight,
-} from "@patchui/react/blocks/app-header";
-import { Button } from "@patchui/react";
+<Usage code={usageCode} />
 
-<AppHeader>
-  <AppHeaderBrand render={<a href="/" />}>Patch</AppHeaderBrand>
+Keep Brand, Nav, Mobile Top, and Right as direct children of App Header. The block extracts those slots and reuses the same navigation tree in desktop and mobile layouts.
 
-  <AppHeaderNav>
-    <AppHeaderNavItem href="/product">Product</AppHeaderNavItem>
-    <AppHeaderNavItem href="/pricing">Pricing</AppHeaderNavItem>
+## Composition
 
-    {/* Sections render as titled groups inside the mobile panel.
-        On desktop the items still show inline (title is dropped). */}
-    <AppHeaderNavSection title="Resources">
-      <AppHeaderNavItem href="/blog">Blog</AppHeaderNavItem>
-      <AppHeaderNavItem href="/docs">Docs</AppHeaderNavItem>
-    </AppHeaderNavSection>
-  </AppHeaderNav>
-
-  {/* Pinned into the mobile top bar just before the hamburger. Hidden
-      on desktop and never rendered in the mobile panel footer — for
-      one-tap actions (notification bell, avatar) that stay reachable
-      without opening the panel. */}
-  <AppHeaderMobileTop>
-    <NotificationBell />
-  </AppHeaderMobileTop>
-
-  <AppHeaderRight>
-    <Button variant="tertiary" size="sm">Sign in</Button>
-    <Button variant="primary" size="sm">Get started</Button>
-  </AppHeaderRight>
-</AppHeader>
-
-// Applications own compound sticky or collapsing chrome.
-<motion.div animate={{ y: collapsed ? "-100%" : 0 }}>
-  <AppHeader bordered={scrolled} />
-  <SearchSuggestions />
-  <FilterToolbar />
-</motion.div>
+```text
+AppHeader
+├── AppHeaderBrand
+├── AppHeaderNav
+│   ├── AppHeaderNavItem
+│   └── AppHeaderNavSection
+├── AppHeaderMobileTop
+└── AppHeaderRight
 ```
+
+## Examples
+
+### Marketing header
+
+Use a borderless header and grouped navigation for a lighter marketing surface. Section titles appear only in the mobile panel.
+
+<ResponsiveBlockPreview slug="app-header-marketing" label="Marketing header" sourcePath="app-header/app-header-marketing-demo.tsx" />
 
 ## Mobile behavior
 
-Below `md`:
-- `AppHeaderNav` is hidden inline; its items render inside the panel instead.
-- `AppHeaderRight` is hidden inline; its items render in the panel's sticky footer instead. Reach for that for a Sign in / primary CTA that stays parked at the bottom of the drawer.
-- `AppHeaderMobileTop` renders inline just before the hamburger — visible on mobile top bar, never rendered in the panel footer. Use for one-tap actions that shouldn't require opening the panel (notification bell, avatar).
-- A **morphing hamburger trigger** replaces the right cluster in the top row. It only renders when `AppHeaderNav` has children.
-- Tapping the trigger drops the panel down — the hamburger morphs to X for the close affordance, and the panel occupies `top: var(--header-height, 64px)` to the bottom of the viewport. Set `--header-height` on `:root` when your header height differs from the 64px default (a `ResizeObserver` on the header element is the usual wiring).
+Below the `md` breakpoint, navigation moves into a full-height panel and right-side actions move to its footer. App Header Mobile Top stays beside the menu trigger for actions that must remain immediately reachable. The menu closes on Escape and locks background scrolling while open.
 
-## Styling notes
+Set `--header-height` when the header differs from the default 64 pixel height so the mobile panel begins below the top row.
 
-- **Desktop nav items** use radius 8 and the shared `layer-hover` interaction background. The active item keeps full ink and medium weight.
-- **Borders:** `bordered` controls one structural bottom hairline. The dashboard demo shows it on; the marketing demo opts out.
-- **Route tools:** place SearchSuggestions, FilterToolbar, and route actions outside AppHeader. Wrap the complete stack in application-owned sticky or collapsing chrome when those rows need to move together.
-- **Header actions**: use the standard radius-8 Button shape so marketing and product controls share one vocabulary.
-- **Sticky headers**: pass `sticky` to pin the header. The panel renders below at `z-40` — the sticky header (`z-50`) stays above it so brand and the hamburger-to-X trigger remain visible.
-- **Escape hatch**: if you need a custom mobile pattern (drawer instead of full-viewport panel), skip this block and compose the primitives (`Sheet` + your own trigger).
+## API reference
 
-## Props
+<PropsTable props={[
+  { name: "AppHeader.bordered", type: "boolean", default: "true", description: "Adds the structural bottom hairline." },
+  { name: "AppHeader.sticky", type: "boolean", default: "false", description: "Pins the header to the top of its scroll container." },
+  { name: "AppHeaderNavItem.active", type: "boolean", default: "false", description: "Marks the current destination and applies aria-current." },
+  { name: "AppHeaderNavItem.prefix / suffix", type: "ReactNode / ReactNode", description: "Adds leading context or trailing metadata." },
+  { name: "AppHeaderNavSection.title", type: "ReactNode", description: "Labels a navigation group inside the mobile panel." },
+]} />
 
-### AppHeader
+Brand and navigation items support Patch UI’s `render` pattern for framework link components. Build a custom header from primitives when the product needs a drawer or a different mobile navigation model.
 
-<PropsTable
-  props={[
-    {
-      name: "bordered",
-      type: "boolean",
-      default: "true",
-      description: "Renders a hairline bottom border. Set false for borderless headers laid over a hero image.",
-    },
-    {
-      name: "sticky",
-      type: "boolean",
-      default: "false",
-      description: "Pins the header to the top of its scroll container via sticky top-0 z-50.",
-    },
-    {
-      name: "render",
-      type: "RenderProp<'header'>",
-      default: "-",
-      description: "Polymorphic render prop.",
-    },
-  ]}
-/>
+## Accessibility
 
-### AppHeaderMobileTop
+- Render Brand as a home link when the logo navigates to the product root.
+- Mark exactly one current navigation item with `active` when appropriate.
+- Keep mobile menu labels concise and preserve visible focus for every action.
+- Use Mobile Top only for a small number of high-priority actions.
 
-<PropsTable
-  props={[
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "Content pinned into the mobile top bar just before the hamburger trigger. Hidden on desktop; never rendered in the mobile panel footer. Meant for one-tap actions (notification bell, avatar) that should stay reachable without opening the panel.",
-    },
-  ]}
-/>
-
-### AppHeaderNavItem
-
-<PropsTable
-  props={[
-    {
-      name: "active",
-      type: "boolean",
-      default: "false",
-      description: "Marks the item as the current page with full ink, medium weight, and aria-current.",
-    },
-    {
-      name: "href",
-      type: "string",
-      default: "-",
-      description: "Destination. Renders as an anchor by default; use render to swap in a framework Link.",
-    },
-    {
-      name: "render",
-      type: "RenderProp<'a'>",
-      default: "-",
-      description: "Polymorphic render prop (e.g. a Next.js <Link>).",
-    },
-  ]}
-/>
-
-### AppHeaderNavSection
-
-<PropsTable
-  props={[
-    {
-      name: "title",
-      type: "ReactNode",
-      default: "-",
-      description: "Section heading — only rendered inside the mobile panel, above the section's items. On desktop the section is transparent (children render inline in the nav row).",
-    },
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "AppHeaderNavItem elements.",
-    },
-  ]}
-/>
-
-<Callout title="Notes">
-- **Composition:** Extract logic runs on `AppHeader`'s children. Put `AppHeaderBrand`, `AppHeaderNav`, `AppHeaderMobileTop`, and `AppHeaderRight` as direct children (order-independent) and the block wires desktop + mobile automatically.
-- **Same tree, two layouts:** The nav children you write once serve both the desktop row and the mobile panel. No duplication.
-- **Routing:** Use the `render` prop on `AppHeaderBrand` and `AppHeaderNavItem` to integrate your router's link component.
-- **Block, not primitive:** For full control (custom mobile pattern, custom collapsing rules, drawers), compose your own header from the underlying primitives.
-</Callout>
+<PageNavigation />

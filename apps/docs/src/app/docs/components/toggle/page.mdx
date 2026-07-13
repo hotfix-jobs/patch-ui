@@ -1,92 +1,74 @@
 import { ToggleDemo } from "./toggle-demo";
+import { ToggleSecondaryDemo } from "./toggle-secondary-demo";
+import { ToggleSizesDemo } from "./toggle-sizes-demo";
 
 export const metadata = { title: "Toggle" };
 
-# Toggle
+export const usageCode = `<Toggle
+  pressed={starred}
+  onPressedChange={setStarred}
+  aria-label="Star project"
+>
+  <Star />
+</Toggle>`;
 
-A press-to-toggle button with persistent on / off state. Use for actions with state: star ★, pin 📌, mute, bookmark, follow, formatting toolbars (bold / italic / underline).
+<PageHeader
+  title="Toggle"
+  description="A button with a persistent pressed state for actions such as starring, pinning, or formatting."
+/>
 
-Distinct from `Switch` (binary form-state control) and `Button` (one-shot action). Toggle has `role="button"` + `aria-pressed` and a visual "on" state that persists until toggled off.
+Use Toggle when activating an action changes whether that action remains applied. Use Button for a one-time action, Switch for a setting, and Toggle Group for a related set of choices.
 
-<Install name="toggle" />
-
-<ComponentPreview label="Toggle">
+<ComponentPreview label="Star project" sourcePath="src/app/docs/components/toggle/toggle-demo.tsx">
   <ToggleDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="toggle" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/toggle.json). The canonical implementation lives in [packages/react/src/components/toggle.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/toggle.tsx).
+
 ## Usage
 
-```tsx
-import { Toggle } from "@patchui/react";
-import { Star } from "@phosphor-icons/react/dist/ssr";
-// Controlled
-const [starred, setStarred] = useState(false);
-<Toggle pressed={starred} onPressedChange={setStarred} icon={<Star />} aria-label="Star" />
+<Usage code={usageCode} />
 
-// Uncontrolled with initial state
-<Toggle defaultPressed icon={<Star />} aria-label="Star" />
+Use `pressed` with `onPressedChange` for controlled state, or `defaultPressed` when the toggle can manage its own state.
 
-// With text
-<Toggle>Public</Toggle>
+## Examples
 
-// Secondary variant (filled resting state)
-<Toggle variant="secondary" icon={<Bold />} aria-label="Bold" />
+### Secondary variant
 
-// Sizes
-<Toggle size="sm" />
-<Toggle size="md" />  // default
-<Toggle size="lg" />
-```
+The secondary variant keeps a neutral fill at rest, making a compact group of formatting actions easier to locate.
 
-## Props
+<ComponentPreview label="Formatting toggles" sourcePath="src/app/docs/components/toggle/toggle-secondary-demo.tsx">
+  <ToggleSecondaryDemo />
+</ComponentPreview>
 
-<PropsTable
-  props={[
-    {
-      name: "pressed",
-      type: "boolean",
-      default: "-",
-      description: "Controlled pressed state.",
-    },
-    {
-      name: "defaultPressed",
-      type: "boolean",
-      default: "false",
-      description: "Initial pressed state when uncontrolled.",
-    },
-    {
-      name: "onPressedChange",
-      type: "(pressed: boolean) => void",
-      default: "-",
-      description: "Called when the pressed state changes.",
-    },
-    {
-      name: "variant",
-      type: '"tertiary" | "secondary"',
-      default: '"tertiary"',
-      description: "tertiary is transparent and uses the shared interaction overlay. Secondary stays on the fill-1 to fill-2 ramp for hover and pressed states.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Same sm / md / lg scale as Button (24 / 32 / 40 px).",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disable interaction.",
-    },
-  ]}
-/>
+### Sizes
 
-<Callout title="Notes">
-- **Migration:** Toggle now defaults to `md` (32px), matching Button and the shared control scale. Pass `size="lg"` where the previous larger default was intentional.
-- Tertiary uses `--layer-hover` for hover and pressed states. Secondary uses `fill-2` for both so a pressed filled control never becomes translucent.
-- Toggle has one radius-8 shape. Use Button for one-shot circular icon actions and Switch for pill-shaped binary settings.
-- Rendered as a `<button>` with `aria-pressed`, so screen readers announce "Star, toggle button, pressed" / "not pressed". Provide `aria-label` for icon-only toggles.
-- For a binary on/off setting slider (Dark mode, Enable notifications), reach for `Switch` instead: Switch reads as a noun (a setting), Toggle reads as a verb (an action).
-- Reach for `Toggle` when the state is about the toolbar action (`Star` this item, `Pin` to top). Reach for `Switch` when the state is a setting (`Dark mode`, `Enable Firewall`). Toggle reads as a verb, Switch as a noun.
-- `ToggleGroup` is the multi-choice sibling: one active option out of several (Grid / List view).
-</Callout>
+Match Toggle to adjacent controls using the shared control size scale.
+
+<ComponentPreview label="Toggle sizes" sourcePath="src/app/docs/components/toggle/toggle-sizes-demo.tsx">
+  <ToggleSizesDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "pressed / onPressedChange", type: "boolean / (pressed: boolean) => void", description: "Controls the persistent pressed state." },
+  { name: "defaultPressed", type: "boolean", default: "false", description: "Sets the initial uncontrolled pressed state." },
+  { name: "variant", type: '"tertiary" | "secondary"', default: '"tertiary"', description: "Uses a transparent interaction surface or a neutral filled surface." },
+  { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Matches the shared 24, 32, or 40 pixel control height." },
+]} />
+
+Toggle has one rounded shape. Use Button for circular icon actions that do not retain state.
+
+## Accessibility
+
+- Toggle renders a button with `aria-pressed`, so its state is announced automatically.
+- Give an icon-only Toggle an `aria-label` that names the action.
+- Use a visible label when the icon may be unfamiliar or ambiguous.
+- Do not use Toggle for a setting that is better understood as on or off. Use Switch instead.
+
+<PageNavigation />

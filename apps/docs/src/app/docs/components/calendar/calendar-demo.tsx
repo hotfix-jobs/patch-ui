@@ -1,36 +1,15 @@
 "use client";
-import { useState } from "react";
-import { Calendar, type DateRange } from "@patchui/react";
+
+import { Calendar } from "@patchui/react";
+
+const selectedDate = new Date(2026, 6, 15);
 
 export function CalendarDemo() {
-  const [single, setSingle] = useState<Date | null>(new Date());
-  const [range, setRange] = useState<DateRange>({});
-
   return (
-    <div className="flex flex-wrap items-start gap-8">
-      <div>
-        <p className="mb-3 text-xs font-medium text-ink-muted">
-          Single
-        </p>
-        <Calendar
-          mode="single"
-          value={single}
-          onValueChange={setSingle}
-          className="border-[0.5px] border-hairline-strong"
-        />
-      </div>
-
-      <div>
-        <p className="mb-3 text-xs font-medium text-ink-muted">
-          Range
-        </p>
-        <Calendar
-          mode="range"
-          value={range}
-          onValueChange={setRange}
-          className="border-[0.5px] border-hairline-strong"
-        />
-      </div>
-    </div>
+    <Calendar
+      mode="single"
+      defaultMonth={selectedDate}
+      defaultValue={selectedDate}
+    />
   );
 }

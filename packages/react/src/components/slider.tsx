@@ -10,6 +10,8 @@ export interface SliderProps extends SliderPrimitive.Root.Props {
   showStartInput?: boolean;
   /** Show a small numeric Input to the right, wired to values[1]. Range mode only. */
   showEndInput?: boolean;
+  /** Accessible name for one thumb, or one name per range thumb. */
+  ariaLabel?: string | string[];
 }
 
 export function Slider({
@@ -23,6 +25,7 @@ export function Slider({
   disabled,
   showStartInput,
   showEndInput,
+  ariaLabel,
   onValueChange,
   ...props
 }: SliderProps): React.ReactElement {
@@ -92,6 +95,11 @@ export function Slider({
                 "has-focus-visible:outline has-focus-visible:outline-1 has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-2",
               )}
               data-slot="slider-thumb"
+              getAriaLabel={(thumbIndex) =>
+                Array.isArray(ariaLabel)
+                  ? (ariaLabel[thumbIndex] ?? `Value ${thumbIndex + 1}`)
+                  : (ariaLabel ?? (isRange ? `Value ${thumbIndex + 1}` : "Value"))
+              }
               index={index}
               key={String(index)}
             />

@@ -7,7 +7,6 @@ import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 import {
-  iconMuted,
   itemGroupLabel,
   itemRow,
   popupDivider,
@@ -201,7 +200,6 @@ function useItemRowClass({
   return cn(
     itemRow.base,
     "no-underline [&_svg]:pointer-events-none [&_svg]:shrink-0",
-    iconMuted,
     density === "compact"
       ? itemRow.compact
       : cn(itemRow.comfortable, "[&_svg:not([class*='size-'])]:size-[18px]"),
@@ -360,7 +358,6 @@ export function MenuCheckboxItem({
       className={cn(
         itemRow.base,
         "gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        iconMuted,
         density === "compact" ? itemRow.compact : itemRow.comfortable,
         className,
       )}
@@ -572,7 +569,6 @@ export function MenuSubTrigger({
       className={cn(
         itemRow.base,
         "gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] [&_svg]:pointer-events-none",
-        iconMuted,
         density === "compact"
           ? cn(itemRow.compact, "[&_svg:not([class*='size-'])]:size-4")
           : cn(itemRow.comfortable, "[&_svg:not([class*='size-'])]:size-[18px]"),

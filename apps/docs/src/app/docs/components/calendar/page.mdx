@@ -1,118 +1,80 @@
 import { CalendarDemo } from "./calendar-demo";
-
+import { CalendarModesDemo } from "./calendar-modes-demo";
+import { CalendarConstraintsDemo } from "./calendar-constraints-demo";
 
 export const metadata = { title: "Calendar" };
 
-# Calendar
+export const usageCode = `const [date, setDate] = useState<Date | null>(null);
 
-Month grid for date selection. Three modes: `single`, `range`, `multiple`, with minimal chrome and tabular nums for clean date alignment. Use it standalone as a date picker inside any container (Modal, Sheet, Popover-style card) that you compose yourself.
+<Calendar mode="single" value={date} onValueChange={setDate} />`;
 
-<Install name="calendar" />
+<PageHeader
+  title="Calendar"
+  description="A month grid for selecting one date, a date range, or multiple dates."
+/>
 
-<ComponentPreview label="Calendar">
+Use Calendar when date selection benefits from visible month context. Compose it inside a Popover, Modal, or Sheet when the calendar should open from another control.
+
+<ComponentPreview label="Single date" sourcePath="src/app/docs/components/calendar/calendar-demo.tsx" resettable>
   <CalendarDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="calendar" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/calendar.json). The canonical implementation lives in [packages/react/src/components/calendar.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/calendar.tsx).
+
 ## Usage
 
-```tsx
-import { Calendar, type DateRange } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Single date
-const [date, setDate] = useState<Date | null>(null);
-<Calendar mode="single" value={date} onValueChange={setDate} />
+The value type follows `mode`: `Date | null` for single, `DateRange` for range, and `Date[]` for multiple selection.
 
-// Range
-const [range, setRange] = useState<DateRange>({});
-<Calendar mode="range" value={range} onValueChange={setRange} />
+## Examples
 
-// Multiple
-const [dates, setDates] = useState<Date[]>([]);
-<Calendar mode="multiple" value={dates} onValueChange={setDates} />
+### Range and multiple selection
 
-// Constraints
-<Calendar
-  mode="single"
-  fromDate={new Date("2026-01-01")}
-  toDate={new Date("2026-12-31")}
-  disabledDates={(d) => d.getDay() === 0 || d.getDay() === 6}  // disable weekends
-/>
+Range selection builds an inclusive start and end. Multiple selection independently toggles each chosen date.
 
-// Week starts on Monday (ISO)
-<Calendar weekStartsOn={1} />
-```
+<ComponentPreview label="Range and multiple selection" sourcePath="src/app/docs/components/calendar/calendar-modes-demo.tsx" resettable>
+  <CalendarModesDemo />
+</ComponentPreview>
 
-## Props
+### Date constraints
 
-<PropsTable
-  props={[
-    {
-      name: "mode",
-      type: '"single" | "range" | "multiple"',
-      default: '"single"',
-      description: "single returns Date|null; range returns { from, to }; multiple returns Date[].",
-    },
-    {
-      name: "value",
-      type: "Date | null | DateRange | Date[]",
-      default: "-",
-      description: "Controlled selection. Shape matches mode.",
-    },
-    {
-      name: "defaultValue",
-      type: "same as value",
-      default: "-",
-      description: "Initial selection when uncontrolled.",
-    },
-    {
-      name: "onValueChange",
-      type: "(value) => void",
-      default: "-",
-      description: "Called when the selection changes.",
-    },
-    {
-      name: "weekStartsOn",
-      type: "0 | 1 | 2 | 3 | 4 | 5 | 6",
-      default: "0",
-      description: "First day of the week (0 = Sunday, 1 = Monday for ISO).",
-    },
-    {
-      name: "fromDate",
-      type: "Date",
-      default: "-",
-      description: "Earliest selectable date.",
-    },
-    {
-      name: "toDate",
-      type: "Date",
-      default: "-",
-      description: "Latest selectable date.",
-    },
-    {
-      name: "disabledDates",
-      type: "(date: Date) => boolean",
-      default: "-",
-      description: "Disable arbitrary dates (return true to disable). Use for blackout dates, weekends, holidays.",
-    },
-    {
-      name: "defaultMonth",
-      type: "Date",
-      default: "selected date or today",
-      description: "Initial month to display.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disable the entire calendar.",
-    },
-  ]}
-/>
+Combine minimum, maximum, and predicate constraints. Disabled dates remain visible but cannot be selected.
 
-<Callout title="Notes">
-- **Range mode flow:** First click sets `from` and clears `to`. Second click (after `from`) sets `to`. Clicking before `from` swaps them. Clicking the same day twice clears the selection.
-- **Range visual:** Days between `from` and `to` get a subtle `--fill-1` background; the endpoints get the full `--primary` solid fill (inverted surface). Lets users see the range at a glance.
-- **Today indicator:** Today's date renders with a hairline ring (`ring-1 ring-inset ring-hairline-strong`) when not selected.
-- **Outside-month days:** Days that spill into the previous / next month are dimmed (opacity 60%) but remain clickable: clicking jumps the view to that month.
-- **Tabular nums:** All numerals use `tabular-nums` so column alignment is perfect regardless of width.
-</Callout>
+<ComponentPreview label="Date constraints" sourcePath="src/app/docs/components/calendar/calendar-constraints-demo.tsx" resettable>
+  <CalendarConstraintsDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "mode", type: '"single" | "range" | "multiple"', default: '"single"', description: "Selects the value contract and selection behavior." },
+  { name: "value / onValueChange", type: "Date | null | DateRange | Date[] / (value) => void", description: "Controls selection using the value shape associated with mode." },
+  { name: "defaultValue", type: "Date | null | DateRange | Date[]", description: "Sets initial selection when state is uncontrolled." },
+  { name: "weekStartsOn", type: "0 | 1 | 2 | 3 | 4 | 5 | 6", default: "0", description: "Sets the first weekday, where 0 is Sunday and 1 is Monday." },
+  { name: "fromDate / toDate", type: "Date / Date", description: "Sets inclusive minimum and maximum selectable dates." },
+  { name: "disabledDates", type: "(date: Date) => boolean", description: "Disables dates for which the predicate returns true." },
+]} />
+
+Use `defaultMonth` when the initially visible month should differ from the selected value. The native `disabled` prop disables the complete calendar.
+
+## Selection behavior
+
+- In range mode, the first selection sets `from`. The second sets `to`, or swaps the endpoints when it precedes `from`.
+- Selecting the same range start twice clears the range.
+- Days from adjacent months remain selectable and move the visible month when chosen.
+- Today receives a neutral outline when it is not selected.
+
+## Accessibility
+
+- Month navigation buttons have accessible Previous month and Next month labels.
+- Every date is a native button named with its full date and exposes selection through `aria-pressed`.
+- Tab moves through the interactive buttons. Enter or Space activates the focused navigation or date button.
+- Constrained dates use the native disabled state and cannot receive focus.
+- Provide a visible field label outside Calendar when it participates in a form.
+
+<PageNavigation />

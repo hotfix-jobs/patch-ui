@@ -1,247 +1,81 @@
 import { FieldDemo } from "./field-demo";
-
+import { FieldErrorDemo } from "./field-error-demo";
 
 export const metadata = { title: "Field" };
 
-# Field
+export const usageCode = `<Field name="username">
+  <FieldLabel>Username</FieldLabel>
+  <Input placeholder="ada_lovelace" />
+  <FieldDescription>Choose a unique username.</FieldDescription>
+</Field>`;
 
-A compound component for form fields that integrate with `<Form>` validation. Wraps Base UI's Field primitive with our styling.
+<PageHeader
+  title="Field"
+  description="A semantic wrapper that coordinates a form control with its label, description, validation, and error message."
+/>
 
-Use Field whenever a control needs a label, description, required or optional marker, or error message. Input owns only the text control; Field owns the surrounding form semantics and message stack.
+Use Field whenever a control needs supporting text or validation. The control owns its editable UI; Field owns the surrounding form relationship.
 
-For structured settings-page cards (title + subtitle + footer with status and actions), reach for `Section` instead: it's a different primitive for that specific layout.
-
-<Install name="field" />
-
-<ComponentPreview label="Field Examples">
+<ComponentPreview label="Labeled field" sourcePath="src/app/docs/components/field/field-demo.tsx">
   <FieldDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="field" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/field.json). The canonical implementation lives in [packages/react/src/components/field.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/field.tsx).
+
 ## Usage
 
-```tsx
-import {
-  Field,
-  FieldLabel,
-  FieldDescription,
-  FieldError,
-  FieldControl,
-  Input,
-} from "@patchui/react";
+<Usage code={usageCode} />
 
-// Basic field with Input
-<Field>
-  <FieldLabel>Username</FieldLabel>
-  <FieldDescription>Choose a unique username.</FieldDescription>
-  <Input placeholder="e.g. jane_doe" />
-</Field>
+FieldLabel and FieldDescription coordinate accessible labeling and description through the underlying Base UI Field primitive.
 
-// Required field — renders a small red * after the label
-<Field name="email">
-  <FieldLabel required>Email</FieldLabel>
-  <FieldControl type="email" required />
-  <FieldError />
-</Field>
+## Composition
 
-// Optional field — renders "(optional)" after the label
-<Field name="phone">
-  <FieldLabel optional>Phone</FieldLabel>
-  <Input type="tel" />
-</Field>
-
-// Error state (controlled externally)
-<Field invalid>
-  <FieldLabel>Password</FieldLabel>
-  <Input type="password" />
-  <FieldError match>Password must be at least 8 characters.</FieldError>
-</Field>
+```text
+Field
+├── FieldLabel
+├── control, such as Input or FieldControl
+├── FieldDescription
+├── FieldError
+└── FieldValidity (optional)
 ```
 
-## Props
+Use FieldItem when a Field groups multiple checkbox or radio rows.
 
-### Field
+## Examples
 
-<PropsTable
-  props={[
-    {
-      name: "name",
-      type: "string",
-      default: "-",
-      description: "Identifies the field when a form is submitted. Takes precedence over the name on FieldControl.",
-    },
-    {
-      name: "invalid",
-      type: "boolean",
-      default: "false",
-      description: "Marks the field as invalid. Useful when field state is controlled externally.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the field and its control, preventing interaction.",
-    },
-    {
-      name: "validate",
-      type: "(value, formValues) => string | string[] | null",
-      default: "-",
-      description: "Custom validation function. Return error message(s) if invalid, or null if valid. Async functions are supported.",
-    },
-    {
-      name: "validationMode",
-      type: '"onSubmit" | "onBlur" | "onChange"',
-      default: '"onSubmit"',
-      description: "When to trigger validation. Takes precedence over Form's validationMode.",
-    },
-    {
-      name: "validationDebounceTime",
-      type: "number",
-      default: "0",
-      description: "Debounce interval (ms) for validate callbacks when using onChange mode.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes to apply to the field container.",
-    },
-  ]}
-/>
+### Invalid field
 
-### FieldLabel
+Set Field `invalid` when application state owns validation, and mirror that state on the control with `aria-invalid`.
 
-<PropsTable
-  props={[
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "The label text content. Automatically associated with the field control via accessibility attributes.",
-    },
-    {
-      name: "required",
-      type: "boolean",
-      default: "false",
-      description: "Renders a small red * after the label (aria-hidden: the input still needs its own required attribute for HTML validation).",
-    },
-    {
-      name: "optional",
-      type: "boolean",
-      default: "false",
-      description: "Renders \"(optional)\" in tertiary text after the label. Ignored when required is true.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
+<ComponentPreview label="Invalid field" sourcePath="src/app/docs/components/field/field-error-demo.tsx">
+  <FieldErrorDemo />
+</ComponentPreview>
 
-### FieldDescription
+## API reference
 
-<PropsTable
-  props={[
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "Help text displayed below the label. Connected to the field control via aria-describedby.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
+<PropsTable props={[
+  { name: "name", type: "string", description: "Identifies the field in form values and validation." },
+  { name: "invalid", type: "boolean", default: "false", description: "Marks externally controlled field state as invalid." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables the field and its registered control." },
+  { name: "validate", type: "(value, formValues) => string | string[] | null", description: "Returns custom synchronous or asynchronous validation errors." },
+  { name: "validationMode", type: '"onSubmit" | "onBlur" | "onChange"', default: '"onSubmit"', description: "Overrides when the surrounding Form validates this field." },
+  { name: "validationDebounceTime", type: "number", default: "0", description: "Debounces on-change custom validation in milliseconds." },
+]} />
 
-### FieldError
+FieldLabel supports `required` and `optional` visual markers. The required marker does not enforce validation, so the underlying control still needs its native `required` attribute. FieldError displays the current validation message, or custom content supplied through `match` or children.
 
-<PropsTable
-  props={[
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "Custom error message. If omitted, displays the browser's native validation message.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
+Use FieldControl for the unstyled Base UI control, and FieldValidity when custom UI needs the complete validity state. These escape hatches expose their underlying Base UI contracts directly.
 
-### FieldControl
+## Accessibility
 
-<PropsTable
-  props={[
-    {
-      name: "onValueChange",
-      type: "(value: string, details) => void",
-      default: "-",
-      description: "Callback fired when the value changes. Use when the control value is managed externally.",
-    },
-    {
-      name: "defaultValue",
-      type: "string",
-      default: "-",
-      description: "The initial value of the control.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
+- Keep one visible FieldLabel for each control. A placeholder is not a label.
+- FieldDescription and FieldError participate in the control’s accessible description through the Field primitive.
+- Apply native constraints such as `required`, `type`, `minLength`, and `aria-invalid` to the control itself.
+- Required and optional markers are visual annotations and are hidden from assistive technology.
+- Keep validation messages specific and explain how to correct the value.
 
-### FieldValidity
-
-<PropsTable
-  props={[
-    {
-      name: "children",
-      type: "(state: FieldValidityState) => ReactNode",
-      default: "-",
-      description: "Render function receiving the field's validity state (validity, error, errors, value).",
-    },
-  ]}
-/>
-
-### FieldItem
-
-<PropsTable
-  props={[
-    {
-      name: "children",
-      type: "ReactNode",
-      default: "-",
-      description: "Content to render inside the field item. Used for grouping within checkbox/radio field groups.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-  ]}
-/>
-
-
-<Callout title="Notes">
-- `FieldLabel` and `FieldDescription` wire `aria-labelledby` and `aria-describedby` on the control automatically: no manual `htmlFor` / `id` matching needed.
-- `FieldControl` can be `<Input>`, `<Checkbox>`, `<Select>`, or any Base UI control. Field integrates with all of them via the shared primitive.
-- `FieldError` prints a browser default validation message when it has no children. Pass children to override with your own copy.
-- `FieldValidity` is a render prop for accessing the whole validity state (custom UI, conditional descriptions, etc.).
-- `FieldItem` groups checkbox / radio rows inside a Field so the group label ties to every child.
-- `validationMode` on Field wins over `<Form>`'s mode: `"onSubmit"` (default), `"onBlur"`, or `"onChange"`. Use `validationDebounceTime` to throttle onChange validation.
-- The required `*` and optional `(optional)` label markers are `aria-hidden`. The `required` attribute on the underlying input is what actually enforces the constraint.
-- Error message animates in with a small fade + 2px slide; unmount is instant so users see errors dismiss the moment they fix the field. Reduced-motion respected.
-</Callout>
+<PageNavigation />

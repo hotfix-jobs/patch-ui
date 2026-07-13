@@ -100,7 +100,7 @@ Size and weight are separate axes. Compose `text-small font-medium`; do not add 
 - `--shadow-tooltip`: Tooltip.
 - `--shadow-modal`: Modal and Sheet.
 
-Actionable Cards change fill; they do not gain a shadow on hover.
+Actionable Cards emphasize their existing boundary; they do not change fill or gain a shadow on hover.
 
 ## Focus
 
@@ -166,7 +166,7 @@ Close, clear, copy, search, theme, and similar utility controls use radius 8 by 
 
 Use `@phosphor-icons/react`, importing from `@phosphor-icons/react/dist/ssr` for server-safe tree shaking. Do not hand-roll SVG icons.
 
-Interactive icons use `iconMuted` or `iconMutedSolid`. Default icons are muted and lift to the label color through interaction state.
+Icons inherit their container's text color.
 
 ## Cursor and states
 
@@ -179,13 +179,19 @@ Every interactive component defines hover, active, focus-visible, and disabled b
 The docs app is the first real consumer of Patch UI.
 
 - ComponentPreview: borderless layer-1, radius 12.
+- Usage and SourceCode: shared code surfaces with the same copy behavior and source treatment across pages.
+- ResponsiveBlockPreview: isolated application-scale previews at real desktop and mobile widths, with reset behavior when the interaction owns state.
+- PageHeader and PageNavigation: shared page framing, breadcrumb context, copy actions, and sparse related destinations.
+- Heading anchors and On This Page: stable, unique IDs shared by desktop and mobile navigation.
 - Notes and install commands: borderless fill-1.
 - Code blocks, tables, blockquotes, and explicit separators: meaningful boundaries retained.
 - Demo shells: do not nest borders around a preview just to create containment.
 - Custom utility controls: radius 8 and the same interaction vocabulary as library controls.
 - Demo content stays generic and never names a downstream product.
+- Foundational pages are editorial documentation, not component-demo pages. Use static explanatory surfaces where they clarify setup, theme, or contrast.
+- Tables are for genuinely tabular comparison or reference data, not general page layout.
 
-Foundational docs must match the actual token file, component APIs, registry targets, and contrast script.
+The docs build generates a search index, per-route Markdown, `docs.md`, `llms.txt`, and `llms-full.txt`. Foundational docs and generated output must match the actual token file, component APIs, registry targets, and contrast script.
 
 ## Distribution contract
 

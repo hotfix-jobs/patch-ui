@@ -1,112 +1,70 @@
 import { PaginationDemo } from "./pagination-demo";
-
+import { PaginationStatesDemo } from "./pagination-states-demo";
 
 export const metadata = { title: "Pagination" };
 
-# Pagination
+export const usageCode = `const [page, setPage] = useState(1);
 
-A borderless row of page numbers between previous and next controls. First and last pages are always rendered so crawlers discover the series; an ellipsis fills gaps in long ranges. Renders nothing when there is only one page.
-
-<Install name="pagination" />
-
-<ComponentPreview label="Pagination Example">
-  <PaginationDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import { useState } from "react";
-import { Pagination } from "@patchui/react";
-
-const [page, setPage] = useState(1);
-
-// Client-side (dashboards, auth-gated pages)
-<Pagination page={page} totalPages={12} onPageChange={setPage} />
-
-// Loading state during async page transitions
 <Pagination
   page={page}
   totalPages={12}
-  onPageChange={async (next) => {
-    setLoading(true);
-    await fetchPage(next);
-    setPage(next);
-    setLoading(false);
-  }}
-  loading={loading}
-/>
-```
+  onPageChange={setPage}
+/>`;
 
-## SEO-friendly server-rendered pages
-
-For indexable content (product catalogs, directories, blog archives), pass an `href` builder. Every control renders as a real `<a href>` with no JavaScript required, so it remains crawlable and works with SSR or RSC.
-
-```tsx
-// Server component
-<Pagination
-  page={currentPage}
-  totalPages={totalPages}
-  href={(p) => (p === 1 ? "/products" : `/products?page=${p}`)}
-/>
-```
-
-The `p === 1` special-case keeps the canonical URL for the first page as the bare route (`/products` rather than `/products?page=1`), so the same page is not indexed under two URLs.
-
-## Props
-
-<PropsTable
-  props={[
-    {
-      name: "page",
-      type: "number",
-      default: "-",
-      description: "The current page (1-indexed).",
-    },
-    {
-      name: "totalPages",
-      type: "number",
-      default: "-",
-      description: "Total number of pages.",
-    },
-    {
-      name: "href",
-      type: "(page: number) => string",
-      default: "-",
-      description: "Builds the URL for each page. When provided, controls render as anchors — the SEO-friendly path. Prefer this over onPageChange for indexable content.",
-    },
-    {
-      name: "onPageChange",
-      type: "(page: number) => void",
-      default: "-",
-      description: "Client-side handler; rendered as button when href is not given. Use for in-app pages that don't need indexing.",
-    },
-    {
-      name: "siblingCount",
-      type: "number",
-      default: "1",
-      description: "How many page-number siblings to render on each side of the current page. Default 1 renders `1 … 4 [5] 6 … 42`.",
-    },
-    {
-      name: "loading",
-      type: "boolean",
-      default: "false",
-      description: "Disables every control and dims the nav. Sets aria-busy on the landmark. Use during async page transitions so users see something is loading.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Extra classes appended to the nav landmark.",
-    },
-  ]}
+<PageHeader
+  title="Pagination"
+  description="A controlled page range with previous, next, current-page, and ellipsis navigation."
 />
 
-<Callout title="Notes">
-- **First and last always visible:** Even in long ranges, page 1 and the final page always render. Ellipsis fills gaps in between. This is deliberate for crawler discovery: with `href`, every enumerated page URL becomes a real anchor Googlebot can follow.
-- **Tabular numerals:** Page numbers use tabular figures so digits stay column-aligned regardless of width.
-- **Active semantics:** The active page cell gets `aria-current="page"` and uses the shared `layer-hover` fill plus stronger label weight.
-- **Focus:** Keyboard focus uses the compact neutral indicator shared by non-editable controls.
-- **Loading state:** When `loading={true}`, every control is disabled, the nav fades, and `aria-busy="true"` signals to assistive tech that a transition is in progress.
-- **Keyboard:** All controls are Tab-focusable. Use Tab + Enter or Space to navigate; arrow keys are intentionally unbound so the control composes inside horizontal scroll containers.
-</Callout>
+Use Pagination to divide a large ordered collection into addressable pages. Prefer a single continuous view when the complete collection remains manageable.
+
+<ComponentPreview label="Interactive pagination" sourcePath="src/app/docs/components/pagination/pagination-demo.tsx">
+  <PaginationDemo />
+</ComponentPreview>
+
+## Installation
+
+<Install name="pagination" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/pagination.json). The canonical implementation lives in [packages/react/src/components/pagination.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/pagination.tsx).
+
+## Usage
+
+<Usage code={usageCode} />
+
+`page` is one-indexed and controlled by the application. Pagination renders nothing when `totalPages` is one or less.
+
+## Examples
+
+### Long range and loading
+
+Long ranges retain the first and last page and collapse gaps into ellipses. Loading disables every control and marks the navigation landmark busy.
+
+<ComponentPreview label="Long range and loading" sourcePath="src/app/docs/components/pagination/pagination-states-demo.tsx">
+  <PaginationStatesDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "page", type: "number", description: "Sets the current one-indexed page." },
+  { name: "totalPages", type: "number", description: "Sets the total number of available pages." },
+  { name: "onPageChange", type: "(page: number) => void", description: "Handles client-side navigation when href is absent." },
+  { name: "href", type: "(page: number) => string", description: "Renders page controls as crawlable anchors using generated URLs." },
+  { name: "siblingCount", type: "number", default: "1", description: "Sets how many page numbers remain visible on each side of the current page." },
+  { name: "loading", type: "boolean", default: "false", description: "Disables navigation and exposes aria-busy during a page transition." },
+]} />
+
+## Indexable pages
+
+Use `href` for catalogs, directories, archives, and other server-rendered collections. Return the canonical bare route for page one and a stable page URL for every later page. Use `onPageChange` for client-only views where the URL does not represent an indexable collection.
+
+## Accessibility
+
+- Pagination renders a navigation landmark named `Pagination`.
+- The current page receives `aria-current="page"`.
+- Previous, next, and numeric controls have specific accessible names.
+- Tab moves between controls. Enter activates links, while Enter or Space activates buttons.
+- Arrow keys are intentionally unbound, so Pagination remains compatible with horizontal scrolling containers.
+
+<PageNavigation />

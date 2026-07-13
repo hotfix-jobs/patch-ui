@@ -1,4 +1,9 @@
 import createMDX from "@next/mdx";
+import { fileURLToPath } from "node:url";
+
+const headingIdsPlugin = fileURLToPath(
+  new URL("./scripts/rehype-heading-ids.mjs", import.meta.url),
+);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -9,6 +14,7 @@ const withMDX = createMDX({
   options: {
     remarkPlugins: [["remark-gfm"]],
     rehypePlugins: [
+      headingIdsPlugin,
       [
         "rehype-pretty-code",
         {

@@ -111,7 +111,7 @@ export function SearchSuggestionsDemo() {
   );
 
   return (
-    <div className="mx-auto w-full max-w-3xl py-8">
+    <div className="mx-auto w-full max-w-3xl py-4">
       <SearchSuggestions
         fields={fields}
         activeField={activeField}

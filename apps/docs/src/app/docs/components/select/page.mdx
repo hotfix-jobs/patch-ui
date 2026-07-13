@@ -1,148 +1,86 @@
 import { SelectDemo } from "./select-demo";
-
+import { SelectGroupsDemo } from "./select-groups-demo";
 
 export const metadata = { title: "Select" };
 
-# Select
-
-A rich single-select with a styled popup. Use `SelectItem` children; group with `SelectGroup` + `SelectGroupLabel`. For a searchable list, reach for `Combobox`.
-
-<Install name="select" />
-
-<ComponentPreview label="Select Examples">
-  <SelectDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import { Field, FieldError, FieldLabel, Select, SelectItem, SelectGroup, SelectGroupLabel } from "@patchui/react";
-
-<Field>
+export const usageCode = `<Field>
   <FieldLabel htmlFor="framework">Framework</FieldLabel>
-  <Select id="framework" value={framework} onValueChange={setFramework}>
+  <Select id="framework" defaultValue="react">
     <SelectItem value="react">React</SelectItem>
     <SelectItem value="vue">Vue</SelectItem>
     <SelectItem value="svelte">Svelte</SelectItem>
   </Select>
-</Field>
+</Field>`;
 
-// Grouped options
-<Select id="assignee" defaultValue="ana">
-  <SelectGroup>
-    <SelectGroupLabel>Design</SelectGroupLabel>
-    <SelectItem value="ana">Ana</SelectItem>
-    <SelectItem value="ben">Ben</SelectItem>
-  </SelectGroup>
-  <SelectGroup>
-    <SelectGroupLabel>Engineering</SelectGroupLabel>
-    <SelectItem value="chris">Chris</SelectItem>
-    <SelectItem value="dana">Dana</SelectItem>
-  </SelectGroup>
-</Select>
-
-// Placeholder + validation
-<Field invalid>
-  <FieldLabel htmlFor="plan" required>Plan</FieldLabel>
-  <Select
-    id="plan"
-    aria-describedby="plan-error"
-    required
-    invalid
-    placeholder="Select a plan…"
-  >
-    <SelectItem value="hobby">Hobby</SelectItem>
-    <SelectItem value="pro">Pro</SelectItem>
-  </Select>
-  <FieldError id="plan-error" match>Please select a plan.</FieldError>
-</Field>
-```
-
-## Props
-
-<PropsTable
-  props={[
-    {
-      name: "value",
-      type: "string",
-      default: "-",
-      description: "Controlled value.",
-    },
-    {
-      name: "defaultValue",
-      type: "string",
-      default: "-",
-      description: "Initial value (uncontrolled).",
-    },
-    {
-      name: "onValueChange",
-      type: "(value: string) => void",
-      default: "-",
-      description: "Called when the selection changes.",
-    },
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Controls the height and typography of the trigger.",
-    },
-    {
-      name: "variant",
-      type: '"default" | "unstyled"',
-      default: '"default"',
-      description: "Use unstyled only when another component owns the trigger surface.",
-    },
-    {
-      name: "placeholder",
-      type: "string",
-      default: "-",
-      description: "Shown in the trigger when no value is selected.",
-    },
-    {
-      name: "id",
-      type: "string",
-      default: "-",
-      description: "Trigger id. Match it from FieldLabel with `htmlFor`.",
-    },
-    {
-      name: "prefix",
-      type: "ReactNode",
-      default: "-",
-      description: "Content rendered at the start of the trigger (icon, unit).",
-    },
-    {
-      name: "suffix",
-      type: "ReactNode",
-      default: "-",
-      description: "Content rendered at the end, before the chevron.",
-    },
-    {
-      name: "invalid",
-      type: "boolean",
-      default: "false",
-      description: "Shows the invalid outline. Pair with FieldError for the message.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the select.",
-    },
-    {
-      name: "required",
-      type: "boolean",
-      default: "false",
-      description: "Marks the select as required for form validation.",
-    },
-  ]}
+<PageHeader
+  title="Select"
+  description="A single-value picker with a styled trigger, rich options, grouping, and responsive popup behavior."
 />
 
-<Callout title="Notes">
-- **Rich items:** `SelectItem` accepts arbitrary children — icons, badges, two-line rows. Selection state renders a check icon via `SelectPrimitive.ItemIndicator`.
-- **Grouping:** Wrap sets of items in `SelectGroup` with a `SelectGroupLabel` when the option count grows past 10.
-- **Searchable list:** For 20+ items or fuzzy matching, reach for `Combobox` instead.
-- **Accessibility:** Base UI Select ships proper roving tabindex, ARIA, and type-ahead out of the box.
-- **Form integration:** Pass `name` and the selected value posts as a hidden input. `required` blocks submission when empty.
-- **Field composition:** Field owns the label, description, and error message. Pass `invalid` when validation fails.
-- **State consistency:** Keyboard focus and the open trigger use the shared stronger fill without an input-style ring. The highlighted option is subtle; the selected option keeps the stronger selected fill.
-</Callout>
+Use Select for a moderate list of known choices where only one value may be selected. Use Combobox when people need search or fuzzy matching.
+
+<ComponentPreview label="Labeled select" sourcePath="src/app/docs/components/select/select-demo.tsx">
+  <SelectDemo />
+</ComponentPreview>
+
+## Installation
+
+<Install name="select" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/select.json). The canonical implementation lives in [packages/react/src/components/select.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/select.tsx).
+
+## Usage
+
+<Usage code={usageCode} />
+
+Match FieldLabel `htmlFor` to Select `id`. Every SelectItem needs a unique string value.
+
+## Composition
+
+```text
+Select
+├── SelectItem
+├── SelectGroup
+│   ├── SelectGroupLabel
+│   └── SelectItem
+└── SelectSeparator (optional)
+```
+
+The trigger, selected-value display, popup, and responsive positioning are rendered internally.
+
+## Examples
+
+### Grouped options
+
+Group longer lists when categories make options easier to scan. Group labels provide structure but are not selectable.
+
+<ComponentPreview label="Grouped options" sourcePath="src/app/docs/components/select/select-groups-demo.tsx">
+  <SelectGroupsDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "value / onValueChange", type: "string / (value: string) => void", description: "Controls the selected value." },
+  { name: "defaultValue", type: "string", description: "Sets the initial uncontrolled selection." },
+  { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "Uses the shared 24, 32, or 40 pixel control heights." },
+  { name: "variant", type: '"default" | "unstyled"', default: '"default"', description: "Removes trigger chrome when another component owns the surface." },
+  { name: "placeholder", type: "string", description: "Displays when no value is selected." },
+  { name: "prefix / suffix", type: "ReactNode / ReactNode", description: "Adds supporting content around the selected value." },
+  { name: "renderValue", type: "(value: string) => ReactNode", description: "Maps stored values to a custom trigger display." },
+]} />
+
+Select also supports native `name`, `required`, and `disabled` form behavior. Set `invalid` and connect FieldError when application validation fails.
+
+## Keyboard behavior
+
+- Enter, Space, Arrow Down, or Arrow Up opens the picker from its trigger.
+- Arrow keys move through enabled options. Typing moves to a matching option.
+- Enter selects the highlighted option. Escape closes without changing selection.
+- The selected option is indicated separately from temporary keyboard or pointer highlight.
+
+## Mobile behavior
+
+On desktop, the popup aligns to the trigger and matches its minimum width. Below the `md` breakpoint, it becomes a centered panel with a backdrop, comfortable option rows, narrow viewport gutters, and locked body scrolling.
+
+<PageNavigation />

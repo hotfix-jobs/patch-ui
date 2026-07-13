@@ -1,130 +1,76 @@
+import { ToastActionDemo } from "./toast-action-demo";
 import { ToastDemo } from "./toast-demo";
-
+import { ToastTypesDemo } from "./toast-types-demo";
 
 export const metadata = { title: "Toast" };
 
-# Toast
+export const usageCode = `<>
+  <Toaster position="bottom-right" />
+  <Button onClick={() => toast.success("Project saved")}>
+    Save project
+  </Button>
+</>`;
 
-Stackable notification toasts built on Base UI Toast. Supports types (success, error, warning, info, loading), descriptions, action buttons, swipe-to-dismiss, and configurable positioning. Trigger via the `toast()` function from anywhere in your app: it forwards to a global `createToastManager()` singleton, no provider context required at the call site.
+<PageHeader
+  title="Toast"
+  description="A temporary notification that appears above the interface and can be triggered from anywhere."
+/>
 
-<Install name="toast" />
+Use Toast to confirm completed actions, report background work, or surface a brief problem without interrupting the current task.
 
-<ComponentPreview label="Toast Examples">
+<ComponentPreview label="Basic toast" sourcePath="src/app/docs/components/toast/toast-demo.tsx">
   <ToastDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="toast" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/toast.json). The canonical implementation lives in [packages/react/src/components/toast.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/toast.tsx).
+
 ## Usage
 
-```tsx
-import { Toaster, toast } from "@patchui/react";
+<Usage code={usageCode} />
 
-// 1. Mount Toaster once near the root of your app
-function App() {
-  return (
-    <>
-      <Toaster position="bottom-right" />
-      <MyContent />
-    </>
-  );
-}
+Mount one Toaster near the application root. Calls to `toast()` and its semantic methods share that global notification queue.
 
-// 2. Trigger from anywhere
-toast("Hello world");
-toast.success("Saved!");
-toast.error("Something went wrong");
-toast.warning("Check your input");
-toast.info("New version available");
-toast.loading("Uploading...");
+## Examples
 
-// With description
-toast.success("Scheduled: Catch up", {
-  description: "Friday at 5:57 PM",
-});
+### Semantic types
 
-// With action button
-toast.success("Message sent", {
-  action: {
-    label: "Undo",
-    onClick: () => undoSend(),
-  },
-});
+Choose the type that matches the meaning of the message. Loading toasts remain visible until dismissed programmatically.
 
-// Programmatic dismissal
-const id = toast.loading("Uploading...");
-toast.dismiss(id);
-```
+<ComponentPreview label="Toast types" sourcePath="src/app/docs/components/toast/toast-types-demo.tsx">
+  <ToastTypesDemo />
+</ComponentPreview>
 
-## Chrome
+### Description and action
 
-- **radius-12** rounded corners, a **1px** hairline border, and `shadow-menu` elevation keep the notification distinct without making it as heavy as a modal.
-- **Semantic icon color** signals the variant: `--success` for success, `--error` for error, `--warning` for warning. No background flood on the toast itself.
-- **Compact padding** matching Menu density.
-- **Typography**: title is `text-small font-medium`, description is `text-mini text-ink-muted`.
-- **Action button** uses a quiet borderless fill, with the same interaction states as other embedded controls.
+Add a description when the title needs context. Use one concise action for an immediate response such as Undo.
 
-## Props
+<ComponentPreview label="Toast with an action" sourcePath="src/app/docs/components/toast/toast-action-demo.tsx">
+  <ToastActionDemo />
+</ComponentPreview>
 
-### Toaster
+## API reference
 
-<PropsTable
-  props={[
-    {
-      name: "position",
-      type: '"top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right"',
-      default: '"bottom-right"',
-      description: "Where toasts appear on screen.",
-    },
-    {
-      name: "visibleToasts",
-      type: "number",
-      default: "3",
-      description: "Maximum number of toasts stacked at once. Older toasts drop off as new ones arrive.",
-    },
-    {
-      name: "toastWidth",
-      type: "number",
-      default: "360",
-      description: "Fixed toast width in pixels.",
-    },
-  ]}
-/>
+<PropsTable props={[
+  { name: "Toaster.position", type: '"top-left" | "top-center" | "top-right" | "bottom-left" | "bottom-center" | "bottom-right"', default: '"bottom-right"', description: "Places the notification stack against a viewport edge." },
+  { name: "Toaster.visibleToasts", type: "number", default: "3", description: "Limits the number of notifications visible in the stack." },
+  { name: "Toaster.toastWidth", type: "number", default: "360", description: "Sets the stack width in pixels." },
+  { name: "toast options.id", type: "string", description: "Provides an identifier that can update or dismiss a notification." },
+  { name: "toast options.description", type: "ReactNode", description: "Adds supporting content below the title." },
+  { name: "toast options.duration", type: "number", description: "Overrides the type’s automatic dismissal delay in milliseconds." },
+  { name: "toast options.action", type: "{ label: ReactNode; onClick: () => void }", description: "Adds one action that runs and then dismisses the notification." },
+]} />
 
-### toast options
+Every toast call returns an ID. Pass it to `toast.dismiss(id)`, or call `toast.dismiss()` without an ID to clear the queue.
 
-<PropsTable
-  props={[
-    {
-      name: "id",
-      type: "string",
-      default: "-",
-      description: "Custom id. Reusing an id upserts the existing toast in place.",
-    },
-    {
-      name: "description",
-      type: "ReactNode",
-      default: "-",
-      description: "Secondary body text below the title.",
-    },
-    {
-      name: "duration",
-      type: "number",
-      default: "5000",
-      description: "Auto-dismiss delay in ms. Warning defaults to 6000, error to 7000. Loading defaults to 0 (persistent).",
-    },
-    {
-      name: "action",
-      type: "{ label: ReactNode; onClick: () => void }",
-      default: "-",
-      description: "Renders an inline action button. Clicking it fires onClick then dismisses the toast.",
-    },
-  ]}
-/>
+## Accessibility
 
-<Callout title="Notes">
-- **Mount Toaster once** at the root of your app or layout. Multiple Toasters share the same global queue.
-- **Imperative API:** `toast()` and its variants (`toast.success`, `toast.error`, etc.) forward to a global `createToastManager()`. No provider context needed at the call site.
-- **Stack behavior:** Toasts stack with a peek animation. Hover expands the stack; leaving it collapses again.
-- **Swipe to dismiss:** Base UI ships native swipe-to-dismiss on touch and mouse drag.
-- **Priority + ARIA:** `warning` and `error` announce `assertive`; everything else announces `polite`.
-- **Returns an id:** Every `toast()` call returns an id you can pass to `toast.dismiss(id)` for programmatic dismissal. `toast.dismiss()` with no argument clears all.
-</Callout>
+- Success, info, loading, and default notifications announce politely.
+- Warning and error notifications use an assertive announcement for higher priority.
+- Keep titles brief and avoid placing essential information only in a temporary toast.
+- Toasts pause for interaction, support swipe dismissal, and always provide a dismiss button.
+
+<PageNavigation />

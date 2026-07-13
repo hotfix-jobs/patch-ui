@@ -2,7 +2,6 @@
 
 import { Field as FieldPrimitive } from "@base-ui/react/field";
 import { Form as FormPrimitive } from "@base-ui/react/form";
-import { motion, useReducedMotion } from "motion/react";
 import type * as React from "react";
 import { cn } from "../utils";
 
@@ -97,7 +96,6 @@ export function FieldError({
   className,
   ...props
 }: FieldPrimitive.Error.Props): React.ReactElement {
-  const reduceMotion = useReducedMotion();
   return (
     <FieldPrimitive.Error
       className={cn(
@@ -106,15 +104,7 @@ export function FieldError({
       )}
       data-slot="field-error"
       render={
-        <motion.span
-          initial={reduceMotion ? false : { opacity: 0, y: -2 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={
-            reduceMotion
-              ? { duration: 0 }
-              : { duration: 0.15, ease: [0.16, 1, 0.3, 1] }
-          }
-        />
+        <span className="[animation:patch-field-error-in_var(--duration-state)_var(--ease-standard)]" />
       }
       {...props}
     />

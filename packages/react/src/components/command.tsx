@@ -5,7 +5,7 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
 import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { iconMuted, itemGroupLabel, itemRow, popupDivider, popupSurface } from "../recipes";
+import { itemGroupLabel, itemRow, popupDivider, popupSurface } from "../recipes";
 
 import { Check } from "@phosphor-icons/react/dist/ssr";
 type Density = "compact" | "comfortable";
@@ -156,7 +156,6 @@ export function CommandItem({
       className={cn(
         itemRow.base,
         "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        iconMuted,
         density === "compact"
           ? itemRow.compact
           : "min-h-11 px-3 py-2.5 text-small [&_svg:not([class*='size-'])]:size-[18px]",

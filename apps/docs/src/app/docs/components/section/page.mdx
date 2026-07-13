@@ -1,115 +1,76 @@
 import { SectionDemo } from "./section-demo";
-
+import { SectionPlainDemo } from "./section-plain-demo";
 
 export const metadata = { title: "Section" };
 
-# Section
+export const usageCode = `<Section variant="card" dividers>
+  <SectionHeader className="p-5">
+    <SectionTitle>Notifications</SectionTitle>
+    <SectionSubtitle>Choose how updates reach you.</SectionSubtitle>
+  </SectionHeader>
+  <SectionContent>...</SectionContent>
+</Section>`;
 
-A structural grouping with optional header, content, and footer slots. It is plain by default and can opt into a borderless, shadowless card surface. Add `dividers` when direct children need quiet internal separation.
+<PageHeader
+  title="Section"
+  description="A semantic structural group with optional header, content, footer, surface, and direct-child dividers."
+/>
 
-Different from `Card`, which represents a discrete content object. Reach for Section when several controls or settings belong to one named area.
+Use Section to organize related settings or controls under one heading. Use Card when the content represents a discrete object with its own boundary, elevation, selection, or interaction state.
 
-<Install name="section" />
-
-<ComponentPreview label="Section Examples">
+<ComponentPreview label="Settings section" sourcePath="src/app/docs/components/section/section-demo.tsx" previewClassName="bg-base">
   <SectionDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="section" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/section.json). The canonical implementation lives in [packages/react/src/components/section.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/section.tsx).
+
 ## Usage
 
-```tsx
-import {
-  Section,
-  SectionHeader,
-  SectionTitle,
-  SectionSubtitle,
-  SectionContent,
-  SectionFooter,
-  Button,
-  Input,
-} from "@patchui/react";
+<Usage code={usageCode} />
 
-// Simple settings row (header + footer, no body)
-<Section variant="card" dividers>
-  <SectionHeader className="px-6 pb-4 pt-5">
-    <SectionTitle>Account Settings</SectionTitle>
-    <SectionSubtitle>Manage your account preferences and settings.</SectionSubtitle>
-  </SectionHeader>
-  <SectionFooter className="flex items-center justify-between px-6 pb-5">
-    <div className="text-small text-ink-muted">Need help? <a href="#">View documentation</a></div>
-    <div className="flex items-center gap-2">
-      <Button size="sm">Save Changes</Button>
-    </div>
-  </SectionFooter>
-</Section>
+Section is plain by default. Its slots provide semantics and styling hooks, while the caller owns padding, gaps, alignment, and responsive layout.
 
-// With a content body (e.g. an input to edit)
-<Section dividers>
-  <SectionHeader className="px-6 pb-4 pt-5">
-    <SectionTitle>Project Name</SectionTitle>
-    <SectionSubtitle>The display name for your project.</SectionSubtitle>
-  </SectionHeader>
-  <SectionContent className="px-6 pb-6">
-    <Input placeholder="my-awesome-project" />
-  </SectionContent>
-  <SectionFooter className="flex items-center justify-between px-6 pb-5">
-    <div className="text-small text-ink-muted">Please use 32 characters at maximum.</div>
-    <div className="flex items-center gap-2">
-      <Button size="sm">Save</Button>
-    </div>
-  </SectionFooter>
-</Section>
+## Composition
+
+```text
+Section
+├── SectionHeader
+│   ├── SectionTitle
+│   └── SectionSubtitle
+├── SectionContent
+└── SectionFooter
 ```
 
-## Components
+Every slot is optional. Keep the order predictable when several slots are used.
 
-- **`Section`**: the structural surface. Renders as `<section>` by default.
-- **`SectionHeader`**: the top block: title + subtitle.
-- **`SectionTitle`**: heading (renders as `<h3>` for correct outline).
-- **`SectionSubtitle`**: descriptive text under the title (renders as `<p>`).
-- **`SectionContent`**: optional body between header and footer.
-- **`SectionFooter`**: optional unstyled footer slot.
+## Examples
 
-## Props
+### Plain structure
 
-### Section
+Use the default plain variant when spacing and typography already establish the grouping and another visible surface would add unnecessary chrome.
 
-<PropsTable
-  props={[
-    {
-      name: "variant",
-      type: '"plain" | "card"',
-      default: '"plain"',
-      description: "Plain adds no surface treatment. Card adds a layer background and radius without a border or shadow.",
-    },
-    {
-      name: "dividers",
-      type: "boolean",
-      default: "false",
-      description: "Adds a hairline between each pair of direct children.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-    {
-      name: "render",
-      type: "RenderProp<'section'>",
-      default: "-",
-      description: "Polymorphic render prop.",
-    },
-  ]}
-/>
+<ComponentPreview label="Plain structure" sourcePath="src/app/docs/components/section/section-plain-demo.tsx" previewClassName="bg-base">
+  <SectionPlainDemo />
+</ComponentPreview>
 
-### SectionHeader, SectionTitle, SectionSubtitle, SectionContent, SectionFooter
+## API reference
 
-Each accepts `className` for overrides and `render` for polymorphic rendering (change the underlying element while keeping the styling).
+<PropsTable props={[
+  { name: "variant", type: '"plain" | "card"', default: '"plain"', description: "Adds no surface or a borderless radius-12 layer surface." },
+  { name: "dividers", type: "boolean", default: "false", description: "Adds a hairline between each pair of direct children." },
+]} />
 
-<Callout title="Notes">
-- Section slots are unstyled structural hooks. Callers own their padding, gaps, alignment, and responsive behavior through `className`.
-- Section is a `<section>` element; `SectionTitle` renders as `<h3>` by default. If the parent already has an `<h2>`, that keeps the outline clean. Adjust with `render={<h2 />}` if the heading level needs to shift.
-- Section is plain by default. `variant="card"` adds `bg-layer-1` and radius 12 with no outer border or shadow. Use Card when an object needs outlined, elevated, hoverable, or selected treatments.
-- `dividers` adds internal hairlines between direct children. Leave it off when spacing alone makes the grouping clear.
-</Callout>
+Section and every structural slot support `render` to change the semantic element. SectionTitle defaults to `h3`; choose another heading level when required by the surrounding document outline.
+
+## Accessibility
+
+- Section renders a native `section`. Give it a heading when it represents a distinct document region.
+- Choose the SectionTitle heading level according to the page hierarchy, not its visual size.
+- Dividers are visual only and do not replace headings or labels.
+- Ensure controls inside setting rows retain visible labels and appropriate accessible names.
+
+<PageNavigation />

@@ -8,7 +8,7 @@ import { cn } from "../utils";
 
 import { User } from "@phosphor-icons/react/dist/ssr";
 export const avatarVariants = cva(
-  "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-ink text-base",
+  "relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden bg-ink text-[color:var(--base)]",
   {
     defaultVariants: { size: "md", shape: "circle" },
     variants: {
@@ -91,7 +91,7 @@ export function Avatar({
 
   const fillClass = placeholder
     ? "bg-fill-1 text-ink-muted"
-    : "bg-ink text-base";
+    : "bg-ink text-[color:var(--base)]";
 
   const baseClass = numericSize
     ? cn(
@@ -137,7 +137,9 @@ export function Avatar({
           className={cn(
             "absolute -bottom-0.5 -left-0.5 inline-flex items-center justify-center rounded-full",
             "ring-2 ring-base",
-            iconBackground ? "bg-ink text-base" : "bg-base text-ink-muted",
+            iconBackground
+              ? "bg-ink text-[color:var(--base)]"
+              : "bg-base text-ink-muted",
           )}
           style={{ width: badgePx, height: badgePx }}
         >

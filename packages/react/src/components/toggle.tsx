@@ -4,7 +4,7 @@ import { Toggle as TogglePrimitive } from "@base-ui/react/toggle";
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../utils";
-import { colorTransition, iconMuted, selectionFocus } from "../recipes";
+import { colorTransition, selectionFocus } from "../recipes";
 
 export const toggleVariants = cva(
   [
@@ -25,11 +25,9 @@ export const toggleVariants = cva(
       },
       variant: {
         tertiary:
-          "bg-transparent text-ink-muted hover:bg-layer-hover hover:text-ink data-[pressed]:bg-layer-hover data-[pressed]:text-ink " +
-          iconMuted,
+          "bg-transparent text-ink-muted hover:bg-layer-hover hover:text-ink data-[pressed]:bg-layer-hover data-[pressed]:text-ink",
         secondary:
-          "bg-fill-1 text-ink hover:bg-fill-2 data-[pressed]:bg-fill-2 data-[pressed]:text-ink " +
-          iconMuted,
+          "bg-fill-1 text-ink hover:bg-fill-2 data-[pressed]:bg-fill-2 data-[pressed]:text-ink",
       },
     },
   },

@@ -68,7 +68,7 @@ export function FilterToolbarDemo() {
   };
 
   return (
-    <div className="flex flex-col gap-10 py-6">
+    <div className="w-full py-2">
       <FilterToolbar
         activeCount={activeCount}
         onClearAll={clearAll}
@@ -121,42 +121,6 @@ export function FilterToolbarDemo() {
         >
           <Eye aria-hidden />
           Visible
-        </Toggle>
-      </FilterToolbar>
-
-      <FilterToolbar
-        overflow="wrap"
-        activeCount={activeCount}
-        onClearAll={clearAll}
-        trailing={<SortControl value={sort} onChange={setSort} />}
-      >
-        <FilterMenu
-          label="Status"
-          value={status}
-          options={statusOptions}
-          onChange={setStatus}
-        />
-        <FilterMenu
-          label="Owner"
-          value={owner}
-          options={ownerOptions}
-          onChange={setOwner}
-        />
-        <FilterToolbarPicker
-          label="Category"
-          selected={categories}
-          onSelectionChange={setCategories}
-          query={categoryQuery}
-          onQueryChange={setCategoryQuery}
-          sections={[{ id: "categories", options: visibleCategories }]}
-        />
-        <Toggle
-          variant="secondary"
-          size="md"
-          pressed={tagged}
-          onPressedChange={setTagged}
-        >
-          Tagged
         </Toggle>
       </FilterToolbar>
     </div>

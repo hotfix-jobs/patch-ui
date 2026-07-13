@@ -283,8 +283,7 @@
       "type": "registry:ui",
       "title": "Field",
       "dependencies": [
-        "@base-ui/react",
-        "motion"
+        "@base-ui/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/tokens.json",
@@ -519,44 +518,6 @@
           "path": "registry/components/ui/scroller.tsx",
           "type": "registry:ui",
           "target": "components/ui/scroller.tsx"
-        }
-      ]
-    },
-    {
-      "name": "search-input",
-      "type": "registry:ui",
-      "title": "Search Input",
-      "dependencies": [
-        "@phosphor-icons/react"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/input.json",
-        "https://ui.hotfix.jobs/r/tokens.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/search-input.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/search-input.tsx"
-        }
-      ]
-    },
-    {
-      "name": "section-label",
-      "type": "registry:ui",
-      "title": "Section Label",
-      "dependencies": [
-        "@base-ui/react"
-      ],
-      "registryDependencies": [
-        "https://ui.hotfix.jobs/r/tokens.json",
-        "https://ui.hotfix.jobs/r/utils.json"
-      ],
-      "files": [
-        {
-          "path": "registry/components/ui/section-label.tsx",
-          "type": "registry:ui",
-          "target": "components/ui/section-label.tsx"
         }
       ]
     },
@@ -803,8 +764,7 @@
       "type": "registry:ui",
       "title": "Theme Toggle",
       "dependencies": [
-        "@phosphor-icons/react",
-        "motion"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
@@ -923,7 +883,6 @@
       "title": "App Header",
       "dependencies": [
         "@base-ui/react",
-        "motion",
         "react-remove-scroll"
       ],
       "registryDependencies": [
@@ -965,8 +924,7 @@
       "type": "registry:block",
       "title": "Filter Toolbar",
       "dependencies": [
-        "@phosphor-icons/react",
-        "motion"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
@@ -991,8 +949,7 @@
       "type": "registry:block",
       "title": "Search Suggestions",
       "dependencies": [
-        "@phosphor-icons/react",
-        "motion"
+        "@phosphor-icons/react"
       ],
       "registryDependencies": [
         "https://ui.hotfix.jobs/r/button.json",
@@ -1043,10 +1000,8 @@
         "https://ui.hotfix.jobs/r/progress.json",
         "https://ui.hotfix.jobs/r/radio.json",
         "https://ui.hotfix.jobs/r/scroller.json",
-        "https://ui.hotfix.jobs/r/search-input.json",
         "https://ui.hotfix.jobs/r/search-suggestions.json",
         "https://ui.hotfix.jobs/r/section.json",
-        "https://ui.hotfix.jobs/r/section-label.json",
         "https://ui.hotfix.jobs/r/select.json",
         "https://ui.hotfix.jobs/r/separator.json",
         "https://ui.hotfix.jobs/r/sheet.json",

@@ -52,18 +52,22 @@ The detailed source of truth is [packages/react/DESIGN.md](./packages/react/DESI
 ## Repository
 
 - `packages/react`: component source, tokens, recipes, and contrast checks
-- `apps/docs`: Next.js documentation, live demos, and served registry output
+- `apps/docs`: Patch UI homepage, Next.js documentation, live demos, generated Markdown, search index, and served registry output
 - `registry.json`: generated registry catalog
 - `scripts/build-registry-source.mjs`: source rewrite and registry generation
 
 Verification:
 
 ```bash
+npm run lint
 npm run build -w packages/react
 npm run check:contrast -w packages/react
 npm run registry
 npx tsc --noEmit -p apps/docs/tsconfig.json
+npm run build -w apps/docs
 ```
+
+The docs build regenerates the search index, per-route Markdown, `docs.md`, `llms.txt`, and `llms-full.txt` before compiling the site.
 
 ## License
 

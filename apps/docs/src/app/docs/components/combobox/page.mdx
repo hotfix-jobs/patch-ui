@@ -1,324 +1,101 @@
 import { ComboboxDemo } from "./combobox-demo";
+import { ComboboxSectionsDemo } from "./combobox-sections-demo";
+import { ComboboxMultipleDemo } from "./combobox-multiple-demo";
 
 export const metadata = { title: "Combobox" };
 
-# Combobox
+export const usageCode = `<Label htmlFor="framework">Framework</Label>
+<Combobox value={query} onValueChange={setQuery}>
+  <ComboboxInput id="framework" />
+  <ComboboxPopup>
+    <ComboboxItem value="react">React</ComboboxItem>
+  </ComboboxPopup>
+</Combobox>`;
 
-An `Input` paired with a floating popup that shows arbitrary filterable content: suggestions, recent searches, custom rows, banners. Built on Base UI Combobox: virtual focus (the input keeps real focus; items highlight via `aria-activedescendant`), roving keyboard navigation, and CSS-driven open / close transitions.
+<PageHeader
+  title="Combobox"
+  description="An editable input with a filterable popup for choosing one or more values."
+/>
 
-Use Combobox when you need an input-driven dropdown with custom row shapes (recents with chips, sign-in nudges, mode-specific banners). For simple command palettes, use [Command](/docs/components/command). For trigger-button dropdowns, use [Menu](/docs/components/menu).
+Use Combobox when people need to type to narrow a list or when the popup needs custom rows. Use [Select](/docs/components/select) for a fixed list opened by a button, and [Command](/docs/components/command) for an application command palette.
 
-Query state (`value` / `onValueChange` / `placeholder`) lives on the `<Combobox>` root so the trigger input and the mobile panel's own search input can share it. On viewports below the `md` breakpoint the popup automatically switches to a centered, near-full-width panel with its own search input.
-
-<Install name="combobox" />
-
-<ComponentPreview label="Combobox">
+<ComponentPreview label="Framework search" sourcePath="src/app/docs/components/combobox/combobox-demo.tsx" resettable>
   <ComboboxDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="combobox" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/combobox.json). The canonical implementation lives in [packages/react/src/components/combobox.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/combobox.tsx).
+
 ## Usage
 
-```tsx
-import {
-  Combobox,
-  ComboboxInput,
-  ComboboxPopup,
-  ComboboxItem,
-} from "@patchui/react";
-import { MagnifyingGlass } from "@phosphor-icons/react/dist/ssr";
-const [query, setQuery] = useState("");
-const matches = items.filter((i) =>
-  i.label.toLowerCase().includes(query.toLowerCase()),
-);
+<Usage code={usageCode} />
 
-<Combobox value={query} onValueChange={setQuery} placeholder="Search...">
-  <ComboboxInput prefix={<Search />} />
-  <ComboboxPopup>
-    {matches.map((item) => (
-      <ComboboxItem key={item.id} onSelect={() => pick(item)}>
-        {item.label}
-      </ComboboxItem>
-    ))}
-  </ComboboxPopup>
-</Combobox>
+Combobox does not filter data. Keep the query on the root, filter in your application, and render the matching items.
+
+## Composition
+
+```text
+Combobox
+├── ComboboxInput
+└── ComboboxPopup
+    ├── ComboboxSection (optional)
+    │   ├── ComboboxGroupLabel
+    │   └── ComboboxItem
+    └── ComboboxDivider (optional)
 ```
 
-### Multi-select
+`ComboboxInput` and `ComboboxPopup` are the minimum useful relationship. Only `ComboboxItem` participates in option selection and keyboard navigation. Section labels, dividers, and arbitrary popup content are optional.
 
-Pass `multiple` on the root with `selectedValues` + `onSelectedValuesChange` and Base UI manages selection state internally. Clicking a `ComboboxItem` toggles it in the array; the built-in `clearable` X on `ComboboxInput` becomes visible whenever `selectedValues` is non-empty and wipes both the input and the picks on click.
+## Examples
 
-```tsx
-const [query, setQuery] = useState("");
-const [selected, setSelected] = useState<string[]>([]);
+### Custom content and sections
 
-<Combobox
-  multiple
-  selectedValues={selected}
-  onSelectedValuesChange={(next) => setSelected(next as string[])}
-  value={query}
-  onValueChange={setQuery}
-  placeholder="Frameworks"
->
-  <ComboboxInput
-    prefix={<Search />}
-    clearable
-    onClear={() => {
-      setQuery("");
-      setSelected([]);
-    }}
-  />
-  <ComboboxPopup>
-    {matches.map((item) => (
-      <ComboboxItem key={item.id} value={item.id}>
-        {item.label}
-      </ComboboxItem>
-    ))}
-  </ComboboxPopup>
-</Combobox>
-```
+Add explanatory content directly to the popup, then group selectable items with `ComboboxSection`. Plain content is not part of keyboard navigation.
 
-To render a Selected section at the top of the popup so users can see and remove active picks in place, pass `onRemove` on the `ComboboxItem` for each row:
+<ComponentPreview label="Grouped results" sourcePath="src/app/docs/components/combobox/combobox-sections-demo.tsx" resettable>
+  <ComboboxSectionsDemo />
+</ComponentPreview>
 
-```tsx
-<ComboboxPopup>
-  {query.trim() === "" && selected.length > 0 ? (
-    <>
-      <div className="px-2 pb-1 pt-2 text-mini text-ink-muted">Selected</div>
-      {selected.map((s) => (
-        <ComboboxItem
-          key={`sel-${s}`}
-          value={s}
-          onRemove={() => setSelected((prev) => prev.filter((x) => x !== s))}
-          removeLabel={`Remove ${s}`}
-        >
-          {s}
-        </ComboboxItem>
-      ))}
-    </>
-  ) : (
-    matches.map((item) => (
-      <ComboboxItem key={item.id} value={item.id}>
-        {item.label}
-      </ComboboxItem>
-    ))
-  )}
-</ComboboxPopup>
-```
+### Multiple selection
 
-To display a summary of the picks in the input when the popup is closed, thread through an `open` state and compute the display value:
+Set `multiple`, then control the selected values separately from the query. An item with `onRemove` exposes an explicit remove action for selected rows.
 
-```tsx
-const [open, setOpen] = useState(false);
-const summary = selected.length === 1 ? selected[0] : `${selected.length} frameworks`;
-const displayValue = open ? query : query || summary;
+<ComponentPreview label="Multiple frameworks" sourcePath="src/app/docs/components/combobox/combobox-multiple-demo.tsx" resettable>
+  <ComboboxMultipleDemo />
+</ComponentPreview>
 
-<Combobox
-  multiple
-  selectedValues={selected}
-  onSelectedValuesChange={...}
-  open={open}
-  onOpenChange={setOpen}
-  value={displayValue}
-  onValueChange={(v) => {
-    // Ignore the summary being echoed back on close.
-    if (!open && v === summary) return;
-    setQuery(v);
-  }}
->
-  ...
-</Combobox>
-```
+## API reference
 
-When the popup opens the input clears to a raw search field so typing / backspacing behaves normally; when it closes the summary comes back as a display-only status.
-
-The popup accepts arbitrary JSX: only `ComboboxItem` gets keyboard navigation. Mix items with banners, headers, separators, or custom rows freely.
-
-```tsx
-<ComboboxPopup>
-  {/* Info banner — not navigable */}
-  <div className="flex items-center gap-1.5 border-b-[0.5px] border-hairline-strong px-3 py-2 text-mini text-ink-muted">
-    <Info className="h-3.5 w-3.5" /> Recents shown first
-  </div>
-
-  {/* Recents section (use ComboboxItem so they're keyboard-navigable) */}
-  {recents.map((r) => (
-    <ComboboxItem key={r.id} onSelect={() => useRecent(r)}>
-      <RecentRow search={r} />
-    </ComboboxItem>
-  ))}
-
-  {/* Live suggestions */}
-  {suggestions.map((s) => (
-    <ComboboxItem key={s} onSelect={() => pick(s)}>
-      {s}
-    </ComboboxItem>
-  ))}
-</ComboboxPopup>
-```
-
-## Props
-
-### Combobox
+The wrapper accepts the underlying Base UI and native element props. The entries below cover behavior added or coordinated by Patch UI. See the [canonical source](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/combobox.tsx) for exhaustive TypeScript definitions.
 
 <PropsTable
   props={[
-    {
-      name: "value",
-      type: "string",
-      default: "-",
-      description: "Current query string. Shared by the trigger input and the mobile panel's own search input.",
-    },
-    {
-      name: "onValueChange",
-      type: "(next: string) => void",
-      default: "-",
-      description: "Called when the query should change. Wired to both inputs.",
-    },
-    {
-      name: "placeholder",
-      type: "string",
-      default: "-",
-      description: "Placeholder for the trigger input and the mobile panel input.",
-    },
-    {
-      name: "open",
-      type: "boolean",
-      default: "-",
-      description: "Controlled open state.",
-    },
-    {
-      name: "defaultOpen",
-      type: "boolean",
-      default: "false",
-      description: "Initial open state (uncontrolled).",
-    },
-    {
-      name: "onOpenChange",
-      type: "(open: boolean) => void",
-      default: "-",
-      description: "Called when the popup should open or close.",
-    },
-    {
-      name: "autoHighlight",
-      type: 'boolean | "always"',
-      default: "false",
-      description: "Uses Base UI's native behavior. By default no option is highlighted on open or while typing; arrow to an option before pressing Enter.",
-    },
-    {
-      name: "multiple",
-      type: "boolean",
-      default: "false",
-      description: "Enable Base UI's native multi-select mode. Pair with `selectedValues` + `onSelectedValuesChange`. The built-in ComboboxInput clearable X becomes visible whenever the selection array is non-empty and clicking Clear wipes both the input value and the array via Base UI's native handler.",
-    },
-    {
-      name: "selectedValues",
-      type: "readonly unknown[]",
-      default: "-",
-      description: "Selected values in multi-select mode. Base UI treats this as the source of truth for which ComboboxItem rows are checked.",
-    },
-    {
-      name: "onSelectedValuesChange",
-      type: "(next: unknown[]) => void",
-      default: "-",
-      description: "Fired when Base UI toggles the selection array in multi mode (clicking an item, invoking the built-in Clear).",
-    },
+    { name: "value / onValueChange", type: "string / (value: string) => void", description: "Controlled query shared by the desktop input and responsive mobile input." },
+    { name: "open / onOpenChange", type: "boolean / (open: boolean) => void", description: "Controlled popup state." },
+    { name: "autoHighlight", type: "boolean | \"always\"", default: "false", description: "Determines whether an option is highlighted automatically on open or input change." },
+    { name: "multiple", type: "boolean", default: "false", description: "Enables Base UI multiple-selection behavior." },
+    { name: "selectedValues / onSelectedValuesChange", type: "readonly unknown[] / (values: unknown[]) => void", description: "Controlled selection array and its change handler." },
+    { name: "ComboboxInput.clearable / onClear", type: "boolean / () => void", default: "false / -", description: "Shows the built-in clear action and lets the application reset related local state." },
+    { name: "ComboboxItem.onRemove / removeLabel", type: "() => void / string", default: "- / \"Remove\"", description: "Adds an explicit, accessibly named remove action for selected rows." },
   ]}
 />
 
-### ComboboxInput
+ComboboxInput also supports `variant="unstyled"` and `hideChevron` for composed input surfaces. ComboboxPopup exposes separate desktop and mobile class names when its responsive layouts need different sizing. Use `ComboboxPrimitive` when an advanced requirement needs a Base UI part that the Patch UI wrapper does not expose directly.
 
-Accepts native input props plus `prefix`, `suffix`, and `size`. `value`, `onChange`, and `placeholder` read from the `<Combobox>` root by default; pass them directly on this input only when you need a per-input override.
+## Accessibility
 
-<PropsTable
-  props={[
-    {
-      name: "variant",
-      type: '"default" | "unstyled"',
-      default: '"default"',
-      description: "Use unstyled only when another component owns the control surface.",
-    },
-    {
-      name: "openOnFocus",
-      type: "boolean",
-      default: "true",
-      description: "Open the popup automatically when the input receives focus. Set false for input-first patterns where typing opens the popup instead.",
-    },
-    {
-      name: "hideChevron",
-      type: "boolean",
-      default: "false",
-      description: "By default the input renders a chevron suffix that flips between down (closed) and up (open). Set true to hide it (e.g. for pure search boxes).",
-    },
-    {
-      name: "clearable",
-      type: "boolean",
-      default: "false",
-      description: "When true and the input has a non-empty value, renders a trailing × button. Pair with `onClear` to reset your value state.",
-    },
-    {
-      name: "onClear",
-      type: "() => void",
-      default: "-",
-      description: "Fired when the × is clicked. Reset your local value state here.",
-    },
-  ]}
-/>
+- Keep a visible label associated with the input. A placeholder is not a label.
+- Real focus remains on the input while the active option is announced through the combobox relationship.
+- Arrow keys move through options. Enter selects the active option. Escape closes the popup. Arrow Down opens a closed popup.
+- With the default `autoHighlight={false}`, opening the popup does not preselect an option. Move to an option before pressing Enter.
+- Only `ComboboxItem` is selectable. Do not make plain popup content look like an option.
+- Give each `onRemove` action a specific `removeLabel`, such as `Remove React`.
 
-### ComboboxItem
+## Responsive behavior
 
-<PropsTable
-  props={[
-    {
-      name: "onSelect",
-      type: "() => void",
-      default: "-",
-      description: "Fired on click or Enter while the item is keyboard-active.",
-    },
-    {
-      name: "closeOnSelect",
-      type: "boolean",
-      default: "true",
-      description: "Whether to close the popup after selection. Set false for multi-select pickers where the user is expected to toggle several items before dismissing.",
-    },
-    {
-      name: "label",
-      type: "string",
-      default: "-",
-      description: "Override the type-ahead label. Defaults to children if it's a string.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables interaction.",
-    },
-    {
-      name: "onRemove",
-      type: "() => void",
-      default: "-",
-      description: "When provided, renders a trailing X affordance at the end of the row that calls this callback instead of firing onSelect. Useful in the Selected section of a multi-select popup so each pick has an explicit remove button.",
-    },
-    {
-      name: "removeLabel",
-      type: "string",
-      default: "\"Remove\"",
-      description: "aria-label for the remove X (screen readers read \"Remove X\" so consumers can pass the picked value here).",
-    },
-  ]}
-/>
+On desktop, the popup is anchored to the input and matches its minimum width. Below the `md` breakpoint it becomes a centered panel with its own focused search input, narrow viewport gutters, and locked body scroll. Query and placeholder state are shared across both inputs. Token-based surfaces, text, boundaries, and focus styles adapt automatically in dark mode.
 
-<Callout title="Notes">
-- **Query state on the root.** Put `value` / `onValueChange` / `placeholder` on `<Combobox>` so the trigger input and the mobile panel's own input share them. The input still accepts `value` / `onChange` / `placeholder` as per-input overrides for advanced cases.
-- **Mobile panel.** Below 768px the popup renders as a centered fixed panel with narrow viewport gutters, its own search input (real focus, autoFocus), and a close X. Desktop behavior is unchanged.
-- **Multi-select.** Pass `multiple` on the root with `selectedValues` + `onSelectedValuesChange` and Base UI manages the array natively (the built-in clearable X becomes visible when the array is non-empty and clears both the input and the picks on click). For the "list of active picks with individual X to remove" pattern, put `onRemove` on the `ComboboxItem` for each Selected row.
-- **State consistency.** The open input uses the same stronger fill as Select and Menu triggers, while retaining its editable-field focus outline. Highlighted rows are subtle; selected rows keep the stronger selected fill.
-- **No automatic option.** The popup opens with no highlighted item by default. This is Base UI's native `autoHighlight={false}` behavior; arrow navigation establishes the active option.
-- The input keeps real focus while you type and arrow through options on desktop. Items get `aria-activedescendant` instead of taking focus, which is the proper ARIA combobox pattern: screen readers announce the active option without interrupting typing.
-- Combobox doesn't filter for you. Filter your data based on the current input value and render the matches as `<ComboboxItem>` children. Substring, fuzzy index, async API: any strategy works.
-- Anything inside `ComboboxPopup` renders. Only `<ComboboxItem>` is keyboard-navigable, so you can drop in banners, section headers, and dividers as plain JSX between item groups.
-- Keyboard: Arrow keys navigate, Enter selects, Esc closes, ↓ opens when closed. Typing is just text input: the popup stays open.
-- The chevron suffix auto-flips based on open state. Use `hideChevron` when the input is pure search (no dropdown affordance needed).
-- `clearable` renders a trailing × when the input has a value. Reset your `value` state in `onClear`: the component doesn't own the value.
-- Motion: spring-physics open / close. Respects `prefers-reduced-motion`.
-- Anchored 8px below the input, flips above when there's no room, shifts to stay 8px from edges. Popup `minWidth` matches the input width.
-</Callout>
+<PageNavigation />

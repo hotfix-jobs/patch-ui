@@ -4,7 +4,6 @@ import { useState } from "react";
 import {
   Button,
   EmptyState,
-  SectionLabel,
   Table,
   TableBody,
   TableCell,
@@ -56,7 +55,7 @@ export function TableDemo() {
   return (
     <div className="flex flex-col gap-10">
       <div className="space-y-3">
-        <SectionLabel>Default</SectionLabel>
+        <p className="text-small font-medium text-ink">Default</p>
         <Table>
           <TableHeader>
             <TableRow>
@@ -80,7 +79,7 @@ export function TableDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Bordered container</SectionLabel>
+        <p className="text-small font-medium text-ink">Bordered container</p>
         <Table bordered>
           <TableHeader>
             <TableRow>
@@ -97,7 +96,7 @@ export function TableDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Compact</SectionLabel>
+        <p className="text-small font-medium text-ink">Compact</p>
         <Table size="sm">
           <TableHeader>
             <TableRow>
@@ -114,7 +113,7 @@ export function TableDemo() {
       </div>
 
       <div className="space-y-3">
-        <SectionLabel>Empty</SectionLabel>
+        <p className="text-small font-medium text-ink">Empty</p>
         <Table bordered>
           <TableHeader>
             <TableRow>

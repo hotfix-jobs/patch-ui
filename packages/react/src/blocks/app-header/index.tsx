@@ -2,7 +2,6 @@
 
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Children,
   createContext,
@@ -385,12 +384,8 @@ function groupMobileNavChildren(children: React.ReactNode): React.ReactNode {
 /* --------------------------- internal: morphing icon --------------------------- */
 
 function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
-  const reduceMotion = useReducedMotion();
-  const transition = reduceMotion
-    ? { duration: 0 }
-    : { duration: 0.22, ease: [0.22, 1, 0.36, 1] as const };
   const bar =
-    "absolute left-1/2 top-1/2 h-px w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-current";
+    "absolute left-1/2 top-1/2 h-px w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-current transition-transform duration-[var(--duration-state)] ease-[var(--ease-standard)]";
 
   return (
     <span
@@ -399,17 +394,21 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
       data-state={open ? "open" : "closed"}
       className="relative inline-flex h-[18px] w-[18px] items-center justify-center"
     >
-      <motion.span
-        className={bar}
-        initial={false}
-        animate={open ? { rotate: 45, y: 0 } : { rotate: 0, y: -4 }}
-        transition={transition}
+      <span
+        className={cn(
+          bar,
+          open
+            ? "[transform:translateY(0px)_rotate(45deg)]"
+            : "[transform:translateY(-4px)_rotate(0deg)]",
+        )}
       />
-      <motion.span
-        className={bar}
-        initial={false}
-        animate={open ? { rotate: -45, y: 0 } : { rotate: 0, y: 4 }}
-        transition={transition}
+      <span
+        className={cn(
+          bar,
+          open
+            ? "[transform:translateY(0px)_rotate(-45deg)]"
+            : "[transform:translateY(4px)_rotate(0deg)]",
+        )}
       />
     </span>
   );
@@ -419,7 +418,6 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
 
 function AppHeaderMobilePanel(): React.ReactPortal | null {
   const { open, setOpen, panelId, navChildren, right } = useAppHeaderContext();
-  const reduceMotion = useReducedMotion();
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   useEffect(() => {
@@ -431,44 +429,32 @@ function AppHeaderMobilePanel(): React.ReactPortal | null {
     return () => document.removeEventListener("keydown", onKey);
   }, [open, setOpen]);
 
-  if (!mounted) return null;
+  if (!mounted || !open) return null;
 
   return createPortal(
-    <AnimatePresence>
-      {open && (
-        <RemoveScroll forwardProps>
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            id={panelId}
-            data-slot="app-header-mobile-panel"
-            initial={reduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={reduceMotion ? undefined : { opacity: 0 }}
-            transition={
-              reduceMotion
-                ? { duration: 0 }
-                : { duration: 0.18, ease: [0.22, 1, 0.36, 1] }
-            }
-            className="fixed inset-x-0 bottom-0 top-[var(--header-height,64px)] z-40 flex flex-col bg-base md:hidden"
-          >
-            <AppHeaderMobileRenderContext.Provider value={true}>
-              <nav className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-6">
-                {groupMobileNavChildren(navChildren)}
-              </nav>
-              {right && Children.count(right) > 0 && (
-                <div
-                  data-slot="app-header-mobile-footer"
-                  className="flex items-center gap-2 border-t border-hairline p-4 [&>button]:w-full [&>a]:w-full"
-                >
-                  {right}
-                </div>
-              )}
-            </AppHeaderMobileRenderContext.Provider>
-          </motion.div>
-        </RemoveScroll>
-      )}
-    </AnimatePresence>,
+    <RemoveScroll forwardProps>
+      <div
+        role="dialog"
+        aria-modal="true"
+        id={panelId}
+        data-slot="app-header-mobile-panel"
+        className="fixed inset-x-0 bottom-0 top-[var(--header-height,64px)] z-40 flex flex-col bg-base md:hidden [animation:patch-app-header-panel-in_var(--duration-overlay)_var(--ease-standard)]"
+      >
+        <AppHeaderMobileRenderContext.Provider value={true}>
+          <nav className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-6">
+            {groupMobileNavChildren(navChildren)}
+          </nav>
+          {right && Children.count(right) > 0 && (
+            <div
+              data-slot="app-header-mobile-footer"
+              className="flex items-center gap-2 border-t border-hairline p-4 [&>button]:min-w-0 [&>button]:flex-1 [&>a]:min-w-0 [&>a]:flex-1"
+            >
+              {right}
+            </div>
+          )}
+        </AppHeaderMobileRenderContext.Provider>
+      </div>
+    </RemoveScroll>,
     document.body,
   );
 }

@@ -1,6 +1,12 @@
 export { ComponentPreview } from "./component-preview";
+export { SourceCode } from "./source-code";
+export { Usage } from "./usage";
+export { CopyPage } from "./copy-page";
+export { PageNavigation } from "./page-navigation";
+export { PageHeader } from "./page-header";
 export { PropsTable } from "./props-table";
 export { CompoundComponents } from "./compound-components";
 export { CodeFigure } from "./code-figure";
 export { Callout } from "./callout";
-export { Install } from "./install";
+export { CopyCommand, Install } from "./install";
+export { ResponsiveBlockPreview } from "./responsive-block-preview";

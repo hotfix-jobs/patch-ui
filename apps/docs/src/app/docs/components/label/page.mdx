@@ -1,67 +1,41 @@
 import { LabelDemo } from "./label-demo";
 
-
 export const metadata = { title: "Label" };
 
-# Label
+export const usageCode = `<div className="flex flex-col gap-1.5">
+  <Label htmlFor="email">Email</Label>
+  <Input id="email" type="email" />
+</div>`;
 
-A styled `<label>` at `text-small text-ink`. Use it standalone when you want the label positioned separately from the control, or wrap it around a `Switch` / `Checkbox` / `Radio` for click-to-toggle behavior.
+<PageHeader
+  title="Label"
+  description="A styled native label for associating text with a form control in a custom layout."
+/>
 
-For a complete form-field stack, use `Field` and `FieldLabel`. Reach for standalone Label when the layout is custom or the control is outside Field.
+Use Label when a control sits outside the Field composition. Use FieldLabel when the control also needs a description, validation, or an error message.
 
-<Install name="label" />
-
-<ComponentPreview label="Label Examples">
+<ComponentPreview label="Input label" sourcePath="src/app/docs/components/label/label-demo.tsx">
   <LabelDemo />
 </ComponentPreview>
 
+## Installation
+
+<Install name="label" />
+
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/label.json). The canonical implementation lives in [packages/react/src/components/label.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/label.tsx).
+
 ## Usage
 
-```tsx
-import { Label, Input, Switch, Checkbox } from "@patchui/react";
+<Usage code={usageCode} />
 
-// Standalone with an input
-<Label htmlFor="email">Email</Label>
-<Input id="email" type="email" />
+Match Label `htmlFor` to the control’s `id`. The component accepts native label attributes and supports `render` when another semantic element is intentionally required.
 
-// Wrapping a Switch or Checkbox — the whole label becomes clickable
-<Label>
-  <Switch />
-  <span>Receive weekly digest</span>
-</Label>
+## Accessibility
 
-// As a different element (polymorphic render prop)
-<Label render={<span />}>Read-only label</Label>
-```
+- Every editable control needs a visible label. A placeholder is not a label.
+- Keep `htmlFor` and `id` values unique within the page.
+- Clicking a correctly associated Label moves focus to or activates its native labelable control.
+- Do not render Label as a `span` when the text is responsible for naming a form control.
+- Use the control component’s supported labeling pattern for button-based widgets such as Switch, Checkbox, and Radio.
 
-## Props
-
-<PropsTable
-  props={[
-    {
-      name: "render",
-      type: "RenderProp<'label'>",
-      default: "-",
-      description: "Polymorphic render prop. Pass a different element to change the rendered tag while keeping label styles.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes.",
-    },
-    {
-      name: "htmlFor",
-      type: "string",
-      default: "-",
-      description: "The `id` of the form element this label is associated with. Standard HTML attribute.",
-    },
-  ]}
-/>
-
-<Callout title="Notes">
-- `<Label>` is a plain `<label>` under the hood. Every native attribute (`htmlFor`, `form`, etc.) passes through.
-- Use `FieldLabel` for labels inside a Field. Reach for standalone `<Label>` when the layout is custom or the control is outside Field.
-- Wrapping the label around a `Switch`, `Checkbox`, or `Radio` makes the whole label click to toggle; no `htmlFor` is needed.
-- Rendered as `<span>` via `render={<span />}` when you want the visual weight without the form semantics.
-</Callout>
+<PageNavigation />

@@ -38,7 +38,10 @@ function toHref(file) {
 function extract(raw) {
   // Title = first H1.
   const titleMatch = raw.match(/^#\s+(.+)$/m);
-  const title = titleMatch ? titleMatch[1].trim() : "";
+  const pageHeaderTitleMatch = raw.match(/<PageHeader[\s\S]*?\btitle=["']([^"']+)["']/);
+  const title = titleMatch
+    ? titleMatch[1].trim()
+    : pageHeaderTitleMatch?.[1].trim() ?? "";
 
   let s = raw.replace(/^import .*$/gm, "");
 
@@ -48,7 +51,7 @@ function extract(raw) {
   for (const m of s.matchAll(/(?:description|title|label):\s*["'`]([^"'`]+)["'`]/g)) {
     captured.push(m[1]);
   }
-  for (const m of s.matchAll(/(?:title|label|placeholder)=["']([^"']+)["']/g)) {
+  for (const m of s.matchAll(/(?:title|description|label|placeholder)=["']([^"']+)["']/g)) {
     captured.push(m[1]);
   }
 
@@ -73,14 +76,15 @@ for (const file of pages) {
   index.push({ id: href, title, href, content });
 }
 
-// The docs root (/docs) is a page.tsx (Introduction), not MDX — add it manually.
-index.unshift({
-  id: "/docs",
-  title: "Introduction",
-  href: "/docs",
-  content:
-    "Patch UI introduction overview getting started React component library Base UI Tailwind CSS design tokens.",
-});
+if (!index.some((page) => page.href === "/docs")) {
+  index.unshift({
+    id: "/docs",
+    title: "Introduction",
+    href: "/docs",
+    content:
+      "Patch UI introduction overview getting started React component library Base UI Tailwind CSS design tokens.",
+  });
+}
 
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, JSON.stringify(index));

@@ -1,101 +1,60 @@
 import { InputDemo } from "./input-demo";
+import { InputAffixesDemo } from "./input-affixes-demo";
+import { InputStatesDemo } from "./input-states-demo";
 
 export const metadata = { title: "Input" };
+export const usageCode = `<Field>
+  <FieldLabel>Email</FieldLabel>
+  <Input id="email" type="email" />
+</Field>`;
 
-# Input
+<PageHeader title="Input" description="A single-line text control with three sizes and optional inline prefix and suffix content." />
 
-A focused text-control primitive with three sizes and optional `prefix` and `suffix` slots. It uses a neutral fill, no resting border, radius 8, and a crisp solid focus outline. Compose labels, descriptions, and errors with `Field`.
+Compose Input with Field for labels, descriptions, validation, and error messaging. Use Textarea when the value can contain line breaks.
+
+<ComponentPreview label="Labeled input" sourcePath="src/app/docs/components/input/input-demo.tsx"><InputDemo /></ComponentPreview>
+
+## Installation
 
 <Install name="input" />
 
-<ComponentPreview label="Input Examples">
-  <InputDemo />
-</ComponentPreview>
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/input.json). The canonical implementation lives in [packages/react/src/components/input.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/input.tsx).
 
 ## Usage
 
-```tsx
-import { Field, FieldError, FieldLabel, Input } from "@patchui/react";
-import { MagnifyingGlass, Envelope, ArrowCircleUp } from "@phosphor-icons/react/dist/ssr";
-// Basic
-<Input placeholder="Enter text" />
+<Usage code={usageCode} />
 
-// Sizes
-<Input size="sm" placeholder="Small" />   // 32px
-<Input size="md" placeholder="Medium" />  // 40px (default)
-<Input size="lg" placeholder="Large" />   // 48px
+For search, compose Input with a search icon in `prefix` and an optional clear action in `suffix`.
 
-// Prefix and suffix (inline muted glyph or short label)
-<Input prefix={<ArrowUpCircle />} placeholder="Icon prefix" />
-<Input suffix={<ArrowUpCircle />} placeholder="Icon suffix" />
-<Input prefix="https://" suffix=".com" placeholder="Text prefix and suffix" />
+## Examples
 
-// Label and error composition
-<Field invalid>
-  <FieldLabel>Email</FieldLabel>
-  <Input id="email" type="email" />
-  <FieldError match>Enter a valid email address.</FieldError>
-</Field>
+### Prefix and suffix
 
-// Loading: disables input, shows a spinner
-<Input loading value={value} />
+Use affixes for supplemental context that is not part of the editable value.
 
-// For clearable search, use SearchInput (X button clears the value)
-<SearchInput
-  value={query}
-  onChange={(e) => setQuery(e.target.value)}
-  placeholder="Search projects"
-/>
-```
+<ComponentPreview label="Prefix and suffix" sourcePath="src/app/docs/components/input/input-affixes-demo.tsx"><InputAffixesDemo /></ComponentPreview>
 
-## Props
+### Sizes and states
 
-<PropsTable
-  props={[
-    {
-      name: "size",
-      type: '"sm" | "md" | "lg"',
-      default: '"md"',
-      description: "Control height. 24 / 32 / 40 px.",
-    },
-    {
-      name: "prefix",
-      type: "ReactNode",
-      default: "-",
-      description: "Content rendered at the start (icon, unit symbol, or text like `https://`). Rendered inline in muted color -- no background or separator.",
-    },
-    {
-      name: "suffix",
-      type: "ReactNode",
-      default: "-",
-      description: "Content rendered at the end (icon, unit label, or text like `.com`). Rendered inline in muted color. Hidden while loading.",
-    },
-    {
-      name: "loading",
-      type: "boolean",
-      default: "false",
-      description: "Disables the input and renders a small spinner in the trailing slot.",
-    },
-    {
-      name: "disabled",
-      type: "boolean",
-      default: "false",
-      description: "Disables the input.",
-    },
-    {
-      name: "className",
-      type: "string",
-      default: "-",
-      description: "Additional CSS classes applied to the control wrapper.",
-    },
-  ]}
-/>
+Size controls density. Loading and disabled states preserve the field’s label and value context.
 
-<Callout title="Notes">
-- Compose label, description, invalid state, and error messaging with `Field`.
-- Whitespace-trim the value at submit time so a stray space doesn't slip past a required check.
-- Placeholders should look like a real value the user would type: `example.com`, `my-project`. Skip the "Enter your…" instructions; the label already does that job.
-- Prefix and suffix render inline in muted color. Good for icons (`<Search />`, `<Mail />`), short text (`https://`, `.com`, currency symbols), and Kbd hints (`Esc`).
-- For an action button that sits inside an input row, pass an icon-only Button with `aria-label`, not a naked icon.
-- Use `<SearchInput>` for search boxes: the trailing X button appears once the field has a value and clears it on click.
-</Callout>
+<ComponentPreview label="Sizes and states" sourcePath="src/app/docs/components/input/input-states-demo.tsx"><InputStatesDemo /></ComponentPreview>
+
+## API reference
+
+Input accepts native input attributes. These props add Patch UI behavior.
+
+<PropsTable props={[
+  { name: "size", type: "\"sm\" | \"md\" | \"lg\"", default: "\"md\"", description: "Uses the shared 24, 32, or 40 pixel control heights." },
+  { name: "variant", type: "\"default\" | \"unstyled\"", default: "\"default\"", description: "Removes control chrome when another component owns the surface." },
+  { name: "prefix / suffix", type: "ReactNode / ReactNode", description: "Adds muted inline content before or after the editable value." },
+  { name: "loading", type: "boolean", default: "false", description: "Disables the input and replaces the suffix with a spinner." },
+]} />
+
+## Accessibility
+
+- Associate every Input with a visible label. A placeholder is not a label.
+- Connect descriptions and errors through Field or `aria-describedby`.
+- Use prefixes and suffixes for supplemental information, not required instructions.
+
+<PageNavigation />

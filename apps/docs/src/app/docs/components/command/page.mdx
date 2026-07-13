@@ -1,138 +1,91 @@
 import { CommandDemo } from "./command-demo";
-
+import { CommandDialogDemo } from "./command-dialog-demo";
 
 export const metadata = { title: "Command" };
 
-# Command
+export const usageCode = `const commands = ["New file", "Open file", "Save file"];
 
-A command palette built on Base UI's Autocomplete (inline mode: the list is always visible, no positioned dropdown). Type to filter, arrow keys to move, Enter to select. Pass `items` for built-in filtering, or `filteredItems` to drive results from your own search index. Wrap in `CommandDialog` for a Cmd+K palette.
-
-<Install name="command" />
-
-<ComponentPreview label="Command">
-  <CommandDemo />
-</ComponentPreview>
-
-## Usage
-
-```tsx
-import {
-  CommandDialog,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandItem,
-  CommandSection,
-} from "@patchui/react";
-
-const items = ["New file", "Open file", "Save"];
-
-<CommandDialog open={open} onOpenChange={setOpen} items={items}>
-  <CommandInput placeholder="Type a command..." />
+<Command items={commands}>
+  <CommandInput placeholder="Search commands" />
   <CommandList>
-    <CommandEmpty>No results found.</CommandEmpty>
+    <CommandEmpty>No commands found.</CommandEmpty>
     <CommandCollection>
-      {(item) => (
-        <CommandItem key={item} value={item} onClick={() => run(item)}>
-          {item}
+      {(command) => (
+        <CommandItem key={command} value={command}>
+          {command}
         </CommandItem>
       )}
     </CommandCollection>
   </CommandList>
-</CommandDialog>
+</Command>`;
 
-// With a trailing "currently chosen" check
-<CommandItem selected={value === item} value={item} onClick={...}>
-  {item}
-</CommandItem>
-
-// Two-line item with a description
-<CommandItem description="Switch between light and dark" value="Toggle theme">
-  Toggle theme
-</CommandItem>
-
-// Sections (sugar for CommandGroup + CommandGroupLabel)
-<CommandSection label="Navigate">
-  <CommandItem>Go to dashboard</CommandItem>
-  <CommandItem>Go to projects</CommandItem>
-</CommandSection>
-
-// Comfortable density (larger items + body type size)
-<CommandList density="comfortable">...</CommandList>
-```
-
-For grouped results, wrap items in `CommandSection` (or `CommandGroup` + `CommandGroupLabel`) + `CommandCollection`. To drive results from a fuzzy index, hold the query in state via the input and pass your matched array as `filteredItems` instead of `items`.
-
-## Props
-
-### CommandItem
-
-<PropsTable
-  props={[
-    {
-      name: "selected",
-      type: "boolean",
-      default: "false",
-      description: "Renders a trailing check to indicate the currently chosen item.",
-    },
-    {
-      name: "description",
-      type: "ReactNode",
-      description: "Secondary line shown beneath the title for two-line items.",
-    },
-  ]}
+<PageHeader
+  title="Command"
+  description="A searchable command list for quickly finding and running application actions."
 />
 
-### CommandList
+Use Command for a compact action index with keyboard navigation and filtering. Use CommandDialog when the list should open as a global palette.
 
-<PropsTable
-  props={[
-    {
-      name: "density",
-      type: '"compact" | "comfortable"',
-      default: '"compact"',
-      description: "Vertical density of contained items. Compact targets dense palettes; comfortable bumps min-height and padding for larger-action lists.",
-    },
-  ]}
-/>
+<ComponentPreview label="Inline command list" sourcePath="src/app/docs/components/command/command-demo.tsx" previewClassName="bg-base">
+  <CommandDemo />
+</ComponentPreview>
 
-## Components
+## Installation
 
-- `Command` - root (Base UI Autocomplete in inline mode); takes `items` or `filteredItems`
-- `CommandDialog` - `Command` inside a `Modal` for a Cmd+K palette
-- `CommandInput` - search input with a leading icon
-- `CommandList` - the results list; supports `density`
-- `CommandItem` - a selectable result; supports `selected` and `description`
-- `CommandEmpty` - shown when nothing matches
-- `CommandSection` - labeled group with consistent spacing, sugar for `CommandGroup` + `CommandGroupLabel`
-- `CommandGroup` / `CommandGroupLabel` / `CommandCollection` - low-level grouped sections
-- `CommandSeparator` - a divider between groups
+<Install name="command" />
 
-## Keyboard hints (`Kbd`)
+The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/command.json). The canonical implementation lives in [packages/react/src/components/command.tsx](https://github.com/hotfix-jobs/patch-ui/blob/main/packages/react/src/components/command.tsx).
 
-Shortcut chips shown in the `suffix` slot of a `CommandItem` are rendered with the `Kbd` primitive. It handles platform glyph switching for you (`⌘` on Mac, `Ctrl` on Windows / Linux) and composes multiple modifiers into one chip.
+## Usage
 
-```tsx
-import { Kbd } from "@patchui/react";
+<Usage code={usageCode} />
 
-<CommandItem
-  suffix={<Kbd meta>N</Kbd>}
-  onClick={() => run("new-file")}
->
-  New file
-</CommandItem>
+Pass `items` for built-in filtering. Pass `filteredItems` when an external search index owns matching and ranking.
 
-// Multiple modifiers compose in order
-<Kbd meta shift>P</Kbd>  // ⇧⌘P on Mac, Ctrl+Shift+P elsewhere
-<Kbd ctrl>K</Kbd>        // ⌃K on Mac, Ctrl+K elsewhere
+## Composition
+
+```text
+Command or CommandDialog
+├── CommandInput
+└── CommandList
+    ├── CommandEmpty
+    ├── CommandSection
+    │   └── CommandItem
+    ├── CommandCollection
+    └── CommandSeparator
 ```
 
-Props: `meta` (⌘ / Ctrl), `ctrl` (⌃ / Ctrl), `alt` (⌥ / Alt), `shift` (⇧), plus a `size` (`sm` | `md`) and an optional `onClick` — passing a handler renders it as a `<button>` with hover state, useful for a clickable Esc chip in an input's `action` slot.
+## Examples
 
-<Callout title="Notes">
-- **Built on Base UI Autocomplete** - filtering, roving focus, type-ahead, and ARIA are handled for you; no extra command library.
-- **Bring your own search:** pass `filteredItems` to render results from a fuzzy index (this docs site does exactly that for its Cmd+K search).
-- **Keyboard:** opening and typing do not highlight a result automatically. Up/Down establishes the highlighted item, Enter selects it, and Esc closes.
-- **Dialog layout:** `CommandDialog` stays vertically centered with narrow viewport gutters on mobile and a capped results height.
-- **`selected` vs filtering:** `selected` is purely visual (renders the trailing check). It does not affect filtering or focus. Use it to mark a "currently chosen" item in single-select pickers.
-</Callout>
+### Dialog palette
+
+CommandDialog provides the modal surface and dismissal behavior. The application owns the trigger and any global keyboard shortcut.
+
+<ComponentPreview label="Dialog palette" sourcePath="src/app/docs/components/command/command-dialog-demo.tsx">
+  <CommandDialogDemo />
+</ComponentPreview>
+
+## API reference
+
+<PropsTable props={[
+  { name: "CommandInput.action", type: "ReactNode", description: "Adds trailing content. The consumer wires any interaction." },
+  { name: "CommandList.density", type: '"compact" | "comfortable"', default: '"comfortable"', description: "Selects dense or larger result rows." },
+  { name: "CommandItem.selected", type: "boolean", default: "false", description: "Displays a trailing check without changing filtering or highlight state." },
+  { name: "CommandItem.description", type: "ReactNode", description: "Adds a secondary line below the item label." },
+]} />
+
+Command and CommandDialog otherwise expose the underlying Autocomplete state. Use `items` for built-in filtering, `filteredItems` for external results, and `open` with `onOpenChange` to control the dialog.
+
+## Keyboard behavior
+
+- Typing filters the supplied items. No result is highlighted automatically.
+- Arrow Down or Arrow Up establishes and moves the highlighted result.
+- Enter selects the highlighted result.
+- Escape dismisses CommandDialog. The application must register shortcuts such as Command K or Control K to open it.
+- CommandItem `selected` marks persistent application state and is separate from the temporary keyboard highlight.
+
+## Mobile behavior
+
+CommandDialog stays centered with narrow viewport gutters and caps its result height. The modal branch locks body scrolling while open.
+
+<PageNavigation />

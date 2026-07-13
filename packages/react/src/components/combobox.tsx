@@ -11,7 +11,6 @@ import { createContext, forwardRef, useContext, useMemo } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
 import {
-  iconMuted,
   itemGroupLabel,
   itemRow,
   popupDivider,
@@ -244,7 +243,7 @@ export const ComboboxInput = forwardRef<HTMLInputElement, ComboboxInputProps>(
           "group/combobox-input relative inline-flex w-full items-center overflow-hidden text-ink",
           !unstyled && "rounded-[var(--radius-8)]",
           !unstyled && [
-            "bg-fill-1 hover:bg-fill-2 has-focus-visible:bg-layer-1",
+            "bg-fill-1 hover:bg-fill-2",
             popupTriggerOpen,
             "outline-none has-focus-visible:[outline-style:solid] has-focus-visible:outline-[length:var(--focus-ring-width)] has-focus-visible:outline-[var(--focus-ring-color)] has-focus-visible:outline-offset-0",
             "transition-[color,background-color,outline-color] duration-[var(--duration-state)] ease-[var(--ease-standard)]",
@@ -435,7 +434,6 @@ export function ComboboxItem({
         itemRow.base,
         itemRow.comfortable,
         "gap-2 transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)]",
-        iconMuted,
         className,
       )}
       onClick={(e: React.MouseEvent<HTMLDivElement>) => {
