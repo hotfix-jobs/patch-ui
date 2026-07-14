@@ -2,9 +2,14 @@
 
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 import { RemoveScroll } from "react-remove-scroll";
+import { createContext, useContext } from "react";
 import type * as React from "react";
 import { cn } from "../utils";
-import { popupSurface } from "../recipes";
+import {
+  mobilePopupBackdrop,
+  mobilePopupSurface,
+  popupSurface,
+} from "../recipes";
 import {
   MOBILE_MEDIA_QUERY,
   useMediaQuery,
@@ -12,6 +17,8 @@ import {
 
 export type PopoverSide = "top" | "bottom" | "left" | "right";
 export type PopoverAlign = "start" | "center" | "end";
+
+const PopoverMobileContext = createContext(false);
 
 export interface PopoverProps
   extends Omit<
@@ -26,11 +33,20 @@ export interface PopoverProps
  *  Tooltip / Modal don't fit. */
 export function Popover({
   children,
+  modal,
   ...props
 }: PopoverProps): React.ReactElement {
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
+
   return (
-    <PopoverPrimitive.Root data-slot="popover" {...props}>
-      {children}
+    <PopoverPrimitive.Root
+      data-slot="popover"
+      modal={isMobile ? true : modal}
+      {...props}
+    >
+      <PopoverMobileContext.Provider value={isMobile}>
+        {children}
+      </PopoverMobileContext.Provider>
     </PopoverPrimitive.Root>
   );
 }
@@ -50,12 +66,15 @@ export interface PopoverContentProps
     React.ComponentProps<typeof PopoverPrimitive.Popup>,
     "children"
   > {
+  /** Desktop placement. Mobile uses a centered modal surface. */
   side?: PopoverSide;
+  /** Desktop alignment. Mobile uses a centered modal surface. */
   align?: PopoverAlign;
+  /** Desktop trigger offset. Mobile uses viewport gutters. */
   sideOffset?: number;
-  /** Element used to position the popup. Defaults to the Popover trigger. */
+  /** Desktop positioning anchor. Defaults to the Popover trigger. */
   anchor?: React.ComponentProps<typeof PopoverPrimitive.Positioner>["anchor"];
-  /** Optional arrow pointing at the trigger. */
+  /** Optional desktop arrow pointing at the trigger. */
   arrow?: boolean;
   children?: React.ReactNode;
 }
@@ -70,7 +89,7 @@ export function PopoverContent({
   children,
   ...props
 }: PopoverContentProps): React.ReactElement {
-  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
+  const isMobile = useContext(PopoverMobileContext);
 
   if (isMobile) {
     return (
@@ -78,28 +97,14 @@ export function PopoverContent({
         <RemoveScroll>
         <PopoverPrimitive.Backdrop
           data-slot="popover-backdrop"
-          className={cn(
-            "fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm",
-            "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-            "data-starting-style:opacity-0 data-ending-style:opacity-0",
-          )}
+          className={mobilePopupBackdrop}
         />
         <PopoverPrimitive.Positioner className="contents">
           <PopoverPrimitive.Popup
             data-slot="popover-content"
             data-mobile="true"
             className={cn(
-              // Centered on mobile: fixed at viewport center via
-              // top-1/2 / left-1/2 + translate. Full width minus 8px
-              // gutters left/right.
-              "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
-              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu",
-              "max-h-[calc(100dvh-2rem)]",
-              // Fade + slight upward drift on enter. Starts 8px below
-              // final center, animates up.
-              "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-              "data-starting-style:opacity-0 data-starting-style:translate-y-[calc(-50%+8px)]",
-              "data-ending-style:opacity-0 data-ending-style:translate-y-[calc(-50%+8px)]",
+              mobilePopupSurface,
               className,
             )}
             {...props}
@@ -133,7 +138,7 @@ export function PopoverContent({
           {...props}
         >
           {arrow && (
-            <PopoverPrimitive.Arrow className="fill-[color:var(--layer-1)] stroke-[color:var(--hairline)] stroke-1" />
+            <PopoverPrimitive.Arrow className="fill-[color:var(--layer-1)] stroke-[color:var(--hairline-soft)] stroke-1" />
           )}
           {children}
         </PopoverPrimitive.Popup>

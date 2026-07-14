@@ -42,6 +42,8 @@ SearchSuggestionsField
 
 Each field supplies an ID, visible label, current value, and suggestion sections. Suggestions need a stable ID, submitted value, and visible label, with optional description, icon, suffix, and disabled state.
 
+Set `onAction`, `actionLabel`, and `actionIcon` to add a trailing action that does not select the suggestion. Running the action closes the suggestion surface. A separate `onRemove` control leaves the surface open so people can continue managing results.
+
 ## Loading and empty states
 
 Set `loading` on the active field while its request is pending. Existing suggestions remain visible during a background refresh; the centered loading state appears only when no results are available yet.
@@ -77,6 +79,7 @@ The consumer decides whether choosing a suggestion submits immediately or only u
 
 - Give each field a concise label that remains meaningful when announced independently.
 - Use descriptions or suffixes to explain where suggestions lead.
+- Give every trailing action and remove control a concise accessible label.
 - Keep disabled suggestions rare and make their unavailable state understandable from context.
 - Preserve useful empty text instead of presenting a silent blank surface.
 

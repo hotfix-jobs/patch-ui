@@ -361,6 +361,7 @@ export function FilterToolbarPicker({
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             aria-label={placeholder}
+            autoComplete="off"
             aria-autocomplete="list"
             aria-controls={listboxId}
             aria-expanded

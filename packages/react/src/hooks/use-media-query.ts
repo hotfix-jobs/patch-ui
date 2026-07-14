@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 /**
  * SSR-safe media query hook. Returns `false` during SSR and hydration to
- * avoid a flash of the wrong layout, then flips to the real match after mount.
+ * avoid a hydration mismatch, then flips to the real match after mount.
  */
 export function useMediaQuery(query: string): boolean {
   const [matches, setMatches] = useState(false);
