@@ -34,6 +34,9 @@ export interface SearchSuggestion {
   onRemove?: () => void;
   /** Accessible label for the remove control, e.g. `Remove "<entry>"`. */
   removeLabel?: string;
+  onAction?: () => void;
+  actionLabel?: string;
+  actionIcon?: React.ReactNode;
 }
 
 export interface SearchSuggestionSection {
@@ -209,6 +212,7 @@ export function SearchSuggestions({
                       placeholder={field.placeholder}
                       prefix={field.icon}
                       aria-label={field.label}
+                      autoComplete="off"
                       aria-autocomplete="list"
                       aria-controls={listboxId}
                       aria-expanded={open && active}
@@ -291,6 +295,7 @@ export function SearchSuggestions({
                 placeholder={activeField.placeholder}
                 prefix={activeField.icon}
                 aria-label={activeField.label}
+                autoComplete="off"
                 aria-autocomplete="list"
                 aria-controls={listboxId}
                 aria-expanded
@@ -311,6 +316,7 @@ export function SearchSuggestions({
             activeIndex={activeIndex}
             onActiveIndexChange={setActiveIndex}
             onSelect={selectSuggestion}
+            onClose={() => setOpen(false)}
           />
         </PopoverContent>
       </Popover>
@@ -324,6 +330,7 @@ function SearchSuggestionsResults({
   activeIndex,
   onActiveIndexChange,
   onSelect,
+  onClose,
 }: {
   field: SearchSuggestionsField;
   listboxId: string;
@@ -331,6 +338,7 @@ function SearchSuggestionsResults({
   activeIndex: number;
   onActiveIndexChange: (index: number) => void;
   onSelect: (suggestion: SearchSuggestion) => void;
+  onClose: () => void;
 }): React.ReactElement {
   const hasSuggestions = field.sections.some(
     (section) => section.suggestions.length > 0,
@@ -366,6 +374,7 @@ function SearchSuggestionsResults({
                       ) + suggestionIndex;
                   const active = index === activeIndex;
                   const onRemove = suggestion.onRemove;
+                  const onAction = suggestion.onAction;
                   const option = (
                     <button
                       key={suggestion.id}
@@ -379,7 +388,8 @@ function SearchSuggestionsResults({
                         itemRow.base,
                         itemRow.comfortable,
                         "w-full gap-3 text-start",
-                        onRemove && "pe-11",
+                        (onRemove || onAction) && "pe-11",
+                        onRemove && onAction && "pe-20",
                       )}
                       onMouseEnter={() => onActiveIndexChange(index)}
                       onMouseDown={(event) => event.preventDefault()}
@@ -408,26 +418,47 @@ function SearchSuggestionsResults({
                     </button>
                   );
 
-                  if (!onRemove) return option;
+                  if (!onRemove && !onAction) return option;
 
                   return (
                     <div key={suggestion.id} className="relative">
                       {option}
-                      <button
-                        type="button"
-                        aria-label={suggestion.removeLabel ?? "Remove"}
-                        className={cn(
-                          "absolute end-1.5 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-[var(--radius-8)] text-ink-tertiary hover:bg-layer-hover hover:text-ink active:bg-layer-hover",
-                          selectionFocus,
-                        )}
-                        onMouseDown={(event) => event.stopPropagation()}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          onRemove();
-                        }}
-                      >
-                        <X aria-hidden className="size-3.5" />
-                      </button>
+                      {onAction && (
+                        <button
+                          type="button"
+                          aria-label={suggestion.actionLabel ?? "Use action"}
+                          className={cn(
+                            "absolute top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-[var(--radius-8)] text-ink-tertiary hover:bg-layer-hover hover:text-ink active:bg-layer-hover",
+                            onRemove ? "end-10" : "end-1.5",
+                            selectionFocus,
+                          )}
+                          onMouseDown={(event) => event.stopPropagation()}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onAction();
+                            onClose();
+                          }}
+                        >
+                          {suggestion.actionIcon}
+                        </button>
+                      )}
+                      {onRemove && (
+                        <button
+                          type="button"
+                          aria-label={suggestion.removeLabel ?? "Remove"}
+                          className={cn(
+                            "absolute end-1.5 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-[var(--radius-8)] text-ink-tertiary hover:bg-layer-hover hover:text-ink active:bg-layer-hover",
+                            selectionFocus,
+                          )}
+                          onMouseDown={(event) => event.stopPropagation()}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            onRemove();
+                          }}
+                        >
+                          <X aria-hidden className="size-3.5" />
+                        </button>
+                      )}
                     </div>
                   );
                 })}

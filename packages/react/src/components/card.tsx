@@ -30,7 +30,7 @@ export function Card({
       variant === "surface" && "bg-layer-1",
       variant === "outlined" && "border border-hairline-soft bg-layer-1",
       variant === "elevated" &&
-        "bg-layer-1 shadow-card dark:shadow-none",
+        "bg-layer-1 shadow-card",
       actionable && [
         "hover:border-hairline-tertiary active:border-hairline-tertiary",
         "aria-disabled:pointer-events-none aria-disabled:opacity-50",

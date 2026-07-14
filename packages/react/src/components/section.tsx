@@ -24,7 +24,7 @@ export function Section({
     className: cn(
       "flex flex-col text-ink",
       variant === "card" && "rounded-[var(--radius-12)] bg-layer-1",
-      dividers && "[&>*+*]:border-t [&>*+*]:border-hairline",
+      dividers && "[&>*+*]:border-t [&>*+*]:border-hairline-soft",
       className,
     ),
     "data-slot": "section",

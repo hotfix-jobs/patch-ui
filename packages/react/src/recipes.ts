@@ -42,7 +42,7 @@ export const colorTransition =
 
 /** Shared chrome for floating panels (Menu, Combobox, Select, Popover, Command). */
 export const popupSurface =
-  "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu outline-none focus:outline-none";
+  "rounded-[var(--radius-12)] bg-layer-1 border border-hairline-soft shadow-menu outline-none focus:outline-none";
 
 export const mobilePopupBackdrop =
   "fixed inset-0 z-[70] bg-scrim backdrop-blur-sm " +

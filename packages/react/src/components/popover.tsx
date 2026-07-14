@@ -138,7 +138,7 @@ export function PopoverContent({
           {...props}
         >
           {arrow && (
-            <PopoverPrimitive.Arrow className="fill-[color:var(--layer-1)] stroke-[color:var(--hairline)] stroke-1" />
+            <PopoverPrimitive.Arrow className="fill-[color:var(--layer-1)] stroke-[color:var(--hairline-soft)] stroke-1" />
           )}
           {children}
         </PopoverPrimitive.Popup>
