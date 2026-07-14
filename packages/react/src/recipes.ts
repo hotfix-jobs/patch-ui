@@ -44,6 +44,18 @@ export const colorTransition =
 export const popupSurface =
   "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu outline-none focus:outline-none";
 
+export const mobilePopupBackdrop =
+  "fixed inset-0 z-[70] bg-scrim backdrop-blur-sm " +
+  "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)] " +
+  "data-starting-style:opacity-0 data-ending-style:opacity-0";
+
+export const mobilePopupSurface =
+  popupSurface +
+  " fixed left-1/2 top-1/2 z-[80] flex w-[calc(100vw-1rem)] max-h-[calc(100dvh-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden " +
+  "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)] " +
+  "data-starting-style:opacity-0 data-starting-style:translate-y-[calc(-50%+8px)] " +
+  "data-ending-style:opacity-0 data-ending-style:translate-y-[calc(-50%+8px)]";
+
 /** Held state shared by triggers while their popup is open. */
 export const popupTriggerOpen = "data-[popup-open]:bg-fill-2";
 

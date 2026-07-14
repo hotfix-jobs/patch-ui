@@ -9,6 +9,8 @@ import { cn } from "../utils";
 import {
   itemGroupLabel,
   itemRow,
+  mobilePopupBackdrop,
+  mobilePopupSurface,
   popupDivider,
   popupSurface,
 } from "../recipes";
@@ -21,6 +23,7 @@ import {
 type Density = "compact" | "comfortable";
 
 const MenuDensityContext = createContext<Density>("comfortable");
+const MenuMobileContext = createContext(false);
 
 /* --------------------------------- Root -------------------------------- */
 
@@ -36,17 +39,21 @@ export function Menu({
   open,
   onOpenChange,
   defaultOpen,
-  modal = false,
+  modal,
   children,
 }: MenuProps): React.ReactElement {
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
+
   return (
     <MenuPrimitive.Root
       open={open}
       onOpenChange={onOpenChange}
       defaultOpen={defaultOpen}
-      modal={modal}
+      modal={isMobile ? true : (modal ?? false)}
     >
-      {children}
+      <MenuMobileContext.Provider value={isMobile}>
+        {children}
+      </MenuMobileContext.Provider>
     </MenuPrimitive.Root>
   );
 }
@@ -69,10 +76,13 @@ export interface MenuPopupProps
     "children"
   > {
   density?: Density;
+  /** Desktop placement. Mobile uses a centered modal surface. */
   side?: "top" | "bottom" | "left" | "right" | "inline-start" | "inline-end";
+  /** Desktop alignment. Mobile uses a centered modal surface. */
   align?: "start" | "center" | "end";
+  /** Desktop trigger offset. Mobile uses viewport gutters. */
   sideOffset?: number;
-  /** Internal: sub-menus opt out of the mobile bottom-drawer treatment. */
+  /** Internal: sub-menus opt out of the centered mobile treatment. */
   sub?: boolean;
   children?: React.ReactNode;
 }
@@ -87,7 +97,7 @@ export function MenuPopup({
   children,
   ...props
 }: MenuPopupProps): React.ReactElement {
-  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
+  const isMobile = useContext(MenuMobileContext);
 
   if (isMobile && !sub) {
     return (
@@ -95,28 +105,15 @@ export function MenuPopup({
         <RemoveScroll>
         <MenuPrimitive.Backdrop
           data-slot="menu-backdrop"
-          className={cn(
-            "fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm",
-            "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-            "data-starting-style:opacity-0 data-ending-style:opacity-0",
-          )}
+          className={mobilePopupBackdrop}
         />
         <MenuPrimitive.Positioner className="contents">
         <MenuPrimitive.Popup
           data-slot="menu-popup"
           data-mobile="true"
           className={cn(
-            // Centered on mobile: fixed at viewport center via
-            // top-1/2 / left-1/2 + translate. Full width minus 8px
-            // gutters left/right.
-            "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
-            "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu",
-            "max-h-[calc(100dvh-2rem)] p-1",
-            // Fade + slight upward drift on enter. Starts 8px below
-            // final center, animates up. translate-x-1/2 stays put.
-            "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-            "data-starting-style:opacity-0 data-starting-style:translate-y-[calc(-50%+8px)]",
-            "data-ending-style:opacity-0 data-ending-style:translate-y-[calc(-50%+8px)]",
+            mobilePopupSurface,
+            "p-1",
             className,
           )}
           {...props}

@@ -13,6 +13,8 @@ import { cn } from "../utils";
 import {
   itemGroupLabel,
   itemRow,
+  mobilePopupBackdrop,
+  mobilePopupSurface,
   popupDivider,
   popupSurface,
   popupTriggerOpen,
@@ -60,7 +62,8 @@ export interface ComboboxProps {
 const ComboboxSharedContext = createContext<{
   placeholder?: string;
   multiple?: boolean;
-}>({});
+  isMobile: boolean;
+}>({ isMobile: false });
 
 export function Combobox({
   open,
@@ -75,9 +78,10 @@ export function Combobox({
   autoHighlight = false,
   children,
 }: ComboboxProps): React.ReactElement {
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
   const shared = useMemo(
-    () => ({ placeholder, multiple }),
-    [placeholder, multiple],
+    () => ({ placeholder, multiple, isMobile }),
+    [placeholder, multiple, isMobile],
   );
   // Base UI's ComboboxRoot is generic over Value + Multiple, and the
   // shape of `value` depends on both. Cast through `unknown as never` at
@@ -110,6 +114,7 @@ export function Combobox({
         // and forwards it unchanged. Cast so consumers can opt into the
         // stronger mode without dropping to the primitive.
         autoHighlight={autoHighlight as boolean}
+        modal={isMobile}
       >
         {children}
       </ComboboxPrimitive.Root>
@@ -287,8 +292,11 @@ export interface ComboboxPopupProps {
   desktopClassName?: string;
   /** Mobile-only overrides for the centered modal layout. */
   mobileClassName?: string;
+  /** Desktop placement. Mobile uses a centered modal surface. */
   side?: "top" | "bottom" | "left" | "right";
+  /** Desktop alignment. Mobile uses a centered modal surface. */
   align?: "start" | "center" | "end";
+  /** Desktop trigger offset. Mobile uses viewport gutters. */
   sideOffset?: number;
   children: React.ReactNode;
 }
@@ -302,8 +310,7 @@ export function ComboboxPopup({
   sideOffset = 6,
   children,
 }: ComboboxPopupProps): React.ReactElement {
-  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
-  const { placeholder } = useContext(ComboboxSharedContext);
+  const { placeholder, isMobile } = useContext(ComboboxSharedContext);
 
   if (isMobile) {
     return (
@@ -311,30 +318,14 @@ export function ComboboxPopup({
         <RemoveScroll>
         <ComboboxPrimitive.Backdrop
           data-slot="combobox-backdrop"
-          className={cn(
-            "fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm",
-            "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-            "data-starting-style:opacity-0 data-ending-style:opacity-0",
-          )}
+          className={mobilePopupBackdrop}
         />
         <ComboboxPrimitive.Positioner className="contents">
           <ComboboxPrimitive.Popup
             data-slot="combobox-popup"
             data-mobile="true"
             className={cn(
-              // Centered on mobile: fixed at viewport center via
-              // top-1/2 / left-1/2 + translate. Full width minus
-              // 8px gutters left/right.
-              "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
-              "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu",
-              "max-h-[calc(100dvh-2rem)]",
-              // Fade + slight vertical slide from below the center on
-              // enter. `translate-y-[calc(-50%+8px)]` starts 8px below
-              // the final -50% center and animates up. translate-x-1/2
-              // stays put throughout.
-              "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-              "data-starting-style:opacity-0 data-starting-style:translate-y-[calc(-50%+8px)]",
-              "data-ending-style:opacity-0 data-ending-style:translate-y-[calc(-50%+8px)]",
+              mobilePopupSurface,
               className,
               mobileClassName,
             )}

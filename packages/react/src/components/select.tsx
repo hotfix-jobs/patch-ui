@@ -5,7 +5,14 @@ import { CaretDown, Check } from "@phosphor-icons/react/dist/ssr";
 import type * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
 import { cn } from "../utils";
-import { itemRow, popupSurface, popupTriggerOpen, selectionFocus } from "../recipes";
+import {
+  itemRow,
+  mobilePopupBackdrop,
+  mobilePopupSurface,
+  popupSurface,
+  popupTriggerOpen,
+  selectionFocus,
+} from "../recipes";
 import {
   MOBILE_MEDIA_QUERY,
   useMediaQuery,
@@ -86,8 +93,10 @@ export function Select({
   className,
   renderValue,
   children,
+  modal,
   ...props
 }: SelectProps): React.ReactElement {
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
   const unstyled = variant === "unstyled";
   const trigger = (
     <SelectPrimitive.Trigger
@@ -165,10 +174,11 @@ export function Select({
       }
       disabled={disabled}
       required={required}
+      modal={isMobile ? true : modal}
       {...props}
     >
       {trigger}
-      <SelectPopupSurface>{children}</SelectPopupSurface>
+      <SelectPopupSurface isMobile={isMobile}>{children}</SelectPopupSurface>
     </SelectPrimitive.Root>
   );
 }
@@ -177,25 +187,18 @@ export function Select({
 
 function SelectPopupSurface({
   children,
+  isMobile,
 }: {
   children: React.ReactNode;
+  isMobile: boolean;
 }): React.ReactElement {
-  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
-
   if (isMobile) {
-    // Matches Menu's mobile treatment: centered dialog + RemoveScroll +
-    // fade/upward-drift enter. Keeps Select and Menu visually identical
-    // as pickers on phones.
     return (
       <SelectPrimitive.Portal>
         <RemoveScroll>
           <SelectPrimitive.Backdrop
             data-slot="select-backdrop"
-            className={cn(
-              "fixed inset-0 z-[70] bg-black/40 backdrop-blur-sm",
-              "transition-opacity duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-              "data-starting-style:opacity-0 data-ending-style:opacity-0",
-            )}
+            className={mobilePopupBackdrop}
           />
           <SelectPrimitive.Positioner
             alignItemWithTrigger={false}
@@ -205,12 +208,8 @@ function SelectPopupSurface({
               data-slot="select-popup"
               data-mobile="true"
               className={cn(
-                "fixed left-1/2 top-1/2 z-[80] w-[calc(100vw-1rem)] -translate-x-1/2 -translate-y-1/2 flex flex-col overflow-hidden outline-none",
-                "rounded-[var(--radius-12)] bg-layer-1 border border-hairline shadow-menu",
-                "max-h-[calc(100dvh-2rem)] p-1",
-                "transition-[opacity,translate] duration-[var(--duration-overlay)] ease-[var(--ease-standard)]",
-                "data-starting-style:opacity-0 data-starting-style:translate-y-[calc(-50%+8px)]",
-                "data-ending-style:opacity-0 data-ending-style:translate-y-[calc(-50%+8px)]",
+                mobilePopupSurface,
+                "p-1",
               )}
             >
               <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
