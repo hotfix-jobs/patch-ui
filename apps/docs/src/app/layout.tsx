@@ -63,7 +63,6 @@ export const metadata: Metadata = {
     "shadcn registry",
     "accessible",
   ],
-  alternates: { canonical: "/docs" },
   // Favicons resolved via Next.js file-based convention (favicon.ico + icon.svg + apple-icon.png in src/app), so no `icons` key here.
   openGraph: {
     type: "website",

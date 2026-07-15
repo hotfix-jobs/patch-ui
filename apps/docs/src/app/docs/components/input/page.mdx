@@ -2,7 +2,10 @@ import { InputDemo } from "./input-demo";
 import { InputAffixesDemo } from "./input-affixes-demo";
 import { InputStatesDemo } from "./input-states-demo";
 
-export const metadata = { title: "Input" };
+export const metadata = {
+  title: "Input",
+  alternates: { canonical: "/docs/components/input" },
+};
 export const usageCode = `<Field>
   <FieldLabel>Email</FieldLabel>
   <Input id="email" type="email" />

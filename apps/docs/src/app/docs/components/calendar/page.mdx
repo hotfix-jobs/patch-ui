@@ -2,7 +2,10 @@ import { CalendarDemo } from "./calendar-demo";
 import { CalendarModesDemo } from "./calendar-modes-demo";
 import { CalendarConstraintsDemo } from "./calendar-constraints-demo";
 
-export const metadata = { title: "Calendar" };
+export const metadata = {
+  title: "Calendar",
+  alternates: { canonical: "/docs/components/calendar" },
+};
 
 export const usageCode = `const [date, setDate] = useState<Date | null>(null);
 

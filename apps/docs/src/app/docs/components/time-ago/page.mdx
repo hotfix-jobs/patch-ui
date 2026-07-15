@@ -1,7 +1,10 @@
 import { TimeAgoDemo } from "./time-ago-demo";
 import { TimeAgoFutureDemo } from "./time-ago-future-demo";
 
-export const metadata = { title: "Time Ago" };
+export const metadata = {
+  title: "Time Ago",
+  alternates: { canonical: "/docs/components/time-ago" },
+};
 
 export const usageCode = `<TimeAgo dateStr={activity.createdAt} />`;
 

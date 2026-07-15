@@ -2,7 +2,10 @@ import { ToggleGroupDemo } from "./toggle-group-demo";
 import { ToggleGroupLabelsDemo } from "./toggle-group-labels-demo";
 import { ToggleGroupSizesDemo } from "./toggle-group-sizes-demo";
 
-export const metadata = { title: "Toggle Group" };
+export const metadata = {
+  title: "Toggle Group",
+  alternates: { canonical: "/docs/components/toggle-group" },
+};
 
 export const usageCode = `<ToggleGroup value={view} onValueChange={setView} aria-label="Project view">
   <ToggleGroupItem value="grid" aria-label="Grid view">

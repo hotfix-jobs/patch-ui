@@ -22,7 +22,7 @@ export function AppHeaderDemo() {
   const [active, setActive] = useState("Home");
 
   return (
-    <div className="w-full overflow-hidden rounded-[var(--radius-12)] bg-base">
+    <div className="min-h-dvh w-full bg-base">
       <AppHeader>
         <AppHeaderBrand>
           <span className="flex size-6 items-center justify-center rounded-[var(--radius-6)] bg-ink text-small font-medium text-[color:var(--base)]">

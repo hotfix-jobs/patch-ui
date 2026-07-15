@@ -2,7 +2,10 @@ import { ComboboxDemo } from "./combobox-demo";
 import { ComboboxSectionsDemo } from "./combobox-sections-demo";
 import { ComboboxMultipleDemo } from "./combobox-multiple-demo";
 
-export const metadata = { title: "Combobox" };
+export const metadata = {
+  title: "Combobox",
+  alternates: { canonical: "/docs/components/combobox" },
+};
 
 export const usageCode = `<Label htmlFor="framework">Framework</Label>
 <Combobox value={query} onValueChange={setQuery}>
