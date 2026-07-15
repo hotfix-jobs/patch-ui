@@ -340,7 +340,10 @@ function AppHeaderRightWithTrigger({
               data-slot="app-header-mobile-trigger"
               aria-label="Open menu"
               aria-controls={panelId}
-              className="inline-flex md:hidden size-8 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
+              className={cn(
+                "inline-flex md:hidden size-8 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover",
+                open && "invisible",
+              )}
             />
           }
         >
@@ -402,7 +405,7 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
         className={cn(
           bar,
           open
-            ? "[transform:translateY(0px)_rotate(45deg)]"
+            ? "[animation:patch-app-header-menu-top-open_var(--duration-state)_var(--ease-standard)_both]"
             : "[transform:translateY(-4px)_rotate(0deg)]",
         )}
       />
@@ -410,7 +413,7 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
         className={cn(
           bar,
           open
-            ? "[transform:translateY(0px)_rotate(-45deg)]"
+            ? "[animation:patch-app-header-menu-bottom-open_var(--duration-state)_var(--ease-standard)_both]"
             : "[transform:translateY(4px)_rotate(0deg)]",
         )}
       />
