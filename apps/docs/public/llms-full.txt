@@ -51,7 +51,7 @@ Use a borderless header and grouped navigation for a lighter marketing surface. 
 
 ## Mobile behavior
 
-Below the `md` breakpoint, navigation moves into a full-height panel and right-side actions move to its footer. App Header Mobile Top stays beside the menu trigger for actions that must remain immediately reachable. The menu closes on Escape and locks background scrolling while open.
+Below the `md` breakpoint, navigation moves into a full-height panel and right-side actions move to its footer. App Header Mobile Top stays beside the menu trigger for actions that must remain immediately reachable. Opening the menu moves focus inside, contains keyboard navigation, hides the background from assistive technology, and locks background scrolling. Escape and the close control return focus to the menu trigger.
 
 Set `--header-height` when the header differs from the default 64 pixel height so the mobile panel begins below the top row.
 
@@ -469,7 +469,7 @@ The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/f
 </FilterToolbar>
 ```
 
-Pass Menu, Popover, Toggle, or other Patch UI controls as children. Filter Toolbar owns rail layout and stable trailing placement while the application owns filter state.
+Pass Menu, Popover, Toggle, or other Patch UI controls as children. Filter Toolbar owns rail layout and stable trailing placement while the application owns filter state. On narrow screens, the filter rail stays on the first row while result metadata and trailing actions move to a second row. The regions recombine at the large breakpoint.
 
 ## Composition
 

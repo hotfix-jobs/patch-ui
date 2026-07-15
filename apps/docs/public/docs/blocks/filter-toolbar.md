@@ -240,7 +240,7 @@ The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/f
 </FilterToolbar>
 ```
 
-Pass Menu, Popover, Toggle, or other Patch UI controls as children. Filter Toolbar owns rail layout and stable trailing placement while the application owns filter state.
+Pass Menu, Popover, Toggle, or other Patch UI controls as children. Filter Toolbar owns rail layout and stable trailing placement while the application owns filter state. On narrow screens, the filter rail stays on the first row while result metadata and trailing actions move to a second row. The regions recombine at the large breakpoint.
 
 ## Composition
 

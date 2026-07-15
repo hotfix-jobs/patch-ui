@@ -73,14 +73,14 @@ export function FilterToolbar({
       data-slot="filter-toolbar"
       data-overflow={overflow}
       className={cn(
-        "flex w-full min-w-0 items-center gap-2",
+        "flex w-full min-w-0 flex-col items-stretch gap-2 lg:flex-row lg:items-center",
         className,
       )}
       {...props}
     >
       <div
         data-slot="filter-toolbar-filters"
-        className="min-w-0 flex-1"
+        className="w-full min-w-0 lg:flex-1"
       >
         {overflow === "scroll" ? (
           <Scroller
@@ -113,7 +113,8 @@ export function FilterToolbar({
         <div
           data-slot="filter-toolbar-trailing"
           className={cn(
-            "flex shrink-0 items-center gap-2 sm:gap-3",
+            "flex w-full shrink-0 items-center gap-2 px-2 pb-1 sm:gap-3 lg:w-auto lg:justify-start lg:px-0 lg:pb-0",
+            count != null ? "justify-between" : "justify-end",
             trailingClassName,
           )}
         >
@@ -129,7 +130,14 @@ export function FilterToolbar({
               {count}
             </span>
           )}
-          {trailing}
+          {trailing != null && (
+            <div
+              data-slot="filter-toolbar-actions"
+              className="flex shrink-0 items-center gap-2 sm:gap-3"
+            >
+              {trailing}
+            </div>
+          )}
         </div>
       )}
     </div>
