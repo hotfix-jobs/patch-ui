@@ -12,7 +12,7 @@ import {
 
 export function AppHeaderMarketingDemo() {
   return (
-    <div className="w-full overflow-hidden rounded-[var(--radius-12)] bg-base">
+    <div className="min-h-dvh w-full bg-base">
       <AppHeader bordered={false}>
         <AppHeaderBrand render={<a href="#" onClick={(event) => event.preventDefault()} />}>
           Patch

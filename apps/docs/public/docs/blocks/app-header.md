@@ -51,7 +51,7 @@ Use a borderless header and grouped navigation for a lighter marketing surface. 
 
 Below the `md` breakpoint, navigation moves into a full-height panel and right-side actions move to its footer. App Header Mobile Top stays beside the menu trigger for actions that must remain immediately reachable. Opening the menu moves focus inside, contains keyboard navigation, hides the background from assistive technology, and locks background scrolling. Escape and the close control return focus to the menu trigger.
 
-Set `--header-height` when the header differs from the default 64 pixel height so the mobile panel begins below the top row.
+The mobile panel measures the rendered header and menu trigger when it opens, so custom header heights, safe-area insets, and embedded layouts stay aligned without additional configuration.
 
 ## API reference
 

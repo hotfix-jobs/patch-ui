@@ -6,9 +6,12 @@ import {
   Children,
   createContext,
   isValidElement,
+  useCallback,
   useContext,
   useId,
+  useLayoutEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import type * as React from "react";
@@ -28,8 +31,18 @@ interface AppHeaderContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
   panelId: string;
+  triggerRef: React.RefObject<HTMLButtonElement | null>;
+  mobileGeometry: MobileGeometry | null;
   right: React.ReactNode;
   navChildren: React.ReactNode;
+}
+
+interface MobileGeometry {
+  headerBottom: number;
+  triggerTop: number;
+  triggerLeft: number;
+  triggerWidth: number;
+  triggerHeight: number;
 }
 
 const AppHeaderContext = createContext<AppHeaderContextValue | null>(null);
@@ -91,7 +104,12 @@ export function AppHeader({
   ...props
 }: AppHeaderProps): React.ReactElement {
   const [open, setOpen] = useState(false);
+  const [mobileGeometry, setMobileGeometry] = useState<MobileGeometry | null>(
+    null,
+  );
   const panelId = useId();
+  const headerRef = useRef<HTMLElement | null>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   const { brand, nav, right, mobileTop } = useMemo(
     () => extractSlots(children),
@@ -103,7 +121,46 @@ export function AppHeader({
       .children;
   }, [nav]);
 
-  const ctx: AppHeaderContextValue = { open, setOpen, panelId, right, navChildren };
+  const updateMobileGeometry = useCallback(() => {
+    const header = headerRef.current;
+    const trigger = triggerRef.current;
+    if (!header || !trigger) return;
+
+    const headerRect = header.getBoundingClientRect();
+    const triggerRect = trigger.getBoundingClientRect();
+    setMobileGeometry({
+      headerBottom: headerRect.bottom,
+      triggerTop: triggerRect.top,
+      triggerLeft: triggerRect.left,
+      triggerWidth: triggerRect.width,
+      triggerHeight: triggerRect.height,
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+
+    updateMobileGeometry();
+    const observer = new ResizeObserver(updateMobileGeometry);
+    if (headerRef.current) observer.observe(headerRef.current);
+    if (triggerRef.current) observer.observe(triggerRef.current);
+    window.addEventListener("resize", updateMobileGeometry);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updateMobileGeometry);
+    };
+  }, [open, updateMobileGeometry]);
+
+  const ctx: AppHeaderContextValue = {
+    open,
+    setOpen,
+    panelId,
+    triggerRef,
+    mobileGeometry,
+    right,
+    navChildren,
+  };
 
   const defaultProps = {
     className: cn(
@@ -129,6 +186,7 @@ export function AppHeader({
       <Sheet open={open} onOpenChange={setOpen} side="top">
         {useRender({
           defaultTagName: "header",
+          ref: headerRef,
           props: mergeProps<"header">(defaultProps, props),
           render,
         })}
@@ -322,7 +380,7 @@ function AppHeaderRightWithTrigger({
   children: React.ReactNode;
   mobileTop?: React.ReactNode;
 }): React.ReactElement {
-  const { open, panelId, navChildren } = useAppHeaderContext();
+  const { open, panelId, navChildren, triggerRef } = useAppHeaderContext();
   const hasNav = Children.count(navChildren) > 0;
   return (
     <div className="ms-auto flex items-center gap-2" data-slot="app-header-right">
@@ -337,6 +395,7 @@ function AppHeaderRightWithTrigger({
           render={
             <button
               type="button"
+              ref={triggerRef}
               data-slot="app-header-mobile-trigger"
               aria-label="Open menu"
               aria-controls={panelId}
@@ -424,7 +483,8 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
 /* --------------------------- internal: mobile panel --------------------------- */
 
 function AppHeaderMobilePanel(): React.ReactElement {
-  const { panelId, navChildren, right } = useAppHeaderContext();
+  const { panelId, navChildren, right, mobileGeometry } =
+    useAppHeaderContext();
 
   return (
     <SheetPrimitive.Portal>
@@ -435,18 +495,31 @@ function AppHeaderMobilePanel(): React.ReactElement {
           aria-modal="true"
           id={panelId}
           data-slot="app-header-mobile-panel"
-          className="fixed inset-0 z-70 bg-transparent md:hidden"
+          className="fixed inset-0 z-70 bg-transparent outline-none md:hidden"
         >
           <SheetPrimitive.Close
             aria-label="Close menu"
+            style={
+              mobileGeometry
+                ? {
+                    top: mobileGeometry.triggerTop,
+                    left: mobileGeometry.triggerLeft,
+                    width: mobileGeometry.triggerWidth,
+                    height: mobileGeometry.triggerHeight,
+                  }
+                : { visibility: "hidden" }
+            }
             className={cn(
-              "absolute end-4 top-3.5 z-10 inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-hover",
+              "absolute z-10 inline-flex items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-hover",
               selectionFocus,
             )}
           >
             <MorphingMenuIcon open />
           </SheetPrimitive.Close>
-          <div className="absolute inset-x-0 bottom-0 top-[var(--header-height,64px)] flex flex-col bg-base [animation:patch-app-header-panel-in_var(--duration-overlay)_var(--ease-standard)]">
+          <div
+            className="absolute inset-x-0 bottom-0 flex flex-col bg-base [animation:patch-app-header-panel-in_var(--duration-overlay)_var(--ease-standard)]"
+            style={{ top: mobileGeometry?.headerBottom ?? 0 }}
+          >
             <AppHeaderMobileRenderContext.Provider value={true}>
               <nav className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-6">
                 {groupMobileNavChildren(navChildren)}
