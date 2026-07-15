@@ -73,6 +73,7 @@ export function FilterToolbarDemo() {
         activeCount={activeCount}
         onClearAll={clearAll}
         count={activeCount > 0 ? `${24 - activeCount * 3} results` : "24 results"}
+        countVisibility="always"
         trailing={<SortControl value={sort} onChange={setSort} />}
       >
         <FilterMenu

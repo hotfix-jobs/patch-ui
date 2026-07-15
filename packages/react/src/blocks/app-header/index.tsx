@@ -7,17 +7,17 @@ import {
   createContext,
   isValidElement,
   useContext,
-  useEffect,
   useId,
   useMemo,
   useState,
-  useSyncExternalStore,
 } from "react";
-
-const emptySubscribe = () => () => {};
-import { createPortal } from "react-dom";
-import { RemoveScroll } from "react-remove-scroll";
 import type * as React from "react";
+import {
+  Sheet,
+  SheetPrimitive,
+  SheetTrigger,
+} from "../../components/sheet";
+import { selectionFocus } from "../../recipes";
 import { cn } from "../../utils";
 
 /** Complete site-header block with responsive mobile panel. */
@@ -126,12 +126,14 @@ export function AppHeader({
 
   return (
     <AppHeaderContext.Provider value={ctx}>
-      {useRender({
-        defaultTagName: "header",
-        props: mergeProps<"header">(defaultProps, props),
-        render,
-      })}
-      <AppHeaderMobilePanel />
+      <Sheet open={open} onOpenChange={setOpen} side="top">
+        {useRender({
+          defaultTagName: "header",
+          props: mergeProps<"header">(defaultProps, props),
+          render,
+        })}
+        <AppHeaderMobilePanel />
+      </Sheet>
     </AppHeaderContext.Provider>
   );
 }
@@ -320,7 +322,7 @@ function AppHeaderRightWithTrigger({
   children: React.ReactNode;
   mobileTop?: React.ReactNode;
 }): React.ReactElement {
-  const { open, setOpen, panelId, navChildren } = useAppHeaderContext();
+  const { open, panelId, navChildren } = useAppHeaderContext();
   const hasNav = Children.count(navChildren) > 0;
   return (
     <div className="ms-auto flex items-center gap-2" data-slot="app-header-right">
@@ -331,17 +333,22 @@ function AppHeaderRightWithTrigger({
         </span>
       )}
       {hasNav && (
-        <button
-          type="button"
-          data-slot="app-header-mobile-trigger"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls={panelId}
-          onClick={() => setOpen(!open)}
-          className="inline-flex md:hidden size-8 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
+        <SheetTrigger
+          render={
+            <button
+              type="button"
+              data-slot="app-header-mobile-trigger"
+              aria-label="Open menu"
+              aria-controls={panelId}
+              className={cn(
+                "inline-flex md:hidden size-8 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover",
+                open && "invisible",
+              )}
+            />
+          }
         >
           <MorphingMenuIcon open={open} />
-        </button>
+        </SheetTrigger>
       )}
     </div>
   );
@@ -398,7 +405,7 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
         className={cn(
           bar,
           open
-            ? "[transform:translateY(0px)_rotate(45deg)]"
+            ? "[animation:patch-app-header-menu-top-open_var(--duration-state)_var(--ease-standard)_both]"
             : "[transform:translateY(-4px)_rotate(0deg)]",
         )}
       />
@@ -406,7 +413,7 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
         className={cn(
           bar,
           open
-            ? "[transform:translateY(0px)_rotate(-45deg)]"
+            ? "[animation:patch-app-header-menu-bottom-open_var(--duration-state)_var(--ease-standard)_both]"
             : "[transform:translateY(4px)_rotate(0deg)]",
         )}
       />
@@ -416,45 +423,46 @@ function MorphingMenuIcon({ open }: { open: boolean }): React.ReactElement {
 
 /* --------------------------- internal: mobile panel --------------------------- */
 
-function AppHeaderMobilePanel(): React.ReactPortal | null {
-  const { open, setOpen, panelId, navChildren, right } = useAppHeaderContext();
-  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+function AppHeaderMobilePanel(): React.ReactElement {
+  const { panelId, navChildren, right } = useAppHeaderContext();
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, setOpen]);
-
-  if (!mounted || !open) return null;
-
-  return createPortal(
-    <RemoveScroll forwardProps>
-      <div
-        role="dialog"
-        aria-modal="true"
-        id={panelId}
-        data-slot="app-header-mobile-panel"
-        className="fixed inset-x-0 bottom-0 top-[var(--header-height,64px)] z-40 flex flex-col bg-base md:hidden [animation:patch-app-header-panel-in_var(--duration-overlay)_var(--ease-standard)]"
-      >
-        <AppHeaderMobileRenderContext.Provider value={true}>
-          <nav className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-6">
-            {groupMobileNavChildren(navChildren)}
-          </nav>
-          {right && Children.count(right) > 0 && (
-            <div
-              data-slot="app-header-mobile-footer"
-              className="flex items-center gap-2 border-t border-hairline p-4 [&>button]:min-w-0 [&>button]:flex-1 [&>a]:min-w-0 [&>a]:flex-1"
-            >
-              {right}
-            </div>
-          )}
-        </AppHeaderMobileRenderContext.Provider>
-      </div>
-    </RemoveScroll>,
-    document.body,
+  return (
+    <SheetPrimitive.Portal>
+      <SheetPrimitive.Backdrop className="fixed inset-0 z-70 bg-transparent md:hidden" />
+      <SheetPrimitive.Viewport className="fixed inset-0 z-70 md:hidden">
+        <SheetPrimitive.Popup
+          aria-label="Main navigation"
+          aria-modal="true"
+          id={panelId}
+          data-slot="app-header-mobile-panel"
+          className="fixed inset-0 z-70 bg-transparent md:hidden"
+        >
+          <SheetPrimitive.Close
+            aria-label="Close menu"
+            className={cn(
+              "absolute end-4 top-3.5 z-10 inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-hover",
+              selectionFocus,
+            )}
+          >
+            <MorphingMenuIcon open />
+          </SheetPrimitive.Close>
+          <div className="absolute inset-x-0 bottom-0 top-[var(--header-height,64px)] flex flex-col bg-base [animation:patch-app-header-panel-in_var(--duration-overlay)_var(--ease-standard)]">
+            <AppHeaderMobileRenderContext.Provider value={true}>
+              <nav className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 pt-6">
+                {groupMobileNavChildren(navChildren)}
+              </nav>
+              {right && Children.count(right) > 0 && (
+                <div
+                  data-slot="app-header-mobile-footer"
+                  className="flex items-center gap-2 border-t border-hairline p-4 [&>button]:min-w-0 [&>button]:flex-1 [&>a]:min-w-0 [&>a]:flex-1"
+                >
+                  {right}
+                </div>
+              )}
+            </AppHeaderMobileRenderContext.Provider>
+          </div>
+        </SheetPrimitive.Popup>
+      </SheetPrimitive.Viewport>
+    </SheetPrimitive.Portal>
   );
 }

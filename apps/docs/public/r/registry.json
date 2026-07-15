@@ -882,10 +882,11 @@
       "type": "registry:block",
       "title": "App Header",
       "dependencies": [
-        "@base-ui/react",
-        "react-remove-scroll"
+        "@base-ui/react"
       ],
       "registryDependencies": [
+        "https://ui.hotfix.jobs/r/recipes.json",
+        "https://ui.hotfix.jobs/r/sheet.json",
         "https://ui.hotfix.jobs/r/tokens.json",
         "https://ui.hotfix.jobs/r/utils.json"
       ],

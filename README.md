@@ -69,6 +69,24 @@ npm run build -w apps/docs
 
 The docs build regenerates the search index, per-route Markdown, `docs.md`, `llms.txt`, and `llms-full.txt` before compiling the site.
 
+## Releases
+
+Patch UI is versioned as a complete copy-in registry. Private workspace packages
+do not carry release versions.
+
+For each release:
+
+1. Move the pending notes in [`CHANGELOG.md`](./CHANGELOG.md) under a dated
+   version heading.
+2. Run the verification commands above.
+3. Commit the release notes and generated registry.
+4. Create an annotated Git tag, for example `git tag -a v0.1.0 -m "Patch UI
+   v0.1.0"`.
+5. Push the commit and tag together.
+
+The hosted `@patchui` registry serves the current source. Git tags identify
+stable repository snapshots and release notes describe migrations between them.
+
 ## License
 
 [MIT](./LICENSE) © Hotfix
