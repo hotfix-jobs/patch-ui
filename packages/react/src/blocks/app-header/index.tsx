@@ -17,6 +17,7 @@ import {
   SheetPrimitive,
   SheetTrigger,
 } from "../../components/sheet";
+import { selectionFocus } from "../../recipes";
 import { cn } from "../../utils";
 
 /** Complete site-header block with responsive mobile panel. */
@@ -435,7 +436,10 @@ function AppHeaderMobilePanel(): React.ReactElement {
         >
           <SheetPrimitive.Close
             aria-label="Close menu"
-            className="absolute end-4 top-3.5 z-10 inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover"
+            className={cn(
+              "absolute end-4 top-3.5 z-10 inline-flex size-8 items-center justify-center rounded-[var(--radius-8)] text-ink transition-colors duration-[var(--duration-state)] ease-[var(--ease-standard)] hover:bg-layer-hover focus-visible:bg-layer-hover active:bg-layer-hover",
+              selectionFocus,
+            )}
           >
             <MorphingMenuIcon open />
           </SheetPrimitive.Close>

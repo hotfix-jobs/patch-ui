@@ -309,6 +309,7 @@ export function FilterToolbarDemo() {
         activeCount={activeCount}
         onClearAll={clearAll}
         count={activeCount > 0 ? `${24 - activeCount * 3} results` : "24 results"}
+        countVisibility="always"
         trailing={<SortControl value={sort} onChange={setSort} />}
       >
         <FilterMenu
@@ -461,6 +462,7 @@ The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/f
   activeCount={activeCount}
   onClearAll={clearFilters}
   count="128 results"
+  countVisibility="always"
   trailing={<SortMenu />}
 >
   <StatusFilter />
@@ -469,7 +471,7 @@ The copied source is available in the [registry JSON](https://ui.hotfix.jobs/r/f
 </FilterToolbar>
 ```
 
-Pass Menu, Popover, Toggle, or other Patch UI controls as children. Filter Toolbar owns rail layout and stable trailing placement while the application owns filter state. On narrow screens, the filter rail stays on the first row while result metadata and trailing actions move to a second row. The regions recombine at the large breakpoint.
+Pass Menu, Popover, Toggle, or other Patch UI controls as children. Filter Toolbar owns rail layout and stable trailing placement while the application owns filter state. On narrow screens, the filter rail stays on the first row while result metadata and trailing actions move to a second row. Set `countVisibility="always"` when the result count should remain visible on that row. The regions recombine at the large breakpoint.
 
 ## Composition
 
