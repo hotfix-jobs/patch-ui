@@ -2,7 +2,10 @@ import { DropzoneCompactDemo } from "./dropzone-compact-demo";
 import { DropzoneDemo } from "./dropzone-demo";
 import { DropzoneSingleDemo } from "./dropzone-single-demo";
 
-export const metadata = { title: "Dropzone" };
+export const metadata = {
+  title: "Dropzone",
+  alternates: { canonical: "/docs/blocks/dropzone" },
+};
 
 export const usageCode = `const [files, setFiles] = useState<File[]>([]);
 

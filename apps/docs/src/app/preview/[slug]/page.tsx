@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AppHeaderDemo } from "@/app/docs/blocks/app-header/app-header-demo";
 import { AppHeaderMarketingDemo } from "@/app/docs/blocks/app-header/app-header-marketing-demo";
@@ -7,6 +8,10 @@ const previews = {
   "app-header": AppHeaderDemo,
   "app-header-marketing": AppHeaderMarketingDemo,
   "search-suggestions": SearchSuggestionsDemo,
+};
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
 };
 
 export function generateStaticParams() {

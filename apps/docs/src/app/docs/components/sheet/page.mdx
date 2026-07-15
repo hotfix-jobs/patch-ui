@@ -1,7 +1,10 @@
 import { SheetDemo } from "./sheet-demo";
 import { SheetBottomDemo } from "./sheet-bottom-demo";
 
-export const metadata = { title: "Sheet" };
+export const metadata = {
+  title: "Sheet",
+  alternates: { canonical: "/docs/components/sheet" },
+};
 
 export const usageCode = `<Sheet side="right">
   <SheetTrigger render={<Button variant="secondary" />}>

@@ -1,7 +1,10 @@
 import { AppHeaderDemo } from "./app-header-demo";
 import { AppHeaderMarketingDemo } from "./app-header-marketing-demo";
 
-export const metadata = { title: "App Header" };
+export const metadata = {
+  title: "App Header",
+  alternates: { canonical: "/docs/blocks/app-header" },
+};
 
 export const usageCode = `<AppHeader>
   <AppHeaderBrand render={<a href="/" />}>Patch</AppHeaderBrand>

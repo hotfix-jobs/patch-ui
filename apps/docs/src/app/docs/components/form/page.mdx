@@ -1,7 +1,10 @@
 import { FormDemo } from "./form-demo";
 import { FormErrorsDemo } from "./form-errors-demo";
 
-export const metadata = { title: "Form" };
+export const metadata = {
+  title: "Form",
+  alternates: { canonical: "/docs/components/form" },
+};
 
 export const usageCode = `<Form onFormSubmit={(values) => save(values)}>
   <Field name="email">

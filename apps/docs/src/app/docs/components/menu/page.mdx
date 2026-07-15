@@ -2,7 +2,10 @@ import { MenuDemo } from "./menu-demo";
 import { MenuSelectionDemo } from "./menu-selection-demo";
 import { MenuSubmenuDemo } from "./menu-submenu-demo";
 
-export const metadata = { title: "Menu" };
+export const metadata = {
+  title: "Menu",
+  alternates: { canonical: "/docs/components/menu" },
+};
 
 export const usageCode = `<Menu>
   <MenuTrigger render={<Button variant="secondary" />}>
