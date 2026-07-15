@@ -1,7 +1,6 @@
 {
   "name": "@patchui/react",
-  "version": "0.23.1",
-  "description": "A React component library built on Base UI primitives with Tailwind CSS v4 and a custom design token system. Source-of-truth for the @patchui/cli copy-in registry (not published as a runtime package).",
+  "description": "Source of truth for the Patch UI shadcn copy-in registry and documentation.",
   "license": "MIT",
   "private": true,
   "type": "module",

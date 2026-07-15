@@ -1,5 +1,8 @@
 # Changelog
 
+> Historical npm package notes. Registry releases are recorded in the root
+> [`CHANGELOG.md`](../../CHANGELOG.md).
+
 ## Unreleased — Public launch (copy-in registry)
 
 Patch UI moves to **copy-in distribution** via a shadcn-compatible registry
